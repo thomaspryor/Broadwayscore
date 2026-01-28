@@ -1,45 +1,112 @@
 # AI Feedback on Plan
 
-**Generated:** 2026-01-28T21:38:26.400Z
+**Generated:** 2026-01-28T21:47:59.860Z
 **Plan file:** docs/biz-section-plan.md
 
 ---
 
 ## Claude (Sonnet) Feedback
 
-## Direct Feedback
+## Recommendation: Option B
 
-**1. Recommendation: Option B**
-You have rare, valuable data that deserves more than a single enhanced page (A), but Option C spreads thin content across too many routes. Option B gives you a strong dashboard for discovery and dedicated deep-dive pages where the detailed financial data can breathe.
+Go with the Dashboard + Deep Dives approach. Option A leaves too much value on the table, and Option C spreads your unique data too thin across pages that don't add meaningful differentiation.
 
-**2. Cut These:**
-- Weekly running costs visualization (only 20 shows, incomplete dataset)
-- Progress bars for TBD shows (you're right about false precision)
-- Color-coded "on-track/at-risk" status (too subjective, adds complexity)
-- Investment comparison by budget tiers (artificial segmentation)
+## Cut These Features
 
-**3. Missing High-Value Feature:**
-**ROI calculator/comparison tool.** With capitalization + grosses data, you can show simple ROI metrics for recouped shows. Industry insiders want to see "Show X returned 3.2x investment in 18 months" - this is actionable intelligence they can't get elsewhere.
+- **Weekly running costs prominently** - only 20 shows have this data, making it feel incomplete
+- **Individual `/biz/[slug]` pages** - enhance existing show pages instead 
+- **Progress bars for TBD shows** - you're right about false precision
+- **Color-coded status systems** - unnecessary visual complexity
 
-**4. Red Flags:**
-- **Don't create separate `/biz/[slug]` pages.** Enhance your existing `/show/[slug]` pages instead. Users are already finding shows there - don't fragment your content.
-- **TBD percentage ranges as text only** - resist the urge to visualize incomplete data.
-- **Dashboard metrics should be instantly scannable** - industry insiders are busy. Lead with the money: total capital deployed, total recouped, current ROI leaders.
+## High-Value/Low-Effort Missing Feature
 
-**Bottom Line:**
-Your instinct is right - the data IS the value. Build Option B but keep individual show financial details on existing show pages. Focus the `/biz` dashboard on aggregate insights and use `/biz/recoupment` as your detailed tracker. Skip the investment comparison page entirely.
+**"Capital at Risk" tracker** - a running tally of total investment dollars in currently non-recouped shows. This is a single number that tells a powerful story about industry risk that literally no one else publishes. Update it monthly and it becomes a metric people will quote.
 
-The ROI angle is your biggest missed opportunity. You have both sides of the equation (investment + returns) - that's pure gold for your target audience.
+Also add **recoupment speed by budget tier** (Under $10M, $10-20M, $20M+). Simple categorization that reveals investment patterns.
+
+## Red Flags
+
+**UX**: Don't bury the lead. Your homepage mentions "commercial data" but doesn't emphasize how rare this is. The `/biz` section should be prominently featured - this is your moat.
+
+**Technical**: Static export is smart, but make sure you're not over-engineering the data structure. Keep it flat and simple.
+
+**Positioning**: "Business Intelligence" sounds corporate. Call it "Investment Tracker" or "Recoupment Watch" - language that reflects what industry insiders actually care about.
+
+**Mobile**: Tables with financial data are brutal on mobile. Plan for card-based layouts that stack key metrics vertically.
+
+## Bottom Line
+
+Your instinct is right - the data IS the value. Focus on making it scannable and quotable rather than interactive and fancy. Two well-designed pages (dashboard + enhanced show pages) will serve your audience better than four mediocre ones.
 
 ---
 
 ## GPT-4o Feedback
 
-1. **Recommendation**: Option B strikes the best balance between value and complexity. It provides a dedicated dashboard for key metrics, allowing users to quickly access significant data points, and offers detailed financial deep dives on individual shows without over-complicating the structure. This option maintains the focus on the unique data you have without diluting it with unnecessary features.
+1. **Recommendation**: I recommend Option B. It provides a balanced approach, offering a comprehensive dashboard with key metrics while also allowing deeper financial insights for individual shows. This option effectively highlights the unique data without overwhelming users with too much complexity, as Option C might.
 
-2. **Cut**: The route renaming from `/biz-buzz` to `/biz` in Option A is subjective and may not substantially impact the user experience. Additionally, the "Investment comparison by budget tier" in Option C's `/biz/investments` might not be necessary, as it could add complexity without clear proven demand from users.
+2. **Cut**: Eliminate the `/biz/recoupment` and `/biz/investments` sections from Option C. These may be redundant or overly detailed, making the platform more complex than necessary. Focus on strengthening the dashboard and enhancing individual show pages instead.
 
-3. **Missing**: Consider incorporating a simple "Insights & Trends" section that uses existing data to highlight trends over time, such as changes in average ticket prices or shifts in categories like "Miracle" vs. "Flop." Implementing this feature with basic data visualizations could deliver high value with minimal effort.
+3. **Missing**: Introduce a simple alert or notification system for industry insiders to track new insights (e.g., status changes in recoupment or significant fluctuations in running costs). This feature could be implemented as a high-value, low-effort addition that drives engagement without complicating the user interface.
 
-4. **Red flags**: Ensure the mobile responsiveness does not compromise the readability and usability of data tables, which are crucial for your target audience. There's a risk that progress bars for estimated recoupment could mislead users into assuming precision. Utilizing simple percentage ranges with color codes (on-track/at-risk) is clearer and more honest about the data's nature. Lastly, watch out for performance issues at build time due to the size of JSON data, particularly if it grows.
+4. **Red flags**:
+   - **UX Concerns**: Be cautious with progress bars for recoupment—they can imply a false sense of precision. Opt for text-based percentage ranges with color-coded statuses to convey both progress and uncertainty effectively.
+   - **Technical Constraints**: Ensure all enhancements are well-suited for the static nature of the site. Particularly, ensure that loading large datasets at build time doesn’t hinder performance, especially on mobile devices.
+   - **Data Visualization**: Avoid overcrowding the dashboard; maintain a clean layout by highlighting the most critical metrics without excessive detail or extraneous visuals.
+
+---
+
+## Gemini 2.0 Flash Feedback
+
+*Error: {
+  "error": {
+    "code": 429,
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\nPlease retry in 12.941102168s.",
+    "status": "RESOURCE_EXHAUSTED",
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.Help",
+        "links": [
+          {
+            "description": "Learn more about Gemini API quotas",
+            "url": "https://ai.google.dev/gemini-api/docs/rate-limits"
+          }
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.QuotaFailure",
+        "violations": [
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_input_token_count",
+            "quotaId": "GenerateContentInputTokensPerModelPerMinute-FreeTier",
+            "quotaDimensions": {
+              "location": "global",
+              "model": "gemini-2.0-flash"
+            }
+          },
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+            "quotaId": "GenerateRequestsPerMinutePerProjectPerModel-FreeTier",
+            "quotaDimensions": {
+              "location": "global",
+              "model": "gemini-2.0-flash"
+            }
+          },
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+            "quotaId": "GenerateRequestsPerDayPerProjectPerModel-FreeTier",
+            "quotaDimensions": {
+              "location": "global",
+              "model": "gemini-2.0-flash"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.RetryInfo",
+        "retryDelay": "12s"
+      }
+    ]
+  }
+}
+*
 
