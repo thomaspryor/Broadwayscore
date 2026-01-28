@@ -1,111 +1,69 @@
 # AI Feedback on Plan
 
-**Generated:** 2026-01-28T21:53:34.054Z
+**Generated:** 2026-01-28T21:56:59.506Z
 **Plan file:** docs/biz-section-plan.md
 
 ---
 
 ## Claude (Sonnet) Feedback
 
-## 1. Recommendation: Option B
+## My Recommendation
 
-Option A is too minimal - you're underselling unique data. Option C spreads thin across too many pages. Option B hits the sweet spot: a dashboard for overview/discovery, individual show pages for deep dives. Industry insiders want to quickly scan the market, then drill down on specific shows.
+**Option B** - Dashboard + Deep Dives. Here's why:
 
-## 2. Cut These Features
+Option A is too minimal given your unique data advantage. Option C spreads the same information too thin across too many pages. Option B gives you focused real estate to showcase your competitive moat while keeping navigation simple.
 
-- **Weekly running costs section** - only 20 shows, incomplete dataset
-- **Budget tier comparisons** - artificial complexity, just sort by capitalization
-- **Progress bars for TBD shows** - you're right about false precision
-- **Color-coded status tracking** - unnecessary visual noise
+## Cut These Features
 
-Keep the estimated recoupment percentages as simple text ranges.
+- **Separate `/biz/recoupment` and `/biz/investments` pages** - This data works better combined in a single dashboard view
+- **Progress bars for TBD shows** - False precision kills credibility with industry insiders. Stick to percentage ranges as text
+- **Color-coded "on-track/at-risk" status** - Your audience can interpret the numbers themselves
 
-## 3. Missing: Capital at Risk Leaderboard
+## Missing High-Value Feature
 
-Add a "Money on the Line" section showing total unrecouped capital by show. This is pure industry insider gold - producers/investors want to see which shows are bleeding the most money. Sort by `(capitalization * (1 - estimatedRecoupmentPct))` for TBDs, full capitalization for confirmed flops.
+**ROI comparison table** showing actual returns for recouped shows. Calculate: (Total Gross - Running Costs × Weeks - Capitalization) ÷ Capitalization. This is the metric investors actually care about but can never find. You have all the data needed.
 
-Also missing: **ROI timeline**. For recouped shows, calculate simple ROI based on continued earnings post-recoupment. Hamilton didn't just recoup - it became a money printer.
+Also add **"Capital at Risk"** prominently on the dashboard - sum of investments for all currently running TBD shows. Industry people love this number.
 
-## 4. Red Flags
+## Red Flags
 
-**Technical**: Static export with 55+ weeks of grosses data could create massive JSON bundles. Consider lazy-loading historical gross data or paginating it.
+**Don't create separate `/biz/[slug]` pages.** Your show pages already exist - just enhance the "Commercial Scorecard" card with more detail (full notes, sources, week-by-week recoupment progress if available). Creating parallel navigation confuses users.
 
-**UX**: Don't create separate `/biz/[slug]` pages. Enhance existing `/show/[slug]` pages with expanded commercial sections. Users shouldn't have to remember two different URLs for the same show.
+**Technical concern:** With static export, make sure your sortable tables work without JavaScript for core functionality. Industry users often browse on locked-down devices.
 
-**Data freshness**: How do you update recoupment estimates? Industry insiders will quickly lose trust if your "70-80% recouped" estimates go stale. Consider adding "last updated" timestamps.
+**UX concern:** Lead with the money. Your dashboard should open with the most shocking stats first - total capital deployed, recoupment rate, biggest winners/losers. Bury methodology explanations below the fold.
 
-**Mobile**: Sortable tables with 6+ columns will be brutal on mobile. Plan for horizontal scrolling or stacked card layouts.
-
-## Bottom Line
-
-Your instinct is right - the data sells itself. Build Option B, cut the bells and whistles, add the capital-at-risk view, and keep show data on existing show pages. Ship fast, then iterate based on user behavior.
+The `/biz` dashboard becomes your showcase page, individual show deep-dives happen on existing show pages, and you avoid over-engineering a simple value proposition.
 
 ---
 
 ## GPT-4o Feedback
 
-1. **Recommendation**: Go with Option B. It provides a balanced approach by offering more detailed insights without overwhelming complexity. Option B improves the current offering by providing deeper dives into individual shows while offering a new dashboard interface that can better showcase key metrics in one place. It avoids the potential overreach and maintenance burden of Option C while still significantly upgrading the user experience over Option A.
+1. **Recommendation**: Option B is the best balance between value and complexity. It addresses the need for more detail than Option A while avoiding the potential over-engineering of Option C. With Option B, you get a comprehensive dashboard and the ability to offer deeper insights on an individual show basis without overwhelming users with too many sections.
 
-2. **Cut**: Remove the separate `/biz/recoupment` and `/biz/investments` pages from Option C if selected. These pages may overlap with the dashboard and individual show deep dives, leading to unnecessary content fragmentation. Simplifying the structure will help maintain focus on truly valuable insights without diluting the information across too many pages.
+2. **Cut**: Removing the `/biz/investments` page from Option C is advisable. The investment comparison by budget tier may not provide significant additional insights compared to detailed recoupment and capitalization data, which are prioritized by the audience. Also, avoid progress bars for estimated recoupment percentages on the basis of their potential to mislead with false precision.
 
-3. **Missing**: Consider adding a simple feature that allows users to set alerts or notifications for status changes or milestones (e.g., when shows reach certain recoupment percentages or designations). This is high-value for industry insiders who want timely updates and represents a relatively low-effort enhancement if implemented through a straightforward email system.
+3. **Missing**: Introduce a simple aggregate comparison view for investment vs. revenue, potentially as a feature in Option B's dashboard. This insight would be highly valued for understanding profitability patterns and can be developed with relatively low effort using existing data fields such as gross, capitalization, and recoupment status.
 
-4. **Red flags**: Ensure that the design maintains a clear hierarchy, especially with the addition of more detailed data. Avoid information overload on the dashboard to keep it user-friendly. Technically, confirm that static JSON loading at build time will handle the anticipated volume efficiently, especially as data grows. Keep an eye on ensuring the mobile responsiveness doesn’t compromise the readability of complex data, particularly on smaller screens.
+4. **Red flags**: Ensure that mobile responsiveness does not compromise the clarity of data presentation, as industry insiders may access data across devices. In terms of technical constraints, rely on static JSON data to design the dashboard dynamically, adhering to Next.js's limitations. Be cautious of overcomplicating navigation with multiple, similar types of pages, which may discourage use—especially with "/biz" already covering substantial ground.
 
 ---
 
 ## Gemini 2.0 Flash Feedback
 
-*Error: {
-  "error": {
-    "code": 429,
-    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash\nPlease retry in 41.957307234s.",
-    "status": "RESOURCE_EXHAUSTED",
-    "details": [
-      {
-        "@type": "type.googleapis.com/google.rpc.Help",
-        "links": [
-          {
-            "description": "Learn more about Gemini API quotas",
-            "url": "https://ai.google.dev/gemini-api/docs/rate-limits"
-          }
-        ]
-      },
-      {
-        "@type": "type.googleapis.com/google.rpc.QuotaFailure",
-        "violations": [
-          {
-            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
-            "quotaId": "GenerateRequestsPerDayPerProjectPerModel-FreeTier",
-            "quotaDimensions": {
-              "location": "global",
-              "model": "gemini-2.0-flash"
-            }
-          },
-          {
-            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
-            "quotaId": "GenerateRequestsPerMinutePerProjectPerModel-FreeTier",
-            "quotaDimensions": {
-              "location": "global",
-              "model": "gemini-2.0-flash"
-            }
-          },
-          {
-            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_input_token_count",
-            "quotaId": "GenerateContentInputTokensPerModelPerMinute-FreeTier",
-            "quotaDimensions": {
-              "location": "global",
-              "model": "gemini-2.0-flash"
-            }
-          }
-        ]
-      },
-      {
-        "@type": "type.googleapis.com/google.rpc.RetryInfo",
-        "retryDelay": "41s"
-      }
-    ]
-  }
-}
-*
+Okay, here's my review:
+
+1.  **Recommendation:** Option B. It's a good balance between providing valuable insights and not overcomplicating the development process. Option A is too minimal, and Option C risks feature bloat without a clear understanding of user needs.
+
+2.  **Cut:** Initially, cut the "Investment comparison by budget tier" section (from Option C). It feels like an assumption about what users want; validate this need later. Focus on core recoupment tracking first.
+
+3.  **Missing:** A simple data download option (CSV/JSON) for users to do their own analysis. This is *very* high-value and *very* low-effort given your existing JSON data structure. Consider requiring registration (email) to access the download for lead generation.
+
+4.  **Red flags:**
+    *   **Static Export Limitation:** Heavily limits interactivity. Consider carefully whether a fully static site truly meets industry insider's needs for data exploration. Can you pre-generate enough variations to satisfy most queries, or should you rethink this constraint? Explore serverless functions if interactivity is truly desired.
+    *   **"Estimated Recoupment Percentage":** Using just a range is weak. Implement color-coding (on-track/at-risk) *with* the range. Make the criteria for "on-track" explicit (e.g., projected recoupment within X weeks based on current run rate).
+    *   **Source Reliability:** "Reddit analysis" as a source is concerning. Ensure all data is thoroughly vetted and clearly indicate source reliability (e.g., clearly mark data coming from SEC filings vs. estimates).
+
+Good luck.
+
 
