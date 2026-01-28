@@ -10,8 +10,64 @@
   "showScoreExcerpt": "\"In retrospect, Wicked seems an early sign of the cultural clout which is to say buying power of a generation of girls (and now women) whose desire to see, read, and sing along with stories about female empowerment has become a snowballing trend.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/wicked",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "show-score",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 55,
+    "confidence": "medium",
+    "range": {
+      "low": 45,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Wicked seems an early sign of the cultural clout",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "buying power of a generation of girls",
+        "sentiment": "neutral",
+        "strength": 1
+      },
+      {
+        "quote": "cultural clout which is to say buying power of a generation of girls",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This appears to be a cultural commentary rather than a theater review, offering no clear recommendation or artistic evaluation of the show's quality. | GPT-4o-mini: The review highlights the cultural significance of Wicked but lacks a clear recommendation or detailed critique of the production itself.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T01:22:17.474Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 50,
+    "openaiScore": 60,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
