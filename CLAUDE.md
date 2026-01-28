@@ -347,6 +347,8 @@ This gives more weight to sources with larger sample sizes.
 - `scripts/collect-review-texts-v2.js` - Enhanced review text scraper with stealth mode, ScrapingBee fallback, Archive.org fallback
 - `scripts/audit-scores.js` - Validates all review scores, flags wrong conversions, sentiment placeholders, duplicates
 - `scripts/fix-scores.js` - Automated fix for common scoring issues (wrong star/letter conversions)
+- `scripts/fix-critic-misattribution.js` - **Data cleanup** - Removes reviews with misattributed critics (e.g., Jesse Green at Variety)
+- `scripts/dedupe-reviews-json.js` - **Data cleanup** - Deduplicates reviews.json by outlet+critic combo
 - `scripts/rebuild-show-reviews.js` - Rebuilds reviews.json for specific shows from review-texts data
 - `scripts/fetch-show-images-auto.js` - Discovers and fetches show images from TodayTix CDN
 - `scripts/archive-show-images.js` - Archives CDN images locally to `public/images/shows/` as WebP
@@ -421,6 +423,35 @@ The `scripts/lib/review-normalization.js` module prevents duplicate review files
 - Merges duplicate files, keeping best data from each
 - Renames files to canonical format
 
+### Review Data Quality - Lessons Learned (Jan 2026)
+
+**CRITICAL:** Web search collection can introduce data quality issues. In January 2026, we discovered 147 misattributed reviews (7% of all reviews) where critics were incorrectly attributed to outlets they don't write for.
+
+**What happened:**
+- Jesse Green (NYT critic) appearing under Variety, TheaterMania, Vulture
+- Peter Marks (WashPost critic) appearing under Variety
+- Adam Feldman (Time Out critic) appearing under TheaterMania
+- Chris Jones (Chicago Tribune) appearing under NY Daily News
+
+**Root causes:**
+1. Web search returned results mentioning a critic's name in context of another outlet
+2. No validation that a critic actually writes for the attributed outlet
+3. No automated tests catching misattribution
+
+**Fixes implemented:**
+1. `scripts/fix-critic-misattribution.js` - Maps known critics to their outlets, removes misattributions
+2. `scripts/dedupe-reviews-json.js` - Deduplicates by outlet+critic combo per show
+3. `scripts/validate-data.js` - Now checks for:
+   - Duplicate outlet+critic combos in reviews.json
+   - Known critic misattributions
+
+**Audit logs saved to:** `data/audit/misattribution-log.json`, `data/audit/dedup-log.json`
+
+**Prevention:**
+- `validate-data.js` now catches these issues before they reach production
+- Known critics list in validation prevents future misattributions
+- Always run `node scripts/validate-data.js` after bulk data changes
+
 ## Automated Testing
 
 The site has comprehensive automated testing that runs via GitHub Actions.
@@ -461,6 +492,9 @@ npm run test         # Run all tests
 - URL-safe slugs
 - Valid image URLs
 - Minimum show counts (safety check)
+- **reviews.json checks** (added Jan 2026):
+  - No duplicate outlet+critic combos per show
+  - No known critic misattributions (e.g., Jesse Green at Variety)
 
 **E2E Tests** (`tests/e2e/`):
 - Homepage loads without errors
