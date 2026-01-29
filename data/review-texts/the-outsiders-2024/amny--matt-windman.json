@@ -7,7 +7,7 @@
   "publishDate": "April 11, 2024",
   "fullText": "However, the book (by playwright Adam Rapp and Justine Levine), which stays dutifully true to the novel, has difficulty reconciling bursts of excitement with the plotting and character details of the novel, with Brody Grant (who looks far too mature to be playing the sensitive 14-year-old Ponyboy Curtis) slowly narrating exposition to the audience and sentimental solos that stop the show in its tracks. By act two, the show felt like a mechanical procession of plot progression and teen melodrama.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "dtliThumb": "Meh",
   "source": "dtli",
   "dtliExcerpt": "However, the book (by playwright Adam Rapp and Justine Levine), which stays dutifully true to the novel, has difficulty reconciling bursts of excitement with the plotting and character details of the novel, with Brody Grant (who looks far too mature to be playing the sensitive 14-year-old Ponyboy Curtis) slowly narrating exposition to the audience and sentimental solos that stop the show in its tracks. By act two, the show felt like a mechanical procession of plot progression and teen melodrama.",
@@ -15,7 +15,60 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 33.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": null,
+      "performances": 35,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show felt like a mechanical procession of plot progression and teen melodrama",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "has difficulty reconciling bursts of excitement with the plotting and character details",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "sentimental solos that stop the show in its tracks",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds fundamental problems with the book, pacing, and casting, describing the show as a 'mechanical procession' with little redeeming value mentioned. | GPT-4o-mini: The review expresses significant criticism of the book's execution and overall pacing, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:08:22.392Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

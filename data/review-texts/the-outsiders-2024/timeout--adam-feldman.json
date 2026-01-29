@@ -7,7 +7,7 @@
   "publishDate": "April 11, 2024",
   "fullText": "I suspect that a lot of people will like The Outsiders more than I did. But to me, its approach misses the central thrust of Hinton’s story.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "dtliThumb": "Meh",
   "source": "dtli",
   "dtliExcerpt": "I suspect that a lot of people will like The Outsiders more than I did. But to me, its approach misses the central thrust of Hinton’s story.",
@@ -15,8 +15,61 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 35.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "its approach misses the central thrust of Hinton's story",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "I suspect that a lot of people will like The Outsiders more than I did",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "I suspect that a lot of people will like The Outsiders more than I did.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Critic acknowledges others may enjoy it but fundamentally disagrees with the adaptation's approach to the source material, suggesting personal disappointment without clear recommendation. | GPT-4o-mini: The review indicates a clear disappointment with the show's interpretation of the source material, leading to a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:08:50.439Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
   "designation": "Recommended"
 }

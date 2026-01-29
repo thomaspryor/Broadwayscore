@@ -7,7 +7,7 @@
   "publishDate": "April 11, 2024",
   "fullText": "It’s a strange paradox of Broadway that its bigness, when used humbly, can honor quite delicate ideas. Whether it can sustain them is another story. In “The Outsiders,” they are not sustained; the structural problems mean its achievements don’t stick. But they’re still achievements, and a show need not be for the ages to be for the moment. In that sense it’s fair, citing Frost, to call it golden — nature’s “hardest hue to hold.”",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "dtliThumb": "Meh",
   "source": "dtli",
   "dtliExcerpt": "It’s a strange paradox of Broadway that its bigness, when used humbly, can honor quite delicate ideas. Whether it can sustain them is another story. In “The Outsiders,” they are not sustained; the structural problems mean its achievements don’t stick. But they’re still achievements, and a show need not be for the ages to be for the moment. In that sense it’s fair, citing Frost, to call it golden — nature’s “hardest hue to hold.”",
@@ -15,8 +15,61 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 55.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": null,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "the structural problems mean its achievements don't stick",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "they're still achievements, and a show need not be for the ages to be for the moment",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "In that sense it's fair, citing Frost, to call it golden",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant structural flaws while finding meaningful achievements, ultimately offering qualified approval for a show with temporary rather than lasting value. | GPT-4o-mini: The review acknowledges achievements but highlights significant structural issues, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:08:38.809Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 60,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
   "designation": "Critics_Pick"
 }

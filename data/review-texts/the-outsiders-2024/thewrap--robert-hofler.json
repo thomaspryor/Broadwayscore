@@ -7,7 +7,7 @@
   "publishDate": "April 11, 2024",
   "fullText": "Levine has the good taste to keep the current trend of loud anthem-itis out of “The Outsiders,” which achieves its best musical moments by serving up several still, quiet and understated tunes.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "dtliThumb": "Meh",
   "source": "dtli",
   "dtliExcerpt": "Levine has the good taste to keep the current trend of loud anthem-itis out of “The Outsiders,” which achieves its best musical moments by serving up several still, quiet and understated tunes.",
@@ -15,7 +15,60 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 77,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "Levine has the good taste to keep the current trend of loud anthem-itis out of 'The Outsiders'",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "achieves its best musical moments by serving up several still, quiet and understated tunes",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the current trend of loud anthem-itis out of 'The Outsiders'",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This excerpt praises the director's restraint and highlights effective quiet musical moments, suggesting positive elements but lacks enough context for a definitive recommendation. | GPT-4o-mini: The review indicates a positive sentiment towards the musical's quieter moments, but lacks a strong overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:08:44.063Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
