@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "In any case, the de-slicking was a mistake; it turns out that the Hollywood varnish was the only thing holding the picture together. In its place, the musical makes few convincing arguments for a separate existence.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": "Down",
   "dtliUrl": null,
@@ -23,8 +23,61 @@
     "dtli",
     "bww-roundup"
   ],
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 33.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": 38,
+      "performances": 68,
+      "direction": 53
+    },
+    "keyPhrases": [
+      {
+        "quote": "the musical makes few convincing arguments for a separate existence",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Or maybe, seen with a cold eye, meretricious",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Whether that is sufficient to make me cry for a would-be weepie is a different matter. That the 'Notebook'-themed tissues are so teeny says it all",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic systematically dismantles most elements of the show while acknowledging only isolated strengths, particularly condemning the songs as 'insubstantial' and the adaptation as unnecessary, with the sarcastic tissue comment serving as his final dismissive verdict. | GPT-4o-mini: The review is predominantly negative, criticizing the script and music while acknowledging some strong performances, particularly from Maryann Plunkett, but overall does not recommend the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:45:30.531Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
   "designation": "Critics_Pick"
 }

@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of Nicholas Sparks' beloved novel manages to capture the essence of the original story while adding its own theatrical flourishes, though it occasionally struggles under the weight of its own ambitions.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical adaptation of Nicholas Sparks' beloved novel manages to capture the essence of the original story while adding its own theatrical flourishes, though it occasionally struggles under the weight of its own ambitions.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "manages to capture the essence of the original story while adding its own theatrical flourishes",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "occasionally struggles under the weight of its own ambitions",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "captures the essence of the original story",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Review presents balanced positive (captures essence, theatrical flourishes) and negative (struggles with ambitions) elements with no clear recommendation, suggesting a mixed reception that leans slightly positive. | GPT-4o-mini: The review indicates a generally positive sentiment towards the adaptation while acknowledging significant challenges, leading to a mixed-positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:45:01.998Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

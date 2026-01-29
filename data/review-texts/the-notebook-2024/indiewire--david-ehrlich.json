@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "This Broadway adaptation of Nicholas Sparks' beloved romance manages to find surprising emotional depth through its innovative staging and powerful performances.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This Broadway adaptation of Nicholas Sparks' beloved romance manages to find surprising emotional depth through its innovative staging and powerful performances.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 72.5,
+      "high": 85.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 83,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "manages to find surprising emotional depth",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "innovative staging and powerful performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "surprising emotional depth",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review uses consistently positive language about performances and staging, suggesting a clear recommendation despite the brief excerpt. | GPT-4o-mini: The review highlights strong performances and innovative staging, indicating a clear recommendation despite a lack of detail on the script.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:45:07.104Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 80,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

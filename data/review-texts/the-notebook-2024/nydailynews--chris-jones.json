@@ -9,15 +9,68 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": "There are two main reasons why this show works. Most important is the songwriter Ingrid Michaelson, who might be a Broadway newcomer, but whose lyrics eschew the mawkish pitfalls in favor of simple, direct communication of intense but familiar emotions through melody and song.",
   "bwwThumb": "Up",
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 83,
+      "performances": null,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "There are two main reasons why this show works",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "delivers unexpectedly sophisticated theatricality with the requisite supercharging of the tear ducts",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "notwithstanding an archly familiar narrative",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic identifies clear reasons why the show succeeds, praises the songwriter and theatricality, with only minor criticism of familiar story elements. | GPT-4o-mini: The review highlights strong songwriting and sophisticated theatricality, leading to a positive recommendation despite acknowledging familiar narrative elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:45:13.112Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
   "sources": [
     "dtli",
     "bww-roundup"

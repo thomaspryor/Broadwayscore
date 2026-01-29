@@ -11,7 +11,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "needsScoring": true,
@@ -38,5 +38,63 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240924205520",
-  "archiveOrgUrl": "http://web.archive.org/web/20240924205520/https://nypost.com/2024/03/14/entertainment/the-notebook-review-broadway-musical-doesnt-match-films-sweep/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240924205520/https://nypost.com/2024/03/14/entertainment/the-notebook-review-broadway-musical-doesnt-match-films-sweep/",
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 38,
+      "music": 53,
+      "performances": 69,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show amounts to a series of un-involving pencil sketches rather than a layered portrait of a decades-long love",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Not a single change book writer Bekah Brunstetter has made improves the simple story's effectiveness",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It's a high note to end on, in a book with few others",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds the production 'merely pleasant' with significant structural flaws and ineffective adaptational choices, though acknowledges some strong performances and emotional moments that work despite the material's weaknesses. | GPT-4o-mini: The review expresses significant concerns about the book and overall emotional engagement, but acknowledges strong performances and some musical highlights, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:45:18.746Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": false,
+    "expectedThumb": "Down",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (57 → Flat) conflicts with aggregator thumbs (Down)"
+    ]
+  }
 }
