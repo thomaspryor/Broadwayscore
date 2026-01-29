@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Hell's Kitchen serves up a feast of gorgeous music and powerful performances, anchored by Maleah Joi Moon's absolutely stunning turn as the Alicia Keys-inspired protagonist.",
   "originalScore": 88,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,5 +19,61 @@
   "needsScoring": true,
   "sources": [
     "web-search"
-  ]
+  ],
+  "llmScore": {
+    "score": 84,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": 92,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "serves up a feast of gorgeous music and powerful performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "absolutely stunning turn",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "gorgeous music",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for music and performances with superlative language ('gorgeous', 'absolutely stunning') indicates clear positive recommendation, but excerpt is too brief to assess full production. | GPT-4o-mini: The review expresses unqualified enthusiasm for the music and performances, particularly highlighting the lead's stunning portrayal, indicating a strong recommendation to see the show. | Note: Models differed by 12 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:35:09.941Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
