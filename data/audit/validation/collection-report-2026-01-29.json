@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T18:10:07.617Z",
+  "runDate": "2026-01-29T18:10:19.828Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 25,
+    "maxReviews": 10,
     "priority": "all",
-    "showFilter": "heart-of-rock-and-roll-2024",
+    "showFilter": "jajas-african-hair-braiding-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 66,
+    "processed": 65,
     "failed": 213,
     "skipped": 0,
-    "successRate": "23.7%"
+    "successRate": "23.4%"
   },
   "tierBreakdown": {
     "playwright": 10,
     "scrapingbee": 6,
     "brightdata": 7,
-    "archive": 43
+    "archive": 42
   },
   "statistics": {
     "tier1Attempts": 6,
     "tier1Success": 0,
     "tier2Attempts": 6,
-    "tier2Success": 1,
-    "tier3Attempts": 5,
-    "tier3Success": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 6,
+    "tier3Success": 1,
     "tier4Attempts": 10,
-    "tier4Success": 1,
+    "tier4Success": 0,
     "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 30
+    "scrapingBeeCreditsUsed": 20
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -99,8 +99,7 @@
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
     "suffs-2024/the-times--nancy-durrant.json",
-    "mj-2022/usatoday--david-rooney.json",
-    "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json"
+    "mj-2022/usatoday--david-rooney.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -310,12 +309,12 @@
     "stereophonic-2024/guardian--gloria-oladipo.json",
     "stereophonic-2024/observer--rex-reed.json",
     "stereophonic-2024/theatermania--adam-feldman.json",
-    "heart-of-rock-and-roll-2024/nytimes--jesse-green.json",
-    "heart-of-rock-and-roll-2024/variety--aramide-tinubu.json",
-    "heart-of-rock-and-roll-2024/nydailynews--chris-jones.json",
-    "heart-of-rock-and-roll-2024/nydailynews--chris.json",
-    "heart-of-rock-and-roll-2024/the-new-york-sun--elysa-gardner.json",
-    "heart-of-rock-and-roll-2024/timeout--regina-robbins.json"
+    "jajas-african-hair-braiding-2023/variety--maya-phillips.json",
+    "jajas-african-hair-braiding-2023/guardian--gloria-oladipo.json",
+    "jajas-african-hair-braiding-2023/nydailynews--chris-jones.json",
+    "jajas-african-hair-braiding-2023/nydailynews--chris.json",
+    "jajas-african-hair-braiding-2023/timeout--adam-feldman.json",
+    "jajas-african-hair-braiding-2023/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -389,8 +388,7 @@
       "queen-versailles-2025/vulture--sara-holdren-and-jesse-david-fox.json",
       "queen-versailles-2025/vulture--sara-holdren.json",
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
-      "suffs-2024/the-times--nancy-durrant.json",
-      "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json"
+      "suffs-2024/the-times--nancy-durrant.json"
     ]
   }
 }
