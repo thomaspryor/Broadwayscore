@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T02:53:16.345Z",
+  "runDate": "2026-01-29T02:58:29.001Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "six-2021",
+    "showFilter": "hamilton-2015",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 45,
-    "failed": 44,
+    "processed": 43,
+    "failed": 51,
     "skipped": 0,
-    "successRate": "50.6%"
+    "successRate": "45.7%"
   },
   "tierBreakdown": {
     "playwright": 5,
     "scrapingbee": 3,
-    "brightdata": 5,
-    "archive": 32
+    "brightdata": 7,
+    "archive": 28
   },
   "statistics": {
-    "tier1Attempts": 10,
+    "tier1Attempts": 19,
     "tier1Success": 0,
-    "tier2Attempts": 10,
+    "tier2Attempts": 19,
     "tier2Success": 0,
-    "tier3Attempts": 10,
-    "tier3Success": 1,
-    "tier4Attempts": 27,
-    "tier4Success": 5,
-    "totalFailed": 9,
-    "scrapingBeeCreditsUsed": 40
+    "tier3Attempts": 19,
+    "tier3Success": 3,
+    "tier4Attempts": 38,
+    "tier4Success": 1,
+    "totalFailed": 16,
+    "scrapingBeeCreditsUsed": 70
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -74,12 +74,10 @@
     "lempicka-2024/queerty--matthew-wexler.json",
     "lempicka-2024/slantmagazine--dan-rubins.json",
     "lempicka-2024/washpost--philip-kennicott.json",
-    "six-2021/nytimes--jesse-green.json",
-    "six-2021/nypost--johnny-oleksinski.json",
-    "six-2021/observer--david-cote.json",
-    "six-2021/chicagotribune--chris-jones.json",
-    "six-2021/nysr--steven-suskin.json",
-    "six-2021/washpost--peter-marks.json"
+    "hamilton-2015/observer--david-cote.json",
+    "hamilton-2015/observer--rex-reed.json",
+    "hamilton-2015/wsj--terry-teachout.json",
+    "hamilton-2015/nbcny--robert-kahn.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -117,15 +115,22 @@
     "lempicka-2024/new-york-sun--elysa-gardner.json",
     "lempicka-2024/nydailynews--chris-jones.json",
     "lempicka-2024/nydailynews--chris.json",
-    "six-2021/variety--peter-marks.json",
-    "six-2021/deadline--pete-hammond.json",
-    "six-2021/ew--ruth-kinane.json",
-    "six-2021/guardian--adrian-horton.json",
-    "six-2021/theatermania--jesse-green.json",
-    "six-2021/thewrap--robert-hofler.json",
-    "six-2021/wsj--charles-isherwood.json",
-    "six-2021/amny--matt-windman.json",
-    "six-2021/talkinbroadway--matthew-murray.json"
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/ew--tim-stack.json",
+    "hamilton-2015/guardian--jesse-green.json",
+    "hamilton-2015/nbcnews--elysa-gardner.json",
+    "hamilton-2015/nbcnews--kristy-puchko.json",
+    "hamilton-2015/nbcnews--melissa-locker.json",
+    "hamilton-2015/newsday--linda-winer.json",
+    "hamilton-2015/nypost--jesse-green.json",
+    "hamilton-2015/nypost--johnny-oleksinski.json",
+    "hamilton-2015/theatermania--adam-feldman.json",
+    "hamilton-2015/theatermania--charles-isherwood.json",
+    "hamilton-2015/ap--mark-kennedy.json",
+    "hamilton-2015/backstage-barbie--backstage-barbie.json",
+    "hamilton-2015/dailybeast--tim-teeman.json",
+    "hamilton-2015/rollingstone--rob-sheffield.json",
+    "hamilton-2015/the-clyde-fitch-report--david-finkle.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -145,7 +150,9 @@
       "harmony-2023/observer--rex-reed.json",
       "harmony-2023/chicagotribune--chris-jones.json",
       "lempicka-2024/nyt-theater--jonathan-mandell.json",
-      "six-2021/observer--david-cote.json"
+      "hamilton-2015/observer--david-cote.json",
+      "hamilton-2015/observer--rex-reed.json",
+      "hamilton-2015/nbcny--robert-kahn.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
@@ -175,11 +182,7 @@
       "lempicka-2024/queerty--matthew-wexler.json",
       "lempicka-2024/slantmagazine--dan-rubins.json",
       "lempicka-2024/washpost--philip-kennicott.json",
-      "six-2021/nytimes--jesse-green.json",
-      "six-2021/nypost--johnny-oleksinski.json",
-      "six-2021/chicagotribune--chris-jones.json",
-      "six-2021/nysr--steven-suskin.json",
-      "six-2021/washpost--peter-marks.json"
+      "hamilton-2015/wsj--terry-teachout.json"
     ]
   }
 }
