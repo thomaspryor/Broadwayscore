@@ -5,7 +5,7 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.usatoday.com/story/entertainment/theater/2023/06/28/just-for-us-broadway-review-alex-edelman/70366028007/",
   "publishDate": "June 28, 2023",
-  "fullText": "Edelman proves himself a natural storyteller with an engaging stage presence, turning what could have been a simple tale of awkward encounters into something more profound about identity, belonging and the persistence of prejudice.",
+  "fullText": "If you talk with anyone in animal rescue, you are going to hear the same story. Too many dogs, not enough room. During a recent adoption event, eager foster families lined up like hawkers at a street bazaar excited to tell you all about their rescue. Tails wagged and tongues panted as playful puppies and excited adult dogs awaited someone to take them to their forever home. More than 20 dogs were at the Renegade Paws Rescue event, and that was just a fraction of the 460 dogs they currently have in their care.",
   "isFullReview": false,
   "dtliExcerpt": "Edelman proves himself a natural storyteller with an engaging stage presence, turning what could have been a simple tale of awkward encounters into something more profound about identity, belonging and the persistence of prejudice.",
   "originalScore": null,
@@ -72,5 +72,42 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "textWordCount": 94,
+  "archivePath": "data/archives/reviews/just-for-us-2023/usatoday--charles-isherwood_2026-01-29.html",
+  "textFetchedAt": "2026-01-29T06:55:46.770Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "Parse Error: Header overflow"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 94 (min: 300)"
+  ]
 }
