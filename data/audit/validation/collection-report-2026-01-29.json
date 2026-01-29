@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T15:55:49.959Z",
+  "runDate": "2026-01-29T15:56:09.469Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 10,
     "priority": "all",
-    "showFilter": "six-2021",
+    "showFilter": "here-lies-love-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 66,
-    "failed": 206,
+    "processed": 65,
+    "failed": 207,
     "skipped": 0,
-    "successRate": "24.3%"
+    "successRate": "23.9%"
   },
   "tierBreakdown": {
     "playwright": 10,
     "scrapingbee": 6,
     "brightdata": 7,
-    "archive": 43
+    "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 9,
+    "tier1Attempts": 10,
     "tier1Success": 0,
-    "tier2Attempts": 9,
+    "tier2Attempts": 10,
     "tier2Success": 0,
-    "tier3Attempts": 9,
-    "tier3Success": 1,
-    "tier4Attempts": 21,
-    "tier4Success": 1,
-    "totalFailed": 9,
-    "scrapingBeeCreditsUsed": 40
+    "tier3Attempts": 10,
+    "tier3Success": 0,
+    "tier4Attempts": 23,
+    "tier4Success": 0,
+    "totalFailed": 10,
+    "scrapingBeeCreditsUsed": 30
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -99,8 +99,7 @@
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
     "suffs-2024/the-times--nancy-durrant.json",
-    "mj-2022/usatoday--david-rooney.json",
-    "six-2021/thewrap--robert-hofler.json"
+    "mj-2022/usatoday--david-rooney.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -300,15 +299,16 @@
     "mj-2022/talkinbroadway--john-olson.json",
     "mj-2022/talkinbroadway--matthew-murray.json",
     "mj-2022/usatoday--charles-isherwood.json",
-    "six-2021/variety--peter-marks.json",
-    "six-2021/deadline--pete-hammond.json",
-    "six-2021/ew--ruth-kinane.json",
-    "six-2021/guardian--adrian-horton.json",
-    "six-2021/observer--david-cote.json",
-    "six-2021/theatermania--jesse-green.json",
-    "six-2021/wsj--charles-isherwood.json",
-    "six-2021/amny--matt-windman.json",
-    "six-2021/talkinbroadway--matthew-murray.json"
+    "here-lies-love-2023/hollywood-reporter--angie-han.json",
+    "here-lies-love-2023/variety--aramide-tinubu.json",
+    "here-lies-love-2023/variety--jesse-green.json",
+    "here-lies-love-2023/variety--peter-marks.json",
+    "here-lies-love-2023/vulture--sara-holdren.json",
+    "here-lies-love-2023/deadline--pete-hammond.json",
+    "here-lies-love-2023/guardian--adrian-horton.json",
+    "here-lies-love-2023/indiewire--chris-ofalt.json",
+    "here-lies-love-2023/observer--rex-reed.json",
+    "here-lies-love-2023/theatermania--adam-feldman.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -382,8 +382,7 @@
       "queen-versailles-2025/vulture--sara-holdren-and-jesse-david-fox.json",
       "queen-versailles-2025/vulture--sara-holdren.json",
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
-      "suffs-2024/the-times--nancy-durrant.json",
-      "six-2021/thewrap--robert-hofler.json"
+      "suffs-2024/the-times--nancy-durrant.json"
     ]
   }
 }
