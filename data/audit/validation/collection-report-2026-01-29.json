@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-29T15:46:18.033Z",
+  "runDate": "2026-01-29T15:46:26.021Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 10,
     "priority": "all",
-    "showFilter": "hamilton-2015",
+    "showFilter": "just-for-us-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -23,16 +23,16 @@
     "archive": 44
   },
   "statistics": {
-    "tier1Attempts": 10,
-    "tier1Success": 0,
-    "tier2Attempts": 10,
+    "tier1Attempts": 9,
+    "tier1Success": 1,
+    "tier2Attempts": 8,
     "tier2Success": 0,
-    "tier3Attempts": 10,
+    "tier3Attempts": 8,
     "tier3Success": 1,
-    "tier4Attempts": 22,
-    "tier4Success": 0,
+    "tier4Attempts": 16,
+    "tier4Success": 2,
     "totalFailed": 10,
-    "scrapingBeeCreditsUsed": 30
+    "scrapingBeeCreditsUsed": 20
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -298,16 +298,16 @@
     "illinoise-2024/usatoday--david-oliver.json",
     "illinoise-2024/washpost--gloria-oladipo.json",
     "illinoise-2024/washpost--peter-marks.json",
-    "hamilton-2015/hollywood-reporter--david-rooney.json",
-    "hamilton-2015/ew--tim-stack.json",
-    "hamilton-2015/guardian--jesse-green.json",
-    "hamilton-2015/nbcnews--elysa-gardner.json",
-    "hamilton-2015/nbcnews--kristy-puchko.json",
-    "hamilton-2015/nbcnews--melissa-locker.json",
-    "hamilton-2015/newsday--linda-winer.json",
-    "hamilton-2015/nypost--jesse-green.json",
-    "hamilton-2015/nypost--johnny-oleksinski.json",
-    "hamilton-2015/observer--david-cote.json"
+    "just-for-us-2023/hollywood-reporter--angie-han.json",
+    "just-for-us-2023/hollywood-reporter--david-rooney.json",
+    "just-for-us-2023/variety--aramide-tinubu.json",
+    "just-for-us-2023/vulture--helen-shaw.json",
+    "just-for-us-2023/deadline--greg-evans.json",
+    "just-for-us-2023/nypost--johnny-oleksinski.json",
+    "just-for-us-2023/observer--david-cote.json",
+    "just-for-us-2023/theatermania--jesse-green.json",
+    "just-for-us-2023/timeout--adam-feldman.json",
+    "just-for-us-2023/timeout--raven-snook.json"
   ],
   "tierDetails": {
     "playwright": [
