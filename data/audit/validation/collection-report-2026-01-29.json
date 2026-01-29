@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T07:19:36.568Z",
+  "runDate": "2026-01-29T07:21:29.315Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "appropriate-2023",
+    "showFilter": "wicked-2003",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 56,
-    "failed": 153,
+    "processed": 64,
+    "failed": 144,
     "skipped": 0,
-    "successRate": "26.8%"
+    "successRate": "30.8%"
   },
   "tierBreakdown": {
-    "playwright": 8,
-    "scrapingbee": 4,
+    "playwright": 10,
+    "scrapingbee": 6,
     "brightdata": 6,
-    "archive": 38
+    "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 12,
+    "tier1Attempts": 7,
     "tier1Success": 0,
-    "tier2Attempts": 12,
+    "tier2Attempts": 6,
     "tier2Success": 0,
-    "tier3Attempts": 12,
-    "tier3Success": 1,
-    "tier4Attempts": 25,
+    "tier3Attempts": 6,
+    "tier3Success": 0,
+    "tier4Attempts": 16,
     "tier4Success": 1,
-    "totalFailed": 12,
-    "scrapingBeeCreditsUsed": 40
+    "totalFailed": 6,
+    "scrapingBeeCreditsUsed": 10
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -90,7 +90,15 @@
     "patriots-2024/amny--matt-windman.json",
     "aladdin-2014/vulture--jesse-green.json",
     "aladdin-2014/thewrap--robert-hofler.json",
-    "aladdin-2014/usatoday--elysa-gardner.json"
+    "aladdin-2014/usatoday--elysa-gardner.json",
+    "queen-versailles-2025/vulture--sara-holdren-and-jesse-david-fox.json",
+    "queen-versailles-2025/vulture--sara-holdren.json",
+    "queen-versailles-2025/ew--dalton-ross.json",
+    "queen-versailles-2025/advertisement--jonathan-mandell.json",
+    "queen-versailles-2025/latimes--charles-mcnulty.json",
+    "queen-versailles-2025/nysr--david-finkle.json",
+    "queen-versailles-2025/slantmagazine--dan-rubins.json",
+    "wicked-2003/ew--alice-king.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -228,24 +236,15 @@
     "back-to-the-future-2023/theatermania--adam-feldman.json",
     "back-to-the-future-2023/thewrap--robert-hofler.json",
     "back-to-the-future-2023/timeout--adam-feldman.json",
-    "back-to-the-future-2023/wsj--charles-isherwood.json",
-    "back-to-the-future-2023/wsj--terry-teachout.json",
-    "back-to-the-future-2023/nysr--elysa-gardner.json",
-    "back-to-the-future-2023/nysr--steven-suskin.json",
-    "back-to-the-future-2023/queerty--matthew-wexler.json",
-    "back-to-the-future-2023/rollingstone--brittany-spanos.json",
-    "appropriate-2023/hollywood-reporter--david-rooney.json",
-    "appropriate-2023/hollywood-reporter--lovia-gyarkye.json",
-    "appropriate-2023/nytimes--jesse-green.json",
-    "appropriate-2023/vulture--jackson-mchenry.json",
-    "appropriate-2023/deadline--greg-evans.json",
-    "appropriate-2023/guardian--adrian-horton.json",
-    "appropriate-2023/nypost--johnny-oleksinski.json",
-    "appropriate-2023/observer--david-cote.json",
-    "appropriate-2023/timeout--adam-feldman.json",
-    "appropriate-2023/wsj--charles-isherwood.json",
-    "appropriate-2023/talkinbroadway--matthew-murray.json",
-    "appropriate-2023/washpost--peter-marks.json"
+    "queen-versailles-2025/nydailynews--chris-jones.json",
+    "queen-versailles-2025/oneminutecritic--matthew-wexler.json",
+    "queen-versailles-2025/washpost--naveen-kumar.json",
+    "wicked-2003/hollywood-reporter--frank-scheck.json",
+    "wicked-2003/guardian--michael-billington.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "wicked-2003/curtainup--elyse-sommer.json",
+    "wicked-2003/njcom-star-ledger--michael-sommers.json",
+    "wicked-2003/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -256,13 +255,17 @@
       "lempicka-2024/nysr--david-finkle.json",
       "stranger-things-2024/londontheatre--marianka-swain.json",
       "hadestown-2019/broadwaynews--charles-isherwood.json",
-      "hadestown-2019/dcmetro--deb-miller.json"
+      "hadestown-2019/dcmetro--deb-miller.json",
+      "queen-versailles-2025/advertisement--jonathan-mandell.json",
+      "queen-versailles-2025/nysr--david-finkle.json"
     ],
     "scrapingbee": [
       "spamalot-2023/cititour--brian-scott-lipton.json",
       "spamalot-2023/chicagotribune--chris-jones.json",
       "lempicka-2024/cititour--brian-scott-lipton.json",
-      "stranger-things-2024/thestage--dave-fargnoli.json"
+      "stranger-things-2024/thestage--dave-fargnoli.json",
+      "queen-versailles-2025/ew--dalton-ross.json",
+      "queen-versailles-2025/latimes--charles-mcnulty.json"
     ],
     "brightdata": [
       "harmony-2023/observer--jesse-green.json",
@@ -310,7 +313,11 @@
       "patriots-2024/broadwaynews--brittani-samuel.json",
       "patriots-2024/amny--matt-windman.json",
       "aladdin-2014/vulture--jesse-green.json",
-      "aladdin-2014/thewrap--robert-hofler.json"
+      "aladdin-2014/thewrap--robert-hofler.json",
+      "queen-versailles-2025/vulture--sara-holdren-and-jesse-david-fox.json",
+      "queen-versailles-2025/vulture--sara-holdren.json",
+      "queen-versailles-2025/slantmagazine--dan-rubins.json",
+      "wicked-2003/ew--alice-king.json"
     ]
   }
 }
