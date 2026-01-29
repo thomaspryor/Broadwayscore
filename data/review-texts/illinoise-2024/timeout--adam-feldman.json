@@ -8,7 +8,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This dance-heavy musical based on Sufjan Stevens's beloved 2005 album is a genuinely moving meditation on love, loss and the American heartland.",
   "originalScore": 80,
-  "assignedScore": 50,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "needsScoring": true,
@@ -54,18 +54,57 @@
     "Word count too low: 228 (min: 300)",
     "Show title not found in text"
   ],
-  "llmScore": null,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 80,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "genuinely moving",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "beloved 2005 album",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "meditation on love, loss and the American heartland",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic uses clearly positive language ('genuinely moving') and describes the show as a thoughtful artistic work, indicating a solid recommendation despite the brevity of the review. | GPT-4o-mini: The review expresses strong positive sentiment about the musical's emotional impact and thematic depth, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:37:22.627Z",
+    "scoredAt": "2026-01-29T20:36:48.116Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 0,
-    "scoreDelta": 0,
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
