@@ -9,13 +9,66 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 75,
+      "performances": 83,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "not a bad performance to be found",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "delivers both her spoken and musical material with complete assurance",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "slightly tricky material",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Strong praise for performances across the board with particular emphasis on the lead, though the brief excerpt limits context about overall recommendation. | GPT-4o-mini: The review highlights strong performances, particularly from the lead, suggesting a clear recommendation despite the material being described as tricky.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T05:26:24.315Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

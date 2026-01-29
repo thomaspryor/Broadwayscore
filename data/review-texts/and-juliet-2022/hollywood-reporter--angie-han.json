@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical finds its footing when it leans into its own silliness, delivering big laughs and bigger dance numbers that make up for any shortcomings in storytelling sophistication.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical finds its footing when it leans into its own silliness, delivering big laughs and bigger dance numbers that make up for any shortcomings in storytelling sophistication.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 48,
+      "music": 75,
+      "performances": null,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "delivering big laughs and bigger dance numbers",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "make up for any shortcomings in storytelling sophistication",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "finds its footing when it leans into its own silliness",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant storytelling weaknesses but finds the entertainment value and production elements strong enough to compensate, suggesting a qualified positive recommendation. | GPT-4o-mini: The review highlights strong comedic and dance elements while acknowledging weaknesses in storytelling, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T05:26:29.034Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
