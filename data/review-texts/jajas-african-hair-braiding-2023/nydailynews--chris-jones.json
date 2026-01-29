@@ -9,13 +9,66 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "You don't need to be a Black woman with braids to enjoy this play",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "it might teach you something about the intricacies of a craft",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "this play is also trying to reach a Black popular audience, long ignored by Broadway",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: This excerpt suggests the play has educational value and broad appeal, but lacks clear evaluative language or explicit recommendation, making it difficult to assess the critic's actual enthusiasm. | GPT-4o-mini: The review suggests a positive outlook on the play's intent and potential impact, but lacks strong enthusiasm or specific praise for its execution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T06:37:10.720Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

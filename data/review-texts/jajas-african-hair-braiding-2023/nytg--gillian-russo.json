@@ -9,14 +9,67 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": "And at the end of the day, despite some narrative clunkiness, Jaja offers plenty to celebrate. It's the Broadway debut of Bioh as a writer, White as a director, and six of the eight cast members. It's a passionate portrayal of Black womanhood in Harlem and all the diverse experiences that encompasses. And it's a love letter to the artistry of hair braiding, a millennia-old form of artistry that allows its participants to express themselves even as they transform themselves. Much like theatre.",
   "bwwThumb": "Up",
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 63,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "despite some narrative clunkiness, Jaja offers plenty to celebrate",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "narrative clunkiness",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "It's a passionate portrayal of Black womanhood in Harlem and all the diverse experiences that encompasses",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges significant script problems ('narrative clunkiness') but emphasizes multiple reasons to celebrate the production, particularly its cultural importance and artistic merit, suggesting a qualified recommendation. | GPT-4o-mini: The review highlights significant strengths in the portrayal of themes and direction while acknowledging some narrative issues, leading to a positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T06:37:18.124Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002"
 }
