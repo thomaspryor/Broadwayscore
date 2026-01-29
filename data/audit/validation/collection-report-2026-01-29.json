@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-29T15:51:59.408Z",
+  "runDate": "2026-01-29T15:52:43.333Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 5,
     "priority": "all",
-    "showFilter": "operation-mincemeat-2025",
+    "showFilter": "death-becomes-her-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 65,
-    "failed": 200,
+    "failed": 202,
     "skipped": 0,
-    "successRate": "24.5%"
+    "successRate": "24.3%"
   },
   "tierBreakdown": {
     "playwright": 10,
@@ -23,16 +23,16 @@
     "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 4,
+    "tier1Attempts": 5,
     "tier1Success": 0,
-    "tier2Attempts": 4,
+    "tier2Attempts": 5,
     "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
-    "tier4Attempts": 4,
-    "tier4Success": 2,
-    "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 0
+    "tier3Attempts": 5,
+    "tier3Success": 0,
+    "tier4Attempts": 10,
+    "tier4Success": 0,
+    "totalFailed": 5,
+    "scrapingBeeCreditsUsed": 40
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -299,9 +299,11 @@
     "mj-2022/talkinbroadway--john-olson.json",
     "mj-2022/talkinbroadway--matthew-murray.json",
     "mj-2022/usatoday--charles-isherwood.json",
-    "operation-mincemeat-2025/observer--david-cote.json",
-    "operation-mincemeat-2025/wsj--charles-isherwood.json",
-    "operation-mincemeat-2025/wsj--charles.json"
+    "death-becomes-her-2024/variety--aramide-tinubu.json",
+    "death-becomes-her-2024/variety--peter-marks.json",
+    "death-becomes-her-2024/guardian--benjamin-lee.json",
+    "death-becomes-her-2024/nypost--johnny-oleksinski.json",
+    "death-becomes-her-2024/theatermania--adam-feldman.json"
   ],
   "tierDetails": {
     "playwright": [
