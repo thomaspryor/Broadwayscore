@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T07:26:31.764Z",
+  "runDate": "2026-01-29T07:32:04.559Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "suffs-2024",
+    "showFilter": "hamilton-2015",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 64,
-    "failed": 151,
+    "processed": 63,
+    "failed": 157,
     "skipped": 0,
-    "successRate": "29.8%"
+    "successRate": "28.6%"
   },
   "tierBreakdown": {
     "playwright": 10,
     "scrapingbee": 6,
     "brightdata": 6,
-    "archive": 42
+    "archive": 41
   },
   "statistics": {
-    "tier1Attempts": 14,
+    "tier1Attempts": 19,
     "tier1Success": 0,
-    "tier2Attempts": 14,
+    "tier2Attempts": 19,
     "tier2Success": 0,
-    "tier3Attempts": 14,
-    "tier3Success": 1,
-    "tier4Attempts": 30,
-    "tier4Success": 1,
-    "totalFailed": 13,
-    "scrapingBeeCreditsUsed": 40
+    "tier3Attempts": 19,
+    "tier3Success": 2,
+    "tier4Attempts": 39,
+    "tier4Success": 0,
+    "totalFailed": 19,
+    "scrapingBeeCreditsUsed": 70
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -97,8 +97,7 @@
     "queen-versailles-2025/advertisement--jonathan-mandell.json",
     "queen-versailles-2025/latimes--charles-mcnulty.json",
     "queen-versailles-2025/nysr--david-finkle.json",
-    "queen-versailles-2025/slantmagazine--dan-rubins.json",
-    "suffs-2024/the-times--nancy-durrant.json"
+    "queen-versailles-2025/slantmagazine--dan-rubins.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -239,19 +238,25 @@
     "queen-versailles-2025/nydailynews--chris-jones.json",
     "queen-versailles-2025/oneminutecritic--matthew-wexler.json",
     "queen-versailles-2025/washpost--naveen-kumar.json",
-    "suffs-2024/hollywood-reporter--angie-han.json",
-    "suffs-2024/nytimes--jesse-green.json",
-    "suffs-2024/variety--aramide-tinubu.json",
-    "suffs-2024/variety--peter-marks.json",
-    "suffs-2024/ew--kristen-baldwin.json",
-    "suffs-2024/guardian--adrian-horton.json",
-    "suffs-2024/guardian--jesse-green.json",
-    "suffs-2024/observer--rex-reed.json",
-    "suffs-2024/theatermania--jesse-green.json",
-    "suffs-2024/wsj--charles-isherwood.json",
-    "suffs-2024/talkinbroadway--matthew-murray.json",
-    "suffs-2024/washpost--elisabeth-vincentelli.json",
-    "suffs-2024/washpost--peter-marks.json"
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/ew--tim-stack.json",
+    "hamilton-2015/guardian--jesse-green.json",
+    "hamilton-2015/nbcnews--elysa-gardner.json",
+    "hamilton-2015/nbcnews--kristy-puchko.json",
+    "hamilton-2015/nbcnews--melissa-locker.json",
+    "hamilton-2015/newsday--linda-winer.json",
+    "hamilton-2015/nypost--jesse-green.json",
+    "hamilton-2015/nypost--johnny-oleksinski.json",
+    "hamilton-2015/observer--david-cote.json",
+    "hamilton-2015/observer--rex-reed.json",
+    "hamilton-2015/theatermania--adam-feldman.json",
+    "hamilton-2015/theatermania--charles-isherwood.json",
+    "hamilton-2015/wsj--terry-teachout.json",
+    "hamilton-2015/ap--mark-kennedy.json",
+    "hamilton-2015/backstage-barbie--backstage-barbie.json",
+    "hamilton-2015/dailybeast--tim-teeman.json",
+    "hamilton-2015/rollingstone--rob-sheffield.json",
+    "hamilton-2015/the-clyde-fitch-report--david-finkle.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -323,8 +328,7 @@
       "aladdin-2014/thewrap--robert-hofler.json",
       "queen-versailles-2025/vulture--sara-holdren-and-jesse-david-fox.json",
       "queen-versailles-2025/vulture--sara-holdren.json",
-      "queen-versailles-2025/slantmagazine--dan-rubins.json",
-      "suffs-2024/the-times--nancy-durrant.json"
+      "queen-versailles-2025/slantmagazine--dan-rubins.json"
     ]
   }
 }
