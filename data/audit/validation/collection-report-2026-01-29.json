@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T18:57:17.917Z",
+  "runDate": "2026-01-29T18:57:36.626Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 10,
     "priority": "all",
-    "showFilter": "and-juliet-2022",
+    "showFilter": "stereophonic-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 66,
-    "failed": 226,
+    "processed": 65,
+    "failed": 225,
     "skipped": 0,
-    "successRate": "22.6%"
+    "successRate": "22.4%"
   },
   "tierBreakdown": {
     "playwright": 10,
     "scrapingbee": 6,
-    "brightdata": 8,
+    "brightdata": 7,
     "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 10,
+    "tier1Attempts": 8,
     "tier1Success": 0,
-    "tier2Attempts": 10,
+    "tier2Attempts": 8,
     "tier2Success": 0,
-    "tier3Attempts": 10,
-    "tier3Success": 1,
-    "tier4Attempts": 22,
+    "tier3Attempts": 8,
+    "tier3Success": 0,
+    "tier4Attempts": 17,
     "tier4Success": 0,
-    "totalFailed": 9,
-    "scrapingBeeCreditsUsed": 40
+    "totalFailed": 8,
+    "scrapingBeeCreditsUsed": 20
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -99,8 +99,7 @@
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
     "suffs-2024/the-times--nancy-durrant.json",
-    "mj-2022/usatoday--david-rooney.json",
-    "and-juliet-2022/cititour--brian-scott-lipton.json"
+    "mj-2022/usatoday--david-rooney.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -320,15 +319,14 @@
     "here-lies-love-2023/indiewire--chris-ofalt.json",
     "here-lies-love-2023/observer--rex-reed.json",
     "here-lies-love-2023/theatermania--adam-feldman.json",
-    "and-juliet-2022/hollywood-reporter--angie-han.json",
-    "and-juliet-2022/hollywood-reporter--frank-scheck.json",
-    "and-juliet-2022/variety--aramide-tinubu.json",
-    "and-juliet-2022/vulture--sara-holdren.json",
-    "and-juliet-2022/ew--leah-greenblatt.json",
-    "and-juliet-2022/theatermania--andy-propst.json",
-    "and-juliet-2022/theatermania--jesse-green.json",
-    "and-juliet-2022/thewrap--robert-hofler.json",
-    "and-juliet-2022/wsj--charles-isherwood.json"
+    "stereophonic-2024/theatermania--jesse-green.json",
+    "stereophonic-2024/theatermania--zachary-stewart.json",
+    "stereophonic-2024/wsj--charles-isherwood.json",
+    "stereophonic-2024/wsj--terry-teachout.json",
+    "stereophonic-2024/theatrely--juan-a-ramirez.json",
+    "stereophonic-2024/ap--mark-kennedy.json",
+    "stereophonic-2024/rollingstone--kalia-richardson.json",
+    "stereophonic-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -358,8 +356,7 @@
       "lempicka-2024/nyt-theater--jonathan-mandell.json",
       "moulin-rouge-2019/observer--rex-reed.json",
       "aladdin-2014/usatoday--elysa-gardner.json",
-      "mj-2022/usatoday--david-rooney.json",
-      "and-juliet-2022/cititour--brian-scott-lipton.json"
+      "mj-2022/usatoday--david-rooney.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
