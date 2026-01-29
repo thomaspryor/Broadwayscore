@@ -5,7 +5,7 @@
   "criticName": "Elisabeth Vincentelli",
   "url": "https://www.washingtonpost.com/entertainment/theater/2024/03/28/tommy-broadway-show-review-pete-townshend/?utm_source=rss&amp;utm_medium=referral&amp;utm_campaign=wp_homepage",
   "publishDate": "March 28th, 2024",
-  "fullText": null,
+  "fullText": "Democracy Dies in DarknessReview by  Elisabeth Vincentelli NEW YORK — “The Who’s Tommy” is one weird show. In terms of head-spinning “whaaaaa?” moments, I would venture that, among mainstream musicals, it’s bested only by “Cats.”\n\nAfter all, it’s about a little boy who shuts out the world around him after a traumatic experience, somehow grows up into a pinball god and acquires legions of adoring followers in the process. Tragedy and catharsis expressed through often surreal tableaux and great rock songs — it’s a wild ride.",
   "isFullReview": false,
   "bwwExcerpt": "Still, the songs, which are often bite-size, remain as distinctive as they’ve ever been (which is why “The Who’s Tommy” can also be effective in a semi-staged format, as evidenced by Josh Rhodes’s production at the Kennedy Center five years ago). The score was very theatrical for a chart-topping rock band in the late ’60s, but it’s also very rock by Broadway standards, even now. The company walks that line, at least vocally, better than the one from 1993, which was more Broadwayfied, and the orc",
   "bwwRoundupUrl": null,
@@ -70,5 +70,44 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "textWordCount": 86,
+  "archivePath": "data/archives/reviews/the-whos-tommy-2024/washpost--elisabeth-vincentelli_2026-01-29.html",
+  "textFetchedAt": "2026-01-29T02:39:53.916Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "shorter_than_excerpt"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 86 (min: 300)"
+  ]
 }
