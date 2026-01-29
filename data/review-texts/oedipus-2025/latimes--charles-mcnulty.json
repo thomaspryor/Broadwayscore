@@ -23,30 +23,7 @@
   "sourceMethod": "stub",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "llmScore": {
-    "score": 0,
-    "confidence": "medium",
-    "range": {
-      "low": 0,
-      "high": 5
-    },
-    "bucket": "Pan",
-    "thumb": "Down",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [],
-    "reasoning": "GPT-4o-mini: The review does not contain any content related to the show, indicating an unqualified rejection.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
+  "llmScore": null,
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
     "scoredAt": "2026-01-26T05:40:47.968Z",

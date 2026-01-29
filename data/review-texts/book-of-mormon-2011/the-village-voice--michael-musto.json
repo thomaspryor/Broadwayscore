@@ -22,46 +22,7 @@
   "sourceMethod": "brightdata",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
-  "llmScore": {
-    "score": 0,
-    "confidence": "medium",
-    "range": {
-      "low": 0,
-      "high": 5
-    },
-    "bucket": "Pan",
-    "thumb": "Down",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Celebrating Martin Luther King Day Will Cost You at a National Park this Year, But BAM is Honoring the Great Orator For Free",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "New Yorkers Resist Trump’s Flooding the Zone With Lies",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "The Evocative Clay Figures in ‘Ministry: Reverend Joyce McDonald’ Radiate Power and Hope",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "GPT-4o-mini: The review lacks substantive content regarding the show itself and does not provide a clear recommendation, leading to a score of pan.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
+  "llmScore": null,
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
     "scoredAt": "2026-01-26T05:05:00.704Z",
