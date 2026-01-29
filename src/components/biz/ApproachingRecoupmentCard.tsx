@@ -4,6 +4,7 @@
  */
 
 import Link from 'next/link';
+import { getTrendColor, getTrendIcon } from '@/config/commercial';
 import type { RecoupmentTrend } from '@/lib/data';
 
 interface ApproachingRecoupmentCardProps {
@@ -26,22 +27,12 @@ function formatCurrency(amount: number): string {
   return `$${amount}`;
 }
 
-function getTrendDisplay(trend: RecoupmentTrend): {
-  icon: string;
-  label: string;
-  className: string;
-} {
-  switch (trend) {
-    case 'improving':
-      return { icon: '↑', label: 'Improving', className: 'text-emerald-400' };
-    case 'steady':
-      return { icon: '→', label: 'Steady', className: 'text-gray-400' };
-    case 'declining':
-      return { icon: '↓', label: 'Declining', className: 'text-red-400' };
-    default:
-      return { icon: '?', label: 'Unknown', className: 'text-gray-500' };
-  }
-}
+const TREND_LABELS: Record<RecoupmentTrend, string> = {
+  improving: 'Improving',
+  steady: 'Steady',
+  declining: 'Declining',
+  unknown: 'Unknown',
+};
 
 export default function ApproachingRecoupmentCard({
   slug,
@@ -51,7 +42,7 @@ export default function ApproachingRecoupmentCard({
   estimatedRecoupmentPct,
   trend,
 }: ApproachingRecoupmentCardProps) {
-  const trendDisplay = getTrendDisplay(trend);
+  const trendLabel = TREND_LABELS[trend];
 
   return (
     <Link
@@ -77,8 +68,8 @@ export default function ApproachingRecoupmentCard({
       </div>
       <div className="flex justify-between text-sm mt-1">
         <span className="text-gray-500">Trend</span>
-        <span className={trendDisplay.className} aria-label={trendDisplay.label}>
-          {trendDisplay.icon} {trendDisplay.label}
+        <span className={getTrendColor(trend, false)} aria-label={trendLabel}>
+          {getTrendIcon(trend, false)} {trendLabel}
         </span>
       </div>
     </Link>

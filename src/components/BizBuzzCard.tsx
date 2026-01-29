@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { ShowCommercial, CommercialDesignation, RecoupmentTrend } from '@/lib/data';
+import { ShowCommercial, RecoupmentTrend } from '@/lib/data';
+import { getDesignationBadgeStyle, getTrendColor, getTrendIcon } from '@/config/commercial';
 import RecoupmentProgressBar from './RecoupmentProgressBar';
 
 interface BizBuzzCardProps {
@@ -34,91 +35,6 @@ function formatWeeksToRecoup(weeks: number | null): string {
   }
   const years = (weeks / 52).toFixed(1);
   return `~${years} years`;
-}
-
-// Designation badge styling
-function getDesignationStyle(designation: CommercialDesignation): {
-  bgClass: string;
-  textClass: string;
-  borderClass: string;
-  icon: string;
-  description: string;
-} {
-  switch (designation) {
-    case 'Miracle':
-      return {
-        bgClass: 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20',
-        textClass: 'text-amber-400',
-        borderClass: 'border-amber-500/30',
-        icon: '✨',
-        description: 'Long-running mega-hit -- extraordinary returns',
-      };
-    case 'Windfall':
-      return {
-        bgClass: 'bg-emerald-500/15',
-        textClass: 'text-emerald-400',
-        borderClass: 'border-emerald-500/25',
-        icon: '💰',
-        description: 'Solid hit -- recouped and profitable',
-      };
-    case 'Trickle':
-      return {
-        bgClass: 'bg-blue-500/15',
-        textClass: 'text-blue-400',
-        borderClass: 'border-blue-500/25',
-        icon: '💧',
-        description: 'Broke even or modest profit',
-      };
-    case 'Easy Winner':
-      return {
-        bgClass: 'bg-pink-500/15',
-        textClass: 'text-pink-400',
-        borderClass: 'border-pink-500/25',
-        icon: '🎁',
-        description: 'Limited run that made money, limited downside, limited upside',
-      };
-    case 'Fizzle':
-      return {
-        bgClass: 'bg-orange-500/15',
-        textClass: 'text-orange-400',
-        borderClass: 'border-orange-500/25',
-        icon: '📉',
-        description: 'Closed without recouping (~30%+ recovered)',
-      };
-    case 'Flop':
-      return {
-        bgClass: 'bg-red-500/15',
-        textClass: 'text-red-400',
-        borderClass: 'border-red-500/25',
-        icon: '💸',
-        description: 'Closed without recouping (~<30% recovered)',
-      };
-    case 'Nonprofit':
-      return {
-        bgClass: 'bg-purple-500/15',
-        textClass: 'text-purple-400',
-        borderClass: 'border-purple-500/25',
-        icon: '🎭',
-        description: 'Nonprofit theater production',
-      };
-    case 'Tour Stop':
-      return {
-        bgClass: 'bg-slate-500/15',
-        textClass: 'text-slate-400',
-        borderClass: 'border-slate-500/25',
-        icon: '🚌',
-        description: 'National tour engagement on Broadway',
-      };
-    case 'TBD':
-    default:
-      return {
-        bgClass: 'bg-gray-500/15',
-        textClass: 'text-gray-400',
-        borderClass: 'border-gray-500/25',
-        icon: '⏳',
-        description: 'Too early to determine',
-      };
-  }
 }
 
 function RecoupmentBadge({ recouped }: { recouped: boolean | null }) {
@@ -158,36 +74,25 @@ function ChevronDown({ className }: { className?: string }) {
 function TrendIndicator({ trend }: { trend: RecoupmentTrend }) {
   if (trend === 'unknown') return null;
 
-  const config = {
-    improving: {
-      icon: '↑',
-      label: 'Trending Up',
-      colorClass: 'text-emerald-400',
-      bgClass: 'bg-emerald-500/15',
-      borderClass: 'border-emerald-500/25',
-    },
-    steady: {
-      icon: '→',
-      label: 'Steady',
-      colorClass: 'text-gray-400',
-      bgClass: 'bg-gray-500/15',
-      borderClass: 'border-gray-500/25',
-    },
-    declining: {
-      icon: '↓',
-      label: 'Trending Down',
-      colorClass: 'text-red-400',
-      bgClass: 'bg-red-500/15',
-      borderClass: 'border-red-500/25',
-    },
-  }[trend];
-
-  if (!config) return null;
+  const colorClass = getTrendColor(trend, false);
+  const icon = getTrendIcon(trend, false);
+  const labels: Record<string, string> = {
+    improving: 'Trending Up',
+    steady: 'Steady',
+    declining: 'Trending Down',
+  };
+  // Derive bg/border from trend color pattern
+  const bgBorderMap: Record<string, { bgClass: string; borderClass: string }> = {
+    improving: { bgClass: 'bg-emerald-500/15', borderClass: 'border-emerald-500/25' },
+    steady: { bgClass: 'bg-gray-500/15', borderClass: 'border-gray-500/25' },
+    declining: { bgClass: 'bg-red-500/15', borderClass: 'border-red-500/25' },
+  };
+  const { bgClass, borderClass } = bgBorderMap[trend] || { bgClass: 'bg-gray-500/15', borderClass: 'border-gray-500/25' };
 
   return (
-    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${config.bgClass} ${config.colorClass} border ${config.borderClass}`}>
-      <span className="text-sm">{config.icon}</span>
-      {config.label}
+    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${bgClass} ${colorClass} border ${borderClass}`}>
+      <span className="text-sm">{icon}</span>
+      {labels[trend] || trend}
     </span>
   );
 }
@@ -224,7 +129,7 @@ function calculateEstimatedReturns(
 
 export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross, showStatus }: BizBuzzCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const style = getDesignationStyle(commercial.designation);
+  const style = getDesignationBadgeStyle(commercial.designation);
 
   // Don't render if we have no useful data
   const hasData = commercial.capitalization || commercial.recouped !== null || commercial.designation !== 'TBD';
