@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"What can I say that hasn't already been said about this lauded new musical, perhaps the best this art form has seen in decades? It lives up to the hype. It is indeed brilliant...Composer, lyricist, and star Lin-Manuel Miranda seamlessly blends musical theater and hip hop in a wholly original way...'Hamilton' is as epic as 'Les Mis' and as relevant as a Jay Z album. It is nothing less than revolutionary.\"",
   "originalScore": null,
-  "assignedScore": 97,
+  "assignedScore": 77,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "textStatus": "complete",
@@ -18,56 +18,56 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 97,
-    "confidence": "high",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 90.5,
-      "high": 100
+      "low": 68.5,
+      "high": 85.5
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 95,
-      "performances": null,
-      "direction": null
+      "music": null,
+      "performances": 85,
+      "direction": 80
     },
     "keyPhrases": [
       {
-        "quote": "perhaps the best this art form has seen in decades",
+        "quote": "This is a compilation review of ten different shows, not focused on one production",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "Hamilton: It lives up to the hype. It is indeed brilliant... nothing less than revolutionary",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "It is nothing less than revolutionary",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "It lives up to the hype. It is indeed brilliant",
+        "quote": "Marjorie Prime: Easily among the best plays I saw this year... I will remember this play for a long time",
         "sentiment": "positive",
         "strength": 5
       }
     ],
-    "reasoning": "Claude: Unqualified superlative praise calling it 'revolutionary,' 'brilliant,' and 'perhaps the best this art form has seen in decades' with no reservations whatsoever. | GPT-4o-mini: The review expresses unqualified enthusiasm and superlative praise, indicating a strong recommendation to see the show.",
+    "reasoning": "Claude: This is a compilation review of ten shows with mixed reactions ranging from raves (Hamilton, Marjorie Prime) to pans (Daddy Long Legs), making it impossible to assign a meaningful single score to any specific production. | GPT-4o-mini: The review contains a mix of positive and negative sentiments across various shows, but overall, there is a strong recommendation for several productions, particularly for performances and direction.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:20:22.538Z",
+    "scoredAt": "2026-01-29T01:55:56.721Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 95,
-    "openaiScore": 98,
-    "scoreDelta": 3,
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -85,7 +85,7 @@
     }
   ],
   "fetchTier": 1,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 97
+  "previousLlmScore": 97,
+  "rescoreCompletedAt": "2026-01-29T01:55:56.721Z"
 }

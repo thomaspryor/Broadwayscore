@@ -11,7 +11,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
@@ -21,62 +21,62 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 87,
+    "score": 89,
     "confidence": "high",
     "range": {
-      "low": 80.5,
-      "high": 93.5
+      "low": 83,
+      "high": 95
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 92,
-      "performances": 93,
-      "direction": 85
+      "book": 85,
+      "music": 85,
+      "performances": 95,
+      "direction": 89
     },
     "keyPhrases": [
       {
-        "quote": "truly awesome performances from O'Hara and d'Arcy James",
+        "quote": "The only major criticism to level at 'Days of Wine and Roses' is that it took Guettel so long to write his third musical, which can easily take its place as one of the few great musicals of this century",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "which are phenomenal",
+        "quote": "Greif obtains truly awesome performances from O'Hara and d'Arcy James",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "we can only mourn all those great 'straight' performances they never delivered",
+        "quote": "Guettel makes Lucas' tormented characters sing because their suffering forces them to",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Strong superlatives about performances ('awesome', 'phenomenal') and direction ('obtains') with speculation about opening new career doors suggests high enthusiasm despite being only an excerpt. | GPT-4o-mini: The review highlights outstanding performances and vocal quality, indicating a strong recommendation despite not addressing other aspects of the show.",
+    "reasoning": "Claude: Despite acknowledging the challenging nature of Guettel's music, the critic delivers overwhelming praise for the performances, direction, and overall achievement, concluding it's 'one of the few great musicals of this century' with only one major criticism being that it took too long to create. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and direction, with a few minor critiques of the music, leading to a high recommendation score.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:16:56.386Z",
+    "scoredAt": "2026-01-29T01:46:11.276Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 85,
-    "scoreDelta": 3,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 87
+  "previousLlmScore": 87,
+  "rescoreCompletedAt": "2026-01-29T01:46:11.276Z"
 }

@@ -10,58 +10,63 @@
   "dtliExcerpt": "You don’t have be Cuban to feel the nostalgia, romance, loss, liberation, joys and pride in such well-lived music.",
   "showScoreExcerpt": "âItâs the most intoxicating and rapturous show of the Broadway season.â",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:58:31.336Z",
   "urlUpdated": "2026-01-23T05:27:32.745Z",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 77,
+    "score": 88,
     "confidence": "high",
     "range": {
-      "low": 70.5,
-      "high": 83.5
+      "low": 83,
+      "high": 93
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 80,
-      "performances": null,
-      "direction": null
+      "book": 75,
+      "music": 93,
+      "performances": 87,
+      "direction": 83
     },
     "keyPhrases": [
       {
-        "quote": "well-lived music",
+        "quote": "it's the most intoxicating and rapturous show of the Broadway season",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the astonishing ensemble cast",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "nostalgia, romance, loss, liberation, joys and pride",
-        "sentiment": "positive",
-        "strength": 4
+        "quote": "the narrative still sometimes veers to cliche",
+        "sentiment": "negative",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The review expresses clear emotional connection and praises the music's ability to evoke universal feelings, but the extremely brief excerpt makes it difficult to assess overall recommendation strength. | GPT-4o-mini: The review expresses positive sentiment towards the emotional depth and quality of the music, suggesting a clear recommendation despite lacking specific critiques.",
+    "reasoning": "Claude: The critic declares this 'the most intoxicating and rapturous show of the Broadway season' with superlative praise for music and performances, despite minor story criticisms. | GPT-4o-mini: The review expresses strong enthusiasm for the music and overall experience while noting minor narrative issues, leading to a solid recommendation.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:56:18.877Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:39:11.069Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 88,
+    "openaiScore": 88,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -104,7 +109,7 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250506000250/https://variety.com/2025/legit/reviews/buena-vista-social-club-review-broadway-musical-1236342624/",
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 77
+  "previousLlmScore": 77,
+  "rescoreCompletedAt": "2026-01-29T01:39:11.069Z"
 }

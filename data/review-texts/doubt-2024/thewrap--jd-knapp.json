@@ -11,7 +11,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
@@ -21,62 +21,62 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 82,
+    "score": 85,
     "confidence": "medium",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 77,
+      "high": 93
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 85,
       "music": null,
-      "performances": 86,
-      "direction": null
+      "performances": 89,
+      "direction": 83
     },
     "keyPhrases": [
+      {
+        "quote": "the first production into the newly renamed theater is a real winner",
+        "sentiment": "positive",
+        "strength": 5
+      },
       {
         "quote": "it's thrilling to watch Amy Ryan's nun and Liev Schreiber's priest duke it out for 90 minutes on stage",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "A feisty revival",
+        "quote": "her take-down of him is all the more stunning",
         "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "sets up a fascinating power play",
-        "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review uses enthusiastic language like 'thrilling' and 'feisty' to describe both the central performances and the production overall, indicating a clear positive recommendation despite being a brief excerpt. | GPT-4o-mini: The review highlights the thrilling performances and engaging nature of the revival, indicating a strong recommendation.",
+    "reasoning": "Claude: The critic calls it 'a real winner' and finds the central performances 'thrilling' and 'stunning,' with consistent praise for the leads and direction throughout. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and direction, highlighting the engaging nature of the production while offering only minor caveats.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:36:26.179Z",
+    "scoredAt": "2026-01-29T01:49:38.440Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "scoreDelta": 6,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 82
+  "previousLlmScore": 82,
+  "rescoreCompletedAt": "2026-01-29T01:49:38.440Z"
 }

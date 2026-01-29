@@ -9,64 +9,64 @@
   "isFullReview": true,
   "dtliExcerpt": "Directed by Scott Ellis, Doubt makes every single second count, and even though it may be over at a brisk 90-minutes, the story and performances will stay with you for much, much longer.",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/doubt-a-parable/",
   "needsScoring": true,
   "llmScore": {
-    "score": 84,
+    "score": 89,
     "confidence": "high",
     "range": {
-      "low": 77.5,
-      "high": 90.5
+      "low": 83,
+      "high": 95
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 88,
       "music": null,
-      "performances": 85,
-      "direction": 83
+      "performances": 93,
+      "direction": 89
     },
     "keyPhrases": [
       {
-        "quote": "makes every single second count",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the story and performances will stay with you for much, much longer",
+        "quote": "the story and performances will stay with you for much, much longer. A–",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "the story and performances will stay with you",
+        "quote": "the action on stage is electric",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "makes every single second count",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Strong praise for direction's efficiency and lasting impact of performances/story suggests clear positive recommendation despite brief excerpt. | GPT-4o-mini: The review expresses strong appreciation for the direction and the lasting impact of the production, indicating a clear recommendation.",
+    "reasoning": "Claude: The A- grade combined with enthusiastic praise for performances ('electric', 'commanding presence', 'marvel') and direction ('makes every single second count') indicates a strong positive recommendation despite the heavy subject matter. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and direction, indicating a must-see experience.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:34:49.434Z",
+    "scoredAt": "2026-01-29T01:48:23.793Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 85,
-    "scoreDelta": 3,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
@@ -76,7 +76,6 @@
     "dtli",
     "bww-roundup"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 84,
   "textWordCount": 941,
@@ -98,5 +97,6 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250726161056",
-  "archiveOrgUrl": "http://web.archive.org/web/20250726161056/https://ew.com/doubt-review-amy-ryan-liev-schreiber-broadway-8605479"
+  "archiveOrgUrl": "http://web.archive.org/web/20250726161056/https://ew.com/doubt-review-amy-ryan-liev-schreiber-broadway-8605479",
+  "rescoreCompletedAt": "2026-01-29T01:48:23.793Z"
 }

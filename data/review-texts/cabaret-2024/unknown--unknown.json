@@ -9,60 +9,60 @@
   "isFullReview": true,
   "dtliExcerpt": "\"Eddie Redmayne and Gayle Rankin dazzle in jaw-dropping Broadway revival\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 48,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 85,
+    "score": 48,
     "confidence": "high",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 43,
+      "high": 53
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
-      "performances": 90,
-      "direction": null
+      "performances": 66,
+      "direction": 38
     },
     "keyPhrases": [
       {
-        "quote": "dazzle",
+        "quote": "This misguided production, in short, has gotten the balance wrong between unsettling and entertaining",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Bebe Neuwirth is exquisite as Fraulein Schneider... Her performance is matched by Steven Skybell",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "jaw-dropping Broadway revival",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Eddie Redmayne and Gayle Rankin dazzle",
-        "sentiment": "positive",
-        "strength": 5
+        "quote": "If so much of it weren't so out of balance, this fourth Broadway revival of 'Cabaret' would be impressive",
+        "sentiment": "negative",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: Strong superlative language ('dazzle', 'jaw-dropping') suggests enthusiastic recommendation, but extremely limited text makes confidence low. | GPT-4o-mini: The review highlights the impressive performances of the lead actors, indicating a strong recommendation despite the lack of detail on other aspects of the production.",
+    "reasoning": "Claude: The critic finds fundamental flaws in the production's concept and direction while praising specific veteran performers, resulting in more problems than strengths overall. | GPT-4o-mini: The review expresses significant disappointment in the production's balance and direction, highlighting more flaws than strengths, despite some praise for individual performances.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T02:50:36.344Z",
+    "scoredAt": "2026-01-29T01:42:48.634Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
+    "claudeScore": 48,
+    "openaiScore": 48,
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
@@ -87,7 +87,7 @@
   "sources": [
     "show-score-playwright"
   ],
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 85
+  "previousLlmScore": 85,
+  "rescoreCompletedAt": "2026-01-29T01:42:48.634Z"
 }

@@ -10,63 +10,63 @@
   "dtliExcerpt": "The fact that the new Broadway show did away with the movie’s super campy opener of Meryl Streep’s “Me” — the film's only musical number, incidentally — and replaced it with the even campier “For the Gaze” tells you everything you need to know about the new production and its mission to go bigger and bawdier at every turn.",
   "showScoreExcerpt": "âItâs a mission that succeeds more often than not.â",
   "originalScore": "B",
-  "assignedScore": 74,
+  "assignedScore": 77,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "complete",
   "textQuality": "full",
   "sourceMethod": "scrapingbee",
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 68.5,
+      "high": 85.5
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": 75
+      "book": 69,
+      "music": 69,
+      "performances": 82,
+      "direction": 76
     },
     "keyPhrases": [
       {
         "quote": "It's a mission that succeeds more often than not",
         "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "go bigger and bawdier at every turn",
-        "sentiment": "neutral",
         "strength": 3
       },
       {
-        "quote": "succeeds more often than not",
+        "quote": "Hilty is a comedic force to be reckoned with in both song and speech",
         "sentiment": "positive",
         "strength": 4
+      },
+      {
+        "quote": "The momentum during the two-hour and 30-minute runtime also does stall somewhat in the second act",
+        "sentiment": "negative",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic approves of the production's campy approach and explicitly states it 'succeeds more often than not,' indicating qualified positive recommendation despite some implied reservations. | GPT-4o-mini: The review indicates a positive recommendation with a successful mission to enhance the production, despite not being overly enthusiastic.",
+    "reasoning": "Claude: The B grade and positive language about performances and comedy outweigh criticisms about pacing and forgettable music, indicating a qualified recommendation. | GPT-4o-mini: The review expresses strong praise for the performances and the overall fun of the production, with some reservations about the music and one casting choice.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:14:18.410Z",
+    "scoredAt": "2026-01-29T01:46:42.878Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -95,7 +95,7 @@
   "originalScoreNormalized": 85,
   "scoreSource": "letter-grade",
   "scoreExtractedFrom": "archive",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 74
+  "previousLlmScore": 74,
+  "rescoreCompletedAt": "2026-01-29T01:46:42.878Z"
 }

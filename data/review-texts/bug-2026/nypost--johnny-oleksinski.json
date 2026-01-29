@@ -9,60 +9,60 @@
   "isFullReview": false,
   "dtliExcerpt": "As they turn into paranoid shut-ins who insist the world is out to get them, Coon’s waitress goes from a vulnerable shift worker to something resembling the subject of an exorcism. Smallwood’s secretive nomad, meanwhile, amps up his crazed conspiracy theories to the volume of “the power of Christ compels you!” Because of Letts’ empathetic writing and Coon’s broken, can’t-take-it-anymore performance, we understand their extremism and why they believe the outlandish things they believe — even if Peter is the harder nut to crack.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 76,
+    "score": 87,
     "confidence": "medium",
     "range": {
-      "low": 67,
-      "high": 85
+      "low": 78.5,
+      "high": 95.5
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 38,
+      "book": 88,
       "music": null,
-      "performances": 83,
-      "direction": 0
+      "performances": 92,
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "Letts' empathetic writing and Coon's broken, can't-take-it-anymore performance",
+        "quote": "If you've only experienced Coon on TV, 'Bug' is an itch you need to scratch.",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "we understand their extremism and why they believe the outlandish things they believe",
+        "quote": "it is alarming, sad and riveting to watch",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       },
       {
-        "quote": "Peter is the harder nut to crack",
-        "sentiment": "negative",
-        "strength": 2
+        "quote": "comes as close to a horror movie as anything that's been on Broadway",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic praises both Letts' empathetic writing and Coon's compelling performance while acknowledging the material's challenging nature, suggesting qualified recommendation despite some character development issues. | GPT-4o-mini: The review highlights strong performances and empathetic writing, indicating a clear recommendation despite no explicit suggestion to see the show.",
+    "reasoning": "Claude: The critic delivers strong praise for performances, particularly Coon's 'mesmeric' and 'broken, can't-take-it-anymore performance,' calls the production 'riveting,' and ends with a clear recommendation to see Coon's stage work. | GPT-4o-mini: The review expresses strong enthusiasm for the production, particularly praising the performances and direction, indicating a must-see experience.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:58:08.782Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:40:15.608Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 80,
-    "scoreDelta": 8,
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -83,7 +83,7 @@
   "bwwExcerpt": null,
   "bwwThumb": null,
   "designation": "Recommended",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 76
+  "previousLlmScore": 76,
+  "rescoreCompletedAt": "2026-01-29T01:40:15.608Z"
 }

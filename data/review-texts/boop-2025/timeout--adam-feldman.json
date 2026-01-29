@@ -11,7 +11,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "4/5",
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
@@ -27,62 +27,62 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 79,
+    "confidence": "high",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 73,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 70,
-      "music": 76,
+      "book": null,
+      "music": null,
       "performances": 88,
-      "direction": 84
+      "direction": 79
     },
     "keyPhrases": [
-      {
-        "quote": "savor this show's red-hot cinnamon heart: Jasmine Amy Rogers, making a sensational Broadway debut",
-        "sentiment": "positive",
-        "strength": 5
-      },
       {
         "quote": "a big Broadway production that leaves you grinning",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "This musical will not change your brain in any way, but it delivers what it promises",
+        "quote": "it delivers what it promises",
         "sentiment": "positive",
         "strength": 3
+      },
+      {
+        "quote": "This musical will not change your brain in any way",
+        "sentiment": "neutral",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: Despite acknowledging the show's formulaic nature and derivative elements, the critic clearly enjoys the production and praises the lead performance, production values, and entertainment value, concluding it delivers on its promises. | GPT-4o-mini: The review expresses strong enthusiasm for the production and performances, particularly highlighting the lead's debut, while acknowledging its light-hearted and familiar nature.",
+    "reasoning": "Claude: The critic clearly recommends the show as delivering entertaining Broadway spectacle with strong performances, despite acknowledging its formulaic nature. | GPT-4o-mini: The review expresses clear enjoyment of the production and highlights the standout performance, leading to a strong recommendation despite acknowledging its lack of depth.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:44:59.073Z",
+    "scoredAt": "2026-01-29T01:37:25.270Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 82
+  "previousLlmScore": 82,
+  "rescoreCompletedAt": "2026-01-29T01:37:25.270Z"
 }

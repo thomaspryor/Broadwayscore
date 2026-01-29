@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"I was intoxicated by 'Hamilton', exquisitely directed by Thomas Kail...It has an energy, a beat, a rhythm, and a rebelliousness that swept me up and kept me thoroughly engaged and enchanted. It's a powerhouse three-hour telling of this pushy historical figure...Act One is an adrenaline-fueled history lesson in politics, war, revolution and love but Act Two is the clincher, which gives this show its emotional core and depth. It is truly amazing what Miranda has done here.\"",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 95,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "textStatus": "complete",
@@ -18,56 +18,56 @@
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 94,
-    "confidence": "high",
+    "score": 95,
+    "confidence": "medium",
     "range": {
-      "low": 87.5,
+      "low": 87,
       "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": 90,
-      "music": null,
-      "performances": null,
-      "direction": 92
+      "music": 98,
+      "performances": 96,
+      "direction": 95
     },
     "keyPhrases": [
       {
-        "quote": "I was intoxicated by 'Hamilton'",
+        "quote": "I proclaim, quite gladly, that I was intoxicated by Lin-Manuel Miranda's Hamilton – An American Musical",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "swept me up and kept me thoroughly engaged and enchanted",
+        "quote": "It's a musical theatre revolution in it's own right",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "It is truly amazing what Miranda has done here",
+        "quote": "It is truly amazing what Miranda has done here. He has made these stiff dull men leap out of the history books and captivate us on every level",
         "sentiment": "positive",
         "strength": 5
       }
     ],
-    "reasoning": "Claude: Unqualified enthusiasm with superlatives like 'intoxicated', 'amazing', and 'truly' plus strong emotional engagement ('swept me up', 'enchanted') indicates a clear rave recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm and admiration for the production, indicating a strong recommendation to see the show.",
+    "reasoning": "Claude: The reviewer expresses unqualified enthusiasm with superlatives like 'intoxicated,' 'revolution,' 'amazing,' and 'exhilarating' throughout, praising every aspect from performances to design with no meaningful reservations. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the show's innovative music, strong performances, and engaging direction, with no significant reservations noted.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:21:10.184Z",
+    "scoredAt": "2026-01-29T01:57:14.008Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": 95,
-    "scoreDelta": 3,
+    "openaiScore": 98,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -85,7 +85,7 @@
     }
   ],
   "fetchTier": 1,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 94
+  "previousLlmScore": 94,
+  "rescoreCompletedAt": "2026-01-29T01:57:14.008Z"
 }

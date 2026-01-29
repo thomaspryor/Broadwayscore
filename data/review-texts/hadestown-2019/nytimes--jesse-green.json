@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "All your favorite Greeks are heading somewhere in “Hadestown,” the sumptuous, hypnotic and somewhat hyperactive musical that opened on Wednesday night after its own twisty 13-year road to Broadway. Eurydice descends to the underworld; Orpheus follows to retrieve her. Persephone spends six months aboveground living the good life of summer and song before returning for six months below with Hades. (He’s her husband.) Hermes, of course, has wings on his feet. And the Fates (at least in this version) are always darting about, minding everyone’s business. But watching “Hadestown” unfold so gorgeously at the Walter Kerr Theater, I found myself thinking of other Greek characters: those lucky few saved from heartbreak by radical metamorphoses.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "dtli",
   "dtliThumb": "Up",
   "dtliUrl": null,
@@ -18,55 +18,55 @@
   "showScoreExcerpt": "This musical about Orpheus and Eurydice, filtered through a Depression-era American lens, is both gorgeous and heartbreaking.",
   "needsScoring": true,
   "llmScore": {
-    "score": 84,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 77.5,
-      "high": 90.5
+      "low": 70.5,
+      "high": 83.5
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 68,
+      "music": 85,
+      "performances": 78,
+      "direction": 81
     },
     "keyPhrases": [
       {
-        "quote": "gorgeous and heartbreaking",
+        "quote": "The gods, or more likely Ms. Chavkin and her creative team, have saved 'Hadestown' on its way uptown",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "filtered through a Depression-era American lens",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "Ms. Chavkin has probably come as close as anyone could to selling a cerebral downtown story as state-of-the-art Broadway entertainment",
+        "sentiment": "positive",
+        "strength": 4
       },
       {
-        "quote": "musical about Orpheus and Eurydice",
-        "sentiment": "neutral",
-        "strength": 3
+        "quote": "For 'Hadestown' — if not yet for us — it has [turned out this time]",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The descriptors 'gorgeous and heartbreaking' signal strong positive sentiment about the musical's emotional impact and artistic quality, suggesting clear recommendation despite the very brief excerpt. | GPT-4o-mini: The review expresses strong positive sentiment with phrases like 'gorgeous and heartbreaking', indicating a clear recommendation to see the show.",
+    "reasoning": "Claude: Green gives clear praise for the transformation from the 2016 version, celebrates the creative team's achievements, and concludes positively despite noting some remaining abstract elements and pacing issues. | GPT-4o-mini: The review expresses a clear recommendation with praise for the music and direction, despite some criticisms of the book and character development.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:20:02.097Z",
+    "scoredAt": "2026-01-29T01:54:06.322Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 85,
+    "claudeScore": 78,
+    "openaiScore": 75,
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
@@ -79,7 +79,7 @@
   ],
   "bwwThumb": null,
   "designation": "Critics_Pick",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 84
+  "previousLlmScore": 84,
+  "rescoreCompletedAt": "2026-01-29T01:54:06.322Z"
 }

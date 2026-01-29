@@ -9,61 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "It is a privilege and treat to hear these musicians play; the whole theater vibrates with their collective energy and mastery—sound design is by Jonathan Deans—and each are accorded individual moments to shine.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "dtli",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T22:01:40.783Z",
   "llmScore": {
-    "score": 85,
-    "confidence": "high",
+    "score": 83,
+    "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 73,
+      "high": 93
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 90,
-      "performances": 87,
-      "direction": 85
+      "book": 58,
+      "music": 93,
+      "performances": 88,
+      "direction": 83
     },
     "keyPhrases": [
       {
-        "quote": "It is a privilege and treat to hear these musicians play",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the whole theater vibrates with their collective energy and mastery",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "each are accorded individual moments to shine",
+        "quote": "This brilliant number, a dazzling distillation of music and dance, is just one of a terrific series of musical set-pieces",
         "sentiment": "positive",
         "strength": 4
+      },
+      {
+        "quote": "The show—unsurprisingly given its rousingly gorgeous aural and visual tableaux—is a bigger treat on a bigger stage",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The slightness of the book, and the understated historical context for what we are watching, does not undermine the musical—because the music is the thing",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: Strong praise for musical performances and production with vivid language ('privilege', 'vibrates with energy', 'mastery') indicates clear positive recommendation, though excerpt is focused solely on musical elements. | GPT-4o-mini: The review expresses strong admiration for the musicians' performances and energy, indicating a clear recommendation to see the show.",
+    "reasoning": "Claude: Despite acknowledging a weak book, the critic enthusiastically praises the music, performances, and production values, explicitly stating that the musical's brilliance overcomes its narrative shortcomings. | GPT-4o-mini: The review expresses strong enthusiasm for the music and performances while noting some weaknesses in the book, leading to a clear recommendation to see the show.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:55:29.688Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:37:51.163Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
-    "scoreDelta": 0,
+    "claudeScore": 78,
+    "openaiScore": 88,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -80,7 +80,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 85
+  "previousLlmScore": 85,
+  "rescoreCompletedAt": "2026-01-29T01:37:51.163Z"
 }

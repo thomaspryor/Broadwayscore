@@ -60,10 +60,10 @@
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 90,
+      "book": 93,
       "music": null,
-      "performances": 68,
-      "direction": 53
+      "performances": 69,
+      "direction": 58
     },
     "keyPhrases": [
       {
@@ -77,12 +77,12 @@
         "strength": 3
       },
       {
-        "quote": "director Scott Ellis' production has a bothersome tendency to ride the brakes",
+        "quote": "Every time the drama is about to really pack a punch, it stops and slows down",
         "sentiment": "negative",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic praises the script as 'immaculate' and calls it 'one of the best plays of the millennium' but criticizes the production as 'merely adequate' and 'so-so,' ultimately giving a qualified recommendation. | GPT-4o-mini: The review acknowledges the strength of the script but highlights significant issues with the direction and the chemistry between the leads, leading to a mixed recommendation.",
+    "reasoning": "Claude: Despite significant criticisms of the direction and performances, the critic praises the script as 'immaculate' and 'one of the best plays of the millennium,' ultimately concluding with a qualified recommendation. | GPT-4o-mini: The review presents a mixed perspective, praising the script while expressing disappointment in the production and performances, leading to a conditional recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -92,7 +92,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:35:14.119Z",
+    "scoredAt": "2026-01-29T01:48:38.093Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -101,8 +101,8 @@
     "claudeScore": 72,
     "openaiScore": 65,
     "scoreDelta": 7,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
     "needsReview": false,
     "needsReviewReasons": []
   },
@@ -115,7 +115,7 @@
   "originalScoreNormalized": 95,
   "scoreSource": "letter-grade",
   "scoreExtractedFrom": "excerpt",
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 69
+  "previousLlmScore": 69,
+  "rescoreCompletedAt": "2026-01-29T01:48:38.093Z"
 }

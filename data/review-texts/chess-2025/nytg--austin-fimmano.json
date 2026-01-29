@@ -9,30 +9,30 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"For those who go to Broadway musicals hoping to hear actors perform songs so powerfully you get goosebumps, youâll find that three times over.\"",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 76,
   "source": "playwright-scraped",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T05:10:00.000Z",
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "medium",
     "range": {
-      "low": 68.5,
-      "high": 85.5
+      "low": 67,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 60,
+      "book": 58,
       "music": 85,
       "performances": 90,
       "direction": 70
     },
     "keyPhrases": [
       {
-        "quote": "But for those who go to Broadway musicals hoping to hear actors perform songs so powerfully you get goosebumps, you'll find that three times over",
+        "quote": "for those who go to Broadway musicals hoping to hear actors perform songs so powerfully you get goosebumps, you'll find that three times over",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
         "quote": "Chess might not be for everyone: Diehard fans may bemoan the modern updates, while newcomers may get lost in the 2-hour-and-40-minute back-and-forth of plot",
@@ -40,12 +40,12 @@
         "strength": 3
       },
       {
-        "quote": "Together and apart, the three of them had my audience cheering and whooping after nearly every song",
+        "quote": "the three of them had my audience cheering and whooping after nearly every song",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic clearly recommends the show for musical theater fans who prioritize vocal performances, despite acknowledging significant flaws in the book and mixed success of updates. | GPT-4o-mini: The review praises the performances and music highly while acknowledging some shortcomings in the book and updates, leading to a strong recommendation overall.",
+    "reasoning": "Claude: The review offers a qualified recommendation based primarily on exceptional vocal performances, while acknowledging significant flaws in the book and mixed success of updates. | GPT-4o-mini: The review highlights strong performances and powerful music while acknowledging some weaknesses in the book and updates, leading to a solid positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -55,15 +55,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:59:49.477Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:44:02.671Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 73,
+    "claudeScore": 72,
     "openaiScore": 80,
-    "scoreDelta": 7,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -79,7 +79,7 @@
   "dtliExcerpt": "Chess might not be for everyone: Diehard fans may bemoan the modern updates, while newcomers may get lost in the 2-hour-and-40-minute back-and-forth of plot that covers, essentially, two chess matches. But for those who go to Broadway musicals hoping to hear actors perform songs so powerfully you get goosebumps, you’ll find that three times over.",
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 77
+  "previousLlmScore": 77,
+  "rescoreCompletedAt": "2026-01-29T01:44:02.671Z"
 }

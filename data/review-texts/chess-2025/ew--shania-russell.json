@@ -9,45 +9,45 @@
   "isFullReview": true,
   "dtliExcerpt": "The script has been reworked and the characters retooled, only for Chess to end up back where it started: impeccable music, a flat story and a baffling execution. But the eternal contradiction of Chess is that while its flaws are many, it's still a delight to witness. Like those that came before, this lively production is bursting with talent both on and offstage. Much of that is owed to the still-impeccable score from EGOT-winning theater lyricist Tim Rice and songwriters Benny Andersson and Björn Ulvaeus (of ABBA fame). Add in some flawless vocals and the electrifying lighting design (from Kevin Adams) and you can almost ignore its failings.",
   "originalScore": "C+",
-  "assignedScore": 71,
+  "assignedScore": 57,
   "source": "dtli",
   "dtliThumb": "Meh",
   "textStatus": "complete",
   "textQuality": "full",
   "sourceMethod": "scrapingbee",
   "llmScore": {
-    "score": 71,
+    "score": 57,
     "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 77
+      "low": 50.5,
+      "high": 63.5
     },
     "bucket": "Mixed",
-    "thumb": "Up",
+    "thumb": "Flat",
     "components": {
-      "book": 38,
-      "music": 93,
+      "book": 33,
+      "music": 88,
       "performances": 83,
-      "direction": 75
+      "direction": 53
     },
     "keyPhrases": [
       {
-        "quote": "it's still a delight to witness",
-        "sentiment": "positive",
+        "quote": "impeccable music, a flat story and a baffling execution",
+        "sentiment": "neutral",
         "strength": 4
       },
       {
-        "quote": "you can almost ignore its failings",
-        "sentiment": "positive",
+        "quote": "while its flaws are many, it's still a delight to witness",
+        "sentiment": "neutral",
         "strength": 3
       },
       {
-        "quote": "flat story and a baffling execution",
+        "quote": "Most of the pieces are there... But once again, it doesn't come together",
         "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Despite significant criticism of the story and execution, the critic finds the production a 'delight to witness' due to exceptional music, performances, and design, indicating a qualified but genuine recommendation. | GPT-4o-mini: While the review highlights significant flaws in the story and execution, it emphasizes the quality of the music and performances, leading to a mixed-positive recommendation.",
+    "reasoning": "Claude: The reviewer gives Chess a C+ grade and acknowledges major structural flaws while praising the music and performances, resulting in a qualified mixed recommendation that leans slightly positive due to the exceptional score and vocal performances. | GPT-4o-mini: The review highlights strong performances and music but criticizes the script and execution, leading to a mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -57,15 +57,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:13:25.714Z",
+    "scoredAt": "2026-01-29T01:43:29.354Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 70,
-    "scoreDelta": 2,
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -95,7 +95,7 @@
   "originalScoreNormalized": 78,
   "scoreSource": "letter-grade",
   "scoreExtractedFrom": "archive",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 71
+  "previousLlmScore": 71,
+  "rescoreCompletedAt": "2026-01-29T01:43:29.354Z"
 }

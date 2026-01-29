@@ -38,7 +38,7 @@
       "book": 83,
       "music": null,
       "performances": 89,
-      "direction": 83
+      "direction": 84
     },
     "keyPhrases": [
       {
@@ -57,7 +57,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The B+ grade combined with consistent praise for performances, direction, and the play's psychological effectiveness indicates a clear positive recommendation despite the challenging subject matter. | GPT-4o-mini: The review expresses strong praise for the performances and direction, particularly highlighting Carrie Coon's captivating return, leading to a clear recommendation.",
+    "reasoning": "Claude: The B+ grade combined with sustained praise for performances, direction, and the play's effectiveness as psychological thriller indicates a clear positive recommendation despite the challenging subject matter. | GPT-4o-mini: The review expresses strong praise for the performances, particularly Coon's, and the overall production, with minor reservations about the story's uniqueness.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -67,7 +67,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:10:31.693Z",
+    "scoredAt": "2026-01-29T01:39:57.234Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -76,13 +76,13 @@
     "claudeScore": 82,
     "openaiScore": 87,
     "scoreDelta": 5,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
   "bwwThumb": "Up",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 85
+  "previousLlmScore": 85,
+  "rescoreCompletedAt": "2026-01-29T01:39:57.234Z"
 }

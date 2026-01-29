@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "Little of it feels original, and none of it feels necessary. But just like actual Betty Boop merchandise — the many toys, t-shirts, scrunchies and socks covered with her image – ‘Boop!’ doesn’t have to feel necessary; it’s fun. And the main reason for that is Jasmine Amy Rogers.",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-MUSICAL-Opens-on-Broadway-20250407",
   "textStatus": "missing",
@@ -18,60 +18,62 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 65,
+    "score": 64,
     "confidence": "high",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 57.5,
+      "high": 70.5
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 43,
-      "music": null,
-      "performances": 78,
-      "direction": null
+      "book": 53,
+      "music": 70,
+      "performances": 80,
+      "direction": 70
     },
     "keyPhrases": [
       {
-        "quote": "Little of it feels original, and none of it feels necessary",
-        "sentiment": "negative",
+        "quote": "Little of it feels original, and none of it feels necessary. But just like actual Betty Boop merchandise – \"Boop!\" doesn't have to feel necessary; it's fun.",
+        "sentiment": "neutral",
         "strength": 4
       },
       {
-        "quote": "it's fun. And the main reason for that is Jasmine Amy Rogers",
+        "quote": "Jasmine Amy Rogers is making a spectacular Broadway debut",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 5
       },
       {
-        "quote": "doesn't have to feel necessary; it's fun",
-        "sentiment": "positive",
+        "quote": "The show starts feeling a bit…diffuse",
+        "sentiment": "negative",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic acknowledges significant flaws (unoriginal, unnecessary) but finds the show enjoyable primarily due to the lead performance, suggesting a qualified positive experience. | GPT-4o-mini: The review indicates that while the show lacks originality and necessity, it is still enjoyable, particularly due to the performance of Jasmine Amy Rogers, leading to a mixed-positive recommendation.",
+    "reasoning": "Claude: The critic acknowledges significant flaws (unoriginal plot, unnecessary story) but finds the show fun thanks to Rogers' spectacular performance and impressive design work, resulting in a qualified mixed recommendation. | GPT-4o-mini: The review presents a mix of enjoyment and critique, highlighting fun elements while also noting a lack of originality and necessity, leading to a mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:08:18.009Z",
+    "scoredAt": "2026-01-29T01:36:43.591Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 65,
+    "claudeScore": 62,
     "openaiScore": 65,
-    "scoreDelta": 0,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
+    "scoreDelta": 3,
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (64 → Flat) conflicts with aggregator thumbs (Up)"
+    ]
   },
   "dtliExcerpt": "Little of it feels original, and none of it feels necessary. But just like actual Betty Boop merchandise — the many toys, t-shirts, scrunchies and socks covered with her image –&nbsp;&nbsp;“Boop!” doesn’t have to feel necessary; it’s fun. And the main reason for that is Jasmine Amy Rogers.",
   "dtliThumb": "UP",
@@ -88,7 +90,7 @@
       "mergedAt": "2026-01-28T21:15:21.834Z"
     }
   ],
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 65
+  "previousLlmScore": 65,
+  "rescoreCompletedAt": "2026-01-29T01:36:43.591Z"
 }

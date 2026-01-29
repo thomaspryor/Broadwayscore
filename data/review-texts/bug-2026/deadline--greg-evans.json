@@ -9,62 +9,62 @@
   "isFullReview": true,
   "dtliExcerpt": "Together, the creative touches corralled by Cromer and his company build a world that’s unerringly, distressingly realistic, even when everything inside those soon-to-be tinfoil-covered walls loses all recognizable meaning.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:59:33.626Z",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 71,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 77
+      "low": 73,
+      "high": 87
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 75,
       "music": null,
-      "performances": null,
-      "direction": 73
+      "performances": 87,
+      "direction": 83
     },
     "keyPhrases": [
       {
-        "quote": "unerringly, distressingly realistic",
+        "quote": "Tracy Letts' excellent, itchy Bug on Broadway",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "loses all recognizable meaning",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "Coon... a revelation even if you saw her spectacular work on HBO's The White Lotus last year",
+        "sentiment": "positive",
+        "strength": 5
       },
       {
-        "quote": "creative touches corralled by Cromer and his company build a world",
+        "quote": "the creative touches corralled by Cromer and his company build a world that's unerringly, distressingly realistic",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Praises the director and creative team for building a convincing world, but the excerpt is too brief to determine overall recommendation strength. | GPT-4o-mini: The review highlights strong creative direction but hints at a loss of meaning, suggesting a mixed-positive recommendation overall.",
+    "reasoning": "Claude: The critic calls the play 'excellent' upfront, praises Coon as 'a revelation' with 'spectacular work', lauds the direction and design elements as expertly crafted, and describes the production as building a distressingly realistic world - clear positive recommendation despite some reservations about contemporary relevance. | GPT-4o-mini: The review expresses strong praise for the performances and direction while acknowledging some limitations in the script, leading to a clear positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:57:58.216Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:39:50.172Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 70,
-    "scoreDelta": 2,
+    "claudeScore": 82,
+    "openaiScore": 78,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -112,7 +112,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 71
+  "previousLlmScore": 71,
+  "rescoreCompletedAt": "2026-01-29T01:39:50.172Z"
 }

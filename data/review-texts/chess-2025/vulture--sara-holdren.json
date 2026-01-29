@@ -9,62 +9,62 @@
   "isFullReview": true,
   "dtliExcerpt": "“One Night In Bangkok” walked so Sam Rockwell’s White Lotus monologue could run. The song is such a ridiculous rush that it pretty much justifies the whole project. I think some plot still happens after that, but frankly, I left my heart—and my wallet and my keys and my sobriety—in this Bangkok, and I’m okay with that. Who knew chess could get you so high?",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:59:53.846Z",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 79,
+    "confidence": "high",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 73,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 88,
-      "performances": 82,
-      "direction": null
+      "book": 53,
+      "music": 85,
+      "performances": 75,
+      "direction": 79
     },
     "keyPhrases": [
       {
+        "quote": "When the show is at its best, it hits levels of unironic ludicrousness that are more fun than most things on Broadway",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "And I had a great time",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
         "quote": "The song is such a ridiculous rush that it pretty much justifies the whole project",
         "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "I left my heart—and my wallet and my keys and my sobriety—in this Bangkok, and I'm okay with that",
-        "sentiment": "positive",
         "strength": 5
-      },
-      {
-        "quote": "Who knew chess could get you so high?",
-        "sentiment": "positive",
-        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review expresses genuine enthusiasm and emotional investment in the production, with strong praise for the standout song and Sam Rockwell's performance, indicating a clear positive recommendation despite some casual dismissiveness about plot. | GPT-4o-mini: The review expresses strong enthusiasm for the song and overall experience, indicating a clear recommendation despite some ambiguity about the plot.",
+    "reasoning": "Claude: Despite acknowledging the show's narrative weaknesses and lack of character chemistry, the critic clearly had a great time and celebrates the production's campy energy, spectacular choreography, and standout musical numbers. | GPT-4o-mini: The review expresses enjoyment of the campy atmosphere and music, with some reservations about the book and character chemistry, leading to a solid recommendation.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:00:27.461Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:44:46.036Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "openaiScore": 80,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -108,7 +108,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 82
+  "previousLlmScore": 82,
+  "rescoreCompletedAt": "2026-01-29T01:44:46.036Z"
 }

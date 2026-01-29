@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "The triumph of this iteration is how it anticipates its audience, teasing them with frothy liberation before making them gasp at Nazi armbands and shattered windows. As the Emcee oversees, or even appears at times to orchestrate, these national contradictions, it’s hard not to feel queasy at the dissonance. Particularly, I’d imagine, if you paid the upcharge for a stage-side meal. When the drumroll closes the show, a new aesthetic takes hold, complete in its muted menace. Dramatic irony is the play’s engine; we know there’s no changing the outcome. But when we sit pretty at the Kit Kat Club — tipsy, titillated, terrified — it’s not too late for us.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 84,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://forward.com/culture/theater/604684/cabaret-broadway-eddie-redmayne-gayle-rankin-review/",
@@ -21,11 +21,11 @@
   "textQuality": "partial",
   "sourceMethod": "bww-roundup",
   "llmScore": {
-    "score": 85,
-    "confidence": "medium",
+    "score": 84,
+    "confidence": "high",
     "range": {
-      "low": 77,
-      "high": 93
+      "low": 78,
+      "high": 90
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -52,7 +52,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic praises this as a 'triumph' with excellent performances and innovative staging that effectively serves the material's themes, with only minor reservations about plot feasibility. | GPT-4o-mini: The review expresses strong praise for the performances and direction while acknowledging some limitations in the book, leading to a clear recommendation to see the show.",
+    "reasoning": "Claude: The critic praises the production's innovation, effectiveness, and performances with particular enthusiasm for its theatrical impact and contemporary relevance, calling it 'the triumph of this iteration.' | GPT-4o-mini: The review expresses strong praise for the performances and direction while acknowledging some limitations in the book and scenery, leading to a solid positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -62,21 +62,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:11:46.006Z",
+    "scoredAt": "2026-01-29T01:41:47.092Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 88,
-    "scoreDelta": 6,
+    "claudeScore": 83,
+    "openaiScore": 85,
+    "scoreDelta": 2,
     "thumbsMatch": true,
     "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 85
+  "previousLlmScore": 85,
+  "rescoreCompletedAt": "2026-01-29T01:41:47.092Z"
 }

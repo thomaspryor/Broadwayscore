@@ -33,13 +33,13 @@
     "thumb": "Up",
     "components": {
       "book": 85,
-      "music": 90,
+      "music": 93,
       "performances": 92,
       "direction": 91
     },
     "keyPhrases": [
       {
-        "quote": "As meaningful as it is melodic, this is a must-see for connoisseurs of innovative musical theater",
+        "quote": "this is a must-see for connoisseurs of innovative musical theater",
         "sentiment": "positive",
         "strength": 5
       },
@@ -49,22 +49,22 @@
         "strength": 4
       },
       {
-        "quote": "Everything about Hadestown is designed to grab your attention and pull you into the story",
+        "quote": "Chavkin has crafted a visually arresting production to match the richness of Mitchell's score",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The review contains explicit 'must-see' language, consistent praise across all production elements, and strong positive language throughout with no significant reservations. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the production's innovation, performances, and design, with no significant reservations noted.",
+    "reasoning": "Claude: The review contains an explicit 'must-see' recommendation and consistently praises all aspects of the production with specific superlatives ('magnificent,' 'visually spectacular,' 'richness of Mitchell's score') while noting the work's contemporary relevance. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its innovative storytelling, strong performances, and visual design, indicating a clear recommendation to see the show.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:18:46.160Z",
+    "scoredAt": "2026-01-29T01:55:00.369Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -79,7 +79,7 @@
     "needsReviewReasons": []
   },
   "designation": "Must_See",
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 92
+  "previousLlmScore": 92,
+  "rescoreCompletedAt": "2026-01-29T01:55:00.369Z"
 }

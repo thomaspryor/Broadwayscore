@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The lush bacchanal of the theater’s dressing seeps into every aspect of this production, from Julia Cheng’s sensual, prurient choreography to Eddie Redmayne’s eerie performance as the Emcee.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "complete",
@@ -19,10 +19,10 @@
   "textQuality": "full",
   "sourceMethod": "dtli",
   "llmScore": {
-    "score": 60,
+    "score": 55,
     "confidence": "low",
     "range": {
-      "low": 30,
+      "low": 20,
       "high": 90
     },
     "bucket": "Mixed",
@@ -30,8 +30,8 @@
     "components": {
       "book": null,
       "music": null,
-      "performances": 83,
-      "direction": 85
+      "performances": 80,
+      "direction": 88
     },
     "keyPhrases": [
       {
@@ -50,7 +50,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: This appears to be an incomplete review excerpt that focuses heavily on production design and atmosphere with positive language, but lacks any clear recommendation or overall assessment, making it difficult to determine the critic's final verdict. | GPT-4o-mini: The review highlights strong performances and a visually captivating direction, indicating a clear recommendation despite not explicitly stating 'must-see'. | Note: Models differed by 50 points.",
+    "reasoning": "Claude: This appears to be an incomplete review excerpt that cuts off mid-analysis, making it impossible to determine the critic's overall recommendation or final verdict. | GPT-4o-mini: The review highlights strong direction and performances, indicating a clear recommendation despite the lack of explicit phrases urging to see it. | Note: Models differed by 60 points.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -60,20 +60,20 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:11:22.876Z",
+    "scoredAt": "2026-01-29T01:41:26.393Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 35,
+    "claudeScore": 25,
     "openaiScore": 85,
-    "scoreDelta": 50,
+    "scoreDelta": 60,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": true,
     "needsReviewReasons": [
-      "Models disagree by 50 points (Claude: 35, OpenAI: 85)"
+      "Models disagree by 60 points (Claude: 25, OpenAI: 85)"
     ]
   },
   "scoreSource": "manual-override",
@@ -85,7 +85,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 60
+  "previousLlmScore": 60,
+  "rescoreCompletedAt": "2026-01-29T01:41:26.393Z"
 }

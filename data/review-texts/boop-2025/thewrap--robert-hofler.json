@@ -11,7 +11,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 18,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "needsScoring": true,
@@ -21,40 +21,40 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 30,
+    "score": 18,
     "confidence": "medium",
     "range": {
-      "low": 20,
-      "high": 40
+      "low": 5.5,
+      "high": 30.5
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": null,
-      "music": 25,
-      "performances": null,
-      "direction": null
+      "book": 13,
+      "music": 23,
+      "performances": 33,
+      "direction": 15
     },
     "keyPhrases": [
       {
-        "quote": "you will leave the Broadhurst humming them, because you've heard them all before",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "caterwauling gospel or anemic jazz or the ubiquitous female power ballad",
+        "quote": "It's 'boop-oop-a-doop' for a show that needs a good spritz of Pooph",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "load 'Boop!' with so many anthems they appear to be auditioning for some new 'I Love NY' ad campaign",
+        "quote": "nearly two hours of total tedium",
         "sentiment": "negative",
-        "strength": 4
+        "strength": 5
+      },
+      {
+        "quote": "some of the ugliest costumes that have ever graced a Broadway stage",
+        "sentiment": "negative",
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic dismisses the musical score as derivative and formulaic, using harsh descriptors like 'caterwauling,' 'anemic,' and 'ubiquitous' to characterize the songs as unoriginal and generic. | GPT-4o-mini: The review expresses significant disappointment in the music and overall creativity, indicating a clear negative recommendation.",
+    "reasoning": "Claude: The critic delivers a scathing pan with harsh language throughout, calling it 'total tedium' and comparing it unfavorably to better-known properties, with only minimal praise for one actor's scene-stealing performance. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the book, music, and overall production quality, leading to a clear rejection of the show. | Note: Models differed by 15 points.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
@@ -62,21 +62,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:44:32.557Z",
+    "scoredAt": "2026-01-29T01:37:19.462Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 25,
-    "openaiScore": 35,
-    "scoreDelta": 10,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "openaiScore": 10,
+    "scoreDelta": 15,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 30
+  "previousLlmScore": 30,
+  "rescoreCompletedAt": "2026-01-29T01:37:19.462Z"
 }

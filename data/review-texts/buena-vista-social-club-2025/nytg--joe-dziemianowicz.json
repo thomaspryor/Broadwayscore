@@ -30,38 +30,38 @@
     "thumb": "Up",
     "components": {
       "book": 68,
-      "music": 90,
-      "performances": 85,
-      "direction": 80
+      "music": 89,
+      "performances": 84,
+      "direction": 83
     },
     "keyPhrases": [
       {
-        "quote": "It's easy to like a show that knows itself",
+        "quote": "the infectiously exuberant and joyous Buena Vista Social Club tells and shows exactly what it's about",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "infectiously exuberant and joyous",
+        "quote": "Choreography by Patricia Delgado and Justin Peck is explosive. Director Saheem Ali's production mambos across time",
         "sentiment": "positive",
-        "strength": 5
+        "strength": 4
       },
       {
-        "quote": "the slender story gets the job done",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "Unapologetically sentimental, the slender story gets the job done",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review clearly recommends the show despite acknowledging a thin plot, praising the music, performances, and production with enthusiastic language like 'infectiously exuberant' and noting it 'knows itself.' | GPT-4o-mini: The review conveys strong enthusiasm for the music and performances, with only minor reservations about the story's depth.",
+    "reasoning": "Claude: The review consistently praises the music, performances, choreography, and direction while acknowledging the script is 'slender' but still effective, with clear enthusiasm for the overall theatrical experience. | GPT-4o-mini: The review conveys strong enthusiasm for the music and performances while acknowledging some limitations in the story, leading to a solid positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:09:51.234Z",
+    "scoredAt": "2026-01-29T01:38:31.339Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -82,7 +82,7 @@
   ],
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 82
+  "previousLlmScore": 82,
+  "rescoreCompletedAt": "2026-01-29T01:38:31.339Z"
 }

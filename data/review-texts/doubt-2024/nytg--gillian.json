@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Doubt&#8216;s many complexities continue to swirl in my mind days after I attended the show. One thing of which I have no doubt, though, is that Doubt delivers a riveting, well-acted, and utterly unmissable night at the theatre.",
   "originalScore": null,
-  "assignedScore": 93,
+  "assignedScore": 92,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/doubt-a-parable/",
@@ -19,58 +19,58 @@
   "scoreConfidence": "medium",
   "extractedPhrase": "unmissable",
   "llmScore": {
-    "score": 93,
-    "confidence": "high",
+    "score": 92,
+    "confidence": "medium",
     "range": {
-      "low": 85.5,
+      "low": 83.5,
       "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": 88,
       "music": null,
-      "performances": 92,
-      "direction": 85
+      "performances": 93,
+      "direction": 86
     },
     "keyPhrases": [
       {
-        "quote": "utterly unmissable night at the theatre",
+        "quote": "One thing of which I have no doubt, though, is that Doubt delivers a riveting, well-acted, and utterly unmissable night at the theatre",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "riveting, well-acted",
+        "quote": "an indomitable Amy Ryan... a standout Liev Schreiber",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "One thing of which I have no doubt",
+        "quote": "I expect I could return to this production and end up with entirely different certainties and uncertainties. I might do just that",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic uses unqualified superlatives like 'utterly unmissable' and 'riveting' with no reservations, making this a clear rave recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong recommendation, indicating it is a must-see production.",
+    "reasoning": "Claude: The critic concludes with an explicit strong recommendation calling it 'utterly unmissable' and praises the performances, direction, and material's complexity with no significant reservations. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the performances and the complexity of the play, with no significant reservations noted.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:35:19.438Z",
+    "scoredAt": "2026-01-29T01:49:04.580Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 90,
+    "claudeScore": 88,
     "openaiScore": 95,
-    "scoreDelta": 5,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "scoreDelta": 7,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
@@ -81,7 +81,6 @@
     "dtli",
     "bww-roundup"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 93,
   "textWordCount": 818,
@@ -103,5 +102,6 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250710210835",
-  "archiveOrgUrl": "http://web.archive.org/web/20250710210835/https://www.newyorktheatreguide.com/reviews/doubt-broadway-review-amy-ryan-liev-schreiber"
+  "archiveOrgUrl": "http://web.archive.org/web/20250710210835/https://www.newyorktheatreguide.com/reviews/doubt-broadway-review-amy-ryan-liev-schreiber",
+  "rescoreCompletedAt": "2026-01-29T01:49:04.580Z"
 }

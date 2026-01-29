@@ -9,64 +9,64 @@
   "isFullReview": true,
   "dtliExcerpt": "Twenty years later, all reasonable doubt has been removed from Shanley’s parable. This taut drama, back in a gripping new Broadway production from the Roundabout Theatre Company and director Scott Ellis, plays like a cautionary tale, an ode to those who found the courage to stand up to abusers and side with the young and the vulnerable.",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 92,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/doubt-a-parable/",
   "needsScoring": true,
   "llmScore": {
-    "score": 84,
-    "confidence": "high",
+    "score": 92,
+    "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 90
+      "low": 83.5,
+      "high": 100
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": 91,
       "music": null,
-      "performances": null,
-      "direction": 84
+      "performances": 91,
+      "direction": 88
     },
     "keyPhrases": [
       {
-        "quote": "gripping new Broadway production",
+        "quote": "a gripping new Broadway production",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "This taut drama",
+        "quote": "a timely and now seemingly timeless piece of art that shed light and did exactly what the American theater is supposed to do",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "all reasonable doubt has been removed from Shanley's parable",
+        "quote": "among the best in any American drama of the last 20 years",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The review uses strong positive language ('gripping', 'taut drama') and frames the production as both artistically successful and thematically relevant, indicating a clear recommendation despite being a brief excerpt. | GPT-4o-mini: The review expresses strong praise for the production's gripping nature and its thematic relevance, indicating a clear recommendation to see it.",
+    "reasoning": "Claude: The critic delivers high praise for the production with superlatives about the script and performances, calling it 'gripping' and declaring one scene 'among the best in any American drama of the last 20 years,' concluding that it does 'exactly what the American theater is supposed to do.' | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its emotional depth and powerful performances, particularly by Amy Ryan, which indicates a strong recommendation to see the show.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:35:07.848Z",
+    "scoredAt": "2026-01-29T01:48:32.566Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 83,
-    "openaiScore": 85,
-    "scoreDelta": 2,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
@@ -77,7 +77,6 @@
     "dtli",
     "bww-roundup"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 84,
   "textWordCount": 631,
@@ -97,5 +96,6 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240316135403",
-  "archiveOrgUrl": "http://web.archive.org/web/20240316135403/https://www.nydailynews.com/2024/03/07/broadway-review-doubt-revival-leaves-no-doubt-a-parable-shanley-amy-ryan/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240316135403/https://www.nydailynews.com/2024/03/07/broadway-review-doubt-revival-leaves-no-doubt-a-parable-shanley-amy-ryan/",
+  "rescoreCompletedAt": "2026-01-29T01:48:32.566Z"
 }

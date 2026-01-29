@@ -9,34 +9,34 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"The slipperiness of ostensible skepticism into utter credulity is what makes Bug continue to resonate so powerfully today.\"",
   "originalScore": "4/5",
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "dtli",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T05:45:00.000Z",
   "bwwExcerpt": "Although Agnes and Peter sleep together early on, their relationship isn’t primarily sexual. But there’s an element of seduction to their whole dynamic, as Peter, at first reluctantly, gets under Agnes’s skin. Letts is an actor as well as a playwright—he and Coon, who are married, met while co-starr...",
   "llmScore": {
-    "score": 84,
-    "confidence": "medium",
+    "score": 83,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 95
+      "low": 76,
+      "high": 90
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 88,
+      "book": 81,
       "music": null,
-      "performances": 89,
-      "direction": 85
+      "performances": 88,
+      "direction": 83
     },
     "keyPhrases": [
       {
-        "quote": "Tracy Letts's engrossing and unsettling 1996 psycho-thriller Bug",
+        "quote": "4 out of 5 stars",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Smallwood and Coon, reprising their roles from the 2021 production of Bug at Chicago's Steppenwolf Theatre, strike a compelling balance",
+        "quote": "Tracy Letts's engrossing and unsettling 1996 psycho-thriller",
         "sentiment": "positive",
         "strength": 4
       },
@@ -46,7 +46,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic consistently praises the script as 'engrossing and unsettling,' commends the lead performances as 'compelling' and 'riveting,' and emphasizes the play's contemporary relevance, with no significant reservations expressed. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting its engaging script, powerful performances, and effective direction, indicating a must-see experience. | Note: Models differed by 12 points.",
+    "reasoning": "Claude: The 4/5 star rating combined with consistently positive language about the play's resonance, performances, and direction indicates a clear positive recommendation despite the dark subject matter. | GPT-4o-mini: The review expresses strong praise for the performances and direction, indicating a clear recommendation to see the show.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -56,15 +56,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:57:34.508Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:40:46.448Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "scoreDelta": 12,
+    "claudeScore": 81,
+    "openaiScore": 85,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -87,7 +87,7 @@
   "originalScoreNormalized": 80,
   "scoreSource": "text-pattern",
   "scoreExtractedFrom": "fullText",
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 84
+  "previousLlmScore": 84,
+  "rescoreCompletedAt": "2026-01-29T01:40:46.448Z"
 }

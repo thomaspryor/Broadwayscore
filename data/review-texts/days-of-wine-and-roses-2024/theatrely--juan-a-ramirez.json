@@ -10,45 +10,45 @@
   "bwwExcerpt": "Craig Lucas and Adam Guettel, whose book and music for The Light in the Piazza lavishly replicated the dizziness of young love 20 years ago, turn their top-shelf craft toward bleaker outlooks in their adaptation of Days of Wine and Roses. Transferring to Broadway after a well-received premiere at the Atlantic last summer, Kelli O’Hara and Brian d’Arcy James give astonishing voice to two lovers drowning in alcoholism. The subject matter is almost corrosively downbeat but, with its two leads at th",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 84,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 77.5,
-      "high": 90.5
+      "low": 73,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": 90,
-      "direction": null
+      "book": 69,
+      "music": 85,
+      "performances": 91,
+      "direction": 78
     },
     "keyPhrases": [
       {
-        "quote": "give astonishing voice to two lovers",
+        "quote": "Kelli O'Hara and Brian d'Arcy James give astonishing voice to two lovers drowning in alcoholism",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "becomes a cathartic, deeply felt tonic",
+        "quote": "the one-act musical becomes a cathartic, deeply felt tonic",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "with its two leads at the top of their game",
-        "sentiment": "positive",
-        "strength": 4
+        "quote": "The predeterminism is a bit dreary, but Lucas' book ably creates moments of tenderness",
+        "sentiment": "neutral",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: Strong praise for lead performances with superlatives like 'astonishing' and 'top of their game', plus overall positive outcome despite challenging subject matter. | GPT-4o-mini: The review highlights the outstanding performances and emotional impact, indicating a strong recommendation despite the heavy subject matter.",
+    "reasoning": "Claude: Despite acknowledging the bleak subject matter and some structural issues, the critic consistently praises the exceptional performances, gorgeous score, and overall emotional impact, positioning it as a worthwhile theatrical experience. | GPT-4o-mini: The review expresses strong praise for the performances and music while acknowledging some weaknesses in the book, leading to a solid positive recommendation overall.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
@@ -56,17 +56,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:17:46.224Z",
+    "scoredAt": "2026-01-29T01:46:04.943Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 85,
-    "scoreDelta": 3,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
@@ -76,7 +76,7 @@
     "dtli"
   ],
   "showScoreExcerpt": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 84
+  "previousLlmScore": 84,
+  "rescoreCompletedAt": "2026-01-29T01:46:04.943Z"
 }

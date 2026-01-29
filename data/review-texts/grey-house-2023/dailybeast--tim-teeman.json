@@ -11,7 +11,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "needsScoring": true,
@@ -21,62 +21,62 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 57,
-    "confidence": "high",
+    "score": 52,
+    "confidence": "medium",
     "range": {
-      "low": 50.5,
+      "low": 40.5,
       "high": 63.5
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 48,
+      "book": 38,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 73,
+      "direction": 55
     },
     "keyPhrases": [
       {
-        "quote": "puzzling, undercooked",
+        "quote": "This puzzling, undercooked, but still arresting play",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "The actors work admirably hard in its quirkily baffling folds, but the story sticks and stops and starts and eventually disappears into itself",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "still arresting",
-        "sentiment": "positive",
+        "quote": "It's not that you aren't tense in your seat for the duration of Grey House—you really are—but all the teasing and foreboding glares and there-be-terror-in-these-parts signposting begin to grate",
+        "sentiment": "negative",
         "strength": 3
-      },
-      {
-        "quote": "knows and accords to the genre conventions",
-        "sentiment": "neutral",
-        "strength": 2
       }
     ],
-    "reasoning": "Claude: Mixed signals with significant criticism ('puzzling, undercooked') balanced by acknowledgment of compelling elements ('still arresting'), suggesting a flawed but somewhat worthwhile theatrical experience. | GPT-4o-mini: The review presents a mixed sentiment, acknowledging both flaws and some engaging qualities, leading to a conditional recommendation.",
+    "reasoning": "Claude: The critic finds the play atmospherically engaging and praises the performances, particularly Metcalf, but ultimately criticizes the confusing narrative, poor execution, and unsatisfying conclusion, describing it as 'puzzling, undercooked' with a story that 'disappears into itself.' | GPT-4o-mini: The review expresses significant disappointment with the script and clarity of the production, despite acknowledging some strong performances. | Note: Models differed by 13 points.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:12:21.380Z",
+    "scoredAt": "2026-01-29T01:50:19.250Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 58,
-    "openaiScore": 55,
-    "scoreDelta": 3,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "openaiScore": 45,
+    "scoreDelta": 13,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 57
+  "previousLlmScore": 57,
+  "rescoreCompletedAt": "2026-01-29T01:50:19.250Z"
 }

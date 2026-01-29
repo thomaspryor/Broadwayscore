@@ -10,45 +10,45 @@
   "showScoreExcerpt": "âSo transportive are the intoxicating Cuban music and spirited dance that itâs easy to forgive the showâs rather wispy and cliched book.â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/buena-vista-social-club",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 69,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 63,
-      "high": 75
+      "low": 73,
+      "high": 85
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 43,
-      "music": 85,
-      "performances": null,
-      "direction": 78
+      "book": 53,
+      "music": 91,
+      "performances": 83,
+      "direction": 87
     },
     "keyPhrases": [
       {
-        "quote": "So transportive are the intoxicating Cuban music and spirited dance",
+        "quote": "So transportive are the intoxicating Cuban music and spirited dance that it's easy to forgive the show's rather wispy and cliched book",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "it's easy to forgive the show's rather wispy and cliched book",
-        "sentiment": "negative",
-        "strength": 3
+        "quote": "The lush sights and sounds more than make up for all the burdensome exposition and Broadway-style one-liners",
+        "sentiment": "positive",
+        "strength": 4
       },
       {
-        "quote": "easy to forgive",
+        "quote": "I really felt whisked away — a feat many shows set in international locales fail to achieve",
         "sentiment": "positive",
-        "strength": 2
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic finds significant flaws in the book but suggests the strong music and dance make the show worth seeing despite these problems. | GPT-4o-mini: The review highlights strong music and dance but notes significant weaknesses in the book, leading to a mixed-positive recommendation.",
+    "reasoning": "Claude: Despite criticizing the weak book, the critic is clearly transported by and recommends the show for its exceptional music, performances, and production values that overcome the script's shortcomings. | GPT-4o-mini: The review highlights the exceptional music and vibrant choreography while acknowledging weaknesses in the book, leading to a strong overall recommendation.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
@@ -56,14 +56,14 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:14:33.071Z",
+    "scoredAt": "2026-01-29T01:38:07.937Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 68,
-    "openaiScore": 70,
+    "claudeScore": 78,
+    "openaiScore": 80,
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
@@ -77,7 +77,7 @@
   ],
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 69
+  "previousLlmScore": 69,
+  "rescoreCompletedAt": "2026-01-29T01:38:07.937Z"
 }

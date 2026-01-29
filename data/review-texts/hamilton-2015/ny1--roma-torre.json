@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"It was phenomenal off-Broadway. It's even better now. 'Hamilton' is that rare musical that fires on all cylinders, even ones we never knew existed...In a sense, the collective talents of this bravura company pay homage to Broadway's founding fathers - and mothers - by pushing the envelope on an artform that at best, teaches us, enlightens us and entertains us like nothing else.\"",
   "originalScore": null,
-  "assignedScore": 95,
+  "assignedScore": 97,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "textStatus": "complete",
@@ -18,19 +18,19 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 95,
+    "score": 97,
     "confidence": "high",
     "range": {
-      "low": 90,
+      "low": 90.5,
       "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": 95,
-      "direction": 90
+      "book": 90,
+      "music": 98,
+      "performances": 98,
+      "direction": 95
     },
     "keyPhrases": [
       {
@@ -39,17 +39,17 @@
         "strength": 5
       },
       {
-        "quote": "Hamilton is that rare musical that fires on all cylinders, even ones we never knew existed",
+        "quote": "Hamilton is that rare musical that fires on all cylinders, even ones we never knew existed.",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "bravura company pay homage to Broadway's founding fathers - and mothers - by pushing the envelope on an artform",
+        "quote": "the collective talents of this bravura company pay homage to Broadway's founding fathers - and mothers - by pushing the envelope on an artform that at best, teaches us, enlightens us and entertains us like nothing else",
         "sentiment": "positive",
         "strength": 5
       }
     ],
-    "reasoning": "Claude: Unqualified superlatives throughout ('phenomenal', 'even better', 'rare musical', 'bravura company') with language indicating the show transcends expectations and pushes artistic boundaries. | GPT-4o-mini: The review expresses unqualified enthusiasm and highlights the show's exceptional qualities, indicating a strong recommendation.",
+    "reasoning": "Claude: This is an unqualified rave with superlative language throughout ('phenomenal', 'even better now', 'fires on all cylinders', 'bravura company') and no meaningful criticism or reservations expressed. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the musical's innovative qualities, exceptional performances, and strong direction, indicating a must-see experience.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
@@ -59,15 +59,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:21:35.028Z",
+    "scoredAt": "2026-01-29T01:57:54.140Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 95,
-    "openaiScore": 95,
-    "scoreDelta": 0,
+    "openaiScore": 98,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -105,7 +105,7 @@
   "fetchTier": 4,
   "archiveOrgTimestamp": "20170705100709",
   "archiveOrgUrl": "http://web.archive.org/web/20170705100709/http://www.ny1.com/nyc/all-boroughs/lifestyles/2015/08/6/ny1-theater-review---hamilton-.html",
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 95
+  "previousLlmScore": 95,
+  "rescoreCompletedAt": "2026-01-29T01:57:54.140Z"
 }

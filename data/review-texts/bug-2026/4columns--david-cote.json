@@ -32,16 +32,16 @@
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 74,
+      "book": 73,
       "music": null,
-      "performances": 61,
-      "direction": 78
+      "performances": 60,
+      "direction": 75
     },
     "keyPhrases": [
       {
         "quote": "vivid but lopsided production",
         "sentiment": "neutral",
-        "strength": 4
+        "strength": 3
       },
       {
         "quote": "It's in the acting, in all honesty, where cracks start to show",
@@ -49,12 +49,12 @@
         "strength": 4
       },
       {
-        "quote": "The design for this production...is a model of high-def realism",
+        "quote": "A hardworking and very effective Coon is left to maintain dramatic tension",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic praises the script's relevance and the production design extensively, but delivers significant criticism of the lead male performance, creating a mixed recommendation that acknowledges both strengths and notable weaknesses. | GPT-4o-mini: The review highlights strong production elements and a standout performance by Coon, but significant issues with Smallwood's performance lead to a mixed recommendation.",
+    "reasoning": "Claude: The critic praises the script's timely relevance and excellent design work but identifies significant problems with the lead male performance that undermine the production's effectiveness, resulting in a mixed recommendation that leans slightly positive due to Coon's strong work. | GPT-4o-mini: The review presents a mixed view, praising the production design and Coon's performance while criticizing Smallwood's portrayal, leading to a conditional recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -64,7 +64,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:10:10.329Z",
+    "scoredAt": "2026-01-29T01:39:23.914Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -80,7 +80,7 @@
       "Score (67 → Flat) conflicts with aggregator thumbs (Up)"
     ]
   },
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 67
+  "previousLlmScore": 67,
+  "rescoreCompletedAt": "2026-01-29T01:39:23.914Z"
 }

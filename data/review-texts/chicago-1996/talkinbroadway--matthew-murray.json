@@ -69,12 +69,12 @@
         "strength": 4
       },
       {
-        "quote": "It remains a heartening experience, a life-affirming dedication to the magic and art of theatre",
+        "quote": "Chicago is as good now as it's ever been. It remains a heartening experience, a life-affirming dedication to the magic and art of theatre",
         "sentiment": "positive",
         "strength": 5
       }
     ],
-    "reasoning": "Claude: The reviewer gives unqualified praise with explicit recommendation language ('absolutely should not be missed'), consistently positive assessment of all elements, and celebration of the production's enduring quality. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting the performances and overall experience as exceptional, with a clear recommendation to see the show.",
+    "reasoning": "Claude: The review contains explicit strong recommendation language ('absolutely should not be missed') with consistent praise for performances, production values, and overall experience, despite minor criticisms of individual performers. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and overall production, indicating it is a must-see experience.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -84,7 +84,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:42:37.876Z",
+    "scoredAt": "2026-01-29T01:45:07.945Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -98,7 +98,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 89
+  "previousLlmScore": 89,
+  "rescoreCompletedAt": "2026-01-29T01:45:07.945Z"
 }

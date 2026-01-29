@@ -10,70 +10,67 @@
   "bwwExcerpt": "Also unexpected, from Shanley: Doubt is not an urban love story or whimsical mediation on the courtship rituals of men and women. Let me qualify that last point. Doubt is very much about female agency in a male-dominated institution, and how, while trying to fight an injustice you know is real, you may perpetuate evil. It would be absurd if it weren’t so tragic.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 88,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 60,
-    "confidence": "low",
+    "score": 88,
+    "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 80
+      "low": 80.5,
+      "high": 95.5
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 60,
+      "book": 91,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 92,
+      "direction": 88
     },
     "keyPhrases": [
       {
-        "quote": "you may perpetuate evil",
-        "sentiment": "negative",
+        "quote": "Not only is Doubt in the top ten American dramas of this century, but Sister Aloysius is one of the greatest stage characters in decades",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Scott Ellis's faithful and beautifully designed revival",
+        "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "It would be absurd if it weren't so tragic",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "very much about female agency in a male-dominated institution",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "Classically balanced, fiendishly focused, lean and eloquent, the play keeps you guessing until that shocking ending",
+        "sentiment": "positive",
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: This excerpt focuses on thematic content with troubling implications ('perpetuate evil', 'absurd if it weren't so tragic') suggesting serious reservations about the material, though it's too brief to determine full critical stance. | GPT-4o-mini: The review indicates a clear appreciation for the themes and complexity of the script, suggesting a positive recommendation despite a lack of explicit enthusiasm. | Note: Models differed by 30 points.",
+    "reasoning": "Claude: The critic calls this one of the top ten American dramas of the century with superlative praise for the script, strong appreciation for the performances (especially Schreiber and Ryan), and admiration for the production design, with only minor casting quibbles. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and the script, highlighting the production's excellence and the significance of the play, indicating a must-see recommendation.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": true
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:36:12.861Z",
+    "scoredAt": "2026-01-29T01:49:19.286Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 75,
-    "scoreDelta": 30,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 30 points (Claude: 45, OpenAI: 75)"
-    ]
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
   },
   "bwwThumb": "Up",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 60,
   "textWordCount": 1072,
@@ -111,5 +108,6 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250517121907",
-  "archiveOrgUrl": "http://web.archive.org/web/20250517121907/https://observer.com/2024/03/review-a-priest-and-a-nun-walk-into-a-war-in-contemporary-classic-doubt/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250517121907/https://observer.com/2024/03/review-a-priest-and-a-nun-walk-into-a-war-in-contemporary-classic-doubt/",
+  "rescoreCompletedAt": "2026-01-29T01:49:19.286Z"
 }

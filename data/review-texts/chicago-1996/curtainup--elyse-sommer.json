@@ -10,61 +10,61 @@
   "showScoreExcerpt": "\"What it's all about: 'murder, greed, corruption, violence, exploitation, adultery and treachery.' Of course what it's also about is sensational dancing, singing, acting...and, fun! No razzle-dazzle mechanical props, just the razzle-dazzle of a company of gifted performers delivering two hours and twenty minutes of show-stopping numbers.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/chicago",
   "originalScore": null,
-  "assignedScore": 87,
+  "assignedScore": 89,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 87,
+    "score": 89,
     "confidence": "high",
     "range": {
-      "low": 80.5,
-      "high": 93.5
+      "low": 83,
+      "high": 95
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 82,
       "music": 85,
       "performances": 90,
-      "direction": 85
+      "direction": 89
     },
     "keyPhrases": [
       {
-        "quote": "sensational dancing, singing, acting...and, fun!",
+        "quote": "something that absolutely should not be missed",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "razzle-dazzle of a company of gifted performers delivering two hours and twenty minutes of show-stopping numbers",
+        "quote": "At the very least, Chicago is as good now as it's ever been. It remains a heartening experience, a life-affirming dedication to the magic and art of theatre",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "No razzle-dazzle mechanical props, just the razzle-dazzle of a company of gifted performers",
+        "quote": "the production - much like its corps of superb actors, singers, and dancers - is in terrific shape",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Enthusiastic praise for performances and entertainment value with superlatives like 'sensational' and 'show-stopping,' indicating strong positive recommendation despite being a brief excerpt. | GPT-4o-mini: The review highlights the exceptional performances and entertainment value, indicating a strong recommendation despite not detailing the script or direction.",
+    "reasoning": "Claude: The critic delivers an unqualified recommendation with explicit 'should not be missed' language, praising the production as 'terrific,' performances as 'superb,' and calling it 'life-affirming' despite minor reservations about two performers. | GPT-4o-mini: The review expresses strong enthusiasm for the production, praising the performances and overall experience, indicating it is a must-see.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:16:07.794Z",
+    "scoredAt": "2026-01-29T01:44:51.630Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 85,
-    "scoreDelta": 3,
+    "openaiScore": 90,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -79,7 +79,7 @@
       "mergedAt": "2026-01-28T21:15:21.843Z"
     }
   ],
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 87
+  "previousLlmScore": 87,
+  "rescoreCompletedAt": "2026-01-29T01:44:51.630Z"
 }

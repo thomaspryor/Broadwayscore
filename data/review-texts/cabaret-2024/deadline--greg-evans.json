@@ -9,67 +9,69 @@
   "isFullReview": true,
   "dtliExcerpt": "The promise of an overwhelming theatrical event just never quite makes good on itself, certainly not with Rankin’s teary, intentionally overwrought delivery of the title song. We get it. Sally isn’t meant to be a big star. I’d still rather hear Liza.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "dtli",
   "dtliThumb": "Meh",
   "textStatus": "complete",
   "textQuality": "full",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 39,
-    "confidence": "medium",
+    "score": 45,
+    "confidence": "low",
     "range": {
-      "low": 30.5,
-      "high": 47.5
+      "low": 10,
+      "high": 80
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": null,
-      "music": 35,
-      "performances": 34,
-      "direction": null
+      "music": null,
+      "performances": 80,
+      "direction": 75
     },
     "keyPhrases": [
       {
-        "quote": "The promise of an overwhelming theatrical event just never quite makes good on itself",
-        "sentiment": "negative",
-        "strength": 4
+        "quote": "This is not a review but a compendium listing page",
+        "sentiment": "neutral",
+        "strength": 1
       },
       {
-        "quote": "teary, intentionally overwrought delivery of the title song",
-        "sentiment": "negative",
-        "strength": 3
+        "quote": "April on Broadway, to mangle a phrase from a showtune classic, is bustin' out all over",
+        "sentiment": "neutral",
+        "strength": 1
       },
       {
-        "quote": "I'd still rather hear Liza",
-        "sentiment": "negative",
-        "strength": 4
+        "quote": "Whether you use this page as a guide or as an invitation to argue",
+        "sentiment": "neutral",
+        "strength": 1
       }
     ],
-    "reasoning": "Claude: The review expresses clear disappointment that the production fails to deliver on its theatrical promise, with specific criticism of the lead performance and an unfavorable comparison to Liza Minnelli. | GPT-4o-mini: The review expresses significant disappointment with the performance and overall production, leading to a clear negative recommendation.",
+    "reasoning": "Claude: This is not actually a review of any specific show but rather an introduction to a compendium of Broadway reviews, making it impossible to assess any recommendation strength. | GPT-4o-mini: The review conveys a strong appreciation for the production's energy and performances, leading to a clear recommendation despite some structural observations. | Note: Models differed by 60 points.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": false
+      "comparesToPrevious": false,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:11:34.237Z",
+    "scoredAt": "2026-01-29T01:41:40.022Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 35,
-    "scoreDelta": 7,
+    "claudeScore": 15,
+    "openaiScore": 75,
+    "scoreDelta": 60,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 60 points (Claude: 15, OpenAI: 75)"
+    ]
   },
   "textWordCount": 7283,
   "archivePath": "data/archives/reviews/cabaret-2024/deadline--greg-evans_2026-01-26.html",
@@ -114,7 +116,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 39
+  "previousLlmScore": 39,
+  "rescoreCompletedAt": "2026-01-29T01:41:40.022Z"
 }

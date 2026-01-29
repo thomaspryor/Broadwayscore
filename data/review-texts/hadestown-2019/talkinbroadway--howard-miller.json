@@ -59,19 +59,19 @@
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 76,
+      "book": 78,
       "music": 95,
-      "performances": 93,
-      "direction": 89
+      "performances": 90,
+      "direction": 90
     },
     "keyPhrases": [
       {
-        "quote": "thoroughly entrancing production",
+        "quote": "when it's retold as magnificently as it is in Anaïs Mitchell's Hadestown, opening tonight in a thoroughly entrancing production",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "the music and the performances are the triumphs of Hadestown",
+        "quote": "the music and the performances are the triumphs of Hadestown, with one gem following the other",
         "sentiment": "positive",
         "strength": 5
       },
@@ -81,7 +81,7 @@
         "strength": 5
       }
     ],
-    "reasoning": "Claude: Clear rave with superlative language ('sublime', 'magnificent', 'triumphs'), explicit enthusiasm despite acknowledging minor story limitations. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, praising the music, performances, and overall experience as a 'sublime evening of musical theater'.",
+    "reasoning": "Claude: Enthusiastic praise throughout with superlatives like 'magnificently,' 'sublime,' and 'triumphs,' despite minor criticisms about character development and story simplicity. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, praising its music, performances, and direction while only noting minor caveats about the simplicity of the story.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -91,7 +91,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T23:24:19.341Z",
+    "scoredAt": "2026-01-29T01:54:43.644Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -105,7 +105,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 92
+  "previousLlmScore": 92,
+  "rescoreCompletedAt": "2026-01-29T01:54:43.644Z"
 }

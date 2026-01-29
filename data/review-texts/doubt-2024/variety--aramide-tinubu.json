@@ -11,7 +11,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -21,62 +21,63 @@
     "show-score"
   ],
   "llmScore": {
-    "score": 74,
+    "score": 68,
     "confidence": "high",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 63,
+      "high": 73
     },
     "bucket": "Mixed",
-    "thumb": "Up",
+    "thumb": "Flat",
     "components": {
-      "book": 75,
+      "book": 68,
       "music": null,
-      "performances": 84,
-      "direction": 77
+      "performances": 79,
+      "direction": 69
     },
     "keyPhrases": [
       {
-        "quote": "Schreiber's standout performance",
+        "quote": "the production remains intriguing despite the wordy dialogue",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Uncomfortable and thought-provoking, the themes of 'Doubt' have never been more urgent",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "David Rockwell's beautifully built rotating set",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "what's exceedingly interesting about 'Doubt'",
-        "sentiment": "positive",
-        "strength": 3
+        "quote": "the moral lesson at the story's center worked best in the 2008 film, when the performances and characters could stretch beyond the limits of one confining act",
+        "sentiment": "negative",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review praises key production elements and finds the play intellectually engaging, but the excerpt cuts off mid-sentence making full assessment impossible. | GPT-4o-mini: The review highlights strong performances and production design while providing a thoughtful commentary on the play's themes, indicating a clear recommendation despite some ambiguity in the overall narrative.",
+    "reasoning": "Claude: The review praises the thematic relevance, Schreiber's performance, and production design, but criticizes the wordy dialogue and suggests the material worked better in film format, creating a qualified mixed recommendation. | GPT-4o-mini: The review expresses a mix of appreciation for performances and themes while noting limitations in the script and overall execution, leading to a balanced but cautious recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:37:12.306Z",
+    "scoredAt": "2026-01-29T01:49:56.207Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
+    "claudeScore": 68,
+    "openaiScore": 68,
+    "scoreDelta": 0,
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (68 → Flat) conflicts with aggregator thumbs (Up)"
+    ]
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 74,
   "textWordCount": 634,
@@ -96,5 +97,6 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240404060616",
-  "archiveOrgUrl": "http://web.archive.org/web/20240404060616/https://variety.com/2024/legit/reviews/doubt-review-broadway-liev-schreiber-amy-ryan-1235929589/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240404060616/https://variety.com/2024/legit/reviews/doubt-review-broadway-liev-schreiber-amy-ryan-1235929589/",
+  "rescoreCompletedAt": "2026-01-29T01:49:56.207Z"
 }

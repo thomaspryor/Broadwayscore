@@ -23,7 +23,7 @@
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": 91,
       "music": null,
       "performances": null,
       "direction": null
@@ -35,17 +35,17 @@
         "strength": 5
       },
       {
-        "quote": "It cannot be devoured in one sitting. It demands you return to it again and again, to discover some new tidbit you missed in your first reading",
+        "quote": "It cannot be devoured in one sitting. It demands you return to it again and again, to discover some new tidbit you missed",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "The physical book itself is gorgeous",
+        "quote": "The physical book itself is gorgeous... You would be mistaken, though, to consider Hamilton: The Revolution a coffee table book: nice to display but rarely worth opening",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Strong unqualified praise throughout with superlative language about the book being 'for everyone' and accomplishing something remarkable, with no significant criticisms. | GPT-4o-mini: The review expresses strong enthusiasm for the book's depth, design, and broad appeal, indicating it is a must-read for various audiences.",
+    "reasoning": "Claude: The reviewer expresses consistent enthusiasm for the book across multiple dimensions - content, collaboration, design, and universal appeal - culminating in the strong endorsement that it 'may actually be for everyone.' | GPT-4o-mini: The review expresses unqualified enthusiasm for the book's depth, design, and accessibility, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
@@ -55,8 +55,8 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:03:04.218Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:56:34.466Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
@@ -76,7 +76,7 @@
     "reviews-json-stub",
     "bww-roundup"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 89
+  "previousLlmScore": 89,
+  "rescoreCompletedAt": "2026-01-29T01:56:34.466Z"
 }

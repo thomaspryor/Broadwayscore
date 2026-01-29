@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "Going to hell has never been as much fun as experiencing this production. The musical makes ancient Greek myths accessible through its narrator character. Herman explains the dual mythological storylines woven together - the tragic romance of Orpheus and Eurydice alongside Hades and Persephone's relationship. The show successfully balances classical themes with contemporary entertainment value.",
   "originalScore": "4 stars",
-  "assignedScore": 85,
+  "assignedScore": 86,
   "source": "webfetch-scraped",
   "textStatus": "complete",
   "textQuality": "full",
@@ -47,19 +47,19 @@
   "archiveOrgTimestamp": "20251216123540",
   "archiveOrgUrl": "http://web.archive.org/web/20251216123540/https://www.newyorktheatreguide.com/reviews/review-of-hadestown-on-broadway",
   "llmScore": {
-    "score": 85,
+    "score": 86,
     "confidence": "high",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 78.5,
+      "high": 93.5
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 78,
-      "music": 90,
+      "book": 77,
+      "music": 89,
       "performances": 80,
-      "direction": 83
+      "direction": 88
     },
     "keyPhrases": [
       {
@@ -68,17 +68,17 @@
         "strength": 5
       },
       {
-        "quote": "the utterly fabulous Hadestown",
-        "sentiment": "positive",
-        "strength": 5
+        "quote": "In the only off note in the production, they fall in love (unfortunately no chemistry between the two - Reeve Carney is a little too much of a hesitant milquetoast to be a believable love interest)",
+        "sentiment": "negative",
+        "strength": 3
       },
       {
-        "quote": "this perfectly heavenly musical",
+        "quote": "Patrick Page and Amber Gray set the house on fire as Orpheus and Persephone",
         "sentiment": "positive",
-        "strength": 5
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review opens with enthusiastic praise calling the show 'fabulous' and 'perfectly heavenly,' includes multiple positive quotes from major critics, and despite noting one weakness in the central romance, overwhelmingly recommends the production with superlative language throughout. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's music, production, and performances, with only minor reservations about the chemistry between the lead characters.",
+    "reasoning": "Claude: The review opens with strong enthusiasm and maintains mostly positive tone throughout, with praise for the music, design, and most performances, though it notes chemistry issues between the leads. | GPT-4o-mini: The review expresses strong enthusiasm for the production's music, direction, and overall experience, with only minor reservations about the chemistry between the lead characters.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
@@ -88,22 +88,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:17:51.946Z",
+    "scoredAt": "2026-01-29T01:54:00.310Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
-    "scoreDelta": 0,
+    "claudeScore": 83,
+    "openaiScore": 88,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
   },
   "designation": "Recommended",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 85
+  "previousLlmScore": 85,
+  "rescoreCompletedAt": "2026-01-29T01:54:00.310Z"
 }

@@ -27,14 +27,19 @@
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 90,
-      "performances": null,
-      "direction": 85
+      "book": 93,
+      "music": 95,
+      "performances": 92,
+      "direction": 93
     },
     "keyPhrases": [
       {
-        "quote": "stylish and electrifying",
+        "quote": "stylish and electrifying 'Hamilton'",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This musical is young, scrappy, hungry — and exhilarating",
         "sentiment": "positive",
         "strength": 5
       },
@@ -42,24 +47,19 @@
         "quote": "proves more than able to carry that weight",
         "sentiment": "positive",
         "strength": 4
-      },
-      {
-        "quote": "young, scrappy, hungry - and exhilarating",
-        "sentiment": "positive",
-        "strength": 5
       }
     ],
-    "reasoning": "Claude: Strong superlative language ('electrifying', 'exhilarating') with no caveats and praise for surpassing high expectations indicates unqualified enthusiasm. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong praise for the production, indicating it is a must-see.",
+    "reasoning": "Claude: The critic uses superlatives like 'electrifying' and 'exhilarating' throughout, praises all aspects of the production extensively, and concludes with unqualified enthusiasm despite high expectations. | GPT-4o-mini: The review expresses unqualified enthusiasm for 'Hamilton', highlighting its innovative storytelling, vibrant performances, and impactful direction, indicating a strong recommendation to see the show.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:20:37.790Z",
+    "scoredAt": "2026-01-29T01:56:18.389Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -97,7 +97,7 @@
     }
   ],
   "fetchTier": 3,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 94
+  "previousLlmScore": 94,
+  "rescoreCompletedAt": "2026-01-29T01:56:18.389Z"
 }

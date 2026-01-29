@@ -10,65 +10,67 @@
   "bwwExcerpt": "Rannells and Gad once again make a terrific pair of unlikely pals and earn many laughs. However, “Gutenberg!” was intended to be what the Polish theater theorist Jerzy Grotowski termed “Poor Theater,” built upon minimal production values and maximized imagination. On Broadway, it feels both overdone (with an elaborate set invoking an empty stage, instead of an actual empty stage, and a band instead of a single piano, losing its original charm) and undercooked (a slight, overextended, and rudimen",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "source": "dtli",
   "dtliThumb": "Down",
   "needsScoring": true,
   "llmScore": {
-    "score": 56,
-    "confidence": "medium",
+    "score": 37,
+    "confidence": "high",
     "range": {
-      "low": 47,
-      "high": 65
+      "low": 30.5,
+      "high": 43.5
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
-      "book": 40,
-      "music": null,
-      "performances": 75,
-      "direction": 43
+      "book": 25,
+      "music": 30,
+      "performances": 50,
+      "direction": 40
     },
     "keyPhrases": [
       {
-        "quote": "Rannells and Gad once again make a terrific pair of unlikely pals and earn many laughs",
+        "quote": "no more than an hour's worth of laughs in a two-person vaudeville routine that goes on for two hours, becoming tedious",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The score is largely unmemorable. The premise makes little sense.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "There are some funny lines",
         "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "it feels both overdone... and undercooked",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "slight, overextended, and rudimen",
-        "sentiment": "negative",
-        "strength": 4
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: Review praises lead performances strongly but criticizes the production approach and script quality, with the text cutting off mid-sentence suggesting incomplete assessment. | GPT-4o-mini: The review highlights strong performances but criticizes the production's execution, leading to a mixed recommendation.",
+    "reasoning": "Claude: The critic finds the show tedious with an unmemorable score, weak premise, and insufficient laughs to sustain its length, with only scattered positive elements. | GPT-4o-mini: The review expresses significant criticism of the script and music, with only mild praise for some performances, leading to a clear negative recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:03:32.576Z",
+    "scoredAt": "2026-01-29T01:51:03.072Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 52,
-    "openaiScore": 60,
-    "scoreDelta": 8,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (37 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
   },
   "dtliExcerpt": "On Broadway, it feels both overdone (with an elaborate set invoking an empty stage, instead of an actual empty stage, and a band instead of a single piano, losing its original charm) and undercooked (a slight, overextended, and rudimentary comic routine).",
   "sources": [
@@ -88,7 +90,7 @@
       "mergedAt": "2026-01-28T21:15:21.851Z"
     }
   ],
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 56
+  "previousLlmScore": 56,
+  "rescoreCompletedAt": "2026-01-29T01:51:03.072Z"
 }

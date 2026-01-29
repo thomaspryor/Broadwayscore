@@ -9,60 +9,60 @@
   "isFullReview": true,
   "dtliExcerpt": "The two work together like the ingredients of a dangerous magical potion, each delivering precisely nuanced yet stupendously big performances in amounts that, were they off by so much as a fraction, would thoroughly undo the magic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "dtli",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T22:05:40.163Z",
   "llmScore": {
-    "score": 87,
+    "score": 94,
     "confidence": "high",
     "range": {
-      "low": 80.5,
-      "high": 93.5
+      "low": 87.5,
+      "high": 100
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": 90,
-      "direction": null
+      "book": 88,
+      "music": 93,
+      "performances": 95,
+      "direction": 93
     },
     "keyPhrases": [
       {
-        "quote": "dangerous magical potion",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "precisely nuanced yet stupendously big performances",
+        "quote": "A virtually perfect big-budget, broad-appeal musical comedy that improves in every way over the 1992 film",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "would thoroughly undo the magic",
+        "quote": "This is a musical that grabs its audience by the jugular fast and doesn't let go",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
+      },
+      {
+        "quote": "Hilty and Simard give two of the funniest performances this side of Oh, Mary!",
+        "sentiment": "positive",
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic uses powerful metaphorical language ('dangerous magical potion', 'magic') and superlatives ('stupendously big', 'precisely nuanced') to praise the performances with clear enthusiasm, though this excerpt focuses narrowly on two performers rather than the overall show experience. | GPT-4o-mini: The review highlights the exceptional quality of performances with strong positive language, indicating a clear recommendation despite lacking details on other aspects.",
+    "reasoning": "Claude: The critic uses superlative language throughout ('virtually perfect', 'wildly entertaining', 'knock-em-dead collection of killer songs') with comprehensive praise for all elements and no meaningful reservations. | GPT-4o-mini: The review expresses unqualified enthusiasm for the show, highlighting its humor, performances, and music, indicating a strong recommendation to see it.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:01:17.334Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:46:36.489Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 85,
+    "claudeScore": 92,
+    "openaiScore": 95,
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
@@ -107,7 +107,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 87
+  "previousLlmScore": 87,
+  "rescoreCompletedAt": "2026-01-29T01:46:36.489Z"
 }

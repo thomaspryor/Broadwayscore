@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "A stunningly visceral, exquisitely original production. The theatre gods should be smiling. A collaborative tour de force highlighting director Rachel Chavkin's ability to unify diverse creative elements. Chavkin transformed Mitchell's original album into a singularly visceral stage experience. The ensemble cast is praised, particularly Andre De Shields, Reeve Carney, Eva Noblezada, Amber Gray, and Patrick Page for their performances. The reimagined Orpheus myth addresses contemporary themes, including economic inequality and environmental concerns. Amber Gray's Persephone will bring to mind a young Eartha Kitt, bubbling with attitude and an outrageously infectious sense of abandon.",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 88,
   "source": "webfetch-scraped",
   "textStatus": "complete",
   "textQuality": "full",
@@ -17,56 +17,56 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 94,
+    "score": 88,
     "confidence": "high",
     "range": {
-      "low": 87.5,
-      "high": 100
+      "low": 83,
+      "high": 93
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": 93,
-      "direction": 95
+      "book": 82,
+      "music": 90,
+      "performances": 88,
+      "direction": 91
     },
     "keyPhrases": [
       {
-        "quote": "A stunningly visceral, exquisitely original production",
+        "quote": "the creative team behind the stunningly visceral production delivered in spades",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "The theatre gods should be smiling",
+        "quote": "it is a collaborative tour de force",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "A collaborative tour de force",
+        "quote": "Love it or not, the theatre gods should be smiling",
         "sentiment": "positive",
-        "strength": 5
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Multiple superlatives and unqualified praise ('stunningly visceral', 'exquisitely original', 'tour de force') with specific praise for direction, performances, and contemporary relevance indicate a clear rave review. | GPT-4o-mini: The review is filled with superlatives and strong praise for the production and performances, indicating an unqualified recommendation.",
+    "reasoning": "Claude: Strong praise throughout with superlatives like 'tour de force' and 'delivered in spades', though acknowledges it 'may not appeal to everyone'. | GPT-4o-mini: The review expresses strong praise for the production's creativity and execution, indicating a clear recommendation despite acknowledging it may not appeal to everyone.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:17:45.810Z",
+    "scoredAt": "2026-01-29T01:53:36.586Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 95,
-    "scoreDelta": 3,
+    "claudeScore": 88,
+    "openaiScore": 88,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -104,7 +104,7 @@
   "fetchTier": 4,
   "archiveOrgTimestamp": "20250913164018",
   "archiveOrgUrl": "http://web.archive.org/web/20250913164018/https://ny1.com/nyc/all-boroughs/news/2019/04/18/roma-torre-theater-review-hadestown-rachel-chavkin-reeve-carney-eva-noblezada",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 94
+  "previousLlmScore": 94,
+  "rescoreCompletedAt": "2026-01-29T01:53:36.586Z"
 }

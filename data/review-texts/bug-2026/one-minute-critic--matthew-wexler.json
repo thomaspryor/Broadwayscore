@@ -25,8 +25,8 @@
     "components": {
       "book": 72,
       "music": null,
-      "performances": 88,
-      "direction": 78
+      "performances": 85,
+      "direction": 77
     },
     "keyPhrases": [
       {
@@ -42,10 +42,10 @@
       {
         "quote": "4 out of 5 stars",
         "sentiment": "positive",
-        "strength": 5
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The reviewer gives clear praise for the lead performances and direction, awards 4/5 stars, and calls it a 'first-rate ensemble' with performances that 'get under your skin' - all indicating a strong positive recommendation. | GPT-4o-mini: The review expresses strong praise for the performances and direction, indicating a clear recommendation despite some thematic complexity.",
+    "reasoning": "Claude: 4/5 star rating with consistent praise for performances and direction, describing the ensemble as 'first-rate' and emphasizing the compelling central performances, places this clearly in positive territory. | GPT-4o-mini: The review highlights strong performances and direction, leading to a clear recommendation despite some narrative complexities.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -55,8 +55,8 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:58:20.921Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:40:35.022Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
@@ -76,7 +76,7 @@
   "originalScoreNormalized": 100,
   "scoreSource": "numeric-stars",
   "scoreExtractedFrom": "fullText",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 79
+  "previousLlmScore": 79,
+  "rescoreCompletedAt": "2026-01-29T01:40:35.022Z"
 }

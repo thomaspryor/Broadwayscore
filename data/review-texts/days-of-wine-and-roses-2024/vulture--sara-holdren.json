@@ -10,58 +10,63 @@
   "showScoreExcerpt": "\"...the show evokes a specific kind of quietly disheartened sigh.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/days-of-wine-and-roses-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "llmScore": {
-    "score": 33,
-    "confidence": "medium",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 20.5,
-      "high": 45.5
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Pan",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 50,
+      "music": 73,
+      "performances": 85,
+      "direction": 53
     },
     "keyPhrases": [
       {
-        "quote": "quietly disheartened sigh",
+        "quote": "So why, with such a radiant double center, does Days of Wine and Roses feel constrained, a little narrow and flat?",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "the show evokes a specific kind of quietly disheartened sigh.",
+        "quote": "It's the sound of great talents put in the service of material that will almost expand to accommodate them, but not quite",
         "sentiment": "negative",
         "strength": 4
+      },
+      {
+        "quote": "O'Hara and James are capable of leaving us not simply pensive, but elated and shattered, if they had a show that would let them",
+        "sentiment": "negative",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The phrase 'quietly disheartened sigh' suggests deep disappointment and resignation rather than anger, indicating a show that fails to engage or inspire. | GPT-4o-mini: The review suggests a sense of disappointment and disengagement, indicating a negative overall sentiment. | Note: Models differed by 15 points.",
+    "reasoning": "Claude: The critic praises the stellar performances and music but finds the material constrained and overly didactic, ultimately expressing disappointment that such talented performers weren't given better material to work with. | GPT-4o-mini: While the performances of O'Hara and James are highly praised, the review expresses significant concerns about the material and direction, leading to a mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:16:11.389Z",
+    "scoredAt": "2026-01-29T01:46:27.047Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 40,
-    "scoreDelta": 15,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "scoreDelta": 0,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
     "needsReview": false,
     "needsReviewReasons": []
   },
@@ -73,7 +78,7 @@
   ],
   "dtliExcerpt": "So why, with such a radiant double center, does Days of Wine and Roses feel constrained, a little narrow and flat? Despite all that vocal brilliance—and the leads’ real chemistry—the show evokes a specific kind of quietly disheartened sigh. It’s the sound of great talents put in the service of material that will almost expand to accommodate them, but not quite, and it’s a very common sound on Broadway.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 33
+  "previousLlmScore": 33,
+  "rescoreCompletedAt": "2026-01-29T01:46:27.047Z"
 }

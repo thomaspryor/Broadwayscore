@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Once that descent begins, though, it’s a perverse thrill to the end. Aided by a masterful set change (the decaying scenery is by Takeshi Kata, spookily lit by Heather Gilbert), Cromer expertly turns the dial up to 11 as Agnes becomes fully consumed by Peter’s conspiratorial mind. The late arrival of the mysterious Dr. Sweet, played with almost otherworldly strangeness by an excellent Randall Arney, elevates the proceedings to unnervingly heightened, wholly gripping heights. Even as his characters destroy their world and themselves, Letts never loses sight of the strange comfort in a good conspiracy theory.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T23:50:00.000Z",
@@ -22,16 +22,16 @@
   "textQuality": "full",
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 79,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 70.5,
+      "high": 85.5
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": 77,
       "music": null,
       "performances": 84,
       "direction": 78
@@ -43,17 +43,17 @@
         "strength": 4
       },
       {
-        "quote": "Cromer expertly turns the dial up to 11 as Agnes becomes fully consumed by Peter's conspiratorial mind",
+        "quote": "Cromer expertly turns the dial up to 11",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "when the pair's shared descent into delusion truly kicks off, it feels abrupt",
+        "quote": "the tonal shift a quick toggle from hangout (act one) to psychodrama (act two)",
         "sentiment": "negative",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The review praises the performances (especially Smallwood), direction, and production values while noting some structural issues with pacing and tonal shifts, but ultimately finds the production gripping and effectively executed. | GPT-4o-mini: The review highlights strong performances and direction while acknowledging some weaknesses in the script and pacing, leading to a positive overall recommendation.",
+    "reasoning": "Claude: Despite noting some structural issues with tonal shifts, the reviewer finds the production compelling with strong performances and expert direction that creates a 'perverse thrill' and 'wholly gripping heights.' | GPT-4o-mini: The review expresses strong praise for the performances and direction while noting some issues with the script's execution, leading to a solid positive recommendation overall.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -63,23 +63,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T15:47:27.146Z",
+    "scoredAt": "2026-01-29T01:40:40.493Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 75,
     "openaiScore": 80,
-    "scoreDelta": 2,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "scoreDelta": 5,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": null,
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 79
+  "previousLlmScore": 79,
+  "rescoreCompletedAt": "2026-01-29T01:40:40.493Z"
 }

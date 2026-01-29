@@ -9,43 +9,43 @@
   "isFullReview": true,
   "bwwExcerpt": "But Frecknall smartly blurs the lines. All we're really sure of is that we're in Weimar-era Berlin. When the Emcee sings the echoey, haunting Aryan anthem \"Tomorrow Belongs to Me,\" he's wandering through some kind of dreamland populated by wooden doll-size white men.",
   "originalScore": "4/5",
-  "assignedScore": 82,
+  "assignedScore": 83,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T18:00:00.000Z",
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 83,
+    "confidence": "high",
     "range": {
-      "low": 73.5,
+      "low": 75.5,
       "high": 90.5
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": null,
-      "performances": 76,
-      "direction": 88
+      "music": 75,
+      "performances": 86,
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "Rebecca Frecknall's impressive fresh-from-London Broadway revival",
+        "quote": "★★★★☆ The August Wilson Theatre has been transformed into the Kit Kat Club",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "It's easy to get caught up in the spell of this Cabaret",
+        "quote": "It's easy to get caught up in the spell of this Cabaret, which is all about mood from the moment you enter",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "woefully miscast in a pivotal role",
+        "quote": "Ato Blankson-Wood, woefully miscast in a pivotal role",
         "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic praises the direction, design, and overall atmospheric experience while noting strong performances from most cast members, but flags significant casting issues that prevent this from being a rave. | GPT-4o-mini: The review highlights strong direction and impactful performances, particularly praising the emotional depth of the production, leading to a clear recommendation despite some minor casting concerns.",
+    "reasoning": "Claude: 4/5 star review praising Frecknall's direction, the immersive theater experience, and key performances (especially Skybell/Neuwirth), with only one significant casting criticism. | GPT-4o-mini: The review expresses strong praise for the performances and direction, highlighting emotional impact and overall enjoyment, leading to a solid recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -55,15 +55,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:58:59.794Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:42:15.987Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 80,
     "openaiScore": 85,
-    "scoreDelta": 7,
+    "scoreDelta": 5,
     "thumbsMatch": true,
     "expectedThumb": "Up",
     "needsReview": false,
@@ -80,7 +80,7 @@
     "playwright-scraped",
     "bww-roundup"
   ],
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 82
+  "previousLlmScore": 82,
+  "rescoreCompletedAt": "2026-01-29T01:42:15.987Z"
 }

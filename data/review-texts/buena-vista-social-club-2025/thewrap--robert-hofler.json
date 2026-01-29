@@ -9,62 +9,62 @@
   "isFullReview": true,
   "dtliExcerpt": "With her absolute command of the stage, Belcon galvanizes and grounds the production in a performance that fulfills all the demands of August Wilson’s greatest female role, Ma Rainey.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:58:28.648Z",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 70.5,
+      "high": 83.5
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": 90,
-      "direction": null
+      "book": 70,
+      "music": 81,
+      "performances": 85,
+      "direction": 78
     },
     "keyPhrases": [
       {
-        "quote": "absolute command of the stage",
+        "quote": "With her absolute command of the stage, Belcon galvanizes and grounds the production in a performance that fulfills all the demands of August Wilson's greatest female role, Ma Rainey.",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "galvanizes and grounds the production",
+        "quote": "A great show has been made only somewhat less wonderful.",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "fulfills all the demands of August Wilson's greatest female role",
+        "quote": "step for step, lift for lift, Peck's work with Patricia Delgado for this slightly earlier show is the far more impressive achievement",
         "sentiment": "positive",
-        "strength": 5
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Extremely enthusiastic praise for the lead performance with superlative language, but this excerpt provides no information about other production elements or overall recommendation. | GPT-4o-mini: The review highlights a strong performance that is central to the production's success, indicating a clear recommendation despite the lack of broader commentary on other elements.",
+    "reasoning": "Claude: Despite noting some cuts from the Off-Broadway version and occasional acting falters, the critic clearly admires the show with particular praise for Belcon's performance, the choreography, and calls it 'a great show' that has been made 'only somewhat less wonderful.' | GPT-4o-mini: The review expresses strong praise for the performances and choreography while noting some shortcomings in the book and overall production, leading to a clear but qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:56:08.825Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:39:05.006Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "openaiScore": 75,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -108,7 +108,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 82
+  "previousLlmScore": 82,
+  "rescoreCompletedAt": "2026-01-29T01:39:05.006Z"
 }
