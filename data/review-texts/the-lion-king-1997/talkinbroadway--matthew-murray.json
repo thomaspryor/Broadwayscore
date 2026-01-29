@@ -5,7 +5,7 @@
   "criticName": "Matthew Murray",
   "url": "http://www.talkinbroadway.com/page/regional/boston/b189.html",
   "publishDate": "November 13, 1997",
-  "fullText": "The Lion King is a theatrical experience unlike any other, combining stunning visual artistry with compelling storytelling in ways that elevate the source material beyond what anyone could have imagined possible.",
+  "fullText": "Off-Broadway show ticketsCostume design suppliesBroadway show ticketsRegional theatre directoryTheatre memorabilia postersBroadway themed experiencesOff-Broadway theatre guideBroadway tour packagesArizona Broadway TheatrePlay directing guides\n\n\n\n\n\n\n\n\n\n\n            \t\t                  Page does not exist\n\nOff-Broadway reviewsLincoln Center for the Performing ArtsTheatre news updatesGift certificates theatreTheatre-themed merchandise\n    \n                \n                \n                \n\n            \n             \n            \n                \n                    \n                        Share:",
   "isFullReview": false,
   "dtliExcerpt": "The Lion King is a theatrical experience unlike any other, combining stunning visual artistry with compelling storytelling in ways that elevate the source material beyond what anyone could have imagined possible.",
   "originalScore": null,
@@ -68,5 +68,45 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "textWordCount": 38,
+  "archivePath": "data/archives/reviews/the-lion-king-1997/talkinbroadway--matthew-murray_2026-01-29.html",
+  "textFetchedAt": "2026-01-29T15:30:43.680Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 38 (min: 300)",
+    "Show title not found in text"
+  ]
 }
