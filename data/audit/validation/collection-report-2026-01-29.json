@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T18:54:33.763Z",
+  "runDate": "2026-01-29T18:54:38.733Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 10,
+    "maxReviews": 5,
     "priority": "all",
-    "showFilter": "the-cottage-2023",
+    "showFilter": "i-need-that-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 65,
-    "failed": 221,
+    "processed": 66,
+    "failed": 230,
     "skipped": 0,
-    "successRate": "22.7%"
+    "successRate": "22.3%"
   },
   "tierBreakdown": {
     "playwright": 10,
     "scrapingbee": 6,
-    "brightdata": 7,
+    "brightdata": 8,
     "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 4,
+    "tier1Attempts": 2,
     "tier1Success": 0,
-    "tier2Attempts": 4,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 4,
-    "tier3Success": 1,
-    "tier4Attempts": 7,
-    "tier4Success": 0,
+    "tier3Attempts": 2,
+    "tier3Success": 0,
+    "tier4Attempts": 5,
+    "tier4Success": 2,
     "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 20
+    "scrapingBeeCreditsUsed": 10
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -99,7 +99,8 @@
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
     "suffs-2024/the-times--nancy-durrant.json",
-    "mj-2022/usatoday--david-rooney.json"
+    "mj-2022/usatoday--david-rooney.json",
+    "harry-potter-2021/cititour--brian-scott-lipton.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -319,10 +320,19 @@
     "here-lies-love-2023/indiewire--chris-ofalt.json",
     "here-lies-love-2023/observer--rex-reed.json",
     "here-lies-love-2023/theatermania--adam-feldman.json",
-    "the-cottage-2023/observer--jesse-green.json",
-    "the-cottage-2023/observer--rex-reed.json",
-    "the-cottage-2023/theatermania--adam-feldman.json",
-    "the-cottage-2023/wsj--charles-isherwood.json"
+    "harry-potter-2021/variety--peter-marks.json",
+    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+    "harry-potter-2021/deadline--greg-evans.json",
+    "harry-potter-2021/guardian--alexis-soloski.json",
+    "harry-potter-2021/nypost--johnny-oleksinski.json",
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "harry-potter-2021/broadway-blog--matthew-wexler.json",
+    "harry-potter-2021/broadwayworld--michael-dale.json",
+    "harry-potter-2021/curtainup--elyse-sommer.json",
+    "i-need-that-2023/guardian--gloria-oladipo.json",
+    "i-need-that-2023/theatermania--adam-feldman.json",
+    "i-need-that-2023/wsj--charles-isherwood.json",
+    "i-need-that-2023/wsj--charles.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -352,7 +362,8 @@
       "lempicka-2024/nyt-theater--jonathan-mandell.json",
       "moulin-rouge-2019/observer--rex-reed.json",
       "aladdin-2014/usatoday--elysa-gardner.json",
-      "mj-2022/usatoday--david-rooney.json"
+      "mj-2022/usatoday--david-rooney.json",
+      "harry-potter-2021/cititour--brian-scott-lipton.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
