@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-29T15:44:49.355Z",
+  "runDate": "2026-01-29T15:45:09.864Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 10,
     "priority": "all",
-    "showFilter": "doubt-2024",
+    "showFilter": "patriots-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 65,
-    "failed": 203,
+    "failed": 207,
     "skipped": 0,
-    "successRate": "24.3%"
+    "successRate": "23.9%"
   },
   "tierBreakdown": {
     "playwright": 10,
@@ -23,16 +23,16 @@
     "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 4,
+    "tier1Attempts": 6,
     "tier1Success": 0,
-    "tier2Attempts": 4,
-    "tier2Success": 1,
-    "tier3Attempts": 3,
+    "tier2Attempts": 6,
+    "tier2Success": 0,
+    "tier3Attempts": 6,
     "tier3Success": 0,
-    "tier4Attempts": 7,
-    "tier4Success": 2,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 20
+    "tier4Attempts": 17,
+    "tier4Success": 4,
+    "totalFailed": 10,
+    "scrapingBeeCreditsUsed": 40
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -299,12 +299,16 @@
     "mj-2022/talkinbroadway--john-olson.json",
     "mj-2022/talkinbroadway--matthew-murray.json",
     "mj-2022/usatoday--charles-isherwood.json",
-    "doubt-2024/vulture--helen-shaw.json",
-    "doubt-2024/guardian--adrian-horton.json",
-    "doubt-2024/wsj--charles-isherwood.json",
-    "doubt-2024/wsj--charles.json",
-    "doubt-2024/john-patrick-shanley--doubt-a-parable.json",
-    "doubt-2024/thestage--lane-williamson.json"
+    "patriots-2024/variety--charles-isherwood.json",
+    "patriots-2024/guardian--adrian-horton.json",
+    "patriots-2024/new-york-sun--elysa-gardner.json",
+    "patriots-2024/new-york-sun--elysa.json",
+    "patriots-2024/nypost--johnny-oleksinski.json",
+    "patriots-2024/theatermania--david-gordon.json",
+    "patriots-2024/wsj--charles-isherwood.json",
+    "patriots-2024/wsj--charles.json",
+    "patriots-2024/nysr--frank-scheck.json",
+    "patriots-2024/nysr--frank.json"
   ],
   "tierDetails": {
     "playwright": [
