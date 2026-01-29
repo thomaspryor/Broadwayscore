@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-29T15:18:08.987Z",
+  "runDate": "2026-01-29T15:20:16.618Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 25,
     "priority": "all",
-    "showFilter": "liberation-2025",
+    "showFilter": "an-enemy-of-the-people-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 64,
-    "failed": 180,
+    "failed": 192,
     "skipped": 0,
-    "successRate": "26.2%"
+    "successRate": "25.0%"
   },
   "tierBreakdown": {
     "playwright": 10,
@@ -23,16 +23,16 @@
     "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 16,
     "tier1Success": 0,
-    "tier2Attempts": 3,
+    "tier2Attempts": 16,
     "tier2Success": 0,
-    "tier3Attempts": 3,
+    "tier3Attempts": 16,
     "tier3Success": 0,
-    "tier4Attempts": 6,
+    "tier4Attempts": 31,
     "tier4Success": 1,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 30
+    "totalFailed": 16,
+    "scrapingBeeCreditsUsed": 70
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -277,10 +277,22 @@
     "hells-kitchen-2024/usatoday--charles-isherwood.json",
     "hells-kitchen-2024/usatoday--david-rooney.json",
     "hells-kitchen-2024/washpost--peter-marks.json",
-    "liberation-2025/guardian--adrian-horton.json",
-    "liberation-2025/nydailynews--chris-jones.json",
-    "liberation-2025/wsj--charles-isherwood.json",
-    "liberation-2025/washpost--naveen-kumar.json"
+    "an-enemy-of-the-people-2024/hollywood-reporter--angie-han.json",
+    "an-enemy-of-the-people-2024/nytg--david-gordon.json",
+    "an-enemy-of-the-people-2024/variety--aramide-tinubu.json",
+    "an-enemy-of-the-people-2024/variety--peter-marks.json",
+    "an-enemy-of-the-people-2024/vulture--helen-shaw.json",
+    "an-enemy-of-the-people-2024/guardian--adrian-horton.json",
+    "an-enemy-of-the-people-2024/nydailynews--chris-jones.json",
+    "an-enemy-of-the-people-2024/nydailynews--chris.json",
+    "an-enemy-of-the-people-2024/theatermania--jesse-green.json",
+    "an-enemy-of-the-people-2024/wsj--terry-teachout.json",
+    "an-enemy-of-the-people-2024/backstage--suzt-evans.json",
+    "an-enemy-of-the-people-2024/bergen-record--robert-feldberg.json",
+    "an-enemy-of-the-people-2024/bloomberg--andnbspjeremy-gerard.json",
+    "an-enemy-of-the-people-2024/philadelphia-inquirer--howard-shapiro.json",
+    "an-enemy-of-the-people-2024/washpost--naveen-kumar.json",
+    "an-enemy-of-the-people-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
