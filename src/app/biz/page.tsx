@@ -25,6 +25,8 @@ import AtRiskCard from '@/components/biz/AtRiskCard';
 import RecoupmentTable from '@/components/biz/RecoupmentTable';
 import AllShowsTable from '@/components/biz/AllShowsTable';
 import DesignationLegend from '@/components/biz/DesignationLegend';
+import GatedDownloadButtons from '@/components/biz/GatedDownloadButtons';
+import BizPageTracker from '@/components/biz/BizPageTracker';
 
 export const metadata: Metadata = {
   title: 'Broadway Investment Tracker | Broadway Scorecard',
@@ -140,6 +142,8 @@ export default function BizDashboard() {
 
   return (
     <div className="min-h-screen bg-surface">
+      {/* Track page views for gating */}
+      <BizPageTracker page="biz-dashboard" />
       <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8">
         {/* Back Link */}
         <Link
@@ -179,22 +183,7 @@ export default function BizDashboard() {
                 ~ indicates estimate based on public reporting
               </p>
             </div>
-            <div className="flex gap-2">
-              <a
-                href="/data/commercial.json"
-                download
-                className="px-4 py-2 bg-brand/20 text-brand rounded-lg text-sm font-medium hover:bg-brand/30 transition"
-              >
-                ↓ JSON
-              </a>
-              <a
-                href="/data/commercial.csv"
-                download
-                className="px-4 py-2 bg-brand/20 text-brand rounded-lg text-sm font-medium hover:bg-brand/30 transition"
-              >
-                ↓ CSV
-              </a>
-            </div>
+            <GatedDownloadButtons />
           </div>
         </div>
 
