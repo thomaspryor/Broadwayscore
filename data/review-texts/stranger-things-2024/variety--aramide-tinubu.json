@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "While 'Stranger Things: The First Shadow' offers spectacular effects and nostalgic thrills, it struggles to find its theatrical footing beyond the source material's familiar beats.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "While 'Stranger Things: The First Shadow' offers spectacular effects and nostalgic thrills, it struggles to find its theatrical footing beyond the source material's familiar beats.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 54,
+    "confidence": "high",
+    "range": {
+      "low": 47.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": null,
+      "direction": 63
+    },
+    "keyPhrases": [
+      {
+        "quote": "offers spectacular effects and nostalgic thrills",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "struggles to find its theatrical footing beyond the source material's familiar beats",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "'Stranger Things: The First Shadow' offers spectacular effects and nostalgic thrills",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review presents a balanced but ultimately lukewarm assessment, praising technical elements while criticizing the show's inability to transcend its source material theatrically. | GPT-4o-mini: The review highlights both impressive effects and nostalgic elements but ultimately indicates a struggle with the overall theatrical execution, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:35:14.089Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
