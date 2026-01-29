@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-29T18:49:31.894Z",
+  "runDate": "2026-01-29T18:49:39.375Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 25,
     "priority": "all",
-    "showFilter": "the-lion-king-1997",
+    "showFilter": "cabaret-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 65,
-    "failed": 227,
+    "failed": 225,
     "skipped": 0,
-    "successRate": "22.3%"
+    "successRate": "22.4%"
   },
   "tierBreakdown": {
     "playwright": 10,
@@ -23,15 +23,15 @@
     "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 10,
+    "tier1Attempts": 6,
     "tier1Success": 0,
-    "tier2Attempts": 10,
+    "tier2Attempts": 6,
     "tier2Success": 0,
-    "tier3Attempts": 10,
+    "tier3Attempts": 6,
     "tier3Success": 0,
-    "tier4Attempts": 23,
-    "tier4Success": 0,
-    "totalFailed": 10,
+    "tier4Attempts": 14,
+    "tier4Success": 2,
+    "totalFailed": 8,
     "scrapingBeeCreditsUsed": 30
   },
   "processed": [
@@ -319,16 +319,14 @@
     "here-lies-love-2023/indiewire--chris-ofalt.json",
     "here-lies-love-2023/observer--rex-reed.json",
     "here-lies-love-2023/theatermania--adam-feldman.json",
-    "the-lion-king-1997/hollywood-reporter--frank-scheck.json",
-    "the-lion-king-1997/variety--charles-isherwood.json",
-    "the-lion-king-1997/variety--matt-wolf.json",
-    "the-lion-king-1997/ew--bruce-handy.json",
-    "the-lion-king-1997/nypost--clive-barnes.json",
-    "the-lion-king-1997/USATODAY--david-patrick-stearns.json",
-    "the-lion-king-1997/chicagotribune--richard-christiansen.json",
-    "the-lion-king-1997/njcom--michael-sommers.json",
-    "the-lion-king-1997/talkinbroadway--matthew-murray.json",
-    "the-lion-king-1997/washpost--lloyd-rose.json"
+    "cabaret-2024/variety--aramide-tinubu.json",
+    "cabaret-2024/variety--frank-rizzo.json",
+    "cabaret-2024/observer--rex-reed.json",
+    "cabaret-2024/theatermania--jesse-green.json",
+    "cabaret-2024/wsj--charles-isherwood.json",
+    "cabaret-2024/wsj--charles.json",
+    "cabaret-2024/queerty--matthew-wexler.json",
+    "cabaret-2024/village-voice--michael-musto.json"
   ],
   "tierDetails": {
     "playwright": [
