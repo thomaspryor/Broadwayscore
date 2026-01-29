@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "It’s the applause — including my own — I find troubling.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "dtli",
   "dtliThumb": "Meh",
   "dtliUrl": null,
@@ -22,7 +22,60 @@
     "dtli"
   ],
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": 75,
+      "performances": 70,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "Finally, it's OK to applaud.",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "a musical not centered on feelings is a strange thing",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Here Lies Love bets that glamour can make up for narrative",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic appreciates the spectacular production values and immersive design but finds the show emotionally hollow and morally problematic, creating a complex mixed response that neither fully recommends nor dismisses. | GPT-4o-mini: The review presents a mix of praise for the music and choreography but significant criticism of the book and emotional engagement, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T05:23:22.328Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

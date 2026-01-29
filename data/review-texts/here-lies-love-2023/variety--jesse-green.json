@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "The show's immersive staging, which puts the audience on the dance floor of a disco club as the story of Imelda Marcos unfolds, is both thrilling and thematically apt.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show's immersive staging, which puts the audience on the dance floor of a disco club as the story of Imelda Marcos unfolds, is both thrilling and thematically apt.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "immersive staging...is both thrilling and thematically apt",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "puts the audience on the dance floor of a disco club",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "immersive staging",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the staging concept as 'thrilling and thematically apt,' suggesting strong approval of the production design, but the excerpt is too brief to determine overall recommendation strength with confidence. | GPT-4o-mini: The review highlights the immersive and thrilling staging, indicating a strong positive recommendation despite lacking details on other components.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T05:23:38.207Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

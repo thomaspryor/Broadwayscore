@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "The Broadway production of 'Here Lies Love' transforms the Longacre Theatre into a discotheque where audiences stand and move around the performers, creating an unprecedented immersive theatrical experience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The Broadway production of 'Here Lies Love' transforms the Longacre Theatre into a discotheque where audiences stand and move around the performers, creating an unprecedented immersive theatrical experience.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 67.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "transforms the Longacre Theatre into a discotheque",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "unprecedented immersive theatrical experience",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "creating an unprecedented immersive theatrical experience",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review focuses solely on the innovative staging concept with positive language about transformation and unprecedented experience, but lacks any critical evaluation of quality or explicit recommendation. | GPT-4o-mini: The review highlights a unique and positive immersive experience, suggesting a strong recommendation. | Note: Models differed by 13 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T05:23:05.774Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 85,
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
