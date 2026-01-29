@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T15:16:31.775Z",
+  "runDate": "2026-01-29T15:16:35.503Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 25,
     "priority": "all",
-    "showFilter": "the-great-gatsby-2024",
+    "showFilter": "mary-jane-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 66,
-    "failed": 189,
+    "processed": 72,
+    "failed": 185,
     "skipped": 0,
-    "successRate": "25.9%"
+    "successRate": "28.0%"
   },
   "tierBreakdown": {
-    "playwright": 10,
+    "playwright": 12,
     "scrapingbee": 6,
     "brightdata": 6,
-    "archive": 44
+    "archive": 48
   },
   "statistics": {
-    "tier1Attempts": 13,
-    "tier1Success": 0,
-    "tier2Attempts": 13,
+    "tier1Attempts": 11,
+    "tier1Success": 2,
+    "tier2Attempts": 9,
     "tier2Success": 0,
-    "tier3Attempts": 13,
-    "tier3Success": 1,
-    "tier4Attempts": 29,
-    "tier4Success": 3,
-    "totalFailed": 13,
-    "scrapingBeeCreditsUsed": 40
+    "tier3Attempts": 9,
+    "tier3Success": 0,
+    "tier4Attempts": 26,
+    "tier4Success": 6,
+    "totalFailed": 9,
+    "scrapingBeeCreditsUsed": 10
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -99,8 +99,14 @@
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
     "suffs-2024/the-times--nancy-durrant.json",
-    "the-great-gatsby-2024/nytimes--maya-phillips.json",
-    "the-great-gatsby-2024/thewrap--robert-hofler.json"
+    "mary-jane-2024/nytg--joe-dziemianowicz.json",
+    "mary-jane-2024/variety--aramide-tinubu.json",
+    "mary-jane-2024/vulture--jackson-mchenry.json",
+    "mary-jane-2024/broadwaynews--brittani-samuel.json",
+    "mary-jane-2024/nydailynews--chris-jones.json",
+    "mary-jane-2024/nydailynews--chris.json",
+    "mary-jane-2024/thewrap--robert-hofler.json",
+    "mary-jane-2024/lighting-and-sound-america--david-barbour.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -279,19 +285,15 @@
     "hells-kitchen-2024/usatoday--charles-isherwood.json",
     "hells-kitchen-2024/usatoday--david-rooney.json",
     "hells-kitchen-2024/washpost--peter-marks.json",
-    "the-great-gatsby-2024/nytg--caroline-cao.json",
-    "the-great-gatsby-2024/variety--aramide-tinubu.json",
-    "the-great-gatsby-2024/guardian--gloria-oladipo.json",
-    "the-great-gatsby-2024/nydailynews--chris-jones.json",
-    "the-great-gatsby-2024/nypost--johnny-oleksinski.json",
-    "the-great-gatsby-2024/observer--david-cote.json",
-    "the-great-gatsby-2024/theatermania--adam-feldman.json",
-    "the-great-gatsby-2024/wsj--terry-teachout.json",
-    "the-great-gatsby-2024/nysr--david-finkle.json",
-    "the-great-gatsby-2024/slantmagazine--dan-rubins.json",
-    "the-great-gatsby-2024/talkinbroadway--matthew-murray.json",
-    "the-great-gatsby-2024/theater-pizzazz--brian-scott-lipton.json",
-    "the-great-gatsby-2024/washpost--naveen-kumar.json"
+    "mary-jane-2024/hollywood-reporter--angie-han.json",
+    "mary-jane-2024/nytg--david-gordon.json",
+    "mary-jane-2024/nytimes--jesse-green.json",
+    "mary-jane-2024/guardian--adrian-horton.json",
+    "mary-jane-2024/nypost--johnny-oleksinski.json",
+    "mary-jane-2024/wsj--charles-isherwood.json",
+    "mary-jane-2024/theatrely--olivia-clement.json",
+    "mary-jane-2024/talkinbroadway--matthew-murray.json",
+    "mary-jane-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -304,7 +306,9 @@
       "hadestown-2019/broadwaynews--charles-isherwood.json",
       "hadestown-2019/dcmetro--deb-miller.json",
       "queen-versailles-2025/advertisement--jonathan-mandell.json",
-      "queen-versailles-2025/nysr--david-finkle.json"
+      "queen-versailles-2025/nysr--david-finkle.json",
+      "mary-jane-2024/nytg--joe-dziemianowicz.json",
+      "mary-jane-2024/lighting-and-sound-america--david-barbour.json"
     ],
     "scrapingbee": [
       "spamalot-2023/cititour--brian-scott-lipton.json",
@@ -365,8 +369,12 @@
       "queen-versailles-2025/vulture--sara-holdren.json",
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
       "suffs-2024/the-times--nancy-durrant.json",
-      "the-great-gatsby-2024/nytimes--maya-phillips.json",
-      "the-great-gatsby-2024/thewrap--robert-hofler.json"
+      "mary-jane-2024/variety--aramide-tinubu.json",
+      "mary-jane-2024/vulture--jackson-mchenry.json",
+      "mary-jane-2024/broadwaynews--brittani-samuel.json",
+      "mary-jane-2024/nydailynews--chris-jones.json",
+      "mary-jane-2024/nydailynews--chris.json",
+      "mary-jane-2024/thewrap--robert-hofler.json"
     ]
   }
 }
