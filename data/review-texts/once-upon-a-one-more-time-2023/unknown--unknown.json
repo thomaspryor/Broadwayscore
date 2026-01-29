@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "“The wish-come-true of ’Once Upon a One More Time’ is that it lifts without apology or even a slight blush...To spoil the plot beyond this would be unfair, even though you’ll likely see most of the twists and turns coming, or at least predict the overall story arc.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 47,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
   "sources": [
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“It’s a fun enough concert, though not worth sitting through two hours and 30 minutes of a dull musical to get there.”\n\nRead more"
+  "showScoreExcerpt": "“It’s a fun enough concert, though not worth sitting through two hours and 30 minutes of a dull musical to get there.”\n\nRead more",
+  "llmScore": {
+    "score": 47,
+    "confidence": "high",
+    "range": {
+      "low": 40.5,
+      "high": 53.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 43,
+      "music": 35,
+      "performances": 74,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "Once Upon a One More Time emerges as a worthwhile concept thwarted by poor execution",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The actors are blameless, and some even manage to deliver excellent performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It is certainly preferable to a Britney Spears biomusical, which would have been a sad affair",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: While the critic praises individual performances and finds the concept interesting, they identify fundamental execution problems with the music adaptation, orchestrations, and direction that prevent a recommendation. | GPT-4o-mini: The review expresses significant disappointment with the execution of the concept, despite acknowledging some strong performances, leading to a clear negative recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T06:39:08.896Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 48,
+    "openaiScore": 45,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

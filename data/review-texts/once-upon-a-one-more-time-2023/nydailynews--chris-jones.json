@@ -9,13 +9,66 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 15,
   "dtliThumb": "Down",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 15,
+    "confidence": "high",
+    "range": {
+      "low": 10,
+      "high": 20
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": null,
+      "direction": 25
+    },
+    "keyPhrases": [
+      {
+        "quote": "The truly awful \"Once Upon a One More Time\"",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "tries to cash in on the repetitive fashion",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The truly awful 'Once Upon a One More Time'",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic opens with unequivocal condemnation calling the show 'truly awful' and criticizes it as a cynical cash grab, indicating a clear pan. | GPT-4o-mini: The review expresses strong disapproval of the musical, indicating it is 'truly awful' and criticizing its approach, leading to a clear pan recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T06:38:45.066Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 15,
+    "openaiScore": 15,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

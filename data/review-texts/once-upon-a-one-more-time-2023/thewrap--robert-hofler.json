@@ -7,7 +7,7 @@
   "publishDate": "June 22, 2023",
   "fullText": "What do you get by crossing “Six” with “& Juliet”? No, “Bad Cinderella” was last season. Today, that mash-up of two similar musicals gives you the slightly better Cinderella show, which has been tortuously titled “Once Upon a One More Time.”",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "dtliThumb": "Down",
   "source": "dtli",
   "dtliExcerpt": "What do you get by crossing “Six” with “& Juliet”? No, “Bad Cinderella” was last season. Today, that mash-up of two similar musicals gives you the slightly better Cinderella show, which has been tortuously titled “Once Upon a One More Time.”",
@@ -15,7 +15,60 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "slightly better Cinderella show",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "tortuously titled",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "What do you get by crossing \"Six\" with \"& Juliet\"?",
+        "sentiment": "neutral",
+        "strength": 1
+      }
+    ],
+    "reasoning": "Claude: This brief excerpt offers minimal substance but suggests qualified approval by calling it 'slightly better' than other Cinderella shows, though the sarcastic tone and criticism of the title indicate reservations. | GPT-4o-mini: The review indicates a mixed sentiment, suggesting some improvement over similar shows but also highlighting a negative aspect of the title, leading to a cautious recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T06:39:02.022Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
