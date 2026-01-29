@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T15:39:25.227Z",
+  "runDate": "2026-01-29T15:43:35.051Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 25,
+    "maxReviews": 10,
     "priority": "all",
-    "showFilter": "mj-2022",
+    "showFilter": "heart-of-rock-and-roll-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 65,
-    "failed": 197,
+    "processed": 68,
+    "failed": 201,
     "skipped": 0,
-    "successRate": "24.8%"
+    "successRate": "25.3%"
   },
   "tierBreakdown": {
     "playwright": 10,
     "scrapingbee": 6,
-    "brightdata": 7,
-    "archive": 42
+    "brightdata": 6,
+    "archive": 46
   },
   "statistics": {
-    "tier1Attempts": 22,
-    "tier1Success": 0,
-    "tier2Attempts": 22,
+    "tier1Attempts": 6,
+    "tier1Success": 1,
+    "tier2Attempts": 5,
     "tier2Success": 0,
-    "tier3Attempts": 22,
-    "tier3Success": 1,
-    "tier4Attempts": 48,
-    "tier4Success": 0,
-    "totalFailed": 21,
-    "scrapingBeeCreditsUsed": 60
+    "tier3Attempts": 5,
+    "tier3Success": 0,
+    "tier4Attempts": 11,
+    "tier4Success": 3,
+    "totalFailed": 6,
+    "scrapingBeeCreditsUsed": 30
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -99,7 +99,10 @@
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
     "suffs-2024/the-times--nancy-durrant.json",
-    "mj-2022/usatoday--david-rooney.json"
+    "illinoise-2024/nytg--amelia-merrill.json",
+    "illinoise-2024/broadwaynews--brittani-samuel.json",
+    "heart-of-rock-and-roll-2024/variety--frank-rizzo.json",
+    "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -278,27 +281,31 @@
     "hells-kitchen-2024/usatoday--charles-isherwood.json",
     "hells-kitchen-2024/usatoday--david-rooney.json",
     "hells-kitchen-2024/washpost--peter-marks.json",
-    "mj-2022/hollywood-reporter--angie-han.json",
-    "mj-2022/hollywood-reporter--david-rooney.json",
-    "mj-2022/variety--aramide-tinubu.json",
-    "mj-2022/variety--charles-isherwood.json",
-    "mj-2022/variety--frank-rizzo.json",
-    "mj-2022/vulture--jackson-mchenry.json",
-    "mj-2022/deadline--pete-hammond.json",
-    "mj-2022/ew--david-rooney.json",
-    "mj-2022/ew--kristen-baldwin.json",
-    "mj-2022/guardian--adrian-horton.json",
-    "mj-2022/nydailynews--joe-dziemianowicz.json",
-    "mj-2022/theatermania--adam-feldman.json",
-    "mj-2022/theatermania--david-gordon.json",
-    "mj-2022/theatermania--jesse-green.json",
-    "mj-2022/wsj--charles-isherwood.json",
-    "mj-2022/wsj--terry-teachout.json",
-    "mj-2022/ap--mark-kennedy.json",
-    "mj-2022/nysr--mark-dundas-wood.json",
-    "mj-2022/talkinbroadway--john-olson.json",
-    "mj-2022/talkinbroadway--matthew-murray.json",
-    "mj-2022/usatoday--charles-isherwood.json"
+    "illinoise-2024/hollywood-reporter--angie-han.json",
+    "illinoise-2024/variety--aramide-tinubu.json",
+    "illinoise-2024/variety--charles-isherwood.json",
+    "illinoise-2024/vulture--jackson-mchenry.json",
+    "illinoise-2024/deadline--pete-hammond.json",
+    "illinoise-2024/ew--kristen-baldwin.json",
+    "illinoise-2024/guardian--adrian-horton.json",
+    "illinoise-2024/observer--jesse-green.json",
+    "illinoise-2024/theatermania--jesse-green.json",
+    "illinoise-2024/thewrap--steve-pond.json",
+    "illinoise-2024/timeout--adam-feldman.json",
+    "illinoise-2024/wsj--charles-isherwood.json",
+    "illinoise-2024/theatrely--zachary-stewart.json",
+    "illinoise-2024/ap--mark-kennedy.json",
+    "illinoise-2024/billboard--demetrios-matheou.json",
+    "illinoise-2024/talkinbroadway--matthew-murray.json",
+    "illinoise-2024/usatoday--david-oliver.json",
+    "illinoise-2024/washpost--gloria-oladipo.json",
+    "illinoise-2024/washpost--peter-marks.json",
+    "heart-of-rock-and-roll-2024/nytimes--jesse-green.json",
+    "heart-of-rock-and-roll-2024/variety--aramide-tinubu.json",
+    "heart-of-rock-and-roll-2024/nydailynews--chris-jones.json",
+    "heart-of-rock-and-roll-2024/nydailynews--chris.json",
+    "heart-of-rock-and-roll-2024/the-new-york-sun--elysa-gardner.json",
+    "heart-of-rock-and-roll-2024/timeout--regina-robbins.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -327,8 +334,7 @@
       "harmony-2023/chicagotribune--chris-jones.json",
       "lempicka-2024/nyt-theater--jonathan-mandell.json",
       "moulin-rouge-2019/observer--rex-reed.json",
-      "aladdin-2014/usatoday--elysa-gardner.json",
-      "mj-2022/usatoday--david-rooney.json"
+      "aladdin-2014/usatoday--elysa-gardner.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
@@ -372,7 +378,11 @@
       "queen-versailles-2025/vulture--sara-holdren-and-jesse-david-fox.json",
       "queen-versailles-2025/vulture--sara-holdren.json",
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
-      "suffs-2024/the-times--nancy-durrant.json"
+      "suffs-2024/the-times--nancy-durrant.json",
+      "illinoise-2024/nytg--amelia-merrill.json",
+      "illinoise-2024/broadwaynews--brittani-samuel.json",
+      "heart-of-rock-and-roll-2024/variety--frank-rizzo.json",
+      "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json"
     ]
   }
 }
