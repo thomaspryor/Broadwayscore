@@ -6,6 +6,7 @@ import HeaderSearch from '@/components/HeaderSearch';
 import { generateOrganizationSchema, generateWebSiteSchema, BASE_URL } from '@/lib/seo';
 import { getAllShows } from '@/lib/data';
 import { Analytics } from '@vercel/analytics/react';
+import { ProGateProvider } from '@/contexts/ProGateContext';
 
 // Static OG image (API routes don't work with static export)
 const homeOgImageUrl = `${BASE_URL}/og/home.png`;
@@ -154,7 +155,9 @@ export default function RootLayout({
             </div>
           </nav>
         </header>
-        <main id="main-content" className="min-h-[calc(100vh-200px)]">{children}</main>
+        <ProGateProvider>
+          <main id="main-content" className="min-h-[calc(100vh-200px)]">{children}</main>
+        </ProGateProvider>
         <footer className="border-t border-white/5 mt-6 sm:mt-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
             {/* Browse Categories */}
