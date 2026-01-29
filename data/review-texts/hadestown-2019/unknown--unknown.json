@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“The thrillingly alarmist new Broadway musical with the score that feels like it comes from somewhere deep in the American gut...An eye-popping, mythological blend of steampunk...’Hadestown’ feels like the most relevant and resistant musical in town, but it never comes off as shrill or moving in some kind of dull lockstep with all the other self-aware plays and musicals lamenting Trump’s America by playing tritely to the choir, critics and all.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -50,56 +50,56 @@
   "archiveOrgTimestamp": "20240606191259",
   "archiveOrgUrl": "http://web.archive.org/web/20240606191259/https://www.amny.com/entertainment/hadestown-review-1.29924932/",
   "llmScore": {
-    "score": 81,
+    "score": 84,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 87
+      "low": 77.5,
+      "high": 90.5
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
-      "music": 83,
-      "performances": 80,
-      "direction": 87
+      "book": 69,
+      "music": 89,
+      "performances": 88,
+      "direction": 83
     },
     "keyPhrases": [
       {
-        "quote": "stunning musical romance",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "exciting, compelling and beautiful",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "may very well become the next risk-taking, genre-defying new musical to catch on with a larger audience and achieve major commercial success",
+        "quote": "as an intricate and gorgeous feat of songwriting, as a vehicle for dynamite performances, as a visionary long-term collaboration and a courageous experiment with form, Hadestown is cause for celebration",
         "sentiment": "positive",
         "strength": 5
+      },
+      {
+        "quote": "Page and Gray are the twin sensations of the show",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Orpheus and Eurydice never grip us they way that the king and queen of the underworld do",
+        "sentiment": "negative",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: Strong praise for the production's visual design, music, and performances with prediction of commercial success, despite minor pacing issues in Act Two. | GPT-4o-mini: The review expresses strong praise for the production's design and music while acknowledging some pacing issues, leading to a solid recommendation.",
+    "reasoning": "Claude: The critic celebrates the songwriting, performances, and creative vision while acknowledging character imbalances, resulting in a clear positive recommendation with reservations. | GPT-4o-mini: The review expresses strong praise for the music and performances while acknowledging some narrative weaknesses, leading to a solid recommendation.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T05:27:48.811Z",
+    "scoredAt": "2026-01-29T01:55:06.286Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "openaiScore": 85,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -109,7 +109,7 @@
     "show-score-playwright"
   ],
   "showScoreExcerpt": "CRITIC'S PICK\n“The sumptuous, hypnotic and somewhat hyperactive musical...Chavkin and her creative team have saved ‘Hadestown’ on its way uptown by turning it into something very much warmer...The story is clearer...’Hadestown,' even with the heat turned up, is still a somewhat abstract experience...Mitchell develops her larger themes mostly through metaphor. This can get tiring; even though so much of what happens happens beautifully.\"\n\nRead more",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 81
+  "previousLlmScore": 81,
+  "rescoreCompletedAt": "2026-01-29T01:55:06.286Z"
 }

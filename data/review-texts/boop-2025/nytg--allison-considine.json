@@ -34,29 +34,29 @@
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 55,
-      "music": 63,
-      "performances": 85,
+      "book": 60,
+      "music": 65,
+      "performances": 84,
       "direction": 80
     },
     "keyPhrases": [
       {
         "quote": "BOOP! The Musical proves that bringing Betty Boop to life on stage is a worthy endeavor, even if only for the spectacle of it all",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 3
       },
       {
-        "quote": "The show's book, written by Bob Martin, is much like the storylines of the Fleischer Studio Betty Boop cartoons: full of romance, slapstick, and science fiction. It is also a bit silly and far-fetched at times, with unengaging subplots",
+        "quote": "The show's book is much like the storylines of the Fleischer Studio Betty Boop cartoons: full of romance, slapstick, and science fiction. It is also a bit silly and far-fetched at times, with unengaging subplots",
         "sentiment": "negative",
         "strength": 3
       },
       {
-        "quote": "While the songs (by composer David Foster and lyricist Susan Birkhead) are toe-tapping, they're often unmemorable",
+        "quote": "While the songs are toe-tapping, they're often unmemorable",
         "sentiment": "negative",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The review offers qualified praise for the spectacle, performances, and production values while acknowledging significant weaknesses in the book and songs, concluding it's worth seeing primarily for the visual experience. | GPT-4o-mini: The review highlights strong performances and dazzling production elements while noting some weaknesses in the book and music, leading to a solid positive recommendation.",
+    "reasoning": "Claude: The review praises the spectacular production values, performances, and choreography while critiquing the book and songs, ultimately concluding it's a 'worthy endeavor' for the spectacle. | GPT-4o-mini: The review highlights strong performances and a visually dazzling production while noting some weaknesses in the book and music, leading to a solid positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -66,7 +66,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:08:26.036Z",
+    "scoredAt": "2026-01-29T01:36:48.160Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -75,8 +75,8 @@
     "claudeScore": 72,
     "openaiScore": 80,
     "scoreDelta": 8,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
@@ -90,7 +90,7 @@
   "dtliThumb": "Up",
   "originalScoreNormalized": 95,
   "scoreExtractedFrom": "fullText",
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 76
+  "previousLlmScore": 76,
+  "rescoreCompletedAt": "2026-01-29T01:36:48.160Z"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "“Hadestown” triggered a lot of buzz when this wholly American show (which came to the stage by way of a concept album) premiered at Off Broadway’s New York Theatre Workshop in 2016. Arriving on Broadway with its earthly delights more or less intact, this perfectly heavenly musical — with book, music and lyrics by Anaïs Mitchell — should stick around for a while. Although the production has lost some of the electricity that goes with playing in the round, director Rachel Chavkin (“Natasha, Pierre, and the Great Comet of 1812”), who also helped with the show’s development, has done a super job of adapting this pretty thing for a proscenium stage. What it loses scenically — namely, a visual sense of the arduous nature of the hero’s journeys to and from the underworld — it makes up for in other ways.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "dtli",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417",
@@ -25,40 +25,40 @@
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": 78,
       "music": 85,
-      "performances": null,
+      "performances": 89,
       "direction": 84
     },
     "keyPhrases": [
       {
-        "quote": "this perfectly heavenly musical",
+        "quote": "this perfectly heavenly musical should stick around for a while",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "should stick around for a while",
+        "quote": "director Rachel Chavkin has done a super job of adapting this pretty thing for a proscenium stage",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "has done a super job of adapting this pretty thing for a proscenium stage",
-        "sentiment": "positive",
-        "strength": 4
+        "quote": "the production has lost some of the electricity that goes with playing in the round",
+        "sentiment": "negative",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: Strong praise with superlative language ('perfectly heavenly') and clear commercial prediction ('should stick around for a while'), with only minor caveats about staging differences. | GPT-4o-mini: The review expresses strong praise for the musical's qualities and direction, indicating a clear recommendation despite some minor reservations about the staging.",
+    "reasoning": "Claude: Strong praise for the musical with clear recommendation language ('perfectly heavenly', 'should stick around'), enthusiastic descriptions of performances and staging, with only minor reservations about adaptation from original venue. | GPT-4o-mini: The review expresses strong enthusiasm for the production, praising the performances and direction while acknowledging some loss of impact in the transition to Broadway, leading to a solid positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:02:58.363Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:55:12.898Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
@@ -113,7 +113,7 @@
   ],
   "showScoreExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 84
+  "previousLlmScore": 84,
+  "rescoreCompletedAt": "2026-01-29T01:55:12.898Z"
 }

@@ -9,69 +9,67 @@
   "isFullReview": true,
   "showScoreExcerpt": "Chavkin has created a hip and wholly inventive production that combines the contemporary...",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 69,
   "source": "show-score",
   "textQuality": "full",
   "sourceMethod": "playwright",
   "scoreSource": "manual-override",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 68,
-    "confidence": "low",
+    "score": 69,
+    "confidence": "medium",
     "range": {
-      "low": 45.5,
-      "high": 90.5
+      "low": 60.5,
+      "high": 77.5
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": null,
-      "music": null,
-      "performances": null,
-      "direction": 80
+      "music": 77,
+      "performances": 73,
+      "direction": 65
     },
     "keyPhrases": [
       {
-        "quote": "hip and wholly inventive production",
+        "quote": "BE MORE CHILL... it's even better",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "combines the contemporary",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "HADESTOWN... The show remains pretty close to perfect too",
+        "sentiment": "positive",
+        "strength": 5
       },
       {
-        "quote": "Chavkin has created a hip and wholly inventive production",
-        "sentiment": "positive",
+        "quote": "OKLAHOMA!... I'm afraid it's one I can't wear",
+        "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Fragment contains only positive language about direction but is too incomplete to determine overall recommendation strength. | GPT-4o-mini: The review indicates strong praise for the direction and inventiveness of the production, suggesting a positive recommendation overall. | Note: Models differed by 35 points.",
+    "reasoning": "Claude: The critic reviews three shows with 2 positive recommendations (Be More Chill and Hadestown receiving strong praise) and 1 negative (Oklahoma!), creating an overall mixed-positive assessment that leans toward recommendation. | GPT-4o-mini: The review contains both praise for certain productions and significant criticism of others, leading to a mixed recommendation overall.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": true
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:15:53.739Z",
+    "scoredAt": "2026-01-29T01:51:32.479Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 50,
-    "openaiScore": 85,
-    "scoreDelta": 35,
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 35 points (Claude: 50, OpenAI: 85)"
-    ]
+    "needsReview": false,
+    "needsReviewReasons": []
   },
   "scoreOverrideReason": "Fragment clearly positive: hip and wholly inventive",
   "scoreOverrideAt": "2026-01-26T17:41:01.342Z",
@@ -88,7 +86,7 @@
     }
   ],
   "fetchTier": 1,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 68
+  "previousLlmScore": 68,
+  "rescoreCompletedAt": "2026-01-29T01:51:32.479Z"
 }

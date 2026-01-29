@@ -27,39 +27,39 @@
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 90,
-      "performances": null,
-      "direction": 85
+      "book": 88,
+      "music": 95,
+      "performances": 93,
+      "direction": 94
     },
     "keyPhrases": [
       {
-        "quote": "stylish and electrifying",
+        "quote": "stylish and electrifying 'Hamilton,' which opened Thursday night at the Richard Rodgers Theatre",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "proves more than able to carry that weight",
+        "quote": "This musical is young, scrappy, hungry — and exhilarating",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "'Hamilton' proves more than able to carry that weight",
         "sentiment": "positive",
         "strength": 4
-      },
-      {
-        "quote": "young, scrappy, hungry - and exhilarating",
-        "sentiment": "positive",
-        "strength": 5
       }
     ],
-    "reasoning": "Claude: Strong superlative language ('electrifying', 'exhilarating') with no caveats and praise for surpassing high expectations indicates unqualified enthusiasm. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong praise for the production, indicating it is a must-see.",
+    "reasoning": "Claude: The review uses consistently superlative language ('stylish and electrifying,' 'exhilarating,' 'brilliantly staged') with no meaningful reservations, praising all aspects from performances to direction to cultural significance. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the innovative storytelling, vibrant performances, and strong direction, indicating a must-see experience.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:20:37.790Z",
+    "scoredAt": "2026-01-29T01:56:14.640Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -97,7 +97,7 @@
     }
   ],
   "fetchTier": 3,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 94
+  "previousLlmScore": 94,
+  "rescoreCompletedAt": "2026-01-29T01:56:14.640Z"
 }

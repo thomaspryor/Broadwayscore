@@ -11,7 +11,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -19,38 +19,38 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 88,
+    "score": 94,
     "confidence": "high",
     "range": {
-      "low": 83,
-      "high": 93
+      "low": 87.5,
+      "high": 100
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 90,
-      "performances": null,
-      "direction": 88
+      "book": 88,
+      "music": 95,
+      "performances": 90,
+      "direction": 94
     },
     "keyPhrases": [
       {
-        "quote": "audaciously ambitious and supremely executed new musical is surely the most entertaining, provocative and moving civics lesson in Broadway history",
+        "quote": "This is, for sure, an extraordinary new show that commands attention",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "can forge melody and lyrics that hold up to the work of the old masters",
+        "quote": "supremely executed new musical is surely the most entertaining, provocative and moving civics lesson in Broadway history",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "I still wonder, too, if the manic staging...may sometimes get in the way of the action instead of enhancing it",
-        "sentiment": "negative",
-        "strength": 2
+        "quote": "the truly thrilling story of 'Hamilton' deserves to — and surely will be — told on Broadway for many years to come",
+        "sentiment": "positive",
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: Overwhelmingly positive review with superlative language praising Miranda's achievement and calling it historically significant, with only minor staging reservations. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's execution and impact, with only minor reservations about the staging, leading to a high recommendation score.",
+    "reasoning": "Claude: The critic uses superlatives throughout ('extraordinary', 'supremely executed', 'most entertaining...in Broadway history') and predicts the show will run for years, indicating unqualified enthusiasm and recommendation. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the show's innovative approach, strong performances, and significant cultural impact, leading to a high recommendation score.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
@@ -60,21 +60,20 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:19:23.328Z",
+    "scoredAt": "2026-01-29T01:56:37.194Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 88,
-    "scoreDelta": 0,
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 88,
   "textWordCount": 1100,
@@ -94,5 +93,6 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20160221200608",
-  "archiveOrgUrl": "http://web.archive.org/web/20160221200608/http://www.chicagotribune.com/entertainment/theater/broadway/sc-hamilton-broadway-review-20150806-column.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20160221200608/http://www.chicagotribune.com/entertainment/theater/broadway/sc-hamilton-broadway-review-20150806-column.html",
+  "rescoreCompletedAt": "2026-01-29T01:56:37.194Z"
 }

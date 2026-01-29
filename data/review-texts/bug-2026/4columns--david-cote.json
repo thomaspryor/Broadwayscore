@@ -9,7 +9,7 @@
   "isFullReview": true,
   "bwwExcerpt": "A hardworking and very effective Coon is left to maintain dramatic tension. In her TV triumphs as plucky social climbers (The Gilded Age and The White Lotus), Coon’s fresh beauty and vivacious yet sensible vigor has elevated so-so scripts. She makes a smart and relatable protagonist either in nineteenth-century bustle or Thai resort muumuu. Adopting a Southern-Midwestern twang and artfully revealing the full depth of Agnes’s trauma and hunger for meaning, Coon relishes the scuzz and grace of Agnes, even if her dance partner’s limp.",
   "originalScore": null,
-  "assignedScore": 67,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://4columns.org/cote-david/bug",
@@ -23,28 +23,23 @@
   "textQuality": "full",
   "sourceMethod": "bww-roundup",
   "llmScore": {
-    "score": 67,
+    "score": 64,
     "confidence": "high",
     "range": {
-      "low": 60.5,
-      "high": 73.5
+      "low": 57.5,
+      "high": 70.5
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 74,
+      "book": 73,
       "music": null,
-      "performances": 61,
-      "direction": 78
+      "performances": 58,
+      "direction": 74
     },
     "keyPhrases": [
       {
-        "quote": "vivid but lopsided production",
-        "sentiment": "neutral",
-        "strength": 4
-      },
-      {
-        "quote": "It's in the acting, in all honesty, where cracks start to show",
+        "quote": "Bug lives or dies on the sexual and neurotic chemistry of its two leads, and if half the equation is muted, terror lapses into bathos",
         "sentiment": "negative",
         "strength": 4
       },
@@ -52,9 +47,14 @@
         "quote": "The design for this production...is a model of high-def realism",
         "sentiment": "positive",
         "strength": 4
+      },
+      {
+        "quote": "A hardworking and very effective Coon is left to maintain dramatic tension",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic praises the script's relevance and the production design extensively, but delivers significant criticism of the lead male performance, creating a mixed recommendation that acknowledges both strengths and notable weaknesses. | GPT-4o-mini: The review highlights strong production elements and a standout performance by Coon, but significant issues with Smallwood's performance lead to a mixed recommendation.",
+    "reasoning": "Claude: The critic praises Letts's script and the production design extensively, but identifies a critical flaw in Smallwood's performance that undermines the central dynamic of the play, creating a mixed experience where strong elements are hampered by a key weakness. | GPT-4o-mini: The review acknowledges strong elements in the production and performance by Coon but expresses significant disappointment in Smallwood's performance, leading to a mixed recommendation overall.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -64,23 +64,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:10:10.329Z",
+    "scoredAt": "2026-01-29T01:39:17.326Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 68,
+    "claudeScore": 62,
     "openaiScore": 65,
     "scoreDelta": 3,
     "thumbsMatch": false,
     "expectedThumb": "Up",
     "needsReview": true,
     "needsReviewReasons": [
-      "Score (67 → Flat) conflicts with aggregator thumbs (Up)"
+      "Score (64 → Flat) conflicts with aggregator thumbs (Up)"
     ]
   },
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 67
+  "previousLlmScore": 67,
+  "rescoreCompletedAt": "2026-01-29T01:39:17.326Z"
 }

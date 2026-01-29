@@ -10,58 +10,63 @@
   "bwwExcerpt": "“Boop!” shows that cartoon makeovers may be an enticing novelty, but to really succeed it first needs to be well drawn.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "llmScore": {
-    "score": 45,
+    "score": 60,
     "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 53,
+      "high": 67
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 35,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 48,
+      "music": 73,
+      "performances": 77,
+      "direction": 65
     },
     "keyPhrases": [
       {
-        "quote": "cartoon makeovers may be an enticing novelty",
+        "quote": "Sometimes that's enough, at least for live mainstream entertainment with girl-empowerment themes, aimed at family-centric markets and with great merchandizing potential. Other times it just feels like a knockoff.",
         "sentiment": "neutral",
-        "strength": 2
+        "strength": 4
       },
       {
-        "quote": "to really succeed it first needs to be well drawn",
+        "quote": "One's interest in any of these answers depends on a tolerance for corn and patience until the musical numbers.",
         "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "That's when Jerry Mitchell's choreography kicks in with the ensemble in top, tip-tap form. The score — with music and arrangements by David Foster, lyrics by Susan Birkenhead and orchestrations by Doug Besterman — is tuneful, fizzy and fun.",
+        "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The review suggests the show fails to achieve its basic requirements despite having an appealing concept, indicating it doesn't succeed and implying a negative recommendation. | GPT-4o-mini: The review suggests that while the concept has potential, it ultimately fails to deliver, indicating a clear negative sentiment.",
+    "reasoning": "Claude: The review acknowledges strong performances and musical numbers but criticizes the weak book and suggests the show only works 'sometimes,' indicating a qualified, mixed response that doesn't clearly recommend or discourage attendance. | GPT-4o-mini: The review presents a mixed view, praising the performances and music while criticizing the book's lack of originality, leading to a conditional recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:45:18.778Z",
+    "scoredAt": "2026-01-29T01:37:28.210Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 45,
-    "scoreDelta": 0,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "claudeScore": 58,
+    "openaiScore": 62,
+    "scoreDelta": 4,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
     "needsReview": false,
     "needsReviewReasons": []
   },
@@ -72,7 +77,7 @@
     "bww-roundup",
     "dtli"
   ],
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 45
+  "previousLlmScore": 45,
+  "rescoreCompletedAt": "2026-01-29T01:37:28.210Z"
 }

@@ -11,67 +11,66 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-2024",
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 39,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 39,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 33,
-      "high": 45
+      "low": 73.5,
+      "high": 90.5
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 35,
+      "book": 83,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 84,
+      "direction": 83
     },
     "keyPhrases": [
       {
-        "quote": "yet another attempt to update",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "smug 1882 satire",
-        "sentiment": "negative",
+        "quote": "Part of Mr. Friel's genius lies in the seamlessness with which he integrates more or less straightforward realism and narrator-driven presentationalism",
+        "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "hypocritical small town",
-        "sentiment": "negative",
-        "strength": 2
+        "quote": "Drew Barr has directed 'Lovers' with the deceptive simplicity of a fable",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "All you see in 'Lovers' are Mr. Friel's small-town characters, realized so fully (by Mr. Riordan and Ms. Salata in particular) that they give the impression of having been played by ordinary people",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic dismisses this as 'yet another attempt' at updating Ibsen and describes the original play itself as 'smug,' indicating fundamental problems with both the adaptation and source material. | GPT-4o-mini: The review expresses significant skepticism about the adaptation and its execution, indicating a clear negative stance.",
+    "reasoning": "Claude: The critic praises Friel's writing as genius-level work, commends the direction as skillful and subtle, and highlights the naturalistic performances, with only minor reservations about actor visibility being intentional artistic choice. | GPT-4o-mini: The review expresses strong appreciation for the play's direction and performances, indicating a clear recommendation despite some minor reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:10:09.604Z",
+    "scoredAt": "2026-01-29T01:36:13.262Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 40,
-    "scoreDelta": 2,
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 39,
   "textWordCount": 1360,
@@ -96,5 +95,6 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20130103115949",
-  "archiveOrgUrl": "http://web.archive.org/web/20130103115949/http://online.wsj.com/article/SB10000872396390443916104578022293994248074.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20130103115949/http://online.wsj.com/article/SB10000872396390443916104578022293994248074.html",
+  "rescoreCompletedAt": "2026-01-29T01:36:13.262Z"
 }

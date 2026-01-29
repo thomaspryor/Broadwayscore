@@ -10,7 +10,7 @@
   "showScoreExcerpt": "\"The Broadway revival of John Kander and Fred Ebb's Chicago, may be on the verge of celebrating its 15th anniversary, but one could hardly tell the production has recently entered the upper echelon of long-running shows on Broadway. There's a crispness to the entire piece of Chicago, that belies its age.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/chicago",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 84,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -54,19 +54,19 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 84,
+    "confidence": "high",
     "range": {
-      "low": 73.5,
+      "low": 77.5,
       "high": 90.5
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 80,
-      "performances": 88,
-      "direction": null
+      "music": 85,
+      "performances": 89,
+      "direction": 80
     },
     "keyPhrases": [
       {
@@ -77,7 +77,7 @@
       {
         "quote": "makes the performance so entirely delectable",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
         "quote": "Equally impressive is Yazbeck's turn",
@@ -85,7 +85,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Strong praise for both lead performances with specific detail about their skills and impact, plus positive mentions of supporting cast, indicating clear recommendation despite no explicit directive. | GPT-4o-mini: The review highlights strong performances from the leads, particularly DioGuardi and Yazbeck, with no significant negative comments, indicating a clear recommendation.",
+    "reasoning": "Claude: Consistently enthusiastic praise for the lead performances with superlatives like 'delectable' and 'impressive,' plus positive comments on supporting cast and production elements, indicating a clear recommendation. | GPT-4o-mini: The review highlights standout performances and strong vocal abilities, leading to a clear recommendation despite not mentioning the book or direction.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -95,21 +95,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:42:43.700Z",
+    "scoredAt": "2026-01-29T01:45:03.631Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 82,
     "openaiScore": 85,
-    "scoreDelta": 7,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 82
+  "previousLlmScore": 82,
+  "rescoreCompletedAt": "2026-01-29T01:45:03.631Z"
 }

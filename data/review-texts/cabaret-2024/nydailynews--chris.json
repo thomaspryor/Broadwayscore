@@ -9,64 +9,64 @@
   "isFullReview": true,
   "dtliExcerpt": "None of this would matter, arguably, if the production within this naked attempt to offer a value-added experience to increase revenue was worth seeing. Alas, outside of&nbsp;Bebe Neuwirth’s and Steven Skybell’s Fraulein Schneider and Herr Schultz, it’s not.",
   "originalScore": null,
-  "assignedScore": 30,
+  "assignedScore": 25,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 30,
-    "confidence": "medium",
+    "score": 25,
+    "confidence": "high",
     "range": {
       "low": 20,
-      "high": 40
+      "high": 30
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
-      "performances": 68,
-      "direction": 20
+      "performances": 28,
+      "direction": 23
     },
     "keyPhrases": [
       {
-        "quote": "naked attempt to offer a value-added experience to increase revenue",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "it's not [worth seeing]",
+        "quote": "outside of Bebe Neuwirth's and Steven Skybell's Fraulein Schneider and Herr Schultz, it's not",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "outside of Bebe Neuwirth's and Steven Skybell's Fraulein Schneider and Herr Schultz",
-        "sentiment": "positive",
-        "strength": 3
+        "quote": "this dystopian production runs headlong into a fatal error",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "How gross",
+        "sentiment": "negative",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic explicitly states the production is not worth seeing, with only two performances as exceptions to an otherwise commercially cynical and unsuccessful show. | GPT-4o-mini: The review indicates a clear disappointment in the production overall, with only specific performances receiving praise, leading to a strong negative recommendation.",
+    "reasoning": "Claude: The critic systematically dismantles nearly every aspect of the production, calling it a 'fatal error' with only two supporting performances worth seeing, expressing disgust at the commercialization, and criticizing the lead performances as ineffective. | GPT-4o-mini: The review expresses strong disapproval of the production, highlighting significant flaws in performances and direction, leading to a clear pan.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:43:28.623Z",
+    "scoredAt": "2026-01-29T01:41:50.114Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 25,
-    "openaiScore": 35,
-    "scoreDelta": 10,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "openaiScore": 25,
+    "scoreDelta": 0,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
     "needsReview": false,
     "needsReviewReasons": []
   },
@@ -87,7 +87,7 @@
       "mergedAt": "2026-01-28T21:15:21.841Z"
     }
   ],
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 30
+  "previousLlmScore": 30,
+  "rescoreCompletedAt": "2026-01-29T01:41:50.114Z"
 }

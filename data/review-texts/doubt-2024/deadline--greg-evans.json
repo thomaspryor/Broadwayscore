@@ -10,63 +10,63 @@
   "bwwExcerpt": "Under the assured direction of Scott Ellis, the revival’s cast is unfaltering in its convictions – we believe that they believe every word they say. If Father Flynn is lying – he’s the only character that has reason to – Schreiber doesn’t let on, a real achievement given that he’s not only squaring off against one tough nun, but several decades now of headlines and heightened public awareness of church atrocities.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 79,
+    "score": 84,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 77.5,
+      "high": 90.5
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 75,
       "music": null,
-      "performances": 85,
-      "direction": null
+      "performances": 89,
+      "direction": 83
     },
     "keyPhrases": [
       {
-        "quote": "the play holds up as well as it does – and it really does",
+        "quote": "That the play holds up as well as it does – and it really does – is due in large part to a top-tier cast that the Roundabout Theater Company has assembled",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "top-tier cast",
+        "quote": "Under the assured direction of Scott Ellis, the revival's cast is unfaltering in its convictions – we believe that they believe every word they say",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "keeps us guessing from beginning to end",
-        "sentiment": "positive",
+        "quote": "Our inclination to immediately side with the crusty, suspicious nun might well upend the entire premise of Shanley's play",
+        "sentiment": "negative",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: Strong praise for cast and affirms the play 'holds up' well, suggesting solid recommendation despite brief excerpt. | GPT-4o-mini: The review highlights the strength of the cast and the play's ability to engage the audience, indicating a strong recommendation.",
+    "reasoning": "Claude: The critic praises the 'top-tier cast' and 'assured direction' extensively, noting the play 'holds up as well as it does – and it really does,' with only minor concerns about how contemporary awareness affects the play's original premise. | GPT-4o-mini: The review highlights strong performances and direction while affirming the play's relevance, leading to a solid recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:34:32.156Z",
+    "scoredAt": "2026-01-29T01:48:10.225Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
@@ -76,7 +76,7 @@
     "dtli"
   ],
   "showScoreExcerpt": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 79
+  "previousLlmScore": 79,
+  "rescoreCompletedAt": "2026-01-29T01:48:10.225Z"
 }

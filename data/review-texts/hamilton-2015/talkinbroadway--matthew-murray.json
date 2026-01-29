@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"Does 'Hamilton' live up to all - any - of this hype? And does it need to? From my perspective, the answers are, respectively, a definite no and a solid yes...Though much has been made of the myriad musical and lyrical references that pockmark the evening, they're more about calling attention to themselves than contributing to a consistent texture or sensible narrative. To my reckoning they brand 'Hamilton,' even in its slightly altered, more precise uptown incarnation, as unsatisfying and unrealized dramatically, and a piece that's forever at war with itself.\"",
   "originalScore": null,
-  "assignedScore": 34,
+  "assignedScore": 64,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "textStatus": "complete",
@@ -18,55 +18,55 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 34,
+    "score": 64,
     "confidence": "medium",
     "range": {
-      "low": 25,
-      "high": 43
+      "low": 55,
+      "high": 73
     },
-    "bucket": "Pan",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 30,
-      "music": 40,
-      "performances": null,
-      "direction": null
+      "book": 50,
+      "music": 58,
+      "performances": 73,
+      "direction": 45
     },
     "keyPhrases": [
       {
-        "quote": "Does 'Hamilton' live up to all - any - of this hype? And does it need to? From my perspective, the answers are, respectively, a definite no and a solid yes",
+        "quote": "Does Hamilton live up to all—any—of this hype? And does it need to? From my perspective, the answers are, respectively, a definite no and a solid yes.",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "unsatisfying and unrealized dramatically, and a piece that's forever at war with itself",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "they're more about calling attention to themselves than contributing to a consistent texture or sensible narrative",
+        "quote": "This shows up in the staging, too... everything unfolds with a laid-back, muted energy that draws no distinction in excitement between, say, drinking in a bar and fighting the decisive Battle of Yorktown.",
         "sentiment": "negative",
         "strength": 4
+      },
+      {
+        "quote": "A major saving grace is the cast, which has improved drastically since the run at The Public.",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic explicitly states Hamilton doesn't live up to the hype and calls it 'unsatisfying and unrealized dramatically,' delivering a clear negative assessment of the show's fundamental qualities. | GPT-4o-mini: The review expresses strong dissatisfaction with the narrative and overall execution, indicating a clear rejection of the show.",
+    "reasoning": "Claude: The critic acknowledges Hamilton's cultural importance and improved cast while systematically dismantling its artistic merits, finding it derivative, dramatically unsatisfying, and poorly staged despite respecting its impact. | GPT-4o-mini: The review presents a balanced view with significant criticisms of the show's innovation and execution, while acknowledging its cultural impact and some strong performances.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:21:56.701Z",
+    "scoredAt": "2026-01-29T01:58:41.314Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 30,
+    "claudeScore": 68,
+    "openaiScore": 60,
     "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
@@ -102,7 +102,7 @@
     "show-score",
     "web-search"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 34
+  "previousLlmScore": 34,
+  "rescoreCompletedAt": "2026-01-29T01:58:41.314Z"
 }

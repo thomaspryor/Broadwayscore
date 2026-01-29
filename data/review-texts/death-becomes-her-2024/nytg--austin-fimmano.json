@@ -9,15 +9,15 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"There is love and fandom in every element of this show, like recreations of the movie's outfits and iconic lines\"",
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 85,
   "source": "playwright-scraped",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T05:15:00.000Z",
   "llmScore": {
-    "score": 83,
+    "score": 85,
     "confidence": "medium",
     "range": {
-      "low": 73,
+      "low": 77,
       "high": 93
     },
     "bucket": "Positive",
@@ -25,8 +25,8 @@
     "components": {
       "book": 75,
       "music": null,
-      "performances": 88,
-      "direction": 83
+      "performances": 89,
+      "direction": 85
     },
     "keyPhrases": [
       {
@@ -40,12 +40,12 @@
         "strength": 4
       },
       {
-        "quote": "create flesh-and-blood theatre magic just as impressive as the movie's computer-generated visual effects were in 1992",
+        "quote": "create flesh-and-blood theatre magic just as impressive as the movie's computer-generated visual effects",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The review is consistently positive throughout, praising performances, design elements, and audience engagement, with only minor caveats about needing familiarity with the source material. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and production design, with a clear recommendation to see the show, despite not detailing the book or music quality.",
+    "reasoning": "Claude: Consistent praise throughout for performances, design, and entertainment value with enthusiastic language ('bursts with star power', 'theatre magic', 'a lot of fun') and no significant criticisms beyond suggesting moviegoers watch the film first. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and overall production quality, with only minor caveats about the story's adaptation.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -55,15 +55,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:01:37.262Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:46:49.109Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 82,
     "openaiScore": 88,
-    "scoreDelta": 10,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -79,7 +79,7 @@
   "dtliExcerpt": "Hilty bursts with star power as the glamorous and self-indulged actress Madeline Ashton, and Simard’s dry delivery is hilarious in author Helen Sharp’s meeker getup — and even better after she transforms into a femme fatale to show up Ashton.",
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 83
+  "previousLlmScore": 83,
+  "rescoreCompletedAt": "2026-01-29T01:46:49.109Z"
 }

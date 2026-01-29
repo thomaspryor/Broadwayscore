@@ -27,39 +27,39 @@
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 43,
-      "music": null,
-      "performances": 78,
-      "direction": null
+      "book": 53,
+      "music": 70,
+      "performances": 80,
+      "direction": 70
     },
     "keyPhrases": [
       {
-        "quote": "Little of it feels original, and none of it feels necessary",
-        "sentiment": "negative",
+        "quote": "Little of it feels original, and none of it feels necessary. But just like actual Betty Boop merchandise... 'Boop!' doesn't have to feel necessary; it's fun.",
+        "sentiment": "neutral",
         "strength": 4
       },
       {
-        "quote": "it's fun. And the main reason for that is Jasmine Amy Rogers",
+        "quote": "Rogers is making a spectacular Broadway debut",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       },
       {
-        "quote": "doesn't have to feel necessary; it's fun",
-        "sentiment": "positive",
+        "quote": "The show starts feeling a bit…diffuse",
+        "sentiment": "negative",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic acknowledges significant flaws (unoriginal, unnecessary) but finds the show enjoyable primarily due to the lead performance, suggesting a qualified positive experience. | GPT-4o-mini: The review indicates that while the show lacks originality and necessity, it is still enjoyable, particularly due to the performance of Jasmine Amy Rogers, leading to a mixed-positive recommendation.",
+    "reasoning": "Claude: The critic acknowledges the show's fun elements and strong lead performance while criticizing its derivative nature and structural problems, landing in mixed territory without a clear recommendation either way. | GPT-4o-mini: The review presents a mix of praise for the performances and design elements while expressing disappointment in the originality and coherence of the story, leading to a conditional recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:08:18.009Z",
+    "scoredAt": "2026-01-29T01:36:40.939Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -68,10 +68,12 @@
     "claudeScore": 65,
     "openaiScore": 65,
     "scoreDelta": 0,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (65 → Flat) conflicts with aggregator thumbs (Up)"
+    ]
   },
   "dtliExcerpt": "Little of it feels original, and none of it feels necessary. But just like actual Betty Boop merchandise — the many toys, t-shirts, scrunchies and socks covered with her image –&nbsp;&nbsp;“Boop!” doesn’t have to feel necessary; it’s fun. And the main reason for that is Jasmine Amy Rogers.",
   "dtliThumb": "UP",
@@ -88,7 +90,7 @@
       "mergedAt": "2026-01-28T21:15:21.834Z"
     }
   ],
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 65
+  "previousLlmScore": 65,
+  "rescoreCompletedAt": "2026-01-29T01:36:40.940Z"
 }

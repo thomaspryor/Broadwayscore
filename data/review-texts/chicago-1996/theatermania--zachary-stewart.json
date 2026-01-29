@@ -10,7 +10,7 @@
   "showScoreExcerpt": "“I am typically of the opinion that no show has any business occupying a Broadway house for more than a decade: Theater is ephemeral, and the magic tends to wear off as the years pass and performances become stale. ’Chicago’ makes this a difficult position to maintain. Ten thousand performances later, it's still dazzling.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/chicago",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 89,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -51,23 +51,23 @@
   "archiveOrgTimestamp": "20230213123704",
   "archiveOrgUrl": "http://web.archive.org/web/20230213123704/https://www.theatermania.com/broadway/reviews/review-chicago-broadway-jinkx-monsoon_94821.html",
   "llmScore": {
-    "score": 92,
-    "confidence": "medium",
+    "score": 89,
+    "confidence": "high",
     "range": {
-      "low": 83.5,
-      "high": 100
+      "low": 83,
+      "high": 95
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": 82,
-      "music": 80,
+      "music": null,
       "performances": 94,
       "direction": 88
     },
     "keyPhrases": [
       {
-        "quote": "Ten thousand performances later, it's still dazzling.",
+        "quote": "Ten thousand performances later, it's still dazzling",
         "sentiment": "positive",
         "strength": 5
       },
@@ -82,7 +82,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The reviewer expresses sustained enthusiasm throughout, praising performances, design, and the show's enduring relevance, culminating in calling it 'still dazzling' after ten thousand performances. | GPT-4o-mini: The review expresses unqualified enthusiasm for the performances and overall production quality, indicating a strong recommendation to see the show.",
+    "reasoning": "Claude: The critic expresses sustained enthusiasm throughout, praising performances as exceptional, acknowledging the show's continued relevance, and concluding that despite typically opposing long runs, this production remains 'dazzling' after ten thousand performances. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and overall production quality, indicating a must-see experience.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -92,15 +92,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:42:50.579Z",
+    "scoredAt": "2026-01-29T01:45:09.396Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 95,
-    "scoreDelta": 7,
+    "openaiScore": 90,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -111,7 +111,7 @@
     "show-score",
     "dtli"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 92
+  "previousLlmScore": 92,
+  "rescoreCompletedAt": "2026-01-29T01:45:09.396Z"
 }

@@ -10,67 +10,66 @@
   "showScoreExcerpt": "\"An actorly, Broadway face-off between Jeremy Strong and Michael Imperioli\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/an-enemy-of-the-people-broadway",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 74,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 63,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 55.5,
-      "high": 70.5
+      "low": 67.5,
+      "high": 80.5
     },
     "bucket": "Mixed",
-    "thumb": "Flat",
+    "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 69,
       "music": null,
-      "performances": 70,
-      "direction": null
+      "performances": 84,
+      "direction": 75
     },
     "keyPhrases": [
       {
-        "quote": "actorly, Broadway face-off",
-        "sentiment": "neutral",
+        "quote": "This production has much to recommend it, and Strong in particular should return to the stage as often as he can",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's hard not to feel as though this 'Enemy of the People'...ended up presenting an opportunity for the audience to put themselves on trial, and then, with a sigh of relief, exonerate themselves",
+        "sentiment": "negative",
         "strength": 3
       },
       {
-        "quote": "between Jeremy Strong and Michael Imperioli",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "An actorly, Broadway face-off between Jeremy Strong and Michael Imperioli",
-        "sentiment": "neutral",
-        "strength": 3
+        "quote": "Their battle comes to a head in a stunning trial sequence",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: This brief excerpt focuses on the star performances without clear positive or negative judgment, suggesting a show driven by acting talent but with no indication of overall quality or recommendation. | GPT-4o-mini: The review provides a neutral observation about the actors without a clear recommendation or critique of the overall production.",
+    "reasoning": "Claude: The critic praises the performances, staging innovation, and thematic relevance while expressing substantive reservations about the adaptation's choices that ultimately let the audience 'off the hook' - a qualified positive recommendation. | GPT-4o-mini: The review expresses clear praise for the performances, particularly Jeremy Strong's, while noting some reservations about the adaptation and its implications, leading to a positive overall recommendation.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:10:00.458Z",
+    "scoredAt": "2026-01-29T01:36:04.517Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 60,
-    "scoreDelta": 5,
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 63,
   "textWordCount": 1232,
@@ -90,5 +89,6 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240415003126",
-  "archiveOrgUrl": "http://web.archive.org/web/20240415003126/https://variety.com/2024/legit/reviews/an-enemy-of-the-people-jeremy-strong-broadway-michael-imperioli-1235944570/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240415003126/https://variety.com/2024/legit/reviews/an-enemy-of-the-people-jeremy-strong-broadway-michael-imperioli-1235944570/",
+  "rescoreCompletedAt": "2026-01-29T01:36:04.517Z"
 }

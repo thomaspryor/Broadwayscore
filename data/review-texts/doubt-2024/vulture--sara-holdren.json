@@ -10,65 +10,67 @@
   "showScoreExcerpt": "\"...Doubt is still a sharp and sturdy piece of writing.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/doubt-a-parable",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "source": "dtli",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "llmScore": {
-    "score": 75,
+    "score": 67,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 60.5,
+      "high": 73.5
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 78,
+      "book": 77,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 65,
+      "direction": 59
     },
     "keyPhrases": [
       {
-        "quote": "sharp and sturdy piece of writing",
+        "quote": "In and of itself, Doubt is still a sharp and sturdy piece of writing",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "still",
-        "sentiment": "positive",
+        "quote": "While Ellis's ensemble doesn't lag behind the play, neither are they quite pushed to light a fire under it",
+        "sentiment": "negative",
         "strength": 3
       },
       {
-        "quote": "Doubt is still a sharp and sturdy piece of writing.",
-        "sentiment": "positive",
+        "quote": "Doubt feels conspicuously steady... almost nostalgic, a familiar object rather than a galvanizing event",
+        "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic praises the writing quality with strong adjectives 'sharp and sturdy' and the word 'still' suggests enduring quality, but the excerpt is too brief to assess full recommendation strength. | GPT-4o-mini: The review indicates a strong appreciation for the writing, suggesting a positive recommendation despite the lack of detail.",
+    "reasoning": "Claude: The critic appreciates Shanley's strong script but finds this production disappointingly safe and restrained, lacking the fire and boldness the material demands. | GPT-4o-mini: The review presents a balanced view, acknowledging the strengths of the writing while criticizing the production and performances, leading to a mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:17:07.170Z",
+    "scoredAt": "2026-01-29T01:49:51.437Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 75,
-    "scoreDelta": 0,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
+    "claudeScore": 68,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (67 → Flat) conflicts with aggregator thumbs (Up)"
+    ]
   },
   "bwwExcerpt": "Director Scott Ellis is happy not to push past the expected. David Rockwell’s set dutifully revolves between stony, ivy-twined cloister courtyard and massy mahogany office. Ryan wears the same severe bonnet and glasses that Streep and Cherry Jones wore before her. Mikaal Sulaiman’s straightforward sound design gives us crows cawing, children at play, and kyries between scenes. And, while one needn’t belabor the point, seven of the eight-person central production team are men. The famous faces on",
   "bwwThumb": "Up",
@@ -78,7 +80,7 @@
   ],
   "dtliExcerpt": "It’s the packaging part that hits hollowly. In and of itself, Doubt is still a sharp and sturdy piece of writing. It’s also tonally broader than Ellis gives it credit for.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 75
+  "previousLlmScore": 75,
+  "rescoreCompletedAt": "2026-01-29T01:49:51.437Z"
 }

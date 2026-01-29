@@ -24,7 +24,7 @@
     "components": {
       "book": 85,
       "music": 58,
-      "performances": 89,
+      "performances": 87,
       "direction": 81
     },
     "keyPhrases": [
@@ -35,8 +35,8 @@
       },
       {
         "quote": "The only thing missing are memorable songs, but fortunately the show is so entertaining you'll find yourself not minding very much",
-        "sentiment": "neutral",
-        "strength": 3
+        "sentiment": "positive",
+        "strength": 4
       },
       {
         "quote": "It turns out that Death Becomes Her becomes Broadway",
@@ -44,7 +44,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Despite significant criticism of the score, the critic strongly recommends the show based on exceptional performances, hilarious book, and lavish production values, concluding it 'becomes Broadway.' | GPT-4o-mini: The review expresses strong praise for the performances and humor, with some reservations about the music, leading to a clear recommendation to see the show.",
+    "reasoning": "Claude: Despite criticizing the forgettable songs, the critic enthusiastically praises the performances, production values, and comedy, concluding the show succeeds as entertainment and 'becomes Broadway.' | GPT-4o-mini: The review highlights strong performances and a humorous book but notes the lack of memorable songs, leading to a solid positive recommendation overall.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -54,8 +54,8 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:01:31.425Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:46:43.611Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
@@ -78,7 +78,7 @@
   "originalScoreNormalized": 40,
   "scoreSource": "unicode-stars",
   "scoreExtractedFrom": "fullText",
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 79
+  "previousLlmScore": 79,
+  "rescoreCompletedAt": "2026-01-29T01:46:43.611Z"
 }

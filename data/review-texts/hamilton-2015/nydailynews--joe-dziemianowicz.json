@@ -29,7 +29,7 @@
     "score": 95,
     "confidence": "high",
     "range": {
-      "low": 89.5,
+      "low": 90,
       "high": 100
     },
     "bucket": "Rave",
@@ -37,8 +37,8 @@
     "components": {
       "book": 90,
       "music": 95,
-      "performances": 91,
-      "direction": 93
+      "performances": 94,
+      "direction": 95
     },
     "keyPhrases": [
       {
@@ -57,7 +57,7 @@
         "strength": 5
       }
     ],
-    "reasoning": "Claude: This is an unqualified rave with superlatives throughout ('magical,' 'one for the ages,' 'dazzled so completely') and only the most minor criticisms that don't diminish the overwhelming enthusiasm. | GPT-4o-mini: The review expresses unqualified enthusiasm for 'Hamilton', highlighting its complexity, performances, and overall theatrical experience, with only minor caveats.",
+    "reasoning": "Claude: The critic uses superlatives throughout ('magical', 'one for the ages', 'dazzled so completely') and calls it a 'great Broadway classic' with only minor caveats about pacing and diction. | GPT-4o-mini: The review expresses overwhelming enthusiasm for the production, highlighting its complexity, performances, and direction while noting only minor issues.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
@@ -67,15 +67,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:19:36.005Z",
+    "scoredAt": "2026-01-29T01:57:51.546Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 94,
+    "claudeScore": 95,
     "openaiScore": 95,
-    "scoreDelta": 1,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -85,7 +85,7 @@
     "bww-roundup",
     "web-search"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 95
+  "previousLlmScore": 95,
+  "rescoreCompletedAt": "2026-01-29T01:57:51.546Z"
 }

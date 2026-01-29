@@ -10,7 +10,7 @@
   "dtliExcerpt": "It was only a matter of time for the starry revival to make its way over here to New York, and I am happy to report that this Cabaret, which opened tonight at the August Wilson Theatre, is a thrilling sight to behold.",
   "bwwExcerpt": "Where I'm fascinated is that spark the production seems to have found over here in the States. I can't necessarily pinpoint what particlualy changed but the world Frecknall has created now works for me. The team has produced a stunning feat the likes of which Broadway has not experienced in a while. If London is any indication, we are in for a long healthy run with exciting new stars every few months, and I look forward to experiencing the wonderment of the Kit Kat Club again and again.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "dtli",
   "scrapedAt": "2026-01-23T18:00:00.000Z",
   "dtliThumb": "Up",
@@ -33,7 +33,7 @@
       {
         "quote": "this Cabaret, which opened tonight at the August Wilson Theatre, is a thrilling sight to behold",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
         "quote": "The team has produced a stunning feat the likes of which Broadway has not experienced in a while",
@@ -46,7 +46,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Strong enthusiasm throughout with superlative language ('thrilling', 'stunning feat', 'astounding'), praise for all elements, and clear indication the critic wants to return multiple times. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its stunning visuals and outstanding performances, particularly from the lead actors, indicating a strong recommendation to see it.",
+    "reasoning": "Claude: Strong positive review with superlative language ('thrilling sight to behold', 'stunning feat'), enthusiastic praise for all elements, and explicit anticipation of return visits. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting its thrilling nature and outstanding performances, particularly from Gayle Rankin, indicating a must-see experience.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -56,8 +56,8 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:59:05.472Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:42:24.561Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
@@ -65,8 +65,8 @@
     "claudeScore": 88,
     "openaiScore": 90,
     "scoreDelta": 2,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
@@ -78,7 +78,7 @@
     "dtli"
   ],
   "showScoreExcerpt": null,
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 89
+  "previousLlmScore": 89,
+  "rescoreCompletedAt": "2026-01-29T01:42:24.561Z"
 }

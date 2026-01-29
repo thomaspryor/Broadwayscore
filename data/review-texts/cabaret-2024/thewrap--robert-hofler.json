@@ -11,7 +11,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 39,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "needsScoring": true,
@@ -21,62 +21,64 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 53,
-    "confidence": "medium",
+    "score": 39,
+    "confidence": "high",
     "range": {
-      "low": 40.5,
-      "high": 65.5
+      "low": 33,
+      "high": 45
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
-      "performances": 53,
-      "direction": 45
+      "performances": 43,
+      "direction": 28
     },
     "keyPhrases": [
       {
-        "quote": "Redmayne and Rankin have been directed to be abrasive to the extreme",
+        "quote": "It didn't work at Loyola and it doesn't work now on Broadway",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "Rankin is able to leaven some of this harshness because Sally is a real character",
-        "sentiment": "positive",
-        "strength": 2
+        "quote": "Because Redmayne isn't playing a character but rather a symbol of decadence, he presents nothing but a jumble of mannerisms",
+        "sentiment": "negative",
+        "strength": 4
       },
       {
-        "quote": "Because Redmayne isn't playing a character but rather a symbol",
-        "sentiment": "negative",
+        "quote": "Tom Scutt, who has not only redesigned the August Wilson Theatre — now nicknamed the Kit Kat Club — but the set and costumes for the new 'Cabaret' revival",
+        "sentiment": "positive",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The excerpt criticizes the director's approach as 'abrasive to the extreme' and faults Redmayne for playing a symbol rather than a character, with only mild praise for Rankin's performance. | GPT-4o-mini: The review presents a mixed view, praising Sally's character while criticizing the abrasive direction and Redmayne's symbolic portrayal. | Note: Models differed by 15 points.",
+    "reasoning": "Claude: The critic fundamentally objects to the production's concept and execution, stating it 'doesn't work' and criticizing key creative choices while only praising technical elements. | GPT-4o-mini: The review expresses significant criticism of the production's direction and interpretation, indicating a clear recommendation against seeing it.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:44:41.308Z",
+    "scoredAt": "2026-01-29T01:42:30.719Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 60,
-    "scoreDelta": 15,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (39 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
   },
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 53
+  "previousLlmScore": 53,
+  "rescoreCompletedAt": "2026-01-29T01:42:30.720Z"
 }

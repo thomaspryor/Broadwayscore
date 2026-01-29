@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "Carrie Coon is unleashed from her corsets—and every other stitch of clothing—in the blistering Broadway revival of her husband Tracy Letts’s macabre thriller “Bug,” being presented by Manhattan Theatre Club roughly 20 years after it was first seen in New York off-Broadway. (Due to the prevalence of nudity, audiences must turn off their phones and have them put in secure pouches for the show’s duration.)",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 65,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Carrie-Coon-Namir-Smallwood-and-More-Star-in-BUG-on-Broadway-20260108",
   "textStatus": "truncated",
@@ -21,60 +21,63 @@
   "scoreStatus": "TO_BE_CALCULATED",
   "scoreSource": null,
   "llmScore": {
-    "score": 84,
-    "confidence": "high",
+    "score": 65,
+    "confidence": "low",
     "range": {
-      "low": 77.5,
-      "high": 90.5
+      "low": 40,
+      "high": 90
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 89,
-      "direction": 80
+      "performances": 83,
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "Carrie Coon is unleashed",
+        "quote": "Carrie Coon is unleashed from her corsets—and every other stitch of clothing—in the blistering Broadway revival",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "blistering Broadway revival",
-        "sentiment": "positive",
-        "strength": 4
+        "quote": "macabre thriller",
+        "sentiment": "neutral",
+        "strength": 2
       },
       {
-        "quote": "turns the screws so unnoticeably you begin squirming before you notice how efficiently the play has gotten, well, under your skin",
-        "sentiment": "positive",
-        "strength": 5
+        "quote": "roughly 20 years after it was first seen in New York off-Broadway",
+        "sentiment": "neutral",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: Strong positive language about Coon's performance and the play's effectiveness as a thriller, with vivid praise for how it gets 'under your skin' efficiently. | GPT-4o-mini: The review highlights strong performances and effective tension-building, indicating a solid recommendation.",
+    "reasoning": "Claude: This appears to be an incomplete excerpt focusing mainly on Coon's performance and the show's content warning, without clear critical evaluation or recommendation. | GPT-4o-mini: The review indicates strong performances, particularly by Carrie Coon, suggesting a clear recommendation despite the lack of detailed critique on other elements. | Note: Models differed by 40 points.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:11:05.533Z",
+    "scoredAt": "2026-01-29T01:41:13.387Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 45,
     "openaiScore": 85,
-    "scoreDelta": 3,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
+    "scoreDelta": 40,
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 40 points (Claude: 45, OpenAI: 85)",
+      "Score (65 → Flat) conflicts with aggregator thumbs (Up)"
+    ]
   },
   "textWordCount": 96,
   "archivePath": "data/archives/reviews/bug-2026/wsj--charles-isherwood_2026-01-27.html",
@@ -118,7 +121,7 @@
     "Show title not found in text"
   ],
   "bwwThumb": "Up",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 84
+  "previousLlmScore": 84,
+  "rescoreCompletedAt": "2026-01-29T01:41:13.387Z"
 }

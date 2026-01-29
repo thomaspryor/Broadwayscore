@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"This ambitious, inventive show remains strong across the board: the entertaining, informative and emotionally involving book is filled with moments of humor and pathos, the characters are vividly drawn, the lyrics are extremely clever, the choreography supports the action brilliantly, the cast is uniformly strong and the direction is fluid and assured...The good news is that the newcomers to the cast are generally fine and the production is as sharp as ever.\"",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 84,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "textStatus": "complete",
@@ -18,25 +18,25 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 89,
+    "score": 84,
     "confidence": "high",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 78,
+      "high": 90
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": 88,
-      "music": 88,
-      "performances": 88,
-      "direction": 89
+      "music": 87,
+      "performances": 81,
+      "direction": 85
     },
     "keyPhrases": [
       {
         "quote": "This ambitious, inventive show remains strong across the board",
         "sentiment": "positive",
-        "strength": 5
+        "strength": 4
       },
       {
         "quote": "the production is as sharp as ever",
@@ -44,12 +44,12 @@
         "strength": 4
       },
       {
-        "quote": "the cast is uniformly strong and the direction is fluid and assured",
+        "quote": "it was a pleasant kind of exhaustion",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: Comprehensive praise across all production elements with superlative language like 'strong across the board' and 'sharp as ever' indicates clear positive recommendation without reservations. | GPT-4o-mini: The review expresses strong enthusiasm for multiple aspects of the production, indicating it is a must-see show.",
+    "reasoning": "Claude: The review consistently praises all aspects of the production with detailed positive assessments, noting only minor flaws like overambition and slight casting disappointments, while affirming the show 'remains strong across the board.' | GPT-4o-mini: The review expresses strong praise for the overall production while noting some minor shortcomings, leading to a solid recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
@@ -59,14 +59,14 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:20:32.677Z",
+    "scoredAt": "2026-01-29T01:55:58.466Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
+    "claudeScore": 83,
+    "openaiScore": 85,
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
@@ -85,7 +85,7 @@
     }
   ],
   "fetchTier": 1,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 89
+  "previousLlmScore": 89,
+  "rescoreCompletedAt": "2026-01-29T01:55:58.466Z"
 }

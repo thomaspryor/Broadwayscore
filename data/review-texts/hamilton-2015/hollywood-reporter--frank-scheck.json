@@ -10,62 +10,62 @@
   "dtliExcerpt": "There's rarely been a history lesson as entertaining as Lin-Manuel Miranda's new hip hop-infused musical about Alexander Hamilton, or, as the opening number puts it, \"The ten-dollar founding father without a father.\" Based on Ron Chernow's best-selling biography, Hamilton brings American history to musical-theater life in a style akin to the classic 1776, only with a hipper, more multi-cultural attitude. Currently enjoying a virtually sold-out off-Broadway premiere engagement at the Public Theater, where its run has already been extended twice before the official opening, the show seems inevitably destined for a Broadway transfer.Miranda, previously responsible for the 2008 Tony Award-winning musical In the Heights, is clearly enamored of his subject. In addition to writing the book, music and lyrics for the nearly three-hour show, he also plays the title role. And while he's had the audacity to cast Hispanic and black actors as the Founding Fathers commonly referred to as \"old dead white men,\" Miranda's work is remarkably faithful to the historical facts, imparting great amounts of information in such rollicking fashion that high school history teachers will find themselves profoundly grateful for the assist.",
   "showScoreExcerpt": "\"Having already become a cultural phenomenon in its off-Broadway premiere run earlier this year at the Public Theater, 'Hamilton' — written by and starring Lin-Manuel Miranda, who previously made a name for himself on Broadway with 'In the Heights' — seems a shoo-in for smash hit status and a slew of awards attention...The musical is a triumph.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAMILTON-Opens-on-Broadway-Updating-LIVE-20150806",
   "dtliThumb": "Up",
   "bwwExcerpt": "The almost entirely sung-through show is remarkably faithful to the historical facts, packing immense amounts of detail into its sprawling narrative. But it does so in such riotously entertaining fashion that it never feels like a history lesson, although it surely delivers one...Largely unaltered f...",
   "llmScore": {
-    "score": 88,
+    "score": 94,
     "confidence": "high",
     "range": {
-      "low": 80.5,
-      "high": 95.5
+      "low": 87.5,
+      "high": 100
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 82,
-      "music": 85,
-      "performances": 80,
-      "direction": null
+      "book": 88,
+      "music": 90,
+      "performances": 94,
+      "direction": 93
     },
     "keyPhrases": [
       {
-        "quote": "There's rarely been a history lesson as entertaining as Lin-Manuel Miranda's new hip hop-infused musical",
+        "quote": "The musical is a triumph",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "brings American history to musical-theater life in such rollicking fashion that high school history teachers will find themselves profoundly grateful",
+        "quote": "seems a shoo-in for smash-hit status and a slew of awardnoms",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "the show seems inevitably destined for a Broadway transfer",
+        "quote": "makes an even greater impact on the large Broadway stage",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Strong praise for entertainment value, innovation, and educational merit with clear prediction of Broadway success indicates enthusiastic recommendation despite no explicit directive to see it. | GPT-4o-mini: The review expresses unqualified enthusiasm for the musical's entertainment value and historical accuracy, indicating a strong recommendation.",
+    "reasoning": "Claude: The critic explicitly calls the show 'a triumph' and uses consistently glowing language throughout, praising every aspect from performances to production values with almost no reservations. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its triumph and cultural significance, leading to a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:03:17.162Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:57:14.975Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 90,
-    "scoreDelta": 5,
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -86,7 +86,7 @@
     "show-score"
   ],
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 88
+  "previousLlmScore": 88,
+  "rescoreCompletedAt": "2026-01-29T01:57:14.975Z"
 }

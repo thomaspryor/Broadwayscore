@@ -10,7 +10,7 @@
   "dtliExcerpt": "While Frecknall has put a lot of energy into giving Cabaret a glow-up—Sleep No More mood board, Eddie Redmayne in a party hat—she hasn’t provided the show underneath the makeover with sufficient focus or muscle.",
   "bwwExcerpt": "It’s not that the performers aren’t trying. As the naïve, swept-away American narrator, Cliff Bradshaw, Ato Blankson-Wood is doing his best to bring vulnerability, sincerity, and even some dignity to the part; but it’s always a bit of a surprise to recall just how often Cliff is left on the sidelines, and just how little he sings (a real loss here, given Blankson-Wood’s gorgeous voice). And as the strung-out Kit Kat Club singer, Sally Bowles, Gayle Rankin is making every effort to leave her guts on the stage, but she’s not getting any help. Rankin has the ability to be wrenching and spectacular — I once watched her swim across a lake in the dark, climb out and play Nina’s devastating Act Four scene from The Seagull, get back in, and swim away again. But her delivery of “Maybe This Time” and of the show’s final drill to the stomach, its great title song, is hampered by extraneous gesture. She flickers between singing, talking, and half-singing in a way that feels like a misguided directorial attempt to make the songs new, but that ends up making Rankin seem nervous about her ability to deliver them. I have no doubt that she really can, and I wish Frecknall had helped her find more connection and more release.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 49,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-AT-THE-KIT-KAT-CLUB-Opens-on-Broadway-Updating-Live-20240421",
   "dtliThumb": "Meh",
@@ -60,38 +60,38 @@
     "thumb": "Down",
     "components": {
       "book": null,
-      "music": 65,
-      "performances": 53,
+      "music": 45,
+      "performances": 63,
       "direction": 43
     },
     "keyPhrases": [
       {
-        "quote": "Style over soobstance",
+        "quote": "If this Cabaret were a cake, Paul Hollywood would shake his head and sigh, northern-ly: Style over soobstance.",
         "sentiment": "negative",
         "strength": 4
-      },
-      {
-        "quote": "I had a better time there than I did during the performance itself",
-        "sentiment": "negative",
-        "strength": 5
       },
       {
         "quote": "she hasn't provided the show underneath the makeover with sufficient focus or muscle",
         "sentiment": "negative",
         "strength": 4
+      },
+      {
+        "quote": "Thank goodness, therefore, for Bebe Neuwirth and Steven Skybell",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic praises the pre-show atmosphere and Neuwirth/Skybell's performances but finds the overall production lacking in substance, with weak direction and particularly criticizes Redmayne's performance as the Emcee. | GPT-4o-mini: The review presents a mixed view, highlighting strong performances but criticizing the direction and overall execution, leading to a conditional recommendation. | Note: Models differed by 13 points.",
+    "reasoning": "Claude: The critic appreciates the immersive pre-show experience and praises Neuwirth/Skybell, but delivers sustained criticism of direction, Redmayne's performance, and overall execution, concluding the production prioritizes style over substance. | GPT-4o-mini: The review expresses significant concerns about the production's direction and overall execution, while acknowledging some strong performances, leading to a mixed recommendation. | Note: Models differed by 13 points.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:13:08.700Z",
+    "scoredAt": "2026-01-29T01:43:00.854Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -100,8 +100,8 @@
     "claudeScore": 42,
     "openaiScore": 55,
     "scoreDelta": 13,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
     "needsReview": false,
     "needsReviewReasons": []
   },
@@ -110,7 +110,7 @@
     "dtli"
   ],
   "showScoreExcerpt": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 49
+  "previousLlmScore": 49,
+  "rescoreCompletedAt": "2026-01-29T01:43:00.854Z"
 }

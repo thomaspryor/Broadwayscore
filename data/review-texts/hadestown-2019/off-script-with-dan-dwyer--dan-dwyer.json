@@ -9,63 +9,63 @@
   "isFullReview": true,
   "showScoreExcerpt": "A poetic folk opera...emotionally resonant, and uniquely refined.",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 92,
   "source": "show-score",
   "textQuality": "full",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 84,
-    "confidence": "high",
+    "score": 92,
+    "confidence": "medium",
     "range": {
-      "low": 77.5,
-      "high": 90.5
+      "low": 83.5,
+      "high": 100
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 85,
-      "performances": null,
-      "direction": null
+      "book": 90,
+      "music": 93,
+      "performances": 92,
+      "direction": 91
     },
     "keyPhrases": [
       {
-        "quote": "poetic folk opera",
+        "quote": "HADESTOWN is boldly distinctive, emotionally resonant and uniquely refined",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "emotionally resonant",
+        "quote": "HADESTOWN transits earth and hell, but it's heaven sent",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "uniquely refined",
+        "quote": "not only a marker in the maturation of American musical but also testament to the ancient Greek's timeless power of storytelling",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Three consistently positive descriptors suggest strong appreciation, but the excerpt is too brief to assess full recommendation strength or identify any reservations. | GPT-4o-mini: The review expresses strong appreciation for the show's emotional depth and artistic quality, indicating a clear recommendation.",
+    "reasoning": "Claude: Enthusiastic praise throughout with superlative language ('heaven sent', 'boldly distinctive', 'stunning') and detailed appreciation for all production elements without significant reservations. | GPT-4o-mini: The review expresses unqualified enthusiasm for 'HADESTOWN', highlighting its distinctiveness, emotional depth, and strong performances, leading to a high recommendation score.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:18:08.628Z",
+    "scoredAt": "2026-01-29T01:53:54.723Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 85,
-    "scoreDelta": 3,
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -104,7 +104,7 @@
   "fetchTier": 4,
   "archiveOrgTimestamp": "20200920021526",
   "archiveOrgUrl": "http://web.archive.org/web/20200920021526/https://www.offscriptdandwyer.com/single-post/2019/05/12/HADESTOWN---Walter-Kerr-Theatre",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 84
+  "previousLlmScore": 84,
+  "rescoreCompletedAt": "2026-01-29T01:53:54.723Z"
 }

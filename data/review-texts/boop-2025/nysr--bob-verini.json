@@ -9,7 +9,7 @@
   "isFullReview": true,
   "bwwExcerpt": "The proceedings, all in all, are rather schizoid. Those seeking a smart night out, with sharply-delineated themes, are likely to react with a weary ‘Boop-Boop-a-Droop.’ There’s always the danger of showstopper fatigue setting in, as if you’ve eaten eight or nine hot fudge sundaes in a row. But as a respite from present-day realities and woes, and you know the ones I mean, Boop! could just be the tonic the doctor ordered.",
   "originalScore": "3/5",
-  "assignedScore": 62,
+  "assignedScore": 65,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T05:20:00.000Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-MUSICAL-Opens-on-Broadway-20250407",
@@ -21,11 +21,11 @@
   "textQuality": "partial",
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 62,
+    "score": 65,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 60,
+      "high": 70
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -33,48 +33,50 @@
       "book": 33,
       "music": 70,
       "performances": 83,
-      "direction": 73
+      "direction": 75
     },
     "keyPhrases": [
       {
-        "quote": "one of the most maladroit storylines Broadway has encountered in years, with cardboard characters that serve plot purposes only",
+        "quote": "one of the most maladroit storylines Broadway has encountered in years",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "reports from the Chicago tryout that a new star was born prove accurate. Jasmine Amy Rogers is the real deal, a triple threat",
+        "quote": "reports from the Chicago tryout that a new star was born prove accurate. Jasmine Amy Rogers is the real deal",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "as a respite from present-day realities and woes, and you know the ones I mean, Boop! could just be the tonic the doctor ordered",
+        "quote": "as a respite from present-day realities and woes... Boop! could just be the tonic the doctor ordered",
         "sentiment": "positive",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The 3/5 star review brutally pans the book while praising performances and production values, ending with a qualified recommendation for escapist entertainment despite acknowledging major flaws. | GPT-4o-mini: The review presents a mixed view, praising performances and music while heavily criticizing the book and storyline.",
+    "reasoning": "Claude: The 3/5 star rating and mixed assessment balances severe criticism of the book against strong praise for performances and production values, with a qualified recommendation as escapist entertainment. | GPT-4o-mini: The review highlights strong performances and music but criticizes the weak storyline, leading to a mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T15:46:39.983Z",
+    "scoredAt": "2026-01-29T01:36:26.873Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 62,
+    "claudeScore": 65,
+    "openaiScore": 65,
     "scoreDelta": 0,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (65 → Flat) conflicts with aggregator thumbs (Up)"
+    ]
   },
   "bwwThumb": "Up",
   "sources": [
@@ -85,7 +87,7 @@
   "dtliExcerpt": "Marshaled by director-choreographer Jerry Mitchell, talent is everywhere you look, and decent songs are everywhere you listen. Yet all this effort is in service of one of the most maladroit storylines Broadway has encountered in years, with cardboard characters that serve plot purposes only, a book that doesn’t listen to the lyrics and dialogue that doesn’t listen to itself. To quote the King of Siam, who had a really good libretto backing him up: Is a puzzlement.",
   "dtliThumb": "Meh",
   "showScoreExcerpt": null,
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 62
+  "previousLlmScore": 62,
+  "rescoreCompletedAt": "2026-01-29T01:36:26.873Z"
 }

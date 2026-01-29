@@ -29,7 +29,7 @@
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 53,
+      "book": 50,
       "music": 83,
       "performances": 75,
       "direction": 74
@@ -37,7 +37,7 @@
     "keyPhrases": [
       {
         "quote": "more involving than a typical concert, but substantially thinner than a truly great play",
-        "sentiment": "neutral",
+        "sentiment": "negative",
         "strength": 4
       },
       {
@@ -51,7 +51,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic appreciates the thrilling musical performances and production design but finds the script thin and dramatically lacking, resulting in a qualified mixed recommendation that leans slightly positive. | GPT-4o-mini: The review highlights strong music and production values while expressing significant concerns about the script, leading to a mixed-positive recommendation overall.",
+    "reasoning": "Claude: The critic praises the musical performances and production values highly but finds the script thin and dramatically weak, creating a mixed recommendation that leans slightly positive due to the musical excellence. | GPT-4o-mini: The review highlights strong music performances and production values but criticizes the script and depth of the story, leading to a mixed-positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -61,7 +61,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:09:38.738Z",
+    "scoredAt": "2026-01-29T01:37:52.248Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -78,7 +78,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 69
+  "previousLlmScore": 69,
+  "rescoreCompletedAt": "2026-01-29T01:37:52.248Z"
 }

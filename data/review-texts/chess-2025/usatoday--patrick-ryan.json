@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "As directed by Michael Mayer (“Spring Awakening”), this too often feels like a “Chess” revival that is embarrassed by its own existence. Rather than earnestly leaning into the melodrama, the show constantly undercuts its emotional moments with a punchline, which quickly becomes more exhausting than charming.",
   "originalScore": null,
-  "assignedScore": 67,
+  "assignedScore": 65,
   "source": "dtli",
   "dtliThumb": "Meh",
   "textStatus": "complete",
@@ -19,40 +19,40 @@
   "textQuality": "full",
   "sourceMethod": "dtli",
   "llmScore": {
-    "score": 67,
+    "score": 65,
     "confidence": "high",
     "range": {
-      "low": 60.5,
-      "high": 73.5
+      "low": 60,
+      "high": 70
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": 43,
-      "music": 80,
-      "performances": 87,
+      "music": 78,
+      "performances": 88,
       "direction": 53
     },
     "keyPhrases": [
       {
-        "quote": "Let's just call it a draw",
-        "sentiment": "neutral",
-        "strength": 4
-      },
-      {
-        "quote": "impossible not to fall under the spell of this powerhouse cast",
+        "quote": "it's impossible not to fall under the spell of this powerhouse cast",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "a smugly satisfied approach that would be borderline intolerable if it weren't for the dazzling constellation of stars",
+        "quote": "this too often feels like a 'Chess' revival that is embarrassed by its own existence",
         "sentiment": "negative",
-        "strength": 3
+        "strength": 4
+      },
+      {
+        "quote": "Let's just call it a draw",
+        "sentiment": "neutral",
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic explicitly calls it 'a draw' - praising the stellar performances while criticizing the book, direction, and meta approach, landing squarely in mixed territory. | GPT-4o-mini: The review acknowledges strong performances and catchy music but criticizes the muddled book and direction, leading to a mixed recommendation overall.",
+    "reasoning": "Claude: The critic is deeply conflicted, praising the stellar performances (especially Lea Michele) while criticizing the fundamental problems with the show's book, direction, and meta approach, ultimately settling on calling it 'a draw.' | GPT-4o-mini: The review highlights strong performances and catchy music but criticizes the muddled book and direction, leading to a mixed recommendation overall.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
@@ -60,15 +60,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:13:49.825Z",
+    "scoredAt": "2026-01-29T01:44:25.609Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 68,
+    "claudeScore": 65,
     "openaiScore": 65,
-    "scoreDelta": 3,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -77,7 +77,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 67
+  "previousLlmScore": 67,
+  "rescoreCompletedAt": "2026-01-29T01:44:25.610Z"
 }

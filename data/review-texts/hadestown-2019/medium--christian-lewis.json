@@ -9,63 +9,63 @@
   "isFullReview": true,
   "showScoreExcerpt": "Practically every single thing about 'Hadestown' is perfect...She has created a god among musicals.",
   "originalScore": null,
-  "assignedScore": 95,
+  "assignedScore": 97,
   "source": "show-score",
   "textQuality": "full",
   "sourceMethod": "archive",
   "scoreStatus": "TO_BE_CALCULATED",
   "scoreSource": null,
   "llmScore": {
-    "score": 95,
+    "score": 97,
     "confidence": "high",
     "range": {
-      "low": 90,
+      "low": 90.5,
       "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 90,
+      "music": 98,
+      "performances": 98,
+      "direction": 99
     },
     "keyPhrases": [
       {
-        "quote": "Practically every single thing about 'Hadestown' is perfect",
+        "quote": "Practically every single thing about \"Hadestown\" is perfect",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "She has created a god among musicals",
+        "quote": "she has created a god among musicals",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "She has created a god among musicals.",
+        "quote": "With \"Hadestown\" Rachel Chavkin has proven that she is one of the best directors in the history of musical theater",
         "sentiment": "positive",
         "strength": 5
       }
     ],
-    "reasoning": "Claude: Uses absolute superlatives like 'perfect' and 'god among musicals' indicating unqualified enthusiasm and highest recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm and praise, indicating a strong recommendation to see the show.",
+    "reasoning": "Claude: This is an unqualified rave with superlatives throughout ('perfect', 'masterpiece', 'god among musicals'), explicit recommendation to see it repeatedly, and declares the director one of the best in musical theater history, with only one minor criticism that 'does not matter' to the overall assessment. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the perfection of the production, performances, and direction, with only a minor critique of a single song.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:17:20.017Z",
+    "scoredAt": "2026-01-29T01:52:51.771Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 95,
-    "openaiScore": 95,
-    "scoreDelta": 0,
+    "openaiScore": 98,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -104,7 +104,7 @@
   "fetchTier": 4,
   "archiveOrgTimestamp": "20190420104217",
   "archiveOrgUrl": "http://web.archive.org/web/20190420104217/https://medium.com/@christianlewis_11156/review-hadestown-is-rachel-chavkins-magnum-opus-57063dbc1117",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 95
+  "previousLlmScore": 95,
+  "rescoreCompletedAt": "2026-01-29T01:52:51.771Z"
 }

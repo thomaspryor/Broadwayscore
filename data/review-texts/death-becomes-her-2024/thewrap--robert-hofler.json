@@ -9,62 +9,62 @@
   "isFullReview": true,
   "dtliExcerpt": "After this month’s major dud, “Tammy Faye,” where “the gays” are repeatedly pandered to, it’s fun to see a show that talks one on one to its core audience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 66,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:00:09.875Z",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 71,
-    "confidence": "high",
+    "score": 66,
+    "confidence": "medium",
     "range": {
-      "low": 65,
+      "low": 55,
       "high": 77
     },
     "bucket": "Mixed",
-    "thumb": "Up",
+    "thumb": "Flat",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 74,
+      "music": 58,
+      "performances": 73,
+      "direction": 65
     },
     "keyPhrases": [
       {
-        "quote": "After this month's major dud, \"Tammy Faye,\" where \"the gays\" are repeatedly pandered to",
-        "sentiment": "negative",
+        "quote": "Directing the new musical, Christopher Gattelli gleefully embraces the material's inherent tackiness",
+        "sentiment": "positive",
         "strength": 4
       },
       {
         "quote": "it's fun to see a show that talks one on one to its core audience",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       },
       {
-        "quote": "it’s fun to see a show that talks one on one to its core audience",
-        "sentiment": "positive",
-        "strength": 4
+        "quote": "that duo's music, which is merely serviceable, manages not to get in the way",
+        "sentiment": "negative",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic contrasts this show favorably against a recent failure, suggesting authentic connection with audience rather than pandering, but the excerpt is too brief to assess overall recommendation strength confidently. | GPT-4o-mini: The review expresses a positive sentiment towards the current show while contrasting it negatively with a previous production, indicating a mixed-positive recommendation.",
+    "reasoning": "Claude: The critic appreciates the smart direction, strong performances (especially Hilty and Simard), and how the show connects with its audience, despite noting the music is only serviceable and some casting issues. | GPT-4o-mini: The review presents a mixed bag of praise for the dialogue and some performances, but also highlights significant shortcomings in direction and overall execution. | Note: Models differed by 12 points.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:02:00.755Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:47:19.507Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 72,
-    "openaiScore": 70,
-    "scoreDelta": 2,
+    "openaiScore": 60,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -108,7 +108,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 71
+  "previousLlmScore": 71,
+  "rescoreCompletedAt": "2026-01-29T01:47:19.507Z"
 }

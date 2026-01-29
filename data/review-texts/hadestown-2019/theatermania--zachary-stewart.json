@@ -39,7 +39,7 @@
     },
     "keyPhrases": [
       {
-        "quote": "As meaningful as it is melodic, this is a must-see for connoisseurs of innovative musical theater",
+        "quote": "this is a must-see for connoisseurs of innovative musical theater",
         "sentiment": "positive",
         "strength": 5
       },
@@ -54,7 +54,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The review contains explicit 'must-see' language, consistent praise across all production elements, and strong positive language throughout with no significant reservations. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the production's innovation, performances, and design, with no significant reservations noted.",
+    "reasoning": "Claude: The review contains explicit must-see language, consistent praise across all production elements, and strong enthusiasm for the innovative adaptation with only minor qualifications. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, praising its innovative storytelling, strong performances, and visual design, indicating a strong recommendation to see it.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -64,7 +64,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:18:46.160Z",
+    "scoredAt": "2026-01-29T01:54:45.400Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -79,7 +79,7 @@
     "needsReviewReasons": []
   },
   "designation": "Must_See",
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 92
+  "previousLlmScore": 92,
+  "rescoreCompletedAt": "2026-01-29T01:54:45.400Z"
 }

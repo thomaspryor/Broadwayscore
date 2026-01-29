@@ -10,68 +10,67 @@
   "bwwExcerpt": "This production might not be overflowing with tension, but Shanley’s text rings truer than ever. He packs more into 90 minutes than most playwrights do into 150. (This season’s revival of his Danny and the Deep Blue Sea and premiere of his Brooklyn Laundry are proof.) And while he may not provide any answers, he’s trusting enough that we’ll figure it out for ourselves.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "originalScore": "4/5 stars",
-  "assignedScore": 77,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 77,
-    "confidence": "high",
+    "score": 76,
+    "confidence": "medium",
     "range": {
-      "low": 70.5,
-      "high": 83.5
+      "low": 67,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 83,
+      "book": 85,
       "music": null,
-      "performances": null,
+      "performances": 78,
       "direction": 70
     },
     "keyPhrases": [
       {
-        "quote": "Shanley's text rings truer than ever",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "He packs more into 90 minutes than most playwrights do into 150",
+        "quote": "Shanley's text rings truer than ever. He packs more into 90 minutes than most playwrights do into 150.",
         "sentiment": "positive",
         "strength": 4
       },
       {
         "quote": "This production might not be overflowing with tension",
         "sentiment": "negative",
-        "strength": 2
+        "strength": 3
+      },
+      {
+        "quote": "while he may not provide any answers, he's trusting enough that we'll figure it out for ourselves",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: Strong praise for Shanley's writing craft and efficiency with qualified criticism of the production's tension level, resulting in a clear positive recommendation despite minor reservations. | GPT-4o-mini: The review expresses a clear appreciation for the script's depth and effectiveness, leading to a positive recommendation despite noting a lack of tension.",
+    "reasoning": "Claude: The critic strongly praises Shanley's writing and the play's continued relevance while noting production shortcomings like lack of tension, resulting in qualified appreciation rather than enthusiastic recommendation. | GPT-4o-mini: The review expresses strong appreciation for the script and performances, indicating a clear recommendation despite minor criticisms.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:35:49.838Z",
+    "scoredAt": "2026-01-29T01:48:42.755Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 75,
-    "scoreDelta": 3,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
   "bwwThumb": "Up",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "textWordCount": 729,
@@ -93,5 +92,6 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240422003844",
-  "archiveOrgUrl": "http://web.archive.org/web/20240422003844/https://nystagereview.com/2024/03/07/doubt-the-debate-rages-on/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240422003844/https://nystagereview.com/2024/03/07/doubt-the-debate-rages-on/",
+  "rescoreCompletedAt": "2026-01-29T01:48:42.755Z"
 }

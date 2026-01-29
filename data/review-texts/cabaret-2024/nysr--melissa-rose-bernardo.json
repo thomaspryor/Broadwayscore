@@ -25,8 +25,8 @@
     "components": {
       "book": null,
       "music": null,
-      "performances": 76,
-      "direction": 88
+      "performances": 83,
+      "direction": 85
     },
     "keyPhrases": [
       {
@@ -40,14 +40,14 @@
         "strength": 4
       },
       {
-        "quote": "woefully miscast in a pivotal role",
+        "quote": "Ato Blankson-Wood, woefully miscast in a pivotal role",
         "sentiment": "negative",
-        "strength": 4
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic praises the direction, design, and overall atmospheric experience while noting strong performances from most cast members, but flags significant casting issues that prevent this from being a rave. | GPT-4o-mini: The review highlights strong direction and impactful performances, particularly praising the emotional depth of the production, leading to a clear recommendation despite some minor casting concerns.",
+    "reasoning": "Claude: Four-star review with strong praise for the production design, direction, and immersive experience, though tempered by some casting criticism and mixed performance assessments. | GPT-4o-mini: The review expresses strong praise for the production's atmosphere, performances, and direction, indicating a clear recommendation despite minor criticisms.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
@@ -55,8 +55,8 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:58:59.794Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:42:10.316Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
@@ -80,7 +80,7 @@
     "playwright-scraped",
     "bww-roundup"
   ],
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 82
+  "previousLlmScore": 82,
+  "rescoreCompletedAt": "2026-01-29T01:42:10.316Z"
 }

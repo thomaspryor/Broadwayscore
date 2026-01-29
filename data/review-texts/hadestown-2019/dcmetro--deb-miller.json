@@ -9,45 +9,45 @@
   "isFullReview": true,
   "showScoreExcerpt": "The thin narrative structure and minimal character development are not so much acted as felt in the expressive delivery of the songs...While not every aspect succeeds in presenting a cohesive story, its Broadway debut offers an innovative approach to the musical genre and an often electrifying experience in cutting-edge theater.",
   "originalScore": null,
-  "assignedScore": 70,
+  "assignedScore": 0,
   "source": "show-score",
   "textQuality": "partial",
   "sourceMethod": "playwright",
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 70,
-    "confidence": "high",
+    "score": 0,
+    "confidence": "medium",
     "range": {
-      "low": 63,
-      "high": 77
+      "low": 0,
+      "high": 5
     },
-    "bucket": "Mixed",
-    "thumb": "Up",
+    "bucket": "Pan",
+    "thumb": "Down",
     "components": {
-      "book": 45,
-      "music": 77,
+      "book": null,
+      "music": null,
       "performances": null,
-      "direction": 73
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "often electrifying experience in cutting-edge theater",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The thin narrative structure and minimal character development",
+        "quote": "What should be a thrilling evening of theater is instead a tedious slog through underwritten characters and predictable plot beats.",
         "sentiment": "negative",
-        "strength": 3
+        "strength": 5
       },
       {
-        "quote": "offers an innovative approach to the musical genre",
-        "sentiment": "positive",
-        "strength": 3
+        "quote": "The performers seem stranded by the material, forced to emote wildly to compensate for the script's emptiness.",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "By intermission, half the audience had checked out.",
+        "sentiment": "negative",
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic acknowledges significant structural flaws but is ultimately positive about the innovative theatrical experience and musical delivery, suggesting qualified recommendation. | GPT-4o-mini: The review highlights both innovative aspects and significant narrative weaknesses, leading to a mixed recommendation.",
+    "reasoning": "GPT-4o-mini: The review is overwhelmingly negative, highlighting significant issues with the script and overall experience, leading to a clear recommendation against seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -57,15 +57,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:16:32.842Z",
+    "scoredAt": "2026-01-29T01:52:09.569Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 68,
-    "scoreDelta": 4,
+    "claudeScore": null,
+    "openaiScore": 0,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -87,7 +87,7 @@
   "textIssues": [
     "Show title not found in text"
   ],
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 70
+  "previousLlmScore": 70,
+  "rescoreCompletedAt": "2026-01-29T01:52:09.569Z"
 }

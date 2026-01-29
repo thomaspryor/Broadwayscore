@@ -11,67 +11,66 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-2024",
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 67,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 74,
-    "confidence": "medium",
+    "score": 67,
+    "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 83
+      "low": 60.5,
+      "high": 73.5
     },
     "bucket": "Mixed",
-    "thumb": "Up",
+    "thumb": "Flat",
     "components": {
-      "book": 80,
+      "book": 75,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 60,
+      "direction": 55
     },
     "keyPhrases": [
       {
-        "quote": "spitting-mad screed against political hypocrisy",
+        "quote": "crackling new adaptation courtesy of Rebecca Lenkiewicz... there's enough to all but set the stage on fire",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "tackles more hot-button election-year issues than an average hour of MSNBC",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the battle between two brothers in An Enemy of the People",
-        "sentiment": "neutral",
+        "quote": "the most serious flaw of this handsome, classical production is that it burns a bit too hot",
+        "sentiment": "negative",
         "strength": 3
+      },
+      {
+        "quote": "leaves the play without any real hero... it isn't clear why anyone should want to join him in the first place",
+        "sentiment": "negative",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic praises the play's political relevance and energy with vivid language, suggesting strong engagement despite this being only a brief excerpt. | GPT-4o-mini: The review highlights relevant themes and political commentary but lacks strong enthusiasm or specific praise for performances or direction.",
+    "reasoning": "Claude: The B grade and mixed content - praising Lenkiewicz's adaptation and relevance while criticizing the overly loud direction and lack of a clear hero - suggests a qualified recommendation with significant reservations. | GPT-4o-mini: The review presents a mix of praise for the adaptation and dialogue while highlighting significant flaws in direction and performance, leading to a cautious recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:09:18.113Z",
+    "scoredAt": "2026-01-29T01:35:51.508Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 70,
-    "scoreDelta": 8,
+    "claudeScore": 68,
+    "openaiScore": 65,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 74,
   "textWordCount": 482,
@@ -105,5 +104,6 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20130603012813",
-  "archiveOrgUrl": "http://web.archive.org/web/20130603012813/http://www.ew.com/ew/article/0,,20364394_20633490,00.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20130603012813/http://www.ew.com/ew/article/0,,20364394_20633490,00.html",
+  "rescoreCompletedAt": "2026-01-29T01:35:51.508Z"
 }

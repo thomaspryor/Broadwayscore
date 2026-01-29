@@ -9,63 +9,63 @@
   "isFullReview": true,
   "dtliExcerpt": "This is a story that speaks to now, and I really wish I could hear it clearly over the hideous shouting of auteur Rebecca Frecknall’s grotesque production at the August Wilson Theatre, where it arrives on a wave of acclaim from across the pond (the West End run is ongoing).",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 39,
   "source": "dtli",
   "dtliThumb": "Down",
   "textStatus": "complete",
   "textQuality": "full",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 23,
+    "score": 39,
     "confidence": "high",
     "range": {
-      "low": 15.5,
-      "high": 30.5
+      "low": 33,
+      "high": 45
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 75,
-      "music": null,
-      "performances": null,
-      "direction": 15
+      "book": 40,
+      "music": 63,
+      "performances": 60,
+      "direction": 28
     },
     "keyPhrases": [
       {
-        "quote": "hideous shouting of auteur Rebecca Frecknall's grotesque production",
+        "quote": "I really wish I could hear it clearly over the hideous shouting of auteur Rebecca Frecknall's grotesque production",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "This is a story that speaks to now",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "I really wish I could hear it clearly",
+        "quote": "The result is a superficial fairytale of a Berlin overrun with hooker clowns and cartoon Nazis",
         "sentiment": "negative",
         "strength": 4
+      },
+      {
+        "quote": "Neuwirth's lucid and powerful performance offers one of the few silver linings of this production",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: While the critic appreciates the story's relevance, they deliver scathing criticism of the production with extremely harsh language ('hideous', 'grotesque'), indicating they cannot recommend this specific staging. | GPT-4o-mini: The review expresses strong dissatisfaction with the production, indicating a clear negative sentiment towards the overall experience.",
+    "reasoning": "Claude: Despite praising the pre-show experience, music, and select performances (Neuwirth, Skybell), the critic delivers a scathing attack on the direction, calling it 'grotesque' and 'superficial,' with particular venom for Redmayne's performance and Frecknall's concept. | GPT-4o-mini: The review expresses significant disappointment in the production's direction and overall execution, despite some praise for individual performances.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:12:33.353Z",
+    "scoredAt": "2026-01-29T01:42:17.870Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 20,
-    "scoreDelta": 5,
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -112,7 +112,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 23
+  "previousLlmScore": 23,
+  "rescoreCompletedAt": "2026-01-29T01:42:17.870Z"
 }

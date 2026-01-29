@@ -26,10 +26,10 @@
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 82,
-      "music": 80,
+      "book": 80,
+      "music": 82,
       "performances": 88,
-      "direction": 79
+      "direction": 78
     },
     "keyPhrases": [
       {
@@ -48,7 +48,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Despite initial skepticism and some reservations about length and pretensions, the critic ultimately praises the story, performances, music, and design elements, concluding with uplifting language about the show's emotional impact. | GPT-4o-mini: The review expresses strong praise for the music and performances while acknowledging some stylistic issues, leading to a solid positive recommendation.",
+    "reasoning": "Claude: Despite initial skepticism based on past work, the critic finds this production succeeds with strong performances, beautiful storytelling, and effective music, offering clear praise while acknowledging minor reservations about length and occasional pretensions. | GPT-4o-mini: The review expresses strong praise for the music and performances while acknowledging some reservations about the direction and style, leading to a solid positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -58,7 +58,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T15:48:11.129Z",
+    "scoredAt": "2026-01-29T01:53:24.177Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -76,7 +76,7 @@
     "playwright-scraped",
     "bww-roundup"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 82
+  "previousLlmScore": 82,
+  "rescoreCompletedAt": "2026-01-29T01:53:24.177Z"
 }

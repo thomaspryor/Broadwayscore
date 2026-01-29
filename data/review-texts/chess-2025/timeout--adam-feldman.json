@@ -10,61 +10,61 @@
   "showScoreExcerpt": "\"has plenty of good moves...but no checkmate. Once again, the show blows its assets; shackled to storytelling that is arguably worse than ever, Chess goes down in forfeit.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/chess-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
   "source": "dtli",
   "dtliThumb": "Down",
   "needsScoring": true,
   "llmScore": {
-    "score": 30,
-    "confidence": "medium",
+    "score": 38,
+    "confidence": "high",
     "range": {
-      "low": 20,
-      "high": 40
+      "low": 30.5,
+      "high": 45.5
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 23,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 18,
+      "music": 73,
+      "performances": 78,
+      "direction": 48
     },
     "keyPhrases": [
       {
-        "quote": "has plenty of good moves...but no checkmate",
+        "quote": "Once again, the show blows its assets; shackled to storytelling that is arguably worse than ever, Chess goes down in forfeit.",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "All of the above might make for an entertaining evening if Chess were just a concert, which unfortunately it is not",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "storytelling that is arguably worse than ever",
+        "quote": "If there's a cast recording of this production, it will probably sound damn good—or good enough, at least, to keep misleading future Broadway fans",
         "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Chess goes down in forfeit",
-        "sentiment": "negative",
-        "strength": 5
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Despite acknowledging some positive elements ('good moves'), the critic delivers a harsh verdict on the storytelling and concludes with a definitive rejection metaphor. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the storytelling and suggesting a complete failure of the production.",
+    "reasoning": "Claude: Despite praising the performances and music extensively, the critic delivers a scathing assessment of the book and overall theatrical experience, explicitly stating the show 'goes down in forfeit' and suggesting it misleads fans into thinking it works as actual theater. | GPT-4o-mini: The review expresses significant disappointment with the book and storytelling while acknowledging some strong performances and music, leading to a clear negative recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:42.255Z",
+    "scoredAt": "2026-01-29T01:44:17.836Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 35,
-    "openaiScore": 25,
-    "scoreDelta": 10,
+    "openaiScore": 40,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -77,7 +77,7 @@
   ],
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 30
+  "previousLlmScore": 30,
+  "rescoreCompletedAt": "2026-01-29T01:44:17.836Z"
 }
