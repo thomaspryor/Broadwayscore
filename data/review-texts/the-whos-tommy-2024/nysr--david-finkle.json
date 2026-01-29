@@ -11,7 +11,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "5/5 stars",
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,5 +34,61 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250724130218",
-  "archiveOrgUrl": "http://web.archive.org/web/20250724130218/https://nystagereview.com/2024/03/28/the-whos-tommy-the-ground-breaking-rock-opera-seen-heard-felt-in-sizzling-revival/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250724130218/https://nystagereview.com/2024/03/28/the-whos-tommy-the-ground-breaking-rock-opera-seen-heard-felt-in-sizzling-revival/",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": 90,
+      "performances": 89,
+      "direction": 95
+    },
+    "keyPhrases": [
+      {
+        "quote": "is just about perfect as it relies on 30 years of technology progress to bring it up-to-thrilling-often-chilling-date",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "McAnuff's flawless direction and Lorin Latarro's choreography",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "they're hitting record-breaking numbers on the flashing and whistling revival machine they're playing",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Critic calls the production 'just about perfect' with 'flawless direction' and uses superlatives throughout, comparing the creative team to 'pinball wizards' hitting 'record-breaking numbers'. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the production's excellence in direction, design, and performances, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:03:42.075Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
