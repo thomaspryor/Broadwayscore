@@ -9,15 +9,68 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": "“Mother Play” has the aura of a valedictorian effort, the completion of a canon by coming home, even a push for a confirmed spot among the greats of this era of American playwriting.\r\nVogel certainly does not shy from her own admiration of Martha. It’s especially apparent in the final scene when she visits and cares for a mother with dementia whom the play has just shown us she has good reason to ignore. Some writers would worry about how that looked, but I suspect Vogel decided that was the tru",
   "bwwThumb": "Up",
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 80,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "has the aura of a valedictorian effort, the completion of a canon by coming home",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "She surely would have been delighted to be portrayed by no less than Jessica Lange, an actress fully capable of turning her into a boozy but sympathetic hybrid",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Some writers would worry about how that looked, but I suspect Vogel decided that was the tru",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review appears incomplete but shows respect for Vogel's work as significant ('valedictorian effort') and praises Lange's performance capability, though lacks clear recommendation language or critical assessment. | GPT-4o-mini: The review expresses a clear appreciation for the personal nature of the play and the performances, particularly by Jessica Lange, indicating a positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T06:35:53.597Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
   "sources": [
     "dtli",
     "bww-roundup"

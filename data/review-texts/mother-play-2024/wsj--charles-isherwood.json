@@ -9,13 +9,66 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 57,
   "dtliThumb": "Meh",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 57,
+    "confidence": "high",
+    "range": {
+      "low": 50.5,
+      "high": 63.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 77,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "has a piercing sadness as Ms. Lange's performance reaches a rending climax",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "too much of \"Mother Play\" feels evanescent, more a personal exercise in exorcising ghosts than a play that resonates on deeper levels",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the final scene...has a piercing sadness",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises Lange's powerful performance but fundamentally criticizes the play as feeling personal rather than universally resonant, suggesting mixed feelings with slight negative lean. | GPT-4o-mini: The review acknowledges a strong performance but critiques the overall impact of the play, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T06:35:59.801Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
