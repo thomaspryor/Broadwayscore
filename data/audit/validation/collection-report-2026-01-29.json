@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T02:41:33.550Z",
+  "runDate": "2026-01-29T02:43:19.877Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "lempicka-2024",
+    "showFilter": "harry-potter-2021",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 39,
-    "failed": 35,
+    "processed": 32,
+    "failed": 47,
     "skipped": 0,
-    "successRate": "52.7%"
+    "successRate": "40.5%"
   },
   "tierBreakdown": {
     "playwright": 5,
     "scrapingbee": 3,
     "brightdata": 4,
-    "archive": 27
+    "archive": 20
   },
   "statistics": {
-    "tier1Attempts": 14,
+    "tier1Attempts": 23,
     "tier1Success": 1,
-    "tier2Attempts": 12,
+    "tier2Attempts": 22,
     "tier2Success": 1,
-    "tier3Attempts": 11,
+    "tier3Attempts": 21,
     "tier3Success": 1,
-    "tier4Attempts": 27,
-    "tier4Success": 10,
-    "totalFailed": 8,
-    "scrapingBeeCreditsUsed": 80
+    "tier4Attempts": 51,
+    "tier4Success": 3,
+    "totalFailed": 20,
+    "scrapingBeeCreditsUsed": 90
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -61,19 +61,12 @@
     "spamalot-2023/nysr--sandy-macdonald.json",
     "spamalot-2023/slantmagazine--dan-rubins.json",
     "spamalot-2023/washpost--peter-marks.json",
-    "lempicka-2024/nyt-theater--jonathan-mandell.json",
-    "lempicka-2024/variety--frank-rizzo.json",
-    "lempicka-2024/vulture--sara-holdren.json",
-    "lempicka-2024/broadwaynews--brittani-samuel.json",
-    "lempicka-2024/wsj--charles-isherwood.json",
-    "lempicka-2024/cititour--brian-scott-lipton.json",
-    "lempicka-2024/chicagotribune--chris-jones.json",
-    "lempicka-2024/dc-theater-arts--deb-miller.json",
-    "lempicka-2024/nysr--david-finkle.json",
-    "lempicka-2024/nysr--sandy-macdonald.json",
-    "lempicka-2024/queerty--matthew-wexler.json",
-    "lempicka-2024/slantmagazine--dan-rubins.json",
-    "lempicka-2024/washpost--philip-kennicott.json"
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "harry-potter-2021/cititour--brian-scott-lipton.json",
+    "harry-potter-2021/dailybeast--tim-teeman.json",
+    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
+    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+    "harry-potter-2021/the-times--ann-treneman.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -103,14 +96,26 @@
     "spamalot-2023/wsj--charles-isherwood.json",
     "spamalot-2023/wsj--charles.json",
     "spamalot-2023/talkinbroadway--matthew-murray.json",
-    "lempicka-2024/hollywood-reporter--angie-han.json",
-    "lempicka-2024/nytg--gillian-russo.json",
-    "lempicka-2024/nytg--gillian.json",
-    "lempicka-2024/nytimes--jesse-green.json",
-    "lempicka-2024/vulture--jackson-mchenry.json",
-    "lempicka-2024/new-york-sun--elysa-gardner.json",
-    "lempicka-2024/nydailynews--chris-jones.json",
-    "lempicka-2024/nydailynews--chris.json"
+    "harry-potter-2021/variety--peter-marks.json",
+    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+    "harry-potter-2021/deadline--greg-evans.json",
+    "harry-potter-2021/guardian--alexis-soloski.json",
+    "harry-potter-2021/nypost--johnny-oleksinski.json",
+    "harry-potter-2021/broadway-blog--matthew-wexler.json",
+    "harry-potter-2021/broadwayworld--michael-dale.json",
+    "harry-potter-2021/curtainup--elyse-sommer.json",
+    "harry-potter-2021/exeunt-magazine--kev-berry.json",
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/frontmezzjunkies--steven-ross.json",
+    "harry-potter-2021/medium--christian-lewis.json",
+    "harry-potter-2021/ny1--roma-torre.json",
+    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
+    "harry-potter-2021/troy-record--bob-goepfert.json",
+    "harry-potter-2021/washpost--peter-marks.json",
+    "harry-potter-2021/wnyc--jennifer-vanasco.json",
+    "harry-potter-2021/wolf-entertainment-guide--william-wolf.json",
+    "harry-potter-2021/woman-around-town--alix-cohen.json",
+    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -118,18 +123,18 @@
       "harmony-2023/nysr--david-finkle.json",
       "harmony-2023/nysr--sandy-macdonald.json",
       "spamalot-2023/nysr--melissa-rose-bernardo.json",
-      "lempicka-2024/nysr--david-finkle.json"
+      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
     ],
     "scrapingbee": [
       "spamalot-2023/cititour--brian-scott-lipton.json",
       "spamalot-2023/chicagotribune--chris-jones.json",
-      "lempicka-2024/cititour--brian-scott-lipton.json"
+      "harry-potter-2021/financial-times-uk--charles-isherwood.json"
     ],
     "brightdata": [
       "harmony-2023/observer--jesse-green.json",
       "harmony-2023/observer--rex-reed.json",
       "harmony-2023/chicagotribune--chris-jones.json",
-      "lempicka-2024/nyt-theater--jonathan-mandell.json"
+      "harry-potter-2021/cititour--brian-scott-lipton.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
@@ -149,16 +154,9 @@
       "spamalot-2023/nysr--sandy-macdonald.json",
       "spamalot-2023/slantmagazine--dan-rubins.json",
       "spamalot-2023/washpost--peter-marks.json",
-      "lempicka-2024/variety--frank-rizzo.json",
-      "lempicka-2024/vulture--sara-holdren.json",
-      "lempicka-2024/broadwaynews--brittani-samuel.json",
-      "lempicka-2024/wsj--charles-isherwood.json",
-      "lempicka-2024/chicagotribune--chris-jones.json",
-      "lempicka-2024/dc-theater-arts--deb-miller.json",
-      "lempicka-2024/nysr--sandy-macdonald.json",
-      "lempicka-2024/queerty--matthew-wexler.json",
-      "lempicka-2024/slantmagazine--dan-rubins.json",
-      "lempicka-2024/washpost--philip-kennicott.json"
+      "harry-potter-2021/wsj--terry-teachout.json",
+      "harry-potter-2021/dailybeast--tim-teeman.json",
+      "harry-potter-2021/the-times--ann-treneman.json"
     ]
   }
 }
