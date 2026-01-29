@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "tells your story,\" this show now gives voice to these Tudor #MeToos, presenting a feminist - both proto and post - version of \"herstory.\" As one character says, \"History s about to get over-throned.\" Helen Shaw, Vulture : The point of Six is its escapism. If you live at the intersection of its interests and can recognize a Spice Girls or Beyonc&eacute; reference (\"C mon, ladies, let s get in Reformation\"), your animal heart will have no choice but to jump up and down with the beat. Even the sheer brightness of Six operates as color therapy. Emma Bailey s set is a simple rock stage backed by outlines of Gothic windows covered in LEDs that change and pulse in cheery display. Tim Deiling s lights are red and purple and gold, bathing your hungry pores. The color pours down your eye holes right into your serotonin receptors - all that warmth without heat triggers something deep in your lizard brain that says, \"Vacation.\" So let the cares of this world roll away. Heck, let the cares of 16th-",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 95,
   "source": "dtli",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-SIX-Opens-on-Broadway-20211004",
@@ -25,17 +25,56 @@
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
-  "llmScore": null,
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 95,
+      "performances": 90,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "You'll laugh. You'll cry. You'll dance. It's everything a theatre experience should be and more.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "pure musical theatre elation for a pop-packed 75 minutes",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the Broadway production is bigger, bolder, and beltier than any Six I've seen yet",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This is clearly a rave review with unqualified enthusiasm, calling it 'everything a theatre experience should be and more' and describing 'pure musical theatre elation' with no meaningful criticisms. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong emotional engagement with the show, indicating a must-see recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:48:42.982Z",
+    "scoredAt": "2026-01-29T22:39:43.549Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 0,
+    "claudeScore": 95,
+    "openaiScore": 95,
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,

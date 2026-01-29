@@ -15,17 +15,56 @@
   "sourceMethod": "brightdata",
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
-  "llmScore": null,
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 13,
+      "performances": 58,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "abysmal score",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "thankless roles",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "gifted cast",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic uses extremely harsh language ('abysmal score') and suggests even talented actors are wasted in 'thankless roles,' indicating a clear pan despite acknowledging the cast's talent. | GPT-4o-mini: The review is overwhelmingly negative, highlighting poor music and unfulfilling roles for the cast, leading to a clear rejection of the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:32:40.496Z",
+    "scoredAt": "2026-01-29T22:39:18.935Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 0,
+    "claudeScore": 25,
+    "openaiScore": 25,
     "scoreDelta": 0,
     "thumbsMatch": true,
     "expectedThumb": "Down",

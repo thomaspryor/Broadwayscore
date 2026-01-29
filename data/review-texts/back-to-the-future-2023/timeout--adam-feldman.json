@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": 60,
-  "assignedScore": 20,
+  "assignedScore": 36,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -21,18 +21,57 @@
     "show-score",
     "web-search"
   ],
-  "llmScore": null,
+  "llmScore": {
+    "score": 36,
+    "confidence": "medium",
+    "range": {
+      "low": 27,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": null,
+      "performances": 40,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "What makes Back to the Future so confusing, aside from the general ineptness",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "If this is the future, please send it back",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "It's a solid, if unsurprising, adaptation that will satisfy fans of the film trilogy",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: Despite one moderate positive line, the review is dominated by harsh criticism including 'general ineptness' and a dismissive final recommendation to 'send it back.' | GPT-4o-mini: The review expresses significant disappointment with the adaptation's ineptness and confusion, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:32:50.273Z",
+    "scoredAt": "2026-01-29T22:39:25.233Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 0,
-    "scoreDelta": 0,
+    "claudeScore": 32,
+    "openaiScore": 40,
+    "scoreDelta": 8,
     "thumbsMatch": true,
     "expectedThumb": "Down",
     "needsReview": false,

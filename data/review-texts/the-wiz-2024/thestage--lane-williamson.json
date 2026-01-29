@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -44,24 +44,61 @@
     "Word count too low: 117 (min: 300)",
     "Show title not found in text"
   ],
-  "llmScore": null,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 84,
+      "performances": 83,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "energetic, charming new staging",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "packed with infectious grooves",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the show ascends when the full ensemble is in motion",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Consistently positive language about music, performances, and staging with no negative caveats suggests a clear recommendation despite being an excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for the staging, music, and performances, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:04:20.951Z",
+    "scoredAt": "2026-01-29T22:40:17.133Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 0,
-    "scoreDelta": 0,
-    "thumbsMatch": false,
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": true,
     "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (0 → Down) conflicts with aggregator thumbs (Up)"
-    ]
+    "needsReview": false,
+    "needsReviewReasons": []
   },
   "rescoreCompletedAt": "2026-01-29T14:31:52.131Z"
 }

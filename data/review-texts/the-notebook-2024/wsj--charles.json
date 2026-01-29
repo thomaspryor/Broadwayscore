@@ -8,7 +8,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This may put me in the minority, given the story’s proven success in other mediums, but for all its sweetness and polish “The Notebook” never rises to truly transporting heights—except when Ms. Plunkett, as the heroine, Allie, in her later years, and&nbsp;Dorian Harewood, as her husband, Noah, are the focus.",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 52,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -39,20 +39,59 @@
   "textIssues": [
     "Word count too low: 116 (min: 300)"
   ],
-  "llmScore": null,
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 43.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": null,
+      "performances": 68,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "left me dry-eyed and occasionally tempted to check my watch",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "never rises to truly transporting heights—except when Ms. Plunkett... and Dorian Harewood... are the focus",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "for all its sweetness and polish",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic finds the central story unengaging and boring despite acknowledging its polish, with only two specific performances providing redeeming value. | GPT-4o-mini: The review expresses mixed feelings, highlighting some strong performances but ultimately finding the story lacking in emotional impact.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:35:40.491Z",
+    "scoredAt": "2026-01-29T22:40:11.181Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 0,
-    "scoreDelta": 0,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "claudeScore": 48,
+    "openaiScore": 55,
+    "scoreDelta": 7,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
     "needsReview": false,
     "needsReviewReasons": []
   },

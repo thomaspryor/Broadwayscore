@@ -9,7 +9,7 @@
   "bwwExcerpt": "The production has a strikingly cinematic aesthetic that seamlessly integrates video projections, live action and superbly achieved stage illusions. Groundbreaking work from visual effects designers Jamie Harrison, Chris Fisher and 59 Productions breathe life into the play’s unnatural world: otherworldly monsters pop up out of dark corners; wisps of animated smoke spiral into spectral shapes; flailing bodies are lifted into the air, tossed around and crushed by invisible forces.",
   "showScoreExcerpt": "“Based on the phenomenally popular Netflix series, this visually stunning retro-horror romp is audacious, exhilarating and relentlessly inventive...Subtlety is not the goal here, and this show never quite matches the series’ charming mix of nostalgia, hope and horror. But it is an extraordinary, gripping spectacle.”",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london-duffer-brothers-jack-thorne-stephen-daldry-sonia-friedman",
@@ -23,24 +23,61 @@
   ],
   "textQuality": "truncated",
   "sourceMethod": "scrapingbee",
-  "llmScore": null,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": null,
+      "direction": 84
+    },
+    "keyPhrases": [
+      {
+        "quote": "audacious, exhilarating and relentlessly inventive",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "extraordinary, gripping spectacle",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "never quite matches the series' charming mix of nostalgia, hope and horror",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for technical achievements and overall spectacle ('extraordinary', 'gripping', 'exhilarating') with only minor criticism about not matching the source material, indicating clear recommendation despite reservations. | GPT-4o-mini: The review highlights the production's visual achievements and overall excitement, but notes it lacks the subtlety and charm of the original series, leading to a strong but qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:51:32.871Z",
+    "scoredAt": "2026-01-29T22:39:50.358Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 0,
-    "scoreDelta": 0,
-    "thumbsMatch": false,
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
     "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (0 → Down) conflicts with aggregator thumbs (Up)"
-    ]
+    "needsReview": false,
+    "needsReviewReasons": []
   },
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [

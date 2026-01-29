@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "etting people express themselves and live their truth may not solve every political problem, but it can certainly make life way more fun. Escola’s doing that, and the rest of us should too. Grade: A- Adrian Horton, The Guardian: The real Mary Todd Lincoln was, by most accounts, erratic, often bedridden by sadness and prone to lavish spending. Not exactly a comic figure, though in the hands of the inimitable Cole Escola, the former first lady is the buzziest, and funniest, theater draw this summer. The comedian’s show Oh, Mary!, which transferred to Broadway after critical raves and a twice-extended Off-Broadway run, takes the public blank slate of Abraham’s hoop-skirted wife as a launchpad for 80 minutes of irreverent, raunchy, gleefully deranged revisionist history. Greg Evans, Deadline: There’s funny, there’s very funny, and then there’s Oh, Mary!, Cole Escola’s riotous new comedy that brings more laughs to Broadway than all the Gutenberg!s, Edelmans and Birbiglias combined. You can",
   "originalScore": null,
-  "assignedScore": 95,
+  "assignedScore": 89,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
@@ -26,20 +26,59 @@
   "scoreSource": "extracted-grade",
   "scoreConfidence": "medium",
   "extractedGrade": "A",
-  "llmScore": null,
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": 88,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "brings more laughs to Broadway than all the Gutenberg!s, Edelmans and Birbiglias combined",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "riotous new comedy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This moment, among many others, brought the house down",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Multiple critics use superlative language ('riotous', 'funniest', 'brought the house down') with explicit comparisons showing it outperforms other Broadway comedies, plus an A- grade signals strong positive recommendation. | GPT-4o-mini: The review expresses strong enthusiasm and excitement for the show, highlighting its humor and unique take on history, indicating a must-see status.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:42:00.962Z",
+    "scoredAt": "2026-01-29T22:39:37.416Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 0,
-    "scoreDelta": 0,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
