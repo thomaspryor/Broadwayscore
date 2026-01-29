@@ -277,6 +277,8 @@ const stats = {
   skippedDuplicate: 0,
   scoreSources: {
     llmScore: 0,
+    'llmScore-lowconf': 0,
+    'llmScore-review': 0,
     assignedScore: 0,
     originalScore: 0,
     bucket: 0,
@@ -344,13 +346,22 @@ function getBestScore(data) {
     return null;
   }
 
-  // Priority 1: LLM score (if trustworthy)
+  // Priority 1: LLM score (accept all LLM scores, even low confidence)
+  // Rationale: A low-confidence LLM score is still better than no score
   if (data.llmScore && data.llmScore.score) {
     const confidence = data.llmScore.confidence;
     const needsReview = data.ensembleData?.needsReview;
 
+    // High/medium confidence: use directly
     if (confidence !== 'low' && !needsReview) {
       return { score: data.llmScore.score, source: 'llmScore' };
+    }
+    // Low confidence or needs review: still use, but mark source
+    if (confidence === 'low') {
+      return { score: data.llmScore.score, source: 'llmScore-lowconf' };
+    }
+    if (needsReview) {
+      return { score: data.llmScore.score, source: 'llmScore-review' };
     }
   }
 
