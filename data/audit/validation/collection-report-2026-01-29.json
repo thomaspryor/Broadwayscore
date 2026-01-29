@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-29T18:12:07.949Z",
+  "runDate": "2026-01-29T18:12:41.210Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 10,
     "priority": "all",
-    "showFilter": "oh-mary-2024",
+    "showFilter": "mamma-mia-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 65,
-    "failed": 217,
+    "failed": 210,
     "skipped": 0,
-    "successRate": "23.0%"
+    "successRate": "23.6%"
   },
   "tierBreakdown": {
     "playwright": 10,
@@ -23,16 +23,16 @@
     "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 10,
+    "tier1Attempts": 3,
     "tier1Success": 0,
-    "tier2Attempts": 10,
+    "tier2Attempts": 3,
     "tier2Success": 0,
-    "tier3Attempts": 10,
-    "tier3Success": 1,
-    "tier4Attempts": 25,
+    "tier3Attempts": 3,
+    "tier3Success": 0,
+    "tier4Attempts": 7,
     "tier4Success": 0,
-    "totalFailed": 10,
-    "scrapingBeeCreditsUsed": 30
+    "totalFailed": 3,
+    "scrapingBeeCreditsUsed": 0
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -309,16 +309,9 @@
     "stereophonic-2024/guardian--gloria-oladipo.json",
     "stereophonic-2024/observer--rex-reed.json",
     "stereophonic-2024/theatermania--adam-feldman.json",
-    "oh-mary-2024/hollywood-reporter--angie-han.json",
-    "oh-mary-2024/nyt-theater--jonathan-mandell.json",
-    "oh-mary-2024/variety--aramide-tinubu.json",
-    "oh-mary-2024/variety--charles-isherwood.json",
-    "oh-mary-2024/vulture--helen-shaw.json",
-    "oh-mary-2024/ew--christian-holub.json",
-    "oh-mary-2024/ew--kristen-baldwin.json",
-    "oh-mary-2024/guardian--adrian-horton.json",
-    "oh-mary-2024/nydailynews--chris-jones.json",
-    "oh-mary-2024/observer--david-cote.json"
+    "mamma-mia-2025/ew--emlyn-travis.json",
+    "mamma-mia-2025/nydailynews--chris-jones.json",
+    "mamma-mia-2025/chicagotribune--chris-jones.json"
   ],
   "tierDetails": {
     "playwright": [
