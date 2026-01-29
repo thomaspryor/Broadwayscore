@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Lion King is a gorgeous spectacle that transforms the New Amsterdam Theater into a magical African landscape, with Julie Taymor's brilliant direction creating visual wonders that transcend the simple story.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,5 +19,63 @@
   "needsScoring": true,
   "sources": [
     "web-search"
-  ]
+  ],
+  "llmScore": {
+    "score": 81,
+    "confidence": "low",
+    "range": {
+      "low": 67,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": null,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "gorgeous spectacle",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "brilliant direction creating visual wonders",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "transcend the simple story",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for visuals and direction but criticism of the story creates a qualified positive recommendation where the spectacle overcomes narrative weaknesses. | GPT-4o-mini: The review expresses strong enthusiasm for the visual and directorial aspects of the production, indicating a must-see experience. | Note: Models differed by 18 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T05:26:26.664Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 90,
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 18 points (Claude: 72, OpenAI: 90)"
+    ]
+  }
 }
