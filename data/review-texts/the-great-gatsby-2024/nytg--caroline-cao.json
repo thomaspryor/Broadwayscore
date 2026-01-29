@@ -9,14 +9,67 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 53,
   "dtliThumb": "Meh",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 40.5,
+      "high": 65.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "feels too spic and span by the time it ends",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Missing is a mess left behind by the Roaring Twenties excess",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "I felt the warmth in The Great Gatsby, but it was begging to bring on the heat",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review criticizes the production for being overly sanitized and lacking the wild energy that should define a Great Gatsby adaptation, with only mild positive acknowledgment of 'warmth'. | GPT-4o-mini: The review expresses a sense of disappointment with the production's lack of emotional depth, indicating a mixed recommendation. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:13:29.039Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 60,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
   "designation": "Recommended"
 }
