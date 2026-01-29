@@ -1,37 +1,37 @@
 {
-  "runDate": "2026-01-29T06:45:19.223Z",
+  "runDate": "2026-01-29T06:47:52.611Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "days-of-wine-and-roses-2024",
+    "showFilter": "aladdin-2014",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 62,
-    "failed": 116,
+    "processed": 56,
+    "failed": 125,
     "skipped": 0,
-    "successRate": "34.8%"
+    "successRate": "30.9%"
   },
   "tierBreakdown": {
-    "playwright": 11,
-    "scrapingbee": 5,
+    "playwright": 8,
+    "scrapingbee": 4,
     "brightdata": 6,
-    "archive": 40
+    "archive": 38
   },
   "statistics": {
-    "tier1Attempts": 17,
-    "tier1Success": 3,
-    "tier2Attempts": 14,
-    "tier2Success": 1,
-    "tier3Attempts": 13,
-    "tier3Success": 2,
-    "tier4Attempts": 28,
-    "tier4Success": 4,
-    "totalFailed": 11,
+    "tier1Attempts": 21,
+    "tier1Success": 1,
+    "tier2Attempts": 20,
+    "tier2Success": 0,
+    "tier3Attempts": 20,
+    "tier3Success": 3,
+    "tier4Attempts": 43,
+    "tier4Success": 3,
+    "totalFailed": 20,
     "scrapingBeeCreditsUsed": 70
   },
   "processed": [
@@ -88,15 +88,9 @@
     "hadestown-2019/dcmetro--deb-miller.json",
     "patriots-2024/broadwaynews--brittani-samuel.json",
     "patriots-2024/amny--matt-windman.json",
-    "days-of-wine-and-roses-2024/nyt-theater--jonathan-mandell.json",
-    "days-of-wine-and-roses-2024/nytg--gillian-russo.json",
-    "days-of-wine-and-roses-2024/nytg--gillian.json",
-    "days-of-wine-and-roses-2024/nydailynews--chris-jones.json",
-    "days-of-wine-and-roses-2024/nydailynews--chris.json",
-    "days-of-wine-and-roses-2024/cititour--brian-scott-lipton.json",
-    "days-of-wine-and-roses-2024/dailybeast--tim-teeman.json",
-    "days-of-wine-and-roses-2024/nysr--bob-verini.json",
-    "days-of-wine-and-roses-2024/nysr--david-finkle.json"
+    "aladdin-2014/vulture--jesse-green.json",
+    "aladdin-2014/thewrap--robert-hofler.json",
+    "aladdin-2014/usatoday--elysa-gardner.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -204,17 +198,26 @@
     "gutenberg-2023/thewrap--steve-pond.json",
     "gutenberg-2023/wsj--charles-isherwood.json",
     "gutenberg-2023/wsj--charles.json",
-    "days-of-wine-and-roses-2024/nytimes--jesse-green.json",
-    "days-of-wine-and-roses-2024/variety--frank-rizzo.json",
-    "days-of-wine-and-roses-2024/guardian--lauren-mechling.json",
-    "days-of-wine-and-roses-2024/nypost--johnny-oleksinski.json",
-    "days-of-wine-and-roses-2024/observer--rex-reed.json",
-    "days-of-wine-and-roses-2024/theatermania--adam-feldman.json",
-    "days-of-wine-and-roses-2024/wsj--charles-isherwood.json",
-    "days-of-wine-and-roses-2024/wsj--terry-teachout.json",
-    "days-of-wine-and-roses-2024/talkinbroadway--matthew-murray.json",
-    "days-of-wine-and-roses-2024/washpost--naveen-kumar.json",
-    "days-of-wine-and-roses-2024/washpost--peter-marks.json"
+    "aladdin-2014/nytimes--ben-brantley.json",
+    "aladdin-2014/deadline--pete-hammond.json",
+    "aladdin-2014/guardian--jesse-green.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "aladdin-2014/newsday--linda-winer.json",
+    "aladdin-2014/nypost--elisabeth-vincentelli.json",
+    "aladdin-2014/observer--rex-reed.json",
+    "aladdin-2014/theatermania--adam-feldman.json",
+    "aladdin-2014/theatermania--andy-propst.json",
+    "aladdin-2014/theatermania--charles-isherwood.json",
+    "aladdin-2014/theatermania--david-finkle.json",
+    "aladdin-2014/wsj--terry-teachout.json",
+    "aladdin-2014/ap--mark-kennedy.json",
+    "aladdin-2014/billboard--bob-verini.json",
+    "aladdin-2014/broadway-voice--kristen-balzano.json",
+    "aladdin-2014/catholic-transcript--bernard-carragher.json",
+    "aladdin-2014/dailybeast--tim-teeman.json",
+    "aladdin-2014/huffpost--steven-suskin.json",
+    "aladdin-2014/thestage--mark-shenton.json",
+    "aladdin-2014/thisbroadsway--sandra-mcfarland.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -225,17 +228,13 @@
       "lempicka-2024/nysr--david-finkle.json",
       "stranger-things-2024/londontheatre--marianka-swain.json",
       "hadestown-2019/broadwaynews--charles-isherwood.json",
-      "hadestown-2019/dcmetro--deb-miller.json",
-      "days-of-wine-and-roses-2024/nyt-theater--jonathan-mandell.json",
-      "days-of-wine-and-roses-2024/nysr--bob-verini.json",
-      "days-of-wine-and-roses-2024/nysr--david-finkle.json"
+      "hadestown-2019/dcmetro--deb-miller.json"
     ],
     "scrapingbee": [
       "spamalot-2023/cititour--brian-scott-lipton.json",
       "spamalot-2023/chicagotribune--chris-jones.json",
       "lempicka-2024/cititour--brian-scott-lipton.json",
-      "stranger-things-2024/thestage--dave-fargnoli.json",
-      "days-of-wine-and-roses-2024/cititour--brian-scott-lipton.json"
+      "stranger-things-2024/thestage--dave-fargnoli.json"
     ],
     "brightdata": [
       "harmony-2023/observer--jesse-green.json",
@@ -243,7 +242,7 @@
       "harmony-2023/chicagotribune--chris-jones.json",
       "lempicka-2024/nyt-theater--jonathan-mandell.json",
       "moulin-rouge-2019/observer--rex-reed.json",
-      "days-of-wine-and-roses-2024/dailybeast--tim-teeman.json"
+      "aladdin-2014/usatoday--elysa-gardner.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
@@ -282,10 +281,8 @@
       "hadestown-2019/nydailynews--chris-jones.json",
       "patriots-2024/broadwaynews--brittani-samuel.json",
       "patriots-2024/amny--matt-windman.json",
-      "days-of-wine-and-roses-2024/nytg--gillian-russo.json",
-      "days-of-wine-and-roses-2024/nytg--gillian.json",
-      "days-of-wine-and-roses-2024/nydailynews--chris-jones.json",
-      "days-of-wine-and-roses-2024/nydailynews--chris.json"
+      "aladdin-2014/vulture--jesse-green.json",
+      "aladdin-2014/thewrap--robert-hofler.json"
     ]
   }
 }
