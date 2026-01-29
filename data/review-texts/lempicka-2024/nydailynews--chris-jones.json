@@ -9,13 +9,61 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "dtliThumb": "Down",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show would have been far better if it had simply evoked a savvy and brilliant artist",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "has the effect of nullifying her singular ambivalence and complexity",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic expresses clear disappointment with the show's approach, arguing it fundamentally mishandles its subject matter and suggesting a better alternative direction. | GPT-4o-mini: The review expresses significant disappointment with the show's execution, indicating a clear negative sentiment towards its overall quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:03:09.369Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
