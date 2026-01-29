@@ -43,6 +43,9 @@ const { extractScore, extractDesignation } = require('./lib/score-extractors');
 // LLM-based content verification
 const { verifyContent, quickValidityCheck } = require('./lib/content-verifier');
 
+// Content quality detection (garbage/invalid content filter)
+const { assessTextQuality, isGarbageContent } = require('./lib/content-quality');
+
 // Parse CLI arguments
 const args = process.argv.slice(2);
 const CLI = {
@@ -1628,6 +1631,53 @@ async function processReview(review) {
     const result = await fetchReviewText(review);
 
     console.log(`  ✓ SUCCESS via ${result.method} (${result.text.length} chars)`);
+
+    // Content quality check - detect garbage/invalid content before saving
+    const showTitle = review.showId ? review.showId.replace(/-\d{4}$/, '').replace(/-/g, ' ') : '';
+    const qualityCheck = assessTextQuality(result.text, showTitle);
+
+    if (qualityCheck.quality === 'garbage' && qualityCheck.confidence === 'high') {
+      // Don't save garbage content as fullText - log as failed fetch
+      console.log(`  ✗ GARBAGE CONTENT DETECTED: ${qualityCheck.issues[0] || 'invalid content'}`);
+      console.log(`    Reason: ${qualityCheck.issues.join(', ')}`);
+
+      // Record as failed fetch with reason
+      const failedEntry = {
+        reviewId: review.reviewId,
+        showId: review.showId,
+        outlet: review.outlet,
+        critic: review.critic,
+        url: review.url,
+        method: result.method,
+        failureReason: 'garbage_content',
+        garbageReason: qualityCheck.issues.join('; '),
+        textLength: result.text.length,
+        timestamp: new Date().toISOString()
+      };
+
+      // Save to failed fetches tracking
+      const failedFetchesPath = path.join(CONFIG.reviewTextsDir, 'failed-fetches.json');
+      let failedFetches = [];
+      if (fs.existsSync(failedFetchesPath)) {
+        try {
+          failedFetches = JSON.parse(fs.readFileSync(failedFetchesPath, 'utf8'));
+        } catch (e) {
+          failedFetches = [];
+        }
+      }
+      // Remove any existing entry for this review
+      failedFetches = failedFetches.filter(f => f.reviewId !== review.reviewId);
+      failedFetches.push(failedEntry);
+      fs.writeFileSync(failedFetchesPath, JSON.stringify(failedFetches, null, 2));
+
+      stats.totalFailed++;
+      return { success: false, error: 'garbage_content', reason: qualityCheck.issues.join('; ') };
+    }
+
+    if (qualityCheck.quality === 'suspicious') {
+      // Log warning but continue processing
+      console.log(`  ⚠ SUSPICIOUS CONTENT: ${qualityCheck.issues.join(', ')}`);
+    }
 
     // Archive HTML
     const archivePath = result.html ? archiveHtml(result.html, review, result.method) : null;

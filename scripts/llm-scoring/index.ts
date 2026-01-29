@@ -54,12 +54,37 @@ import { runValidation } from './validation';
 import { findGroundTruthReviews, calculateGroundTruthCalibration, printGroundTruthReport } from './ground-truth';
 import { ReviewTextFile, ScoringPipelineOptions, PipelineRunSummary } from './types';
 
+// Import content quality module for garbage detection
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { assessTextQuality } = require('../lib/content-quality.js');
+
 // ========================================
 // CONSTANTS
 // ========================================
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '../../data/review-texts');
 const RUNS_LOG_PATH = path.join(__dirname, '../../data/llm-scoring-runs.json');
+const GARBAGE_SKIPS_PATH = path.join(__dirname, '../../data/llm-scoring-garbage-skips.json');
+
+// ========================================
+// CONTENT QUALITY TYPES
+// ========================================
+
+interface ContentQualityResult {
+  quality: 'valid' | 'garbage' | 'suspicious';
+  confidence: 'high' | 'medium' | 'low';
+  issues: string[];
+}
+
+interface GarbageSkipEntry {
+  showId: string;
+  outletId: string;
+  filePath: string;
+  quality: string;
+  confidence: string;
+  issues: string[];
+  skippedAt: string;
+}
 
 // ========================================
 // CLI PARSING
@@ -344,7 +369,10 @@ async function main(): Promise<void> {
   let processed = 0;
   let skipped = 0;
   let errors = 0;
+  let garbageSkipped = 0;
+  let suspiciousWarnings = 0;
   const errorDetails: Array<{ showId: string; outletId: string; error: string }> = [];
+  const garbageSkips: GarbageSkipEntry[] = [];
 
   for (let i = 0; i < finalFiles.length; i++) {
     const { path: filePath, data: reviewFile } = finalFiles[i];
@@ -353,6 +381,41 @@ async function main(): Promise<void> {
     const showName = reviewFile.showId;
     const outletName = reviewFile.outlet || reviewFile.outletId;
     process.stdout.write(`[${i + 1}/${finalFiles.length}] ${showName} / ${outletName}... `);
+
+    // Pre-scoring content quality check
+    const scorableText = getScorableText(reviewFile);
+    if (scorableText && reviewFile.fullText && reviewFile.fullText.length >= 100) {
+      // Get show title for context
+      const showTitle = reviewFile.showId
+        ? reviewFile.showId.replace(/-\d{4}$/, '').replace(/-/g, ' ')
+        : '';
+
+      const qualityResult: ContentQualityResult = assessTextQuality(reviewFile.fullText, showTitle);
+
+      if (qualityResult.quality === 'garbage' && qualityResult.confidence === 'high') {
+        // Skip scoring - content is garbage with high confidence
+        console.log(`SKIPPED (garbage: ${qualityResult.issues[0] || 'invalid content'})`);
+        garbageSkipped++;
+        garbageSkips.push({
+          showId: reviewFile.showId,
+          outletId: reviewFile.outletId || '',
+          filePath,
+          quality: qualityResult.quality,
+          confidence: qualityResult.confidence,
+          issues: qualityResult.issues,
+          skippedAt: new Date().toISOString()
+        });
+        continue;
+      }
+
+      if (qualityResult.quality === 'suspicious' || qualityResult.quality === 'garbage') {
+        // Still score but add warning
+        suspiciousWarnings++;
+        if (options.verbose) {
+          console.log(`(WARNING: ${qualityResult.issues.join(', ')}) `);
+        }
+      }
+    }
 
     try {
       const result = await scorer.scoreReviewFile(reviewFile);
@@ -412,6 +475,8 @@ async function main(): Promise<void> {
   console.log('\n========================================');
   console.log(`Processed: ${processed}`);
   console.log(`Skipped: ${skipped}`);
+  console.log(`Garbage skipped: ${garbageSkipped}`);
+  console.log(`Suspicious warnings: ${suspiciousWarnings}`);
   console.log(`Errors: ${errors}`);
 
   // Handle both single and ensemble scorer token usage
@@ -479,6 +544,22 @@ async function main(): Promise<void> {
 
     saveRunSummary(summary);
     console.log(`\nRun summary saved to: ${RUNS_LOG_PATH}`);
+
+    // Save garbage skips if any
+    if (garbageSkips.length > 0) {
+      let existingSkips: GarbageSkipEntry[] = [];
+      if (fs.existsSync(GARBAGE_SKIPS_PATH)) {
+        try {
+          existingSkips = JSON.parse(fs.readFileSync(GARBAGE_SKIPS_PATH, 'utf-8'));
+        } catch {
+          existingSkips = [];
+        }
+      }
+      // Append new skips, keeping last 500
+      const allSkips = [...existingSkips, ...garbageSkips].slice(-500);
+      fs.writeFileSync(GARBAGE_SKIPS_PATH, JSON.stringify(allSkips, null, 2) + '\n');
+      console.log(`Garbage skips saved to: ${GARBAGE_SKIPS_PATH} (${garbageSkips.length} new, ${allSkips.length} total)`);
+    }
   } else {
     // Still run calibration/validation if requested
     if (options.runCalibration) {

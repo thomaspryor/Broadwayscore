@@ -216,7 +216,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                 Est. Recouped
                 <SortIcon active={sortColumn === 'recoupment'} direction={sortDirection} />
               </th>
-              <th className="py-3 px-4 font-medium hidden sm:table-cell">Status</th>
+              <th className="py-3 px-4 font-medium hidden sm:table-cell" title="Weeks to recoup (for recouped shows) or trend (for in-progress shows)">Time to Recoup</th>
             </tr>
           </thead>
           <tbody className="text-gray-300">
