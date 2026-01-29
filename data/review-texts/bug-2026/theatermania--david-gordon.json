@@ -7,7 +7,7 @@
   "publishDate": "January 8, 2026",
   "fullText": "Playing a woman with a long-missing child living in constant fear of her ex’s fist, Coon conveys with exacting precision how a lifetime spent asking “why me” can push someone to seek extravagant answers from whatever source seems most plausible, even if those answers are delusions. In her profoundly shattering turn, Coon makes Agnes’s descent at the hands of Peter feel inevitable&#8230;Bug is the scariest play ever written.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "dtliThumb": "Up",
   "source": "dtli",
   "dtliExcerpt": "Playing a woman with a long-missing child living in constant fear of her ex’s fist, Coon conveys with exacting precision how a lifetime spent asking “why me” can push someone to seek extravagant answers from whatever source seems most plausible, even if those answers are delusions. In her profoundly shattering turn, Coon makes Agnes’s descent at the hands of Peter feel inevitable&#8230;Bug is the scariest play ever written.",
@@ -15,7 +15,60 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 95,
+      "music": null,
+      "performances": 95,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "profoundly shattering turn",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Bug is the scariest play ever written",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "makes Agnes's descent at the hands of Peter feel inevitable",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review uses superlative language ('profoundly shattering', 'scariest play ever written') and praises both the performance and the play itself with unqualified enthusiasm. | GPT-4o-mini: The review expresses unqualified enthusiasm for Coon's performance and the play's impact, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T15:06:08.742Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

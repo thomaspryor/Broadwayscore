@@ -9,11 +9,67 @@
   "isFullReview": false,
   "dtliExcerpt": "\"The endless production becomes totally reliant on the amped-up singing of leads... I was board all right.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": 80,
+      "performances": 75,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "vivid, terrifically sung, but hard to love revival",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "Chess' music is its greatest asset",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "this Chess may belt to the rafters and flatter the senses, but its stumbling book and cut-out characters keep it from delivering a real checkmate",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges strong musical performances and production values but finds the show fundamentally flawed with weak characters and an overlong, formulaic book, resulting in admiration without emotional investment. | GPT-4o-mini: While the music and performances are praised, the review highlights significant issues with the book and character development, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T15:06:15.166Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
