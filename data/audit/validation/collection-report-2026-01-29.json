@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T15:10:41.105Z",
+  "runDate": "2026-01-29T15:11:27.294Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 25,
     "priority": "all",
-    "showFilter": "heart-of-rock-and-roll-2024",
+    "showFilter": "cabaret-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 67,
-    "failed": 183,
+    "processed": 65,
+    "failed": 184,
     "skipped": 0,
-    "successRate": "26.8%"
+    "successRate": "26.1%"
   },
   "tierBreakdown": {
     "playwright": 10,
     "scrapingbee": 6,
     "brightdata": 6,
-    "archive": 45
+    "archive": 43
   },
   "statistics": {
-    "tier1Attempts": 7,
+    "tier1Attempts": 6,
     "tier1Success": 0,
-    "tier2Attempts": 7,
-    "tier2Success": 1,
+    "tier2Attempts": 6,
+    "tier2Success": 0,
     "tier3Attempts": 6,
     "tier3Success": 0,
-    "tier4Attempts": 14,
+    "tier4Attempts": 15,
     "tier4Success": 3,
-    "totalFailed": 7,
-    "scrapingBeeCreditsUsed": 60
+    "totalFailed": 8,
+    "scrapingBeeCreditsUsed": 20
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -99,9 +99,7 @@
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
     "suffs-2024/the-times--nancy-durrant.json",
-    "heart-of-rock-and-roll-2024/nytg--gillian-russo.json",
-    "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json",
-    "heart-of-rock-and-roll-2024/nypost--johnny-oleksinski.json"
+    "cabaret-2024/amny--matt-windman.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -280,13 +278,14 @@
     "hells-kitchen-2024/usatoday--charles-isherwood.json",
     "hells-kitchen-2024/usatoday--david-rooney.json",
     "hells-kitchen-2024/washpost--peter-marks.json",
-    "heart-of-rock-and-roll-2024/nytimes--jesse-green.json",
-    "heart-of-rock-and-roll-2024/variety--aramide-tinubu.json",
-    "heart-of-rock-and-roll-2024/variety--frank-rizzo.json",
-    "heart-of-rock-and-roll-2024/nydailynews--chris-jones.json",
-    "heart-of-rock-and-roll-2024/nydailynews--chris.json",
-    "heart-of-rock-and-roll-2024/the-new-york-sun--elysa-gardner.json",
-    "heart-of-rock-and-roll-2024/timeout--regina-robbins.json"
+    "cabaret-2024/variety--aramide-tinubu.json",
+    "cabaret-2024/variety--frank-rizzo.json",
+    "cabaret-2024/observer--rex-reed.json",
+    "cabaret-2024/theatermania--jesse-green.json",
+    "cabaret-2024/wsj--charles-isherwood.json",
+    "cabaret-2024/wsj--charles.json",
+    "cabaret-2024/queerty--matthew-wexler.json",
+    "cabaret-2024/village-voice--michael-musto.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -360,9 +359,7 @@
       "queen-versailles-2025/vulture--sara-holdren.json",
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
       "suffs-2024/the-times--nancy-durrant.json",
-      "heart-of-rock-and-roll-2024/nytg--gillian-russo.json",
-      "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json",
-      "heart-of-rock-and-roll-2024/nypost--johnny-oleksinski.json"
+      "cabaret-2024/amny--matt-windman.json"
     ]
   }
 }
