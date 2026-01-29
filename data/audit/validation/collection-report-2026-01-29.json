@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T07:55:03.284Z",
+  "runDate": "2026-01-29T15:06:08.933Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 50,
+    "maxReviews": 25,
     "priority": "all",
-    "showFilter": "hells-kitchen-2024",
+    "showFilter": "aladdin-2014",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 64,
+    "processed": 65,
     "failed": 176,
     "skipped": 0,
-    "successRate": "26.7%"
+    "successRate": "27.0%"
   },
   "tierBreakdown": {
     "playwright": 10,
-    "scrapingbee": 6,
+    "scrapingbee": 7,
     "brightdata": 6,
     "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 25,
+    "tier1Attempts": 1,
     "tier1Success": 0,
-    "tier2Attempts": 25,
-    "tier2Success": 0,
-    "tier3Attempts": 25,
-    "tier3Success": 2,
-    "tier4Attempts": 55,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 25,
-    "scrapingBeeCreditsUsed": 90
+    "totalFailed": 0,
+    "scrapingBeeCreditsUsed": 10
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -98,7 +98,8 @@
     "queen-versailles-2025/latimes--charles-mcnulty.json",
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
-    "suffs-2024/the-times--nancy-durrant.json"
+    "suffs-2024/the-times--nancy-durrant.json",
+    "aladdin-2014/nbcny--dave-quinn.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -297,7 +298,8 @@
       "lempicka-2024/cititour--brian-scott-lipton.json",
       "stranger-things-2024/thestage--dave-fargnoli.json",
       "queen-versailles-2025/ew--dalton-ross.json",
-      "queen-versailles-2025/latimes--charles-mcnulty.json"
+      "queen-versailles-2025/latimes--charles-mcnulty.json",
+      "aladdin-2014/nbcny--dave-quinn.json"
     ],
     "brightdata": [
       "harmony-2023/observer--jesse-green.json",
