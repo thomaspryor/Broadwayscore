@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T01:49:53.287Z",
+  "runDate": "2026-01-29T01:52:05.202Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "prayer-for-the-french-republic-2024",
+    "showFilter": "book-of-mormon-2011",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 27,
-    "failed": 25,
+    "processed": 24,
+    "failed": 29,
     "skipped": 0,
-    "successRate": "51.9%"
+    "successRate": "45.3%"
   },
   "tierBreakdown": {
     "playwright": 3,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 4,
-    "archive": 19
+    "archive": 17
   },
   "statistics": {
-    "tier1Attempts": 12,
+    "tier1Attempts": 15,
     "tier1Success": 0,
-    "tier2Attempts": 12,
-    "tier2Success": 1,
-    "tier3Attempts": 11,
+    "tier2Attempts": 15,
+    "tier2Success": 0,
+    "tier3Attempts": 15,
     "tier3Success": 1,
-    "tier4Attempts": 31,
-    "tier4Success": 10,
-    "totalFailed": 9,
-    "scrapingBeeCreditsUsed": 50
+    "tier4Attempts": 39,
+    "tier4Success": 8,
+    "totalFailed": 13,
+    "scrapingBeeCreditsUsed": 30
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -50,18 +50,15 @@
     "harmony-2023/nysr--sandy-macdonald.json",
     "harmony-2023/talkinbroadway--matthew-murray.json",
     "harmony-2023/washpost--peter-marks.json",
-    "prayer-for-the-french-republic-2024/newyorker--helen-shaw.json",
-    "prayer-for-the-french-republic-2024/nytg--joe-dziemianowicz.json",
-    "prayer-for-the-french-republic-2024/nytimes--jesse-green.json",
-    "prayer-for-the-french-republic-2024/variety--daniel-dand8217addario.json",
-    "prayer-for-the-french-republic-2024/nydailynews--chris-jones.json",
-    "prayer-for-the-french-republic-2024/nydailynews--chris.json",
-    "prayer-for-the-french-republic-2024/observer--david-cote.json",
-    "prayer-for-the-french-republic-2024/observer--rex-reed.json",
-    "prayer-for-the-french-republic-2024/wsj--charles-isherwood.json",
-    "prayer-for-the-french-republic-2024/cititour--brian-scott-lipton.json",
-    "prayer-for-the-french-republic-2024/nysr--frank-scheck.json",
-    "prayer-for-the-french-republic-2024/nysr--roma-torre.json"
+    "book-of-mormon-2011/hollywood-reporter--unknown.json",
+    "book-of-mormon-2011/variety--unknown.json",
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "book-of-mormon-2011/chicagotribune--unknown.json",
+    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+    "book-of-mormon-2011/latimes--unknown.json",
+    "book-of-mormon-2011/ny-1--roma-torre.json",
+    "book-of-mormon-2011/the-village-voice--michael-musto.json",
+    "book-of-mormon-2011/toronto-star--richard-ouzounian.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -80,15 +77,19 @@
     "harmony-2023/theatrely--michael-appler.json",
     "harmony-2023/stageandcinema--matthew-murray.json",
     "harmony-2023/usatoday--charles-isherwood.json",
-    "prayer-for-the-french-republic-2024/hollywood-reporter--david-rooney.json",
-    "prayer-for-the-french-republic-2024/nytg--david-gordon.json",
-    "prayer-for-the-french-republic-2024/variety--aramide-tinubu.json",
-    "prayer-for-the-french-republic-2024/variety--jesse-green.json",
-    "prayer-for-the-french-republic-2024/vulture--helen-shaw.json",
-    "prayer-for-the-french-republic-2024/theatermania--jesse-green.json",
-    "prayer-for-the-french-republic-2024/forward--jesse-green.json",
-    "prayer-for-the-french-republic-2024/talkinbroadway--matthew-murray.json",
-    "prayer-for-the-french-republic-2024/washpost--peter-marks.json"
+    "book-of-mormon-2011/variety--marilyn-stasio.json",
+    "book-of-mormon-2011/vulture--jesse-green.json",
+    "book-of-mormon-2011/ew--thom-geier.json",
+    "book-of-mormon-2011/guardian--brian-logan.json",
+    "book-of-mormon-2011/newsday--linda-winer.json",
+    "book-of-mormon-2011/theatermania--charles-isherwood.json",
+    "book-of-mormon-2011/theatermania--david-finkle.json",
+    "book-of-mormon-2011/wsj--terry-teachout.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/dailybeast--john-anderson.json",
+    "book-of-mormon-2011/the-philadelphia-inquirer--howard-shapiro.json",
+    "book-of-mormon-2011/usatoday--elysa-gardner.json",
+    "book-of-mormon-2011/washpost--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -96,14 +97,12 @@
       "harmony-2023/nysr--david-finkle.json",
       "harmony-2023/nysr--sandy-macdonald.json"
     ],
-    "scrapingbee": [
-      "prayer-for-the-french-republic-2024/cititour--brian-scott-lipton.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [
       "harmony-2023/observer--jesse-green.json",
       "harmony-2023/observer--rex-reed.json",
       "harmony-2023/chicagotribune--chris-jones.json",
-      "prayer-for-the-french-republic-2024/observer--rex-reed.json"
+      "book-of-mormon-2011/the-village-voice--michael-musto.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
@@ -115,16 +114,14 @@
       "harmony-2023/amny--matt-windman.json",
       "harmony-2023/talkinbroadway--matthew-murray.json",
       "harmony-2023/washpost--peter-marks.json",
-      "prayer-for-the-french-republic-2024/newyorker--helen-shaw.json",
-      "prayer-for-the-french-republic-2024/nytg--joe-dziemianowicz.json",
-      "prayer-for-the-french-republic-2024/nytimes--jesse-green.json",
-      "prayer-for-the-french-republic-2024/variety--daniel-dand8217addario.json",
-      "prayer-for-the-french-republic-2024/nydailynews--chris-jones.json",
-      "prayer-for-the-french-republic-2024/nydailynews--chris.json",
-      "prayer-for-the-french-republic-2024/observer--david-cote.json",
-      "prayer-for-the-french-republic-2024/wsj--charles-isherwood.json",
-      "prayer-for-the-french-republic-2024/nysr--frank-scheck.json",
-      "prayer-for-the-french-republic-2024/nysr--roma-torre.json"
+      "book-of-mormon-2011/hollywood-reporter--unknown.json",
+      "book-of-mormon-2011/variety--unknown.json",
+      "book-of-mormon-2011/backstage--david-sheward.json",
+      "book-of-mormon-2011/chicagotribune--unknown.json",
+      "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+      "book-of-mormon-2011/latimes--unknown.json",
+      "book-of-mormon-2011/ny-1--roma-torre.json",
+      "book-of-mormon-2011/toronto-star--richard-ouzounian.json"
     ]
   }
 }
