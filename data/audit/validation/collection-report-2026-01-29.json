@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T15:57:17.504Z",
+  "runDate": "2026-01-29T15:58:04.269Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 5,
+    "maxReviews": 10,
     "priority": "all",
-    "showFilter": "our-town-2024",
+    "showFilter": "grey-house-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 65,
-    "failed": 202,
+    "processed": 66,
+    "failed": 205,
     "skipped": 0,
-    "successRate": "24.3%"
+    "successRate": "24.4%"
   },
   "tierBreakdown": {
     "playwright": 10,
-    "scrapingbee": 6,
+    "scrapingbee": 7,
     "brightdata": 7,
     "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 5,
+    "tier1Attempts": 9,
     "tier1Success": 0,
-    "tier2Attempts": 5,
-    "tier2Success": 0,
-    "tier3Attempts": 5,
+    "tier2Attempts": 9,
+    "tier2Success": 1,
+    "tier3Attempts": 8,
     "tier3Success": 0,
-    "tier4Attempts": 11,
-    "tier4Success": 0,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 0
+    "tier4Attempts": 16,
+    "tier4Success": 1,
+    "totalFailed": 8,
+    "scrapingBeeCreditsUsed": 40
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -99,7 +99,8 @@
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
     "suffs-2024/the-times--nancy-durrant.json",
-    "mj-2022/usatoday--david-rooney.json"
+    "mj-2022/usatoday--david-rooney.json",
+    "grey-house-2023/cititour--brian-scott-lipton.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -299,11 +300,14 @@
     "mj-2022/talkinbroadway--john-olson.json",
     "mj-2022/talkinbroadway--matthew-murray.json",
     "mj-2022/usatoday--charles-isherwood.json",
-    "our-town-2024/hollywood-reporter--david-rooney.json",
-    "our-town-2024/nytimes--pulitzer-prize-jesse-green.json",
-    "our-town-2024/variety--frank-rizzo.json",
-    "our-town-2024/variety--peter-debruge.json",
-    "our-town-2024/vulture--jackson-mchenry.json"
+    "grey-house-2023/hollywood-reporter--angie-han.json",
+    "grey-house-2023/hollywood-reporter--david-rooney.json",
+    "grey-house-2023/newyorker--dan-stahl.json",
+    "grey-house-2023/variety--charles-isherwood.json",
+    "grey-house-2023/variety--peter-marks.json",
+    "grey-house-2023/vulture--helen-shaw.json",
+    "grey-house-2023/observer--david-cote.json",
+    "grey-house-2023/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -324,7 +328,8 @@
       "lempicka-2024/cititour--brian-scott-lipton.json",
       "stranger-things-2024/thestage--dave-fargnoli.json",
       "queen-versailles-2025/ew--dalton-ross.json",
-      "queen-versailles-2025/latimes--charles-mcnulty.json"
+      "queen-versailles-2025/latimes--charles-mcnulty.json",
+      "grey-house-2023/cititour--brian-scott-lipton.json"
     ],
     "brightdata": [
       "harmony-2023/observer--jesse-green.json",
