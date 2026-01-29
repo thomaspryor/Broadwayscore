@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T02:36:18.328Z",
+  "runDate": "2026-01-29T02:37:59.398Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "queen-versailles-2025",
+    "showFilter": "purlie-victorious-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 33,
-    "failed": 32,
+    "processed": 37,
+    "failed": 31,
     "skipped": 0,
-    "successRate": "50.8%"
+    "successRate": "54.4%"
   },
   "tierBreakdown": {
     "playwright": 6,
-    "scrapingbee": 2,
-    "brightdata": 3,
-    "archive": 22
+    "scrapingbee": 3,
+    "brightdata": 4,
+    "archive": 24
   },
   "statistics": {
-    "tier1Attempts": 7,
+    "tier1Attempts": 11,
     "tier1Success": 2,
-    "tier2Attempts": 5,
-    "tier2Success": 0,
-    "tier3Attempts": 5,
-    "tier3Success": 0,
-    "tier4Attempts": 14,
-    "tier4Success": 5,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 40
+    "tier2Attempts": 9,
+    "tier2Success": 1,
+    "tier3Attempts": 8,
+    "tier3Success": 1,
+    "tier4Attempts": 17,
+    "tier4Success": 7,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 60
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -61,13 +61,17 @@
     "spamalot-2023/nysr--sandy-macdonald.json",
     "spamalot-2023/slantmagazine--dan-rubins.json",
     "spamalot-2023/washpost--peter-marks.json",
-    "queen-versailles-2025/ew--dalton-ross.json",
-    "queen-versailles-2025/nydailynews--chris-jones.json",
-    "queen-versailles-2025/nydailynews--chris.json",
-    "queen-versailles-2025/advertisement--jonathan-mandell.json",
-    "queen-versailles-2025/latimes--charles-mcnulty.json",
-    "queen-versailles-2025/latimes--charlesmcnulty.json",
-    "queen-versailles-2025/nysr--david-finkle.json"
+    "purlie-victorious-2023/nyt-theater--jonathan-mandell.json",
+    "purlie-victorious-2023/nytg--joe-dziemianowicz.json",
+    "purlie-victorious-2023/variety--aramide-tinubu.json",
+    "purlie-victorious-2023/vulture--sara-holdren.json",
+    "purlie-victorious-2023/ew--christian-holub.json",
+    "purlie-victorious-2023/observer--david-cote.json",
+    "purlie-victorious-2023/chicagotribune--chris-jones.json",
+    "purlie-victorious-2023/nysr--steven-suskin.json",
+    "purlie-victorious-2023/slantmagazine--dan-rubins.json",
+    "purlie-victorious-2023/talkinbroadway--howard-miller.json",
+    "purlie-victorious-2023/washpost--peter-marks.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -97,11 +101,10 @@
     "spamalot-2023/wsj--charles-isherwood.json",
     "spamalot-2023/wsj--charles.json",
     "spamalot-2023/talkinbroadway--matthew-murray.json",
-    "queen-versailles-2025/vulture--sara-holdren-and-jesse-david-fox.json",
-    "queen-versailles-2025/vulture--sara-holdren.json",
-    "queen-versailles-2025/oneminutecritic--matthew-wexler.json",
-    "queen-versailles-2025/slantmagazine--dan-rubins.json",
-    "queen-versailles-2025/washpost--naveen-kumar.json"
+    "purlie-victorious-2023/nytimes--jesse-green.json",
+    "purlie-victorious-2023/guardian--jesse-hassenger.json",
+    "purlie-victorious-2023/nydailynews--chris-jones.json",
+    "purlie-victorious-2023/nydailynews--chris.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -109,17 +112,19 @@
       "harmony-2023/nysr--david-finkle.json",
       "harmony-2023/nysr--sandy-macdonald.json",
       "spamalot-2023/nysr--melissa-rose-bernardo.json",
-      "queen-versailles-2025/advertisement--jonathan-mandell.json",
-      "queen-versailles-2025/nysr--david-finkle.json"
+      "purlie-victorious-2023/nyt-theater--jonathan-mandell.json",
+      "purlie-victorious-2023/nytg--joe-dziemianowicz.json"
     ],
     "scrapingbee": [
       "spamalot-2023/cititour--brian-scott-lipton.json",
-      "spamalot-2023/chicagotribune--chris-jones.json"
+      "spamalot-2023/chicagotribune--chris-jones.json",
+      "purlie-victorious-2023/ew--christian-holub.json"
     ],
     "brightdata": [
       "harmony-2023/observer--jesse-green.json",
       "harmony-2023/observer--rex-reed.json",
-      "harmony-2023/chicagotribune--chris-jones.json"
+      "harmony-2023/chicagotribune--chris-jones.json",
+      "purlie-victorious-2023/washpost--peter-marks.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
@@ -139,11 +144,13 @@
       "spamalot-2023/nysr--sandy-macdonald.json",
       "spamalot-2023/slantmagazine--dan-rubins.json",
       "spamalot-2023/washpost--peter-marks.json",
-      "queen-versailles-2025/ew--dalton-ross.json",
-      "queen-versailles-2025/nydailynews--chris-jones.json",
-      "queen-versailles-2025/nydailynews--chris.json",
-      "queen-versailles-2025/latimes--charles-mcnulty.json",
-      "queen-versailles-2025/latimes--charlesmcnulty.json"
+      "purlie-victorious-2023/variety--aramide-tinubu.json",
+      "purlie-victorious-2023/vulture--sara-holdren.json",
+      "purlie-victorious-2023/observer--david-cote.json",
+      "purlie-victorious-2023/chicagotribune--chris-jones.json",
+      "purlie-victorious-2023/nysr--steven-suskin.json",
+      "purlie-victorious-2023/slantmagazine--dan-rubins.json",
+      "purlie-victorious-2023/talkinbroadway--howard-miller.json"
     ]
   }
 }
