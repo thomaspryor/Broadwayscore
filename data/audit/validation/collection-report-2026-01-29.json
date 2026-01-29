@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T05:16:48.513Z",
+  "runDate": "2026-01-29T05:28:19.460Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "an-enemy-of-the-people-2024",
+    "showFilter": "book-of-mormon-2011",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 45,
-    "failed": 76,
+    "processed": 48,
+    "failed": 87,
     "skipped": 0,
-    "successRate": "37.2%"
+    "successRate": "35.6%"
   },
   "tierBreakdown": {
     "playwright": 6,
     "scrapingbee": 4,
-    "brightdata": 6,
-    "archive": 29
+    "brightdata": 5,
+    "archive": 33
   },
   "statistics": {
-    "tier1Attempts": 17,
+    "tier1Attempts": 14,
     "tier1Success": 0,
-    "tier2Attempts": 17,
+    "tier2Attempts": 14,
     "tier2Success": 0,
-    "tier3Attempts": 17,
-    "tier3Success": 1,
+    "tier3Attempts": 14,
+    "tier3Success": 0,
     "tier4Attempts": 32,
-    "tier4Success": 0,
-    "totalFailed": 16,
-    "scrapingBeeCreditsUsed": 40
+    "tier4Success": 1,
+    "totalFailed": 14,
+    "scrapingBeeCreditsUsed": 50
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -79,7 +79,10 @@
     "stranger-things-2024/nytg--kyle-turner.json",
     "stranger-things-2024/londontheatre--marianka-swain.json",
     "stranger-things-2024/thestage--dave-fargnoli.json",
-    "an-enemy-of-the-people-2024/talkinbroadway--matthew-murray.json"
+    "the-outsiders-2024/nytg--joe-dziemianowicz.json",
+    "the-outsiders-2024/thewrap--robert-hofler.json",
+    "the-outsiders-2024/washpost--elisabeth-vincentelli.json",
+    "book-of-mormon-2011/washpost--unknown.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -142,22 +145,33 @@
     "stranger-things-2024/wsj--charles-isherwood.json",
     "stranger-things-2024/theatrely--olivia-clement.json",
     "stranger-things-2024/tickertv--cheryl-king.json",
-    "an-enemy-of-the-people-2024/hollywood-reporter--angie-han.json",
-    "an-enemy-of-the-people-2024/nytg--david-gordon.json",
-    "an-enemy-of-the-people-2024/variety--aramide-tinubu.json",
-    "an-enemy-of-the-people-2024/variety--peter-marks.json",
-    "an-enemy-of-the-people-2024/vulture--helen-shaw.json",
-    "an-enemy-of-the-people-2024/guardian--adrian-horton.json",
-    "an-enemy-of-the-people-2024/nydailynews--chris-jones.json",
-    "an-enemy-of-the-people-2024/nydailynews--chris.json",
-    "an-enemy-of-the-people-2024/theatermania--jesse-green.json",
-    "an-enemy-of-the-people-2024/wsj--terry-teachout.json",
-    "an-enemy-of-the-people-2024/backstage--suzt-evans.json",
-    "an-enemy-of-the-people-2024/bergen-record--robert-feldberg.json",
-    "an-enemy-of-the-people-2024/bloomberg--andnbspjeremy-gerard.json",
-    "an-enemy-of-the-people-2024/philadelphia-inquirer--howard-shapiro.json",
-    "an-enemy-of-the-people-2024/washpost--naveen-kumar.json",
-    "an-enemy-of-the-people-2024/washpost--peter-marks.json"
+    "the-outsiders-2024/hollywood-reporter--angie-han.json",
+    "the-outsiders-2024/hollywood-reporter--david-rooney.json",
+    "the-outsiders-2024/nytimes--jesse-green.json",
+    "the-outsiders-2024/ew--emlyn-travis.json",
+    "the-outsiders-2024/nydailynews--chris-jones.json",
+    "the-outsiders-2024/nypost--johnny-oleksinski.json",
+    "the-outsiders-2024/theatermania--david-gordon.json",
+    "the-outsiders-2024/timeout--adam-feldman.json",
+    "the-outsiders-2024/wsj--charles-isherwood.json",
+    "the-outsiders-2024/amny--matt-windman.json",
+    "the-outsiders-2024/dailybeast--tim-teeman.json",
+    "the-outsiders-2024/rollingstone--brittany-spanos.json",
+    "the-outsiders-2024/talkinbroadway--walter-bilderback.json",
+    "book-of-mormon-2011/variety--marilyn-stasio.json",
+    "book-of-mormon-2011/vulture--jesse-green.json",
+    "book-of-mormon-2011/ew--thom-geier.json",
+    "book-of-mormon-2011/guardian--brian-logan.json",
+    "book-of-mormon-2011/newsday--linda-winer.json",
+    "book-of-mormon-2011/theatermania--charles-isherwood.json",
+    "book-of-mormon-2011/theatermania--david-finkle.json",
+    "book-of-mormon-2011/wsj--terry-teachout.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "book-of-mormon-2011/dailybeast--john-anderson.json",
+    "book-of-mormon-2011/the-philadelphia-inquirer--howard-shapiro.json",
+    "book-of-mormon-2011/the-village-voice--michael-musto.json",
+    "book-of-mormon-2011/usatoday--elysa-gardner.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -179,8 +193,7 @@
       "harmony-2023/observer--rex-reed.json",
       "harmony-2023/chicagotribune--chris-jones.json",
       "lempicka-2024/nyt-theater--jonathan-mandell.json",
-      "moulin-rouge-2019/observer--rex-reed.json",
-      "an-enemy-of-the-people-2024/talkinbroadway--matthew-murray.json"
+      "moulin-rouge-2019/observer--rex-reed.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
@@ -211,7 +224,11 @@
       "lempicka-2024/slantmagazine--dan-rubins.json",
       "lempicka-2024/washpost--philip-kennicott.json",
       "moulin-rouge-2019/theater-news-online--jeremy-gerard.json",
-      "stranger-things-2024/nytg--kyle-turner.json"
+      "stranger-things-2024/nytg--kyle-turner.json",
+      "the-outsiders-2024/nytg--joe-dziemianowicz.json",
+      "the-outsiders-2024/thewrap--robert-hofler.json",
+      "the-outsiders-2024/washpost--elisabeth-vincentelli.json",
+      "book-of-mormon-2011/washpost--unknown.json"
     ]
   }
 }
