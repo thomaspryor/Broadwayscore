@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "“Clutter – physical, emotional – is the subject of Theresa Rebeck’s new Broadway play ‘I Need That’, a comedy-drama that stars Danny DeVito works mightily and with increasing futility to stuff with laughs and meaning.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 23,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
   "sources": [
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“There’s a certain kind of numbness that sets in when you’re stuck in a theater and you realize that the characters up onstage are going to keep playing the same scene, over and over again, for the rest of the evening.”\n\nRead more"
+  "showScoreExcerpt": "“There’s a certain kind of numbness that sets in when you’re stuck in a theater and you realize that the characters up onstage are going to keep playing the same scene, over and over again, for the rest of the evening.”\n\nRead more",
+  "llmScore": {
+    "score": 23,
+    "confidence": "high",
+    "range": {
+      "low": 15.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 13,
+      "music": null,
+      "performances": 40,
+      "direction": 18
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's a cynicism at work when a show doesn't do more than outline its characters, then dares you to notice or care",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "That perfunctory quality — a feeling of being put together quickly out of easy parts — pervades I Need That",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Sometimes a play reviews itself",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic delivers a scathing review that systematically dismantles the play's script, characters, and execution, with only minimal praise for DeVito's familiar persona, clearly advising against seeing it. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the script and character development while acknowledging some appeal in the performances, but ultimately advises against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T05:23:27.391Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
