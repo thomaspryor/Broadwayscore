@@ -9,13 +9,66 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": "While the Emcee adores all of the Kit Kat Club’s endlessly talented ensemble, it’s easy to see why he holds a special fondness for the cabaret’s headliner, Sally Bowles. Rankin is nothing short of spectacular as the ostentatious performer, knowing when turn on her character's charming nature and when to pull back the curtain to reveal a weariness that makes it feel as if life's hardships have been weighing on her shoulders for centuries. Still, when the curtain lifts and the spotlight beams down",
   "bwwThumb": "Up",
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 94,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rankin is nothing short of spectacular",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "jaw-droppingly gorgeous from start to finish",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "celebrated take on the legendary musical",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong superlatives throughout ('spectacular', 'jaw-droppingly gorgeous') with praise for both lead performance and overall production quality, indicating clear recommendation despite incomplete excerpt. | GPT-4o-mini: The review expresses strong admiration for the performances and direction, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:03:19.087Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
