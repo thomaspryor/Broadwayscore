@@ -61,20 +61,20 @@
     "thumb": "Up",
     "components": {
       "book": 82,
-      "music": 80,
+      "music": null,
       "performances": 94,
-      "direction": 88
+      "direction": 90
     },
     "keyPhrases": [
       {
-        "quote": "Ten thousand performances later, it's still dazzling.",
+        "quote": "it's one of the great delights of Broadway in 2023 that the cast and crew of Chicago are still performing like it's opening night",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "it's one of the great delights of Broadway in 2023 that the cast and crew of Chicago are still performing like it's opening night",
+        "quote": "Ten thousand performances later, it's still dazzling",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
         "quote": "Chicago makes this a difficult position to maintain",
@@ -82,7 +82,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The reviewer expresses sustained enthusiasm throughout, praising performances, design, and the show's enduring relevance, culminating in calling it 'still dazzling' after ten thousand performances. | GPT-4o-mini: The review expresses unqualified enthusiasm for the performances and overall production quality, indicating a strong recommendation to see the show.",
+    "reasoning": "Claude: The critic expresses genuine surprise and delight at the production's sustained excellence after decades, concluding it's 'still dazzling' and challenges their own skepticism about long-running shows. | GPT-4o-mini: The review expresses unqualified enthusiasm for the performances and overall production quality, indicating a strong recommendation to see the show.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -92,7 +92,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:42:50.579Z",
+    "scoredAt": "2026-01-29T01:45:07.300Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -111,7 +111,7 @@
     "show-score",
     "dtli"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 92
+  "previousLlmScore": 92,
+  "rescoreCompletedAt": "2026-01-29T01:45:07.300Z"
 }

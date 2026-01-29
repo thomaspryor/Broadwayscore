@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"Does 'Hamilton' live up to all - any - of this hype? And does it need to? From my perspective, the answers are, respectively, a definite no and a solid yes...Though much has been made of the myriad musical and lyrical references that pockmark the evening, they're more about calling attention to themselves than contributing to a consistent texture or sensible narrative. To my reckoning they brand 'Hamilton,' even in its slightly altered, more precise uptown incarnation, as unsatisfying and unrealized dramatically, and a piece that's forever at war with itself.\"",
   "originalScore": null,
-  "assignedScore": 34,
+  "assignedScore": 61,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "textStatus": "complete",
@@ -18,56 +18,56 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 34,
-    "confidence": "medium",
+    "score": 61,
+    "confidence": "high",
     "range": {
-      "low": 25,
-      "high": 43
+      "low": 55,
+      "high": 67
     },
-    "bucket": "Pan",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 30,
-      "music": 40,
-      "performances": null,
-      "direction": null
+      "book": 50,
+      "music": 58,
+      "performances": 73,
+      "direction": 45
     },
     "keyPhrases": [
       {
-        "quote": "Does 'Hamilton' live up to all - any - of this hype? And does it need to? From my perspective, the answers are, respectively, a definite no and a solid yes",
-        "sentiment": "negative",
-        "strength": 4
+        "quote": "Does Hamilton live up to all—any—of this hype? And does it need to? From my perspective, the answers are, respectively, a definite no and a solid yes.",
+        "sentiment": "neutral",
+        "strength": 5
       },
       {
         "quote": "unsatisfying and unrealized dramatically, and a piece that's forever at war with itself",
         "sentiment": "negative",
-        "strength": 5
+        "strength": 4
       },
       {
-        "quote": "they're more about calling attention to themselves than contributing to a consistent texture or sensible narrative",
+        "quote": "locating one more rewarding and just plain better will take a season, tops",
         "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic explicitly states Hamilton doesn't live up to the hype and calls it 'unsatisfying and unrealized dramatically,' delivering a clear negative assessment of the show's fundamental qualities. | GPT-4o-mini: The review expresses strong dissatisfaction with the narrative and overall execution, indicating a clear rejection of the show.",
+    "reasoning": "Claude: The critic acknowledges Hamilton's cultural impact and improved performances but finds it dramatically unsatisfying, lacking innovation, and structurally flawed, suggesting other shows will surpass it quickly. | GPT-4o-mini: The review presents a mix of praise for the cast and cultural impact while criticizing the script and direction, leading to a conditional recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:21:56.701Z",
+    "scoredAt": "2026-01-29T01:58:19.965Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 30,
-    "scoreDelta": 8,
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -102,7 +102,7 @@
     "show-score",
     "web-search"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 34
+  "previousLlmScore": 34,
+  "rescoreCompletedAt": "2026-01-29T01:58:19.965Z"
 }

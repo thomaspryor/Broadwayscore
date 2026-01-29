@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "No matter how many improvements it has made, it is stuck with the foundational problems of the film. But the chance to see two theatrical masterminds go at it for a few hours is sufficient justification for the effort.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "Meh",
   "dtliUrl": null,
@@ -18,51 +18,56 @@
   "showScoreExcerpt": "The musical adaptation of the 1992 dark comedy starring Meryl Streep and Goldie Hawn has been transformed into a glitzy, effects-heavy spectacle that prioritizes visual dazzle over narrative coherence.",
   "needsScoring": true,
   "llmScore": {
-    "score": 39,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 30.5,
-      "high": 47.5
+      "low": 67.5,
+      "high": 80.5
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Up",
     "components": {
-      "book": 28,
-      "music": null,
-      "performances": null,
-      "direction": 43
+      "book": 63,
+      "music": 78,
+      "performances": 89,
+      "direction": 70
     },
     "keyPhrases": [
       {
-        "quote": "prioritizes visual dazzle over narrative coherence",
-        "sentiment": "negative",
+        "quote": "the chance to see two theatrical masterminds go at it for a few hours is sufficient justification for the effort",
+        "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "glitzy, effects-heavy spectacle",
+        "quote": "the show is a bit like that too: It keeps going despite being disconnected",
         "sentiment": "negative",
         "strength": 3
+      },
+      {
+        "quote": "Hilty and Simard are tireless, forever pulling vocal drama and line-reading surprises out of their Swarovski-encrusted imaginations",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic emphasizes that spectacle comes at the expense of storytelling fundamentals, suggesting a production that fails in its primary theatrical mission despite technical polish. | GPT-4o-mini: The review criticizes the adaptation for sacrificing narrative coherence for visual effects, indicating a clear negative stance on the production.",
+    "reasoning": "Claude: The critic praises the stellar lead performances and finds the show entertaining despite acknowledging significant structural flaws and disconnected plotting, ultimately recommending it for the performances alone. | GPT-4o-mini: The review expresses strong praise for the performances of Hilty and Simard while acknowledging some structural issues with the musical, leading to a positive overall recommendation.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T03:08:53.390Z",
+    "scoredAt": "2026-01-29T01:46:53.813Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 35,
-    "scoreDelta": 7,
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -74,7 +79,7 @@
   ],
   "bwwThumb": null,
   "designation": "Critics_Pick",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 39
+  "previousLlmScore": 39,
+  "rescoreCompletedAt": "2026-01-29T01:46:53.813Z"
 }

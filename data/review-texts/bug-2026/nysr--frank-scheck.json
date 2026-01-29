@@ -9,7 +9,7 @@
   "isFullReview": true,
   "bwwExcerpt": "When Bug was first seen Off-Broadway in 2004, it seemed prescient in its portrayal of mental illness and conspiracy theories. Now — after the world has gone collectively crazy with wacky notions about COVID, pedophile rings, vaccines, and 5G, among countless other things — Tracy Letts’ play practically feels quaint. Receiving its Broadway premiere in a Manhattan Theatre Club production in association with Steppenwolf Theatre Company, it nonetheless remains a grippingly unnerving thriller that feels like a waking nightmare.",
   "originalScore": "4/5",
-  "assignedScore": 64,
+  "assignedScore": 67,
   "source": "playwright-scraped",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Carrie-Coon-Namir-Smallwood-and-More-Star-in-BUG-on-Broadway-20260108",
   "scrapedAt": "2026-01-24T04:20:00.000Z",
@@ -21,23 +21,23 @@
   "textQuality": "full",
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 64,
+    "score": 67,
     "confidence": "high",
     "range": {
-      "low": 57.5,
-      "high": 70.5
+      "low": 60.5,
+      "high": 73.5
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 58,
+      "book": 68,
       "music": null,
-      "performances": 75,
-      "direction": 50
+      "performances": 78,
+      "direction": 55
     },
     "keyPhrases": [
       {
-        "quote": "it nonetheless remains a grippingly unnerving thriller that feels like a waking nightmare",
+        "quote": "grippingly unnerving thriller that feels like a waking nightmare",
         "sentiment": "positive",
         "strength": 4
       },
@@ -47,34 +47,36 @@
         "strength": 4
       },
       {
-        "quote": "His staging proves atypically lackluster, lacking the pacing and shock effects necessary",
-        "sentiment": "negative",
-        "strength": 4
+        "quote": "The disturbing play still manages to burrow its way into your brain and is likely to haunt your dreams",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: 4/5 star review with strong praise for Coon's performance and the play's unsettling power, but significant criticisms of direction, pacing, and the production losing impact compared to earlier versions. | GPT-4o-mini: The review presents a mixed perspective, praising the performances but criticizing the pacing and direction, leading to a conditional recommendation.",
+    "reasoning": "Claude: 4-star review that praises Coon's performance and the play's unsettling power but criticizes the direction, pacing issues, and feels the Broadway production diminishes the original's impact. | GPT-4o-mini: The review expresses appreciation for the performances, particularly Coon's, but highlights significant issues with pacing and direction, leading to a mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T15:47:17.774Z",
+    "scoredAt": "2026-01-29T01:40:11.127Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
+    "claudeScore": 65,
+    "openaiScore": 68,
     "scoreDelta": 3,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (67 → Flat) conflicts with aggregator thumbs (Up)"
+    ]
   },
   "bwwThumb": "Up",
   "sources": [
@@ -84,7 +86,7 @@
   "dtliThumb": "Meh",
   "dtliExcerpt": "Cromer, so masterful at directing low-key, character-based dramas, doesn’t deliver the goods here. His staging proves atypically lackluster, lacking the pacing and shock effects necessary to fully realize the play’s Grand Guignol elements despite the copious amounts of gore. It doesn’t help that the theater, while one of Broadway’s smallest, feels too large for the claustrophobic proceedings, even though Takeshi Kata’s suitably grungy, compressed set takes up only a portion of the stage. The disturbing play still manages to burrow its way into your brain and is likely to haunt your dreams for nights afterwards. But it’s hard to escape the feeling that on Broadway, Bug has lost some of its bite.",
   "showScoreExcerpt": null,
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 64
+  "previousLlmScore": 64,
+  "rescoreCompletedAt": "2026-01-29T01:40:11.127Z"
 }

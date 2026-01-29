@@ -9,63 +9,63 @@
   "isFullReview": true,
   "showScoreExcerpt": "The show is so strong and enjoyable...Gray dances off with it.",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 84,
   "source": "show-score",
   "textQuality": "full",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 84,
+    "confidence": "high",
     "range": {
-      "low": 73.5,
+      "low": 77.5,
       "high": 90.5
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": 86,
-      "direction": null
+      "book": 73,
+      "music": 88,
+      "performances": 87,
+      "direction": 90
     },
     "keyPhrases": [
       {
-        "quote": "The show is so strong and enjoyable",
+        "quote": "rises above the sum of its parts. It creeps under your skin and stays there so ably that in the theater, you can actually see the cult following develop in real time",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "Gray dances off with it",
+        "quote": "this show is, in the most literal sense of the word, breathtaking",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "Gray dances off with it.",
-        "sentiment": "positive",
-        "strength": 4
+        "quote": "The metaphor is a little bit incoherent. The narrative is a little bit shaggy, and some of the characters are a little bit flat",
+        "sentiment": "negative",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: Clear positive language about both the show overall and a standout performance, but extremely brief excerpt limits confidence in full assessment. | GPT-4o-mini: The review expresses strong enjoyment and highlights a standout performance, indicating a clear recommendation.",
+    "reasoning": "Claude: Despite acknowledging structural flaws, the critic is clearly enthusiastic about the overall theatrical experience, praising the direction, performances, and emotional impact while calling it 'breathtaking.' | GPT-4o-mini: The review expresses strong enthusiasm for the production and its performances while acknowledging some narrative weaknesses, leading to a solid recommendation.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:19:12.625Z",
+    "scoredAt": "2026-01-29T01:55:16.404Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 82,
     "openaiScore": 85,
-    "scoreDelta": 7,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -104,7 +104,7 @@
   "fetchTier": 4,
   "archiveOrgTimestamp": "20240305125752",
   "archiveOrgUrl": "http://web.archive.org/web/20240305125752/https://www.vox.com/culture/2019/4/22/18508067/hadestown-review-broadway-anais-mitchell-rachel-chavkin",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 82
+  "previousLlmScore": 82,
+  "rescoreCompletedAt": "2026-01-29T01:55:16.404Z"
 }

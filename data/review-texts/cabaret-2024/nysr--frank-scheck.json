@@ -32,8 +32,8 @@
     "components": {
       "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 74
+      "performances": 84,
+      "direction": 75
     },
     "keyPhrases": [
       {
@@ -44,7 +44,7 @@
       {
         "quote": "has been given an undeniably powerful if somewhat imperfect staging",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       },
       {
         "quote": "you'll be ready glad you've come to Cabaret at the Kit Kat Club",
@@ -52,7 +52,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: 4/5 stars with strong praise for lead performances (especially Redmayne, Rankin, Neuwirth) and overall production power, despite some reservations about staging concepts and one weak performance. | GPT-4o-mini: The review expresses strong praise for the performances and overall production while noting some conceptual issues, leading to a solid positive recommendation.",
+    "reasoning": "Claude: 4-star review with consistent praise for lead performances and overall production, despite noting some imperfections in staging and one weak performance. | GPT-4o-mini: The review expresses strong praise for the performances, particularly Redmayne and Neuwirth, while acknowledging some conceptual staging issues, leading to a solid positive recommendation overall.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -62,7 +62,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T15:47:33.493Z",
+    "scoredAt": "2026-01-29T01:41:55.825Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -71,8 +71,8 @@
     "claudeScore": 78,
     "openaiScore": 80,
     "scoreDelta": 2,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
@@ -81,7 +81,7 @@
     "playwright-scraped",
     "bww-roundup"
   ],
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 79
+  "previousLlmScore": 79,
+  "rescoreCompletedAt": "2026-01-29T01:41:55.825Z"
 }

@@ -9,25 +9,25 @@
   "isFullReview": true,
   "dtliExcerpt": "At the heart of “Bug” is a romantic craving—to be with someone and not be judged for your craziest thoughts. It’s a play about painkillers of all kinds, but also about how much easier grief is to handle when it’s reimagined as a battle to be won. Terrible things may be happening to you and your partner, but you’re at the center of it, together. Even in an era in which paranoia has become the default setting, “Bug” feels more pungent, more punishing, and—for all its perversity—more crushing than similar stories, precisely because it’s about how people “catch feelings,” not just ideas.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Carrie-Coon-Namir-Smallwood-and-More-Star-in-BUG-on-Broadway-20260108",
   "dtliThumb": "Up",
   "bwwExcerpt": "In Coon's openhearted, subtly joyful portrayal, Agnes is not a broken person who is tricked into faith; she is someone who makes a series of choices to get something she needs, a glue to fix a broken world. In her final monologue, this all becomes clear: it's liberating to see a pattern in your pain...",
   "llmScore": {
-    "score": 82,
+    "score": 83,
     "confidence": "medium",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 73,
+      "high": 93
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": 82,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 88,
+      "direction": 80
     },
     "keyPhrases": [
       {
@@ -36,37 +36,37 @@
         "strength": 4
       },
       {
-        "quote": "precisely because it's about how people 'catch feelings,' not just ideas",
+        "quote": "Coon, who is Letts's wife, builds an Agnes who, despite her fragility and naïveté, also comes across as a sharp, observant woman",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Even in an era in which paranoia has become the default setting",
-        "sentiment": "neutral",
+        "quote": "In Cromer's spare, intelligent production, the set hovers inside an inky blackness",
+        "sentiment": "positive",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic praises the play's unique emotional depth and distinguishes it favorably from similar works, suggesting strong appreciation for the material's psychological complexity and impact. | GPT-4o-mini: The review expresses strong appreciation for the themes and emotional depth of the play, indicating a clear recommendation despite a lack of explicit endorsement.",
+    "reasoning": "Claude: The critic offers sustained, thoughtful praise for the production's intelligence, Coon's exceptional performance, and the play's contemporary relevance, with only minor reservations about casting choices. | GPT-4o-mini: The review expresses strong praise for the performances and direction while acknowledging some thematic depth, leading to a solid recommendation.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:58:03.655Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:39:53.177Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "openaiScore": 88,
+    "scoreDelta": 10,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
@@ -86,7 +86,7 @@
   "extractedGrade": "B",
   "bwwThumb": "Up",
   "showScoreExcerpt": null,
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 82
+  "previousLlmScore": 82,
+  "rescoreCompletedAt": "2026-01-29T01:39:53.177Z"
 }

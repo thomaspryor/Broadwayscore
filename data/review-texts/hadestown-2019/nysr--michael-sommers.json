@@ -27,9 +27,9 @@
     "thumb": "Flat",
     "components": {
       "book": 50,
-      "music": 81,
-      "performances": 71,
-      "direction": 80
+      "music": 80,
+      "performances": 68,
+      "direction": 75
     },
     "keyPhrases": [
       {
@@ -43,12 +43,12 @@
         "strength": 3
       },
       {
-        "quote": "brilliantly staged and designed, and there's no denying the infernal red-hot charms of the jazzy, jumping, blues-streaked score",
+        "quote": "there's no denying the infernal red-hot charms of the jazzy, jumping, blues-streaked score",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic praises the production values and score highly but finds fundamental flaws in the story and emotional resonance, resulting in a qualified, lukewarm recommendation that positions it as decent but not essential. | GPT-4o-mini: The review highlights strong staging and music but points out significant flaws in the book and emotional resonance, leading to a mixed recommendation.",
+    "reasoning": "Claude: The critic praises the staging, design, and score while noting significant flaws in the story, character development, and lead performance, ultimately giving a qualified recommendation as 'among the better attractions' in a weak season. | GPT-4o-mini: The review acknowledges strong music and staging but highlights significant issues with the book and emotional resonance, leading to a mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -58,7 +58,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T15:48:18.039Z",
+    "scoredAt": "2026-01-29T01:53:27.751Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -76,7 +76,7 @@
     "playwright-scraped",
     "bww-roundup"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 67
+  "previousLlmScore": 67,
+  "rescoreCompletedAt": "2026-01-29T01:53:27.751Z"
 }

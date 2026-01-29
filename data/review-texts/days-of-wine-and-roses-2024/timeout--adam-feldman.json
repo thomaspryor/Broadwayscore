@@ -11,7 +11,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
@@ -23,62 +23,62 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 64,
-    "confidence": "high",
+    "score": 75,
+    "confidence": "medium",
     "range": {
-      "low": 57.5,
-      "high": 70.5
+      "low": 67,
+      "high": 83
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 68,
-      "performances": 70,
-      "direction": null
+      "book": 75,
+      "music": 79,
+      "performances": 89,
+      "direction": 81
     },
     "keyPhrases": [
       {
-        "quote": "Guettel's score has the feel of a chamber opera",
+        "quote": "If Days and Wine and Roses isn't exactly galvanizing—it's too classy for that—it is effectively sober",
         "sentiment": "neutral",
-        "strength": 2
+        "strength": 4
       },
       {
-        "quote": "This is demanding stuff, both dramatically and musical",
-        "sentiment": "neutral",
+        "quote": "Both are superb: Playing 'two people stranded at sea,' they navigate their characters' desperate highs and lows...with depth, grit and vocal expertise",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the result is ambitious, artful and musically sophisticated",
+        "sentiment": "positive",
         "strength": 3
-      },
-      {
-        "quote": "eschewing strong melodies in favor of moment-to-moment expression",
-        "sentiment": "negative",
-        "strength": 2
       }
     ],
-    "reasoning": "Claude: This excerpt focuses on musical analysis without clear recommendation signals, describing the score as challenging and lacking strong melodies while acknowledging its artistic ambitions. | GPT-4o-mini: The review indicates a complex musical score that may appeal to some but lacks strong melodies, leading to a mixed recommendation.",
+    "reasoning": "Claude: The review appreciates the artistic ambition and exceptional performances but finds the show emotionally distant and not galvanizing, suggesting respect rather than enthusiasm. | GPT-4o-mini: The review expresses strong praise for the performances and musical sophistication while noting some limitations in emotional impact, leading to a positive recommendation overall.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:34:31.806Z",
+    "scoredAt": "2026-01-29T01:46:08.069Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "scoreDelta": 3,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "claudeScore": 72,
+    "openaiScore": 78,
+    "scoreDelta": 6,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 64
+  "previousLlmScore": 64,
+  "rescoreCompletedAt": "2026-01-29T01:46:08.069Z"
 }

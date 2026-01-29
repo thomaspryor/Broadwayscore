@@ -9,58 +9,63 @@
   "isFullReview": true,
   "showScoreExcerpt": "Diverse casting choices morph these characters iconic, universal allegories.",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 82,
   "source": "show-score",
   "textQuality": "full",
   "sourceMethod": "playwright",
   "scoreStatus": "TO_BE_CALCULATED",
   "scoreSource": null,
   "llmScore": {
-    "score": 68,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 60.5,
-      "high": 75.5
+      "low": 73.5,
+      "high": 90.5
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
-      "music": null,
-      "performances": 70,
-      "direction": null
+      "music": 82,
+      "performances": 85,
+      "direction": 75
     },
     "keyPhrases": [
       {
-        "quote": "Diverse casting choices morph these characters iconic, universal allegories",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "Diverse casting choices morph these characters iconic, universal allegories.",
+        "quote": "The energy was dynamic and fresh, and the performances were absolutely beautiful. I left ready to sing it again.",
         "sentiment": "positive",
         "strength": 4
+      },
+      {
+        "quote": "sang the roof off the building and was an absolutely spellbinding Persephone",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the awkwardness of his dance moves was quite distracting",
+        "sentiment": "negative",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: Single fragment praising casting choices suggests mild positivity but lacks context for overall recommendation strength. | GPT-4o-mini: The review highlights a positive aspect of the casting but lacks detail on other elements, leading to a mixed-positive recommendation.",
+    "reasoning": "Claude: Despite some critical observations about individual performances and changes from the original, the reviewer expresses clear enthusiasm for the production's fresh energy, praises most performances highly, and leaves wanting more. | GPT-4o-mini: The review expresses strong admiration for the performances and the fresh energy of the production, despite some mixed feelings about specific roles.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:18:19.029Z",
+    "scoredAt": "2026-01-29T01:53:58.156Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 70,
-    "scoreDelta": 5,
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -79,7 +84,7 @@
     }
   ],
   "fetchTier": 1,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 68
+  "previousLlmScore": 68,
+  "rescoreCompletedAt": "2026-01-29T01:53:58.156Z"
 }

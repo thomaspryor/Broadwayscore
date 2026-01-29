@@ -9,47 +9,47 @@
   "isFullReview": true,
   "showScoreExcerpt": "With a decade-long peripatetic journey of development and furbishing, 'Hadestown' has finally ignited on Broadway.",
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 94,
   "source": "show-score",
   "textQuality": "full",
   "sourceMethod": "playwright",
   "scoreStatus": "TO_BE_CALCULATED",
   "scoreSource": null,
   "llmScore": {
-    "score": 83,
+    "score": 94,
     "confidence": "high",
     "range": {
-      "low": 75.5,
-      "high": 90.5
+      "low": 87.5,
+      "high": 100
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 88,
+      "music": 95,
+      "performances": 93,
+      "direction": 94
     },
     "keyPhrases": [
       {
-        "quote": "has finally ignited on Broadway",
+        "quote": "The wait was worth every minute",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "decade-long peripatetic journey of development and furbishing",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "works like an hallucination you may never want to end",
+        "sentiment": "positive",
+        "strength": 5
       },
       {
-        "quote": "finally ignited on Broadway",
+        "quote": "It's music that's alternately seductive, mesmerising and exhilarating, adjectives that, of course, describe the entire Hadestown experience",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The phrase 'finally ignited' suggests strong success after a long development process, indicating positive recommendation despite the brief excerpt. | GPT-4o-mini: The review indicates a strong positive sentiment about the show's arrival on Broadway, suggesting it is worth seeing.",
+    "reasoning": "Claude: Unqualified enthusiasm throughout with superlative language ('spectacular performances', 'supreme entertainment', 'heavenly heights') and no meaningful criticisms, culminating in the declaration that the musical qualities describe 'the entire Hadestown experience.' | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, praising the performances, direction, and music, indicating it as a must-see experience.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
@@ -57,15 +57,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:17:24.805Z",
+    "scoredAt": "2026-01-29T01:52:54.992Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": 85,
-    "scoreDelta": 5,
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -84,7 +84,7 @@
     }
   ],
   "fetchTier": 1,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 83
+  "previousLlmScore": 83,
+  "rescoreCompletedAt": "2026-01-29T01:52:54.992Z"
 }

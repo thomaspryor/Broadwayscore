@@ -9,61 +9,61 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"In the unending battle between sincerity and snark, Iâm afraid I have to call this particular showdown a draw.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:59:44.368Z",
   "llmScore": {
-    "score": 62,
-    "confidence": "medium",
+    "score": 64,
+    "confidence": "high",
     "range": {
-      "low": 53.5,
+      "low": 57.5,
       "high": 70.5
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": 53,
-      "music": 68,
-      "performances": 74,
-      "direction": 63
+      "music": 70,
+      "performances": 79,
+      "direction": 58
     },
     "keyPhrases": [
       {
-        "quote": "sets a musical about the Cold War at garish, sometimes glorious, war with itself",
+        "quote": "In the unending battle between sincerity and snark, I'm afraid I have to call this particular showdown a draw.",
         "sentiment": "neutral",
-        "strength": 3
+        "strength": 5
       },
       {
-        "quote": "a lumpy but often sweetly sonorous mess that many ardent fans love mostly for a handful of songs",
-        "sentiment": "negative",
+        "quote": "He's ridiculously good in those minutes, in which all of the show's arch conceit falls away and the production stands proud in the glitzy, high-theater melodrama of Chess at its purest.",
+        "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "some of the show's Brechtian self-awareness works quite well, giving Chess a giddy shiver of the prescient or the eternal",
-        "sentiment": "positive",
-        "strength": 3
+        "quote": "There's a strange, undermining, conflicted nature to Mayer's project, a push and pull between eras and customs.",
+        "sentiment": "negative",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review acknowledges both successful elements (performances, some directorial choices) and significant problems (dated material, structural issues), with no clear recommendation emerging. | GPT-4o-mini: The review presents a mixed perspective, highlighting both engaging elements and significant flaws, leading to a conditional recommendation.",
+    "reasoning": "Claude: The critic finds the production fundamentally conflicted between ironic commentary and sincere musical theater, praising the performances while criticizing the directorial concept that undermines them. | GPT-4o-mini: The review presents a mix of praise for performances and style but highlights significant issues with direction and script, leading to a conditional recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:59:32.357Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:43:25.524Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 58,
+    "claudeScore": 62,
     "openaiScore": 65,
-    "scoreDelta": 7,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -82,7 +82,7 @@
   ],
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 62
+  "previousLlmScore": 62,
+  "rescoreCompletedAt": "2026-01-29T01:43:25.524Z"
 }

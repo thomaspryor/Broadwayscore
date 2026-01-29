@@ -19,37 +19,37 @@
   "scoreConfidence": "medium",
   "llmScore": {
     "score": 89,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 80.5,
+      "high": 97.5
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 88,
-      "performances": null,
-      "direction": 90
+      "book": 90,
+      "music": 89,
+      "performances": 85,
+      "direction": 91
     },
     "keyPhrases": [
       {
-        "quote": "much greater triumph",
+        "quote": "Yes, Hamilton, concerning Founding Father Alexander Hamilton, has received near-unanimous raves and certainly deserves them.",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "seamless, sure-handed musical replete with stunning stage pictures",
+        "quote": "Take it from someone who's witnessed about 85% of the Broadway musicals of the last 50 years: Binkley's work may well be the best lighting I've ever seen in a musical.",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "Miranda puts eloquence in every mouth",
+        "quote": "So Miranda has become one of those comparatively rare musical theater writers who follows his first success (In the Heights) with a much greater triumph.",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: Strong unqualified praise calling Hamilton a 'triumph' superior to Miranda's previous success, with specific acclaim for writing, direction, and choreography. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting its direction and overall impact as a significant triumph in musical theater.",
+    "reasoning": "Claude: Despite the unconventional opening comparison to school productions, the critic clearly states Hamilton 'deserves' its unanimous raves, calls it Miranda's 'much greater triumph,' and praises every aspect from performances to technical elements with superlatives. | GPT-4o-mini: The review expresses strong admiration for the music, performances, and direction while acknowledging the show's significance, leading to a clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
@@ -59,15 +59,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:20:43.187Z",
+    "scoredAt": "2026-01-29T01:56:04.312Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
+    "claudeScore": 92,
+    "openaiScore": 85,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -85,7 +85,7 @@
     }
   ],
   "fetchTier": 1,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 89
+  "previousLlmScore": 89,
+  "rescoreCompletedAt": "2026-01-29T01:56:04.312Z"
 }

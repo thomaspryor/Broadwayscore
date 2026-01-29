@@ -26,12 +26,17 @@
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 92,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 88,
+      "music": 95,
+      "performances": 93,
+      "direction": 89
     },
     "keyPhrases": [
+      {
+        "quote": "one of the most joyful, kinetic, and extravagantly original musicals ever imagined for the stage",
+        "sentiment": "positive",
+        "strength": 5
+      },
       {
         "quote": "It's that strange and that spectacular, and you'd be crazy to miss it",
         "sentiment": "positive",
@@ -41,14 +46,9 @@
         "quote": "Miranda's singular gift for storytelling and wordplay makes even the Federalist Papers sound sexy",
         "sentiment": "positive",
         "strength": 4
-      },
-      {
-        "quote": "A",
-        "sentiment": "positive",
-        "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic gives an 'A' grade with unqualified enthusiasm ('spectacular') and an explicit strong recommendation ('you'd be crazy to miss it'), placing this firmly in rave territory. | GPT-4o-mini: The review expresses unqualified enthusiasm and a strong recommendation to see the show, indicating it is a must-see experience.",
+    "reasoning": "Claude: This is an unqualified rave with superlative language ('most joyful...extravagantly original musicals ever'), an A grade, and explicit recommendation ('you'd be crazy to miss it'). | GPT-4o-mini: The review expresses unqualified enthusiasm for the musical's originality, performances, and overall experience, indicating a strong recommendation to see it.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
@@ -58,7 +58,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:21:04.666Z",
+    "scoredAt": "2026-01-29T01:56:43.909Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -72,7 +72,6 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 95,
   "textWordCount": 707,
@@ -91,5 +90,6 @@
     "no_ending_punctuation"
   ],
   "archiveOrgTimestamp": "20250114125531",
-  "archiveOrgUrl": "http://web.archive.org/web/20250114125531/https://ew.com/article/2015/08/06/hamilton-ew-stage-review/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250114125531/https://ew.com/article/2015/08/06/hamilton-ew-stage-review/",
+  "rescoreCompletedAt": "2026-01-29T01:56:43.909Z"
 }

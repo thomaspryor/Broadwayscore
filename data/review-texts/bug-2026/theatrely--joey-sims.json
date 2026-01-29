@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Once that descent begins, though, it’s a perverse thrill to the end. Aided by a masterful set change (the decaying scenery is by Takeshi Kata, spookily lit by Heather Gilbert), Cromer expertly turns the dial up to 11 as Agnes becomes fully consumed by Peter’s conspiratorial mind. The late arrival of the mysterious Dr. Sweet, played with almost otherworldly strangeness by an excellent Randall Arney, elevates the proceedings to unnervingly heightened, wholly gripping heights. Even as his characters destroy their world and themselves, Letts never loses sight of the strange comfort in a good conspiracy theory.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T23:50:00.000Z",
@@ -22,19 +22,19 @@
   "textQuality": "full",
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 79,
+    "score": 78,
     "confidence": "high",
     "range": {
       "low": 73,
-      "high": 85
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": 75,
       "music": null,
-      "performances": 84,
-      "direction": 78
+      "performances": 81,
+      "direction": 79
     },
     "keyPhrases": [
       {
@@ -43,7 +43,7 @@
         "strength": 4
       },
       {
-        "quote": "Cromer expertly turns the dial up to 11 as Agnes becomes fully consumed by Peter's conspiratorial mind",
+        "quote": "wholly gripping heights",
         "sentiment": "positive",
         "strength": 4
       },
@@ -53,7 +53,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The review praises the performances (especially Smallwood), direction, and production values while noting some structural issues with pacing and tonal shifts, but ultimately finds the production gripping and effectively executed. | GPT-4o-mini: The review highlights strong performances and direction while acknowledging some weaknesses in the script and pacing, leading to a positive overall recommendation.",
+    "reasoning": "Claude: The critic praises the performances (especially Smallwood), direction, and the thrilling second act while noting some structural issues with pacing and tonal shifts - overall a clear positive recommendation despite minor reservations. | GPT-4o-mini: The review expresses clear praise for the performances and direction while acknowledging some issues with pacing and tonal shifts, leading to a positive recommendation overall.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -63,23 +63,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T15:47:27.146Z",
+    "scoredAt": "2026-01-29T01:40:28.033Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "openaiScore": 78,
+    "scoreDelta": 0,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": null,
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 79
+  "previousLlmScore": 79,
+  "rescoreCompletedAt": "2026-01-29T01:40:28.033Z"
 }

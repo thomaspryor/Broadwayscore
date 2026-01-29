@@ -10,60 +10,60 @@
   "showScoreExcerpt": "â...hard to dislike and ultimatelyâas a medical examiner might say of these womenâwithout a heartbeat.â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/death-becomes-her-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "source": "dtli",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "llmScore": {
-    "score": 44,
+    "score": 67,
     "confidence": "high",
     "range": {
-      "low": 37.5,
-      "high": 50.5
+      "low": 60.5,
+      "high": 73.5
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 58,
+      "music": 70,
+      "performances": 78,
+      "direction": 63
     },
     "keyPhrases": [
       {
-        "quote": "hard to dislike",
-        "sentiment": "positive",
-        "strength": 2
+        "quote": "Death Becomes Her fires on all cylinders, like a fine automobile that runs on ecologically dodgy fuel",
+        "sentiment": "neutral",
+        "strength": 4
       },
       {
-        "quote": "without a heartbeat",
+        "quote": "hard to dislike and ultimately—as a medical examiner might say of these women—without a heartbeat",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "ultimatelyâas a medical examiner might say of these womenâwithout a heartbeat",
+        "quote": "The surface level-focus of Death Becomes Her kept gnawing at me. It also stalls the show's second act",
         "sentiment": "negative",
-        "strength": 5
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review presents a damning critique disguised as mild praise, suggesting the show lacks emotional core despite being superficially pleasant. | GPT-4o-mini: The review suggests a lack of emotional impact despite some redeeming qualities, leading to a negative overall recommendation.",
+    "reasoning": "Claude: The critic appreciates the performances and technical elements but is frustrated by the show's lack of emotional depth and thematic exploration, resulting in a qualified mixed review that acknowledges entertainment value while critiquing substance. | GPT-4o-mini: The review expresses enjoyment of the performances and humor but critiques the lack of depth in the material, leading to a mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:16:15.749Z",
+    "scoredAt": "2026-01-29T01:47:35.617Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 45,
+    "claudeScore": 65,
+    "openaiScore": 68,
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
@@ -78,7 +78,7 @@
   ],
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 44
+  "previousLlmScore": 44,
+  "rescoreCompletedAt": "2026-01-29T01:47:35.617Z"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"The question asked by many who see 'Hamilton' is whether it is worth the investment of time and money. This reviewer's answer, 'Absolutely!'\"",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 95,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "textStatus": "complete",
@@ -18,56 +18,56 @@
   "scoreSource": "sentiment-indicator-positive",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 94,
+    "score": 95,
     "confidence": "high",
     "range": {
-      "low": 87.5,
+      "low": 90,
       "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
+      "book": 92,
+      "music": 95,
       "performances": null,
-      "direction": null
+      "direction": 90
     },
     "keyPhrases": [
       {
-        "quote": "This reviewer's answer, 'Absolutely!'",
+        "quote": "The question asked to many who see 'Hamilton' is whether it is worth the investment of time and money? This reviewer's answer, 'Absolutely!'",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "whether it is worth the investment of time and money",
-        "sentiment": "neutral",
-        "strength": 3
+        "quote": "The script and production have been called, 'exhilarating,' 'a theatrical watershed,' and 'sublime.'",
+        "sentiment": "positive",
+        "strength": 5
       },
       {
-        "quote": "Absolutely!",
+        "quote": "I can't wait until it comes to Cleveland this summer to see it again! (And, hopefully more than once!)",
         "sentiment": "positive",
         "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic provides an unqualified, enthusiastic recommendation with 'Absolutely!' in response to whether the show is worth seeing, indicating strong positive sentiment despite the brief review. | GPT-4o-mini: The review expresses unqualified enthusiasm and a strong recommendation to see the show.",
+    "reasoning": "Claude: The critic gives an unqualified endorsement with superlatives like 'sublime' and 'theatrical watershed,' explicitly states it's 'absolutely' worth the investment, and expresses enthusiasm to see it multiple times. | GPT-4o-mini: The review expresses unqualified enthusiasm for 'Hamilton', highlighting its groundbreaking nature and compelling storytelling, leading to a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:21:45.302Z",
+    "scoredAt": "2026-01-29T01:58:05.140Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 95,
     "openaiScore": 95,
-    "scoreDelta": 3,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -85,7 +85,7 @@
     }
   ],
   "fetchTier": 1,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 94
+  "previousLlmScore": 94,
+  "rescoreCompletedAt": "2026-01-29T01:58:05.140Z"
 }

@@ -10,65 +10,67 @@
   "bwwExcerpt": "In the end, it’s not “Gutenberg” the show but rather this odd coupling of comedic pals, both on stage and off, that delights. Hats off to them.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "dtli",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 65,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 60,
+      "high": 70
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": 85,
-      "direction": null
+      "book": 50,
+      "music": 50,
+      "performances": 83,
+      "direction": 65
     },
     "keyPhrases": [
       {
-        "quote": "delights",
+        "quote": "At first, all off the goings-on are entertaining in a crazy kind of way — until they become less and less so",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The real fun, however — and there is much of it — lies in simply watching Gad and Rannells run riot",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Hats off to them",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "it's not 'Gutenberg' the show but rather this odd coupling",
+        "quote": "In the end, it's not 'Gutenberg' the show but rather this odd coupling of comedic pals, both on stage and off, that delights",
         "sentiment": "neutral",
-        "strength": 3
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic explicitly praises the performers' chemistry and work while suggesting the material itself is less strong, resulting in a clear positive recommendation focused on the performances.",
+    "reasoning": "Claude: The critic clearly enjoys the star performances but finds the material itself weak and tiresome, creating a mixed recommendation that's worth seeing primarily for Gad and Rannells rather than the show itself. | GPT-4o-mini: The review highlights strong performances from Gad and Rannells but expresses significant disappointment in the book and music, leading to a mixed recommendation overall.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:11:37.116Z",
+    "scoredAt": "2026-01-29T01:51:14.666Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": null,
+    "claudeScore": 65,
+    "openaiScore": 65,
     "scoreDelta": 0,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (65 → Flat) conflicts with aggregator thumbs (Up)"
+    ]
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "\"The real fun, however — and there is much of it — lies in simply watching Gad and Rannells run riot, riff with each other, play with the audience, and just have a grand old time once again playing sweet, deluded dreamers...In the end, it’s not 'Gutenberg' the show but rather this odd coupling of comedic pals, both on stage and off, that delights. Hats off to them.\"",
@@ -77,7 +79,7 @@
   "sources": [
     "dtli"
   ],
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 78
+  "previousLlmScore": 78,
+  "rescoreCompletedAt": "2026-01-29T01:51:14.666Z"
 }

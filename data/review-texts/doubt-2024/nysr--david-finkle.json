@@ -11,62 +11,66 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 79,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 79,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 73.5,
+      "high": 90.5
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 76,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 88,
+      "direction": 83
     },
     "keyPhrases": [
       {
-        "quote": "it succeeds without a doubt",
+        "quote": "Assuring the revival's quality is director Scott Ellis, who elicits top-flight ensemble performances from the cast",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "a few doubts aside",
+        "quote": "it succeeds without a doubt, but, okay, a few doubts aside, that's still exactly what it does",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "As a result, it may be that Father Flynn's goodness in opposition to Sister Aloysius' inflexibility is a dramaturgical drawback",
         "sentiment": "negative",
-        "strength": 2
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic clearly states the production 'succeeds without a doubt' despite acknowledging minor reservations, indicating a solid positive recommendation. | GPT-4o-mini: The review indicates a strong overall success with minor reservations, suggesting a positive recommendation.",
+    "reasoning": "Claude: Despite some dramaturgical criticisms about character balance, the critic praises the performances, direction, and overall execution, concluding definitively that the revival 'succeeds without a doubt.' | GPT-4o-mini: The review expresses strong praise for the performances and direction while acknowledging some minor narrative shortcomings, leading to a solid recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:17:11.412Z",
+    "scoredAt": "2026-01-29T01:48:32.441Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "openaiScore": 85,
+    "scoreDelta": 7,
     "thumbsMatch": true,
     "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
   "textWordCount": 954,
@@ -88,5 +92,6 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240316135218",
-  "archiveOrgUrl": "http://web.archive.org/web/20240316135218/https://nystagereview.com/2024/03/07/doubt-john-patrick-shanleys-prize-winning-play-in-a-blessed-revival/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240316135218/https://nystagereview.com/2024/03/07/doubt-john-patrick-shanleys-prize-winning-play-in-a-blessed-revival/",
+  "rescoreCompletedAt": "2026-01-29T01:48:32.441Z"
 }

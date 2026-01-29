@@ -21,35 +21,35 @@
     "score": 95,
     "confidence": "high",
     "range": {
-      "low": 90,
+      "low": 89.5,
       "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
-      "music": null,
-      "performances": null,
-      "direction": 88
+      "book": 95,
+      "music": 95,
+      "performances": 92,
+      "direction": 94
     },
     "keyPhrases": [
-      {
-        "quote": "It's an event that hasn't been over-hyped",
-        "sentiment": "positive",
-        "strength": 5
-      },
       {
         "quote": "The show is spectacularly unique, an endlessly clever history lesson",
         "sentiment": "positive",
         "strength": 5
       },
       {
+        "quote": "it's his writing and dramatic imagination that lift 'Hamilton' to its exalted perch",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
         "quote": "Hamilton is just a really, really terrific show",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: Unqualified praise with superlatives like 'spectacularly unique' and 'really, really terrific', plus explicit statement that it 'hasn't been over-hyped' indicates highest recommendation level. | GPT-4o-mini: The review expresses unqualified enthusiasm for 'Hamilton', highlighting its uniqueness and compelling nature, indicating a strong recommendation to see the show.",
+    "reasoning": "Claude: Unqualified rave with superlatives like 'spectacularly unique,' 'exalted perch,' and 'really, really terrific show,' plus extensive praise for all creative elements without any meaningful caveats. | GPT-4o-mini: The review expresses unqualified enthusiasm for 'Hamilton', highlighting its uniqueness, strong performances, and overall excellence, leading to a high recommendation score.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
@@ -59,15 +59,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:21:28.034Z",
+    "scoredAt": "2026-01-29T01:57:22.848Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 95,
+    "claudeScore": 94,
     "openaiScore": 95,
-    "scoreDelta": 0,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -105,7 +105,7 @@
   "fetchTier": 4,
   "archiveOrgTimestamp": "20151018024712",
   "archiveOrgUrl": "http://web.archive.org/web/20151018024712/http://www.northjersey.com/arts-and-entertainment/theater/revolutionary-musical-fits-on-broadway-1.1388340",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 95
+  "previousLlmScore": 95,
+  "rescoreCompletedAt": "2026-01-29T01:57:22.848Z"
 }

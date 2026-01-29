@@ -9,61 +9,61 @@
   "isFullReview": true,
   "dtliExcerpt": "Lovers of ABBA may continue to think the score’s great. For the rest of us, the musical features a couple of treacly sweet love songs and a slew of ponderous anthems and percussive dirges driven by propulsive rhythms. Audial exhaustion sets in about halfway through act one. As for Strong’s new book, it’s even more confusing than Nelson’s rewrite, which never quite made sense of the story’s love triangle – or the show’s chess metaphor regarding the U.S. and the U.S.S.R. blowing each other up.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 35,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:59:48.065Z",
   "dtliThumb": "Down",
   "llmScore": {
-    "score": 25,
+    "score": 35,
     "confidence": "high",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 30,
+      "high": 40
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 20,
-      "music": 30,
-      "performances": null,
-      "direction": null
+      "book": 23,
+      "music": 40,
+      "performances": 73,
+      "direction": 35
     },
     "keyPhrases": [
       {
+        "quote": "Strong's new book, it's even more confusing than Nelson's rewrite, which never quite made sense",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
         "quote": "Audial exhaustion sets in about halfway through act one",
         "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "it's even more confusing than Nelson's rewrite, which never quite made sense",
-        "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "a slew of ponderous anthems and percussive dirges",
-        "sentiment": "negative",
-        "strength": 4
+        "quote": "the three leads are vocally super-strong",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic delivers harsh criticism of both the music (causing 'audial exhaustion') and book (calling it 'even more confusing'), with only minimal acknowledgment that ABBA fans might still enjoy it. | GPT-4o-mini: The review is overwhelmingly critical of the music and book, indicating a clear lack of recommendation for the show.",
+    "reasoning": "Claude: Despite praising the vocal performances, the critic systematically dismantles the book, music, and overall production with harsh criticism that far outweighs any positives. | GPT-4o-mini: The review expresses significant criticism of the book and overall narrative while acknowledging strong performances, leading to a clear negative recommendation.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:00:07.942Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:44:06.230Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 25,
+    "claudeScore": 35,
+    "openaiScore": 35,
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
@@ -108,7 +108,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 25
+  "previousLlmScore": 25,
+  "rescoreCompletedAt": "2026-01-29T01:44:06.230Z"
 }

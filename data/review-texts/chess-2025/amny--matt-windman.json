@@ -9,61 +9,61 @@
   "isFullReview": true,
   "dtliExcerpt": "After the revelatory 2023 revival of “Merrily We Roll Along,” which finally clarified another difficult 80s musical, there was hope that “Chess” might enjoy a similar breakthrough. This isn’t that breakthrough. But when the commentary dies down and the music takes over, the show soars, proving again why people keep trying to resurrect it. As drama, “Chess” remains a puzzle. As a concert, though, it can be thrilling—and in this production, that’s what ultimately wins.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "dtli",
   "dtliThumb": "Meh",
   "scrapedAt": "2026-01-23T22:07:45.212Z",
   "llmScore": {
-    "score": 69,
+    "score": 68,
     "confidence": "high",
     "range": {
-      "low": 63,
-      "high": 75
+      "low": 60.5,
+      "high": 75.5
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": 43,
       "music": 83,
-      "performances": null,
-      "direction": null
+      "performances": 77,
+      "direction": 58
     },
     "keyPhrases": [
       {
-        "quote": "This isn't that breakthrough",
-        "sentiment": "negative",
+        "quote": "As drama, 'Chess' remains a puzzle. As a concert, though, it can be thrilling—and in this production, that's what ultimately wins.",
+        "sentiment": "neutral",
         "strength": 4
       },
       {
-        "quote": "when the commentary dies down and the music takes over, the show soars",
+        "quote": "when the commentary dies down and the music takes over, the show soars, proving again why people keep trying to resurrect it",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "that's what ultimately wins",
-        "sentiment": "positive",
+        "quote": "This isn't that breakthrough. But when the commentary dies down and the music takes over, the show soars",
+        "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic acknowledges significant dramatic flaws but finds the musical elements thrilling enough to ultimately recommend, settling on a qualified positive assessment. | GPT-4o-mini: The review highlights a mix of thrilling musical moments but acknowledges significant shortcomings in the dramatic elements, leading to a mixed-positive recommendation.",
+    "reasoning": "Claude: The review acknowledges fundamental flaws in the show's structure and book while praising the performances and music, ultimately suggesting it works as a concert experience rather than traditional theater. | GPT-4o-mini: The review indicates that while the music and performances are strong, the book and overall coherence of the production are lacking, leading to a mixed-positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:59:37.688Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:43:03.233Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 68,
+    "claudeScore": 65,
     "openaiScore": 70,
-    "scoreDelta": 2,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -107,7 +107,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 69
+  "previousLlmScore": 69,
+  "rescoreCompletedAt": "2026-01-29T01:43:03.233Z"
 }

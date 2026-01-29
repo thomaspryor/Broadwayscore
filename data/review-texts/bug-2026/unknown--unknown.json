@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 28,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -32,38 +32,38 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 83,
-    "confidence": "medium",
+    "score": 28,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 93
+      "low": 20.5,
+      "high": 35.5
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Pan",
+    "thumb": "Down",
     "components": {
-      "book": 82,
+      "book": 48,
       "music": null,
-      "performances": 88,
-      "direction": 83
+      "performances": 58,
+      "direction": 18
     },
     "keyPhrases": [
       {
-        "quote": "Tracy Letts's Bug, making its Broadway debut three decades after its first performance, is a psychological thriller that has a timely prescience in David Cromer's riveting production",
-        "sentiment": "positive",
+        "quote": "Cromer's fundamental misreading—treating the play as conspiracy culture commentary rather than folie à deux tragedy—squanders that opportunity",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "this should have been the definitive production of a psychological horror masterpiece",
+        "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "Carrie Coon delivers a powerful performance",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Bug has emerged as both an acute psychological study of two damaged people inflicting damage on each other and also a parable for our age of heightened, often tribal paranoia",
-        "sentiment": "positive",
-        "strength": 4
+        "quote": "'Bug' deserves better than being reduced to timely metaphor. It deserves to devastate us",
+        "sentiment": "negative",
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The 4/5 star rating combined with consistent praise for performances ('powerful', 'riveting'), thoughtful analysis of the play's contemporary relevance, and positive assessment of production elements indicates a clear positive recommendation despite the dark subject matter. | GPT-4o-mini: The review expresses strong praise for the performances and direction, indicating a clear recommendation to see the show.",
+    "reasoning": "Claude: This is a scathing critique that systematically dismantles the production's directorial choices, calling it a 'fundamental misreading' that 'squanders' the play's power and reduces a masterpiece to failed sociology. | GPT-4o-mini: The review overwhelmingly criticizes the direction and interpretation of the play, leading to a clear recommendation against seeing it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -73,15 +73,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T05:25:51.715Z",
+    "scoredAt": "2026-01-29T01:40:41.446Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 88,
-    "scoreDelta": 10,
+    "claudeScore": 25,
+    "openaiScore": 30,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -91,7 +91,7 @@
     "show-score-playwright"
   ],
   "showScoreExcerpt": "\"Amid crafty scenic metamorphoses, blood, violence, and pyrotechnics, the show’s most special effects are performances by Coon and Smallwood.\"\n\nRead more",
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 83
+  "previousLlmScore": 83,
+  "rescoreCompletedAt": "2026-01-29T01:40:41.446Z"
 }

@@ -9,62 +9,62 @@
   "isFullReview": true,
   "showScoreExcerpt": "Tunefully delicious, theatrically tasty...While not its strongest feature, 'Hadestown''s book now...",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 87,
   "source": "show-score",
   "textQuality": "full",
   "sourceMethod": "playwright",
   "scoreSource": "extracted-strong-positive",
   "llmScore": {
-    "score": 75,
+    "score": 87,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 80.5,
+      "high": 93.5
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 60,
-      "music": 85,
-      "performances": null,
-      "direction": null
+      "book": 74,
+      "music": 89,
+      "performances": 90,
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "Tunefully delicious, theatrically tasty",
+        "quote": "this red-hot show has finally moved following its 2015 Off-Broadway debut",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "While not its strongest feature, 'Hadestown''s book now",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Tunefully delicious",
+        "quote": "tunefully delicious, theatrically tasty show",
         "sentiment": "positive",
         "strength": 4
+      },
+      {
+        "quote": "Judging by the unanimous standing ovation that greeted its conclusion...there are going to be hot times in old Hadestown for many nights to come",
+        "sentiment": "positive",
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The strong praise for the musical elements ('tunefully delicious') outweighs the mild criticism of the book, suggesting overall positive recommendation despite reservations. | GPT-4o-mini: The review expresses positive sentiments about the musical's qualities, suggesting a clear recommendation despite mentioning the book as not its strongest feature.",
+    "reasoning": "Claude: Enthusiastic review with vivid praise for performances, music, and production design, acknowledging previous reservations but celebrating the show's Broadway evolution with strong positive language throughout. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and music, with a positive shift in the perception of the book, leading to a clear recommendation to see the show.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:19:02.790Z",
+    "scoredAt": "2026-01-29T01:54:46.415Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 75,
-    "scoreDelta": 0,
+    "claudeScore": 85,
+    "openaiScore": 88,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -85,7 +85,7 @@
   "fetchTier": 1,
   "scoreConfidence": "medium",
   "extractedPhrase": "standing ovation",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 75
+  "previousLlmScore": 75,
+  "rescoreCompletedAt": "2026-01-29T01:54:46.415Z"
 }

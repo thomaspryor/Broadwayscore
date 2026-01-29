@@ -74,7 +74,7 @@
         "strength": 5
       }
     ],
-    "reasoning": "Claude: The reviewer gives unqualified praise with explicit recommendation language ('absolutely should not be missed'), consistently positive assessment of all elements, and celebration of the production's enduring quality. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting the performances and overall experience as exceptional, with a clear recommendation to see the show.",
+    "reasoning": "Claude: The reviewer gives unqualified praise throughout with multiple superlatives and explicitly states the show 'absolutely should not be missed,' indicating strong recommendation despite being a revival review. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and overall production quality, highlighting the show's enduring excellence and recommending it as a must-see.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -84,7 +84,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:42:37.876Z",
+    "scoredAt": "2026-01-29T01:44:56.079Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -98,7 +98,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 89
+  "previousLlmScore": 89,
+  "rescoreCompletedAt": "2026-01-29T01:44:56.079Z"
 }

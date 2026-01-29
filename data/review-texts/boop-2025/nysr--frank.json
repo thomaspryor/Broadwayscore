@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "And Mitchell handles everything with his usual slick, Broadway-style flair, filling the stage with so much energy that you get caught up in the sheer giddiness of it all.",
   "originalScore": "4/5",
-  "assignedScore": 71,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
@@ -36,38 +36,38 @@
   "scoreConfidence": "medium",
   "extractedStars": "3/5",
   "llmScore": {
-    "score": 71,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 77
+      "low": 67.5,
+      "high": 80.5
     },
     "bucket": "Mixed",
     "thumb": "Up",
     "components": {
       "book": 43,
       "music": 58,
-      "performances": 87,
-      "direction": 75
+      "performances": 88,
+      "direction": 73
     },
     "keyPhrases": [
       {
-        "quote": "But you know what? You'll have a hell of a good time anyway.",
+        "quote": "You'll have a hell of a good time anyway",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "She's single-handedly responsible for that fourth star you see in the box above this review.",
+        "quote": "She's single-handedly responsible for that fourth star you see in the box above this review",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "Boop! suffers from myriad problems, including a clunky book, generally unmemorable score, and cheap-looking production values.",
+        "quote": "Boop! suffers from myriad problems, including a clunky book, generally unmemorable score, and cheap-looking production values",
         "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Despite significant criticism of the book and score, the critic gives 4 stars and explicitly states audiences will have 'a hell of a good time,' with the lead performance earning extraordinary praise that elevates the overall experience. | GPT-4o-mini: The review highlights strong performances, particularly from Jasmine Amy Rogers, but criticizes the book and overall narrative, leading to a mixed-positive recommendation.",
+    "reasoning": "Claude: Four-star review that explicitly promises audiences will 'have a hell of a good time' despite acknowledging significant flaws in book and score, with the lead performance being so strong it elevates the entire production. | GPT-4o-mini: The review highlights strong performances, particularly by Jasmine Amy Rogers, while acknowledging significant flaws in the book and score, leading to a clear but qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -77,17 +77,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:43:33.439Z",
+    "scoredAt": "2026-01-29T01:36:29.068Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 72,
-    "openaiScore": 70,
-    "scoreDelta": 2,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
@@ -98,7 +98,7 @@
     "playwright-scraped"
   ],
   "bwwThumb": "Up",
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 71
+  "previousLlmScore": 71,
+  "rescoreCompletedAt": "2026-01-29T01:36:29.068Z"
 }

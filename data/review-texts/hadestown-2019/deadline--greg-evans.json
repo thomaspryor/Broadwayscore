@@ -9,45 +9,45 @@
   "isFullReview": false,
   "dtliExcerpt": "Broadway is doing some remarkable myth-making this season, or maybe myth-revising. Daniel Fish’s Oklahoma! is upending that great American folktale of the frontier. Aaron Sorkin’s adaptation of To Kill A Mockingbird is taking on the myth of its very own origins. And now Hadestown, the most thrilling new original musical of the season, is taking on the great grandfolk of all mythology, sending Orpheus and Eurydice straight to Hades via the irresistible rhythms of New Orleans jazz, sultry French Quarter gyrations and a cast no pantheon could have improved. Written by the immensely talented singer-songwriter Anaïs Mitchell – the musical began life as folk opera concept album, then was developed at New York Theatre Workshop – Hadestown is brought to remarkable life by director Rachel Chavkin, who does for the Quarter and hell what she did for Tolstoy’s Russia with 2016’s equally fine Natasha, Pierre &#038; the Great Comet of 1812.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:01:00.186Z",
   "dtliThumb": "Up",
   "bwwExcerpt": "Written by the immensely talented singer-songwriter Anaïs Mitchell - the musical began life as folk opera concept album, then was developed at New York Theatre Workshop - Hadestown is brought to remarkable life by director Rachel Chavkin, who does for the Quarter and hell what she did for Tolstoy's ...",
   "llmScore": {
-    "score": 89,
-    "confidence": "high",
+    "score": 76,
+    "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 67,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 90,
-      "performances": 88,
-      "direction": 93
+      "book": 65,
+      "music": 75,
+      "performances": 79,
+      "direction": 80
     },
     "keyPhrases": [
       {
-        "quote": "the most thrilling new original musical of the season",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "brought to remarkable life by director Rachel Chavkin",
+        "quote": "provides a Tiffany setting for Mitchell's work",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "a cast no pantheon could have improved",
+        "quote": "Hadestown is more enjoyable than Williams' tormenting vision",
         "sentiment": "positive",
-        "strength": 5
+        "strength": 3
+      },
+      {
+        "quote": "I didn't weep for E&O when he blew their escape plan in the end",
+        "sentiment": "negative",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: Strong superlative language calling it 'the most thrilling new original musical of the season' with praise for all creative elements and no caveats suggests clear enthusiastic recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm for Hadestown, highlighting its thrilling nature and remarkable direction, indicating a strong recommendation to see the show.",
+    "reasoning": "Claude: The critic praises the production design, performances, and staging as high-quality ('Tiffany setting') while finding the material pleasant but emotionally underwhelming, suggesting a solid but not deeply moving theatrical experience. | GPT-4o-mini: The review expresses clear enjoyment and praise for the production while acknowledging some personal detachment, leading to a strong but not unqualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -57,15 +57,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:02:35.968Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:52:21.321Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -82,7 +82,7 @@
   "textQuality": "full",
   "sourceMethod": "dtli",
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 89
+  "previousLlmScore": 89,
+  "rescoreCompletedAt": "2026-01-29T01:52:21.321Z"
 }

@@ -9,47 +9,47 @@
   "isFullReview": true,
   "dtliExcerpt": "The promise of an overwhelming theatrical event just never quite makes good on itself, certainly not with Rankin’s teary, intentionally overwrought delivery of the title song. We get it. Sally isn’t meant to be a big star. I’d still rather hear Liza.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "Meh",
   "textStatus": "complete",
   "textQuality": "full",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 39,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "high",
     "range": {
-      "low": 30.5,
-      "high": 47.5
+      "low": 70.5,
+      "high": 85.5
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
-      "music": 35,
-      "performances": 34,
-      "direction": null
+      "music": null,
+      "performances": 85,
+      "direction": 80
     },
     "keyPhrases": [
       {
-        "quote": "The promise of an overwhelming theatrical event just never quite makes good on itself",
-        "sentiment": "negative",
-        "strength": 4
+        "quote": "The final Broadway production of this crazy busy 2023-24 season is also one of its most exhilarating: Illinoise is a thrilling and absolutely gorgeous dance celebration",
+        "sentiment": "positive",
+        "strength": 5
       },
       {
-        "quote": "teary, intentionally overwrought delivery of the title song",
-        "sentiment": "negative",
-        "strength": 3
+        "quote": "Stereophonic, a masterpiece in its own smaller way",
+        "sentiment": "positive",
+        "strength": 5
       },
       {
-        "quote": "I'd still rather hear Liza",
-        "sentiment": "negative",
-        "strength": 4
+        "quote": "Suffs is enthralling, a smart, funny and beautifully sung musical that brings its chosen moment in history to life just as surely and confidently as Hamilton did for its",
+        "sentiment": "positive",
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The review expresses clear disappointment that the production fails to deliver on its theatrical promise, with specific criticism of the lead performance and an unfavorable comparison to Liza Minnelli. | GPT-4o-mini: The review expresses significant disappointment with the performance and overall production, leading to a clear negative recommendation.",
+    "reasoning": "Claude: This is a comprehensive review roundup showing consistent enthusiasm for multiple shows with superlative language like 'exhilarating,' 'masterpiece,' and 'enthralling,' indicating strong positive recommendations across the board. | GPT-4o-mini: The review expresses strong praise for the production's vitality and performances, indicating a clear recommendation despite some structural comments.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
@@ -57,15 +57,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:11:34.237Z",
+    "scoredAt": "2026-01-29T01:41:29.978Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 35,
-    "scoreDelta": 7,
+    "claudeScore": 75,
+    "openaiScore": 80,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -114,7 +114,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 39
+  "previousLlmScore": 39,
+  "rescoreCompletedAt": "2026-01-29T01:41:29.978Z"
 }

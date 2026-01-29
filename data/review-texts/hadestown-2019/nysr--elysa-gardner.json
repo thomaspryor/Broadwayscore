@@ -9,7 +9,7 @@
   "isFullReview": true,
   "bwwExcerpt": "For starters, Mitchell is a gifted tunesmith, and lyricist, who approaches musical theater with a clear, infectious sense of wonder. Her melodic savvy, if not entirely consistent over a run time of nearly two and a half hours with little spoken dialogue, is buttressed by an ear for piercing, haunting harmonies, abetted here by musical director and vocal arranger Liam Robinson. Moreover, Mitchell and, to her credit, Chavkin have mined a beautiful and theatrically resonant tale from their source material. If there are traces of the pretensions that marred Natasha in this heavily stylized production, the director and her lavishly talented design team remain in service to the story, which ties together the myths of Orpheus and Eurydice, respectively played by Reeve Carney and Eva Noblezada, and Hades and Persephone, played by Patrick Page and Amber Gray.",
   "originalScore": "4/5",
-  "assignedScore": 82,
+  "assignedScore": 81,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T06:25:00.000Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417",
@@ -17,28 +17,28 @@
   "textQuality": "full",
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 82,
+    "score": 81,
     "confidence": "medium",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 72,
+      "high": 90
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 82,
-      "music": 80,
-      "performances": 88,
-      "direction": 79
+      "book": 78,
+      "music": 86,
+      "performances": 85,
+      "direction": 78
     },
     "keyPhrases": [
       {
-        "quote": "this time, I'm happy to say, my skepticism proved less warranted",
+        "quote": "Mitchell is a gifted tunesmith, and lyricist, who approaches musical theater with a clear, infectious sense of wonder",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Mitchell and, to her credit, Chavkin have mined a beautiful and theatrically resonant tale from their source material",
+        "quote": "this time, I'm happy to say, my skepticism proved less warranted",
         "sentiment": "positive",
         "strength": 4
       },
@@ -48,7 +48,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Despite initial skepticism and some reservations about length and pretensions, the critic ultimately praises the story, performances, music, and design elements, concluding with uplifting language about the show's emotional impact. | GPT-4o-mini: The review expresses strong praise for the music and performances while acknowledging some stylistic issues, leading to a solid positive recommendation.",
+    "reasoning": "Claude: Despite initial skepticism based on the critic's dislike of the director's previous work, the review expresses clear appreciation for the music, performances, and overall production, concluding with praise for the show's ability to 'lift mortal spirits.' | GPT-4o-mini: The review expresses strong praise for the music and performances while acknowledging some reservations about the direction and style, leading to a solid positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -58,15 +58,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T15:48:11.129Z",
+    "scoredAt": "2026-01-29T01:53:21.261Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 77,
     "openaiScore": 85,
-    "scoreDelta": 7,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -76,7 +76,7 @@
     "playwright-scraped",
     "bww-roundup"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 82
+  "previousLlmScore": 82,
+  "rescoreCompletedAt": "2026-01-29T01:53:21.261Z"
 }

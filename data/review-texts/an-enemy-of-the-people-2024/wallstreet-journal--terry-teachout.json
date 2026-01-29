@@ -11,67 +11,66 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-2024",
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 39,
+  "assignedScore": 84,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 39,
+    "score": 84,
     "confidence": "high",
     "range": {
-      "low": 33,
-      "high": 45
+      "low": 77.5,
+      "high": 90.5
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 35,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 84,
+      "music": 85,
+      "performances": 83,
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "yet another attempt to update",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "smug 1882 satire",
-        "sentiment": "negative",
+        "quote": "Drew Barr has directed 'Lovers' with the deceptive simplicity of a fable",
+        "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "hypocritical small town",
-        "sentiment": "negative",
-        "strength": 2
+        "quote": "All you see in 'Lovers' are Mr. Friel's small-town characters, realized so fully (by Mr. Riordan and Ms. Salata in particular) that they give the impression of having been played by ordinary people",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "He has a great ear—and a great heart",
+        "sentiment": "positive",
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic dismisses this as 'yet another attempt' at updating Ibsen and describes the original play itself as 'smug,' indicating fundamental problems with both the adaptation and source material. | GPT-4o-mini: The review expresses significant skepticism about the adaptation and its execution, indicating a clear negative stance.",
+    "reasoning": "Claude: The critic offers sustained, detailed praise for the direction, performances, design, and especially Brian Friel's writing, describing the production with admiration and clear appreciation for its artistry. | GPT-4o-mini: The review expresses strong appreciation for the play's direction and character realization, indicating a clear recommendation despite some minor reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:10:09.604Z",
+    "scoredAt": "2026-01-29T01:36:09.840Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 40,
-    "scoreDelta": 2,
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 39,
   "textWordCount": 1360,
@@ -96,5 +95,6 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20130103115949",
-  "archiveOrgUrl": "http://web.archive.org/web/20130103115949/http://online.wsj.com/article/SB10000872396390443916104578022293994248074.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20130103115949/http://online.wsj.com/article/SB10000872396390443916104578022293994248074.html",
+  "rescoreCompletedAt": "2026-01-29T01:36:09.840Z"
 }

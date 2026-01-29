@@ -11,67 +11,66 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-2024",
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 84,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 60,
-    "confidence": "medium",
+    "score": 84,
+    "confidence": "high",
     "range": {
-      "low": 50,
-      "high": 70
+      "low": 77.5,
+      "high": 90.5
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 53,
+      "book": 75,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 85,
+      "direction": 87
     },
     "keyPhrases": [
       {
-        "quote": "Don't be put off by any grumbles about the conversational, tightened two-hour adaptation",
+        "quote": "this jagged fist of a revival proves with such ripping theatricality",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 5
       },
       {
-        "quote": "timely classic",
+        "quote": "Hughes, in his most muscular, richly ambiguous work since 'Doubt'",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       },
       {
-        "quote": "tosses off the occasional jarring anachronism",
-        "sentiment": "negative",
-        "strength": 3
+        "quote": "true to both the playwright and to theatergoers hungry for a play as wise about human nature as it is entertaining",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic defends the adaptation against criticism while acknowledging flaws, suggesting a mixed but slightly positive view of a problematic but worthwhile production. | GPT-4o-mini: The review expresses a mixed sentiment, acknowledging some strengths in adaptation while pointing out notable flaws, leading to a conditional recommendation.",
+    "reasoning": "Claude: The critic uses enthusiastic language like 'ripping theatricality' and 'jagged fist of a revival' while praising the direction, performances, and adaptation's faithfulness to Ibsen's vision, with only minor quibbles about occasional anachronisms. | GPT-4o-mini: The review expresses strong praise for the production's theatricality and performances, indicating a clear recommendation despite minor criticisms.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:09:32.739Z",
+    "scoredAt": "2026-01-29T01:35:54.329Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 55,
-    "openaiScore": 65,
-    "scoreDelta": 10,
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 60,
   "textWordCount": 431,
@@ -112,5 +111,6 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20210928130702",
-  "archiveOrgUrl": "http://web.archive.org/web/20210928130702/https://www.newsday.com/entertainment/theater/enemy-of-the-people-review-fine-ibsen-1.4043118"
+  "archiveOrgUrl": "http://web.archive.org/web/20210928130702/https://www.newsday.com/entertainment/theater/enemy-of-the-people-review-fine-ibsen-1.4043118",
+  "rescoreCompletedAt": "2026-01-29T01:35:54.329Z"
 }

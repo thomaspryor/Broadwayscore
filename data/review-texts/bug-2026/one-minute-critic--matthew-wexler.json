@@ -23,12 +23,17 @@
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 72,
+      "book": 70,
       "music": null,
-      "performances": 88,
-      "direction": 78
+      "performances": 85,
+      "direction": 75
     },
     "keyPhrases": [
+      {
+        "quote": "4 out of 5 stars",
+        "sentiment": "positive",
+        "strength": 4
+      },
       {
         "quote": "Coon leads a first-rate ensemble",
         "sentiment": "positive",
@@ -38,14 +43,9 @@
         "quote": "it's Coon and Smallwood's performances that make us question how far we'll go to not feel alone",
         "sentiment": "positive",
         "strength": 4
-      },
-      {
-        "quote": "4 out of 5 stars",
-        "sentiment": "positive",
-        "strength": 5
       }
     ],
-    "reasoning": "Claude: The reviewer gives clear praise for the lead performances and direction, awards 4/5 stars, and calls it a 'first-rate ensemble' with performances that 'get under your skin' - all indicating a strong positive recommendation. | GPT-4o-mini: The review expresses strong praise for the performances and direction, indicating a clear recommendation despite some thematic complexity.",
+    "reasoning": "Claude: The 4/5 star rating with consistent praise for the lead performances and direction, plus descriptive language about the production getting 'under your skin' indicates a clear positive recommendation. | GPT-4o-mini: The review expresses strong praise for the performances and direction while maintaining a positive overall recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -55,8 +55,8 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:58:20.921Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:40:22.012Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
@@ -76,7 +76,7 @@
   "originalScoreNormalized": 100,
   "scoreSource": "numeric-stars",
   "scoreExtractedFrom": "fullText",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 79
+  "previousLlmScore": 79,
+  "rescoreCompletedAt": "2026-01-29T01:40:22.012Z"
 }

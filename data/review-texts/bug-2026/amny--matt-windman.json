@@ -9,67 +9,69 @@
   "isFullReview": false,
   "dtliExcerpt": "Seen on Broadway, with greater polish and physical distance, “Bug” lands differently. The problem isn’t that “Bug” no longer makes sense. It’s that this time, I never fully went with it. I understood what the play was doing. I respected the craft. I appreciated the performances. But I didn’t surrender to the descent. Where the play once swept me into its fever dream, I remained aware, analytical, outside the experience. The bugs never got under my skin.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:59:30.842Z",
   "dtliThumb": "Meh",
   "bwwExcerpt": "Seen on Broadway, with greater polish and physical distance, “Bug” lands differently. The problem isn’t that “Bug” no longer makes sense. It’s that this time, I never fully went with it. I understood what the play was doing. I respected the craft. I appreciated the performances. But I didn’t surrend...",
   "llmScore": {
-    "score": 59,
+    "score": 68,
     "confidence": "high",
     "range": {
-      "low": 53,
-      "high": 65
+      "low": 63,
+      "high": 73
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": null,
+      "book": 75,
       "music": null,
-      "performances": 75,
-      "direction": 65
+      "performances": 81,
+      "direction": 63
     },
     "keyPhrases": [
       {
-        "quote": "I understood what the play was doing. I respected the craft. I appreciated the performances. But I didn't surrender to the descent.",
+        "quote": "intelligent, disciplined, and often absorbing—but rarely electrifying",
         "sentiment": "neutral",
         "strength": 4
       },
       {
-        "quote": "Where the play once swept me into its fever dream, I remained aware, analytical, outside the experience.",
+        "quote": "The problem isn't that 'Bug' no longer makes sense. It's that this time, I never fully went with it",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "The bugs never got under my skin.",
-        "sentiment": "negative",
-        "strength": 3
+        "quote": "I understood what the play was doing. I respected the craft. I appreciated the performances. But I didn't surrender to the descent",
+        "sentiment": "neutral",
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic acknowledges professional craft and performances but clearly states the production failed to engage them emotionally, indicating a mixed experience that's hard to recommend. | GPT-4o-mini: While the critic acknowledges strong performances and craftsmanship, they express a significant disconnect with the overall experience, leading to a mixed-positive recommendation.",
+    "reasoning": "Claude: The critic respects the craft and performances but finds the production emotionally distancing and less effective than previous versions, suggesting qualified appreciation rather than recommendation. | GPT-4o-mini: The review expresses appreciation for the performances and craft but notes a lack of emotional engagement and intensity, leading to a mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:57:47.121Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:39:16.693Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 60,
-    "scoreDelta": 2,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
+    "claudeScore": 68,
+    "openaiScore": 68,
+    "scoreDelta": 0,
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (68 → Flat) conflicts with aggregator thumbs (Up)"
+    ]
   },
   "textStatus": "complete",
   "textIssue": "too_short",
@@ -81,7 +83,7 @@
   "sourceMethod": "dtli",
   "bwwThumb": "Up",
   "showScoreExcerpt": null,
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 59
+  "previousLlmScore": 59,
+  "rescoreCompletedAt": "2026-01-29T01:39:16.693Z"
 }

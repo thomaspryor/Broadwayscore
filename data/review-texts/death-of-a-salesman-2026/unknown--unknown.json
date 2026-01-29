@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "\"The script is unchanged – and surprisingly accommodating to the fresh point of view...infusing the production with a legacy and identity all its own.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 54,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
@@ -29,38 +29,38 @@
   "textQuality": "full",
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 54,
+    "confidence": "high",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 47.5,
+      "high": 60.5
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 85,
+      "book": 50,
       "music": null,
-      "performances": 83,
-      "direction": 82
+      "performances": 70,
+      "direction": 45
     },
     "keyPhrases": [
       {
-        "quote": "we're given reams of new subtext about the anxiety, trauma, stress and stakes at hand",
-        "sentiment": "positive",
+        "quote": "Death of a Salesman is a disappointment in several ways",
+        "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "director Miranda Cromwell's production... is a pointed investigation of Black survival",
+        "quote": "These two formidable talents do give largely invigorating performances",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 3
       },
       {
-        "quote": "Not a lick of Miller's script has been altered, and yet, we're given reams of new subtext",
-        "sentiment": "positive",
+        "quote": "makes the three hour and ten minute running time – half an hour longer than the 2012 Broadway revival – feel overlong",
+        "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The review praises the production's fresh perspective on a classic text, highlighting how the casting and direction create new layers of meaning without changing Miller's script, indicating a strong positive recommendation for this innovative revival. | GPT-4o-mini: The review praises the production's contemporary relevance and performances while highlighting its innovative direction, indicating a strong recommendation despite some nuanced critiques.",
+    "reasoning": "Claude: The review explicitly calls the production 'a disappointment in several ways' despite praising the lead performances, criticizing the direction, pacing, and conceptual execution. | GPT-4o-mini: The review expresses mixed feelings, praising performances but highlighting significant issues with the production's historical context and direction.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -70,15 +70,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T23:24:14.018Z",
+    "scoredAt": "2026-01-29T01:47:47.313Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "claudeScore": 52,
+    "openaiScore": 55,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -87,7 +87,7 @@
   "sources": [
     "show-score-playwright"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 82
+  "previousLlmScore": 82,
+  "rescoreCompletedAt": "2026-01-29T01:47:47.313Z"
 }

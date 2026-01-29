@@ -9,45 +9,45 @@
   "isFullReview": true,
   "dtliExcerpt": "Which begs a question. If all you’re shooting for is the tired old metaphor that life is a game and the game is life, you might as well call your show Yahtzee! or Old Maid (no reflection on how Lea Michele’s character of Florence, the “genius strategist,” is criminally underused as a pawn of male players). Actually, Chutes’n’Ladders might suit this version best, what with the cast gamely trudging up and down David Rockwell’s American Bandstand set, while the characters’ fortunes rise and fall with librettist Danny Strong and director Michael Mayer pulling their strings.",
   "originalScore": "2/5",
-  "assignedScore": 47,
+  "assignedScore": 49,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T19:00:00.000Z",
   "dtliThumb": "Down",
   "textQuality": "full",
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 47,
+    "score": 49,
     "confidence": "high",
     "range": {
-      "low": 40.5,
-      "high": 53.5
+      "low": 43,
+      "high": 55
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": 38,
-      "music": 63,
-      "performances": 70,
-      "direction": 43
+      "music": 68,
+      "performances": 68,
+      "direction": 45
     },
     "keyPhrases": [
+      {
+        "quote": "play to a draw",
+        "sentiment": "negative",
+        "strength": 3
+      },
       {
         "quote": "the spectacle wears out its welcome long before the end of a near-three-hour running time",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "the promise of an effective staged Chess – if indeed it's a promise and not a chimera – remains stubbornly out of reach",
+        "quote": "the promise of an effective staged Chess - if indeed it's a promise and not a chimera - remains stubbornly out of reach",
         "sentiment": "negative",
         "strength": 5
-      },
-      {
-        "quote": "They put over the beloved classics with minimal melisma and maximal emotional connection",
-        "sentiment": "positive",
-        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic finds fundamental flaws in the concept, script, and execution while acknowledging strong performances, ultimately concluding this adaptation fails to solve Chess's inherent stageworthiness problems. | GPT-4o-mini: The review expresses significant disappointment with the script and overall execution while acknowledging some strong performances, leading to a mixed-negative recommendation.",
+    "reasoning": "Claude: The critic acknowledges strong performances and beloved music but delivers sustained criticism of the book, direction, and overall effectiveness, concluding that the production fails to solve the musical's fundamental staging problems. | GPT-4o-mini: The review presents a mixed view, highlighting strong performances and music while criticizing the script and overall execution, leading to a conditional recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -57,15 +57,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T15:47:48.992Z",
+    "scoredAt": "2026-01-29T01:43:37.443Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 48,
-    "scoreDelta": 3,
+    "claudeScore": 48,
+    "openaiScore": 50,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -74,7 +74,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 47
+  "previousLlmScore": 47,
+  "rescoreCompletedAt": "2026-01-29T01:43:37.443Z"
 }

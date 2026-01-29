@@ -29,14 +29,14 @@
     "bucket": "Mixed",
     "thumb": "Up",
     "components": {
-      "book": 53,
+      "book": 50,
       "music": 83,
-      "performances": 79,
+      "performances": 84,
       "direction": 73
     },
     "keyPhrases": [
       {
-        "quote": "that's enough to make the show a consistent pleasure, notwithstanding the lack of any bona fide surprises",
+        "quote": "that's enough to make the show a consistent pleasure",
         "sentiment": "positive",
         "strength": 4
       },
@@ -46,12 +46,12 @@
         "strength": 4
       },
       {
-        "quote": "Still, few people in the house are there for the story. They bought tickets to hear the great music and watch the thrilling dance",
+        "quote": "Bravura performances flow to the ear and eye from pretty much the entire company",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic clearly acknowledges the show's weak book but enthusiastically praises the music, dance, and performances, ultimately finding it a 'consistent pleasure' worth attending for its musical artistry. | GPT-4o-mini: The review highlights strong musical performances and dance but critiques the predictable and moralistic story, leading to a mixed-positive recommendation.",
+    "reasoning": "Claude: Despite significant criticism of the predictable and moralistic story, the critic finds the exceptional music and performances make it 'a consistent pleasure' and worth experiencing. | GPT-4o-mini: The review highlights strong performances and music but criticizes the predictability of the story, leading to a mixed-positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -61,7 +61,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:09:44.736Z",
+    "scoredAt": "2026-01-29T01:37:54.212Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -78,7 +78,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 71
+  "previousLlmScore": 71,
+  "rescoreCompletedAt": "2026-01-29T01:37:54.212Z"
 }

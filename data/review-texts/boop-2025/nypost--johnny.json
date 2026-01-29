@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "[Rogers] can do it all.&nbsp;As smiley, effervescent and, well, animated as t he actress is for most of the night, she&nbsp;finds power and emotional resonance in her 11 o’clock number “Something To Shout About.”",
   "originalScore": "A",
-  "assignedScore": 77,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": null,
@@ -51,38 +51,38 @@
   "archiveOrgTimestamp": "20250723113506",
   "archiveOrgUrl": "http://web.archive.org/web/20250723113506/https://nypost.com/2025/04/07/entertainment/boop-review-broadway-star-jasmine-amy-rogers-is-born-in-new-musical/",
   "llmScore": {
-    "score": 77,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 70.5,
-      "high": 83.5
+      "low": 67.5,
+      "high": 80.5
     },
-    "bucket": "Positive",
+    "bucket": "Mixed",
     "thumb": "Up",
     "components": {
       "book": 53,
       "music": 68,
-      "performances": 87,
+      "performances": 85,
       "direction": 75
     },
     "keyPhrases": [
-      {
-        "quote": "How refreshing to see, during this depressing season marred by A-list celebrities underdelivering for big bucks, a bona fide new stage star hoofing and belting with the best of 'em",
-        "sentiment": "positive",
-        "strength": 4
-      },
       {
         "quote": "I mostly enjoyed the bump-free ride to a happy ending",
         "sentiment": "positive",
         "strength": 3
       },
       {
-        "quote": "The basic and predictable book from writer Bob Martin is surely a nod to her short films",
+        "quote": "a fun if not fantastic musical",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "The basic and predictable book from writer Bob Martin",
         "sentiment": "negative",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: Despite criticizing the predictable book and underwhelming comic relief, the critic clearly enjoyed the show overall, praising Rogers' star-making performance, the production values, and describing it as a 'mostly enjoyable' experience with 'magical moments of stagecraft.' | GPT-4o-mini: The review expresses clear enjoyment of the performances, particularly Jasmine Amy Rogers, while acknowledging weaknesses in the book and overall concept, leading to a solid recommendation.",
+    "reasoning": "Claude: The critic acknowledges significant flaws in the book and plot but ultimately recommends the show based on Rogers' star-making performance and enjoyable entertainment value. | GPT-4o-mini: The review expresses clear enjoyment of the performances, particularly Jasmine Amy Rogers, while noting some weaknesses in the story and overall concept, leading to a strong but qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -92,17 +92,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:43:17.645Z",
+    "scoredAt": "2026-01-29T01:36:15.060Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 72,
     "openaiScore": 75,
     "scoreDelta": 3,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
@@ -117,7 +117,7 @@
   "originalScoreNormalized": 95,
   "scoreSource": "letter-grade",
   "scoreExtractedFrom": "fullText",
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 77
+  "previousLlmScore": 77,
+  "rescoreCompletedAt": "2026-01-29T01:36:15.060Z"
 }

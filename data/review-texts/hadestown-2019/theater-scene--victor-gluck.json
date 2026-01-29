@@ -9,30 +9,35 @@
   "isFullReview": true,
   "showScoreExcerpt": "'Hadestown' is probably the most exciting musical to be seen in New York at present...Miss it at your own peril",
   "originalScore": null,
-  "assignedScore": 95,
+  "assignedScore": 88,
   "source": "show-score",
   "textQuality": "full",
   "sourceMethod": "playwright",
   "scoreStatus": "TO_BE_CALCULATED",
   "scoreSource": null,
   "llmScore": {
-    "score": 95,
+    "score": 88,
     "confidence": "high",
     "range": {
-      "low": 90,
-      "high": 100
+      "low": 83,
+      "high": 93
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 78,
+      "music": 86,
+      "performances": 78,
+      "direction": 95
     },
     "keyPhrases": [
       {
-        "quote": "the most exciting musical to be seen in New York at present",
+        "quote": "The dazzling Broadway production of Anaïs Mitchell's musical Hadestown proves director/developer Rachel Chavkin to be a creative genius",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Hadestown is probably the most exciting musical to be seen in New York at present",
         "sentiment": "positive",
         "strength": 5
       },
@@ -40,31 +45,26 @@
         "quote": "Miss it at your own peril",
         "sentiment": "positive",
         "strength": 5
-      },
-      {
-        "quote": "'Hadestown' is probably the most exciting musical to be seen in New York at present",
-        "sentiment": "positive",
-        "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic declares this 'the most exciting musical' in New York and warns readers they'll regret missing it - unqualified superlatives with urgent recommendation language indicating a rave review. | GPT-4o-mini: The review expresses unqualified enthusiasm and a strong recommendation to see the show, indicating it is a must-see experience.",
+    "reasoning": "Claude: Despite specific criticisms of the lead characters being bland, the critic calls it 'probably the most exciting musical to be seen in New York' and warns 'Miss it at your own peril' - clear strong recommendation language. | GPT-4o-mini: The review expresses strong enthusiasm for the production's direction, design, and overall excitement, with only minor reservations about the lead performances.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:18:57.175Z",
+    "scoredAt": "2026-01-29T01:54:32.307Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 95,
-    "openaiScore": 95,
+    "claudeScore": 88,
+    "openaiScore": 88,
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
@@ -84,7 +84,7 @@
     }
   ],
   "fetchTier": 1,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 95
+  "previousLlmScore": 95,
+  "rescoreCompletedAt": "2026-01-29T01:54:32.308Z"
 }

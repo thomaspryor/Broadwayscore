@@ -63,36 +63,36 @@
       "book": null,
       "music": null,
       "performances": 85,
-      "direction": 80
+      "direction": 84
     },
     "keyPhrases": [
       {
-        "quote": "ravishing and mercilessly introspective production",
+        "quote": "Rebecca Frecknall's ravishing and mercilessly introspective production",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "grounded, gut-punching take on a disturbingly timely story",
+        "quote": "a grounded, gut-punching take on a disturbingly timely story",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Redmayne's remoteness drains some of the force",
+        "quote": "Redmayne's remoteness drains some of the force from what is otherwise a grounded, gut-punching take",
         "sentiment": "negative",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: Strong praise for the production design, performances (especially Rankin and Neuwirth), and director's vision, with only moderate criticism of Redmayne's performance choices. | GPT-4o-mini: The review highlights strong performances and direction while acknowledging some weaknesses, leading to a solid recommendation despite mixed elements.",
+    "reasoning": "Claude: The critic praises the production design, direction, and most performances with vivid enthusiasm ('ravishing', 'gut-punching'), with only measured criticism of Redmayne's performance style, indicating a clear positive recommendation despite minor reservations. | GPT-4o-mini: The review highlights strong performances and direction while noting some weaknesses in the narrative, leading to a positive overall recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:12:56.797Z",
+    "scoredAt": "2026-01-29T01:42:49.484Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -101,13 +101,15 @@
     "claudeScore": 82,
     "openaiScore": 80,
     "scoreDelta": 2,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (81 → Up) conflicts with aggregator thumbs (Flat)"
+    ]
   },
   "bwwThumb": "Meh",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 81
+  "previousLlmScore": 81,
+  "rescoreCompletedAt": "2026-01-29T01:42:49.484Z"
 }

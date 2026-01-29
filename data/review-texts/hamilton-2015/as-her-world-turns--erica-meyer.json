@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"What can I say that hasn't already been said about this lauded new musical, perhaps the best this art form has seen in decades? It lives up to the hype. It is indeed brilliant...Composer, lyricist, and star Lin-Manuel Miranda seamlessly blends musical theater and hip hop in a wholly original way...'Hamilton' is as epic as 'Les Mis' and as relevant as a Jay Z album. It is nothing less than revolutionary.\"",
   "originalScore": null,
-  "assignedScore": 97,
+  "assignedScore": 80,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "textStatus": "complete",
@@ -18,56 +18,56 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 97,
-    "confidence": "high",
+    "score": 80,
+    "confidence": "medium",
     "range": {
-      "low": 90.5,
-      "high": 100
+      "low": 70,
+      "high": 90
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 95,
-      "performances": null,
-      "direction": null
+      "book": 88,
+      "music": 82,
+      "performances": 88,
+      "direction": 83
     },
     "keyPhrases": [
       {
-        "quote": "perhaps the best this art form has seen in decades",
+        "quote": "What can I say that hasn't already been said about this lauded new musical, perhaps the best this art form has seen in decades? It lives up to the hype. It is indeed brilliant.",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "It is nothing less than revolutionary",
+        "quote": "Hamilton is as epic as Les Mis and as relevant as a Jay Z album. It is nothing less than revolutionary (no pun intended).",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "It lives up to the hype. It is indeed brilliant",
+        "quote": "Composer, lyricist, and star Lin-Manuel Miranda seamlessly blends musical theater and hip hop in a wholly original way",
         "sentiment": "positive",
-        "strength": 5
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Unqualified superlative praise calling it 'revolutionary,' 'brilliant,' and 'perhaps the best this art form has seen in decades' with no reservations whatsoever. | GPT-4o-mini: The review expresses unqualified enthusiasm and superlative praise, indicating a strong recommendation to see the show.",
+    "reasoning": "Claude: The reviewer calls Hamilton 'perhaps the best this art form has seen in decades,' declares it 'brilliant,' 'revolutionary,' and says it 'lives up to the hype' with unqualified enthusiasm and superlatives throughout. | GPT-4o-mini: The review expresses strong enthusiasm for several shows, particularly praising performances and direction, but also includes some negative feedback about specific productions, leading to a generally positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:20:22.538Z",
+    "scoredAt": "2026-01-29T01:55:40.007Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 95,
-    "openaiScore": 98,
-    "scoreDelta": 3,
+    "claudeScore": 85,
+    "openaiScore": 75,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -85,7 +85,7 @@
     }
   ],
   "fetchTier": 1,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 97
+  "previousLlmScore": 97,
+  "rescoreCompletedAt": "2026-01-29T01:55:40.007Z"
 }

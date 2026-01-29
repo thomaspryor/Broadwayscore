@@ -9,58 +9,63 @@
   "isFullReview": true,
   "showScoreExcerpt": "Usually, I only tell my enemies to go to hell, but, right now, I'm making an exception...",
   "originalScore": null,
-  "assignedScore": 18,
+  "assignedScore": 86,
   "source": "show-score",
   "textQuality": "full",
   "sourceMethod": "scrapingbee",
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 18,
+    "score": 86,
     "confidence": "medium",
     "range": {
-      "low": 5.5,
-      "high": 30.5
+      "low": 77,
+      "high": 95
     },
-    "bucket": "Pan",
-    "thumb": "Down",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 73,
+      "music": 92,
+      "performances": 88,
+      "direction": 86
     },
     "keyPhrases": [
       {
-        "quote": "Usually, I only tell my enemies to go to hell, but, right now, I'm making an exception",
-        "sentiment": "negative",
-        "strength": 4
+        "quote": "get thee down to the Walter Kerr Theatre where Anais Mitchell's incredibly moving and melodic musical, 'Hadestown,' is burning up the stage, bursting with ingenuity and intensity",
+        "sentiment": "positive",
+        "strength": 5
       },
       {
-        "quote": "go to hell",
-        "sentiment": "negative",
+        "quote": "may well not only turn out to be the true cult hit of this theatrical season, but it's likely to be a major contender at awards time",
+        "sentiment": "positive",
         "strength": 5
+      },
+      {
+        "quote": "the show's quasi-political commentary feels more than ever like an unnecessary digression... feels heavy-handed and also adds unwarranted length",
+        "sentiment": "negative",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The quote strongly suggests the critic is telling readers to avoid the show ('go to hell'), indicating a clear pan despite the incomplete excerpt. | GPT-4o-mini: The review's tone suggests a strong rejection of the show, indicating it should be avoided. | Note: Models differed by 15 points.",
+    "reasoning": "Claude: Despite criticisms of length and political elements, the reviewer enthusiastically recommends the show with superlatives about performances, music, and stagecraft, calling it a likely awards contender and urging people to see it. | GPT-4o-mini: The review expresses unqualified enthusiasm for the musical's performances, direction, and score, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:16:22.719Z",
+    "scoredAt": "2026-01-29T01:51:56.347Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 10,
-    "scoreDelta": 15,
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -85,7 +90,7 @@
     }
   ],
   "fetchTier": 2,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 18
+  "previousLlmScore": 18,
+  "rescoreCompletedAt": "2026-01-29T01:51:56.347Z"
 }

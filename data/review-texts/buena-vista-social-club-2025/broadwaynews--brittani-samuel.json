@@ -9,65 +9,67 @@
   "isFullReview": true,
   "dtliExcerpt": "Faults in the sometimes wooden acting from principal cast members (some of whom, to be fair, come from the music world) are eclipsed by the sonic brilliance of it all.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 48,
   "source": "dtli",
   "dtliThumb": "Meh",
   "scrapedAt": "2026-01-23T22:02:08.338Z",
   "llmScore": {
-    "score": 69,
-    "confidence": "medium",
+    "score": 48,
+    "confidence": "low",
     "range": {
-      "low": 60.5,
-      "high": 77.5
+      "low": 30.5,
+      "high": 65.5
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
-      "book": null,
+      "book": 30,
       "music": 85,
-      "performances": 48,
+      "performances": null,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "Faults in the sometimes wooden acting from principal cast members",
+        "quote": "skims over pre- and post-Revolution Cuban life",
         "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "vividly displays what came of it: incredible music",
+        "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "eclipsed by the sonic brilliance of it all",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "sonic brilliance",
-        "sentiment": "positive",
-        "strength": 5
+        "quote": "leaves history behind",
+        "sentiment": "negative",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: Despite clear criticism of performances, the critic suggests the musical strengths significantly outweigh the acting weaknesses, implying overall recommendation. | GPT-4o-mini: The review highlights significant strengths in the music but points out notable weaknesses in the performances, leading to a mixed-positive recommendation overall.",
+    "reasoning": "Claude: The review praises the music as 'incredible' but criticizes the book for skimming over important historical context, suggesting a flawed adaptation that doesn't fully succeed despite strong musical elements. | GPT-4o-mini: The review acknowledges the vibrant music but criticizes the lack of historical depth, leading to a mixed-positive recommendation. | Note: Models differed by 25 points.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:55:23.061Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:37:35.161Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 65,
-    "scoreDelta": 7,
+    "claudeScore": 35,
+    "openaiScore": 60,
+    "scoreDelta": 25,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 25 points (Claude: 35, OpenAI: 60)"
+    ]
   },
   "textStatus": "partial",
   "textIssue": "too_short",
@@ -82,7 +84,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 69
+  "previousLlmScore": 69,
+  "rescoreCompletedAt": "2026-01-29T01:37:35.161Z"
 }

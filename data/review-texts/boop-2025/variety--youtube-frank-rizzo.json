@@ -10,58 +10,63 @@
   "bwwExcerpt": "“Boop!” shows that cartoon makeovers may be an enticing novelty, but to really succeed it first needs to be well drawn.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "llmScore": {
-    "score": 45,
+    "score": 60,
     "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 53,
+      "high": 67
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 35,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 45,
+      "music": 71,
+      "performances": 75,
+      "direction": 65
     },
     "keyPhrases": [
       {
-        "quote": "cartoon makeovers may be an enticing novelty",
+        "quote": "Sometimes that's enough, at least for live mainstream entertainment with girl-empowerment themes, aimed at family-centric markets and with great merchandizing potential. Other times it just feels like a knockoff.",
         "sentiment": "neutral",
-        "strength": 2
+        "strength": 4
       },
       {
-        "quote": "to really succeed it first needs to be well drawn",
+        "quote": "Martin's script has little of the wit and originality which propelled his clash-of-worlds scripts for 'The Drowsy Chaperone' and 'The Prom.' His 'Boop' book only elicits the occasional big laugh",
         "sentiment": "negative",
         "strength": 4
+      },
+      {
+        "quote": "cartoon makeovers may be an enticing novelty, but to really succeed it first needs to be well drawn",
+        "sentiment": "negative",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review suggests the show fails to achieve its basic requirements despite having an appealing concept, indicating it doesn't succeed and implying a negative recommendation. | GPT-4o-mini: The review suggests that while the concept has potential, it ultimately fails to deliver, indicating a clear negative sentiment.",
+    "reasoning": "Claude: The review is clearly mixed, praising performances, choreography, and music while criticizing the weak book and acknowledging the show feels like a 'knockoff' - the critic sees potential but finds significant flaws that prevent a recommendation. | GPT-4o-mini: The review highlights some enjoyable elements like the music and performances but expresses significant disappointment with the book and overall execution, leading to a mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:45:18.778Z",
+    "scoredAt": "2026-01-29T01:37:23.135Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 45,
-    "scoreDelta": 0,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "claudeScore": 58,
+    "openaiScore": 62,
+    "scoreDelta": 4,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
     "needsReview": false,
     "needsReviewReasons": []
   },
@@ -72,7 +77,7 @@
     "bww-roundup",
     "dtli"
   ],
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 45
+  "previousLlmScore": 45,
+  "rescoreCompletedAt": "2026-01-29T01:37:23.135Z"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "Thumbs up, three cheers, and a long, long, long life to Death Becomes Her.",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 86,
   "source": "show-score",
   "needsFullText": true,
   "fetchedAt": "2026-01-24T20:00:00.000Z",
@@ -18,56 +18,56 @@
   "scoreSource": "extracted-thumbs-up",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 92,
-    "confidence": "medium",
+    "score": 86,
+    "confidence": "high",
     "range": {
-      "low": 83.5,
-      "high": 100
+      "low": 78.5,
+      "high": 93.5
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 81,
+      "music": 85,
+      "performances": 89,
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "Thumbs up",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "three cheers",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "long, long, long life",
+        "quote": "Thumbs up, three cheers, and a long, long, long life to Death Becomes Her",
         "sentiment": "positive",
         "strength": 5
+      },
+      {
+        "quote": "the real wonder is that it works so well",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "is a super-fun grudge match between two divas",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Multiple enthusiastic endorsements ('thumbs up', 'three cheers') and wish for longevity suggest strong recommendation, but extremely brief review limits confidence in precise score. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong support for the show, indicating a must-see experience.",
+    "reasoning": "Claude: Enthusiastic review with consistent praise for performances, staging, and adaptation quality, culminating in explicit 'thumbs up' recommendation and celebration of the show's success. | GPT-4o-mini: The review expresses strong enthusiasm for the performances, music, and overall production quality, indicating a clear recommendation to see the show.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:14:40.471Z",
+    "scoredAt": "2026-01-29T01:46:59.074Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 95,
-    "scoreDelta": 7,
+    "claudeScore": 83,
+    "openaiScore": 88,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -106,7 +106,7 @@
   "fetchTier": 4,
   "archiveOrgTimestamp": "20250327194024",
   "archiveOrgUrl": "http://web.archive.org/web/20250327194024/https://www.talkinbroadway.com/page/world/DeathBecomesHer.html",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 92
+  "previousLlmScore": 92,
+  "rescoreCompletedAt": "2026-01-29T01:46:59.074Z"
 }

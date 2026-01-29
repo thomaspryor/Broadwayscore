@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "A hell of a musical. The show has evolved since its Off-Broadway debut three years prior, now featuring an expanded 13-member cast and more elaborate staging at the Walter Kerr Theater. The score is delightful, blending folk, jazz, and blues elements. Andre De Shields' performance as Hermes receives particular acclaim for commanding the stage and providing narrative clarity. Patrick Page and Amber Gray deliver show-stopping performances. The Broadway version maintains theatrical impact despite abandoning the original's intimate in-the-round staging. Overall assessment: devilishly good and feeling like a full-fledged musical.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 87,
   "source": "webfetch-scraped",
   "textStatus": "complete",
   "textQuality": "full",
@@ -17,38 +17,38 @@
   "scoreSource": "sentiment-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 88,
+    "score": 87,
     "confidence": "high",
     "range": {
       "low": 80.5,
-      "high": 95.5
+      "high": 93.5
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 89,
-      "performances": 93,
-      "direction": 86
+      "book": 75,
+      "music": 90,
+      "performances": 88,
+      "direction": 83
     },
     "keyPhrases": [
       {
-        "quote": "A hell of a musical",
+        "quote": "On Broadway, as Off, Hadestown is a hell of a musical",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "The score is delightful, blending folk, jazz, and blues elements",
+        "quote": "What made Hadestown most thrilling remains – the delightful score, which mixes sweet and sexy folk, rocking jazz, and exquisite blues",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "devilishly good and feeling like a full-fledged musical",
+        "quote": "They are beyond extraordinary",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The review opens with strong enthusiasm ('A hell of a musical') and consistently praises music, performances, and overall production with clear recommendation language throughout. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's evolution, performances, and score, indicating a must-see experience.",
+    "reasoning": "Claude: The critic opens with enthusiastic praise calling it 'a hell of a musical' and consistently highlights exceptional elements like the score, key performances, and production values while noting meaningful improvements from the Off-Broadway version. | GPT-4o-mini: The review expresses strong enthusiasm for the music and performances, highlighting the show's quality while acknowledging some changes from the Off-Broadway version.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -58,15 +58,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:16:43.973Z",
+    "scoredAt": "2026-01-29T01:52:13.928Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 85,
-    "openaiScore": 90,
-    "scoreDelta": 5,
+    "openaiScore": 88,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -84,7 +84,7 @@
     }
   ],
   "fetchTier": 1,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 88
+  "previousLlmScore": 88,
+  "rescoreCompletedAt": "2026-01-29T01:52:13.928Z"
 }

@@ -9,63 +9,63 @@
   "isFullReview": true,
   "showScoreExcerpt": "The cast is accompanied by a superb on-stage band, bringing fresh creativity to this musical season.",
   "originalScore": null,
-  "assignedScore": 70,
+  "assignedScore": 91,
   "source": "show-score",
   "textQuality": "full",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 70,
+    "score": 91,
     "confidence": "medium",
     "range": {
-      "low": 60,
-      "high": 80
+      "low": 82,
+      "high": 100
     },
-    "bucket": "Mixed",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 78,
-      "performances": null,
-      "direction": 70
+      "book": 82,
+      "music": 88,
+      "performances": 92,
+      "direction": 90
     },
     "keyPhrases": [
       {
-        "quote": "superb on-stage band",
+        "quote": "Hadestown is definitely a must-see for this season",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "zippy with vibrancy and folk-era romance",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "bringing fresh creativity to this musical season",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "fresh creativity",
+        "quote": "this stage brings a bright freshness to a classic tale",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Brief excerpt with positive elements (superb band, fresh creativity) but lacks overall show assessment or clear recommendation. | GPT-4o-mini: The review highlights the quality of the on-stage band and their creativity, indicating a positive recommendation for the musical.",
+    "reasoning": "Claude: The review concludes with an explicit 'must-see' recommendation and consistently praises all aspects of the production including performances, music, direction, and design with enthusiastic language throughout. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the production's creativity, performances, and overall impact, with no significant reservations noted.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:16:04.289Z",
+    "scoredAt": "2026-01-29T01:51:42.005Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 75,
-    "scoreDelta": 10,
+    "claudeScore": 87,
+    "openaiScore": 95,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -105,7 +105,7 @@
   "archiveOrgTimestamp": "20250615121635",
   "archiveOrgUrl": "http://web.archive.org/web/20250615121635/https://cabaretscenes.org/2019/05/01/hadestown/",
   "designation": "Must_See",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 70
+  "previousLlmScore": 70,
+  "rescoreCompletedAt": "2026-01-29T01:51:42.005Z"
 }

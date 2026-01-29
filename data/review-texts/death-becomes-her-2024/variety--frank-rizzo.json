@@ -10,63 +10,63 @@
   "dtliExcerpt": "The show’s potential shelf-life looks long for New York as well as for the road, ever hungry for a hit.",
   "showScoreExcerpt": "âThe storyline is cleaner, the characters are clearer, and the pace and the laughs are now non-stop.â",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:00:12.591Z",
   "urlUpdated": "2026-01-23T05:27:32.767Z",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 77,
-    "confidence": "high",
+    "score": 86,
+    "confidence": "medium",
     "range": {
-      "low": 70.5,
-      "high": 83.5
+      "low": 77,
+      "high": 95
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 88,
+      "music": 85,
+      "performances": 89,
+      "direction": 88
     },
     "keyPhrases": [
       {
-        "quote": "potential shelf-life looks long",
+        "quote": "a major glow-up produced by Universal Theatrical Group, the story has been reconceived, refreshed and reborn by a savvy creative team",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "hungry for a hit",
+        "quote": "Hilty and Simard are perfectly paired, with the former going hysterically broad as Simard offers a contrasting approach, effectively leaning into the simmering madness",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       },
       {
-        "quote": "the show’s potential shelf-life looks long for New York",
+        "quote": "The show's potential shelf-life looks long for New York as well as for the road, ever hungry for a hit",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The excerpt suggests commercial success and longevity ('long shelf-life') and positions it as a desirable 'hit,' indicating positive industry assessment, but lacks detailed artistic evaluation. | GPT-4o-mini: The review suggests a strong potential for success and longevity, indicating a positive recommendation despite lacking specific details.",
+    "reasoning": "Claude: The review consistently praises the creative team's transformation of weak source material into an entertaining Broadway musical, with strong performances and production values throughout. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's transformation, humor, and performances, indicating it as a must-see production.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:02:12.243Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:47:28.347Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -109,7 +109,7 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250420231506/https://variety.com/2024/legit/reviews/death-becomes-her-review-broadway-musical-1236216493/",
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 77
+  "previousLlmScore": 77,
+  "rescoreCompletedAt": "2026-01-29T01:47:28.347Z"
 }

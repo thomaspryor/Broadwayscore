@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"Director Thomas Kail keeps the story moving along with fluid precision and at an exhausting, nonstop pace at all times. The fusion of direction and choreography complement each other in the frenetic goings-on in this nearly three-hour, monumental show. 'Hamilton' has truly started a Broadway revolution and will continue to influence the American musical theater for years to come.\"",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 96,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "textStatus": "complete",
@@ -18,56 +18,56 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 94,
+    "score": 96,
     "confidence": "high",
     "range": {
-      "low": 87.5,
+      "low": 89,
       "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": 93
+      "book": 94,
+      "music": 98,
+      "performances": 94,
+      "direction": 94
     },
     "keyPhrases": [
       {
-        "quote": "Hamilton has truly started a Broadway revolution and will continue to influence the American musical theater for years to come",
+        "quote": "Hamilton, which recently transferred to Broadway after a sold-out run downtown at the Public Theater... is so innovative and unprecedented that it changes the American musical theater as we know it",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "monumental show",
+        "quote": "Mr. Miranda has created a theatrical masterpiece... turned it into an entertaining epic that appeals to the masses of all ages",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "fluid precision",
+        "quote": "Hamilton has truly started a Broadway revolution and will continue to influence the American musical theater for years to come",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic uses superlative language calling Hamilton 'monumental' and 'revolutionary' with praise for direction's 'fluid precision,' indicating unqualified enthusiasm despite acknowledging the exhausting pace. | GPT-4o-mini: The review expresses unqualified enthusiasm for the direction and overall impact of the show, indicating a strong recommendation.",
+    "reasoning": "Claude: This is an unqualified rave review that explicitly calls Hamilton a 'masterpiece' that 'changes American musical theater,' with superlative language throughout and no meaningful criticisms. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the show's innovative qualities, strong performances, and cultural impact, indicating a strong recommendation to see it.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:21:50.727Z",
+    "scoredAt": "2026-01-29T01:58:12.626Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 95,
-    "scoreDelta": 3,
+    "claudeScore": 94,
+    "openaiScore": 98,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -91,7 +91,7 @@
     }
   ],
   "fetchTier": 2,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 94
+  "previousLlmScore": 94,
+  "rescoreCompletedAt": "2026-01-29T01:58:12.626Z"
 }

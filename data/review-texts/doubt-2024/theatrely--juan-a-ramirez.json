@@ -10,63 +10,63 @@
   "bwwExcerpt": "It’s tempting to chalk this up to Ryan’s last-minute substitution for Tyne Daly, who bowed out as the production began previews. And though, perhaps, some time will benefit the production, it seems impossible to fault Ryan, who is soul-shakingly effective. Her Sister Aloysius is stoney and near-monotone, as if registering emotion would seem to her ungodly or, worse, unproductive. The actor makes an art out of frozenness: her physical rigidity — at times cutting a monolithic silhouette in her nun",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 89,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 67.5,
+      "high": 80.5
     },
-    "bucket": "Positive",
+    "bucket": "Mixed",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": 85,
       "music": null,
-      "performances": 88,
-      "direction": 90
+      "performances": 89,
+      "direction": 60
     },
     "keyPhrases": [
       {
-        "quote": "intense brilliance",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "exquisite church set",
+        "quote": "what most emerges from this revival is the brilliance of the material",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "If this Doubt leaves room for growth",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "Scott Ellis' direction is slack where suffocating tension is demanded",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "If this Doubt leaves room for growth, there is still none left as to the play's intense brilliance",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review concludes with unqualified praise calling the play's brilliance 'intense' with 'none left' for doubt, despite minor suggestion of room for improvement. | GPT-4o-mini: The review expresses strong enthusiasm for the production's brilliance and design, indicating a must-see experience.",
+    "reasoning": "Claude: The critic praises the brilliant material and exceptional performances (particularly Amy Ryan) but significantly criticizes the direction as lacking necessary tension, resulting in a qualified positive recommendation. | GPT-4o-mini: The review expresses strong praise for the performances, particularly Amy Ryan's, while noting significant issues with direction, leading to a positive but qualified recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:36:45.571Z",
+    "scoredAt": "2026-01-29T01:49:18.643Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },
@@ -76,7 +76,7 @@
     "dtli"
   ],
   "showScoreExcerpt": null,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 89
+  "previousLlmScore": 89,
+  "rescoreCompletedAt": "2026-01-29T01:49:18.643Z"
 }

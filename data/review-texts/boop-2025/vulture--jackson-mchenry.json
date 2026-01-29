@@ -10,7 +10,7 @@
   "showScoreExcerpt": "\"Unsteadiness in premise can be covered for by verve of execution, which Boop! does find here and there\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/boop-the-musical-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "dtli",
   "dtliThumb": "Meh",
   "needsScoring": true,
@@ -36,19 +36,19 @@
   "archiveOrgTimestamp": "20260103021238",
   "archiveOrgUrl": "http://web.archive.org/web/20260103021238/https://www.vulture.com/article/theater-review-betty-boop-broadway-musical.html",
   "llmScore": {
-    "score": 54,
+    "score": 55,
     "confidence": "high",
     "range": {
-      "low": 47.5,
-      "high": 60.5
+      "low": 50,
+      "high": 60
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 43,
+      "book": 45,
       "music": 58,
-      "performances": 71,
-      "direction": 55
+      "performances": 73,
+      "direction": 58
     },
     "keyPhrases": [
       {
@@ -67,7 +67,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic finds individual elements charming (particularly Rogers' performance) but ultimately deems the show incoherent and poorly conceived, with significant structural and aesthetic problems that prevent recommendation. | GPT-4o-mini: The review reflects a mix of positive and negative elements, with some praise for performances but significant criticism of the book and overall coherence.",
+    "reasoning": "Claude: The critic finds individual elements charming (especially Rogers' performance) but is frustrated by the show's incoherent premise, brand management approach, and lack of artistic vision, resulting in a mixed but ultimately disappointing experience. | GPT-4o-mini: The review presents a mixed view, praising the performances while criticizing the coherence and execution of the musical as a whole.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -77,15 +77,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:43:08.654Z",
+    "scoredAt": "2026-01-29T01:37:29.542Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 52,
+    "claudeScore": 55,
     "openaiScore": 55,
-    "scoreDelta": 3,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -98,7 +98,7 @@
   ],
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 54
+  "previousLlmScore": 54,
+  "rescoreCompletedAt": "2026-01-29T01:37:29.542Z"
 }

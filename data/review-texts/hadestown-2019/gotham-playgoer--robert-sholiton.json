@@ -9,63 +9,63 @@
   "isFullReview": true,
   "showScoreExcerpt": "The score is the main attraction...a lost opportunity of minor consequence.",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 81,
   "source": "show-score",
   "textQuality": "full",
   "sourceMethod": "playwright",
   "scoreStatus": "TO_BE_CALCULATED",
   "scoreSource": null,
   "llmScore": {
-    "score": 42,
-    "confidence": "medium",
+    "score": 81,
+    "confidence": "high",
     "range": {
-      "low": 33.5,
-      "high": 50.5
+      "low": 75,
+      "high": 87
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 63,
-      "performances": null,
-      "direction": null
+      "book": 65,
+      "music": 87,
+      "performances": 75,
+      "direction": 83
     },
     "keyPhrases": [
       {
-        "quote": "The score is the main attraction",
+        "quote": "A- Anaïs Mitchell's marvelous folk opera",
         "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "a lost opportunity of minor consequence",
-        "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "a lost opportunity",
-        "sentiment": "negative",
+        "quote": "the rest of the show is so strong and so enjoyable that it is little more than a lost opportunity of minor consequence",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The rest of us will be grateful for the opportunity to enjoy something different",
+        "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The review dismisses the overall show as a 'lost opportunity' while only praising the music, indicating significant disappointment despite one redeeming element. | GPT-4o-mini: The review indicates that while the score has some merit, the overall impression is negative, suggesting a lack of compelling content.",
+    "reasoning": "Claude: The A- grade and consistent praise for the production, music, and most performances outweigh the criticism of the miscast lead, with the critic explicitly stating the show remains 'strong and enjoyable' despite this flaw. | GPT-4o-mini: The review expresses strong enjoyment of the production and music, with only a minor caveat regarding the lead performance, leading to a solid positive recommendation overall.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:17:04.314Z",
+    "scoredAt": "2026-01-29T01:52:36.192Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 45,
-    "scoreDelta": 7,
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -84,7 +84,7 @@
     }
   ],
   "fetchTier": 1,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 42
+  "previousLlmScore": 42,
+  "rescoreCompletedAt": "2026-01-29T01:52:36.192Z"
 }

@@ -28,38 +28,38 @@
     "thumb": "Up",
     "components": {
       "book": 90,
-      "music": null,
-      "performances": null,
+      "music": 95,
+      "performances": 94,
       "direction": 92
     },
     "keyPhrases": [
       {
-        "quote": "I was intoxicated by 'Hamilton'",
+        "quote": "I proclaim, quite gladly, that I was intoxicated by Lin-Manuel Miranda's Hamilton – An American Musical",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "swept me up and kept me thoroughly engaged and enchanted",
+        "quote": "It's a musical theatre revolution in it's own right by using these non-traditional musical forms",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "It is truly amazing what Miranda has done here",
+        "quote": "It is truly amazing what Miranda has done here. He has made these stiff dull men leap out of the history books and captivate us on every level",
         "sentiment": "positive",
         "strength": 5
       }
     ],
-    "reasoning": "Claude: Unqualified enthusiasm with superlatives like 'intoxicated', 'amazing', and 'truly' plus strong emotional engagement ('swept me up', 'enchanted') indicates a clear rave recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm and admiration for the production, indicating a strong recommendation to see the show.",
+    "reasoning": "Claude: This is an unqualified rave with superlative language throughout ('intoxicated', 'powerhouse', 'revolution', 'truly amazing') and detailed praise for all elements of the production. | GPT-4o-mini: The review expresses overwhelming enthusiasm for the production, praising its innovative approach, performances, and overall impact, indicating a strong recommendation to see it.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:21:10.184Z",
+    "scoredAt": "2026-01-29T01:56:51.188Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -85,7 +85,7 @@
     }
   ],
   "fetchTier": 1,
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 94
+  "previousLlmScore": 94,
+  "rescoreCompletedAt": "2026-01-29T01:56:51.188Z"
 }

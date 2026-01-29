@@ -9,61 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "In \"Road to Hell,\" the exhilarating opening number of the utterly fabulous Hadestown, Hermes, the conductor of souls into the afterlife, invites us to \"Ride that train to the end of the line.\" He's played with seductive authority and knowing humor by the eternally elegant Andre De Shields, outfitted like a superfly pimp in a flashy silver suit, and it's hard to imagine anyone resisting his call. He sells a ticket to a bewitching journey that pays off at every turn. Spun out of a 2010 concept album by singer-songwriter Anais Mitchell and developed together with director Rachel Chavkin as a seamless theatrical experience, this beguiling, virtually sung-through musical is notable for the expressive beauty of its score, the dark imagination of its stage pictures and the clarity of its storytelling. Performed by a first-rate cast and played with spirited feeling by seven onstage musicians, it arrives on Broadway with a furnace-like blast of creativity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 94,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 87.5,
-      "high": 100
+      "low": 73,
+      "high": 85
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 88,
-      "music": 95,
-      "performances": 93,
-      "direction": 94
+      "book": 55,
+      "music": 89,
+      "performances": 85,
+      "direction": 81
     },
     "keyPhrases": [
       {
-        "quote": "utterly fabulous Hadestown",
+        "quote": "The music is terrific — endlessly inventive and eclectic, as melodic as it is funky and folksy",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "it's hard to imagine anyone resisting his call. He sells a ticket to a bewitching journey that pays off at every turn",
+        "quote": "All together, they make Hadestown an unlikely desirable destination",
         "sentiment": "positive",
-        "strength": 5
+        "strength": 4
       },
       {
-        "quote": "arrives on Broadway with a furnace-like blast of creativity",
-        "sentiment": "positive",
-        "strength": 5
+        "quote": "Truth be told, the familiar story seems attenuated and thin over the course of an evening running more than two hours",
+        "sentiment": "negative",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Unqualified praise throughout with superlative language ('utterly fabulous', 'furnace-like blast of creativity') and explicit endorsement that the journey 'pays off at every turn' with no caveats or criticisms. | GPT-4o-mini: The review expresses unqualified enthusiasm for the musical's creativity, performances, and overall experience, indicating it as a must-see.",
+    "reasoning": "Claude: Despite significant criticisms of the book and pacing, the reviewer is clearly impressed by the music, performances, and staging, concluding that the strengths make it worth seeing. | GPT-4o-mini: The review highlights the music and performances as standout elements while noting some weaknesses in the book and dialogue, leading to a strong but qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:02:41.450Z",
-    "promptVersion": "2.0.0",
+    "scoredAt": "2026-01-29T01:52:42.995Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 95,
-    "scoreDelta": 3,
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -85,7 +85,7 @@
     "web-search"
   ],
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 94
+  "previousLlmScore": 94,
+  "rescoreCompletedAt": "2026-01-29T01:52:42.995Z"
 }

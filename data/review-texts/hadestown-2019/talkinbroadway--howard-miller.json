@@ -59,39 +59,39 @@
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 76,
+      "book": 78,
       "music": 95,
-      "performances": 93,
-      "direction": 89
+      "performances": 90,
+      "direction": 90
     },
     "keyPhrases": [
       {
-        "quote": "thoroughly entrancing production",
+        "quote": "the ancient story could not be in better hands. And neither could the audience.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "So, I, too, happily raise my cup to this sublime evening of musical theater",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the music and the performances are the triumphs of Hadestown, with one gem following the other",
         "sentiment": "positive",
         "strength": 4
-      },
-      {
-        "quote": "the music and the performances are the triumphs of Hadestown",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "I, too, happily raise my cup to this sublime evening of musical theater",
-        "sentiment": "positive",
-        "strength": 5
       }
     ],
-    "reasoning": "Claude: Clear rave with superlative language ('sublime', 'magnificent', 'triumphs'), explicit enthusiasm despite acknowledging minor story limitations. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, praising the music, performances, and overall experience as a 'sublime evening of musical theater'.",
+    "reasoning": "Claude: Critic expresses overwhelming enthusiasm for the music and production while acknowledging minor story limitations, concluding with strong recommendation language like 'sublime evening' and 'raise my cup.' | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its music and performances as standout elements, leading to a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T23:24:19.341Z",
+    "scoredAt": "2026-01-29T01:54:23.024Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -105,7 +105,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 92
+  "previousLlmScore": 92,
+  "rescoreCompletedAt": "2026-01-29T01:54:23.024Z"
 }

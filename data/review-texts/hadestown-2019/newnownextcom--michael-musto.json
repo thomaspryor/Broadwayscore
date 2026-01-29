@@ -9,63 +9,63 @@
   "isFullReview": true,
   "showScoreExcerpt": "'Hadestown' is full of feeling, movement, and journeys to the dark side...has effective elements.",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 71,
   "source": "show-score",
   "textQuality": "full",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 68,
+    "score": 71,
     "confidence": "high",
     "range": {
-      "low": 60.5,
-      "high": 75.5
+      "low": 65,
+      "high": 77
     },
     "bucket": "Mixed",
-    "thumb": "Flat",
+    "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": 70
+      "book": 65,
+      "music": 70,
+      "performances": 78,
+      "direction": 73
     },
     "keyPhrases": [
       {
-        "quote": "full of feeling, movement, and journeys to the dark side",
+        "quote": "I still cheer this kind of anything-goes burlesque, since perverse verse is always cherce and the three priceless clowns—sorry, fools—dive in with all burners lit",
         "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the absurdism doesn't seem based in enough grounding to fully take off",
+        "sentiment": "negative",
         "strength": 3
       },
       {
-        "quote": "has effective elements",
+        "quote": "If the whole isn't greater than the sum of its parts, Hadestown still has effective elements that come together for the best atmosphere on Broadway",
         "sentiment": "positive",
-        "strength": 2
-      },
-      {
-        "quote": "'Hadestown' is full of feeling, movement, and journeys to the dark side",
-        "sentiment": "positive",
-        "strength": 4
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review uses positive descriptors like 'full of feeling' and 'effective elements' but the language is quite restrained and general, suggesting modest approval rather than enthusiasm. | GPT-4o-mini: The review expresses some positive sentiments about the emotional depth and movement of the show but lacks strong enthusiasm or specific praise, leading to a mixed-positive score.",
+    "reasoning": "Claude: The critic appreciates the experimental nature and strong performances across multiple shows, with clear enthusiasm for the theatrical artistry despite noting structural weaknesses in the material. | GPT-4o-mini: The review presents a mix of appreciation for performances and humor but expresses concerns about tonal inconsistencies and overall impact, leading to a mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:17:30.097Z",
+    "scoredAt": "2026-01-29T01:53:02.960Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 70,
-    "openaiScore": 65,
-    "scoreDelta": 5,
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -104,7 +104,7 @@
   "fetchTier": 4,
   "archiveOrgTimestamp": "20211019093821",
   "archiveOrgUrl": "http://web.archive.org/web/20211019093821/http://www.newnownext.com/michael-musto-broadway-reviews/04/2019/",
-  "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 68
+  "previousLlmScore": 68,
+  "rescoreCompletedAt": "2026-01-29T01:53:02.960Z"
 }

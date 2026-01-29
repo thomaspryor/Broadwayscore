@@ -11,7 +11,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 20,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "needsScoring": true,
@@ -21,62 +21,62 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 30,
+    "score": 20,
     "confidence": "medium",
     "range": {
-      "low": 20,
-      "high": 40
+      "low": 10,
+      "high": 30
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": null,
+      "book": 13,
       "music": 25,
-      "performances": null,
-      "direction": null
+      "performances": 33,
+      "direction": 18
     },
     "keyPhrases": [
       {
-        "quote": "you will leave the Broadhurst humming them, because you've heard them all before",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "caterwauling gospel or anemic jazz or the ubiquitous female power ballad",
+        "quote": "a musical that needs a good spritz of Pooph",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "load 'Boop!' with so many anthems they appear to be auditioning for some new 'I Love NY' ad campaign",
+        "quote": "nearly two hours of total tedium",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "It's difficult to say what's more embarrassing",
         "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic dismisses the musical score as derivative and formulaic, using harsh descriptors like 'caterwauling,' 'anemic,' and 'ubiquitous' to characterize the songs as unoriginal and generic. | GPT-4o-mini: The review expresses significant disappointment in the music and overall creativity, indicating a clear negative recommendation.",
+    "reasoning": "Claude: This is a scathing pan that condemns nearly every aspect of the production with harsh language and finds only one performer (Erich Bergen) worth watching in an otherwise tedious show. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the script, music, and overall execution, leading to a strong recommendation against seeing the show.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:44:32.557Z",
+    "scoredAt": "2026-01-29T01:37:10.573Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 25,
-    "openaiScore": 35,
+    "openaiScore": 15,
     "scoreDelta": 10,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 30
+  "previousLlmScore": 30,
+  "rescoreCompletedAt": "2026-01-29T01:37:10.573Z"
 }

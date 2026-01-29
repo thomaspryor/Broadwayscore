@@ -10,65 +10,67 @@
   "showScoreExcerpt": "“Once you get to huge Broadway houses, claustrophobia is harder to maintain... But it was also fun to see the production swing so hard at genre tropiness. If it doesn’t fully succeed on its own terms, it’s at least a solid reminder that terror is as worthy of drama as any other kind of spectacle.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/grey-house-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "source": "dtli",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "llmScore": {
-    "score": 64,
+    "score": 67,
     "confidence": "high",
     "range": {
-      "low": 57.5,
-      "high": 70.5
+      "low": 60.5,
+      "high": 73.5
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": null,
+      "book": 53,
       "music": null,
-      "performances": null,
-      "direction": 58
+      "performances": 75,
+      "direction": 70
     },
     "keyPhrases": [
       {
-        "quote": "If it doesn't fully succeed on its own terms",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "it's at least a solid reminder that terror is as worthy of drama as any other kind of spectacle",
-        "sentiment": "positive",
+        "quote": "If it doesn't fully succeed on its own terms, it's at least a solid reminder that terror is as worthy of drama as any other kind of spectacle",
+        "sentiment": "neutral",
         "strength": 3
       },
       {
-        "quote": "it was also fun to see the production swing so hard at genre tropiness",
-        "sentiment": "positive",
-        "strength": 2
+        "quote": "The production makes a good case for more full-on spookiness onstage, even if it's a less convincing one for this play in particular",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "There's only so many times kids can say things like 'tell a lie and a mama die' before things turn silly",
+        "sentiment": "negative",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Mixed review that acknowledges the production doesn't fully succeed but finds value in its ambitious attempt at horror theater and its entertainment value. | GPT-4o-mini: The review expresses a mix of appreciation for the production's ambition and acknowledgment of its shortcomings, leading to a conditional recommendation.",
+    "reasoning": "Claude: The critic appreciates the production's ambition and performances but finds significant flaws in the script's execution and clarity, resulting in qualified interest rather than a clear recommendation. | GPT-4o-mini: The review expresses a mix of appreciation for the performances and direction while highlighting significant flaws in the script and clarity of the plot, leading to a conditional recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": false
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:17:34.428Z",
+    "scoredAt": "2026-01-29T01:50:38.940Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 62,
+    "claudeScore": 68,
     "openaiScore": 65,
     "scoreDelta": 3,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
+    "thumbsMatch": false,
+    "expectedThumb": "Up",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (67 → Flat) conflicts with aggregator thumbs (Up)"
+    ]
   },
   "bwwExcerpt": "I won’t try to explain what exactly is going on in the Grey House, both in order to avoid spoiling the plot and because I’m not entirely sure myself. (The production sent over a PDF explaining the lore to critics after they attended, which may be a sign that things aren’t entirely clear in the performance.) I’ll just say that Holloway inches toward a double-underlined, not exactly groundbreaking message about how men treat women, though the more the play tried to emphasize its insights, the less",
   "bwwThumb": "Up",
@@ -78,7 +80,7 @@
   ],
   "dtliExcerpt": "But if you’ve seen a lot of this onscreen, capital-H horror of this kind is less often done on Broadway, and in that context, the scares are fresher. The production makes a good case for more full-on spookiness onstage, even if it’s a less convincing one for this play in particular.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
-  "needsRescore": true,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 64
+  "previousLlmScore": 64,
+  "rescoreCompletedAt": "2026-01-29T01:50:38.940Z"
 }
