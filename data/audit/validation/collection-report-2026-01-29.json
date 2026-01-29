@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T15:34:39.908Z",
+  "runDate": "2026-01-29T15:39:25.227Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 25,
     "priority": "all",
-    "showFilter": "the-roommate-2024",
+    "showFilter": "mj-2022",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 66,
-    "failed": 191,
+    "processed": 65,
+    "failed": 197,
     "skipped": 0,
-    "successRate": "25.7%"
+    "successRate": "24.8%"
   },
   "tierBreakdown": {
     "playwright": 10,
     "scrapingbee": 6,
-    "brightdata": 6,
-    "archive": 44
+    "brightdata": 7,
+    "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 14,
+    "tier1Attempts": 22,
     "tier1Success": 0,
-    "tier2Attempts": 14,
+    "tier2Attempts": 22,
     "tier2Success": 0,
-    "tier3Attempts": 14,
-    "tier3Success": 0,
-    "tier4Attempts": 33,
-    "tier4Success": 3,
-    "totalFailed": 15,
-    "scrapingBeeCreditsUsed": 40
+    "tier3Attempts": 22,
+    "tier3Success": 1,
+    "tier4Attempts": 48,
+    "tier4Success": 0,
+    "totalFailed": 21,
+    "scrapingBeeCreditsUsed": 60
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -99,8 +99,7 @@
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
     "suffs-2024/the-times--nancy-durrant.json",
-    "the-roommate-2024/nydailynews--chris-jones.json",
-    "the-roommate-2024/washpost--naveen-kumar.json"
+    "mj-2022/usatoday--david-rooney.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -279,21 +278,27 @@
     "hells-kitchen-2024/usatoday--charles-isherwood.json",
     "hells-kitchen-2024/usatoday--david-rooney.json",
     "hells-kitchen-2024/washpost--peter-marks.json",
-    "the-roommate-2024/hollywood-reporter--angie-han.json",
-    "the-roommate-2024/variety--aramide-tinubu.json",
-    "the-roommate-2024/variety--charles-isherwood.json",
-    "the-roommate-2024/variety--frank-rizzo.json",
-    "the-roommate-2024/vulture--jackson-mchenry.json",
-    "the-roommate-2024/deadline--pete-hammond.json",
-    "the-roommate-2024/guardian--adrian-horton.json",
-    "the-roommate-2024/nypost--johnny-oleksinski.json",
-    "the-roommate-2024/theatermania--jesse-green.json",
-    "the-roommate-2024/wsj--charles-isherwood.json",
-    "the-roommate-2024/billboard--greg-evans.json",
-    "the-roommate-2024/dailybeast--tim-teeman.json",
-    "the-roommate-2024/rollingstone--alexis-soloski.json",
-    "the-roommate-2024/talkinbroadway--matthew-murray.json",
-    "the-roommate-2024/washpost--peter-marks.json"
+    "mj-2022/hollywood-reporter--angie-han.json",
+    "mj-2022/hollywood-reporter--david-rooney.json",
+    "mj-2022/variety--aramide-tinubu.json",
+    "mj-2022/variety--charles-isherwood.json",
+    "mj-2022/variety--frank-rizzo.json",
+    "mj-2022/vulture--jackson-mchenry.json",
+    "mj-2022/deadline--pete-hammond.json",
+    "mj-2022/ew--david-rooney.json",
+    "mj-2022/ew--kristen-baldwin.json",
+    "mj-2022/guardian--adrian-horton.json",
+    "mj-2022/nydailynews--joe-dziemianowicz.json",
+    "mj-2022/theatermania--adam-feldman.json",
+    "mj-2022/theatermania--david-gordon.json",
+    "mj-2022/theatermania--jesse-green.json",
+    "mj-2022/wsj--charles-isherwood.json",
+    "mj-2022/wsj--terry-teachout.json",
+    "mj-2022/ap--mark-kennedy.json",
+    "mj-2022/nysr--mark-dundas-wood.json",
+    "mj-2022/talkinbroadway--john-olson.json",
+    "mj-2022/talkinbroadway--matthew-murray.json",
+    "mj-2022/usatoday--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -322,7 +327,8 @@
       "harmony-2023/chicagotribune--chris-jones.json",
       "lempicka-2024/nyt-theater--jonathan-mandell.json",
       "moulin-rouge-2019/observer--rex-reed.json",
-      "aladdin-2014/usatoday--elysa-gardner.json"
+      "aladdin-2014/usatoday--elysa-gardner.json",
+      "mj-2022/usatoday--david-rooney.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
@@ -366,9 +372,7 @@
       "queen-versailles-2025/vulture--sara-holdren-and-jesse-david-fox.json",
       "queen-versailles-2025/vulture--sara-holdren.json",
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
-      "suffs-2024/the-times--nancy-durrant.json",
-      "the-roommate-2024/nydailynews--chris-jones.json",
-      "the-roommate-2024/washpost--naveen-kumar.json"
+      "suffs-2024/the-times--nancy-durrant.json"
     ]
   }
 }
