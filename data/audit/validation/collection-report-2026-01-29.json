@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T15:19:49.520Z",
+  "runDate": "2026-01-29T15:19:52.653Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 25,
     "priority": "all",
-    "showFilter": "purlie-victorious-2023",
+    "showFilter": "hamilton-2015",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 68,
-    "failed": 177,
+    "processed": 64,
+    "failed": 195,
     "skipped": 0,
-    "successRate": "27.8%"
+    "successRate": "24.7%"
   },
   "tierBreakdown": {
     "playwright": 10,
     "scrapingbee": 6,
-    "brightdata": 7,
-    "archive": 45
+    "brightdata": 6,
+    "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 2,
+    "tier1Attempts": 18,
     "tier1Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 18,
     "tier2Success": 0,
-    "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier4Attempts": 5,
-    "tier4Success": 3,
-    "totalFailed": 1,
-    "scrapingBeeCreditsUsed": 20
+    "tier3Attempts": 18,
+    "tier3Success": 2,
+    "tier4Attempts": 37,
+    "tier4Success": 1,
+    "totalFailed": 19,
+    "scrapingBeeCreditsUsed": 40
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -98,11 +98,7 @@
     "queen-versailles-2025/latimes--charles-mcnulty.json",
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
-    "suffs-2024/the-times--nancy-durrant.json",
-    "purlie-victorious-2023/nytimes--jesse-green.json",
-    "purlie-victorious-2023/nydailynews--chris-jones.json",
-    "purlie-victorious-2023/nydailynews--chris.json",
-    "purlie-victorious-2023/washpost--peter-marks.json"
+    "suffs-2024/the-times--nancy-durrant.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -281,7 +277,25 @@
     "hells-kitchen-2024/usatoday--charles-isherwood.json",
     "hells-kitchen-2024/usatoday--david-rooney.json",
     "hells-kitchen-2024/washpost--peter-marks.json",
-    "purlie-victorious-2023/guardian--jesse-hassenger.json"
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/ew--tim-stack.json",
+    "hamilton-2015/guardian--jesse-green.json",
+    "hamilton-2015/nbcnews--elysa-gardner.json",
+    "hamilton-2015/nbcnews--kristy-puchko.json",
+    "hamilton-2015/nbcnews--melissa-locker.json",
+    "hamilton-2015/newsday--linda-winer.json",
+    "hamilton-2015/nypost--jesse-green.json",
+    "hamilton-2015/nypost--johnny-oleksinski.json",
+    "hamilton-2015/observer--david-cote.json",
+    "hamilton-2015/observer--rex-reed.json",
+    "hamilton-2015/theatermania--adam-feldman.json",
+    "hamilton-2015/theatermania--charles-isherwood.json",
+    "hamilton-2015/wsj--terry-teachout.json",
+    "hamilton-2015/ap--mark-kennedy.json",
+    "hamilton-2015/backstage-barbie--backstage-barbie.json",
+    "hamilton-2015/dailybeast--tim-teeman.json",
+    "hamilton-2015/rollingstone--rob-sheffield.json",
+    "hamilton-2015/the-clyde-fitch-report--david-finkle.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -310,8 +324,7 @@
       "harmony-2023/chicagotribune--chris-jones.json",
       "lempicka-2024/nyt-theater--jonathan-mandell.json",
       "moulin-rouge-2019/observer--rex-reed.json",
-      "aladdin-2014/usatoday--elysa-gardner.json",
-      "purlie-victorious-2023/washpost--peter-marks.json"
+      "aladdin-2014/usatoday--elysa-gardner.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
@@ -355,10 +368,7 @@
       "queen-versailles-2025/vulture--sara-holdren-and-jesse-david-fox.json",
       "queen-versailles-2025/vulture--sara-holdren.json",
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
-      "suffs-2024/the-times--nancy-durrant.json",
-      "purlie-victorious-2023/nytimes--jesse-green.json",
-      "purlie-victorious-2023/nydailynews--chris-jones.json",
-      "purlie-victorious-2023/nydailynews--chris.json"
+      "suffs-2024/the-times--nancy-durrant.json"
     ]
   }
 }
