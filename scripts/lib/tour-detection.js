@@ -34,8 +34,8 @@ const TOURING_VENUES = [
   // Los Angeles
   'ahmanson theatre',
   'pantages theatre',
-  'dolby theatre',
   'hollywood pantages',
+  'dolby theatre',
   'segerstrom center',
   'la mirada theatre',
 
@@ -47,19 +47,20 @@ const TOURING_VENUES = [
   'shn golden gate',
   'shn curran',
 
-  // Chicago
+  // Chicago (NOTE: "Nederlander Theatre" without "Chicago" is Broadway!)
   'cadillac palace theatre',
   'privatebank theatre',
   'bank of america theatre',
-  'james m nederlander theatre',
+  'james m nederlander theatre chicago',
   'broadway in chicago',
   'cibc theatre',
   'nederlander theatre chicago',
 
-  // Washington DC
+  // Washington DC (NOTE: "National Theatre" alone could be Broadway Nederlander)
   'kennedy center',
+  'national theatre washington',
   'national theatre dc',
-  'warner theatre',
+  'warner theatre dc',
 
   // Boston
   'boston opera house',
@@ -172,6 +173,9 @@ function titleIndicatesTour(title) {
 
 /**
  * Check if a venue is a known touring venue (not Broadway)
+ *
+ * NOTE: This uses exact matching to avoid false positives like
+ * "Nederlander Theatre" (Broadway) matching "Nederlander Theatre Chicago" (tour)
  */
 function isKnownTouringVenue(venueName) {
   if (!venueName) return false;
@@ -179,9 +183,16 @@ function isKnownTouringVenue(venueName) {
   const normalized = venueName.toLowerCase().trim();
 
   for (const tourVenue of TOURING_VENUES) {
-    if (normalized.includes(tourVenue) || tourVenue.includes(normalized)) {
+    // Exact match
+    if (normalized === tourVenue) {
       return true;
     }
+    // Tour venue is contained in normalized name (e.g., "ahmanson theatre los angeles" contains "ahmanson theatre")
+    if (normalized.includes(tourVenue)) {
+      return true;
+    }
+    // Don't do reverse check - it causes false positives
+    // e.g., "nederlander theatre" is contained in "nederlander theatre chicago"
   }
 
   return false;
@@ -228,7 +239,7 @@ function indicatesOffBroadway(text) {
 function isTourProduction(show) {
   const { title, venue, description } = show;
 
-  // 1. Check if title explicitly says "tour"
+  // 1. Check if title explicitly says "tour" - strongest signal
   if (titleIndicatesTour(title)) {
     return {
       isTour: true,
@@ -237,25 +248,7 @@ function isTourProduction(show) {
     };
   }
 
-  // 2. Check if venue is a known touring venue
-  if (isKnownTouringVenue(venue)) {
-    return {
-      isTour: true,
-      reason: `Venue "${venue}" is a touring venue, not a Broadway theater`,
-      type: 'tour'
-    };
-  }
-
-  // 3. Check if venue is Off-Broadway
-  if (isOffBroadwayVenue(venue)) {
-    return {
-      isTour: true, // Not technically a tour, but not Broadway
-      reason: `Venue "${venue}" is Off-Broadway`,
-      type: 'off-broadway'
-    };
-  }
-
-  // 4. Check if description/title indicates Off-Broadway
+  // 2. Check if description/title indicates Off-Broadway
   if (indicatesOffBroadway(title) || indicatesOffBroadway(description)) {
     return {
       isTour: true,
@@ -264,8 +257,32 @@ function isTourProduction(show) {
     };
   }
 
-  // 5. Check if venue is NOT a recognized Broadway theater
-  if (venue && !isOfficialBroadwayTheater(venue)) {
+  // 3. If venue is an OFFICIAL Broadway theater, it's definitely not a tour
+  // This check comes BEFORE touring venue check to avoid false positives
+  if (venue && isOfficialBroadwayTheater(venue)) {
+    return { isTour: false };
+  }
+
+  // 4. Check if venue is a known touring venue
+  if (isKnownTouringVenue(venue)) {
+    return {
+      isTour: true,
+      reason: `Venue "${venue}" is a touring venue, not a Broadway theater`,
+      type: 'tour'
+    };
+  }
+
+  // 5. Check if venue is Off-Broadway
+  if (isOffBroadwayVenue(venue)) {
+    return {
+      isTour: true,
+      reason: `Venue "${venue}" is Off-Broadway`,
+      type: 'off-broadway'
+    };
+  }
+
+  // 6. Check if venue is NOT a recognized Broadway theater (unknown venue)
+  if (venue && venue !== 'TBA') {
     return {
       isTour: true,
       reason: `Venue "${venue}" is not a recognized Broadway theater`,
@@ -273,6 +290,7 @@ function isTourProduction(show) {
     };
   }
 
+  // No venue specified or TBA - can't determine
   return { isTour: false };
 }
 
