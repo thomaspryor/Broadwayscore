@@ -11,7 +11,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "needsScoring": true,
@@ -38,5 +38,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240410100011",
-  "archiveOrgUrl": "http://web.archive.org/web/20240410100011/https://nypost.com/2024/03/07/entertainment/liev-schreiber-doubt-broadway-review-nun-play-scorches-even-in-a-so-so-revival/?utm_campaign=nypost&utm_source=twitter&utm_medium=social"
+  "archiveOrgUrl": "http://web.archive.org/web/20240410100011/https://nypost.com/2024/03/07/entertainment/liev-schreiber-doubt-broadway-review-nun-play-scorches-even-in-a-so-so-revival/?utm_campaign=nypost&utm_source=twitter&utm_medium=social",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 77.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": 68,
+      "direction": 58
+    },
+    "keyPhrases": [
+      {
+        "quote": "you could do worse than attend a merely adequate production of one of the best plays of the millennium",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the pair of actors just do not click",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "the words are never less than riveting",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the script as immaculate and one of the best plays of the millennium, but finds significant flaws in the performances' chemistry and direction, ultimately calling it 'merely adequate' while still recommending attendance. | GPT-4o-mini: The review expresses admiration for the script while highlighting significant issues with the production and performances, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:13:43.275Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
