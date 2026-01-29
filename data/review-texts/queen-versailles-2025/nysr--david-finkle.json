@@ -9,13 +9,66 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "dtliThumb": "Meh",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": "Final observation: At a point in the 1970s, Schwartz had three shows running on and off-Broadway: Godspell, Pippin, and The Magic Show. (There might even have been a fourth—The Baker’s Wife.) Right now, he’s matched the three-record with Wicked showing no signs of ever closing on Broadway, this one also on Broadway, and The Baker’s Wife currently revived off-Broadway. Congrats to him for that kind of rare happenstance. Imagine the personal pleasure as well as the weekly royalties.",
   "bwwThumb": "Meh",
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 77.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 74,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "there's nothing wrong with the cast Chenoweth heads like Lady Liberty raising her lamp",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Abraham disappears for such long periods of time he's often all but forgotten",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Others contributing strongly",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This excerpt focuses entirely on performances with mixed signals - praising the cast overall but noting significant structural issues with one lead role's absence. | GPT-4o-mini: The review highlights strong performances but indicates some issues with character presence, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:28:18.356Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

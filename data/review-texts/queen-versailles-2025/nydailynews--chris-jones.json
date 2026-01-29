@@ -9,15 +9,68 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": "I suspect some will want far more blue state judgment with their big Broadway night out. Not I. I’m all for a huge, morally complicated show that sends your head spinning through the mirrored funhouse of Versailles in Central Florida, musing on all-American achievement and aspiration and realizing family and friends are the only way to happiness.",
   "bwwThumb": "Up",
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 89,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "I'm all for a huge, morally complicated show that sends your head spinning through the mirrored funhouse of Versailles in Central Florida",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Chenoweth drives the new musical from Stephen Schwartz and Lindsey Ferrentino with a singular combo of raw determination and a beguilingly empathetic commitment to veracity",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Chenoweth, with the help of the director Michael Arden, gets Jackie Siegel exactly right",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic expresses clear enthusiasm for the show's moral complexity and scope, with particular praise for Chenoweth's nuanced performance and the director's work, indicating a strong positive recommendation. | GPT-4o-mini: The review expresses strong praise for Chenoweth's performance and the show's complexity, indicating a clear recommendation despite no explicit call to action.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:28:11.885Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
   "sources": [
     "dtli",
     "bww-roundup"

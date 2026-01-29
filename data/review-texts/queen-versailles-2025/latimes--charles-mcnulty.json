@@ -9,13 +9,66 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 56,
   "dtliThumb": "Meh",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 56,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 73,
+      "direction": 48
+    },
+    "keyPhrases": [
+      {
+        "quote": "the production ultimately overtaxes her strengths",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Chenoweth's dazzling star power didn't have to do so much of the heavy lifting",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "designed to bring out all of Chenoweth's Broadway shine",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review praises Chenoweth's star power but criticizes the production for over-relying on her performance to compensate for other weaknesses, suggesting a flawed show saved only by its lead. | GPT-4o-mini: The review highlights both ambition and shortcomings, leading to a mixed recommendation with a focus on performances but significant concerns about the production's overall execution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:28:05.013Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 60,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

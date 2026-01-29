@@ -7,7 +7,7 @@
   "publishDate": "November 9, 2025",
   "fullText": "There is a two-hour-and-40-minute luxury-car crash happening at the St. James Theatre. If I were the litigious type, I’d be trying to figure out how to sue for whiplash. Instead, here I am staggering homewards, still trying to twist my head back into position after The Queen of Versailles. If you’re morbidly curious about the experience, you could try for tickets to the new musical by Stephen Schwartz and Lindsey Ferrentino, with Kristin Chenoweth glittering relentlessly at its center. Or you could save the money and have someone slap you back and forth with a large salmon.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 23,
   "dtliThumb": "Down",
   "source": "dtli",
   "dtliExcerpt": "There is a two-hour-and-40-minute luxury-car crash happening at the St. James Theatre. If I were the litigious type, I’d be trying to figure out how to sue for whiplash. Instead, here I am staggering homewards, still trying to twist my head back into position after The Queen of Versailles. If you’re morbidly curious about the experience, you could try for tickets to the new musical by Stephen Schwartz and Lindsey Ferrentino, with Kristin Chenoweth glittering relentlessly at its center. Or you could save the money and have someone slap you back and forth with a large salmon.",
@@ -15,7 +15,60 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 23,
+    "confidence": "high",
+    "range": {
+      "low": 15.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 40,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There is a two-hour-and-40-minute luxury-car crash happening at the St. James Theatre",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "you could save the money and have someone slap you back and forth with a large salmon",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Kristin Chenoweth glittering relentlessly at its center",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic uses visceral metaphors of physical violence and car crashes to describe an overwhelmingly negative theater experience, explicitly suggesting audiences save their money rather than attend. | GPT-4o-mini: The review is overwhelmingly negative, using harsh metaphors and suggesting avoidance of the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:28:31.564Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

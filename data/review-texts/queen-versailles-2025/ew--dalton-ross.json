@@ -9,15 +9,70 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": "D",
-  "assignedScore": null,
+  "assignedScore": 37,
   "dtliThumb": "Down",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": "It’s a situation where Jackie has both won it all yet also lost it all at the same time, and the show seems prepared to end abruptly with its protagonist forced to confront her entire life's mission that has left her at this crossroads. But the moment is fleeting, as the orchestra strikes back up, the sharp edge is dulled, the curtain falls, and audiences are left to ponder how a show so big could also say so little.",
   "bwwThumb": "Meh",
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 37,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 43.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": null,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "how a show so big could also say so little",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "does none of them particularly well",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "tonal whiplash as the production attempts to scratch several itches without truly satisfying any",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic systematically dismantles the show's execution across multiple elements, comparing it unfavorably to another flop and describing fundamental structural problems that prevent recommendation. | GPT-4o-mini: The review expresses significant disappointment in the show's execution and coherence, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:27:51.873Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 35,
+    "scoreDelta": 3,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (37 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
+  },
   "originalScoreNormalized": 65,
   "scoreSource": "letter-grade",
   "scoreExtractedFrom": "archive"

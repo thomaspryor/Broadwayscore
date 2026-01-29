@@ -11,8 +11,66 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 38,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 45.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 55,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There is a two-hour-and-40-minute luxury-car crash happening at the St. James Theatre",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "If I were the litigious type, I'd be trying to figure out how to sue for whiplash",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Kristin Chenoweth glittering relentlessly at its center",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic uses vivid negative metaphors (luxury-car crash, suing for whiplash) and describes a physically disorienting experience, suggesting a clear pan despite the excerpt being incomplete. | GPT-4o-mini: The review conveys a predominantly negative experience, describing the show as a painful ordeal rather than an enjoyable theatrical experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:28:25.951Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 35,
+    "openaiScore": 40,
+    "scoreDelta": 5,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (38 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }

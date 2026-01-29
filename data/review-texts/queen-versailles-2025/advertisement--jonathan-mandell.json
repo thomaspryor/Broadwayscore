@@ -7,7 +7,7 @@
   "publishDate": "November 9, 2025",
   "fullText": "The production is impressively designed and wonderfully acted; the show has a pleasant enough new score by a high-profile composer who’s on a roll (his 1976 musical “The Baker’s Wife” is opening later this week Off-Broadway, and “Wicked: For Good” is being released later this month.) But it doesn’t adequately answer for me Sondheim’s essential question: Why should this be a musical?",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "dtliThumb": "Meh",
   "source": "dtli",
   "dtliExcerpt": "The production is impressively designed and wonderfully acted; the show has a pleasant enough new score by a high-profile composer who’s on a roll (his 1976 musical “The Baker’s Wife” is opening later this week Off-Broadway, and “Wicked: For Good” is being released later this month.) But it doesn’t adequately answer for me Sondheim’s essential question: Why should this be a musical?",
@@ -15,7 +15,60 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 68,
+      "performances": 79,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "impressively designed and wonderfully acted",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "pleasant enough new score",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "doesn't adequately answer for me Sondheim's essential question: Why should this be a musical?",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for design and performances but fundamental skepticism about the musical's justification for existing as a musical creates a qualified, lukewarm recommendation. | GPT-4o-mini: The review praises the design and performances while expressing a significant concern about the musical's purpose, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:27:47.160Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
