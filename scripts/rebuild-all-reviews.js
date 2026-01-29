@@ -434,6 +434,7 @@ const stats = {
   },
   explicitOverrideLlm: 0,  // Count how many times explicit rating overrode LLM
   thumbOverrideLlm: 0,     // Count how many times thumb overrode low-conf LLM
+  needsLlmScoring: [],     // Reviews with text but no LLM score (should be scored!)
   byShow: {}
 };
 
@@ -686,6 +687,20 @@ showDirs.forEach(showId => {
       }
       seenKeys.add(dedupKey);
 
+      // CHECK: Flag reviews that SHOULD have LLM scores but don't
+      // These have scorable text but were never run through LLM scoring
+      const scorableText = data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || '';
+      const hasScorableText = scorableText.length >= 100;
+      const hasLlmScore = data.llmScore && data.llmScore.score;
+
+      if (hasScorableText && !hasLlmScore) {
+        stats.needsLlmScoring.push({
+          path: showId + '/' + file,
+          textLength: scorableText.length,
+          hasThumb: !!(data.dtliThumb || data.bwwThumb)
+        });
+      }
+
       // Get best score - returns null if no valid score
       const scoreResult = getBestScore(data);
 
@@ -825,6 +840,28 @@ if (skippedReviews.length > 0) {
       console.log(`    ... and ${reviews.length - 5} more`);
     }
   });
+}
+
+// WARNING: Reviews that should have LLM scores but don't
+if (stats.needsLlmScoring.length > 0) {
+  console.log(`\n⚠️  WARNING: ${stats.needsLlmScoring.length} REVIEWS NEED LLM SCORING`);
+  console.log('These have scorable text (100+ chars) but no LLM score.');
+  console.log('Run: gh workflow run "LLM Ensemble Score Reviews" to score them.\n');
+
+  // Group by show
+  const byShow = {};
+  stats.needsLlmScoring.forEach(r => {
+    const show = r.path.split('/')[0];
+    byShow[show] = (byShow[show] || 0) + 1;
+  });
+
+  console.log('By show:');
+  Object.entries(byShow).sort((a, b) => b[1] - a[1]).slice(0, 10).forEach(([show, count]) => {
+    console.log(`  ${show}: ${count}`);
+  });
+  if (Object.keys(byShow).length > 10) {
+    console.log(`  ... and ${Object.keys(byShow).length - 10} more shows`);
+  }
 }
 
 console.log('\n=== DONE ===');
