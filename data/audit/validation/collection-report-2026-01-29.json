@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T01:52:43.635Z",
+  "runDate": "2026-01-29T01:54:29.246Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "the-notebook-2024",
+    "showFilter": "here-lies-love-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 19,
-    "failed": 35,
+    "processed": 23,
+    "failed": 30,
     "skipped": 0,
-    "successRate": "35.2%"
+    "successRate": "43.4%"
   },
   "tierBreakdown": {
     "playwright": 3,
     "scrapingbee": 0,
-    "brightdata": 3,
-    "archive": 13
+    "brightdata": 4,
+    "archive": 16
   },
   "statistics": {
-    "tier1Attempts": 19,
+    "tier1Attempts": 17,
     "tier1Success": 0,
-    "tier2Attempts": 19,
+    "tier2Attempts": 17,
     "tier2Success": 0,
-    "tier3Attempts": 19,
-    "tier3Success": 0,
-    "tier4Attempts": 45,
-    "tier4Success": 4,
-    "totalFailed": 19,
-    "scrapingBeeCreditsUsed": 110
+    "tier3Attempts": 17,
+    "tier3Success": 1,
+    "tier4Attempts": 39,
+    "tier4Success": 7,
+    "totalFailed": 14,
+    "scrapingBeeCreditsUsed": 30
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -50,10 +50,14 @@
     "harmony-2023/nysr--sandy-macdonald.json",
     "harmony-2023/talkinbroadway--matthew-murray.json",
     "harmony-2023/washpost--peter-marks.json",
-    "the-notebook-2024/nypost--johnny-oleksinski.json",
-    "the-notebook-2024/wsj--charles-isherwood.json",
-    "the-notebook-2024/wsj--charles.json",
-    "the-notebook-2024/vu--sara-holdren.json"
+    "here-lies-love-2023/nytg--allison-considine.json",
+    "here-lies-love-2023/variety--naveen-kumar.json",
+    "here-lies-love-2023/nydailynews--chris-jones.json",
+    "here-lies-love-2023/nydailynews--chris.json",
+    "here-lies-love-2023/observer--rex-reed.json",
+    "here-lies-love-2023/thewrap--robert-hofler.json",
+    "here-lies-love-2023/wsj--charles-isherwood.json",
+    "here-lies-love-2023/wsj--charles.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -72,25 +76,20 @@
     "harmony-2023/theatrely--michael-appler.json",
     "harmony-2023/stageandcinema--matthew-murray.json",
     "harmony-2023/usatoday--charles-isherwood.json",
-    "the-notebook-2024/hollywood-reporter--angie-han.json",
-    "the-notebook-2024/nytg--andy-propst.json",
-    "the-notebook-2024/variety--aramide-tinubu.json",
-    "the-notebook-2024/vulture--jackson-mchenry.json",
-    "the-notebook-2024/deadline--pete-hammond.json",
-    "the-notebook-2024/ew--alex-zalben.json",
-    "the-notebook-2024/guardian--adrian-horton.json",
-    "the-notebook-2024/guardian--gloria-oladipo.json",
-    "the-notebook-2024/guardian--jesse-green.json",
-    "the-notebook-2024/indiewire--christian-lewis.json",
-    "the-notebook-2024/indiewire--david-ehrlich.json",
-    "the-notebook-2024/nydailynews--chris-jones.json",
-    "the-notebook-2024/nydailynews--chris.json",
-    "the-notebook-2024/theatermania--adam-feldman.json",
-    "the-notebook-2024/theatermania--jesse-green.json",
-    "the-notebook-2024/theatrely--andy-lefkowitz.json",
-    "the-notebook-2024/theatrely--jackson-mchenry.json",
-    "the-notebook-2024/amny--david-gordon.json",
-    "the-notebook-2024/talkinbroadway--matthew-murray.json"
+    "here-lies-love-2023/hollywood-reporter--angie-han.json",
+    "here-lies-love-2023/variety--aramide-tinubu.json",
+    "here-lies-love-2023/variety--jesse-green.json",
+    "here-lies-love-2023/variety--peter-marks.json",
+    "here-lies-love-2023/vulture--sara-holdren.json",
+    "here-lies-love-2023/deadline--pete-hammond.json",
+    "here-lies-love-2023/guardian--adrian-horton.json",
+    "here-lies-love-2023/indiewire--chris-ofalt.json",
+    "here-lies-love-2023/theatermania--adam-feldman.json",
+    "here-lies-love-2023/bergen-record--robert-feldberg.json",
+    "here-lies-love-2023/rollingstone--brittany-spanos.json",
+    "here-lies-love-2023/talkinbroadway--matthew-murray.json",
+    "here-lies-love-2023/usatoday--charles-isherwood.json",
+    "here-lies-love-2023/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -102,7 +101,8 @@
     "brightdata": [
       "harmony-2023/observer--jesse-green.json",
       "harmony-2023/observer--rex-reed.json",
-      "harmony-2023/chicagotribune--chris-jones.json"
+      "harmony-2023/chicagotribune--chris-jones.json",
+      "here-lies-love-2023/observer--rex-reed.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
@@ -114,10 +114,13 @@
       "harmony-2023/amny--matt-windman.json",
       "harmony-2023/talkinbroadway--matthew-murray.json",
       "harmony-2023/washpost--peter-marks.json",
-      "the-notebook-2024/nypost--johnny-oleksinski.json",
-      "the-notebook-2024/wsj--charles-isherwood.json",
-      "the-notebook-2024/wsj--charles.json",
-      "the-notebook-2024/vu--sara-holdren.json"
+      "here-lies-love-2023/nytg--allison-considine.json",
+      "here-lies-love-2023/variety--naveen-kumar.json",
+      "here-lies-love-2023/nydailynews--chris-jones.json",
+      "here-lies-love-2023/nydailynews--chris.json",
+      "here-lies-love-2023/thewrap--robert-hofler.json",
+      "here-lies-love-2023/wsj--charles-isherwood.json",
+      "here-lies-love-2023/wsj--charles.json"
     ]
   }
 }
