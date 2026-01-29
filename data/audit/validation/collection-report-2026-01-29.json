@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-29T18:06:38.445Z",
+  "runDate": "2026-01-29T18:07:44.749Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 10,
     "priority": "all",
-    "showFilter": "redwood-2025",
+    "showFilter": "doubt-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 65,
-    "failed": 211,
+    "failed": 213,
     "skipped": 0,
-    "successRate": "23.6%"
+    "successRate": "23.4%"
   },
   "tierBreakdown": {
     "playwright": 10,
@@ -23,16 +23,16 @@
     "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 4,
     "tier1Success": 0,
-    "tier2Attempts": 3,
-    "tier2Success": 0,
+    "tier2Attempts": 4,
+    "tier2Success": 1,
     "tier3Attempts": 3,
     "tier3Success": 0,
-    "tier4Attempts": 6,
+    "tier4Attempts": 7,
     "tier4Success": 2,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 30
+    "totalFailed": 6,
+    "scrapingBeeCreditsUsed": 20
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -309,10 +309,12 @@
     "stereophonic-2024/guardian--gloria-oladipo.json",
     "stereophonic-2024/observer--rex-reed.json",
     "stereophonic-2024/theatermania--adam-feldman.json",
-    "redwood-2025/guardian--adrian-horton.json",
-    "redwood-2025/guardian--adrian.json",
-    "redwood-2025/observer--david-cote.json",
-    "redwood-2025/wsj--charles-isherwood.json"
+    "doubt-2024/vulture--helen-shaw.json",
+    "doubt-2024/guardian--adrian-horton.json",
+    "doubt-2024/wsj--charles-isherwood.json",
+    "doubt-2024/wsj--charles.json",
+    "doubt-2024/john-patrick-shanley--doubt-a-parable.json",
+    "doubt-2024/thestage--lane-williamson.json"
   ],
   "tierDetails": {
     "playwright": [
