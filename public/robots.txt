@@ -1,0 +1,22 @@
+# Broadway Scorecard - robots.txt
+# Phase 0: Protect premium data from bulk scraping
+
+# Allow Googlebot full access for SEO
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+
+# Allow Bingbot full access
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+
+# Block all other bots from premium data pages
+User-agent: *
+Disallow: /biz
+Disallow: /biz-buzz
+Disallow: /api/
+Disallow: /data/
+
+# Sitemap location
+Sitemap: https://broadwayscorecard.com/sitemap.xml
