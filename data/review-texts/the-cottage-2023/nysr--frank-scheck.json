@@ -11,8 +11,64 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-COTTAGE-Opens-on-Broadway-20230723",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 28,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 28,
+    "confidence": "high",
+    "range": {
+      "low": 20.5,
+      "high": 35.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 23,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "humor is so devoid of reality that the laughs become increasingly strained",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "plot twists have little impact since we're so little invested in the characters",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "evening has the feel of an elongated Carol Burnett Show sketch",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic heavily criticizes the fundamental elements of the show - unrealistic humor, uninvolving characters, and structural problems that make it feel like an overstretched TV sketch. | GPT-4o-mini: The review expresses strong dissatisfaction with the humor, plot, and character investment, indicating a clear rejection of the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T06:38:43.693Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 30,
+    "scoreDelta": 5,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

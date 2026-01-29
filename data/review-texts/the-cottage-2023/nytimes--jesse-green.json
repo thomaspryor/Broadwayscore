@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "But after all the temporizing and flatulating earlier, the last-minute arrival of a point seemed, well, beside the point. Had I laughed more than twice in the play’s previous 119 minutes, I might even have found it funny.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 39,
   "source": "dtli",
   "dtliThumb": "Down",
   "dtliUrl": null,
@@ -22,7 +22,60 @@
     "web-search",
     "dtli"
   ],
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 39,
+    "confidence": "high",
+    "range": {
+      "low": 33,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": null,
+      "performances": 53,
+      "direction": 43
+    },
+    "keyPhrases": [
+      {
+        "quote": "cannot hide that the stakes are too low",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Dawdling is the play's difficulty as well; everyone talks in pseudofancy circles",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The stunts and capers likewise have no danger in them",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Critic systematically identifies fundamental flaws in the farce's construction - low stakes, dawdling pace, lack of danger - while acknowledging some positive production elements, resulting in a clear pan with minor redeeming qualities. | GPT-4o-mini: The review expresses significant criticism of the play's lack of stakes and engaging content, leading to a strong negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T06:38:49.942Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

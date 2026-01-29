@@ -11,7 +11,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-COTTAGE-Opens-on-Broadway-20230723",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "needsScoring": true,
@@ -21,5 +21,61 @@
     "bww-roundup",
     "dtli",
     "web-search"
-  ]
+  ],
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 33.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": null,
+      "performances": 58,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rustin's irksome writing, though, was a flea in my ear",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "What makes 'The Cottage' habitable is its game and mostly charming actors",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "that physical prop gag is funnier than any one line of dialogue in this entire witless play",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic harshly criticizes the script as 'witless' and 'irksome' while acknowledging some charm in the performances, but the overwhelming negative tone about the writing and structure dominates the review. | GPT-4o-mini: The review expresses significant disappointment in the writing and overall execution of the play, despite some praise for individual performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T06:38:38.125Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
