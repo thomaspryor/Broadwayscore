@@ -1,8 +1,9 @@
 {
   "_meta": {
     "description": "Biz Buzz - Commercial performance data for Broadway shows",
-    "lastUpdated": "2026-01-28",
+    "lastUpdated": "2026-01-29",
     "sources": "SEC filings, trade press (Broadway Journal, Broadway News, Deadline, Variety), Reddit r/Broadway",
+    "notes": "recoupedWeeks is DEPRECATED - now calculated from openingDate + recoupedDate in the data layer. Only recoupedDate is required for recouped shows.",
     "designations": {
       "Miracle": "Long-running mega-hit -- extraordinary returns",
       "Windfall": "Solid hit -- recouped and profitable",
@@ -260,10 +261,9 @@
       "capitalizationSource": "SEC filing / Reddit",
       "weeklyRunningCost": null,
       "recouped": true,
-      "recoupedDate": null,
-      "recoupedWeeks": null,
+      "recoupedDate": "2024-12",
       "recoupedSource": "Inferred from Easy Winner designation",
-      "notes": "Star vehicle for Patti LuPone and Mia Farrow. Limited run closed as scheduled. Low capitalization compared to other Broadway shows."
+      "notes": "Star vehicle for Patti LuPone and Mia Farrow. Limited run closed as scheduled Jan 2025. Low capitalization compared to other Broadway shows."
     },
     "our-town": {
       "designation": "Easy Winner",
@@ -271,10 +271,9 @@
       "capitalizationSource": "NY Times / Broadway Stars",
       "weeklyRunningCost": null,
       "recouped": true,
-      "recoupedDate": null,
-      "recoupedWeeks": null,
+      "recoupedDate": "2025-01",
       "recoupedSource": "Inferred from Easy Winner designation",
-      "notes": "Limited run with Jim Parsons. First Thornton Wilder play to gross $1M+ in a week. Strong final weeks. Capitalized at $20M."
+      "notes": "Limited run with Jim Parsons. First Thornton Wilder play to gross $1M+ in a week. Strong final weeks. Capitalized at $20M. Closed Jan 2025."
     },
     "death-becomes-her": {
       "designation": "TBD",
@@ -620,10 +619,9 @@
       "capitalizationSource": "Playbill (original 2001 production)",
       "weeklyRunningCost": null,
       "recouped": true,
-      "recoupedDate": null,
-      "recoupedWeeks": null,
+      "recoupedDate": "2002-10",
       "recoupedSource": "Playbill",
-      "notes": "Original production ran 14 years / 5,773 performances. $7B+ grossed across all global productions."
+      "notes": "Original production ran 14 years / 5,773 performances. Recouped within ~1 year. $7B+ grossed across all global productions."
     },
     "queen-of-versailles": {
       "designation": "Flop",

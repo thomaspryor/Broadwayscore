@@ -569,6 +569,21 @@ function validateCommercialJson() {
       }
     }
 
+    // CRITICAL: Recouped shows MUST have recoupedDate (used to calculate weeks)
+    if (show.recouped === true && !show.recoupedDate) {
+      error(`commercial.json: "${showId}" has recouped=true but missing recoupedDate (REQUIRED for weeks calculation)`);
+      issues++;
+    }
+
+    // Validate recoupedDate format if present (YYYY-MM or YYYY)
+    if (show.recoupedDate) {
+      const validRecoupDateFormat = /^\d{4}(-\d{2})?$/;
+      if (!validRecoupDateFormat.test(show.recoupedDate)) {
+        error(`commercial.json: "${showId}" recoupedDate must be YYYY-MM or YYYY format, got "${show.recoupedDate}"`);
+        issues++;
+      }
+    }
+
     // Validate costMethodology
     if (show.costMethodology && !VALID_COST_METHODOLOGIES.includes(show.costMethodology)) {
       error(`commercial.json: "${showId}" has invalid costMethodology "${show.costMethodology}". Valid values: ${VALID_COST_METHODOLOGIES.join(', ')}`);
