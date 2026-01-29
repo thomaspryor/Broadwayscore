@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T15:23:22.758Z",
+  "runDate": "2026-01-29T15:23:50.736Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 25,
     "priority": "all",
-    "showFilter": "the-whos-tommy-2024",
+    "showFilter": "wicked-2003",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 67,
-    "failed": 179,
+    "processed": 65,
+    "failed": 182,
     "skipped": 0,
-    "successRate": "27.2%"
+    "successRate": "26.3%"
   },
   "tierBreakdown": {
     "playwright": 10,
     "scrapingbee": 6,
-    "brightdata": 7,
-    "archive": 44
+    "brightdata": 6,
+    "archive": 43
   },
   "statistics": {
-    "tier1Attempts": 2,
+    "tier1Attempts": 5,
     "tier1Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 5,
     "tier2Success": 0,
-    "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier4Attempts": 7,
-    "tier4Success": 4,
-    "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 10
+    "tier3Attempts": 5,
+    "tier3Success": 0,
+    "tier4Attempts": 14,
+    "tier4Success": 2,
+    "totalFailed": 6,
+    "scrapingBeeCreditsUsed": 20
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -99,9 +99,7 @@
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
     "suffs-2024/the-times--nancy-durrant.json",
-    "the-whos-tommy-2024/variety--trish-deitch.json",
-    "the-whos-tommy-2024/thewrap--robert-hofler.json",
-    "the-whos-tommy-2024/washpost--elisabeth-vincentelli.json"
+    "wicked-2003/ew--alice-king.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -280,9 +278,12 @@
     "hells-kitchen-2024/usatoday--charles-isherwood.json",
     "hells-kitchen-2024/usatoday--david-rooney.json",
     "hells-kitchen-2024/washpost--peter-marks.json",
-    "the-whos-tommy-2024/variety--frank-rizzo.json",
-    "the-whos-tommy-2024/wsj--charles-isherwood.json",
-    "the-whos-tommy-2024/wsj--charles.json"
+    "wicked-2003/hollywood-reporter--frank-scheck.json",
+    "wicked-2003/guardian--michael-billington.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "wicked-2003/curtainup--elyse-sommer.json",
+    "wicked-2003/njcom-star-ledger--michael-sommers.json",
+    "wicked-2003/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -311,8 +312,7 @@
       "harmony-2023/chicagotribune--chris-jones.json",
       "lempicka-2024/nyt-theater--jonathan-mandell.json",
       "moulin-rouge-2019/observer--rex-reed.json",
-      "aladdin-2014/usatoday--elysa-gardner.json",
-      "the-whos-tommy-2024/washpost--elisabeth-vincentelli.json"
+      "aladdin-2014/usatoday--elysa-gardner.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
@@ -357,8 +357,7 @@
       "queen-versailles-2025/vulture--sara-holdren.json",
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
       "suffs-2024/the-times--nancy-durrant.json",
-      "the-whos-tommy-2024/variety--trish-deitch.json",
-      "the-whos-tommy-2024/thewrap--robert-hofler.json"
+      "wicked-2003/ew--alice-king.json"
     ]
   }
 }
