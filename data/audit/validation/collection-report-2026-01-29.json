@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-29T18:18:32.703Z",
+  "runDate": "2026-01-29T18:18:35.998Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 5,
     "priority": "all",
-    "showFilter": "six-2021",
+    "showFilter": "bug-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 65,
-    "failed": 212,
+    "failed": 211,
     "skipped": 0,
-    "successRate": "23.5%"
+    "successRate": "23.6%"
   },
   "tierBreakdown": {
     "playwright": 10,
@@ -23,16 +23,16 @@
     "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 5,
+    "tier1Attempts": 3,
     "tier1Success": 0,
-    "tier2Attempts": 5,
+    "tier2Attempts": 3,
     "tier2Success": 0,
-    "tier3Attempts": 5,
-    "tier3Success": 1,
-    "tier4Attempts": 11,
-    "tier4Success": 0,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 10
+    "tier3Attempts": 3,
+    "tier3Success": 0,
+    "tier4Attempts": 6,
+    "tier4Success": 1,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 20
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -309,11 +309,10 @@
     "stereophonic-2024/guardian--gloria-oladipo.json",
     "stereophonic-2024/observer--rex-reed.json",
     "stereophonic-2024/theatermania--adam-feldman.json",
-    "six-2021/variety--peter-marks.json",
-    "six-2021/deadline--pete-hammond.json",
-    "six-2021/ew--ruth-kinane.json",
-    "six-2021/guardian--adrian-horton.json",
-    "six-2021/observer--david-cote.json"
+    "bug-2026/nytimes--jason-zinoman.json",
+    "bug-2026/guardian--jesse-hassenger.json",
+    "bug-2026/wsj--charles-isherwood.json",
+    "bug-2026/washpost--naveen-kumar.json"
   ],
   "tierDetails": {
     "playwright": [
