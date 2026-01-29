@@ -9,15 +9,68 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": "Ideal fodder, then, for a modestly scaled and warm-hearted jukebox show that might prove to be one of the sleeper hits of the season. That’s thanks to an inestimably witty book with plenty of hard laughs and a suite of winning lead performances under director Gordon Greenberg.",
   "bwwThumb": "Up",
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 84,
+      "music": null,
+      "performances": 80,
+      "direction": 79
+    },
+    "keyPhrases": [
+      {
+        "quote": "sleeper hits of the season",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "inestimably witty book with plenty of hard laughs",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "suite of winning lead performances",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review uses consistently positive language praising the book's wit, performances, and predicts commercial success, indicating a clear recommendation despite being an excerpt. | GPT-4o-mini: The review indicates strong praise for the book and performances, suggesting a clear recommendation despite not being overly enthusiastic.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T06:35:51.790Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
   "sources": [
     "dtli",
     "bww-roundup"
