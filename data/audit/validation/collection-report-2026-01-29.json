@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-29T15:22:20.686Z",
+  "runDate": "2026-01-29T15:22:25.324Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 25,
     "priority": "all",
-    "showFilter": "days-of-wine-and-roses-2024",
+    "showFilter": "stereophonic-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 64,
-    "failed": 187,
+    "failed": 194,
     "skipped": 0,
-    "successRate": "25.5%"
+    "successRate": "24.8%"
   },
   "tierBreakdown": {
     "playwright": 10,
@@ -23,16 +23,16 @@
     "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 11,
+    "tier1Attempts": 18,
     "tier1Success": 0,
-    "tier2Attempts": 11,
-    "tier2Success": 0,
-    "tier3Attempts": 11,
-    "tier3Success": 1,
-    "tier4Attempts": 21,
+    "tier2Attempts": 18,
+    "tier2Success": 1,
+    "tier3Attempts": 17,
+    "tier3Success": 0,
+    "tier4Attempts": 38,
     "tier4Success": 0,
-    "totalFailed": 11,
-    "scrapingBeeCreditsUsed": 40
+    "totalFailed": 18,
+    "scrapingBeeCreditsUsed": 100
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -277,17 +277,24 @@
     "hells-kitchen-2024/usatoday--charles-isherwood.json",
     "hells-kitchen-2024/usatoday--david-rooney.json",
     "hells-kitchen-2024/washpost--peter-marks.json",
-    "days-of-wine-and-roses-2024/nytimes--jesse-green.json",
-    "days-of-wine-and-roses-2024/variety--frank-rizzo.json",
-    "days-of-wine-and-roses-2024/guardian--lauren-mechling.json",
-    "days-of-wine-and-roses-2024/nypost--johnny-oleksinski.json",
-    "days-of-wine-and-roses-2024/observer--rex-reed.json",
-    "days-of-wine-and-roses-2024/theatermania--adam-feldman.json",
-    "days-of-wine-and-roses-2024/wsj--charles-isherwood.json",
-    "days-of-wine-and-roses-2024/wsj--terry-teachout.json",
-    "days-of-wine-and-roses-2024/talkinbroadway--matthew-murray.json",
-    "days-of-wine-and-roses-2024/washpost--naveen-kumar.json",
-    "days-of-wine-and-roses-2024/washpost--peter-marks.json"
+    "stereophonic-2024/hollywood-reporter--angie-han.json",
+    "stereophonic-2024/variety--aramide-tinubu.json",
+    "stereophonic-2024/variety--jesse-green.json",
+    "stereophonic-2024/variety--peter-marks.json",
+    "stereophonic-2024/vulture--helen-shaw.json",
+    "stereophonic-2024/deadline--pete-hammond.json",
+    "stereophonic-2024/guardian--adrian-horton.json",
+    "stereophonic-2024/guardian--gloria-oladipo.json",
+    "stereophonic-2024/observer--rex-reed.json",
+    "stereophonic-2024/theatermania--adam-feldman.json",
+    "stereophonic-2024/theatermania--jesse-green.json",
+    "stereophonic-2024/theatermania--zachary-stewart.json",
+    "stereophonic-2024/wsj--charles-isherwood.json",
+    "stereophonic-2024/wsj--terry-teachout.json",
+    "stereophonic-2024/theatrely--juan-a-ramirez.json",
+    "stereophonic-2024/ap--mark-kennedy.json",
+    "stereophonic-2024/rollingstone--kalia-richardson.json",
+    "stereophonic-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
