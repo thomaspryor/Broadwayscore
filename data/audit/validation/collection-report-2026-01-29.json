@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-29T15:28:12.847Z",
+  "runDate": "2026-01-29T15:28:18.196Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 25,
     "priority": "all",
-    "showFilter": "the-shark-is-broken-2023",
+    "showFilter": "the-wiz-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 66,
-    "failed": 181,
+    "failed": 180,
     "skipped": 0,
-    "successRate": "26.7%"
+    "successRate": "26.8%"
   },
   "tierBreakdown": {
     "playwright": 10,
@@ -26,13 +26,13 @@
     "tier1Attempts": 5,
     "tier1Success": 0,
     "tier2Attempts": 5,
-    "tier2Success": 0,
-    "tier3Attempts": 5,
+    "tier2Success": 1,
+    "tier3Attempts": 4,
     "tier3Success": 0,
-    "tier4Attempts": 11,
-    "tier4Success": 3,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 20
+    "tier4Attempts": 8,
+    "tier4Success": 2,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 40
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -99,8 +99,8 @@
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
     "suffs-2024/the-times--nancy-durrant.json",
-    "the-shark-is-broken-2023/variety--trish-deitch.json",
-    "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json"
+    "the-wiz-2024/broadwaynews--brittani-samuel.json",
+    "the-wiz-2024/queerty--matthew-wexler.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -279,11 +279,10 @@
     "hells-kitchen-2024/usatoday--charles-isherwood.json",
     "hells-kitchen-2024/usatoday--david-rooney.json",
     "hells-kitchen-2024/washpost--peter-marks.json",
-    "the-shark-is-broken-2023/observer--david-cote.json",
-    "the-shark-is-broken-2023/theatermania--jesse-green.json",
-    "the-shark-is-broken-2023/wsj--terry-teachout.json",
-    "the-shark-is-broken-2023/talkinbroadway--matthew-murray.json",
-    "the-shark-is-broken-2023/usatoday--charles-isherwood.json"
+    "the-wiz-2024/nydailynews--chris-jones.json",
+    "the-wiz-2024/nydailynews--chris.json",
+    "the-wiz-2024/wsj--charles-isherwood.json",
+    "the-wiz-2024/thestage--lane-williamson.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -357,8 +356,8 @@
       "queen-versailles-2025/vulture--sara-holdren.json",
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
       "suffs-2024/the-times--nancy-durrant.json",
-      "the-shark-is-broken-2023/variety--trish-deitch.json",
-      "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json"
+      "the-wiz-2024/broadwaynews--brittani-samuel.json",
+      "the-wiz-2024/queerty--matthew-wexler.json"
     ]
   }
 }
