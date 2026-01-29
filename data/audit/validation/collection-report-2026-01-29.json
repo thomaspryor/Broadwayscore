@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T15:20:48.450Z",
+  "runDate": "2026-01-29T15:22:20.686Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 25,
     "priority": "all",
-    "showFilter": "grey-house-2023",
+    "showFilter": "days-of-wine-and-roses-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 67,
-    "failed": 184,
+    "processed": 64,
+    "failed": 187,
     "skipped": 0,
-    "successRate": "26.7%"
+    "successRate": "25.5%"
   },
   "tierBreakdown": {
     "playwright": 10,
-    "scrapingbee": 8,
+    "scrapingbee": 6,
     "brightdata": 6,
-    "archive": 43
+    "archive": 42
   },
   "statistics": {
     "tier1Attempts": 11,
     "tier1Success": 0,
     "tier2Attempts": 11,
-    "tier2Success": 2,
-    "tier3Attempts": 9,
-    "tier3Success": 0,
-    "tier4Attempts": 18,
-    "tier4Success": 2,
-    "totalFailed": 8,
-    "scrapingBeeCreditsUsed": 60
+    "tier2Success": 0,
+    "tier3Attempts": 11,
+    "tier3Success": 1,
+    "tier4Attempts": 21,
+    "tier4Success": 0,
+    "totalFailed": 11,
+    "scrapingBeeCreditsUsed": 40
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -98,10 +98,7 @@
     "queen-versailles-2025/latimes--charles-mcnulty.json",
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
-    "suffs-2024/the-times--nancy-durrant.json",
-    "grey-house-2023/broadwaynews--brittani-samuel.json",
-    "grey-house-2023/thewrap--robert-hofler.json",
-    "grey-house-2023/cititour--brian-scott-lipton.json"
+    "suffs-2024/the-times--nancy-durrant.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -280,14 +277,17 @@
     "hells-kitchen-2024/usatoday--charles-isherwood.json",
     "hells-kitchen-2024/usatoday--david-rooney.json",
     "hells-kitchen-2024/washpost--peter-marks.json",
-    "grey-house-2023/hollywood-reporter--angie-han.json",
-    "grey-house-2023/hollywood-reporter--david-rooney.json",
-    "grey-house-2023/newyorker--dan-stahl.json",
-    "grey-house-2023/variety--charles-isherwood.json",
-    "grey-house-2023/variety--peter-marks.json",
-    "grey-house-2023/vulture--helen-shaw.json",
-    "grey-house-2023/observer--david-cote.json",
-    "grey-house-2023/wsj--charles-isherwood.json"
+    "days-of-wine-and-roses-2024/nytimes--jesse-green.json",
+    "days-of-wine-and-roses-2024/variety--frank-rizzo.json",
+    "days-of-wine-and-roses-2024/guardian--lauren-mechling.json",
+    "days-of-wine-and-roses-2024/nypost--johnny-oleksinski.json",
+    "days-of-wine-and-roses-2024/observer--rex-reed.json",
+    "days-of-wine-and-roses-2024/theatermania--adam-feldman.json",
+    "days-of-wine-and-roses-2024/wsj--charles-isherwood.json",
+    "days-of-wine-and-roses-2024/wsj--terry-teachout.json",
+    "days-of-wine-and-roses-2024/talkinbroadway--matthew-murray.json",
+    "days-of-wine-and-roses-2024/washpost--naveen-kumar.json",
+    "days-of-wine-and-roses-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -308,9 +308,7 @@
       "lempicka-2024/cititour--brian-scott-lipton.json",
       "stranger-things-2024/thestage--dave-fargnoli.json",
       "queen-versailles-2025/ew--dalton-ross.json",
-      "queen-versailles-2025/latimes--charles-mcnulty.json",
-      "grey-house-2023/broadwaynews--brittani-samuel.json",
-      "grey-house-2023/cititour--brian-scott-lipton.json"
+      "queen-versailles-2025/latimes--charles-mcnulty.json"
     ],
     "brightdata": [
       "harmony-2023/observer--jesse-green.json",
@@ -318,8 +316,7 @@
       "harmony-2023/chicagotribune--chris-jones.json",
       "lempicka-2024/nyt-theater--jonathan-mandell.json",
       "moulin-rouge-2019/observer--rex-reed.json",
-      "aladdin-2014/usatoday--elysa-gardner.json",
-      "and-juliet-2022/cititour--brian-scott-lipton.json"
+      "aladdin-2014/usatoday--elysa-gardner.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
@@ -363,8 +360,7 @@
       "queen-versailles-2025/vulture--sara-holdren-and-jesse-david-fox.json",
       "queen-versailles-2025/vulture--sara-holdren.json",
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
-      "suffs-2024/the-times--nancy-durrant.json",
-      "grey-house-2023/thewrap--robert-hofler.json"
+      "suffs-2024/the-times--nancy-durrant.json"
     ]
   }
 }
