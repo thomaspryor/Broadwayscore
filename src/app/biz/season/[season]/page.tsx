@@ -7,31 +7,17 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import {
+  getSeasonsWithCommercialData,
   getSeasonStats,
   getShowsBySeasonWithCommercial,
 } from '@/lib/data';
 
 import AllShowsTable from '@/components/biz/AllShowsTable';
 
-// Valid seasons for static generation
-const VALID_SEASONS = [
-  '2024-2025',
-  '2023-2024',
-  '2022-2023',
-  '2021-2022',
-  '2019-2020',
-  '2018-2019',
-  '2017-2018',
-  '2015-2016',
-  '2013-2014',
-  '2010-2011',
-  '2003-2004',
-  '1997-1998',
-  '1996-1997',
-];
-
+// Dynamically generate params from actual data - auto-updates when shows are added
 export function generateStaticParams() {
-  return VALID_SEASONS.map((season) => ({
+  const seasons = getSeasonsWithCommercialData();
+  return seasons.map((season) => ({
     season,
   }));
 }
