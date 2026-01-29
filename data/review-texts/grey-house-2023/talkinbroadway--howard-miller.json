@@ -5,8 +5,8 @@
   "criticName": "Howard Miller",
   "url": "https://www.talkinbroadway.com/page/world/GreyHouse.html",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "Theatre Review by Howard Miller - June 1, 2023\n\nGrey House by Levi Holloway. Directed by Joe Mantello. Scenic design by Scott Pask. Costume design by Rudy Mance. Lighting design by Natasha Katz. Sound design by Tom Gibbons. Hair and wig design by Katie Gell and Robert Pickens. Makeup design by Christina Grant. Associate director Logan Reed. Voice coach Gigi Buffington. Movement consultant Ellenore Scott. Music supervisor and a cappella arranger Or Matias . Director of artistic sign language Andrew Morrill.\nCast: Laurie Metcalf, Tatiana Maslany, Paul Sparks, Sophia Anne Caruso, Millicent Simmonds, Colby Kipnes, Alyssa Emily Marvin, Eamon Patrick O'Connell, and Cyndi Coyne.\nTheater: Lyceum Theatre, 149 West 45th Street (Between Broadway and 6th Avenue)\nTickets: Telecharge.com\n\nThe year is 1977, the same year, by the way, that Stephen King's horror novel \"The Shining\" was published. (There are so many referential nods in the play, it almost invites seeking out such \"Easter eggs\"). Two travelers, Henry (Paul Sparks) and Max (Tatiana Maslany), driving in a blizzard, are stranded when their car smashes into a deer. The vehicle is badly damaged, and Henry suffers a broken leg. But somehow Max manages to drag him and herself to a nearby cabin in the woods, where they are welcomed in by its inhabitants: five enigmatic children, their caregiver (Laurie Metcalf), and a never-to-be-explained character known as The Ancient (Cyndi Coyne).\n\nAs the designated \"mom\" to this odd little brood, Metcalf's character, Raleigh, quickly makes it clear she is no more in charge than is the Ancient. It's the kids, dressed mostly in night clothes and looking like they belong in M. Night Shyamalan's The Village, who run the show. They are Marlow (Sophia Anne Caruso), the eldest and the leader of the pack; Bernie (Millicent Simmonds), who communicates in American Sign Language; Squirrel (Colby Kipnes), who apparently lives up to her name, as we learn she has chewed off the cord to the telephone, rendering it functionless (or is it???); and a character known as A1656, the origin of whose name we learn late in the show. There is also a clingy, sweet-faced boy, played by Eamon Patrick O'Connell, who may bring to mind the little boy played by Billy Mumy in the classic episode of \"The Twilight Zone\" known as \"It's a Good Life.\"\n\nThere you have the basic setup. More details would turn this review into a full-fledged spoiler. However, I will say that the playwright and director Joe Mantello are content, determined even, with sending us out filled with unanswered questions. Questions about happenstance versus predestination; questions about just punishments; questions about purgatory and hell (where does that frequently open cellar door lead to, and how real is the game of \"Show and Hell\" that Max is \"invited\" to join?). Questions about what really is in those jars of \"moonshine\" that Henry is happy to imbibe. And even questions about the origin of the play's title, which may be a play on the children's book \"Grey Mouse.\"\n\nEven with the likely post-performance discussions and musings about \"meaning,\" the greatest strength of this production of Grey House is the consistency of its preternatural mood. That is all thanks to its fully committed cast, to Joe Mantello's sharply focused direction, and to the design team of Scott Pask, whose set draws us into both the seen and unseen areas of the cabin; Rudy Mance, whose costumes provide both contemporary and appropriately dated looks that help us differentiate between the living and the dead; and Natasha Katz's lighting and Tom Gibbons' sound design that gives the entire production its air of disquietude. I like that word \"disquietude.\" It is the best description I can think of for Grey House. Nothing that jumps out at you, just a series of inexplicable and ominous moments that hold things together until the very end.",
+  "isFullReview": true,
   "bwwExcerpt": "Even with the likely post-performance discussions and musings about \"meaning,\" the greatest strength of this production of Grey House is the consistency of its preternatural mood. That is all thanks to its fully committed cast, to Joe Mantello's sharply focused direction, and to the design team of Scott Pask, whose set draws us into both the seen and unseen areas of the cabin; Rudy Mance, whose costumes provide both contemporary and appropriately dated looks that help us differentiate between th",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Up",
@@ -73,5 +73,36 @@
     "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 78,
+  "textWordCount": 639,
+  "archivePath": "data/archives/reviews/grey-house-2023/talkinbroadway--howard-miller_2026-01-29.html",
+  "textFetchedAt": "2026-01-29T01:52:21.296Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata"
 }
