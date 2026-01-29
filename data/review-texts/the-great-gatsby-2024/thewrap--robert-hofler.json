@@ -7,7 +7,7 @@
   "publishDate": "April 25, 2024",
   "fullText": "Jay Gatsby lives in West Egg. Daisy Buchanan lives in East Egg. And the new musical about them that opened Thursday at the Broadway Theatre lays a big egg.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 20,
   "dtliThumb": "Down",
   "source": "dtli",
   "dtliExcerpt": "Jay Gatsby lives in West Egg. Daisy Buchanan lives in East Egg. And the new musical about them that opened Thursday at the Broadway Theatre lays a big egg.",
@@ -15,7 +15,55 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 20,
+    "confidence": "medium",
+    "range": {
+      "low": 10,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "lays a big egg",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "the new musical about them that opened Thursday at the Broadway Theatre lays a big egg.",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic uses the theatrical idiom 'lays a big egg' (meaning complete failure) as the punchline to dismiss the entire production with wordplay on the characters' East/West Egg locations. | GPT-4o-mini: The review expresses a clear rejection of the musical, indicating it fails to deliver.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:13:33.348Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 15,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

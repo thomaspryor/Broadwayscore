@@ -9,15 +9,70 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": "The twin lead performances are musically exquisite and courageous to boot; the target audience for this melancholy musical will be Guettel’s many fans as well as admirers of stars willing to head to a tough place with only each other for company. Watching O’Hara in particular is to be drawn as ever to her voice but also to watch her explore self-destruction in a way few of her fans ever will have experienced.",
   "bwwThumb": "Meh",
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 85,
+      "performances": 87,
+      "direction": 81
+    },
+    "keyPhrases": [
+      {
+        "quote": "The twin lead performances are musically exquisite and courageous to boot",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "beautifully directed, acted, written and composed piece",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The show is caught in the middle",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging the show is 'caught in the middle,' the critic offers consistent praise for all elements and suggests the show has meaningful value, indicating a clear positive recommendation. | GPT-4o-mini: The review highlights strong performances and direction while acknowledging the show's emotional depth, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:13:32.785Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "scoreDelta": 4,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (78 → Up) conflicts with aggregator thumbs (Flat)"
+    ]
+  },
   "sources": [
     "dtli",
     "bww-roundup"

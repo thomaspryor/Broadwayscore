@@ -9,12 +9,63 @@
   "isFullReview": false,
   "dtliExcerpt": "Hadestown is a musical that feels both ancient and urgently contemporary, a work that uses myth to illuminate modern concerns about love, loss, and the price of survival.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Hadestown is a musical that feels both ancient and urgently contemporary, a work that uses myth to illuminate modern concerns about love, loss, and the price of survival.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "feels both ancient and urgently contemporary",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "uses myth to illuminate modern concerns",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The language is appreciative and intellectually engaged, suggesting the critic finds artistic merit in the show's thematic resonance, but the excerpt is too brief to determine specific recommendation strength. | GPT-4o-mini: The review highlights the musical's relevance and depth, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:13:39.789Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 85,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

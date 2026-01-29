@@ -9,14 +9,67 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": "In less skilled hands, these flawed characters could push the audience away or else flatten into scapegoats. But James and O'Hara don't let that happen for a second. O'Hara's Kirsten contains multitudes beneath a sheltered, sunny air, including a zeal for what her favorite books describe as \"the human desire penetrate the unknown\" — like the world of booze. James's Joe is magnetic such that when he trades his drunken aggressiveness for tenderness, we immediately root for him again. James and O'H",
   "bwwThumb": "Up",
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 83,
+    "confidence": "high",
+    "range": {
+      "low": 75.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 88,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "James and O'Hara don't let that happen for a second",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "James's Joe is magnetic such that when he trades his drunken aggressiveness for tenderness, we immediately root for him again",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "has aged like, well, wine",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the lead performances with specific examples of their effectiveness, plus positive comparison to the show's earlier incarnation, though the excerpt appears incomplete. | GPT-4o-mini: The review highlights strong performances and character depth, indicating a clear recommendation despite some flaws.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:13:38.123Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 85,
+    "scoreDelta": 5,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127"
 }
