@@ -6,6 +6,8 @@
  * We NEVER use a default score of 50 - that skews results
  *
  * Score priority:
+ * 0. EXPLICIT RATING IN TEXT (★★★★☆, "4 out of 5", letter grades, X/5)
+ *    - These are MOST reliable - override LLM scores which had 33% error rate
  * 1. llmScore.score (if confidence != 'low' AND ensembleData.needsReview != true)
  * 2. assignedScore (if already set and valid, with known source)
  * 3. originalScore parsed (stars, letter grades)
@@ -27,6 +29,144 @@ const LETTER_TO_SCORE = {
   'D+': 55, 'D': 50, 'D-': 45,
   'F': 30
 };
+
+/**
+ * EXPLICIT RATING EXTRACTION
+ * Extracts ratings directly from review text (stars, grades, X/5, etc.)
+ * These are MORE RELIABLE than LLM inference when present
+ */
+
+function extractStarRatingFromText(text) {
+  if (!text) return null;
+
+  // Match star symbols: ★★★★☆, ★★★☆☆, etc.
+  const match = text.match(/★+☆*/);
+  if (!match) return null;
+
+  const filled = (match[0].match(/★/g) || []).length;
+  const empty = (match[0].match(/☆/g) || []).length;
+  const total = filled + empty;
+
+  // Only trust 4-star or 5-star scales
+  if (total >= 4 && total <= 5) {
+    return {
+      type: 'stars',
+      raw: match[0],
+      score: Math.round((filled / total) * 100)
+    };
+  }
+  return null;
+}
+
+function extractOutOfRatingFromText(text) {
+  if (!text) return null;
+
+  // "4 out of 5", "3 out of 5", "8 out of 10", etc.
+  const match = text.match(/(\d+\.?\d*)\s+out\s+of\s+(5|10|4)\b/i);
+  if (!match) return null;
+
+  const value = parseFloat(match[1]);
+  const scale = parseInt(match[2]);
+
+  // Sanity check
+  if (value > scale || value < 0) return null;
+
+  return {
+    type: `outOf${scale}`,
+    raw: match[0],
+    score: Math.round((value / scale) * 100)
+  };
+}
+
+function extractSlashRatingFromText(text) {
+  if (!text) return null;
+
+  // Match "3/5" or "4/5" but NOT dates like "2023/4" or "2003/10"
+  // Look for patterns NOT preceded by a 4-digit year
+  const match = text.match(/(?:^|[^\d])([\d]\.?[\d]?)\s*\/\s*(5|4)(?:[^\d]|$)/);
+  if (!match) return null;
+
+  const value = parseFloat(match[1]);
+  const scale = parseInt(match[2]);
+
+  // Sanity check - value should be <= scale and not be a year fragment
+  if (value > scale || value < 0) return null;
+
+  return {
+    type: `slash${scale}`,
+    raw: `${value}/${scale}`,
+    score: Math.round((value / scale) * 100)
+  };
+}
+
+function extractLetterGradeFromText(text) {
+  if (!text) return null;
+
+  // Letter grades need context to avoid false positives
+  // Look for: "grade: B+", "gives it a B+", "A- rating", etc.
+  const patterns = [
+    /\b(?:grade|rating|score)[:\s]+([A-D][+-]?|F)\b/i,
+    /\bgives?\s+(?:it\s+)?(?:a\s+)?([A-D][+-]?)\b/i,
+    /\b([A-D][+-]?)\s+(?:grade|rating)\b/i
+  ];
+
+  for (const pattern of patterns) {
+    const match = text.match(pattern);
+    if (match) {
+      const grade = match[1].toUpperCase();
+      const gradeMap = {
+        'A+': 98, 'A': 95, 'A-': 92,
+        'B+': 88, 'B': 85, 'B-': 82,
+        'C+': 78, 'C': 75, 'C-': 72,
+        'D+': 68, 'D': 65, 'D-': 62,
+        'F': 50
+      };
+      if (gradeMap[grade]) {
+        return {
+          type: 'letterGrade',
+          raw: grade,
+          score: gradeMap[grade]
+        };
+      }
+    }
+  }
+  return null;
+}
+
+/**
+ * Extract explicit rating from all text sources in a review
+ * Returns { type, raw, score } or null if no explicit rating found
+ */
+function extractExplicitRating(data) {
+  // Combine all text sources
+  const allText = [
+    data.fullText || '',
+    data.dtliExcerpt || '',
+    data.bwwExcerpt || '',
+    data.showScoreExcerpt || ''
+  ].join(' ');
+
+  if (!allText.trim()) return null;
+
+  // Try each extraction method in order of reliability
+  // Stars are most reliable (no false positives)
+  const starRating = extractStarRatingFromText(allText);
+  if (starRating) return starRating;
+
+  // "X out of Y" is also very reliable
+  const outOfRating = extractOutOfRatingFromText(allText);
+  if (outOfRating) return outOfRating;
+
+  // Slash ratings (3/5) - slightly more prone to false positives
+  const slashRating = extractSlashRatingFromText(allText);
+  if (slashRating) return slashRating;
+
+  // Letter grades - only with proper context
+  const letterGrade = extractLetterGradeFromText(allText);
+  if (letterGrade) return letterGrade;
+
+  return null;
+}
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -276,6 +416,10 @@ const stats = {
   skippedNoScore: 0,
   skippedDuplicate: 0,
   scoreSources: {
+    'explicit-stars': 0,
+    'explicit-outOf': 0,
+    'explicit-slash': 0,
+    'explicit-letterGrade': 0,
     llmScore: 0,
     'llmScore-lowconf': 0,
     'llmScore-review': 0,
@@ -284,6 +428,7 @@ const stats = {
     bucket: 0,
     thumb: 0
   },
+  explicitOverrideLlm: 0,  // Count how many times explicit rating overrode LLM
   byShow: {}
 };
 
@@ -344,6 +489,32 @@ function getBestScore(data) {
   // Skip if explicitly marked as TO_BE_CALCULATED
   if (data.scoreStatus === 'TO_BE_CALCULATED') {
     return null;
+  }
+
+  // Priority 0: EXPLICIT RATINGS IN TEXT (most reliable!)
+  // Star ratings, letter grades, "X out of Y" directly stated in the review
+  // These override LLM scores which have ~33% error rate on explicit ratings
+  const explicitRating = extractExplicitRating(data);
+  if (explicitRating) {
+    // Track if this overrides an LLM score
+    if (data.llmScore && data.llmScore.score) {
+      const diff = Math.abs(explicitRating.score - data.llmScore.score);
+      if (diff > 15) {
+        stats.explicitOverrideLlm++;
+      }
+    }
+
+    // Map rating type to source
+    let sourceType = 'explicit-stars';
+    if (explicitRating.type.startsWith('outOf')) sourceType = 'explicit-outOf';
+    else if (explicitRating.type.startsWith('slash')) sourceType = 'explicit-slash';
+    else if (explicitRating.type === 'letterGrade') sourceType = 'explicit-letterGrade';
+
+    return {
+      score: explicitRating.score,
+      source: sourceType,
+      explicitRaw: explicitRating.raw
+    };
   }
 
   // Priority 1: LLM score (accept all LLM scores, even low confidence)
@@ -573,6 +744,16 @@ console.log(`Total reviews INCLUDED: ${stats.totalReviews}`);
 console.log(`  Skipped (no valid score): ${stats.skippedNoScore}`);
 console.log(`  Skipped (duplicate): ${stats.skippedDuplicate}`);
 console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`);
+
+// Explicit rating summary
+const explicitCount = (stats.scoreSources['explicit-stars'] || 0) +
+                      (stats.scoreSources['explicit-outOf'] || 0) +
+                      (stats.scoreSources['explicit-slash'] || 0) +
+                      (stats.scoreSources['explicit-letterGrade'] || 0);
+if (explicitCount > 0) {
+  console.log(`\nExplicit ratings extracted from text: ${explicitCount}`);
+  console.log(`  Overrode conflicting LLM scores: ${stats.explicitOverrideLlm}`);
+}
 
 console.log('\nScore sources:');
 Object.entries(stats.scoreSources).forEach(([source, count]) => {
