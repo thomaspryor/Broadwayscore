@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Water for Elephants is a gorgeous production that succeeds in bringing Sara Gruen's beloved novel to vivid theatrical life, though it occasionally struggles under the weight of its own ambitions.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,5 +19,61 @@
   "needsScoring": true,
   "sources": [
     "web-search"
-  ]
+  ],
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "gorgeous production that succeeds in bringing Sara Gruen's beloved novel to vivid theatrical life",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "occasionally struggles under the weight of its own ambitions",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "gorgeous production",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the production's visual success and faithfulness to source material, but notable criticism about overambition creates a qualified positive recommendation. | GPT-4o-mini: The review expresses clear praise for the production while acknowledging some struggles, indicating a solid recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:03:21.786Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

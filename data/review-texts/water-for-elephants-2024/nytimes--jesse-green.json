@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "In building such a huge and heart-filling musical one image at a time, the creators of “Water for Elephants” have disproved the old circus adage behind the title, which holds that you can never deliver enough sustenance for a creature so large and thirsty. Apparently, you can.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "dtli",
   "dtliThumb": "Up",
   "dtliUrl": null,
@@ -22,8 +22,61 @@
     "web-search",
     "dtli"
   ],
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 79,
+      "music": 75,
+      "performances": 88,
+      "direction": 91
+    },
+    "keyPhrases": [
+      {
+        "quote": "What a pleasure it is to be treated that way by a brand-extension musical, a form usually characterized by craftlessness and cynicism",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the many wonders awaiting audiences at the Imperial Theater",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "In building such a huge and heart-filling musical one image at a time, the creators of 'Water for Elephants' have disproved the old circus adage",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Jesse Green delivers sustained praise throughout, calling it a 'pleasure' with 'many wonders awaiting audiences' and concluding it's 'huge and heart-filling,' with only minor quibbles about lyrics clarity. | GPT-4o-mini: The review expresses strong enthusiasm for the production's creativity, performances, and direction, with only minor reservations about the music and book.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:03:16.450Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 88,
+    "scoreDelta": 0,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
   "designation": "Critics_Pick"
 }
