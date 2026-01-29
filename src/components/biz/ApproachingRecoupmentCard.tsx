@@ -72,7 +72,7 @@ export default function ApproachingRecoupmentCard({
       <div className="flex justify-between text-sm mt-1">
         <span className="text-gray-500">Est. Recouped</span>
         <span className="text-amber-400 font-semibold">
-          ~{estimatedRecoupmentPct[0]}-{estimatedRecoupmentPct[1]}%
+          ~{estimatedRecoupmentPct[0]}-{estimatedRecoupmentPct[1]}% recouped
         </span>
       </div>
       <div className="flex justify-between text-sm mt-1">
