@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "The show succeeds in translating the energy and spectacle of Baz Luhrmann's film to the stage, creating a genuinely thrilling theatrical experience that manages to feel both familiar and fresh.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show succeeds in translating the energy and spectacle of Baz Luhrmann's film to the stage, creating a genuinely thrilling theatrical experience that manages to feel both familiar and fresh.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "genuinely thrilling theatrical experience",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "manages to feel both familiar and fresh",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The show succeeds in translating the energy and spectacle",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Clear positive language praising the production's success in adaptation with strong descriptors like 'genuinely thrilling' and 'succeeds,' indicating solid recommendation despite brief excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for the show's ability to capture the essence of the film, indicating a clear recommendation for audiences.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:55:51.089Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
