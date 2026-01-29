@@ -11,7 +11,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -55,5 +55,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251207101633/https://www.nysun.com/article/theres-no-place-like-broadway-revival-of-the-wiz-arrives-at-a-busy-time-for-musical-theater",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": 84,
+      "performances": 88,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "that score — which includes enduring favorites such as the blithely funky 'Ease on Down the Road' and the shimmering ballad 'Home' — is lovingly served by a cast of performers whose virtuosity is matched by their obvious joy in revisiting this material",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "if you're just up for a good time, you can ease on down here in comfort and confidence",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "directed with a light hand and a big heart by Schele Williams",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review consistently praises the performances, music, and direction with warm language, culminating in a clear recommendation to see the show 'in comfort and confidence.' | GPT-4o-mini: The review expresses strong praise for the performances and overall enjoyment of the production, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:03:21.791Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

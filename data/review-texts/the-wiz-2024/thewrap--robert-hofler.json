@@ -11,7 +11,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
@@ -42,5 +42,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251116085102/https://www.thewrap.com/the-wiz-broadway-review-funniest-lion-scarecrow-tin-man/",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 88,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "the actors and dancers in this 'Wiz' carry the show magnificently",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This kind of ensemble doesn't come out of nowhere and credit must go to director Schele Williams",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a friendly competition not to be missed",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic praises the ensemble performances, creative staging, choreography, and direction with enthusiasm, offering clear recommendation language like 'not to be missed' despite minor critiques of the lead's vocal direction. | GPT-4o-mini: The review expresses strong praise for the performances and overall production while noting some issues with direction, leading to a positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:04:28.494Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

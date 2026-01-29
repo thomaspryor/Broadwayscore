@@ -11,7 +11,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -42,5 +42,63 @@
   "sourceMethod": "scrapingbee",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 33,
+      "high": 53
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 63,
+      "music": 73,
+      "performances": 72,
+      "direction": 38
+    },
+    "keyPhrases": [
+      {
+        "quote": "Broadway audiences deserve something far better than this middling national-tour production",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "a sadly missed opportunity to introduce the show to new audiences",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Brady turns out to be no big deal – nor does 'The Wiz.'",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging some appealing performances and catchy songs, the critic delivers a clear negative verdict with harsh criticism of the production values, sound design, and overall execution, explicitly stating audiences 'deserve something far better.' | GPT-4o-mini: The review expresses significant disappointment with the production quality and direction, despite some positive notes on performances and music, leading to a mixed-negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:03:14.850Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 48,
+    "scoreDelta": 10,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (43 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }

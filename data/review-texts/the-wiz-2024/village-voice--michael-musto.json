@@ -11,7 +11,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -42,5 +42,63 @@
   "sourceMethod": "scrapingbee",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": 79,
+      "performances": 84,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "this Wiz mounts in appeal and becomes so alternately giddy and moving that after a while I forgot to be annoyed",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The three companions are terrific",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "at times her Dorothy is so lost that she tends to become a cog in the aggressively flashy happenings around her",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic ultimately finds the show appealing despite initial reservations, praising the performances (especially the three companions) and Act Two numbers, while noting some issues with the lead and production elements. | GPT-4o-mini: The review expresses strong praise for the performances and overall enjoyment of the revival, despite some minor criticisms.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:04:36.251Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 78,
+    "scoreDelta": 6,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (75 → Up) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }

@@ -11,7 +11,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -53,5 +53,63 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250723205730/https://www.slantmagazine.com/theater/the-wiz-broadway-revival-review/",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 72,
+    "confidence": "high",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 43,
+      "music": 83,
+      "performances": 90,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's easy enough to put the 'hard stuff' to one side and just relish the aural euphoria",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "A smarter, warmer, bolder revival of The Wiz remains tantalizingly out of reach, but Lewis delivers brains, heart, and courage all on her own",
+        "sentiment": "neutral",
+        "strength": 5
+      },
+      {
+        "quote": "the production's shortcomings could be forgiven and must be forgotten",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite significant criticisms of direction, staging, and book, the critic ultimately recommends the show for its extraordinary vocal performances, particularly Nichelle Lewis, suggesting the strengths outweigh the weaknesses. | GPT-4o-mini: The review highlights outstanding performances and music but criticizes the book and direction, leading to a mixed-positive recommendation overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:04:06.987Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "scoreDelta": 0,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (72 → Up) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }

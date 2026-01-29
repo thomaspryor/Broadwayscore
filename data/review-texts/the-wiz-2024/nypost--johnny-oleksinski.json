@@ -11,7 +11,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "needsScoring": true,
@@ -43,5 +43,61 @@
   "archiveOrgUrl": "http://web.archive.org/web/20241003075348/https://nypost.com/2024/04/17/entertainment/the-wiz-broadway-review-were-off-to-see-the-cheap-natl-tour/",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 33.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 38,
+      "music": 68,
+      "performances": 60,
+      "direction": 28
+    },
+    "keyPhrases": [
+      {
+        "quote": "director Schele Williams' production is deflatingly flimsy and lackluster. Clumsily staged, it's a Wiz-sper of what it should be.",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Their songs are fabulous... The quartet doesn't follow the Yellow Brick Road, they 'Ease On Down' it.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "There's no place like Broadway!' at the end. Alas, back on W. 46th St. at 10:30 p.m., I headed to the train thinking, 'There's no place like home.'",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds the production 'deflatingly flimsy and lackluster' with major flaws in direction and design, despite praising the music and some performances, ultimately expressing disappointment and inability to recommend. | GPT-4o-mini: The review expresses significant disappointment with the production, citing lackluster direction and design while acknowledging some redeeming performances and music.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:03:34.715Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "scoreDelta": 7,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
