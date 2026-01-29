@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Taub's score is tuneful and varied, with moments of real beauty, and her book is smart about the internal conflicts within the suffrage movement.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Taub's score is tuneful and varied, with moments of real beauty, and her book is smart about the internal conflicts within the suffrage movement.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 77,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "score is tuneful and varied, with moments of real beauty",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "her book is smart about the internal conflicts within the suffrage movement",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Taub's score is tuneful and varied",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This excerpt shows clear praise for both music and book but is too brief to assess overall recommendation strength or identify any potential weaknesses. | GPT-4o-mini: The review expresses clear praise for the score and book, indicating a strong recommendation despite no mention of performances or direction.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T05:26:35.106Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

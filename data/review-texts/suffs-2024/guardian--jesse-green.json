@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Taub has written a smart, stirring musical that makes the suffragettes' century-old struggle feel urgently contemporary.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Taub has written a smart, stirring musical that makes the suffragettes' century-old struggle feel urgently contemporary.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "smart, stirring musical",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "feel urgently contemporary",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "suffragettes' century-old struggle feel urgently contemporary",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong positive language praising the writing as 'smart' and 'stirring' with contemporary relevance, but brief excerpt limits confidence in full recommendation strength. | GPT-4o-mini: The review expresses strong praise for the musical's writing and its contemporary relevance, indicating a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T05:26:30.262Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

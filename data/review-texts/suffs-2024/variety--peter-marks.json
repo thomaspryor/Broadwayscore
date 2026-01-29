@@ -9,12 +9,63 @@
   "isFullReview": false,
   "dtliExcerpt": "Taub has fashioned a rousing, intelligently crafted musical that makes the case for the suffragettes with both passion and theatrical savvy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Taub has fashioned a rousing, intelligently crafted musical that makes the case for the suffragettes with both passion and theatrical savvy.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 82,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "rousing, intelligently crafted musical",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "makes the case for the suffragettes with both passion and theatrical savvy",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong positive language praising the musical's craft, intelligence, and emotional impact with no caveats or criticisms mentioned. | GPT-4o-mini: The review expresses strong praise for the musical's craftsmanship and thematic passion, indicating a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T05:26:39.249Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
