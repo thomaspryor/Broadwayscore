@@ -8,7 +8,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Hell's Kitchen is a musical that feels both deeply personal and broadly universal, anchored by Maleah Joi Moon's powerhouse performance as Ali, a character inspired by Alicia Keys' own teenage years.",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -60,18 +60,57 @@
     "Word count too low: 98 (min: 300)",
     "Show title not found in text"
   ],
-  "llmScore": null,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 85.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "powerhouse performance as Ali",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "feels both deeply personal and broadly universal",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "deeply personal and broadly universal",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This excerpt shows clear praise for the lead performance and thematic resonance, but lacks overall evaluation or recommendation language needed for confident scoring. | GPT-4o-mini: The review highlights a strong performance and a meaningful connection to the material, suggesting a positive recommendation overall. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T02:35:29.678Z",
+    "scoredAt": "2026-01-29T20:35:08.679Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 0,
-    "scoreDelta": 0,
+    "claudeScore": 65,
+    "openaiScore": 80,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
