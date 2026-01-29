@@ -59,8 +59,17 @@ for (const show of shows.shows) {
 }
 
 // Process each commercial entry
+// Skip orphaned shows (in commercial.json but not in shows.json)
+let skippedOrphans = 0;
 for (const [slug, data] of Object.entries(commercial.shows)) {
   const show = showMap.get(slug);
+
+  // Skip shows that don't exist in shows.json
+  // These are historical entries awaiting proper database entries
+  if (!show) {
+    skippedOrphans++;
+    continue;
+  }
 
   const entry = {
     slug,
@@ -100,6 +109,11 @@ exportData.shows.sort((a, b) => {
   }
   return a.title.localeCompare(b.title);
 });
+
+// Log skipped orphans
+if (skippedOrphans > 0) {
+  console.log(`ℹ Skipped ${skippedOrphans} orphaned shows (in commercial.json but not shows.json)`);
+}
 
 // Write JSON export
 const jsonPath = path.join(outputDir, 'commercial.json');
