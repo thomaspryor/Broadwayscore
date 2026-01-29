@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T02:49:12.521Z",
+  "runDate": "2026-01-29T02:50:06.862Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "wicked-2003",
+    "showFilter": "liberation-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 43,
-    "failed": 40,
+    "processed": 45,
+    "failed": 38,
     "skipped": 0,
-    "successRate": "51.8%"
+    "successRate": "54.2%"
   },
   "tierBreakdown": {
-    "playwright": 5,
-    "scrapingbee": 3,
-    "brightdata": 4,
-    "archive": 31
+    "playwright": 6,
+    "scrapingbee": 4,
+    "brightdata": 5,
+    "archive": 30
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 0,
-    "tier2Attempts": 5,
-    "tier2Success": 0,
+    "tier1Attempts": 7,
+    "tier1Success": 1,
+    "tier2Attempts": 6,
+    "tier2Success": 1,
     "tier3Attempts": 5,
-    "tier3Success": 0,
-    "tier4Attempts": 16,
-    "tier4Success": 4,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 20
+    "tier3Success": 1,
+    "tier4Attempts": 9,
+    "tier4Success": 3,
+    "totalFailed": 3,
+    "scrapingBeeCreditsUsed": 50
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -74,10 +74,12 @@
     "lempicka-2024/queerty--matthew-wexler.json",
     "lempicka-2024/slantmagazine--dan-rubins.json",
     "lempicka-2024/washpost--philip-kennicott.json",
-    "wicked-2003/nytimes--charles-isherwood.json",
-    "wicked-2003/vulture--john-simon.json",
-    "wicked-2003/ew--alice-king.json",
-    "wicked-2003/wsj--terry-teachout.json"
+    "liberation-2025/nyt-theater--jonathan-mandell.json",
+    "liberation-2025/nytg--amelia-merrill.json",
+    "liberation-2025/ew--emlyn-travis.json",
+    "liberation-2025/thewrap--robert-hofler.json",
+    "liberation-2025/wsj--charles-isherwood.json",
+    "liberation-2025/chicagotribune--chris-jones.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -115,11 +117,9 @@
     "lempicka-2024/new-york-sun--elysa-gardner.json",
     "lempicka-2024/nydailynews--chris-jones.json",
     "lempicka-2024/nydailynews--chris.json",
-    "wicked-2003/hollywood-reporter--frank-scheck.json",
-    "wicked-2003/guardian--michael-billington.json",
-    "wicked-2003/curtainup--elyse-sommer.json",
-    "wicked-2003/njcom-star-ledger--michael-sommers.json",
-    "wicked-2003/washpost--peter-marks.json"
+    "liberation-2025/guardian--adrian-horton.json",
+    "liberation-2025/nydailynews--chris-jones.json",
+    "liberation-2025/washpost--naveen-kumar.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -127,18 +127,21 @@
       "harmony-2023/nysr--david-finkle.json",
       "harmony-2023/nysr--sandy-macdonald.json",
       "spamalot-2023/nysr--melissa-rose-bernardo.json",
-      "lempicka-2024/nysr--david-finkle.json"
+      "lempicka-2024/nysr--david-finkle.json",
+      "liberation-2025/nytg--amelia-merrill.json"
     ],
     "scrapingbee": [
       "spamalot-2023/cititour--brian-scott-lipton.json",
       "spamalot-2023/chicagotribune--chris-jones.json",
-      "lempicka-2024/cititour--brian-scott-lipton.json"
+      "lempicka-2024/cititour--brian-scott-lipton.json",
+      "liberation-2025/ew--emlyn-travis.json"
     ],
     "brightdata": [
       "harmony-2023/observer--jesse-green.json",
       "harmony-2023/observer--rex-reed.json",
       "harmony-2023/chicagotribune--chris-jones.json",
-      "lempicka-2024/nyt-theater--jonathan-mandell.json"
+      "lempicka-2024/nyt-theater--jonathan-mandell.json",
+      "liberation-2025/nyt-theater--jonathan-mandell.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
@@ -168,10 +171,9 @@
       "lempicka-2024/queerty--matthew-wexler.json",
       "lempicka-2024/slantmagazine--dan-rubins.json",
       "lempicka-2024/washpost--philip-kennicott.json",
-      "wicked-2003/nytimes--charles-isherwood.json",
-      "wicked-2003/vulture--john-simon.json",
-      "wicked-2003/ew--alice-king.json",
-      "wicked-2003/wsj--terry-teachout.json"
+      "liberation-2025/thewrap--robert-hofler.json",
+      "liberation-2025/wsj--charles-isherwood.json",
+      "liberation-2025/chicagotribune--chris-jones.json"
     ]
   }
 }
