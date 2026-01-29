@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding, getShowAwards, getAudienceBuzz, getCriticConsensus, getLotteryRush, getShowCommercial, getShowLastUpdated } from '@/lib/data';
+import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding, getShowAwards, getAudienceBuzz, getCriticConsensus, getLotteryRush, getShowCommercial, getShowLastUpdated, getRecoupmentTrend } from '@/lib/data';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
@@ -772,7 +772,13 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
         {/* Commercial Scorecard */}
         {commercial ? (
-          <BizBuzzCard commercial={commercial} showTitle={show.title} />
+          <BizBuzzCard
+            commercial={commercial}
+            showTitle={show.title}
+            trend={getRecoupmentTrend(show.slug)}
+            weeklyGross={grosses?.thisWeek?.gross}
+            showStatus={show.status as 'open' | 'closed' | 'previews'}
+          />
         ) : show.status === 'previews' && (
           <section className="card p-5 sm:p-6 mb-6">
             <h2 className="text-lg font-bold text-white mb-3">Commercial Performance</h2>
