@@ -7,7 +7,7 @@
   "publishDate": "April 7, 2025",
   "fullText": "Little of it feels original, and none of it feels necessary. But just like actual Betty Boop merchandise — the many toys, t-shirts, scrunchies and socks covered with her image –  “Boop!” doesn’t have to feel necessary; it’s fun. And the main reason for that is Jasmine Amy Rogers.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "dtliThumb": "Up",
   "source": "dtli",
   "dtliExcerpt": "Little of it feels original, and none of it feels necessary. But just like actual Betty Boop merchandise — the many toys, t-shirts, scrunchies and socks covered with her image – “Boop!” doesn’t have to feel necessary; it’s fun. And the main reason for that is Jasmine Amy Rogers.",
@@ -15,7 +15,60 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": null,
+      "performances": 79,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Little of it feels original, and none of it feels necessary",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it's fun. And the main reason for that is Jasmine Amy Rogers",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "doesn't have to feel necessary",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic dismisses the material as unoriginal and unnecessary but finds the show fun primarily due to the lead performance, suggesting a qualified, lukewarm recommendation. | GPT-4o-mini: The review acknowledges a lack of originality and necessity but highlights the fun factor and strong performances, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T06:37:25.146Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

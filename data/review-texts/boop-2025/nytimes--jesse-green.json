@@ -7,7 +7,7 @@
   "publishDate": "April 7, 2025",
   "fullText": "The most disappointing subgenre of musical, at least in terms of opportunity cost, is the “why?” show: a well-crafted, charmingly performed, highly professional production that nobody asked for. Its intentions are foggy and sometimes suspicious. “Boop! The Musical” — now playing at the Broadhurst Theater, in a production directed and choreographed by Jerry Mitchell — is a “why?” show par excellence.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 34,
   "dtliThumb": "Meh",
   "source": "dtli",
   "dtliExcerpt": "The most disappointing subgenre of musical, at least in terms of opportunity cost, is the “why?” show: a well-crafted, charmingly performed, highly professional production that nobody asked for. Its intentions are foggy and sometimes suspicious. “Boop! The Musical” — now playing at the Broadhurst Theater, in a production directed and choreographed by Jerry Mitchell — is a “why?” show par excellence.",
@@ -15,8 +15,63 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": "But none of that explains or justifies the show’s existence. Nor, despite enormous effort, can the book by Bob Martin. In building a case for a vintage piece of intellectual property — Betty was born as a half-dog in 1930 — Martin winds up replicating the kind of musical he roasted in ‘The Drowsy Chaperone’... That show’s imaginary ‘Eleanor! The Eleanor Roosevelt Musical,’ is no less ludicrous than the real-life ‘Boop! The Musical.’",
   "bwwThumb": "Meh",
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 34,
+    "confidence": "medium",
+    "range": {
+      "low": 25,
+      "high": 43
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 65,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "The most disappointing subgenre of musical",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "well-crafted, charmingly performed, highly professional production that nobody asked for",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Its intentions are foggy and sometimes suspicious",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite acknowledging professional craft and charm in performances, the critic fundamentally questions the show's existence and purpose, calling it 'disappointing' and 'nobody asked for' - a clear negative recommendation. | GPT-4o-mini: The review expresses strong disappointment and skepticism about the production, indicating a clear rejection of its value.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T06:37:51.658Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 30,
+    "scoreDelta": 8,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (34 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
+  },
   "designation": "Critics_Pick"
 }
