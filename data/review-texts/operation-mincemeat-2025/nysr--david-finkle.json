@@ -9,14 +9,67 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": "As they bound along, the five performers have ingrained their work so well they could amusingly pass for figures on a Swiss clock. Their ensemble presentation is like nothing—or very few things—seen on a local stage before. It’s a major reason, though hardly the only of abundant reasons, to make Operation Mincemeat gleeful obligatory viewing.",
   "bwwThumb": "Up",
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 89,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "gleeful obligatory viewing",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "ensemble presentation is like nothing—or very few things—seen on a local stage before",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "major reason, though hardly the only of abundant reasons",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic uses strong positive language like 'gleeful obligatory viewing' and cites 'abundant reasons' to see the show, with particular praise for the unique ensemble work. | GPT-4o-mini: The review expresses strong enthusiasm for the performers and the unique presentation, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:27:44.630Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250121"
 }

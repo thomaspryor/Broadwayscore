@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Stereophonic is a masterclass in theatrical storytelling, weaving together music and drama in ways that feel both intimate and epic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Stereophonic is a masterclass in theatrical storytelling, weaving together music and drama in ways that feel both intimate and epic.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 85,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "masterclass in theatrical storytelling",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "weaving together music and drama in ways that feel both intimate and epic",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "weaving together music and drama",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise with 'masterclass' indicating high quality, but extremely brief excerpt limits confidence in comprehensive evaluation. | GPT-4o-mini: The review expresses unqualified enthusiasm and uses strong language indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:28:21.889Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 95,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

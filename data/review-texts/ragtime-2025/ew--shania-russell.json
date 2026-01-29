@@ -9,13 +9,66 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 86,
+    "confidence": "high",
+    "range": {
+      "low": 78.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 89,
+      "performances": 88,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the trio of book writer Terrence McNally, composer Stephen Flaherty, and lyricist Lynn Ahrens meet in harmony: the characters connect, the score dazzles",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the 28-piece orchestra more than rises to the occasion, accompanied by an ensemble of pitch perfect vocalists",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "showstopping vocal moment still fresh in my mind",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Consistently positive language praising all creative elements with specific highlights of performances and music, suggesting a clear recommendation despite being an excerpt. | GPT-4o-mini: The review highlights strong performances and a dazzling score, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:27:52.910Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 88,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
