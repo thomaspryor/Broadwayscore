@@ -7,7 +7,7 @@
   "publishDate": "September 27, 2023",
   "fullText": "The “Purlie Victorious” that opened on Wednesday at the Music Box — unaccountably its first Broadway revival — is every bit as scathingly funny as the 1961 reviews said it was.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "dtliThumb": "Up",
   "source": "dtli",
   "dtliExcerpt": "The “Purlie Victorious” that opened on Wednesday at the Music Box — unaccountably its first Broadway revival — is every bit as scathingly funny as the 1961 reviews said it was.",
@@ -15,8 +15,61 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": "Originally played by Dee, and now by Kara Young, Lutiebelle is a rich creation, sweet and hungry, down-home and dirty. Young, a two-time Tony nominee known mostly for dramatic roles (“Halfway Bitches Go Straight to Heaven,” “The New Englanders,” “All the Natalie Portmans”), is also a daring comedian, finding in Lutiebelle a cross between Lucille Ball and Moms Mabley. That she is not afraid to go as far as the part can take her — with a gawky pigeon-toed gait and hilariously lustful line readings",
   "bwwThumb": "Up",
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "every bit as scathingly funny as the 1961 reviews said it was",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "unaccountably its first Broadway revival",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "scathingly funny",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic strongly affirms the play's enduring comedic power by confirming it lives up to its acclaimed 1961 reputation, with 'scathingly funny' indicating high praise for the material's quality. | GPT-4o-mini: The review expresses strong enthusiasm for the humor of the revival, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T05:19:54.444Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 85,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927"
 }
