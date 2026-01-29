@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T06:05:53.583Z",
+  "runDate": "2026-01-29T06:38:43.689Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "patriots-2024",
+    "showFilter": "the-cottage-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 53,
-    "failed": 108,
+    "processed": 64,
+    "failed": 109,
     "skipped": 0,
-    "successRate": "32.9%"
+    "successRate": "37.0%"
   },
   "tierBreakdown": {
-    "playwright": 8,
-    "scrapingbee": 4,
+    "playwright": 9,
+    "scrapingbee": 7,
     "brightdata": 5,
-    "archive": 36
+    "archive": 43
   },
   "statistics": {
-    "tier1Attempts": 11,
-    "tier1Success": 0,
-    "tier2Attempts": 11,
-    "tier2Success": 0,
-    "tier3Attempts": 11,
-    "tier3Success": 0,
-    "tier4Attempts": 25,
-    "tier4Success": 4,
-    "totalFailed": 11,
-    "scrapingBeeCreditsUsed": 50
+    "tier1Attempts": 8,
+    "tier1Success": 1,
+    "tier2Attempts": 7,
+    "tier2Success": 3,
+    "tier3Attempts": 4,
+    "tier3Success": 1,
+    "tier4Attempts": 16,
+    "tier4Success": 8,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 60
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -87,7 +87,18 @@
     "hadestown-2019/nydailynews--chris-jones.json",
     "hadestown-2019/dcmetro--deb-miller.json",
     "patriots-2024/broadwaynews--brittani-samuel.json",
-    "patriots-2024/amny--matt-windman.json"
+    "patriots-2024/amny--matt-windman.json",
+    "the-cottage-2023/nytg--joe-dziemianowicz.json",
+    "the-cottage-2023/variety--naveen-kumar.json",
+    "the-cottage-2023/broadwaynews--brittani-samuel.json",
+    "the-cottage-2023/ew--emlyn-travis.json",
+    "the-cottage-2023/nydailynews--chris-jones.json",
+    "the-cottage-2023/nydailynews--chris.json",
+    "the-cottage-2023/thewrap--robert-hofler.json",
+    "the-cottage-2023/cititour--brian-scott-lipton.json",
+    "the-cottage-2023/nysr--frank-scheck.json",
+    "the-cottage-2023/nysr--melissa-rose-bernardo.json",
+    "the-cottage-2023/queerty--matthew-wexler.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -187,17 +198,18 @@
     "hadestown-2019/usatoday--elysa-gardner.json",
     "hadestown-2019/washpost--peter-marks.json",
     "hadestown-2019/wnyc--jennifer-vanasco.json",
-    "patriots-2024/variety--charles-isherwood.json",
-    "patriots-2024/guardian--adrian-horton.json",
-    "patriots-2024/new-york-sun--elysa-gardner.json",
-    "patriots-2024/new-york-sun--elysa.json",
-    "patriots-2024/nypost--johnny-oleksinski.json",
-    "patriots-2024/theatermania--david-gordon.json",
-    "patriots-2024/wsj--charles-isherwood.json",
-    "patriots-2024/wsj--charles.json",
-    "patriots-2024/nysr--frank-scheck.json",
-    "patriots-2024/nysr--frank.json",
-    "patriots-2024/talkinbroadway--matthew-murray.json"
+    "gutenberg-2023/variety--aramide-tinubu.json",
+    "gutenberg-2023/vulture--helen-shaw.json",
+    "gutenberg-2023/nypost--johnny-oleksinski.json",
+    "gutenberg-2023/observer--david-cote.json",
+    "gutenberg-2023/theatermania--adam-feldman.json",
+    "gutenberg-2023/thewrap--steve-pond.json",
+    "gutenberg-2023/wsj--charles-isherwood.json",
+    "gutenberg-2023/wsj--charles.json",
+    "the-cottage-2023/observer--jesse-green.json",
+    "the-cottage-2023/observer--rex-reed.json",
+    "the-cottage-2023/theatermania--adam-feldman.json",
+    "the-cottage-2023/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -208,13 +220,17 @@
       "lempicka-2024/nysr--david-finkle.json",
       "stranger-things-2024/londontheatre--marianka-swain.json",
       "hadestown-2019/broadwaynews--charles-isherwood.json",
-      "hadestown-2019/dcmetro--deb-miller.json"
+      "hadestown-2019/dcmetro--deb-miller.json",
+      "the-cottage-2023/nytg--joe-dziemianowicz.json"
     ],
     "scrapingbee": [
       "spamalot-2023/cititour--brian-scott-lipton.json",
       "spamalot-2023/chicagotribune--chris-jones.json",
       "lempicka-2024/cititour--brian-scott-lipton.json",
-      "stranger-things-2024/thestage--dave-fargnoli.json"
+      "stranger-things-2024/thestage--dave-fargnoli.json",
+      "the-cottage-2023/broadwaynews--brittani-samuel.json",
+      "the-cottage-2023/ew--emlyn-travis.json",
+      "the-cottage-2023/cititour--brian-scott-lipton.json"
     ],
     "brightdata": [
       "harmony-2023/observer--jesse-green.json",
@@ -259,7 +275,14 @@
       "chicago-1996/ap--michael-kuchwara.json",
       "hadestown-2019/nydailynews--chris-jones.json",
       "patriots-2024/broadwaynews--brittani-samuel.json",
-      "patriots-2024/amny--matt-windman.json"
+      "patriots-2024/amny--matt-windman.json",
+      "the-cottage-2023/variety--naveen-kumar.json",
+      "the-cottage-2023/nydailynews--chris-jones.json",
+      "the-cottage-2023/nydailynews--chris.json",
+      "the-cottage-2023/thewrap--robert-hofler.json",
+      "the-cottage-2023/nysr--frank-scheck.json",
+      "the-cottage-2023/nysr--melissa-rose-bernardo.json",
+      "the-cottage-2023/queerty--matthew-wexler.json"
     ]
   }
 }
