@@ -20,6 +20,8 @@ interface EmailCaptureModalProps {
   onClose: () => void;
   onSubmit: (data: CapturedUserData) => void;
   trigger: GateTrigger;
+  /** If true, modal cannot be dismissed — user must enter email */
+  blocking?: boolean;
 }
 
 export interface CapturedUserData {
@@ -69,6 +71,7 @@ export default function EmailCaptureModal({
   onClose,
   onSubmit,
   trigger,
+  blocking = false,
 }: EmailCaptureModalProps) {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -86,8 +89,9 @@ export default function EmailCaptureModal({
     }
   }, [isOpen, trigger]);
 
-  // Handle escape key
+  // Handle escape key (only for non-blocking modals)
   useEffect(() => {
+    if (blocking) return;
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
         onClose();
@@ -95,7 +99,7 @@ export default function EmailCaptureModal({
     };
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, blocking]);
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -165,22 +169,24 @@ export default function EmailCaptureModal({
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/70 backdrop-blur-sm"
-        onClick={onClose}
+        onClick={blocking ? undefined : onClose}
         aria-hidden="true"
       />
 
       {/* Modal */}
       <div className="relative w-full max-w-md bg-surface-raised rounded-2xl shadow-2xl border border-white/10 overflow-hidden">
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors z-10"
-          aria-label="Close modal"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
+        {/* Close button - hidden when blocking */}
+        {!blocking && (
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors z-10"
+            aria-label="Close modal"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        )}
 
         {/* Header */}
         <div className="px-6 pt-8 pb-4 text-center">
