@@ -6,8 +6,8 @@
 import Link from 'next/link';
 
 export interface DevelopmentItem {
-  date: string; // Format: "MMM YYYY" e.g., "Jan 2025"
-  type: 'recouped' | 'estimate' | 'closing' | 'at-risk';
+  date: string; // Format: "MMM YYYY" e.g., "Jan 2025" or "MMM DD" for current year
+  type: 'recouped' | 'estimate' | 'closing' | 'closing-announced' | 'at-risk';
   showTitle: string;
   showSlug?: string;
   description: string;
@@ -25,7 +25,9 @@ function getTypeStyles(type: DevelopmentItem['type']): { dotClass: string; label
     case 'estimate':
       return { dotClass: 'text-amber-400', label: 'Progress update' };
     case 'closing':
-      return { dotClass: 'text-red-400', label: 'Closing' };
+      return { dotClass: 'text-red-400', label: 'Closed' };
+    case 'closing-announced':
+      return { dotClass: 'text-orange-400', label: 'Closing announced' };
     case 'at-risk':
       return { dotClass: 'text-red-400', label: 'At risk' };
     default:

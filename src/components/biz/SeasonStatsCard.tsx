@@ -3,6 +3,8 @@
  * Sprint 2, Task 2.1
  */
 
+import Link from 'next/link';
+
 interface SeasonStatsCardProps {
   season: string;
   capitalAtRisk: number;
@@ -29,9 +31,13 @@ export default function SeasonStatsCard({
   recoupedShows,
 }: SeasonStatsCardProps) {
   return (
-    <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
-      <div className="text-xs text-gray-500 uppercase tracking-wide mb-2">
+    <Link
+      href={`/biz/season/${season}`}
+      className="block bg-surface-overlay rounded-xl p-4 border border-white/5 hover:border-brand/30 hover:bg-surface-overlay/80 transition-all cursor-pointer group"
+    >
+      <div className="text-xs text-gray-500 uppercase tracking-wide mb-2 group-hover:text-gray-400">
         {season} Season
+        <span className="ml-2 text-brand opacity-0 group-hover:opacity-100 transition-opacity">→</span>
       </div>
       <div className="flex justify-between items-end">
         <div>
@@ -59,6 +65,6 @@ export default function SeasonStatsCard({
           No commercial shows this season
         </div>
       )}
-    </div>
+    </Link>
   );
 }

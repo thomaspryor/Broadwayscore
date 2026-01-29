@@ -11,6 +11,8 @@ import {
   getShowsApproachingRecoupment,
   getShowsAtRisk,
   getRecentRecoupments,
+  getRecentClosings,
+  getUpcomingClosings,
   getAllOpenShowsWithCommercial,
   getCommercialLastUpdated,
 } from '@/lib/data';
@@ -33,19 +35,39 @@ export const metadata: Metadata = {
   },
 };
 
+// Format date as "Mon YYYY" or "Mon DD"
+function formatDateShort(dateStr: string): string {
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  // Handle YYYY-MM format (recoup dates)
+  if (/^\d{4}-\d{2}$/.test(dateStr)) {
+    const [year, month] = dateStr.split('-');
+    return `${months[parseInt(month) - 1]} ${year}`;
+  }
+
+  // Handle YYYY-MM-DD format (closing dates)
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+    const date = new Date(dateStr);
+    const now = new Date();
+    // If within current year, show "Mon DD"
+    if (date.getFullYear() === now.getFullYear()) {
+      return `${months[date.getMonth()]} ${date.getDate()}`;
+    }
+    return `${months[date.getMonth()]} ${date.getFullYear()}`;
+  }
+
+  return dateStr;
+}
+
 // Generate recent developments from actual data
 function generateRecentDevelopments(): DevelopmentItem[] {
   const items: DevelopmentItem[] = [];
+
+  // Add recent recoupments (last 12 months)
   const recentRecoupments = getRecentRecoupments(12);
-
-  // Add recent recoupments
-  for (const show of recentRecoupments.slice(0, 3)) {
-    const [year, month] = show.recoupDate.split('-');
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const dateStr = `${months[parseInt(month) - 1]} ${year}`;
-
+  for (const show of recentRecoupments.slice(0, 4)) {
     items.push({
-      date: dateStr,
+      date: formatDateShort(show.recoupDate),
       type: 'recouped',
       showTitle: show.title,
       showSlug: show.slug,
@@ -53,26 +75,50 @@ function generateRecentDevelopments(): DevelopmentItem[] {
     });
   }
 
-  // Add shows at risk
-  const atRiskShows = getShowsAtRisk();
-  for (const show of atRiskShows.slice(0, 2)) {
-    // Determine accurate description based on actual status
-    const isBelowBreakEven = show.weeklyGross < show.weeklyRunningCost;
-    const description = isBelowBreakEven
-      ? 'operating below break-even'
-      : 'declining trajectory';
-
+  // Add recent closings that didn't recoup (last 3 months)
+  const recentClosings = getRecentClosings(3);
+  for (const show of recentClosings.slice(0, 3)) {
+    const desc = show.designation === 'Flop'
+      ? 'closed as a flop'
+      : show.designation === 'Fizzle'
+        ? 'closed without recouping'
+        : 'closed';
     items.push({
-      date: 'Jan 2026',
-      type: 'at-risk',
+      date: formatDateShort(show.closingDate),
+      type: 'closing',
       showTitle: show.title,
       showSlug: show.slug,
-      description,
+      description: desc,
     });
   }
 
-  // Sort by date (most recent first) - simple heuristic since dates are mixed formats
-  return items.slice(0, 5);
+  // Add upcoming closings (announced)
+  const upcomingClosings = getUpcomingClosings();
+  for (const show of upcomingClosings.slice(0, 2)) {
+    items.push({
+      date: formatDateShort(show.closingDate),
+      type: 'closing-announced',
+      showTitle: show.title,
+      showSlug: show.slug,
+      description: 'closing announced',
+    });
+  }
+
+  // Add shows at risk (if any pass strict criteria)
+  const atRiskShows = getShowsAtRisk();
+  for (const show of atRiskShows.slice(0, 2)) {
+    items.push({
+      date: 'Now',
+      type: 'at-risk',
+      showTitle: show.title,
+      showSlug: show.slug,
+      description: 'below break-even',
+    });
+  }
+
+  // Sort by type priority: recouped first, then closings, then at-risk
+  // Within same type, most recent first (already sorted by date from data functions)
+  return items.slice(0, 8);
 }
 
 export default function BizDashboard() {

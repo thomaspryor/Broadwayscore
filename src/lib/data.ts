@@ -1259,6 +1259,94 @@ export function getRecentRecoupments(months: number = 24): RecentRecoupmentShow[
   });
 }
 
+export interface RecentClosing {
+  slug: string;
+  title: string;
+  closingDate: string;
+  designation: CommercialDesignation;
+  wasFlop: boolean;
+}
+
+/**
+ * Get shows that recently closed without recouping (flops/fizzles)
+ */
+export function getRecentClosings(months: number = 6): RecentClosing[] {
+  const allShows = getAllShows();
+  const results: RecentClosing[] = [];
+  const cutoffDate = new Date();
+  cutoffDate.setMonth(cutoffDate.getMonth() - months);
+
+  for (const show of allShows) {
+    if (show.status !== 'closed' || !show.closingDate) continue;
+
+    const closingDate = new Date(show.closingDate);
+    if (isNaN(closingDate.getTime()) || closingDate < cutoffDate) continue;
+    if (closingDate > new Date()) continue; // Skip future closing dates
+
+    const data = commercial.shows[show.slug];
+    if (!data) continue;
+
+    // Only include shows that didn't recoup
+    if (data.recouped === true) continue;
+
+    const wasFlop = data.designation === 'Flop' || data.designation === 'Fizzle';
+
+    results.push({
+      slug: show.slug,
+      title: show.title,
+      closingDate: show.closingDate,
+      designation: data.designation,
+      wasFlop,
+    });
+  }
+
+  // Sort by closing date descending
+  return results.sort((a, b) => {
+    return new Date(b.closingDate).getTime() - new Date(a.closingDate).getTime();
+  });
+}
+
+export interface UpcomingClosing {
+  slug: string;
+  title: string;
+  closingDate: string;
+  designation: CommercialDesignation;
+}
+
+/**
+ * Get shows with announced upcoming closing dates
+ */
+export function getUpcomingClosings(): UpcomingClosing[] {
+  const allShows = getAllShows();
+  const results: UpcomingClosing[] = [];
+  const now = new Date();
+  const twoMonthsOut = new Date();
+  twoMonthsOut.setMonth(twoMonthsOut.getMonth() + 2);
+
+  for (const show of allShows) {
+    if (show.status !== 'open' || !show.closingDate) continue;
+
+    const closingDate = new Date(show.closingDate);
+    if (isNaN(closingDate.getTime())) continue;
+    if (closingDate <= now || closingDate > twoMonthsOut) continue;
+
+    const data = commercial.shows[show.slug];
+    if (!data) continue;
+
+    results.push({
+      slug: show.slug,
+      title: show.title,
+      closingDate: show.closingDate,
+      designation: data.designation,
+    });
+  }
+
+  // Sort by closing date ascending (soonest first)
+  return results.sort((a, b) => {
+    return new Date(a.closingDate).getTime() - new Date(b.closingDate).getTime();
+  });
+}
+
 /**
  * Get all open shows with commercial data for the full table
  */
@@ -1268,6 +1356,7 @@ export function getAllOpenShowsWithCommercial(): Array<{
   designation: CommercialDesignation;
   capitalization: number | null;
   weeklyGross: number | null;
+  totalGross: number | null;
   estimatedRecoupmentPct: [number, number] | null;
   trend: RecoupmentTrend;
   recouped: boolean | null;
@@ -1280,6 +1369,7 @@ export function getAllOpenShowsWithCommercial(): Array<{
     designation: CommercialDesignation;
     capitalization: number | null;
     weeklyGross: number | null;
+    totalGross: number | null;
     estimatedRecoupmentPct: [number, number] | null;
     trend: RecoupmentTrend;
     recouped: boolean | null;
@@ -1298,6 +1388,7 @@ export function getAllOpenShowsWithCommercial(): Array<{
       designation: data.designation,
       capitalization: data.capitalization,
       weeklyGross: grossData?.thisWeek?.gross || null,
+      totalGross: grossData?.allTime?.gross || null,
       estimatedRecoupmentPct: data.estimatedRecoupmentPct || null,
       trend: getRecoupmentTrend(slug),
       recouped: data.recouped,
@@ -1306,6 +1397,83 @@ export function getAllOpenShowsWithCommercial(): Array<{
   }
 
   return results;
+}
+
+/**
+ * Get all shows from a specific season with commercial data
+ * Includes both open and closed shows
+ */
+export function getShowsBySeasonWithCommercial(season: string): Array<{
+  slug: string;
+  title: string;
+  status: 'open' | 'closed' | 'previews';
+  designation: CommercialDesignation;
+  capitalization: number | null;
+  weeklyGross: number | null;
+  totalGross: number | null;
+  estimatedRecoupmentPct: [number, number] | null;
+  trend: RecoupmentTrend;
+  recouped: boolean | null;
+  recoupedWeeks: number | null;
+}> {
+  const allShows = getAllShows();
+  const results: Array<{
+    slug: string;
+    title: string;
+    status: 'open' | 'closed' | 'previews';
+    designation: CommercialDesignation;
+    capitalization: number | null;
+    weeklyGross: number | null;
+    totalGross: number | null;
+    estimatedRecoupmentPct: [number, number] | null;
+    trend: RecoupmentTrend;
+    recouped: boolean | null;
+    recoupedWeeks: number | null;
+  }> = [];
+
+  for (const [slug, data] of Object.entries(commercial.shows)) {
+    const show = allShows.find(s => s.slug === slug);
+    if (!show) continue;
+
+    // Check if show is in this season
+    const showSeason = getSeason(show.openingDate);
+    if (showSeason !== season) continue;
+
+    const grossData = getShowGrosses(slug);
+
+    results.push({
+      slug,
+      title: show.title,
+      status: show.status as 'open' | 'closed' | 'previews',
+      designation: data.designation,
+      capitalization: data.capitalization,
+      weeklyGross: grossData?.thisWeek?.gross || null,
+      totalGross: grossData?.allTime?.gross || null,
+      estimatedRecoupmentPct: data.estimatedRecoupmentPct || null,
+      trend: getRecoupmentTrend(slug),
+      recouped: data.recouped,
+      recoupedWeeks: data.recoupedWeeks,
+    });
+  }
+
+  // Sort by designation (best first), then by title
+  const designationOrder: Record<CommercialDesignation, number> = {
+    'Miracle': 1,
+    'Windfall': 2,
+    'Easy Winner': 3,
+    'Trickle': 4,
+    'TBD': 5,
+    'Fizzle': 6,
+    'Flop': 7,
+    'Nonprofit': 8,
+    'Tour Stop': 9,
+  };
+
+  return results.sort((a, b) => {
+    const orderDiff = (designationOrder[a.designation] || 10) - (designationOrder[b.designation] || 10);
+    if (orderDiff !== 0) return orderDiff;
+    return a.title.localeCompare(b.title);
+  });
 }
 
 // ============================================
