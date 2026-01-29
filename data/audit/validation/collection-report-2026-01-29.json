@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-29T15:26:37.726Z",
+  "runDate": "2026-01-29T15:27:14.338Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 25,
     "priority": "all",
-    "showFilter": "maybe-happy-ending-2024",
+    "showFilter": "water-for-elephants-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 65,
-    "failed": 183,
+    "failed": 184,
     "skipped": 0,
-    "successRate": "26.2%"
+    "successRate": "26.1%"
   },
   "tierBreakdown": {
     "playwright": 10,
@@ -23,16 +23,16 @@
     "archive": 43
   },
   "statistics": {
-    "tier1Attempts": 7,
+    "tier1Attempts": 6,
     "tier1Success": 0,
-    "tier2Attempts": 7,
-    "tier2Success": 0,
-    "tier3Attempts": 7,
+    "tier2Attempts": 6,
+    "tier2Success": 1,
+    "tier3Attempts": 5,
     "tier3Success": 0,
-    "tier4Attempts": 17,
-    "tier4Success": 1,
-    "totalFailed": 7,
-    "scrapingBeeCreditsUsed": 10
+    "tier4Attempts": 14,
+    "tier4Success": 3,
+    "totalFailed": 8,
+    "scrapingBeeCreditsUsed": 50
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -99,7 +99,7 @@
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
     "suffs-2024/the-times--nancy-durrant.json",
-    "maybe-happy-ending-2024/washpost--naveen-kumar.json"
+    "water-for-elephants-2024/nytg--joe-dziemianowicz.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -278,13 +278,14 @@
     "hells-kitchen-2024/usatoday--charles-isherwood.json",
     "hells-kitchen-2024/usatoday--david-rooney.json",
     "hells-kitchen-2024/washpost--peter-marks.json",
-    "maybe-happy-ending-2024/variety--aramide-tinubu.json",
-    "maybe-happy-ending-2024/ew--shania-russell.json",
-    "maybe-happy-ending-2024/nydailynews--chris-jones.json",
-    "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
-    "maybe-happy-ending-2024/wsj--terry-teachout.json",
-    "maybe-happy-ending-2024/talkinbroadway--matthew-murray.json",
-    "maybe-happy-ending-2024/washpost--peter-marks.json"
+    "water-for-elephants-2024/variety--aramide-tinubu.json",
+    "water-for-elephants-2024/variety--charles-isherwood.json",
+    "water-for-elephants-2024/vulture--helen-shaw.json",
+    "water-for-elephants-2024/nypost--johnny-oleksinski.json",
+    "water-for-elephants-2024/theatermania--andy-propst.json",
+    "water-for-elephants-2024/wsj--charles-isherwood.json",
+    "water-for-elephants-2024/wsj--charles.json",
+    "water-for-elephants-2024/thestage--lane-williamson.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -358,7 +359,7 @@
       "queen-versailles-2025/vulture--sara-holdren.json",
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
       "suffs-2024/the-times--nancy-durrant.json",
-      "maybe-happy-ending-2024/washpost--naveen-kumar.json"
+      "water-for-elephants-2024/nytg--joe-dziemianowicz.json"
     ]
   }
 }
