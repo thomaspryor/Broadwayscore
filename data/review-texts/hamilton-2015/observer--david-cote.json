@@ -5,28 +5,28 @@
   "criticName": "David Cote",
   "url": "https://observer.com/2015/08/hamilton-broadway-review/",
   "publishDate": "2015-08-06",
-  "fullText": "We noticed you're using an ad blocker.\n\t\t\tWe get it: you like to have control of your own internet experience. But advertising revenue helps support our journalism. To read our full stories, please turn off your ad blocker.We'd really appreciate it.\n\nBelow are steps you can take in order to whitelist Observer.com on your browser:\n\nClick the AdBlock button on your browser and select Don't run on pages on this domain.\n\nClick the AdBlock Plus button on your browser and select Enabled on this site.\n\nClick the AdBlock Plus button on your browser and select Disable on Observer.com.",
+  "fullText": null,
   "isFullReview": false,
   "bwwExcerpt": "s the same vibrant and youthful impression that it did downtown. Indeed, everybody in the show from the boss to the ushers exudes the confident air of show folk who know they've got themselves a hit. David Cote, Time Out NY : I love Hamilton. I love it like I love New York, or Broadway when it gets it right. And this is so right. A sublime conjunction of radio-ready hip-hop (as well as R&B, Britpop and trad showstoppers), under-dramatized American history and Miranda's uniquely personal focus as a son of immigrants and as an inexhaustible wordsmith, Hamilton hits multilevel culture buttons, hard...Miranda may be composer-lyricist and star, but the world he creates is vibrantly democratic. Hamilton is the center, but Burr is his equally weighted Judas and Javert-and more complexly drawn than either...Phillipa Soo, playing the betrayed but finally forgiving wife, Eliza, has some of the show's most heartbreaking music...As French ally Lafayette in the first act and a foppish, trash-talkin",
   "originalScore": null,
-  "assignedScore": 0,
+  "assignedScore": 95,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAMILTON-Opens-on-Broadway-20150806",
-  "textStatus": "truncated",
-  "textQuality": "truncated",
+  "textStatus": "excerpt_only",
+  "textQuality": "excerpt_only",
   "sourceMethod": "brightdata",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 0,
+    "score": 95,
     "confidence": "medium",
     "range": {
-      "low": 0,
-      "high": 5
+      "low": 90,
+      "high": 100
     },
-    "bucket": "Pan",
-    "thumb": "Down",
+    "bucket": "Rave",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "GPT-4o-mini: The review does not contain any content related to the show itself, indicating a complete lack of recommendation.",
+    "reasoning": "Restored from previousLlmScore after garbage fullText was removed",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -95,7 +95,10 @@
   "truncationSignals": [
     "shorter_than_excerpt"
   ],
-  "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 95,
-  "rescoreCompletedAt": "2026-01-29T01:58:16.212Z"
+  "garbageTextRemoved": {
+    "removedAt": "2026-01-29T02:00:00.000Z",
+    "reason": "Ad blocker notice from Observer.com - not a review",
+    "previousScore": 0,
+    "restoredScore": 95
+  }
 }

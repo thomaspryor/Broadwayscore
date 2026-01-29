@@ -24,11 +24,16 @@ const designations = [
     color: 'text-red-400',
     description: 'Closed without recouping (<30% back)',
   },
+  {
+    name: 'Tour Stop',
+    color: 'text-slate-400',
+    description: 'National tour engagement on Broadway',
+  },
 ];
 
 export default function DesignationLegend() {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
       {designations.map((designation) => (
         <div key={designation.name} className="card p-3">
           <span className={`font-semibold ${designation.color}`}>
