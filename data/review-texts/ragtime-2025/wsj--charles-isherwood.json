@@ -13,10 +13,10 @@
   "assignedScore": 89,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
-  "textStatus": "partial",
+  "textStatus": "truncated",
   "urlSource": "show-score",
   "urlUpdatedAt": "2026-01-25T14:20:46.988Z",
-  "textQuality": "partial",
+  "textQuality": "truncated",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
@@ -77,31 +77,13 @@
     "needsReviewReasons": []
   },
   "textWordCount": 131,
-  "archivePath": "data/archives/reviews/ragtime-2025/wsj--charles-isherwood_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:39:37.751Z",
+  "archivePath": "data/archives/reviews/ragtime-2025/wsj--charles-isherwood_2026-01-29.html",
+  "textFetchedAt": "2026-01-29T02:46:23.006Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee error (500): Request failed with status code 500"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "Access blocked in Bright Data response"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
@@ -114,5 +96,10 @@
   "bwwThumb": "Up",
   "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 89
+  "previousLlmScore": 89,
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text",
+    "possible_mid_word_cutoff"
+  ]
 }
