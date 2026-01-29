@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Maria Friedman’s unsparing direction and a thrillingly fierce central performance by Jonathan Groff have given the show the hard shell it lacked. Now heartbreaking in the poignant sense only, “Merrily” has been found in the dark.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "dtli",
   "dtliThumb": "Up",
   "dtliUrl": null,
@@ -22,7 +22,60 @@
     "web-search",
     "dtli"
   ],
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 93.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 90,
+      "direction": 87
+    },
+    "keyPhrases": [
+      {
+        "quote": "thrillingly fierce central performance by Jonathan Groff",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Maria Friedman's unsparing direction",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Merrily has been found in the dark",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong praise for both lead performance and direction with language suggesting a transformative production that has solved previous problems. | GPT-4o-mini: The review highlights strong direction and a standout performance, indicating a clear recommendation despite not mentioning the script or music.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:55:43.152Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
