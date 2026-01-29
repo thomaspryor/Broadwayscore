@@ -8,12 +8,15 @@
  * Score priority:
  * 0. EXPLICIT RATING IN TEXT (★★★★☆, "4 out of 5", letter grades, X/5)
  *    - These are MOST reliable - override LLM scores which had 33% error rate
- * 1. llmScore.score (if confidence != 'low' AND ensembleData.needsReview != true)
- * 2. assignedScore (if already set and valid, with known source)
- * 3. originalScore parsed (stars, letter grades)
- * 4. bucket mapping (Rave=90, Positive=82, Mixed=65, Negative=48, Pan=30)
- * 5. dtliThumb or bwwThumb (Up=80, Flat=60, Down=35)
- * 6. SKIP - do not include in reviews.json
+ * 1. llmScore.score (HIGH/MEDIUM confidence only)
+ * 2. THUMB (when LLM is low-conf/needs-review AND thumb exists)
+ *    - Aggregator editors saw full review, more reliable than incomplete text
+ * 3. llmScore.score (low confidence or needs review - fallback when no thumb)
+ * 4. assignedScore (if already set and valid, with known source)
+ * 5. originalScore parsed (stars, letter grades)
+ * 6. bucket mapping (Rave=90, Positive=82, Mixed=65, Negative=48, Pan=30)
+ * 7. dtliThumb or bwwThumb (Up=80, Flat=60, Down=35) - final fallback
+ * 8. SKIP - do not include in reviews.json
  */
 
 const fs = require('fs');
@@ -421,6 +424,7 @@ const stats = {
     'explicit-slash': 0,
     'explicit-letterGrade': 0,
     llmScore: 0,
+    'thumb-override-llm': 0,  // Thumb used instead of low-conf/needs-review LLM
     'llmScore-lowconf': 0,
     'llmScore-review': 0,
     assignedScore: 0,
@@ -429,6 +433,7 @@ const stats = {
     thumb: 0
   },
   explicitOverrideLlm: 0,  // Count how many times explicit rating overrode LLM
+  thumbOverrideLlm: 0,     // Count how many times thumb overrode low-conf LLM
   byShow: {}
 };
 
@@ -517,8 +522,7 @@ function getBestScore(data) {
     };
   }
 
-  // Priority 1: LLM score (accept all LLM scores, even low confidence)
-  // Rationale: A low-confidence LLM score is still better than no score
+  // Priority 1: LLM score (HIGH/MEDIUM confidence only)
   if (data.llmScore && data.llmScore.score) {
     const confidence = data.llmScore.confidence;
     const needsReview = data.ensembleData?.needsReview;
@@ -527,7 +531,29 @@ function getBestScore(data) {
     if (confidence !== 'low' && !needsReview) {
       return { score: data.llmScore.score, source: 'llmScore' };
     }
-    // Low confidence or needs review: still use, but mark source
+  }
+
+  // Priority 2: Thumbs OVERRIDE low-confidence/needs-review LLM scores
+  // Rationale: When LLM confidence is low, it's often because text is incomplete.
+  // Aggregator editors saw the full review - their judgment is more reliable.
+  const hasLowConfLlm = data.llmScore?.score &&
+    (data.llmScore.confidence === 'low' || data.ensembleData?.needsReview);
+
+  if (hasLowConfLlm) {
+    const thumbScore = data.dtliThumb ? THUMB_TO_SCORE[data.dtliThumb] :
+                       data.bwwThumb ? THUMB_TO_SCORE[data.bwwThumb] : null;
+
+    if (thumbScore) {
+      stats.thumbOverrideLlm = (stats.thumbOverrideLlm || 0) + 1;
+      return { score: thumbScore, source: 'thumb-override-llm' };
+    }
+  }
+
+  // Priority 3: LLM score (low confidence or needs review - fallback when no thumb)
+  if (data.llmScore && data.llmScore.score) {
+    const confidence = data.llmScore.confidence;
+    const needsReview = data.ensembleData?.needsReview;
+
     if (confidence === 'low') {
       return { score: data.llmScore.score, source: 'llmScore-lowconf' };
     }
@@ -753,6 +779,12 @@ const explicitCount = (stats.scoreSources['explicit-stars'] || 0) +
 if (explicitCount > 0) {
   console.log(`\nExplicit ratings extracted from text: ${explicitCount}`);
   console.log(`  Overrode conflicting LLM scores: ${stats.explicitOverrideLlm}`);
+}
+
+// Thumb override summary
+if (stats.thumbOverrideLlm > 0) {
+  console.log(`\nThumb overrides of low-conf/needs-review LLM: ${stats.thumbOverrideLlm}`);
+  console.log(`  (Aggregator editors saw full review, more reliable than incomplete text)`);
 }
 
 console.log('\nScore sources:');
