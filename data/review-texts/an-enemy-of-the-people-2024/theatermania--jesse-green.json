@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Jeremy Strong delivers a powerhouse performance in Amy Leach's adaptation of Ibsen's classic, bringing contemporary urgency to this tale of truth-telling and its consequences.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jeremy Strong delivers a powerhouse performance in Amy Leach's adaptation of Ibsen's classic, bringing contemporary urgency to this tale of truth-telling and its consequences.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 83,
+    "confidence": "high",
+    "range": {
+      "low": 75.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": 88,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "powerhouse performance",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "bringing contemporary urgency",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Jeremy Strong delivers a powerhouse performance",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong praise for lead performance and adaptation approach suggests clear recommendation, but extremely brief review limits confidence in scoring. | GPT-4o-mini: The review highlights a standout performance with strong positive language, suggesting a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T05:23:27.757Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 85,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

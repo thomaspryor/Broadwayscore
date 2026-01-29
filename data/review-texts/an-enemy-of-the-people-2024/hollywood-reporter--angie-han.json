@@ -9,12 +9,63 @@
   "isFullReview": false,
   "dtliExcerpt": "Strong brings a compelling intensity to his performance as Dr. Thomas Stockmann, the idealistic physician who discovers his town's water supply is contaminated.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Strong brings a compelling intensity to his performance as Dr. Thomas Stockmann, the idealistic physician who discovers his town's water supply is contaminated.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Strong brings a compelling intensity to his performance",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the idealistic physician who discovers his town's water supply is contaminated",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This excerpt only praises one performance aspect without any overall recommendation or assessment of the production as a whole. | GPT-4o-mini: The review highlights a strong performance but lacks broader context or enthusiasm for the overall production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T05:23:08.250Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

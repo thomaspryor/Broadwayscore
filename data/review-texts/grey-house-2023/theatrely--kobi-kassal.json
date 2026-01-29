@@ -11,7 +11,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -42,5 +42,61 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "llmScore": {
+    "score": 69,
+    "confidence": "high",
+    "range": {
+      "low": 63,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 63,
+      "music": null,
+      "performances": 81,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "Grey House is an absorbing and often brilliant work, but it never quite lives up to its own potential",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "vague, sentimental conclusion that blunts its overall power",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Grey House is strongest when it is at its weirdest",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the performances and staging while expressing significant reservations about the play's conclusion and thematic execution, landing on qualified appreciation rather than clear recommendation. | GPT-4o-mini: The review highlights strong performances and effective horror elements but notes significant vagueness in the script, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T05:23:25.329Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 68,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
