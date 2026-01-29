@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-29T18:07:57.224Z",
+  "runDate": "2026-01-29T18:08:27.309Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 25,
     "priority": "all",
-    "showFilter": "back-to-the-future-2023",
+    "showFilter": "cabaret-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 65,
-    "failed": 213,
+    "failed": 215,
     "skipped": 0,
-    "successRate": "23.4%"
+    "successRate": "23.2%"
   },
   "tierBreakdown": {
     "playwright": 10,
@@ -29,10 +29,10 @@
     "tier2Success": 0,
     "tier3Attempts": 5,
     "tier3Success": 0,
-    "tier4Attempts": 12,
-    "tier4Success": 2,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 10
+    "tier4Attempts": 13,
+    "tier4Success": 3,
+    "totalFailed": 8,
+    "scrapingBeeCreditsUsed": 30
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -309,12 +309,14 @@
     "stereophonic-2024/guardian--gloria-oladipo.json",
     "stereophonic-2024/observer--rex-reed.json",
     "stereophonic-2024/theatermania--adam-feldman.json",
-    "back-to-the-future-2023/wsj--charles-isherwood.json",
-    "back-to-the-future-2023/wsj--terry-teachout.json",
-    "back-to-the-future-2023/nysr--elysa-gardner.json",
-    "back-to-the-future-2023/nysr--steven-suskin.json",
-    "back-to-the-future-2023/queerty--matthew-wexler.json",
-    "back-to-the-future-2023/rollingstone--brittany-spanos.json"
+    "cabaret-2024/variety--aramide-tinubu.json",
+    "cabaret-2024/variety--frank-rizzo.json",
+    "cabaret-2024/observer--rex-reed.json",
+    "cabaret-2024/theatermania--jesse-green.json",
+    "cabaret-2024/wsj--charles-isherwood.json",
+    "cabaret-2024/wsj--charles.json",
+    "cabaret-2024/queerty--matthew-wexler.json",
+    "cabaret-2024/village-voice--michael-musto.json"
   ],
   "tierDetails": {
     "playwright": [
