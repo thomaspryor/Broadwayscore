@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-29T18:14:58.901Z",
+  "runDate": "2026-01-29T18:15:07.276Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 25,
     "priority": "all",
-    "showFilter": "hamilton-2015",
+    "showFilter": "the-great-gatsby-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 65,
-    "failed": 226,
+    "failed": 219,
     "skipped": 0,
-    "successRate": "22.3%"
+    "successRate": "22.9%"
   },
   "tierBreakdown": {
     "playwright": 10,
@@ -23,16 +23,16 @@
     "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 18,
+    "tier1Attempts": 12,
     "tier1Success": 0,
-    "tier2Attempts": 18,
+    "tier2Attempts": 12,
     "tier2Success": 0,
-    "tier3Attempts": 18,
-    "tier3Success": 2,
-    "tier4Attempts": 37,
+    "tier3Attempts": 12,
+    "tier3Success": 1,
+    "tier4Attempts": 26,
     "tier4Success": 1,
-    "totalFailed": 19,
-    "scrapingBeeCreditsUsed": 70
+    "totalFailed": 12,
+    "scrapingBeeCreditsUsed": 30
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -309,25 +309,18 @@
     "stereophonic-2024/guardian--gloria-oladipo.json",
     "stereophonic-2024/observer--rex-reed.json",
     "stereophonic-2024/theatermania--adam-feldman.json",
-    "hamilton-2015/hollywood-reporter--david-rooney.json",
-    "hamilton-2015/ew--tim-stack.json",
-    "hamilton-2015/guardian--jesse-green.json",
-    "hamilton-2015/nbcnews--elysa-gardner.json",
-    "hamilton-2015/nbcnews--kristy-puchko.json",
-    "hamilton-2015/nbcnews--melissa-locker.json",
-    "hamilton-2015/newsday--linda-winer.json",
-    "hamilton-2015/nypost--jesse-green.json",
-    "hamilton-2015/nypost--johnny-oleksinski.json",
-    "hamilton-2015/observer--david-cote.json",
-    "hamilton-2015/observer--rex-reed.json",
-    "hamilton-2015/theatermania--adam-feldman.json",
-    "hamilton-2015/theatermania--charles-isherwood.json",
-    "hamilton-2015/wsj--terry-teachout.json",
-    "hamilton-2015/ap--mark-kennedy.json",
-    "hamilton-2015/backstage-barbie--backstage-barbie.json",
-    "hamilton-2015/dailybeast--tim-teeman.json",
-    "hamilton-2015/rollingstone--rob-sheffield.json",
-    "hamilton-2015/the-clyde-fitch-report--david-finkle.json"
+    "the-great-gatsby-2024/variety--aramide-tinubu.json",
+    "the-great-gatsby-2024/guardian--gloria-oladipo.json",
+    "the-great-gatsby-2024/nydailynews--chris-jones.json",
+    "the-great-gatsby-2024/nypost--johnny-oleksinski.json",
+    "the-great-gatsby-2024/observer--david-cote.json",
+    "the-great-gatsby-2024/theatermania--adam-feldman.json",
+    "the-great-gatsby-2024/wsj--terry-teachout.json",
+    "the-great-gatsby-2024/nysr--david-finkle.json",
+    "the-great-gatsby-2024/slantmagazine--dan-rubins.json",
+    "the-great-gatsby-2024/talkinbroadway--matthew-murray.json",
+    "the-great-gatsby-2024/theater-pizzazz--brian-scott-lipton.json",
+    "the-great-gatsby-2024/washpost--naveen-kumar.json"
   ],
   "tierDetails": {
     "playwright": [
