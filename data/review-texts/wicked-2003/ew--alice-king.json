@@ -74,7 +74,7 @@
   "previousLlmScore": 71,
   "textWordCount": 166,
   "archivePath": "data/archives/reviews/wicked-2003/ew--alice-king_2026-01-29.html",
-  "textFetchedAt": "2026-01-29T07:15:10.261Z",
+  "textFetchedAt": "2026-01-29T15:21:19.402Z",
   "originalScoreNormalized": 85,
   "scoreSource": "letter-grade",
   "fetchMethod": "archive",
@@ -82,18 +82,6 @@
     {
       "tier": 0,
       "method": "archive-first",
-      "success": false,
-      "error": "Request failed with status code 503"
-    },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "404 - Page not found"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
       "success": true
     }
   ],
