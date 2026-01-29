@@ -7,7 +7,7 @@
   "publishDate": "March 20, 2025",
   "fullText": "But is it funny? Whether “Operation Mincemeat,” the diverting if irksome musical comedy about the plan, works as well will depend a lot on your answer to that question.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "dtliThumb": "Meh",
   "source": "dtli",
   "dtliExcerpt": "But is it funny? Whether “Operation Mincemeat,” the diverting if irksome musical comedy about the plan, works as well will depend a lot on your answer to that question.",
@@ -15,9 +15,62 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": "I enjoyed ‘Operation Mincemeat’ well enough, but I would have enjoyed it much more if I thought that were true onstage.",
   "bwwThumb": "Meh",
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 45,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "diverting if irksome musical comedy",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "works as well will depend a lot on your answer to that question",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "the diverting if irksome musical comedy",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic calls the show 'diverting' (positive) but 'irksome' (negative) and explicitly states success depends on individual taste, indicating a non-committal mixed assessment. | GPT-4o-mini: The review suggests a conditional interest in the show, indicating that its success hinges on the audience's sense of humor, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:28:02.370Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 50,
+    "scoreDelta": 8,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250121",
   "designation": "Critics_Pick"
 }
