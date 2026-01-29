@@ -11,7 +11,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "needsScoring": true,
@@ -62,5 +62,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251002230850",
-  "archiveOrgUrl": "http://web.archive.org/web/20251002230850/https://nypost.com/2023/11/13/entertainment/harmony-review-barry-manilows-musical-is-moving-but-isnt-in-sync/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251002230850/https://nypost.com/2023/11/13/entertainment/harmony-review-barry-manilows-musical-is-moving-but-isnt-in-sync/",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 50,
+      "music": 75,
+      "performances": 81,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "Take apart Barry Manilow's new musical 'Harmony,' which opened Monday night on Broadway, and you'll find a lot to admire.",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The problem is that while 'Harmony' is about a sextet of singers whose voices blend like milk and coffee, its elements do not similarly fuse into a cohesive and satisfying musical.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "That's the central takeaway of 'Harmony': not everything is harmonious, but nonetheless there is much that's worth listening to.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges significant admirable elements (performances, music, themes) but identifies fundamental structural problems that prevent it from being a cohesive, satisfying musical experience. | GPT-4o-mini: While the review highlights strong performances and a catchy score, it also points out significant structural flaws and pacing issues that detract from the overall experience, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:35:15.857Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": true,
+    "expectedThumb": "Flat",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
