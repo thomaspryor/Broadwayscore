@@ -41,6 +41,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Run commercial data update
+        id: update
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -63,6 +64,8 @@ jobs:
             ARGS="$ARGS --gather-sec"
           fi
           node scripts/update-commercial-data.js $ARGS
+        # Continue even if there are Deep Research conflicts (they're logged, not failures)
+        continue-on-error: true
 
       - name: Validate data
         if: always()
@@ -105,10 +108,34 @@ jobs:
       - name: Summary
         if: always()
         run: |
-          echo "## Commercial Data Update" >> $GITHUB_STEP_SUMMARY
+          echo "## Commercial Data Update Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
           if [ -f data/commercial-changelog.json ]; then
-            ENTRIES=$(node -e "try{const d=require('./data/commercial-changelog.json');console.log(d.entries.length)}catch(e){console.log(0)}")
-            echo "Total changelog entries: $ENTRIES" >> $GITHUB_STEP_SUMMARY
+            # Extract the latest entry's stats
+            node -e "
+              const changelog = require('./data/commercial-changelog.json');
+              const entries = changelog.entries || [];
+              const latest = entries[entries.length - 1];
+              if (latest) {
+                console.log('- **Date:** ' + (latest.date || latest.weekEnding || 'unknown'));
+                console.log('- **Changes Applied:** ' + (latest.changesApplied || 0));
+                console.log('- **Changes Flagged:** ' + (latest.changesFlagged || 0));
+                console.log('- **Deep Research Conflicts:** ' + (latest.deepResearchConflicts || 0));
+                if (latest.deepResearchConflicts > 0) {
+                  console.log('');
+                  console.log('### ⚠️ Deep Research Conflicts Blocked');
+                  console.log('');
+                  console.log('The following changes were blocked by Deep Research protection:');
+                  if (latest.blocked) {
+                    for (const b of latest.blocked) {
+                      console.log('- **' + b.slug + '.' + b.field + '**: ' + (b.discrepancy || 'conflict detected'));
+                    }
+                  }
+                }
+              } else {
+                console.log('No changelog entries found.');
+              }
+            " >> $GITHUB_STEP_SUMMARY
           fi
 
       - name: Create issue on failure

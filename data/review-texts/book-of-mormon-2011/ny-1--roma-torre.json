@@ -5,8 +5,8 @@
   "criticName": "Roma Torre",
   "url": "http://www.ny1.com/content/ny1_living/theater_reviews/",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "Your City, Your News. NYC's 24-hour newschannel on the web.\n\nTime Warner Cable. The power of you &trade;\n\nTo view our videos, you need to\n                    enable JavaScript. Learn how.\n                    install Adobe Flash 9 or above. Install now.\n                    \n                    \n                    Then come back here and refresh the page.\n\n\"Born Yesterday\" is 65 years old, and while it’s very much a product of its time, the current production proves it stands the test of time. Garson Kanin’s play, intended as an indictment of corruption and the abuse of political power, certainly resonates today.\n\nBut any production of the populist drama largely depends on the strength of its two central performances, and on that front, the latest staging is likely to gain a whole new generation of fans.\n\nJudy Holliday created the role of Billie Dawn on stage and film and set a benchmark that’s been impossible to top ever since. As a floozie plucked from the chorus line by the rich thug Harry Brock, she is endearingly clueless. Kanin, playing off the Pygmalion theme, transforms this dim bulb into an enlightened citizen.\n\nIt’s an acting challenge that’s sunk many a decent actress, but rising star Nina Arianda nailed it. With a bow to Holliday’s sweet naiveté, Arianda makes the role her own. She gets a huge assist from costume designer Catherine Zuber, who drapes her fabulously svelte figure in elegantly ostentatious fashion.  As her foil, Jim Belushi is a perfect fit, seemingly born to play this larger-than-life brute. He’s a natural, bellowing Harry’s vulgarisms, but beneath the menace, Belushi shades the performance enough to reveal a spark of humanity.\n\nBoth lead actors, along with Robert Sean Leonard in the pivotal role of Billie's tutor Paul Verrall, manage to delve beyond stereotype.  Doug Hughes' staging is first-rate, finding just the right balance between the humor and Kanin's serious message.\n\nKanin's idealism may seem preachy, but given the state of the union today, our democratic principles can certainly bear repeating. No matter how familiar you are with the work, this fine production offers plenty of compelling reasons to return to \"Born Yesterday.\"\n\nReproduction in whole or in part without permission is prohibited.\n\n&copy; 1999-2011 NY1 News and Time Warner Cable Inc. All Rights Reserved.\n\nWeb production by Tipit — Powered by News Gecko\n\t\t\t\n\t\t\t10.11.12.223",
+  "isFullReview": true,
   "bwwExcerpt": ": It is meticulously cast and everyone shines. Nikki M. James as sweetly naive Nabalungi has a gorgeous voice. Andrew Rannells plays golden boy Elder Price with divine versatility; and as misfit Elder Cunningham, Josh Gad is truly blessed with outsize talent. Casey Nicholaw shares directing credit with Trey Parker. Along with Stone and Lopez, their \"Book of Mormon\" is an inspired collaboration made in theatre heaven.",
   "bwwRoundupUrl": null,
   "bwwThumb": null,
@@ -70,5 +70,50 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 92,
+  "textWordCount": 378,
+  "archivePath": "data/archives/reviews/book-of-mormon-2011/ny-1--roma-torre_2026-01-29.html",
+  "textFetchedAt": "2026-01-29T01:47:22.345Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (404): Request failed with status code 404"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Access blocked in Bright Data response"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20110429060820",
+  "archiveOrgUrl": "http://web.archive.org/web/20110429060820/http://www.ny1.com:80/content/ny1_living/theater_reviews",
+  "textIssues": [
+    "Show title not found in text"
+  ]
 }

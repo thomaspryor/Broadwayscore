@@ -57,6 +57,14 @@ try {
   console.warn('Warning: source-validator module not available');
 }
 
+// Sprint 3: Deep Research Guardian module
+let deepResearchGuardian;
+try {
+  deepResearchGuardian = require('./lib/deep-research-guardian');
+} catch (e) {
+  console.warn('Warning: deep-research-guardian module not available');
+}
+
 // ---------------------------------------------------------------------------
 // CLI Arguments
 // ---------------------------------------------------------------------------
@@ -1551,19 +1559,44 @@ Respond with ONLY valid JSON (no markdown code fences):
  * - Designation upgrades (non-TBD to non-TBD) -> flagged
  * - TBD -> Windfall/Fizzle/Flop with high/medium -> applied
  * - productionType changes -> flagged
+ * - Sprint 3: Deep Research conflicts -> blocked
  *
  * @param {Object[]} proposedChanges - From Claude analysis (with validatedConfidence from Sprint 4.9)
- * @returns {{ applied: Object[], flagged: Object[], skipped: Object[] }}
+ * @param {Object} commercialData - commercial.json data (for Deep Research protection check)
+ * @returns {{ applied: Object[], flagged: Object[], skipped: Object[], deepResearchConflicts: Object[] }}
  */
-function filterByConfidence(proposedChanges) {
+function filterByConfidence(proposedChanges, commercialData) {
   const applied = [];
   const flagged = [];
   const skipped = [];
+  const deepResearchConflicts = [];  // Sprint 3: Track Deep Research conflicts
 
   const protectedDesignations = new Set(['Miracle', 'Nonprofit', 'Tour Stop']);
 
   for (const change of (proposedChanges || [])) {
-    const { field, oldValue, newValue, confidence } = change;
+    const { slug, field, oldValue, newValue, confidence } = change;
+
+    // Sprint 3: Check for Deep Research conflicts FIRST
+    if (deepResearchGuardian && commercialData) {
+      const showData = commercialData.shows?.[slug];
+      const conflict = deepResearchGuardian.detectConflict(change, showData);
+
+      if (conflict && deepResearchGuardian.shouldBlockChange(conflict)) {
+        const discrepancy = deepResearchGuardian.calculateDiscrepancy
+          ? deepResearchGuardian.calculateDiscrepancy(conflict.field, conflict.verifiedValue, conflict.proposedValue)
+          : `verified ${JSON.stringify(conflict.verifiedValue)}, proposed ${JSON.stringify(conflict.proposedValue)}`;
+
+        deepResearchConflicts.push({
+          ...change,
+          conflict: {
+            ...conflict,
+            discrepancy
+          }
+        });
+        console.log(`    [BLOCKED - Deep Research] ${slug}.${field}: ${discrepancy}`);
+        continue;  // Skip this change
+      }
+    }
 
     // Sprint 4.10: Use validatedConfidence if available (from source validation)
     const effectiveConfidence = change.validatedConfidence || confidence;
@@ -1613,7 +1646,7 @@ function filterByConfidence(proposedChanges) {
     applied.push(change);
   }
 
-  return { applied, flagged, skipped };
+  return { applied, flagged, skipped, deepResearchConflicts };
 }
 
 /**
@@ -1652,6 +1685,26 @@ function applyChanges(applied, newEntries, commercial) {
     if (field === 'estimatedRecoupmentPct') {
       commercial.shows[slug].estimatedRecoupmentSource = change.source || 'Automated update';
       commercial.shows[slug].estimatedRecoupmentDate = new Date().toISOString().split('T')[0];
+    }
+
+    // Sprint 3: For weeklyRunningCost or capitalization, set costMethodology based on source
+    if (['weeklyRunningCost', 'capitalization'].includes(field)) {
+      const showData = commercial.shows[slug];
+      let methodology = null;
+
+      if (change.source?.toLowerCase().includes('reddit')) {
+        methodology = 'reddit-standard';
+      } else if (change.source?.toLowerCase().includes('sec')) {
+        methodology = 'sec-filing';
+      } else if (change.source?.toLowerCase().includes('deadline') ||
+                 change.source?.toLowerCase().includes('variety') ||
+                 change.source?.toLowerCase().includes('broadway news')) {
+        methodology = 'trade-reported';
+      }
+
+      if (methodology && !showData.costMethodology) {
+        showData.costMethodology = methodology;
+      }
     }
   }
 
@@ -1967,6 +2020,88 @@ async function createGitHubIssue(summary) {
     console.log('  Created GitHub issue');
   } catch (e) {
     console.error(`  Failed to create GitHub issue: ${e.message}`);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Sprint 3: Deep Research Conflict Issue
+// ---------------------------------------------------------------------------
+
+/**
+ * Create a GitHub issue for Deep Research conflicts (if running in CI).
+ *
+ * @param {Object[]} conflicts - Array of conflict objects from filterByConfidence
+ */
+async function createDeepResearchConflictIssue(conflicts) {
+  if (!conflicts || conflicts.length === 0) return;
+
+  // Only create issues in CI with GitHub token
+  const token = GITHUB_TOKEN;
+  if (!token) {
+    console.log('\n  [Note] GITHUB_TOKEN not set - skipping Deep Research conflict issue creation');
+    return;
+  }
+
+  const title = `[Deep Research Conflict] ${conflicts.length} automated change(s) blocked`;
+
+  let body = `## Deep Research Conflict Alert
+
+Automated commercial data update detected ${conflicts.length} change(s) that conflict with manually-verified Deep Research data.
+
+### Blocked Changes
+
+| Show | Field | Verified Value | Proposed Value | Severity |
+|------|-------|----------------|----------------|----------|
+`;
+
+  for (const c of conflicts) {
+    const conflict = c.conflict;
+    body += `| ${c.slug} | ${c.field} | ${JSON.stringify(conflict.verifiedValue)} | ${JSON.stringify(conflict.proposedValue)} | ${conflict.severity} |\n`;
+  }
+
+  body += `
+### Action Required
+
+Please review these conflicts manually. Options:
+1. **Keep verified data** - No action needed (automated change was correctly blocked)
+2. **Update verified data** - If the new data is more accurate, update the Deep Research verification
+3. **Remove protection** - If this field no longer needs Deep Research protection, remove it from verifiedFields
+
+### Context
+
+Each of these fields was previously verified through Deep Research and should not be automatically overwritten.
+Check the show's \`deepResearch.notes\` field in commercial.json for verification context.
+
+---
+*This issue was automatically created by \`scripts/update-commercial-data.js\`*
+`;
+
+  console.log('\n  Creating GitHub issue for Deep Research conflicts...');
+  console.log(`  Title: ${title}`);
+
+  // Use GitHub API
+  const issueData = JSON.stringify({
+    title,
+    body,
+    labels: ['automation', 'deep-research-conflict']
+  });
+
+  try {
+    await httpsRequest({
+      hostname: 'api.github.com',
+      path: '/repos/thomaspryor/Broadwayscore/issues',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'User-Agent': 'BroadwayScorecard-Bot',
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    }, issueData);
+
+    console.log('  Created Deep Research conflict issue');
+  } catch (e) {
+    console.error(`  Failed to create Deep Research conflict issue: ${e.message}`);
   }
 }
 
@@ -2341,10 +2476,16 @@ async function main() {
   analysisResult.proposedChanges = validatedChanges;
 
   // -----------------------------------------------------------------------
-  // Step 8: Filter by confidence (now uses validatedConfidence)
+  // Step 8: Filter by confidence (now uses validatedConfidence and Deep Research protection)
   // -----------------------------------------------------------------------
-  const { applied, flagged, skipped } = filterByConfidence(analysisResult.proposedChanges || []);
+  const { applied, flagged, skipped, deepResearchConflicts } = filterByConfidence(analysisResult.proposedChanges || [], commercial);
   console.log(`\nFiltered: ${applied.length} applied, ${flagged.length} flagged, ${skipped.length} skipped`);
+
+  // Sprint 3: Report and handle Deep Research conflicts
+  if (deepResearchConflicts.length > 0) {
+    console.log(`\n[Deep Research] ${deepResearchConflicts.length} change(s) blocked by Deep Research protection`);
+    await createDeepResearchConflictIssue(deepResearchConflicts);
+  }
 
   // -----------------------------------------------------------------------
   // Step 9: Apply changes
@@ -2368,13 +2509,14 @@ async function main() {
   // Step 11: Write changelog
   // -----------------------------------------------------------------------
   const dateStr = new Date().toISOString().split('T')[0];
-  if (applied.length > 0 || (analysisResult.newShowEntries || []).length > 0) {
+  if (applied.length > 0 || (analysisResult.newShowEntries || []).length > 0 || deepResearchConflicts.length > 0) {
     writeChangelog({
       date: dateStr,
       timestamp: new Date().toISOString(),
       changesApplied: applied.length,
       changesFlagged: flagged.length,
       changesSkipped: skipped.length,
+      deepResearchConflicts: deepResearchConflicts.length,  // Sprint 3: Track blocked changes
       newEntries: (analysisResult.newShowEntries || []).filter(e => e.confidence !== 'low').length,
       shadowDisagreements: disagreements.length,
       applied: applied.map(c => ({
@@ -2390,6 +2532,14 @@ async function main() {
         field: c.field,
         newValue: c.newValue,
         flagReason: c.flagReason
+      })),
+      blocked: deepResearchConflicts.map(c => ({  // Sprint 3: Include blocked changes details
+        slug: c.slug,
+        field: c.field,
+        verifiedValue: c.conflict?.verifiedValue,
+        proposedValue: c.conflict?.proposedValue,
+        severity: c.conflict?.severity,
+        discrepancy: c.conflict?.discrepancy
       }))
     });
   }

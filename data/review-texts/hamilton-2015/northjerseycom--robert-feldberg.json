@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"The first question critics usually consider when a hit off-Broadway show moves to Broadway is whether it works as well in a larger space. 'Hamilton' does. Emphatically...It's an event that hasn't been over-hyped. The show is spectacularly unique, an endlessly clever history lesson that links us to the country's Founding Fathers in an ingenious and compelling theatrical way...There are probably a half-dozen more things I could rave about, but, essentially, 'Hamilton' is just a really, really terrific show.\"",
   "originalScore": null,
-  "assignedScore": 95,
+  "assignedScore": 94,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "textStatus": "complete",
@@ -18,10 +18,10 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 95,
+    "score": 94,
     "confidence": "high",
     "range": {
-      "low": 90,
+      "low": 87.5,
       "high": 100
     },
     "bucket": "Rave",
@@ -65,9 +65,9 @@
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 95,
+    "claudeScore": 92,
     "openaiScore": 95,
-    "scoreDelta": 0,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

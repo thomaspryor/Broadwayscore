@@ -66,11 +66,16 @@
         "quote": "Scott Ellis's production for the Roundabout Theater Company has not yet reached the ideal balance",
         "sentiment": "negative",
         "strength": 3
+      },
+      {
+        "quote": "I want plays to manipulate me, and it is often truly the case that we cannot know the truth",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
     "reasoning": "Claude: Green praises Shanley's script as expertly crafted and gripping while noting significant production issues with casting and pacing, resulting in qualified admiration for a flawed revival of excellent material. | GPT-4o-mini: The review expresses clear praise for the play's writing and themes, but notes some shortcomings in the performances and direction, leading to a positive overall recommendation.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false

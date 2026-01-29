@@ -5,21 +5,21 @@
   "criticName": "Michael Musto",
   "url": "https://www.villagevoice.com/2011/03/24/book-of-mormon-broadway-review/",
   "publishDate": "2011-03-24",
-  "fullText": "Celebrating Martin Luther King Day Will Cost You at a National Park this Year, But BAM is Honoring the Great Orator For Free\n\nNew Yorkers Resist Trump’s Flooding the Zone With Lies\n\nIn the Reagan ’80s, Tobacco Peddlers and Anti-Smoking Lawyers Were Both Going Great Guns\n\nNew Yorkers Resist Trump’s Flooding the Zone With Lies\n\nThe Evocative Clay Figures in ‘Ministry: Reverend Joyce McDonald’ Radiate Power and Hope\n\n&#8216;First Saturdays&#8217; Return to the Brooklyn Museum in Time to Celebrate Black History Month\n\nCelebrating Martin Luther King Day Will Cost You at a National Park this Year, But BAM is Honoring the Great Orator For Free\n\nIn 1963, the Voice Reported on a Speech that Made History\n\nVVLOGO_NEWBLUE               Search Search   Close this search box.     Facebook      Twitter      Instagram        Menu VVLOGO_NEWBLUE               Search Search   Close this search box.  It looks like nothing was found at this location.\n\nTwitter      Instagram   ©2023 VILLAGE VOICE, LLC. ALL RIGHTS RESERVED.    |    SITE MAP",
+  "fullText": "One Reichstag Fire After Another\n\nCelebrating Martin Luther King Day Will Cost You at a National Park this Year, But BAM is Honoring the Great Orator For Free\n\nNew Yorkers Resist Trump’s Flooding the Zone With Lies\n\nNew Yorkers Resist Trump’s Flooding the Zone With Lies\n\nThe Evocative Clay Figures in ‘Ministry: Reverend Joyce McDonald’ Radiate Power and Hope\n\nWhat We Talk About When We Talk About Painting\n\n&#8216;First Saturdays&#8217; Return to the Brooklyn Museum in Time to Celebrate Black History Month\n\nCelebrating Martin Luther King Day Will Cost You at a National Park this Year, But BAM is Honoring the Great Orator For Free\n\nVVLOGO_NEWBLUE               Search Search   Close this search box.     Facebook      Twitter      Instagram        Menu VVLOGO_NEWBLUE               Search Search   Close this search box.  It looks like nothing was found at this location.\n\nTwitter      Instagram   ©2023 VILLAGE VOICE, LLC. ALL RIGHTS RESERVED.    |    SITE MAP",
   "originalScore": null,
   "assignedScore": 0,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "The show--done by the South Park guys with the help of an Avenue Q writer--manages the high-wire feat of spoofing religion, poverty, and Jesus, while throwing in AIDS jokes and songs about closeted Mormons \"turning it off\"--and virtually everyone leaves happy!",
-  "textStatus": "partial",
+  "textStatus": "truncated",
   "isFullReview": false,
-  "textWordCount": 155,
-  "archivePath": "data/archives/reviews/book-of-mormon-2011/villagevoice--michael-musto_2026-01-26.html",
-  "textFetchedAt": "2026-01-26T20:10:34.369Z",
+  "textWordCount": 144,
+  "archivePath": "data/archives/reviews/book-of-mormon-2011/the-village-voice--michael-musto_2026-01-29.html",
+  "textFetchedAt": "2026-01-29T01:48:36.920Z",
   "textIssues": [
-    "Word count too low: 155 (min: 300)"
+    "Word count too low: 144 (min: 300)"
   ],
-  "textQuality": "partial",
+  "textQuality": "truncated",
   "sourceMethod": "brightdata",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
@@ -82,6 +82,12 @@
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
       "tier": 1,
       "method": "playwright",
       "success": false,
@@ -109,5 +115,9 @@
   "sources": [
     "reviews-json-stub",
     "bww-roundup"
+  ],
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text"
   ]
 }

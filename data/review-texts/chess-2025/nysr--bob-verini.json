@@ -22,8 +22,8 @@
       "low": 40.5,
       "high": 55.5
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": 33,
       "music": 70,
@@ -31,6 +31,11 @@
       "direction": 43
     },
     "keyPhrases": [
+      {
+        "quote": "play to a draw",
+        "sentiment": "negative",
+        "strength": 3
+      },
       {
         "quote": "the spectacle wears out its welcome long before the end of a near-three-hour running time",
         "sentiment": "negative",
@@ -45,6 +50,11 @@
         "quote": "They put over the beloved classics...with minimal melisma and maximal emotional connection",
         "sentiment": "positive",
         "strength": 3
+      },
+      {
+        "quote": "the promise of an effective staged Chess...remains stubbornly out of reach",
+        "sentiment": "negative",
+        "strength": 4
       }
     ],
     "reasoning": "Claude: The critic systematically dismantles the production's concept, direction, and execution while offering only qualified praise for performances and music, concluding that an effective Chess musical remains elusive. | GPT-4o-mini: The review presents a mixed view, highlighting strong performances and music but criticizing the script and overall execution, leading to a conditional recommendation.",

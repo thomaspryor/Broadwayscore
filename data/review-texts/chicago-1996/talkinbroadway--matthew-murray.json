@@ -10,7 +10,7 @@
   "showScoreExcerpt": "\"Chicago is as good now as it's ever been--a heartening experience, a life-affirming dedication to the magic and art of theatre, and something that absolutely should not be missed. Though all shows must eventually close, the glory and genius of Chicago should be celebrated while it's here, and with any luck, it will still be gracing and energizing Broadway for many years to come.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/chicago",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 90,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -43,19 +43,19 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "llmScore": {
-    "score": 89,
+    "score": 90,
     "confidence": "high",
     "range": {
       "low": 83,
-      "high": 95
+      "high": 97
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 82,
-      "music": 85,
+      "book": 85,
+      "music": 87,
       "performances": 90,
-      "direction": 89
+      "direction": 88
     },
     "keyPhrases": [
       {
@@ -71,7 +71,7 @@
       {
         "quote": "Chicago is as good now as it's ever been. It remains a heartening experience, a life-affirming dedication to the magic and art of theatre",
         "sentiment": "positive",
-        "strength": 5
+        "strength": 4
       }
     ],
     "reasoning": "Claude: The review contains explicit strong recommendation language ('absolutely should not be missed') with consistent praise for performances, production values, and overall experience, despite minor criticisms of individual performers. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and overall production, indicating it is a must-see experience.",
@@ -91,8 +91,8 @@
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
+    "openaiScore": 92,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
