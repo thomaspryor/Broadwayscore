@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -37,5 +37,61 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 84,
+      "music": 90,
+      "performances": 88,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "a sui generis multidisciplinary marvel that suggests new possibilities for both dance and theater",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Justin Peck has delivered an absorbingly expressive work",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "makes a striking case for how modern dance, set to contemporary music, can tell a story that speaks to generations of audiences",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review uses strong superlatives like 'multidisciplinary marvel' and 'suggests new possibilities' while praising all major elements - choreography, music, performances, and design - with only minor structural observations rather than criticisms. | GPT-4o-mini: The review expresses strong enthusiasm for the innovative blend of dance and storytelling, highlighting the choreography and emotional depth, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:56:08.211Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

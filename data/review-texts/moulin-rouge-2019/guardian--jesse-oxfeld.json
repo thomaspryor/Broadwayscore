@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Moulin Rouge! The Musical is a jukebox musical that knows exactly what it is and revels in its own excess, even if the result sometimes feels more like a theme park ride than a theatrical experience.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Moulin Rouge! The Musical is a jukebox musical that knows exactly what it is and revels in its own excess, even if the result sometimes feels more like a theme park ride than a theatrical experience.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 57.5,
+      "high": 70.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "knows exactly what it is and revels in its own excess",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "feels more like a theme park ride than a theatrical experience",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "sometimes feels more like a theme park ride than a theatrical experience",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review is balanced between appreciating the show's self-awareness and spectacle while criticizing its lack of theatrical depth, suggesting a qualified mixed recommendation. | GPT-4o-mini: The review expresses enjoyment of the show's self-awareness and excess but also suggests it lacks depth, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:55:46.181Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
