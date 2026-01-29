@@ -1,12 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { ShowCommercial, CommercialDesignation } from '@/lib/data';
+import { ShowCommercial, CommercialDesignation, RecoupmentTrend } from '@/lib/data';
 import RecoupmentProgressBar from './RecoupmentProgressBar';
 
 interface BizBuzzCardProps {
   commercial: ShowCommercial;
   showTitle: string;
+  trend?: RecoupmentTrend;
+  weeklyGross?: number | null;
+  showStatus?: 'open' | 'closed' | 'previews';
 }
 
 function formatCurrency(value: number | null): string {
@@ -151,13 +154,94 @@ function ChevronDown({ className }: { className?: string }) {
   );
 }
 
-export default function BizBuzzCard({ commercial, showTitle }: BizBuzzCardProps) {
+// Trend indicator component
+function TrendIndicator({ trend }: { trend: RecoupmentTrend }) {
+  if (trend === 'unknown') return null;
+
+  const config = {
+    improving: {
+      icon: '↑',
+      label: 'Trending Up',
+      colorClass: 'text-emerald-400',
+      bgClass: 'bg-emerald-500/15',
+      borderClass: 'border-emerald-500/25',
+    },
+    steady: {
+      icon: '→',
+      label: 'Steady',
+      colorClass: 'text-gray-400',
+      bgClass: 'bg-gray-500/15',
+      borderClass: 'border-gray-500/25',
+    },
+    declining: {
+      icon: '↓',
+      label: 'Trending Down',
+      colorClass: 'text-red-400',
+      bgClass: 'bg-red-500/15',
+      borderClass: 'border-red-500/25',
+    },
+  }[trend];
+
+  if (!config) return null;
+
+  return (
+    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${config.bgClass} ${config.colorClass} border ${config.borderClass}`}>
+      <span className="text-sm">{config.icon}</span>
+      {config.label}
+    </span>
+  );
+}
+
+// Calculate estimated returns since recoupment
+function calculateEstimatedReturns(
+  recouped: boolean | null,
+  recoupedWeeks: number | null,
+  weeklyGross: number | null,
+  weeklyRunningCost: number | null,
+  capitalization: number | null,
+  showStatus: 'open' | 'closed' | 'previews' | undefined
+): { yearsOfReturns: number; percentageReturn: number } | null {
+  // Only for recouped shows still running
+  if (!recouped || !recoupedWeeks || showStatus !== 'open') return null;
+  if (!weeklyGross || !weeklyRunningCost || !capitalization) return null;
+
+  // Estimate weekly profit
+  const weeklyProfit = weeklyGross - weeklyRunningCost;
+  if (weeklyProfit <= 0) return null;
+
+  // Rough estimate: weeks running since recoupment * weekly profit
+  // Assuming the show is currently at week = recoupedWeeks + time since
+  // We don't have exact weeks running, so use a rough estimate
+  const weeksOfProfitEstimate = 52; // Use 1 year as a rough running estimate post-recoupment
+  const estimatedTotalReturns = weeklyProfit * weeksOfProfitEstimate;
+  const percentageReturn = Math.round((estimatedTotalReturns / capitalization) * 100);
+
+  return {
+    yearsOfReturns: 1, // Simplified to 1 year estimate
+    percentageReturn,
+  };
+}
+
+export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross, showStatus }: BizBuzzCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const style = getDesignationStyle(commercial.designation);
 
   // Don't render if we have no useful data
   const hasData = commercial.capitalization || commercial.recouped !== null || commercial.designation !== 'TBD';
   if (!hasData) return null;
+
+  // Calculate estimated returns for recouped shows
+  const estimatedReturns = calculateEstimatedReturns(
+    commercial.recouped,
+    commercial.recoupedWeeks,
+    weeklyGross ?? null,
+    commercial.weeklyRunningCost,
+    commercial.capitalization,
+    showStatus
+  );
+
+  // Show trend for TBD shows that aren't recouped
+  const showTrend = trend && trend !== 'unknown' && commercial.designation === 'TBD' && !commercial.recouped;
 
   return (
     <div className="card p-5 sm:p-6 mb-8">
@@ -167,7 +251,7 @@ export default function BizBuzzCard({ commercial, showTitle }: BizBuzzCardProps)
 
       {/* Main Content */}
       <div className="space-y-4">
-        {/* Top Row: Designation Badge + Recoupment */}
+        {/* Top Row: Designation Badge + Recoupment + Trend */}
         <div className="flex flex-wrap items-center gap-3">
           {/* Designation Badge */}
           <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg ${style.bgClass} ${style.textClass} border ${style.borderClass}`}>
@@ -177,6 +261,9 @@ export default function BizBuzzCard({ commercial, showTitle }: BizBuzzCardProps)
 
           {/* Recoupment Badge */}
           <RecoupmentBadge recouped={commercial.recouped} />
+
+          {/* Trend Indicator for TBD shows */}
+          {showTrend && <TrendIndicator trend={trend} />}
         </div>
 
         {/* Stats Row */}
@@ -222,6 +309,28 @@ export default function BizBuzzCard({ commercial, showTitle }: BizBuzzCardProps)
             estimatedPct={commercial.estimatedRecoupmentPct}
             source={commercial.estimatedRecoupmentSource}
           />
+        )}
+
+        {/* ROI Indicator (for recouped shows still running) */}
+        {estimatedReturns && (
+          <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+            <div className="flex items-center gap-2">
+              <span className="text-emerald-400 text-sm">📈</span>
+              <span className="text-sm text-emerald-400 font-medium">
+                Generating ~{estimatedReturns.percentageReturn}% annual return on investment
+              </span>
+            </div>
+            <p className="text-xs text-gray-500 mt-1">
+              Based on current weekly gross vs running costs
+            </p>
+          </div>
+        )}
+
+        {/* Source Attribution (visible without expanding) */}
+        {commercial.capitalizationSource && !commercial.notes && (
+          <p className="text-xs text-gray-500">
+            Source: {commercial.capitalizationSource}
+          </p>
         )}
 
         {/* Expandable Details */}
