@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T19:00:51.810Z",
+  "runDate": "2026-01-29T19:01:08.371Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 25,
+    "maxReviews": 5,
     "priority": "all",
-    "showFilter": "the-notebook-2024",
+    "showFilter": "the-shark-is-broken-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 65,
-    "failed": 238,
+    "processed": 67,
+    "failed": 230,
     "skipped": 0,
-    "successRate": "21.5%"
+    "successRate": "22.6%"
   },
   "tierBreakdown": {
     "playwright": 10,
     "scrapingbee": 6,
-    "brightdata": 7,
-    "archive": 42
+    "brightdata": 8,
+    "archive": 43
   },
   "statistics": {
-    "tier1Attempts": 21,
+    "tier1Attempts": 4,
     "tier1Success": 0,
-    "tier2Attempts": 21,
+    "tier2Attempts": 4,
     "tier2Success": 0,
-    "tier3Attempts": 21,
+    "tier3Attempts": 4,
     "tier3Success": 0,
-    "tier4Attempts": 45,
-    "tier4Success": 0,
-    "totalFailed": 21,
-    "scrapingBeeCreditsUsed": 100
+    "tier4Attempts": 8,
+    "tier4Success": 2,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 20
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -99,7 +99,9 @@
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
     "suffs-2024/the-times--nancy-durrant.json",
-    "mj-2022/usatoday--david-rooney.json"
+    "mj-2022/usatoday--david-rooney.json",
+    "harry-potter-2021/cititour--brian-scott-lipton.json",
+    "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -319,27 +321,19 @@
     "here-lies-love-2023/indiewire--chris-ofalt.json",
     "here-lies-love-2023/observer--rex-reed.json",
     "here-lies-love-2023/theatermania--adam-feldman.json",
-    "the-notebook-2024/hollywood-reporter--angie-han.json",
-    "the-notebook-2024/nytg--andy-propst.json",
-    "the-notebook-2024/variety--aramide-tinubu.json",
-    "the-notebook-2024/vulture--jackson-mchenry.json",
-    "the-notebook-2024/deadline--pete-hammond.json",
-    "the-notebook-2024/ew--alex-zalben.json",
-    "the-notebook-2024/guardian--adrian-horton.json",
-    "the-notebook-2024/guardian--gloria-oladipo.json",
-    "the-notebook-2024/guardian--jesse-green.json",
-    "the-notebook-2024/indiewire--christian-lewis.json",
-    "the-notebook-2024/indiewire--david-ehrlich.json",
-    "the-notebook-2024/nydailynews--chris-jones.json",
-    "the-notebook-2024/nydailynews--chris.json",
-    "the-notebook-2024/theatermania--adam-feldman.json",
-    "the-notebook-2024/theatermania--jesse-green.json",
-    "the-notebook-2024/wsj--charles-isherwood.json",
-    "the-notebook-2024/wsj--charles.json",
-    "the-notebook-2024/theatrely--andy-lefkowitz.json",
-    "the-notebook-2024/theatrely--jackson-mchenry.json",
-    "the-notebook-2024/amny--david-gordon.json",
-    "the-notebook-2024/talkinbroadway--matthew-murray.json"
+    "harry-potter-2021/variety--peter-marks.json",
+    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+    "harry-potter-2021/deadline--greg-evans.json",
+    "harry-potter-2021/guardian--alexis-soloski.json",
+    "harry-potter-2021/nypost--johnny-oleksinski.json",
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "harry-potter-2021/broadway-blog--matthew-wexler.json",
+    "harry-potter-2021/broadwayworld--michael-dale.json",
+    "harry-potter-2021/curtainup--elyse-sommer.json",
+    "the-shark-is-broken-2023/observer--david-cote.json",
+    "the-shark-is-broken-2023/theatermania--jesse-green.json",
+    "the-shark-is-broken-2023/wsj--terry-teachout.json",
+    "the-shark-is-broken-2023/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -369,7 +363,8 @@
       "lempicka-2024/nyt-theater--jonathan-mandell.json",
       "moulin-rouge-2019/observer--rex-reed.json",
       "aladdin-2014/usatoday--elysa-gardner.json",
-      "mj-2022/usatoday--david-rooney.json"
+      "mj-2022/usatoday--david-rooney.json",
+      "harry-potter-2021/cititour--brian-scott-lipton.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
@@ -413,7 +408,8 @@
       "queen-versailles-2025/vulture--sara-holdren-and-jesse-david-fox.json",
       "queen-versailles-2025/vulture--sara-holdren.json",
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
-      "suffs-2024/the-times--nancy-durrant.json"
+      "suffs-2024/the-times--nancy-durrant.json",
+      "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json"
     ]
   }
 }
