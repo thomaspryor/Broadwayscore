@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T03:19:39.727Z",
+  "runDate": "2026-01-29T05:09:11.917Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "stranger-things-2024",
+    "showFilter": "the-outsiders-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 44,
-    "failed": 60,
+    "processed": 47,
+    "failed": 73,
     "skipped": 0,
-    "successRate": "42.3%"
+    "successRate": "39.2%"
   },
   "tierBreakdown": {
     "playwright": 6,
     "scrapingbee": 4,
     "brightdata": 5,
-    "archive": 29
+    "archive": 32
   },
   "statistics": {
-    "tier1Attempts": 9,
-    "tier1Success": 1,
-    "tier2Attempts": 8,
+    "tier1Attempts": 14,
+    "tier1Success": 0,
+    "tier2Attempts": 14,
     "tier2Success": 1,
-    "tier3Attempts": 7,
+    "tier3Attempts": 13,
     "tier3Success": 0,
-    "tier4Attempts": 15,
-    "tier4Success": 1,
-    "totalFailed": 7,
-    "scrapingBeeCreditsUsed": 20
+    "tier4Attempts": 30,
+    "tier4Success": 3,
+    "totalFailed": 13,
+    "scrapingBeeCreditsUsed": 50
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -78,7 +78,10 @@
     "moulin-rouge-2019/theater-news-online--jeremy-gerard.json",
     "stranger-things-2024/nytg--kyle-turner.json",
     "stranger-things-2024/londontheatre--marianka-swain.json",
-    "stranger-things-2024/thestage--dave-fargnoli.json"
+    "stranger-things-2024/thestage--dave-fargnoli.json",
+    "the-outsiders-2024/nytg--joe-dziemianowicz.json",
+    "the-outsiders-2024/thewrap--robert-hofler.json",
+    "the-outsiders-2024/washpost--elisabeth-vincentelli.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -140,7 +143,20 @@
     "stranger-things-2024/theatermania--adam-feldman.json",
     "stranger-things-2024/wsj--charles-isherwood.json",
     "stranger-things-2024/theatrely--olivia-clement.json",
-    "stranger-things-2024/tickertv--cheryl-king.json"
+    "stranger-things-2024/tickertv--cheryl-king.json",
+    "the-outsiders-2024/hollywood-reporter--angie-han.json",
+    "the-outsiders-2024/hollywood-reporter--david-rooney.json",
+    "the-outsiders-2024/nytimes--jesse-green.json",
+    "the-outsiders-2024/ew--emlyn-travis.json",
+    "the-outsiders-2024/nydailynews--chris-jones.json",
+    "the-outsiders-2024/nypost--johnny-oleksinski.json",
+    "the-outsiders-2024/theatermania--david-gordon.json",
+    "the-outsiders-2024/timeout--adam-feldman.json",
+    "the-outsiders-2024/wsj--charles-isherwood.json",
+    "the-outsiders-2024/amny--matt-windman.json",
+    "the-outsiders-2024/dailybeast--tim-teeman.json",
+    "the-outsiders-2024/rollingstone--brittany-spanos.json",
+    "the-outsiders-2024/talkinbroadway--walter-bilderback.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -193,7 +209,10 @@
       "lempicka-2024/slantmagazine--dan-rubins.json",
       "lempicka-2024/washpost--philip-kennicott.json",
       "moulin-rouge-2019/theater-news-online--jeremy-gerard.json",
-      "stranger-things-2024/nytg--kyle-turner.json"
+      "stranger-things-2024/nytg--kyle-turner.json",
+      "the-outsiders-2024/nytg--joe-dziemianowicz.json",
+      "the-outsiders-2024/thewrap--robert-hofler.json",
+      "the-outsiders-2024/washpost--elisabeth-vincentelli.json"
     ]
   }
 }
