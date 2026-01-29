@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-29T05:45:16.232Z",
+  "runDate": "2026-01-29T06:01:35.986Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "hadestown-2019",
+    "showFilter": "gutenberg-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 51,
-    "failed": 97,
+    "failed": 105,
     "skipped": 0,
-    "successRate": "34.5%"
+    "successRate": "32.7%"
   },
   "tierBreakdown": {
     "playwright": 8,
@@ -23,16 +23,16 @@
     "archive": 34
   },
   "statistics": {
-    "tier1Attempts": 24,
-    "tier1Success": 2,
-    "tier2Attempts": 22,
+    "tier1Attempts": 8,
+    "tier1Success": 0,
+    "tier2Attempts": 8,
     "tier2Success": 0,
-    "tier3Attempts": 22,
-    "tier3Success": 2,
-    "tier4Attempts": 50,
-    "tier4Success": 1,
-    "totalFailed": 21,
-    "scrapingBeeCreditsUsed": 60
+    "tier3Attempts": 8,
+    "tier3Success": 0,
+    "tier4Attempts": 16,
+    "tier4Success": 0,
+    "totalFailed": 8,
+    "scrapingBeeCreditsUsed": 30
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -184,7 +184,15 @@
     "hadestown-2019/talkinbroadway--nancy-grossman.json",
     "hadestown-2019/usatoday--elysa-gardner.json",
     "hadestown-2019/washpost--peter-marks.json",
-    "hadestown-2019/wnyc--jennifer-vanasco.json"
+    "hadestown-2019/wnyc--jennifer-vanasco.json",
+    "gutenberg-2023/variety--aramide-tinubu.json",
+    "gutenberg-2023/vulture--helen-shaw.json",
+    "gutenberg-2023/nypost--johnny-oleksinski.json",
+    "gutenberg-2023/observer--david-cote.json",
+    "gutenberg-2023/theatermania--adam-feldman.json",
+    "gutenberg-2023/thewrap--steve-pond.json",
+    "gutenberg-2023/wsj--charles-isherwood.json",
+    "gutenberg-2023/wsj--charles.json"
   ],
   "tierDetails": {
     "playwright": [
