@@ -7,7 +7,7 @@
   "publishDate": "October 16, 2025",
   "fullText": "Twenty-five years after its original run, the musical roars back not with spectacle but with purpose, and in doing so, it may finally have found the moment it was meant for. This revival, now at Lincoln Center’s Vivian Beaumont Theater and expanded from last year’s high-powered City Center concert staging, arrives not as nostalgia but as a galvanizing statement, both thrilling and newly vital.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "dtliThumb": "Up",
   "source": "dtli",
   "dtliExcerpt": "Twenty-five years after its original run, the musical roars back not with spectacle but with purpose, and in doing so, it may finally have found the moment it was meant for. This revival, now at Lincoln Center’s Vivian Beaumont Theater and expanded from last year’s high-powered City Center concert staging, arrives not as nostalgia but as a galvanizing statement, both thrilling and newly vital.",
@@ -15,7 +15,60 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "the musical roars back not with spectacle but with purpose",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "arrives not as nostalgia but as a galvanizing statement, both thrilling and newly vital",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it may finally have found the moment it was meant for",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong positive language with powerful descriptors like 'galvanizing,' 'thrilling,' and 'vital' indicates clear enthusiasm and recommendation despite being an excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for the revival's purpose and impact, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:27:47.676Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 88,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,14 +9,67 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 93,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "elevates very silly jokes into a work of art that keeps you riveted from start to finish",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "we had literally laughed until our faces hurt",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the entire ensemble",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Enthusiastic praise for ensemble performances with vivid description of physical comedy response and being 'riveted from start to finish' indicates strong positive recommendation despite excerpt limitations. | GPT-4o-mini: The review expresses unqualified enthusiasm for the performances and overall enjoyment, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:27:47.996Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
   "designation": "Recommended"
 }
