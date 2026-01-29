@@ -10,7 +10,7 @@
   "showScoreExcerpt": "\"The show is all bark and no bite. \"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/redwood-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 39,
   "source": "dtli",
   "dtliThumb": "Down",
   "needsScoring": true,
@@ -21,9 +21,62 @@
   ],
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 39,
+    "confidence": "high",
+    "range": {
+      "low": 33,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 28,
+      "music": 35,
+      "performances": 63,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "The arc of Jesse's healing is long—nearly two hours without intermission—and it bends toward banality",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "arboreal splendor can't compensate for the blandness that surrounds it. The show is all bark and no bite",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Where Redwood really shines is in the physical... much of this show is lovely to look at",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite praising Menzel's performance and the visual spectacle, the critic delivers harsh criticism of the book's banality, weak songs, and overall blandness, concluding with a damning pun that signals clear rejection. | GPT-4o-mini: The review is predominantly negative, highlighting significant flaws in the script and music while only offering mild praise for performances and direction.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:56:30.638Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
   "textWordCount": 1004,
   "archivePath": "data/archives/reviews/redwood-2025/timeout--adam-feldman_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:31:47.617Z",
