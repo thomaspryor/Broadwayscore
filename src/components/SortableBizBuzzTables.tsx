@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
+import { getDesignationColor, getDesignationIcon } from '@/config/commercial';
 
 type SortDirection = 'asc' | 'desc';
 
@@ -21,17 +22,6 @@ interface ShowCommercialData {
   };
   commercial: CommercialData | null | undefined;
 }
-
-const designationConfig: Record<string, { emoji: string; color: string }> = {
-  'Miracle': { emoji: '🌟', color: 'text-yellow-400' },
-  'Windfall': { emoji: '💰', color: 'text-emerald-400' },
-  'Trickle': { emoji: '💧', color: 'text-blue-400' },
-  'Easy Winner': { emoji: '✓', color: 'text-teal-400' },
-  'Fizzle': { emoji: '📉', color: 'text-orange-400' },
-  'Flop': { emoji: '💥', color: 'text-red-400' },
-  'Nonprofit': { emoji: '🎭', color: 'text-purple-400' },
-  'TBD': { emoji: '⏳', color: 'text-gray-400' },
-};
 
 function formatCurrency(amount: number | null | undefined): string {
   if (amount === null || amount === undefined) return '—';
@@ -165,9 +155,9 @@ export function RecoupTable({ data }: RecoupTableProps) {
                   {formatCurrency(item.commercial?.capitalization)}
                 </td>
                 <td className="py-3 px-4 text-center hidden md:table-cell">
-                  {item.commercial?.designation && designationConfig[item.commercial.designation] && (
-                    <span className={designationConfig[item.commercial.designation].color}>
-                      {designationConfig[item.commercial.designation].emoji} {item.commercial.designation}
+                  {item.commercial?.designation && (
+                    <span className={getDesignationColor(item.commercial.designation)}>
+                      {getDesignationIcon(item.commercial.designation)} {item.commercial.designation}
                     </span>
                   )}
                 </td>
@@ -304,9 +294,9 @@ export function CapitalizationTable({ data }: CapitalizationTableProps) {
                   )}
                 </td>
                 <td className="py-3 px-4 text-center hidden md:table-cell">
-                  {item.commercial?.designation && designationConfig[item.commercial.designation] && (
-                    <span className={designationConfig[item.commercial.designation].color}>
-                      {designationConfig[item.commercial.designation].emoji} {item.commercial.designation}
+                  {item.commercial?.designation && (
+                    <span className={getDesignationColor(item.commercial.designation)}>
+                      {getDesignationIcon(item.commercial.designation)} {item.commercial.designation}
                     </span>
                   )}
                 </td>

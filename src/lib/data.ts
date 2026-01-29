@@ -22,6 +22,7 @@ import grossesHistoryData from '../../data/grosses-history.json';
 import audienceBuzzData from '../../data/audience-buzz.json';
 import criticConsensusData from '../../data/critic-consensus.json';
 import lotteryRushData from '../../data/lottery-rush.json';
+import { getDesignationSortOrder } from '@/config/commercial';
 
 // Type the imported data
 const shows: RawShow[] = showsData.shows as RawShow[];
@@ -322,7 +323,10 @@ const BEST_OF_CONFIG: Record<BestOfCategory, { title: string; description: strin
     description: 'The highest-rated shows that opened in the current season.',
     filter: (show) => {
       const openDate = new Date(show.openingDate);
-      const seasonStart = new Date('2025-09-01'); // Current season
+      // Dynamically compute current season start (Broadway seasons roughly start in September)
+      const now = new Date();
+      const seasonStartYear = now.getMonth() >= 8 ? now.getFullYear() : now.getFullYear() - 1;
+      const seasonStart = new Date(`${seasonStartYear}-09-01`);
       return show.status === 'open' && openDate >= seasonStart;
     },
   },
@@ -1521,20 +1525,8 @@ export function getShowsBySeasonWithCommercial(season: string): Array<{
   }
 
   // Sort by designation (best first), then by title
-  const designationOrder: Record<CommercialDesignation, number> = {
-    'Miracle': 1,
-    'Windfall': 2,
-    'Easy Winner': 3,
-    'Trickle': 4,
-    'TBD': 5,
-    'Fizzle': 6,
-    'Flop': 7,
-    'Nonprofit': 8,
-    'Tour Stop': 9,
-  };
-
   return results.sort((a, b) => {
-    const orderDiff = (designationOrder[a.designation] || 10) - (designationOrder[b.designation] || 10);
+    const orderDiff = getDesignationSortOrder(a.designation) - getDesignationSortOrder(b.designation);
     if (orderDiff !== 0) return orderDiff;
     return a.title.localeCompare(b.title);
   });

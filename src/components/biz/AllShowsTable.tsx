@@ -7,6 +7,12 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
+import {
+  getDesignationColor,
+  getDesignationSortOrder,
+  getTrendColor,
+  getTrendIcon,
+} from '@/config/commercial';
 import type { CommercialDesignation, RecoupmentTrend } from '@/lib/data';
 
 interface ShowData {
@@ -42,71 +48,6 @@ function formatCurrency(amount: number | null): string {
     return `$${(amount / 1_000).toFixed(0)}K`;
   }
   return `$${amount}`;
-}
-
-function getDesignationStyle(designation: CommercialDesignation): { textClass: string } {
-  switch (designation) {
-    case 'Miracle':
-      return { textClass: 'text-yellow-400' };
-    case 'Windfall':
-      return { textClass: 'text-emerald-400' };
-    case 'Trickle':
-      return { textClass: 'text-blue-400' };
-    case 'Easy Winner':
-      return { textClass: 'text-pink-400' };
-    case 'Fizzle':
-      return { textClass: 'text-orange-400' };
-    case 'Flop':
-      return { textClass: 'text-red-400' };
-    case 'Nonprofit':
-      return { textClass: 'text-purple-400' };
-    case 'Tour Stop':
-      return { textClass: 'text-slate-400' };
-    case 'TBD':
-    default:
-      return { textClass: 'text-gray-400' };
-  }
-}
-
-function getDesignationSortOrder(designation: CommercialDesignation): number {
-  const order: Record<CommercialDesignation, number> = {
-    'Miracle': 1,
-    'Windfall': 2,
-    'Trickle': 3,
-    'Easy Winner': 4,
-    'TBD': 5,
-    'Fizzle': 6,
-    'Flop': 7,
-    'Nonprofit': 8,
-    'Tour Stop': 9,
-  };
-  return order[designation] || 10;
-}
-
-function getTrendIcon(trend: RecoupmentTrend, recouped: boolean | null): string {
-  if (recouped) return '—';
-  switch (trend) {
-    case 'improving':
-      return '↑';
-    case 'declining':
-      return '↓';
-    case 'steady':
-      return '→';
-    default:
-      return '—';
-  }
-}
-
-function getTrendClass(trend: RecoupmentTrend, recouped: boolean | null): string {
-  if (recouped) return 'text-gray-500';
-  switch (trend) {
-    case 'improving':
-      return 'text-emerald-400';
-    case 'declining':
-      return 'text-red-400';
-    default:
-      return 'text-gray-500';
-  }
 }
 
 function SortIcon({ active, direction }: { active: boolean; direction: SortDirection }) {
@@ -236,7 +177,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
           </thead>
           <tbody className="text-gray-300">
             {displayShows.map((show) => {
-              const designationStyle = getDesignationStyle(show.designation);
+              const designationColorClass = getDesignationColor(show.designation);
               return (
                 <tr
                   key={show.slug}
@@ -251,7 +192,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                     </Link>
                   </td>
                   <td className="py-3 px-4">
-                    <span className={designationStyle.textClass}>{show.designation}</span>
+                    <span className={designationColorClass}>{show.designation}</span>
                   </td>
                   <td className="py-3 px-4">
                     {show.capitalization ? `~${formatCurrency(show.capitalization)}` : '—'}
@@ -275,7 +216,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                   </td>
                   <td className="py-3 px-4 hidden sm:table-cell">
                     <span
-                      className={getTrendClass(show.trend, show.recouped)}
+                      className={getTrendColor(show.trend, show.recouped)}
                       aria-label={show.recouped ? 'Recouped' : show.trend}
                     >
                       {show.recouped
