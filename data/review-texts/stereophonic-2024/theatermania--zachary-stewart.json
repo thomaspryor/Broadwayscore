@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Stereophonic is a remarkable achievement in theatrical storytelling, weaving together music and drama in ways that feel both intimate and epic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Stereophonic is a remarkable achievement in theatrical storytelling, weaving together music and drama in ways that feel both intimate and epic.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 84,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 80,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "remarkable achievement in theatrical storytelling",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "weaving together music and drama in ways that feel both intimate and epic",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "weaving together music and drama",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the production as a 'remarkable achievement' with effective integration of music and drama, but the brief excerpt limits confidence in the full critical assessment. | GPT-4o-mini: The review expresses strong enthusiasm and praise for the production, indicating it as a must-see experience. | Note: Models differed by 12 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:28:14.626Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
