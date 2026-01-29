@@ -5,8 +5,8 @@
   "criticName": "Allison Considine",
   "url": "https://www.newyorktheatreguide.com/reviews/appropriate-broadway-review-sarah-paulson",
   "publishDate": "December 18, 2023",
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "Read our five-star review of Appropriate on Broadway, Branden Jacobs-Jenkins's family drama now playing at the Hayes Theater and starring Sarah Paulson. The piercing sound of cicadas at the start of Appropriate causes the audience at the Hayes Theater to stir. This percussive drone is the first sign Branden Jacobs-Jenkins’s family drama is a bit, well, subversive. Appropriate, which first bowed off Broadway in 2014, has all the hallmarks of a great American drama — and then some. Set at a crumbling, stately plantation home in Arkansas, the play follows the Lafayette family as its members reunite to settle their late father’s estate. The eldest daughter Toni (Sarah Paulson), the executor, holds court in the living room among boxes of clutter. For her, this weekend is a chance to reminisce about her father and the family’s summers spent there. Bo (Corey Stoll), Toni’s even-keeled brother, sees the estate sale and auction as an opportunity to recoup some of the money spent on his father’s care over the past few years. Bo’s wife, Rachael (Natalie Gold), hopes the trip will help educate their two kids about their late grandfather and the American South. Tensions are high as the family navigates varying stages of grief and prepares to sell the house. The unexpected arrival of estranged brother Frank (Michael Esper), now going by the name Franz, sets chaos into motion. His New Age, vegan fiancé, River (Elle Fanning), tries to soothe the atmosphere by smudging sage and facilitating a sibling apology. Neither helps to quell the past or present bad spirits in the house. The discovery of a photo album depicting lynchings of Black people among the late patriarch’s belongings is the fuel that ignites a bomb. The racist memorabilia calls the father’s character into question, and the siblings grapple with the kind of person he might have been. This is particularly challenging for Toni. “Someone has to defend the dead, Bo. Someone has to defend the truth,” she spews. Director Lila Neugebauer carefully threads the complexities of grief and racism with humor and lightness. The characters lob sharp-tongued dialogue (and a few punches) at one another. It’s a thrilling match. Appropriate marks the long overdue Broadway debut for Pulitzer Prize finalist Jacobs-Jenkins, whose plays include Everybody, An Octoroon, and Gloria, among others. Neugebauer and the all-around stellar cast are the perfect vehicle for the debut. In a remarkable display of range, Paulson’s portrayal of Toni is both razor-sharp and tender. Paulson particularly shines in Act 2's intimate one-on-one scenes, which reveal Toni as a character who wants to show care and be cared for. The design ups the play’s ante. Lighting designer Jane Cox beautifully illuminates the historic homestead (scenic design is by dots) with dappled moonlight and delicate sun rays through the large hung windows. In a standout transition, a sequence of blackouts, strobing lights, and lightning flashes display the passage of time. The sound design, by Bray Poor and Will Pickens, transports audiences into the sweltering discomfort of the South with the overpowering sound of the cicadas that continue throughout the show. Appropriate is well worth the buzz. Appropriate is at the Hayes Theater through March 3. Get Appropriate tickets on New York Theatre Guide. Photo Credit: Sarah Paulson and Elle Fanning in Appropriate. (Photo by Joan Marcus) Emmy Award winner Sarah Paulson returns to Broadway for the first time in 13 years in Pulitzer finalist Brandon Jacobs-Jenkins's Broadway-debut play. Join a family reunion following the death of a patriarch, where reminiscing gives way to long-secret revelations and explosive tension. Appropriate on Broadway is playing at Belasco Theatre. The theatre is located at 111 West 44th Street, New York, 10036. The running time of Appropriate on Broadway is 2hr 30min. Incl. 1 intermission. The recommended age for Appropriate on Broadway is Ages 12+. Children under 4 years old will not be admitted.. Book tickets for Appropriate on Broadway on New York Theatre Guide. Branden Jacobs-Jenkins is the playwright of Appropriate. He premiered the show off Broadway in 2014, and he now makes his Broadway debut with the show. Lila Neugebauer directs Appropriate. Her past theatre credits include The Waverly Gallery, starring Elaine May, and The Wolves, and she also directs Uncle Vanya in spring 2024. Appropriate is suitable for teenagers and adults, as the play contains strong language and some sexual themes. Please note that children 4 and younger are not permitted in Broadway theatres. Appropriate is a critically acclaimed family drama starring Sarah Paulson, an award-winning star of stage and screen. Fans of Paulson, or anyone interested in seeing a play by a young two-time Pulitzer Prize nominee, should definitely see Appropriate. Originally published on Dec 18, 202322:00",
+  "isFullReview": true,
   "bwwExcerpt": "Director Lila Neugebauer carefully threads the complexities of grief and racism with humor and lightness. The characters lob sharp-tongued dialogue (and a few punches) at one another. It’s a thrilling match.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217",
   "originalScore": null,
@@ -77,5 +77,33 @@
   "sources": [
     "bww-roundup",
     "dtli"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 82,
+  "textWordCount": 780,
+  "archivePath": "data/archives/reviews/appropriate-2023/nytg--allison-considine_2026-01-29.html",
+  "textFetchedAt": "2026-01-29T04:59:56.256Z",
+  "designation": "Recommended",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "partial",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "partial",
+  "sourceMethod": "playwright"
 }
