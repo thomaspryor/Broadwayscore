@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Though the play itself feels slight and undercooked, watching Farrow and LuPone share the stage is nothing short of magical.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,5 +19,56 @@
   "needsScoring": true,
   "sources": [
     "web-search"
-  ]
+  ],
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 60.5,
+      "high": 77.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 43,
+      "music": null,
+      "performances": 84,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the play itself feels slight and undercooked",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "watching Farrow and LuPone share the stage is nothing short of magical",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Despite harsh criticism of the script, the 'magical' star power of Farrow and LuPone creates enough theatrical value to warrant a qualified recommendation. | GPT-4o-mini: While the performances are praised as magical, the overall play is criticized as feeling underdeveloped, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:45:23.337Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
