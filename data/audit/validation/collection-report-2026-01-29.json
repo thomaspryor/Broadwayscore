@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T15:56:51.628Z",
+  "runDate": "2026-01-29T15:57:13.222Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 10,
+    "maxReviews": 25,
     "priority": "all",
-    "showFilter": "stereophonic-2024",
+    "showFilter": "harry-potter-2021",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 65,
-    "failed": 207,
+    "processed": 69,
+    "failed": 217,
     "skipped": 0,
-    "successRate": "23.9%"
+    "successRate": "24.1%"
   },
   "tierBreakdown": {
-    "playwright": 10,
+    "playwright": 11,
     "scrapingbee": 6,
     "brightdata": 7,
-    "archive": 42
+    "archive": 45
   },
   "statistics": {
-    "tier1Attempts": 10,
-    "tier1Success": 0,
-    "tier2Attempts": 10,
-    "tier2Success": 0,
-    "tier3Attempts": 10,
+    "tier1Attempts": 23,
+    "tier1Success": 1,
+    "tier2Attempts": 22,
+    "tier2Success": 1,
+    "tier3Attempts": 21,
     "tier3Success": 1,
-    "tier4Attempts": 22,
-    "tier4Success": 0,
-    "totalFailed": 10,
-    "scrapingBeeCreditsUsed": 50
+    "tier4Attempts": 50,
+    "tier4Success": 2,
+    "totalFailed": 22,
+    "scrapingBeeCreditsUsed": 120
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -99,7 +99,11 @@
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
     "suffs-2024/the-times--nancy-durrant.json",
-    "mj-2022/usatoday--david-rooney.json"
+    "illinoise-2024/nytg--amelia-merrill.json",
+    "illinoise-2024/broadwaynews--brittani-samuel.json",
+    "harry-potter-2021/cititour--brian-scott-lipton.json",
+    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+    "harry-potter-2021/the-times--ann-treneman.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -278,37 +282,47 @@
     "hells-kitchen-2024/usatoday--charles-isherwood.json",
     "hells-kitchen-2024/usatoday--david-rooney.json",
     "hells-kitchen-2024/washpost--peter-marks.json",
-    "mj-2022/hollywood-reporter--angie-han.json",
-    "mj-2022/hollywood-reporter--david-rooney.json",
-    "mj-2022/variety--aramide-tinubu.json",
-    "mj-2022/variety--charles-isherwood.json",
-    "mj-2022/variety--frank-rizzo.json",
-    "mj-2022/vulture--jackson-mchenry.json",
-    "mj-2022/deadline--pete-hammond.json",
-    "mj-2022/ew--david-rooney.json",
-    "mj-2022/ew--kristen-baldwin.json",
-    "mj-2022/guardian--adrian-horton.json",
-    "mj-2022/nydailynews--joe-dziemianowicz.json",
-    "mj-2022/theatermania--adam-feldman.json",
-    "mj-2022/theatermania--david-gordon.json",
-    "mj-2022/theatermania--jesse-green.json",
-    "mj-2022/wsj--charles-isherwood.json",
-    "mj-2022/wsj--terry-teachout.json",
-    "mj-2022/ap--mark-kennedy.json",
-    "mj-2022/nysr--mark-dundas-wood.json",
-    "mj-2022/talkinbroadway--john-olson.json",
-    "mj-2022/talkinbroadway--matthew-murray.json",
-    "mj-2022/usatoday--charles-isherwood.json",
-    "stereophonic-2024/hollywood-reporter--angie-han.json",
-    "stereophonic-2024/variety--aramide-tinubu.json",
-    "stereophonic-2024/variety--jesse-green.json",
-    "stereophonic-2024/variety--peter-marks.json",
-    "stereophonic-2024/vulture--helen-shaw.json",
-    "stereophonic-2024/deadline--pete-hammond.json",
-    "stereophonic-2024/guardian--adrian-horton.json",
-    "stereophonic-2024/guardian--gloria-oladipo.json",
-    "stereophonic-2024/observer--rex-reed.json",
-    "stereophonic-2024/theatermania--adam-feldman.json"
+    "illinoise-2024/hollywood-reporter--angie-han.json",
+    "illinoise-2024/variety--aramide-tinubu.json",
+    "illinoise-2024/variety--charles-isherwood.json",
+    "illinoise-2024/vulture--jackson-mchenry.json",
+    "illinoise-2024/deadline--pete-hammond.json",
+    "illinoise-2024/ew--kristen-baldwin.json",
+    "illinoise-2024/guardian--adrian-horton.json",
+    "illinoise-2024/observer--jesse-green.json",
+    "illinoise-2024/theatermania--jesse-green.json",
+    "illinoise-2024/thewrap--steve-pond.json",
+    "illinoise-2024/timeout--adam-feldman.json",
+    "illinoise-2024/wsj--charles-isherwood.json",
+    "illinoise-2024/theatrely--zachary-stewart.json",
+    "illinoise-2024/ap--mark-kennedy.json",
+    "illinoise-2024/billboard--demetrios-matheou.json",
+    "illinoise-2024/talkinbroadway--matthew-murray.json",
+    "illinoise-2024/usatoday--david-oliver.json",
+    "illinoise-2024/washpost--gloria-oladipo.json",
+    "illinoise-2024/washpost--peter-marks.json",
+    "harry-potter-2021/variety--peter-marks.json",
+    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+    "harry-potter-2021/deadline--greg-evans.json",
+    "harry-potter-2021/guardian--alexis-soloski.json",
+    "harry-potter-2021/nypost--johnny-oleksinski.json",
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "harry-potter-2021/broadway-blog--matthew-wexler.json",
+    "harry-potter-2021/broadwayworld--michael-dale.json",
+    "harry-potter-2021/curtainup--elyse-sommer.json",
+    "harry-potter-2021/exeunt-magazine--kev-berry.json",
+    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/frontmezzjunkies--steven-ross.json",
+    "harry-potter-2021/medium--christian-lewis.json",
+    "harry-potter-2021/ny1--roma-torre.json",
+    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
+    "harry-potter-2021/troy-record--bob-goepfert.json",
+    "harry-potter-2021/washpost--peter-marks.json",
+    "harry-potter-2021/wnyc--jennifer-vanasco.json",
+    "harry-potter-2021/wolf-entertainment-guide--william-wolf.json",
+    "harry-potter-2021/woman-around-town--alix-cohen.json",
+    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -321,7 +335,8 @@
       "hadestown-2019/broadwaynews--charles-isherwood.json",
       "hadestown-2019/dcmetro--deb-miller.json",
       "queen-versailles-2025/advertisement--jonathan-mandell.json",
-      "queen-versailles-2025/nysr--david-finkle.json"
+      "queen-versailles-2025/nysr--david-finkle.json",
+      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
     ],
     "scrapingbee": [
       "spamalot-2023/cititour--brian-scott-lipton.json",
@@ -338,7 +353,7 @@
       "lempicka-2024/nyt-theater--jonathan-mandell.json",
       "moulin-rouge-2019/observer--rex-reed.json",
       "aladdin-2014/usatoday--elysa-gardner.json",
-      "mj-2022/usatoday--david-rooney.json"
+      "harry-potter-2021/cititour--brian-scott-lipton.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
@@ -382,7 +397,10 @@
       "queen-versailles-2025/vulture--sara-holdren-and-jesse-david-fox.json",
       "queen-versailles-2025/vulture--sara-holdren.json",
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
-      "suffs-2024/the-times--nancy-durrant.json"
+      "suffs-2024/the-times--nancy-durrant.json",
+      "illinoise-2024/nytg--amelia-merrill.json",
+      "illinoise-2024/broadwaynews--brittani-samuel.json",
+      "harry-potter-2021/the-times--ann-treneman.json"
     ]
   }
 }
