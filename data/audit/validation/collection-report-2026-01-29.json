@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T15:52:47.855Z",
+  "runDate": "2026-01-29T15:53:09.884Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 5,
+    "maxReviews": 10,
     "priority": "all",
-    "showFilter": "marjorie-prime-2025",
+    "showFilter": "illinoise-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 65,
-    "failed": 200,
+    "processed": 66,
+    "failed": 206,
     "skipped": 0,
-    "successRate": "24.5%"
+    "successRate": "24.3%"
   },
   "tierBreakdown": {
     "playwright": 10,
     "scrapingbee": 6,
     "brightdata": 7,
-    "archive": 42
+    "archive": 43
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 9,
     "tier1Success": 0,
-    "tier2Attempts": 3,
+    "tier2Attempts": 9,
     "tier2Success": 0,
-    "tier3Attempts": 3,
+    "tier3Attempts": 9,
     "tier3Success": 1,
-    "tier4Attempts": 4,
-    "tier4Success": 0,
-    "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 20
+    "tier4Attempts": 22,
+    "tier4Success": 1,
+    "totalFailed": 9,
+    "scrapingBeeCreditsUsed": 30
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -99,7 +99,8 @@
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
     "suffs-2024/the-times--nancy-durrant.json",
-    "mj-2022/usatoday--david-rooney.json"
+    "mj-2022/usatoday--david-rooney.json",
+    "illinoise-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -299,9 +300,15 @@
     "mj-2022/talkinbroadway--john-olson.json",
     "mj-2022/talkinbroadway--matthew-murray.json",
     "mj-2022/usatoday--charles-isherwood.json",
-    "marjorie-prime-2025/nytimes--elisabeth-vincentelli.json",
-    "marjorie-prime-2025/guardian--richard-lawson.json",
-    "marjorie-prime-2025/observer--david-cote.json"
+    "illinoise-2024/hollywood-reporter--angie-han.json",
+    "illinoise-2024/variety--aramide-tinubu.json",
+    "illinoise-2024/variety--charles-isherwood.json",
+    "illinoise-2024/vulture--jackson-mchenry.json",
+    "illinoise-2024/deadline--pete-hammond.json",
+    "illinoise-2024/ew--kristen-baldwin.json",
+    "illinoise-2024/guardian--adrian-horton.json",
+    "illinoise-2024/observer--jesse-green.json",
+    "illinoise-2024/theatermania--jesse-green.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -375,7 +382,8 @@
       "queen-versailles-2025/vulture--sara-holdren-and-jesse-david-fox.json",
       "queen-versailles-2025/vulture--sara-holdren.json",
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
-      "suffs-2024/the-times--nancy-durrant.json"
+      "suffs-2024/the-times--nancy-durrant.json",
+      "illinoise-2024/broadwaynews--brittani-samuel.json"
     ]
   }
 }
