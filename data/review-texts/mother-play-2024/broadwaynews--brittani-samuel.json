@@ -76,5 +76,34 @@
   "bwwThumb": null,
   "needsRescore": true,
   "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 76
+  "previousLlmScore": 76,
+  "textWordCount": 162,
+  "archivePath": "data/archives/reviews/mother-play-2024/broadwaynews--brittani-samuel_2026-01-29.html",
+  "textFetchedAt": "2026-01-29T06:34:04.862Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "Request failed with status code 503"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_paywall_text",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 162 (min: 300)"
+  ]
 }
