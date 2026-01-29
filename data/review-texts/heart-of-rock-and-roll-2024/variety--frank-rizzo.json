@@ -10,7 +10,7 @@
   "showScoreExcerpt": "\"Humor and brightness is what fuels this engine\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-heart-of-rock-and-roll-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250104073859",
-  "archiveOrgUrl": "http://web.archive.org/web/20250104073859/https://variety.com/2024/legit/reviews/the-heart-of-rock-and-roll-review-huey-lewis-musical-broadway-1235976855/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250104073859/https://variety.com/2024/legit/reviews/the-heart-of-rock-and-roll-review-huey-lewis-musical-broadway-1235976855/",
+  "llmScore": {
+    "score": 70,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 58,
+      "music": 68,
+      "performances": 75,
+      "direction": 74
+    },
+    "keyPhrases": [
+      {
+        "quote": "there's something to be said for simple packaging that knows what it is and does it well",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "pleasant middle which neither offends nor inspires, just entertains",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "it doesn't really matter that it thinks inside the box. After all, cardboard has its uses",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic finds genuine entertainment value in this 'unpretentious, silly and rather fun show' despite acknowledging its formulaic nature and thin plotting, ultimately endorsing it as effective crowd-pleasing entertainment. | GPT-4o-mini: The review indicates a generally entertaining experience with some fun moments, but also highlights significant weaknesses in the plot and music, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T15:45:43.185Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 70,
+    "openaiScore": 70,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
