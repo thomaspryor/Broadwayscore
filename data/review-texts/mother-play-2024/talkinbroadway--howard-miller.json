@@ -76,7 +76,6 @@
       "Models disagree by 20 points (Claude: 45, OpenAI: 65)"
     ]
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 55,
   "textWordCount": 708,
@@ -106,5 +105,6 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "rescoreCompletedAt": "2026-01-29T14:31:51.908Z"
 }

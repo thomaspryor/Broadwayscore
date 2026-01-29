@@ -73,7 +73,6 @@
       "Score (49 → Down) conflicts with aggregator thumbs (Flat)"
     ]
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 49,
   "textWordCount": 678,
@@ -100,5 +99,6 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "rescoreCompletedAt": "2026-01-29T14:31:52.065Z"
 }

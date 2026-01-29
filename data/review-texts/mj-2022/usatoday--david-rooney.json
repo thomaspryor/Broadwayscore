@@ -76,7 +76,6 @@
   "sources": [
     "web-search"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 61,
   "textWordCount": 195,
@@ -116,5 +115,6 @@
   "textIssues": [
     "Word count too low: 195 (min: 300)",
     "Show title not found in text"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-01-29T14:31:51.898Z"
 }

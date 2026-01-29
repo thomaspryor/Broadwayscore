@@ -83,7 +83,6 @@
   "showScoreExcerpt": null,
   "originalScoreNormalized": 85,
   "scoreExtractedFrom": "excerpt",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 80,
   "textWordCount": 2319,
@@ -108,5 +107,6 @@
     "no_ending_punctuation",
     "shorter_than_excerpt",
     "possible_mid_word_cutoff"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-01-29T14:31:51.999Z"
 }

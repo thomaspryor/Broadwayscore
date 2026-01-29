@@ -76,7 +76,6 @@
   "originalScoreNormalized": 65,
   "scoreSource": "letter-grade",
   "scoreExtractedFrom": "archive",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 37,
   "textWordCount": 1222,
@@ -108,5 +107,6 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "rescoreCompletedAt": "2026-01-29T14:31:51.981Z"
 }

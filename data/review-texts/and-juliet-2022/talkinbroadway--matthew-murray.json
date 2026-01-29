@@ -76,7 +76,6 @@
   "sources": [
     "web-search"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
   "textWordCount": 776,
@@ -112,5 +111,6 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "rescoreCompletedAt": "2026-01-29T14:31:51.647Z"
 }

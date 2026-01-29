@@ -421,9 +421,9 @@ async function main(): Promise<void> {
       const result = await scorer.scoreReviewFile(reviewFile);
 
       if (result.success && result.scoredFile) {
-        // Clear needsRescore flag and track previous score if this was a rescore
+        // Always clear needsRescore flag after successful scoring
         const scoredAny = result.scoredFile as any;
-        if (options.needsRescore && scoredAny.needsRescore) {
+        if (scoredAny.needsRescore) {
           delete scoredAny.needsRescore;
           scoredAny.rescoreCompletedAt = new Date().toISOString();
         }

@@ -73,7 +73,6 @@
       "Score (50 → Flat) conflicts with aggregator thumbs (Up)"
     ]
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 50,
   "textWordCount": 721,
@@ -99,5 +98,6 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "rescoreCompletedAt": "2026-01-29T14:31:51.752Z"
 }
