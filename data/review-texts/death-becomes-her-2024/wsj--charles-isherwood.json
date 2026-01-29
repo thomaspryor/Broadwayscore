@@ -25,7 +25,7 @@
       "high": 85.5
     },
     "bucket": "Mixed",
-    "thumb": "Up",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -36,7 +36,7 @@
       {
         "quote": "may be one of the funnier new musicals to splash down on Broadway",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 3
       },
       {
         "quote": "in a nearly blinding glare of sequins",
@@ -54,7 +54,7 @@
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
@@ -70,8 +70,10 @@
     "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 35 points (Claude: 45, OpenAI: 80)"
+    ]
   },
   "textStatus": "partial",
   "textWordCount": 94,

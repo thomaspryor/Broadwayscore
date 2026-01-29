@@ -17,10 +17,11 @@
 /**
  * Source weights for credibility scoring.
  * Higher weights indicate more authoritative sources.
- * Scale: 0.0 (least credible) to 1.0 (most credible)
+ * Scale: 0.0 (least credible) to 1.2 (most credible)
  */
 const SOURCE_WEIGHTS = {
-  'SEC Form D': 1.0,           // Official government filing - highest authority
+  'Deep Research': 1.2,        // Manually verified through extensive research - highest authority
+  'SEC Form D': 1.0,           // Official government filing
   'Deadline': 0.9,             // Major entertainment trade publication
   'Variety': 0.9,              // Major entertainment trade publication
   'New York Times': 0.85,      // Respected newspaper with editorial standards
@@ -30,6 +31,44 @@ const SOURCE_WEIGHTS = {
   'Reddit comment': 0.4,       // Single user comment - low credibility
   'estimate': 0.3              // Unattributed estimate - lowest credibility
 };
+
+/**
+ * Methodology compatibility matrix.
+ * Defines which cost methodologies can be meaningfully compared.
+ * 'all' means compatible with all methodologies.
+ */
+const METHODOLOGY_COMPATIBILITY = {
+  'reddit-standard': ['reddit-standard'],  // Reddit methodology only compares to itself
+  'trade-reported': ['trade-reported', 'sec-filing', 'producer-confirmed', 'deep-research'],
+  'sec-filing': ['trade-reported', 'sec-filing', 'producer-confirmed', 'deep-research'],
+  'producer-confirmed': ['trade-reported', 'sec-filing', 'producer-confirmed', 'deep-research'],
+  'deep-research': 'all',  // Deep Research compares to everything
+  'industry-estimate': ['industry-estimate']  // Industry estimates only compare to themselves
+};
+
+/**
+ * Check if two methodologies can be meaningfully compared.
+ *
+ * @param {string} methodology1 - First methodology
+ * @param {string} methodology2 - Second methodology
+ * @returns {boolean} True if methodologies can be compared
+ */
+function methodologiesAreComparable(methodology1, methodology2) {
+  // If either is missing, assume comparable (backward compatibility)
+  if (!methodology1 || !methodology2) return true;
+
+  // If either is 'all', they're compatible
+  const compat1 = METHODOLOGY_COMPATIBILITY[methodology1];
+  const compat2 = METHODOLOGY_COMPATIBILITY[methodology2];
+
+  if (compat1 === 'all' || compat2 === 'all') return true;
+
+  // Check if either lists the other as compatible
+  if (Array.isArray(compat1) && compat1.includes(methodology2)) return true;
+  if (Array.isArray(compat2) && compat2.includes(methodology1)) return true;
+
+  return false;
+}
 
 /**
  * Manual override slugs that bypass validation.
@@ -52,9 +91,11 @@ const OVERRIDE_SLUGS = [
  * @param {string} sources[].field - Field name
  * @param {*} sources[].value - Value from this source
  * @param {string} sources[].sourceType - Type of source (key in SOURCE_WEIGHTS)
+ * @param {string} sources[].methodology - Optional methodology for cost data
+ * @param {string} [changeMethodology=null] - Methodology of the proposed change (for cost fields)
  * @returns {Object} { supporting: Source[], contradicting: Source[] }
  */
-function findCorroboration(change, sources) {
+function findCorroboration(change, sources, changeMethodology = null) {
   const supporting = [];
   const contradicting = [];
 
@@ -71,6 +112,13 @@ function findCorroboration(change, sources) {
     // Skip if same source as the change itself (don't self-corroborate)
     if (source.sourceType === change.sourceType && source.url === change.sourceUrl) {
       continue;
+    }
+
+    // Skip if methodologies are incompatible for cost-related fields
+    if (['weeklyRunningCost', 'capitalization'].includes(change.field)) {
+      if (!methodologiesAreComparable(changeMethodology, source.methodology)) {
+        continue;  // Skip - incompatible methodologies
+      }
     }
 
     // Compare values
@@ -241,6 +289,34 @@ if (require.main === module) {
         console.log(`  ${source.padEnd(25)} ${weight.toFixed(2)}`);
       });
 
+    // Display METHODOLOGY_COMPATIBILITY
+    console.log('\n' + '='.repeat(50));
+    console.log('METHODOLOGY_COMPATIBILITY:');
+    Object.entries(METHODOLOGY_COMPATIBILITY).forEach(([methodology, compatible]) => {
+      const compatStr = compatible === 'all' ? 'all' : compatible.join(', ');
+      console.log(`  ${methodology.padEnd(20)} -> ${compatStr}`);
+    });
+
+    // Test methodologiesAreComparable
+    console.log('\n' + '='.repeat(50));
+    console.log('Testing methodologiesAreComparable():');
+
+    const methodologyTestCases = [
+      { m1: 'reddit-standard', m2: 'reddit-standard', expected: true },
+      { m1: 'reddit-standard', m2: 'trade-reported', expected: false },
+      { m1: 'trade-reported', m2: 'sec-filing', expected: true },
+      { m1: 'deep-research', m2: 'reddit-standard', expected: true },  // deep-research is 'all'
+      { m1: 'industry-estimate', m2: 'trade-reported', expected: false },
+      { m1: null, m2: 'trade-reported', expected: true },  // Backward compatibility
+      { m1: 'unknown', m2: 'trade-reported', expected: false }  // Unknown methodology
+    ];
+
+    methodologyTestCases.forEach(tc => {
+      const result = methodologiesAreComparable(tc.m1, tc.m2);
+      const pass = result === tc.expected ? 'PASS' : 'FAIL';
+      console.log(`  [${pass}] (${tc.m1 || 'null'}, ${tc.m2 || 'null'}) -> ${result}`);
+    });
+
     // Test findCorroboration
     console.log('\n' + '='.repeat(50));
     console.log('Testing findCorroboration():');
@@ -323,19 +399,23 @@ if (require.main === module) {
     console.log('\nExports:');
     console.log('  validateChange(change, allSources) - Main validation function');
     console.log('  SOURCE_WEIGHTS - Object with source credibility weights');
-    console.log('  findCorroboration(change, sources) - Find supporting/contradicting sources');
+    console.log('  METHODOLOGY_COMPATIBILITY - Matrix of comparable methodologies');
+    console.log('  findCorroboration(change, sources, methodology) - Find supporting/contradicting sources');
     console.log('  calculateConfidence(original, supportCount, contradictCount) - Calculate confidence');
     console.log('  OVERRIDE_SLUGS - Array of slugs that bypass validation');
     console.log('  getSourceWeight(sourceType) - Get weight for a source type');
+    console.log('  methodologiesAreComparable(m1, m2) - Check if methodologies can be compared');
   }
 }
 
 module.exports = {
   validateChange,
   SOURCE_WEIGHTS,
+  METHODOLOGY_COMPATIBILITY,
   findCorroboration,
   calculateConfidence,
   OVERRIDE_SLUGS,
   getSourceWeight,
-  valuesMatch  // Exported for testing
+  valuesMatch,  // Exported for testing
+  methodologiesAreComparable
 };

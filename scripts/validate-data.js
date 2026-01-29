@@ -450,6 +450,16 @@ function validateReviewsJson() {
 // COMMERCIAL DATA VALIDATION
 // ===========================================
 
+// Valid costMethodology values for commercial data
+const VALID_COST_METHODOLOGIES = [
+  'reddit-standard',
+  'trade-reported',
+  'sec-filing',
+  'producer-confirmed',
+  'deep-research',
+  'industry-estimate'
+];
+
 function validateCommercialJson() {
   info('Checking commercial.json...');
 
@@ -555,6 +565,50 @@ function validateCommercialJson() {
     if (show.productionType === 'tour-stop') {
       if (show.designation !== 'Tour Stop') {
         error(`commercial.json: "${showId}" has productionType "tour-stop" but designation is "${show.designation || 'missing'}" (must be "Tour Stop")`);
+        issues++;
+      }
+    }
+
+    // Validate costMethodology
+    if (show.costMethodology && !VALID_COST_METHODOLOGIES.includes(show.costMethodology)) {
+      error(`commercial.json: "${showId}" has invalid costMethodology "${show.costMethodology}". Valid values: ${VALID_COST_METHODOLOGIES.join(', ')}`);
+      issues++;
+    }
+
+    // Validate deepResearch object if present
+    if (show.deepResearch) {
+      const dr = show.deepResearch;
+
+      // verifiedFields must be an array of strings
+      if (!Array.isArray(dr.verifiedFields)) {
+        error(`commercial.json: "${showId}" deepResearch.verifiedFields must be an array`);
+        issues++;
+      } else if (dr.verifiedFields.length === 0) {
+        error(`commercial.json: "${showId}" deepResearch.verifiedFields cannot be empty`);
+        issues++;
+      } else if (!dr.verifiedFields.every(f => typeof f === 'string')) {
+        error(`commercial.json: "${showId}" deepResearch.verifiedFields must contain only strings`);
+        issues++;
+      }
+
+      // verifiedDate must be an ISO date string (YYYY-MM-DD)
+      if (!dr.verifiedDate) {
+        error(`commercial.json: "${showId}" deepResearch.verifiedDate is required`);
+        issues++;
+      } else if (!dateRegex.test(dr.verifiedDate)) {
+        error(`commercial.json: "${showId}" deepResearch.verifiedDate must be in YYYY-MM-DD format`);
+        issues++;
+      }
+
+      // verifiedBy is optional but must be string if present
+      if (dr.verifiedBy !== undefined && typeof dr.verifiedBy !== 'string') {
+        error(`commercial.json: "${showId}" deepResearch.verifiedBy must be a string`);
+        issues++;
+      }
+
+      // notes is optional but must be string if present
+      if (dr.notes !== undefined && typeof dr.notes !== 'string') {
+        error(`commercial.json: "${showId}" deepResearch.notes must be a string`);
         issues++;
       }
     }

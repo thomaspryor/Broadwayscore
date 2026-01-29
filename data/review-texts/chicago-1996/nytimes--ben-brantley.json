@@ -70,8 +70,10 @@
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Models disagree by 50 points (Claude: 0, OpenAI: 50)"
+    ]
   },
   "sources": [
     "web-search",

@@ -56,12 +56,18 @@ function generateRecentDevelopments(): DevelopmentItem[] {
   // Add shows at risk
   const atRiskShows = getShowsAtRisk();
   for (const show of atRiskShows.slice(0, 2)) {
+    // Determine accurate description based on actual status
+    const isBelowBreakEven = show.weeklyGross < show.weeklyRunningCost;
+    const description = isBelowBreakEven
+      ? 'operating below break-even'
+      : 'declining trajectory';
+
     items.push({
       date: 'Jan 2026',
       type: 'at-risk',
       showTitle: show.title,
       showSlug: show.slug,
-      description: 'operating below break-even',
+      description,
     });
   }
 
