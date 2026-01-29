@@ -7,7 +7,7 @@
   "publishDate": "April 24, 2024",
   "fullText": "If Vanya is properly no hero in this amusing but rarely deeply affecting production, it’s because he’s no one at all. He despairs and disappears.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "dtliThumb": "Meh",
   "source": "dtli",
   "dtliExcerpt": "If Vanya is properly no hero in this amusing but rarely deeply affecting production, it’s because he’s no one at all. He despairs and disappears.",
@@ -15,7 +15,60 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 35.5,
+      "high": 50.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 40,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "amusing but rarely deeply affecting production",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "he's no one at all. He despairs and disappears",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "amusing but rarely deeply affecting",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic finds the production 'amusing' but fundamentally lacking depth and emotional impact, with the central character described as essentially nonexistent. | GPT-4o-mini: The review indicates a lack of emotional depth and connection, leading to a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T06:38:45.634Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
