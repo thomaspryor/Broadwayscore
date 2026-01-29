@@ -1,37 +1,37 @@
 {
-  "runDate": "2026-01-29T06:59:38.657Z",
+  "runDate": "2026-01-29T07:04:31.423Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "back-to-the-future-2023",
+    "showFilter": "the-great-gatsby-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 56,
-    "failed": 141,
+    "processed": 58,
+    "failed": 140,
     "skipped": 0,
-    "successRate": "28.4%"
+    "successRate": "29.3%"
   },
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 10,
     "scrapingbee": 4,
     "brightdata": 6,
     "archive": 38
   },
   "statistics": {
-    "tier1Attempts": 15,
-    "tier1Success": 0,
+    "tier1Attempts": 17,
+    "tier1Success": 2,
     "tier2Attempts": 15,
-    "tier2Success": 2,
-    "tier3Attempts": 13,
+    "tier2Success": 0,
+    "tier3Attempts": 15,
     "tier3Success": 1,
-    "tier4Attempts": 28,
-    "tier4Success": 2,
-    "totalFailed": 16,
+    "tier4Attempts": 30,
+    "tier4Success": 1,
+    "totalFailed": 15,
     "scrapingBeeCreditsUsed": 80
   },
   "processed": [
@@ -90,7 +90,9 @@
     "patriots-2024/amny--matt-windman.json",
     "aladdin-2014/vulture--jesse-green.json",
     "aladdin-2014/thewrap--robert-hofler.json",
-    "aladdin-2014/usatoday--elysa-gardner.json"
+    "aladdin-2014/usatoday--elysa-gardner.json",
+    "the-great-gatsby-2024/nytg--gillian-russo.json",
+    "the-great-gatsby-2024/unknown--david-sheward.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -218,22 +220,21 @@
     "aladdin-2014/huffpost--steven-suskin.json",
     "aladdin-2014/thestage--mark-shenton.json",
     "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
-    "back-to-the-future-2023/hollywood-reporter--frank-scheck.json",
-    "back-to-the-future-2023/variety--aramide-tinubu.json",
-    "back-to-the-future-2023/variety--charles-isherwood.json",
-    "back-to-the-future-2023/chelsea-community-news--michael-musto.json",
-    "back-to-the-future-2023/ew--dalton-ross.json",
-    "back-to-the-future-2023/nypost--johnny-oleksinski.json",
-    "back-to-the-future-2023/observer--david-cote.json",
-    "back-to-the-future-2023/theatermania--adam-feldman.json",
-    "back-to-the-future-2023/thewrap--robert-hofler.json",
-    "back-to-the-future-2023/timeout--adam-feldman.json",
-    "back-to-the-future-2023/wsj--charles-isherwood.json",
-    "back-to-the-future-2023/wsj--terry-teachout.json",
-    "back-to-the-future-2023/nysr--elysa-gardner.json",
-    "back-to-the-future-2023/nysr--steven-suskin.json",
-    "back-to-the-future-2023/queerty--matthew-wexler.json",
-    "back-to-the-future-2023/rollingstone--brittany-spanos.json"
+    "the-great-gatsby-2024/nytg--caroline-cao.json",
+    "the-great-gatsby-2024/nytimes--maya-phillips.json",
+    "the-great-gatsby-2024/variety--aramide-tinubu.json",
+    "the-great-gatsby-2024/guardian--gloria-oladipo.json",
+    "the-great-gatsby-2024/nydailynews--chris-jones.json",
+    "the-great-gatsby-2024/nypost--johnny-oleksinski.json",
+    "the-great-gatsby-2024/observer--david-cote.json",
+    "the-great-gatsby-2024/theatermania--adam-feldman.json",
+    "the-great-gatsby-2024/thewrap--robert-hofler.json",
+    "the-great-gatsby-2024/wsj--terry-teachout.json",
+    "the-great-gatsby-2024/nysr--david-finkle.json",
+    "the-great-gatsby-2024/slantmagazine--dan-rubins.json",
+    "the-great-gatsby-2024/talkinbroadway--matthew-murray.json",
+    "the-great-gatsby-2024/theater-pizzazz--brian-scott-lipton.json",
+    "the-great-gatsby-2024/washpost--naveen-kumar.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -244,7 +245,9 @@
       "lempicka-2024/nysr--david-finkle.json",
       "stranger-things-2024/londontheatre--marianka-swain.json",
       "hadestown-2019/broadwaynews--charles-isherwood.json",
-      "hadestown-2019/dcmetro--deb-miller.json"
+      "hadestown-2019/dcmetro--deb-miller.json",
+      "the-great-gatsby-2024/nytg--gillian-russo.json",
+      "the-great-gatsby-2024/unknown--david-sheward.json"
     ],
     "scrapingbee": [
       "spamalot-2023/cititour--brian-scott-lipton.json",
