@@ -5,8 +5,8 @@
   "criticName": "Patrick Ryan",
   "url": "https://www.usatoday.com/story/entertainment/music/2023/08/03/back-to-the-future-musical-broadway-review/70519369007/",
   "publishDate": "August 3, 2023",
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "MUSICBack to the FutureAdd Topic‘Back to the Future’ review: Broadway musical is a dazzling joyride stuck on cruise control Patrick RyanUSA TODAYAug. 3, 2023Updated Aug. 4, 2023, 10:40 a.m. ETNEW YORK – Over on 43rd Street, magic phone booths and fireballs astound in “Harry Potter and the Cursed Child,” a stage-play sequel to J.K. Rowling’s hit book series.\n\nNow, a new brand of wizardry is happening just seven blocks away at the Winter Garden Theatre, where a time-traveling DeLorean all but steals the show in Broadway’s “Back to the Future: The Musical,” a fitfully thrilling adaptation of the 1985 sci-fi comedy starring Michael J. Fox and Christopher Lloyd.\n\nThanks to copious projections and some next-level stagecraft, the souped-up sports car manages to zip, flip and fly over the audience in a genuinely “how did they do that?” moment. It’s a jaw-dropping spectacle that may win over even the most skeptical of New York theatergoers, many of whom have long decried the theme-park theatrics wrought by “The Phantom of the Opera” and “Miss Saigon.”\n\nIf only the rest of the show could reach such heights.\n\n“Back to the Future,” which officially opened Thursday, is faithfully adapted by original screenwriter Bob Gale and directed by Tony winner John Rando (“Urinetown”). Like the Robert Zemeckis movie, the musical follows a teenage boy named Marty McFly (Casey Likes) who is accidentally whisked back to 1955 by mad genius Doc Brown (Roger Bart).\n\nThere, Marty encounters high school versions of his parents: the painfully shy George (Hugh Coles) and coquettish Lorraine (Liana Hunt), who unknowingly takes a fancy to her son. At risk of changing history and being stuck in the past forever, Marty must find a way to make George and Lorraine fall in love so he can return to 1985.\n\nIt’s an ingenious premise that remains just as funny nearly 40 years after the movie’s release, with an eager-to-please cast that mostly nails the film’s tricky balance between cringe and charm. Cole, in particular, is the musical’s hilarious standout. Stepping into the impossible shoes of Crispin Glover, Cole’s rubber-limbed George McFly has all the grace of a newborn foal, with a piercing chuckle that borders on blubbering. His journey from town weirdo to ungainly hero is the most fully realized, and Cole adds a delightfully peculiar energy to his father-son scenes with Likes.\n\nAfter carrying last season’s short-lived “Almost Famous,” Likes’ star power is once again on full display here. The 21-year-old actor brings easy magnetism and a crystalline croon to Marty, who delivers a rousing one-two punch of Huey Lewis favorites “The Power of Love” and “Back in Time” to close out the show.\n\nBart’s mugging, shrieking take on Doc Brown is less successful, although he still milks some laughs from the movie’s now-iconic dialogue. His scientist is regrettably saddled with some of the show’s most groanworthy songs: a generic ballad about following your heart (“For the Dreamers”), and a limply choreographed dream sequence imagining the new millennium (“21st Century”).\n\nLike a broken-down DeLorean, the show sputters to a halt almost any time the characters start singing – an unenviable hurdle for any musical, let alone one that carries a hefty price tag of more than $20 million. With music and lyrics by Alan Silvestri and Glen Ballard, the score is riddled with ham-fisted clichés about having no future and feeling misunderstood. Only occasionally do the songs mine the story’s inherent comedic potential: “Cake,” an ironic ode to progressive 1950s society; and “Pretty Baby,” a doo wop-style come-hither between Lorraine and Marty, performed with droll conviction by Hunt.\n\n“Back to the Future” is a technical marvel that hits all the right nostalgia buttons, and in the immortal words of Marty McFly, your kids are gonna love it. But with soulless songs that are more obligatory than earned, you can’t escape the feeling that they’re just running down the clock.",
+  "isFullReview": true,
   "bwwExcerpt": "“Back to the Future” is a technical marvel that hits all the right nostalgia buttons, and in the immortal words of Marty McFly, your kids are gonna love it. But with soulless songs that are more obligatory than earned, you can’t escape the feeling that they’re just running down the clock.",
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
@@ -73,5 +73,42 @@
     "expectedThumb": "Flat",
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 59,
+  "textWordCount": 647,
+  "archivePath": "data/archives/reviews/back-to-the-future-2023/usatoday--patrick-ryan_2026-01-29.html",
+  "textFetchedAt": "2026-01-29T05:15:37.963Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "Request failed with status code 503"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata"
 }
