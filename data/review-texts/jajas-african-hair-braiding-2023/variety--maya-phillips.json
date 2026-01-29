@@ -8,7 +8,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jocelyn Bioh's play is a warm, observant comedy that finds profound meaning in the everyday rhythms of a Harlem hair braiding salon.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,5 +21,61 @@
   "garbageReason": "No theater-related keywords found",
   "garbageFixedAt": "2026-01-29T22:45:22.943Z",
   "textQuality": "excerpt_only",
-  "textStatus": "garbage_cleared"
+  "textStatus": "garbage_cleared",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "warm, observant comedy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "finds profound meaning in the everyday rhythms",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "profound meaning in the everyday rhythms",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review uses consistently positive language praising the play's warmth, observational skills, and ability to find deeper meaning, indicating a clear recommendation despite the brief excerpt. | GPT-4o-mini: The review highlights the play's warmth and depth, indicating a strong recommendation without any significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T22:48:20.659Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

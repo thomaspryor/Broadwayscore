@@ -8,15 +8,68 @@
   "dtliExcerpt": "In fact Mr. Morgan’s engrossing play, now on Broadway after an acclaimed London run, depicts the rise of Boris Berezovsky, one of the Russian oligarchs who amassed vast wealth, often by shady means, during the tumultuous years after the fall of the Soviet Union. He is portrayed by the fine actor Michael Stuhlbarg, who gives a performance of unflagging energy and febrile intensity; in the play’s denser passages, one almost worries that he will begin hyperventilating, so caught up is he in Berezovsky’s fervent ambitions.",
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Morgan's engrossing play",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the fine actor Michael Stuhlbarg, who gives a performance of unflagging energy and febrile intensity",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "acclaimed London run",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic uses consistently positive language about both the play and lead performance, with no reservations expressed in this excerpt. | GPT-4o-mini: The review highlights strong performances, particularly by Stuhlbarg, and describes the play as engrossing, indicating a clear recommendation despite the lack of explicit call to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T22:48:55.163Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
   "textWordCount": 95,
   "archivePath": "data/archives/reviews/patriots-2024/wsj--charles-isherwood_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:35:39.456Z",

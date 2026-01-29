@@ -8,15 +8,68 @@
   "dtliExcerpt": "What may be most remarkable about “Here Lies Love” is how deftly it pivots from the celebratory and even sentimental presentation of Imelda’s rise to the inevitably condemnatory, as we witness the assassination of Aquino at the airport upon his return from exile.",
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 80
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "What may be most remarkable about \"Here Lies Love\" is how deftly it pivots",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "deftly it pivots from the celebratory and even sentimental presentation",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "inevitably condemnatory",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This excerpt praises the show's structural sophistication and storytelling craft but is too brief to indicate overall recommendation strength. | GPT-4o-mini: The review praises the show's ability to navigate complex themes, suggesting a clear recommendation despite the lack of explicit enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T22:47:58.016Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 75,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
   "textWordCount": 405,
   "archivePath": "data/archives/reviews/here-lies-love-2023/wsj--charles-isherwood_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:49:04.439Z",

@@ -6,7 +6,7 @@
   "url": "https://www.latimes.com/entertainment-arts/story/2025-11-14/oedipus-broadway-review-mark-strong-lesley-manville",
   "publishDate": "2025-11-14",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 82,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "textStatus": "garbage_cleared",
@@ -22,20 +22,59 @@
   "sourceMethod": "stub",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
-  "llmScore": null,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 86,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "sympathetically beguiling portrayal",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "smart and sleek direction",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "buzziest, if not the chicest, Broadway offering of the fall season",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Consistently positive language praising Strong's performance and Icke's direction, with cultural cachet indicators suggesting a clear recommendation despite being an excerpt. | GPT-4o-mini: The review highlights strong performances and direction, indicating a clear recommendation to see the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:40:47.968Z",
+    "scoredAt": "2026-01-29T22:48:31.096Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 0,
-    "scoreDelta": 0,
-    "thumbsMatch": null,
-    "expectedThumb": null,
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
     "needsReview": false,
     "needsReviewReasons": []
   },

@@ -8,7 +8,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jocelyn Bioh's warm, funny play about West African women working in a Harlem hair salon is a love letter to immigrant sisterhood that braids together multiple storylines with skill and care.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,61 @@
   "garbageReason": "No theater-related keywords found",
   "garbageFixedAt": "2026-01-29T22:45:22.942Z",
   "textQuality": "excerpt_only",
-  "textStatus": "garbage_cleared"
+  "textStatus": "garbage_cleared",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 83,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "warm, funny play",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "love letter to immigrant sisterhood",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "braids together multiple storylines with skill and care",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Consistently positive language praising the play's warmth, humor, and skillful construction with no caveats or criticisms mentioned. | GPT-4o-mini: The review expresses strong admiration for the play's themes and storytelling, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T22:48:15.180Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

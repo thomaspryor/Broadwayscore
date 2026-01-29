@@ -8,7 +8,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Joshua Harmon's sprawling family drama about Jewish identity and assimilation in modern France is both deeply personal and politically urgent.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,5 +21,61 @@
   "garbageReason": "No theater-related keywords found",
   "garbageFixedAt": "2026-01-29T22:45:23.110Z",
   "textQuality": "excerpt_only",
-  "textStatus": "garbage_cleared"
+  "textStatus": "garbage_cleared",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "deeply personal and politically urgent",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "sprawling family drama",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "deeply personal",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This appears to be a descriptive excerpt rather than an evaluative review, with positive descriptors but no clear recommendation signal. | GPT-4o-mini: The review indicates a strong positive sentiment towards the play's themes, suggesting a clear recommendation despite lacking specific details.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T22:48:59.924Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 70,
+    "openaiScore": 80,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

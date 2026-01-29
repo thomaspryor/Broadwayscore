@@ -8,7 +8,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Bliss's gift is his ability to find the funny in the uncomfortable, the relatable in the particular, and the universal in the personal.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,5 +21,61 @@
   "garbageReason": "No theater-related keywords found",
   "garbageFixedAt": "2026-01-29T22:45:22.944Z",
   "textQuality": "excerpt_only",
-  "textStatus": "garbage_cleared"
+  "textStatus": "garbage_cleared",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 78,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bliss's gift is his ability to find the funny in the uncomfortable",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the relatable in the particular, and the universal in the personal",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "find the funny in the uncomfortable",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review praises the performer's comedic talents and ability to connect with audiences, but the excerpt is too brief to determine overall recommendation strength with confidence. | GPT-4o-mini: The review highlights the playwright's skill in finding humor and relatability, indicating a strong positive sentiment without any significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T22:48:25.151Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

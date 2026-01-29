@@ -8,7 +8,7 @@
   "isFullReview": false,
   "dtliExcerpt": "In any case, “Once Upon a One More Time” is a dizzy but enjoyable goof, similar in many ways to “& Juliet.”",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": "Meh",
   "dtliUrl": null,
@@ -22,9 +22,62 @@
     "show-score"
   ],
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 75,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "dizzy but enjoyable goof",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The show finds its groove when it stops trying so hard to be clever",
+        "sentiment": "negative",
+        "strength": 2
+      },
+      {
+        "quote": "creating moments of genuine emotional connection amid the fairy-tale chaos",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic describes the show as 'enjoyable' with 'genuine emotional connection' while acknowledging it's a 'goof' that sometimes tries too hard, suggesting a qualified but positive recommendation. | GPT-4o-mini: The review expresses a clear positive sentiment towards the show, highlighting enjoyable moments and emotional connections despite some reservations about its cleverness.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T22:48:43.774Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
   "garbageFullText": "The show finds its groove when it stops trying so hard to be clever and lets the pop anthems do their work, creating moments of genuine emotional connection amid the fairy-tale chaos.",
   "garbageReason": "No theater-related keywords found",
   "garbageFixedAt": "2026-01-29T22:45:23.070Z",
