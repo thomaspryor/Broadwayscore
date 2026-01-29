@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T15:27:14.338Z",
+  "runDate": "2026-01-29T15:27:33.618Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 25,
     "priority": "all",
-    "showFilter": "water-for-elephants-2024",
+    "showFilter": "merrily-we-roll-along-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 65,
-    "failed": 184,
+    "processed": 64,
+    "failed": 186,
     "skipped": 0,
-    "successRate": "26.1%"
+    "successRate": "25.6%"
   },
   "tierBreakdown": {
     "playwright": 10,
     "scrapingbee": 6,
     "brightdata": 6,
-    "archive": 43
+    "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 6,
+    "tier1Attempts": 9,
     "tier1Success": 0,
-    "tier2Attempts": 6,
-    "tier2Success": 1,
-    "tier3Attempts": 5,
+    "tier2Attempts": 9,
+    "tier2Success": 0,
+    "tier3Attempts": 9,
     "tier3Success": 0,
-    "tier4Attempts": 14,
-    "tier4Success": 3,
-    "totalFailed": 8,
-    "scrapingBeeCreditsUsed": 50
+    "tier4Attempts": 20,
+    "tier4Success": 1,
+    "totalFailed": 10,
+    "scrapingBeeCreditsUsed": 30
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -98,8 +98,7 @@
     "queen-versailles-2025/latimes--charles-mcnulty.json",
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
-    "suffs-2024/the-times--nancy-durrant.json",
-    "water-for-elephants-2024/nytg--joe-dziemianowicz.json"
+    "suffs-2024/the-times--nancy-durrant.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -278,14 +277,16 @@
     "hells-kitchen-2024/usatoday--charles-isherwood.json",
     "hells-kitchen-2024/usatoday--david-rooney.json",
     "hells-kitchen-2024/washpost--peter-marks.json",
-    "water-for-elephants-2024/variety--aramide-tinubu.json",
-    "water-for-elephants-2024/variety--charles-isherwood.json",
-    "water-for-elephants-2024/vulture--helen-shaw.json",
-    "water-for-elephants-2024/nypost--johnny-oleksinski.json",
-    "water-for-elephants-2024/theatermania--andy-propst.json",
-    "water-for-elephants-2024/wsj--charles-isherwood.json",
-    "water-for-elephants-2024/wsj--charles.json",
-    "water-for-elephants-2024/thestage--lane-williamson.json"
+    "merrily-we-roll-along-2023/hollywood-reporter--angie-han.json",
+    "merrily-we-roll-along-2023/variety--aramide-tinubu.json",
+    "merrily-we-roll-along-2023/variety--charles-isherwood.json",
+    "merrily-we-roll-along-2023/vulture--jackson-mchenry.json",
+    "merrily-we-roll-along-2023/theatermania--jesse-green.json",
+    "merrily-we-roll-along-2023/wsj--charles-isherwood.json",
+    "merrily-we-roll-along-2023/wsj--terry-teachout.json",
+    "merrily-we-roll-along-2023/the-times--will-pavia.json",
+    "merrily-we-roll-along-2023/usatoday--charles-isherwood.json",
+    "merrily-we-roll-along-2023/usatoday--david-rooney.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -358,8 +359,7 @@
       "queen-versailles-2025/vulture--sara-holdren-and-jesse-david-fox.json",
       "queen-versailles-2025/vulture--sara-holdren.json",
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
-      "suffs-2024/the-times--nancy-durrant.json",
-      "water-for-elephants-2024/nytg--joe-dziemianowicz.json"
+      "suffs-2024/the-times--nancy-durrant.json"
     ]
   }
 }
