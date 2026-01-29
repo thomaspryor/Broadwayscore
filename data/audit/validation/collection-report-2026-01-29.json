@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T15:46:26.021Z",
+  "runDate": "2026-01-29T15:47:43.231Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 10,
     "priority": "all",
-    "showFilter": "just-for-us-2023",
+    "showFilter": "the-great-gatsby-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 66,
-    "failed": 205,
+    "processed": 67,
+    "failed": 204,
     "skipped": 0,
-    "successRate": "24.4%"
+    "successRate": "24.7%"
   },
   "tierBreakdown": {
     "playwright": 10,
     "scrapingbee": 6,
     "brightdata": 6,
-    "archive": 44
+    "archive": 45
   },
   "statistics": {
     "tier1Attempts": 9,
-    "tier1Success": 1,
-    "tier2Attempts": 8,
+    "tier1Success": 0,
+    "tier2Attempts": 9,
     "tier2Success": 0,
-    "tier3Attempts": 8,
-    "tier3Success": 1,
-    "tier4Attempts": 16,
-    "tier4Success": 2,
-    "totalFailed": 10,
-    "scrapingBeeCreditsUsed": 20
+    "tier3Attempts": 9,
+    "tier3Success": 0,
+    "tier4Attempts": 22,
+    "tier4Success": 1,
+    "totalFailed": 9,
+    "scrapingBeeCreditsUsed": 30
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -100,7 +100,8 @@
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
     "suffs-2024/the-times--nancy-durrant.json",
     "illinoise-2024/nytg--amelia-merrill.json",
-    "illinoise-2024/broadwaynews--brittani-samuel.json"
+    "illinoise-2024/broadwaynews--brittani-samuel.json",
+    "the-great-gatsby-2024/nytg--caroline-cao.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -298,16 +299,15 @@
     "illinoise-2024/usatoday--david-oliver.json",
     "illinoise-2024/washpost--gloria-oladipo.json",
     "illinoise-2024/washpost--peter-marks.json",
-    "just-for-us-2023/hollywood-reporter--angie-han.json",
-    "just-for-us-2023/hollywood-reporter--david-rooney.json",
-    "just-for-us-2023/variety--aramide-tinubu.json",
-    "just-for-us-2023/vulture--helen-shaw.json",
-    "just-for-us-2023/deadline--greg-evans.json",
-    "just-for-us-2023/nypost--johnny-oleksinski.json",
-    "just-for-us-2023/observer--david-cote.json",
-    "just-for-us-2023/theatermania--jesse-green.json",
-    "just-for-us-2023/timeout--adam-feldman.json",
-    "just-for-us-2023/timeout--raven-snook.json"
+    "the-great-gatsby-2024/variety--aramide-tinubu.json",
+    "the-great-gatsby-2024/guardian--gloria-oladipo.json",
+    "the-great-gatsby-2024/nydailynews--chris-jones.json",
+    "the-great-gatsby-2024/nypost--johnny-oleksinski.json",
+    "the-great-gatsby-2024/observer--david-cote.json",
+    "the-great-gatsby-2024/theatermania--adam-feldman.json",
+    "the-great-gatsby-2024/wsj--terry-teachout.json",
+    "the-great-gatsby-2024/nysr--david-finkle.json",
+    "the-great-gatsby-2024/slantmagazine--dan-rubins.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -382,7 +382,8 @@
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
       "suffs-2024/the-times--nancy-durrant.json",
       "illinoise-2024/nytg--amelia-merrill.json",
-      "illinoise-2024/broadwaynews--brittani-samuel.json"
+      "illinoise-2024/broadwaynews--brittani-samuel.json",
+      "the-great-gatsby-2024/nytg--caroline-cao.json"
     ]
   }
 }
