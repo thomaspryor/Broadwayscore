@@ -8,7 +8,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Branden Jacobs-Jenkins's family drama is a searing examination of inherited trauma and systemic racism that burns with uncomfortable truths.",
   "originalScore": 80,
-  "assignedScore": 50,
+  "assignedScore": 84,
   "source": "web-search",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,18 +48,52 @@
     "Word count too low: 228 (min: 300)",
     "Show title not found in text"
   ],
-  "llmScore": null,
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "searing examination of inherited trauma and systemic racism",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "burns with uncomfortable truths",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong praise for the play's thematic content and dramatic impact using powerful language ('searing', 'burns'), indicating clear appreciation for the work's artistic merit and social relevance. | GPT-4o-mini: The review highlights strong thematic content and emotional impact, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:16:37.433Z",
+    "scoredAt": "2026-01-29T20:34:51.138Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 0,
-    "scoreDelta": 0,
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
