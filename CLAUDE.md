@@ -412,10 +412,29 @@ Shows with manually-verified commercial data are protected from automated overwr
 
 **Shows with Deep Research protection:**
 - death-becomes-her (estimatedRecoupmentPct, weeklyRunningCost)
+- the-great-gatsby (weeklyRunningCost, estimatedRecoupmentPct)
 - stranger-things (capitalization, recouped, recoupedDate)
 - operation-mincemeat (weeklyRunningCost, estimatedRecoupmentPct)
 - just-in-time (weeklyRunningCost, estimatedRecoupmentPct)
 - all-out (weeklyRunningCost, estimatedRecoupmentPct)
+
+### Commercial Data Automation Files
+
+| File | Purpose |
+|------|---------|
+| `scripts/update-commercial-data.js` | Main automation script - gathers Reddit/trade press, proposes changes via Claude |
+| `scripts/lib/deep-research-guardian.js` | Blocks changes to Deep Research verified fields |
+| `scripts/lib/source-validator.js` | Cross-references sources, flags contradictions |
+| `data/commercial.json` | Commercial data with deepResearch and costMethodology fields |
+| `data/commercial-changelog.json` | Audit log of all automated changes |
+| `data/methodology-definitions.json` | Defines cost calculation methodologies |
+| `.github/workflows/update-commercial.yml` | Weekly automated commercial data update |
+
+**CLI testing:**
+```bash
+node scripts/lib/deep-research-guardian.js --test  # Test guardian module
+node scripts/lib/source-validator.js --test        # Test source validation
+```
 
 ## Key Files
 - `src/lib/engine.ts` - Scoring engine + TypeScript interfaces
