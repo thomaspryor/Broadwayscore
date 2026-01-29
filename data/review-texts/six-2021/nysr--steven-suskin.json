@@ -11,11 +11,67 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": "5/5 stars",
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "originalScoreNormalized": 100,
   "scoreSource": "unicode-stars",
-  "scoreExtractedFrom": "archive"
+  "scoreExtractedFrom": "archive",
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "mass appeal, immediacy, enthusiasm, and an incredibly high sense of style",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "rafter-raising entertainment that'll get you throwing your proverbial bonnet in the air",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "An audience show for a wide audience",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong positive language like 'rafter-raising entertainment' and 'incredibly high sense of style' indicates clear enthusiasm and recommendation despite the incomplete excerpt. | GPT-4o-mini: The review expresses strong enthusiasm and positive sentiment towards the show's appeal and entertainment value, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:35:00.583Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
