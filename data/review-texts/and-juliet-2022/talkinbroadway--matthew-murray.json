@@ -5,8 +5,8 @@
   "criticName": "Matthew Murray",
   "url": "http://www.talkinbroadway.com/world/AndJuliet.html",
   "publishDate": "November 21, 2022",
-  "fullText": "The show is a jukebox musical that uses Max Martin's pop songs to tell the story of what might have happened if Juliet hadn't died at the end of Romeo and Juliet, and it's a surprisingly effective piece of musical theater.",
-  "isFullReview": false,
+  "fullText": "Theatre Review by Howard Miller - November 17, 2022\n\n& Juliet. Book by David West Read. Music and lyrics by Max Martin and Friends. Directed by Luke Sheppard. Choreographed by Jennifer Weber. Musical supervision, orchestrations and arrangements by Bill Sherman. Scenic design by Soutra Gilmour. Costume design by Paloma Young. Lighting design by Howard Hudson. Sound design by Gareth Owen. Video and projection design by Andrzej Goulding. Hair, wig, and makeup design by J. Jared Janas. Music director, additional arrangements and orchestrations by Dominic Fallacaro. Music coordinator Michael Aarons.\nCast: Lorna Courtney, Paulo Szot, Betsy Wolfe, Stark Sands, Justin David Sullivan, Melanie La Barrie, Ben Jackson Walker, Philippe Arroyo, Brandon Antonio, Michael Iván Carrier, Nico DeJesus, Nicholas Edwards, Virgil Gadson, Bobby \"Pocket\" Horner, Joomin Hwang, Megan Kane, Alaina Vi Maderal, Daniel J. Maldonado, Joe Moeller, Brittany Nicholas, Veronica Otim, Jasmine Rafael, Matt Raffy, Tiernan Tunnicliffe, and Rachel Webb.\nTheater: Stephen Sondheim Theatre, 124 West 43rd Street between Broadway and 6 Avenue\nTickets: CriterionTicketing.com\n\nProbably not hard to guess, but & Juliet, with a book by David West Read and a truckload of songs by Max Martin (\"and Friends,\" as it is credited in the Playbill) is a riff on Shakespeare's Romeo and Juliet. It asks the question, what if Juliet didn't die down there in the crypt? What would happen to her? After all, as one character puts it, \"she's got her whole life ahead of her, and she's only had one boyfriend.\"\n\nBefore we go any further, let's talk about the writers for a moment, since neither likely has great name recognition among your typical Broadway theatergoers. David West Read, the show's bookwriter, does have some prior theater credits, including the comedy The Performers that ran for a short time at the Longacre Theatre in 2012. However, he is rather more well known as a writer and as executive producer for two seasons of the popular television series \"Schitt's Creek.\" As for Max Martin, whose songs make up the show's score and who also serves as one of its lead producers, he has churned out dozens of hits, alone or collaboratively for/with such pop stars as Britney Spears, Backstreet Boys, NSYNC, and Taylor Swift, some of the \"friends\" with whom the generic songwriting credit is shared.\n\nUndoubtedly, & Juliet will appeal to fans of these pop stars, as well as to fans of \"America's Got Talent,\" on which the 11 o'clock number, \"Roar,\" a big hit for Katy Perry, was featured in an appearance by the cast ahead of Broadway previews. The performers represent the creative team's commitment to diversity, along with finding the right mix of singers with the ability to sell the power ballads, glam rock, hard rock, disco, boy band, and emo tunes that make up the score. The nine musicians who accompany them are quite excellent, and are rightly brought on stage to take a bow. The arrangements and orchestrations are stadium-ready. And the dancers perform Jennifer Weber's choreography with tireless drill team precision. (A busy person, indeed, Weber is also responsible for choreographing KPOP, another big show that is about to open on Broadway).\n\nAfter Juliet (Lorna Courtney, who has the appearance of an ingénue and a powerhouse pop star's voice) is revived and learns her Romeo (Ben Jackson Walker, an old-school rocker) wasn't exactly hers alone, she is ready to pack it in and head out to (where else?) Paris. On her journey of self-discovery, Juliet is accompanied not only by April and May, but also by her devoted Nurse, Angélique (Trinidadian singer Melanie La Barrie). In Paris, Juliet makes friends with the shy and sexually ambiguous François (Philippe Arroyo, adorable), whose overbearing father Lance (Paulo Szot, having a ball playing the bullish ex-soldier and Angélique's ex-lover) is pushing him to get married. Oh, and, because Shakespeare can't leave well enough alone, guess whose formerly dead husband shows up, assuming he and Juliet will simply pick up where they left off? Hah!\n\nAll told, there is plenty of plot to go around, even if it does ask us to suspend a lot of disbelief along the way. In any event, & Juliet is less about the narrative contrivances than it is about the singing and dancing and every bit of staging that director Luke Sheppard has been able to muster. The set design often looks like that gumball machine has exploded all over everything, and the lighting, sound, and video design employ every trick in the trade to grab the audience and surround the performers as they pour out nearly 30 numbers from the \"Max Martin and Friends\" playbook. Proving yet again that there's no business like show business.",
+  "isFullReview": true,
   "dtliExcerpt": "The show is a jukebox musical that uses Max Martin's pop songs to tell the story of what might have happened if Juliet hadn't died at the end of Romeo and Juliet, and it's a surprisingly effective piece of musical theater.",
   "originalScore": null,
   "assignedScore": 76,
@@ -75,5 +75,42 @@
   },
   "sources": [
     "web-search"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 76,
+  "textWordCount": 776,
+  "archivePath": "data/archives/reviews/and-juliet-2022/talkinbroadway--matthew-murray_2026-01-29.html",
+  "textFetchedAt": "2026-01-29T07:09:31.776Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata"
 }
