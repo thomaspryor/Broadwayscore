@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-29T02:39:27.757Z",
+  "runDate": "2026-01-29T02:39:58.539Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "the-wiz-2024",
+    "showFilter": "the-whos-tommy-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,27 +12,27 @@
   },
   "summary": {
     "processed": 42,
-    "failed": 31,
+    "failed": 30,
     "skipped": 0,
-    "successRate": "57.5%"
+    "successRate": "58.3%"
   },
   "tierBreakdown": {
     "playwright": 7,
-    "scrapingbee": 5,
-    "brightdata": 3,
+    "scrapingbee": 4,
+    "brightdata": 4,
     "archive": 27
   },
   "statistics": {
-    "tier1Attempts": 13,
+    "tier1Attempts": 12,
     "tier1Success": 3,
-    "tier2Attempts": 10,
-    "tier2Success": 3,
+    "tier2Attempts": 9,
+    "tier2Success": 2,
     "tier3Attempts": 7,
-    "tier3Success": 0,
-    "tier4Attempts": 19,
+    "tier3Success": 1,
+    "tier4Attempts": 20,
     "tier4Success": 10,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 80
+    "totalFailed": 3,
+    "scrapingBeeCreditsUsed": 70
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -61,22 +61,22 @@
     "spamalot-2023/nysr--sandy-macdonald.json",
     "spamalot-2023/slantmagazine--dan-rubins.json",
     "spamalot-2023/washpost--peter-marks.json",
-    "the-wiz-2024/nyt-theater--jonathan-mandell.json",
-    "the-wiz-2024/nytg--kyle-turner.json",
-    "the-wiz-2024/broadwaynews--brittani-samuel.json",
-    "the-wiz-2024/nypost--johnny-oleksinski.json",
-    "the-wiz-2024/nypost--johnny.json",
-    "the-wiz-2024/thewrap--robert-hofler.json",
-    "the-wiz-2024/cititour--brian-scott-lipton.json",
-    "the-wiz-2024/amny--matt-windman.json",
-    "the-wiz-2024/chicagotribune--chris-jones.json",
-    "the-wiz-2024/ny-sun--elysa-gardner.json",
-    "the-wiz-2024/nysr--bob-verini.json",
-    "the-wiz-2024/nysr--david-finkle.json",
-    "the-wiz-2024/slantmagazine--dan-rubins.json",
-    "the-wiz-2024/thestage--lane-williamson.json",
-    "the-wiz-2024/village-voice--michael-musto.json",
-    "the-wiz-2024/washpost--gloria-oladipo.json"
+    "the-whos-tommy-2024/newyorker--helen-shaw.json",
+    "the-whos-tommy-2024/nyt-theater--jonathan-mandell.json",
+    "the-whos-tommy-2024/nytg--joe-dziemianowicz.json",
+    "the-whos-tommy-2024/nytimes--jesse-green.json",
+    "the-whos-tommy-2024/ew--emlyn-travis.json",
+    "the-whos-tommy-2024/nypost--johnny-oleksinski.json",
+    "the-whos-tommy-2024/theatermania--david-gordon.json",
+    "the-whos-tommy-2024/wsj--charles-isherwood.json",
+    "the-whos-tommy-2024/wsj--charles.json",
+    "the-whos-tommy-2024/cititour--brian-scott-lipton.json",
+    "the-whos-tommy-2024/advertisement--joe-dziemianowicz.json",
+    "the-whos-tommy-2024/fredericksburgcom--gail-choochan.json",
+    "the-whos-tommy-2024/nysr--bob-verini.json",
+    "the-whos-tommy-2024/nysr--david-finkle.json",
+    "the-whos-tommy-2024/showbiz411--roger-friedman.json",
+    "the-whos-tommy-2024/washpost--elisabeth-vincentelli.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -106,10 +106,9 @@
     "spamalot-2023/wsj--charles-isherwood.json",
     "spamalot-2023/wsj--charles.json",
     "spamalot-2023/talkinbroadway--matthew-murray.json",
-    "the-wiz-2024/nydailynews--chris-jones.json",
-    "the-wiz-2024/nydailynews--chris.json",
-    "the-wiz-2024/wsj--charles-isherwood.json",
-    "the-wiz-2024/queerty--matthew-wexler.json"
+    "the-whos-tommy-2024/variety--frank-rizzo.json",
+    "the-whos-tommy-2024/variety--trish-deitch.json",
+    "the-whos-tommy-2024/thewrap--robert-hofler.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -117,21 +116,21 @@
       "harmony-2023/nysr--david-finkle.json",
       "harmony-2023/nysr--sandy-macdonald.json",
       "spamalot-2023/nysr--melissa-rose-bernardo.json",
-      "the-wiz-2024/nyt-theater--jonathan-mandell.json",
-      "the-wiz-2024/broadwaynews--brittani-samuel.json",
-      "the-wiz-2024/nysr--bob-verini.json"
+      "the-whos-tommy-2024/nyt-theater--jonathan-mandell.json",
+      "the-whos-tommy-2024/nytg--joe-dziemianowicz.json",
+      "the-whos-tommy-2024/advertisement--joe-dziemianowicz.json"
     ],
     "scrapingbee": [
       "spamalot-2023/cititour--brian-scott-lipton.json",
       "spamalot-2023/chicagotribune--chris-jones.json",
-      "the-wiz-2024/cititour--brian-scott-lipton.json",
-      "the-wiz-2024/thestage--lane-williamson.json",
-      "the-wiz-2024/village-voice--michael-musto.json"
+      "the-whos-tommy-2024/ew--emlyn-travis.json",
+      "the-whos-tommy-2024/cititour--brian-scott-lipton.json"
     ],
     "brightdata": [
       "harmony-2023/observer--jesse-green.json",
       "harmony-2023/observer--rex-reed.json",
-      "harmony-2023/chicagotribune--chris-jones.json"
+      "harmony-2023/chicagotribune--chris-jones.json",
+      "the-whos-tommy-2024/washpost--elisabeth-vincentelli.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
@@ -151,16 +150,16 @@
       "spamalot-2023/nysr--sandy-macdonald.json",
       "spamalot-2023/slantmagazine--dan-rubins.json",
       "spamalot-2023/washpost--peter-marks.json",
-      "the-wiz-2024/nytg--kyle-turner.json",
-      "the-wiz-2024/nypost--johnny-oleksinski.json",
-      "the-wiz-2024/nypost--johnny.json",
-      "the-wiz-2024/thewrap--robert-hofler.json",
-      "the-wiz-2024/amny--matt-windman.json",
-      "the-wiz-2024/chicagotribune--chris-jones.json",
-      "the-wiz-2024/ny-sun--elysa-gardner.json",
-      "the-wiz-2024/nysr--david-finkle.json",
-      "the-wiz-2024/slantmagazine--dan-rubins.json",
-      "the-wiz-2024/washpost--gloria-oladipo.json"
+      "the-whos-tommy-2024/newyorker--helen-shaw.json",
+      "the-whos-tommy-2024/nytimes--jesse-green.json",
+      "the-whos-tommy-2024/nypost--johnny-oleksinski.json",
+      "the-whos-tommy-2024/theatermania--david-gordon.json",
+      "the-whos-tommy-2024/wsj--charles-isherwood.json",
+      "the-whos-tommy-2024/wsj--charles.json",
+      "the-whos-tommy-2024/fredericksburgcom--gail-choochan.json",
+      "the-whos-tommy-2024/nysr--bob-verini.json",
+      "the-whos-tommy-2024/nysr--david-finkle.json",
+      "the-whos-tommy-2024/showbiz411--roger-friedman.json"
     ]
   }
 }
