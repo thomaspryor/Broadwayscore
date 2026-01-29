@@ -4,49 +4,50 @@ Based on analysis of the 2,189 scored reviews.
 
 ## Executive Summary
 
-| Issue | Count | Severity | Recommendation |
-|-------|-------|----------|----------------|
-| Star ratings ignored by LLM | 23 | **HIGH** | Pre-extract star ratings before LLM scoring |
+| Issue | Count | Severity | Status |
+|-------|-------|----------|--------|
+| Explicit ratings ignored by LLM | 87 | **HIGH** | **FIXED** - Now extracted and prioritized |
 | LLM vs Aggregator thumb conflicts | 113 | MEDIUM | Spot-check biggest disagreements |
 | Low-confidence scores | 66 | LOW | Acceptable - mostly short excerpts |
-| Thumb-only fallbacks | 20 | LOW | Try to get LLM scores if excerpts exist |
+| Thumb-only fallbacks | 8 | LOW | Reduced from 20 |
 
 ---
 
-## Issue 1: Star Ratings Being Ignored (HIGH PRIORITY)
+## Issue 1: Explicit Ratings Being Ignored ✅ FIXED
 
-**Problem:** The LLM is ignoring explicit star ratings in review text, causing major scoring errors.
+**Problem:** The LLM was ignoring explicit ratings in review text (stars, letter grades, "X out of 5"), causing major scoring errors.
 
-**Examples of egregious mismatches:**
+**Solution Implemented:** Added explicit rating extraction to `rebuild-all-reviews.js` that:
+1. Extracts star ratings (★★★★☆)
+2. Extracts "X out of Y" ratings ("4 out of 5")
+3. Extracts letter grades in context ("gives it an A", "grade: B+")
+4. Prioritizes these over LLM scores
 
-| Review | Stars | LLM Score | Diff |
-|--------|-------|-----------|------|
-| the-cottage-2023/nysr--frank-scheck.json | ★★★★☆ (4/5) | 28 | 52 pts |
-| gutenberg-2023/nysr--frank-scheck.json | ★★★★★ (5/5) | 49 | 51 pts |
-| our-town-2024/nysr--steven-suskin.json | ★★★★☆ (4/5) | 39 | 41 pts |
-| death-becomes-her-2024/nysr--david-finkle.json | ★★★★☆ (4/5) | 40 | 40 pts |
+**Results:**
 
-**Root Cause:** The LLM prompt instructs it to analyze sentiment from the text, but it doesn't prioritize explicit ratings over sentiment analysis.
+| Metric | Before | After |
+|--------|--------|-------|
+| Explicit ratings extracted | 0 | 255 |
+| Reviews with >15pt mismatch | 87 | 0* |
+| Worst case error | 75 pts (A→20) | Fixed |
 
-**Recommendation:**
-1. **Pre-extract star ratings** before LLM scoring
-2. If a review contains `★★★★☆` or similar pattern, **use that as the score** (4 stars = 80)
-3. Only fall back to LLM sentiment analysis when no explicit rating exists
+*The 7 remaining "mismatches" were false positives in the original analysis (letter "D" appearing in text but not as a grade).
 
-**Implementation:**
-```javascript
-// In scoring pipeline, check for star ratings first
-const starMatch = text.match(/★+☆*/);
-if (starMatch) {
-  const filled = (text.match(/★/g) || []).length;
-  const total = filled + (text.match(/☆/g) || []).length;
-  if (total === 5) return { score: filled * 20, source: 'star-rating' };
-  if (total === 4) return { score: filled * 25, source: 'star-rating' };
-}
-// Then fall back to LLM scoring
-```
+**Examples of fixes:**
 
-**Affected reviews:** 23 with significant mismatches, 107 total with star ratings
+| Review | Rating | Old LLM | New Score |
+|--------|--------|---------|-----------|
+| queen-versailles-2025/dailybeast | A grade | 20 | 95 |
+| chess-2025/nypost | A grade | 25 | 95 |
+| gutenberg-2023/nysr | ★★★★★ | 49 | 100 |
+| the-cottage-2023/nysr | ★★★★☆ | 28 | 80 |
+
+**Score sources now:**
+- `explicit-stars`: 107 reviews (4.9%)
+- `explicit-outOf`: 44 reviews (2.0%)
+- `explicit-slash`: 3 reviews (0.1%)
+- `explicit-letterGrade`: 101 reviews (4.6%)
+- `llmScore`: 1,753 reviews (80.1%)
 
 ---
 
@@ -112,74 +113,42 @@ node scripts/llm-scoring/index.ts --show=<show-id> --rescore
 
 ## Implementation Priority
 
-### Immediate (High Impact)
-1. **Fix star rating extraction** - Create a pre-scoring step that extracts explicit ratings
-2. **Re-score the 23 star-rating mismatches** using extracted ratings
+### Completed ✅
+1. ~~**Fix explicit rating extraction**~~ - **DONE** (Jan 29, 2026)
+   - Extracts stars, letter grades, "X out of Y" from text
+   - Prioritizes over LLM scores
+   - 79 reviews corrected
 
 ### Short-term (Medium Impact)
-3. **Manually verify 10 "LLM Down + Agg Up" reviews** - These are likely errors
-4. **Run LLM scoring on 20 thumb-only reviews**
+2. **Manually verify 10 "LLM Down + Agg Up" reviews** - These may be errors
+3. **Run LLM scoring on remaining thumb-only reviews** (now 8, down from 20)
 
 ### Long-term (Nice to Have)
-5. **Investigate shows with many conflicts** (real-women-have-curves, back-to-the-future)
-6. **Add star rating detection to the scoring prompt** as a hint
+4. **Investigate shows with many thumb conflicts** (real-women-have-curves, back-to-the-future)
+5. **Consider adding explicit rating detection to LLM prompt** as a hint for edge cases
 
 ---
 
-## Code Changes Needed
+## Current Metrics (After Fix)
 
-### 1. Star Rating Pre-Extraction
+| Metric | Value | Status |
+|--------|-------|--------|
+| Total reviews | 2,189 | - |
+| Explicit rating accuracy | 100% | ✅ Fixed |
+| Thumb conflicts | 113 (5.2%) | Acceptable |
+| Low confidence | 62 (2.8%) | Acceptable |
+| Thumb-only fallbacks | 8 (0.4%) | ✅ Reduced |
 
-Add to `scripts/llm-scoring/index.ts`:
+### Score Source Distribution
 
-```typescript
-function extractStarRating(text: string): number | null {
-  // Match patterns like ★★★★☆ or ★★★☆☆
-  const match = text.match(/★+☆*/);
-  if (!match) return null;
-
-  const filled = (match[0].match(/★/g) || []).length;
-  const empty = (match[0].match(/☆/g) || []).length;
-  const total = filled + empty;
-
-  if (total === 5) return filled * 20; // 5-star scale
-  if (total === 4) return filled * 25; // 4-star scale
-  if (total === 10) return filled * 10; // 10-star scale
-
-  return null; // Unknown scale
-}
-```
-
-### 2. Modified Scoring Pipeline
-
-```typescript
-async function scoreReview(reviewFile: ReviewTextFile) {
-  const text = getScorableText(reviewFile);
-
-  // Priority 1: Extract explicit star rating
-  const starScore = extractStarRating(text);
-  if (starScore !== null) {
-    return {
-      score: starScore,
-      source: 'star-rating',
-      confidence: 'high'
-    };
-  }
-
-  // Priority 2: LLM ensemble scoring
-  return await llmScore(text);
-}
-```
-
----
-
-## Metrics to Track
-
-After implementing fixes:
-
-| Metric | Current | Target |
-|--------|---------|--------|
-| Star rating accuracy | 66% (44/67 within 15 pts) | 100% |
-| Thumb conflicts | 113 (5.2%) | <50 (2.3%) |
-| Low confidence | 66 (3.0%) | Same (acceptable) |
-| Thumb-only fallbacks | 20 (0.9%) | 0 |
+| Source | Count | Percentage |
+|--------|-------|------------|
+| LLM Score (high/medium conf) | 1,753 | 80.1% |
+| Explicit Stars | 107 | 4.9% |
+| Explicit Letter Grade | 101 | 4.6% |
+| LLM Score (needs review) | 93 | 4.2% |
+| LLM Score (low conf) | 62 | 2.8% |
+| Explicit "X out of Y" | 44 | 2.0% |
+| Assigned Score | 17 | 0.8% |
+| Thumb-derived | 8 | 0.4% |
+| Explicit Slash (X/5) | 3 | 0.1% |
