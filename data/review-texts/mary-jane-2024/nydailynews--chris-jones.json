@@ -9,13 +9,66 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Amy Herzog's beautiful play",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "You leave after 90 minutes with a near-crushing awareness of the unfairness of life",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Amy Herzog’s beautiful play “Mary Jane” is, at its core, a study of the extraordinary lengths to which a mother will go to care for her child.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The critic calls the play 'beautiful' and describes a profound emotional impact, indicating strong appreciation for the theatrical experience despite its difficult subject matter. | GPT-4o-mini: The review expresses strong appreciation for the play's themes and emotional impact, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T06:41:24.063Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -7,7 +7,7 @@
   "publishDate": "April 23, 2024",
   "fullText": "Ultimately, McAdams gets her big theatrical moment, but much of the play’s power comes from Herzog’s scheme to withhold that moment. We expect Mary Jane to break down, explode, get pissed off long before she does. What sets her off is unexpected. It’s worth the wait.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "dtliThumb": "Up",
   "source": "dtli",
   "dtliExcerpt": "Ultimately, McAdams gets her big theatrical moment, but much of the play’s power comes from Herzog’s scheme to withhold that moment. We expect Mary Jane to break down, explode, get pissed off long before she does. What sets her off is unexpected. It’s worth the wait.",
@@ -15,7 +15,60 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": null,
+      "performances": 80,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's worth the wait",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "much of the play's power comes from Herzog's scheme to withhold that moment",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "What sets her off is unexpected",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the playwright's strategic pacing and McAdams' performance, concluding definitively that the payoff 'is worth the wait,' which signals a clear positive recommendation. | GPT-4o-mini: The review indicates a clear appreciation for the play's structure and a strong performance, leading to a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T06:41:35.057Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
