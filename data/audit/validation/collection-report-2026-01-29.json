@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T15:58:08.654Z",
+  "runDate": "2026-01-29T18:06:38.445Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 5,
+    "maxReviews": 10,
     "priority": "all",
-    "showFilter": "the-shark-is-broken-2023",
+    "showFilter": "redwood-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 66,
-    "failed": 201,
+    "processed": 65,
+    "failed": 211,
     "skipped": 0,
-    "successRate": "24.7%"
+    "successRate": "23.6%"
   },
   "tierBreakdown": {
     "playwright": 10,
     "scrapingbee": 6,
     "brightdata": 7,
-    "archive": 43
+    "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 4,
+    "tier1Attempts": 3,
     "tier1Success": 0,
-    "tier2Attempts": 4,
+    "tier2Attempts": 3,
     "tier2Success": 0,
-    "tier3Attempts": 4,
+    "tier3Attempts": 3,
     "tier3Success": 0,
-    "tier4Attempts": 8,
+    "tier4Attempts": 6,
     "tier4Success": 2,
     "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 20
+    "scrapingBeeCreditsUsed": 30
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -99,8 +99,7 @@
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
     "suffs-2024/the-times--nancy-durrant.json",
-    "mj-2022/usatoday--david-rooney.json",
-    "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json"
+    "mj-2022/usatoday--david-rooney.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -300,10 +299,20 @@
     "mj-2022/talkinbroadway--john-olson.json",
     "mj-2022/talkinbroadway--matthew-murray.json",
     "mj-2022/usatoday--charles-isherwood.json",
-    "the-shark-is-broken-2023/observer--david-cote.json",
-    "the-shark-is-broken-2023/theatermania--jesse-green.json",
-    "the-shark-is-broken-2023/wsj--terry-teachout.json",
-    "the-shark-is-broken-2023/talkinbroadway--matthew-murray.json"
+    "stereophonic-2024/hollywood-reporter--angie-han.json",
+    "stereophonic-2024/variety--aramide-tinubu.json",
+    "stereophonic-2024/variety--jesse-green.json",
+    "stereophonic-2024/variety--peter-marks.json",
+    "stereophonic-2024/vulture--helen-shaw.json",
+    "stereophonic-2024/deadline--pete-hammond.json",
+    "stereophonic-2024/guardian--adrian-horton.json",
+    "stereophonic-2024/guardian--gloria-oladipo.json",
+    "stereophonic-2024/observer--rex-reed.json",
+    "stereophonic-2024/theatermania--adam-feldman.json",
+    "redwood-2025/guardian--adrian-horton.json",
+    "redwood-2025/guardian--adrian.json",
+    "redwood-2025/observer--david-cote.json",
+    "redwood-2025/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -377,8 +386,7 @@
       "queen-versailles-2025/vulture--sara-holdren-and-jesse-david-fox.json",
       "queen-versailles-2025/vulture--sara-holdren.json",
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
-      "suffs-2024/the-times--nancy-durrant.json",
-      "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json"
+      "suffs-2024/the-times--nancy-durrant.json"
     ]
   }
 }
