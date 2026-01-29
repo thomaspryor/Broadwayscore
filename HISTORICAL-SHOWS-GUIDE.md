@@ -247,25 +247,26 @@ async function processDiscoveredShow(show, existingShows) {
 
 ## Implementation Plan
 
-### Phase 1: Foundation (Before Historical Expansion)
-1. [ ] Create `scripts/lib/broadway-theaters.js` with canonical list
-2. [ ] Create `scripts/lib/tour-detection.js`
-3. [ ] Create `scripts/lib/broadway-seasons.js`
-4. [ ] Add venue normalization (like we have for outlets)
-5. [ ] Fix existing venue inconsistencies in shows.json
+### Phase 1: Foundation (Before Historical Expansion) ✅ COMPLETE
+1. [x] Create `scripts/lib/broadway-theaters.js` with canonical list (41 theaters)
+2. [x] Create `scripts/lib/tour-detection.js` (tour patterns, touring venues, Off-Broadway venues)
+3. [x] Create `scripts/lib/broadway-seasons.js` (July-June season logic)
+4. [x] Add venue normalization - `scripts/normalize-venues.js`
+5. [x] Fix existing venue inconsistencies in shows.json (7 venues normalized)
 
-### Phase 2: Schema Updates
-1. [ ] Add `isRevival`, `originalProductionId` fields to show schema
+### Phase 2: Schema Updates ⏳ IN PROGRESS
+1. [x] Add `isRevival`, `originalProductionId`, `productionNumber`, `season` fields to show schema
 2. [ ] Add `productionHistory` for shows with multiple productions
-3. [ ] Update TypeScript types in `src/lib/engine.ts`
+3. [x] Update TypeScript types in `src/lib/engine.ts` (RawShow, ComputedShow interfaces)
 
-### Phase 3: Discovery Updates
-1. [ ] Update `discover-historical-shows.js` with new validations
-2. [ ] Add tour rejection logic
-3. [ ] Add revival linking logic
-4. [ ] Add Broadway theater validation
+### Phase 3: Discovery Updates ✅ COMPLETE
+1. [x] Update `discover-historical-shows.js` with new validations
+2. [x] Add tour rejection logic (STEP 1)
+3. [x] Add venue validation and normalization (STEP 2)
+4. [x] Add season validation (STEP 3)
+5. [x] Add revival linking logic (fills isRevival, originalProductionId, productionNumber)
 
-### Phase 4: Review Data Linking
+### Phase 4: Review Data Linking ❌ NOT STARTED
 1. [ ] When gathering reviews for revivals, verify reviews match the production year
 2. [ ] Flag reviews that might be for wrong production (e.g., 2024 review on 1998 show)
 3. [ ] Add `productionId` to review files for explicit linking
