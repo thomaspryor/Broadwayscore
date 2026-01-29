@@ -1,26 +1,26 @@
 {
-  "runDate": "2026-01-29T18:46:30.937Z",
+  "runDate": "2026-01-29T18:46:56.297Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 15,
+    "maxReviews": 25,
     "priority": "all",
-    "showFilter": "mother-play-2024",
+    "showFilter": "back-to-the-future-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 66,
-    "failed": 224,
+    "processed": 65,
+    "failed": 223,
     "skipped": 0,
-    "successRate": "22.8%"
+    "successRate": "22.6%"
   },
   "tierBreakdown": {
     "playwright": 10,
     "scrapingbee": 6,
     "brightdata": 7,
-    "archive": 43
+    "archive": 42
   },
   "statistics": {
     "tier1Attempts": 5,
@@ -29,9 +29,9 @@
     "tier2Success": 0,
     "tier3Attempts": 5,
     "tier3Success": 0,
-    "tier4Attempts": 13,
-    "tier4Success": 3,
-    "totalFailed": 7,
+    "tier4Attempts": 12,
+    "tier4Success": 2,
+    "totalFailed": 6,
     "scrapingBeeCreditsUsed": 10
   },
   "processed": [
@@ -99,8 +99,7 @@
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
     "suffs-2024/the-times--nancy-durrant.json",
-    "mj-2022/usatoday--david-rooney.json",
-    "mother-play-2024/broadwaynews--brittani-samuel.json"
+    "mj-2022/usatoday--david-rooney.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -320,13 +319,12 @@
     "here-lies-love-2023/indiewire--chris-ofalt.json",
     "here-lies-love-2023/observer--rex-reed.json",
     "here-lies-love-2023/theatermania--adam-feldman.json",
-    "mother-play-2024/hollywood-reporter--david-rooney.json",
-    "mother-play-2024/nytimes--jesse-green.json",
-    "mother-play-2024/guardian--adrian-horton.json",
-    "mother-play-2024/guardian--benjamin-lee.json",
-    "mother-play-2024/nypost--johnny-oleksinski.json",
-    "mother-play-2024/wsj--charles-isherwood.json",
-    "mother-play-2024/wsj--charles.json"
+    "back-to-the-future-2023/wsj--charles-isherwood.json",
+    "back-to-the-future-2023/wsj--terry-teachout.json",
+    "back-to-the-future-2023/nysr--elysa-gardner.json",
+    "back-to-the-future-2023/nysr--steven-suskin.json",
+    "back-to-the-future-2023/queerty--matthew-wexler.json",
+    "back-to-the-future-2023/rollingstone--brittany-spanos.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -400,8 +398,7 @@
       "queen-versailles-2025/vulture--sara-holdren-and-jesse-david-fox.json",
       "queen-versailles-2025/vulture--sara-holdren.json",
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
-      "suffs-2024/the-times--nancy-durrant.json",
-      "mother-play-2024/broadwaynews--brittani-samuel.json"
+      "suffs-2024/the-times--nancy-durrant.json"
     ]
   }
 }
