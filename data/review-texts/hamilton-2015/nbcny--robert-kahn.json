@@ -5,17 +5,17 @@
   "criticName": "Robert Kahn",
   "url": "https://www.nbcnewyork.com/entertainment/hamilton-broadway-review/",
   "publishDate": "2015-08-06",
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "Bruce Springsteen released a fiery protest song Wednesday dedicated to the memory of Renee Good and Alex Pretti, two Minneapolis residents who were fatally shot by federal agents this month.\n\nLauren Scala finds out how you can win a trip to Palm Coast, Florida. No Pur. Nec. Void where prohibited. 21+ Ends 2/1. Subject to Official Rules.\n\nThe film, which celebrates all the pageantry that comes with the historic horse race, was filmed at the Kentucky Derby’s beloved Churchill Downs Racetrack.\n\nEmmy nominee Camila Morrone tells Sara Gore about the second season of &#8220;The Night Manager,&#8221; and an upcoming horror series from The Duffer Brothers.\n\nPeyton List sits down with Sara Gore to dish on the third season of &#8220;School Spirits&#8221; and joining the Off-Broadway hit &#8220;Heathers: The Musical.&#8221;\n\nGerran Howell chats with Sara Gore about season 2 of &#8220;The Pitt,&#8221; what&#8217;s next for Whitaker, and medical bootcamps.\n\nSwims is one of many acts who will perform before the 2026 Super Bowl matchup between the New England Patriots and Seattle Seahawks.\n\nSocial media users have a range of reasons for why you should avoid wearing red at a wedding.\n\nThe &#8220;Euphoria&#8221; and &#8220;Housemaid&#8221; star used the Los Angeles landmark to launch her new lingerie line.\n\nWhat to know about the new &#8220;America’s Next Top Model&#8221; documentary coming to Netflix.\n\nNeil Young is offering free access to his entire music catalog to residents of Greenland.\n\nKay Angrum heads to Cobble Hill to find out why Bolo Bolo Cafe &#038; Bakery is drawing crowds for its Asian-inspired treats and teas.\n\nTony nominee Melissa Errico chats with Sara Gore about her new album of standards and annual Birdland residency.\n\n&#8220;NBC News Daily&#8221; anchor Kate Snow sits down with Sara Gore to chat about her digital series &#8220;The Drink,&#8221; new podcast, &#038; musical talent.\n\nPaul Costabile sits down with Jason Segel to preview season 3 of the Emmy-nominated dramedy &#8220;Shrinking.&#8221;\n\nAlex Honnold&#8217;s daring climb was streamed on &#8220;Skyscraper Live.&#8221;\n\nTurns out he&#8217;s more than &#8220;just Ken.&#8221;\n\nJim Curtis is sharing the origin story of his romance with Jennifer Aniston.\n\nTODAY is preparing for a major milestone as it gets ready to honor Al Roker’s 30‑year Al‑iversary on Tuesday.",
+  "isFullReview": true,
   "bwwExcerpt": "Miranda's score, whether the performers are rapping or singing. Blankenbuehler keeps the dancers in almost constant motion, sustaining a sense of urgency that heightens our engagement and excitement. Robert Kahn, NBC New York : \"Hamilton\" arrives burnished and proud, though two performances struck me as having evolved considerably from the musical's debut. The first is Leslie Odom Jr.'s Aaron Burr...Odom's Burr is a stop-at-nothing climber obsessed with relevancy, fully exposed when he raps about wanting to be in \"The Room Where It Happens.\" Yet somehow, the kinetic Odom makes Burr's admiration for his lifelong rival come through in every scene. Odom is just magnetic here. Enchanting, as well, is Phillipa Soo...as Eliza, Alexander's wife...Daveed Diggs, doing double duty as Lafayette and Thomas Jefferson, is a hyper-caffeinated and charismatic White Rabbit, by way of Willy Wonka. Christopher Jackson's Washington is confident and good-humored. Groff has the crowd on his side and hits al",
   "originalScore": null,
   "assignedScore": 89,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAMILTON-Opens-on-Broadway-20150806",
-  "textStatus": "excerpt_only",
-  "textQuality": "excerpt_only",
-  "sourceMethod": "scrapingbee",
+  "textStatus": "incomplete",
+  "textQuality": "partial",
+  "sourceMethod": "brightdata",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -58,11 +58,17 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "textWordCount": 684,
-  "archivePath": "data/archives/reviews/hamilton-2015/nbc--robert-kahn_2026-01-26.html",
-  "textFetchedAt": "2026-01-26T22:21:47.876Z",
-  "fetchMethod": "scrapingbee",
+  "textWordCount": 364,
+  "archivePath": "data/archives/reviews/hamilton-2015/nbcny--robert-kahn_2026-01-29.html",
+  "textFetchedAt": "2026-01-29T02:56:54.378Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
     {
       "tier": 1,
       "method": "playwright",
@@ -72,10 +78,16 @@
     {
       "tier": 2,
       "method": "scrapingbee",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 2,
+  "fetchTier": 3,
   "textIssues": [
     "Show title not found in text"
   ],
@@ -87,5 +99,9 @@
     "reason": "NBC New York homepage content (Al Roker, news headlines) - not a review",
     "previousScore": 0,
     "restoredScore": 89
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 89,
+  "truncationSignals": []
 }
