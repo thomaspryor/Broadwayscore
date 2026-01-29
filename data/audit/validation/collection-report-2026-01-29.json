@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T07:11:43.541Z",
+  "runDate": "2026-01-29T07:12:39.904Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "and-juliet-2022",
+    "showFilter": "once-upon-a-one-more-time-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 60,
-    "failed": 145,
+    "processed": 62,
+    "failed": 148,
     "skipped": 0,
-    "successRate": "29.3%"
+    "successRate": "29.5%"
   },
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 9,
     "scrapingbee": 4,
-    "brightdata": 8,
-    "archive": 40
+    "brightdata": 6,
+    "archive": 43
   },
   "statistics": {
-    "tier1Attempts": 12,
-    "tier1Success": 0,
-    "tier2Attempts": 12,
+    "tier1Attempts": 15,
+    "tier1Success": 1,
+    "tier2Attempts": 14,
     "tier2Success": 0,
-    "tier3Attempts": 12,
-    "tier3Success": 2,
-    "tier4Attempts": 26,
-    "tier4Success": 2,
-    "totalFailed": 10,
-    "scrapingBeeCreditsUsed": 30
+    "tier3Attempts": 14,
+    "tier3Success": 0,
+    "tier4Attempts": 34,
+    "tier4Success": 5,
+    "totalFailed": 13,
+    "scrapingBeeCreditsUsed": 70
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -91,10 +91,12 @@
     "aladdin-2014/vulture--jesse-green.json",
     "aladdin-2014/thewrap--robert-hofler.json",
     "aladdin-2014/usatoday--elysa-gardner.json",
-    "and-juliet-2022/cititour--brian-scott-lipton.json",
-    "and-juliet-2022/city-beat--brain-scott-lipton.json",
-    "and-juliet-2022/talkinbroadway--matthew-murray.json",
-    "and-juliet-2022/washpost--peter-marks.json"
+    "once-upon-a-one-more-time-2023/nytg--gillian-russo.json",
+    "once-upon-a-one-more-time-2023/nytg--gillian.json",
+    "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
+    "once-upon-a-one-more-time-2023/ew--emlyn-travis.json",
+    "once-upon-a-one-more-time-2023/ew--emlyn.json",
+    "once-upon-a-one-more-time-2023/thewrap--robert-hofler.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -232,16 +234,19 @@
     "back-to-the-future-2023/theatermania--adam-feldman.json",
     "back-to-the-future-2023/thewrap--robert-hofler.json",
     "back-to-the-future-2023/timeout--adam-feldman.json",
-    "and-juliet-2022/hollywood-reporter--angie-han.json",
-    "and-juliet-2022/hollywood-reporter--frank-scheck.json",
-    "and-juliet-2022/variety--aramide-tinubu.json",
-    "and-juliet-2022/vulture--sara-holdren.json",
-    "and-juliet-2022/ew--leah-greenblatt.json",
-    "and-juliet-2022/theatermania--andy-propst.json",
-    "and-juliet-2022/theatermania--jesse-green.json",
-    "and-juliet-2022/thewrap--robert-hofler.json",
-    "and-juliet-2022/wsj--charles-isherwood.json",
-    "and-juliet-2022/talkinbroadway--nancy-grossman.json"
+    "once-upon-a-one-more-time-2023/hollywood-reporter--angie-han.json",
+    "once-upon-a-one-more-time-2023/nytimes--jesse-green.json",
+    "once-upon-a-one-more-time-2023/variety--aramide-tinubu.json",
+    "once-upon-a-one-more-time-2023/variety--bob-verini.json",
+    "once-upon-a-one-more-time-2023/variety--charles-isherwood.json",
+    "once-upon-a-one-more-time-2023/vulture--helen-shaw.json",
+    "once-upon-a-one-more-time-2023/ew--kristen-baldwin.json",
+    "once-upon-a-one-more-time-2023/nydailynews--chris-jones.json",
+    "once-upon-a-one-more-time-2023/nydailynews--chris.json",
+    "once-upon-a-one-more-time-2023/theatermania--jesse-green.json",
+    "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
+    "once-upon-a-one-more-time-2023/broadwayworld--hannah-wing.json",
+    "once-upon-a-one-more-time-2023/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -252,7 +257,8 @@
       "lempicka-2024/nysr--david-finkle.json",
       "stranger-things-2024/londontheatre--marianka-swain.json",
       "hadestown-2019/broadwaynews--charles-isherwood.json",
-      "hadestown-2019/dcmetro--deb-miller.json"
+      "hadestown-2019/dcmetro--deb-miller.json",
+      "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json"
     ],
     "scrapingbee": [
       "spamalot-2023/cititour--brian-scott-lipton.json",
@@ -266,9 +272,7 @@
       "harmony-2023/chicagotribune--chris-jones.json",
       "lempicka-2024/nyt-theater--jonathan-mandell.json",
       "moulin-rouge-2019/observer--rex-reed.json",
-      "aladdin-2014/usatoday--elysa-gardner.json",
-      "and-juliet-2022/cititour--brian-scott-lipton.json",
-      "and-juliet-2022/talkinbroadway--matthew-murray.json"
+      "aladdin-2014/usatoday--elysa-gardner.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
@@ -309,8 +313,11 @@
       "patriots-2024/amny--matt-windman.json",
       "aladdin-2014/vulture--jesse-green.json",
       "aladdin-2014/thewrap--robert-hofler.json",
-      "and-juliet-2022/city-beat--brain-scott-lipton.json",
-      "and-juliet-2022/washpost--peter-marks.json"
+      "once-upon-a-one-more-time-2023/nytg--gillian-russo.json",
+      "once-upon-a-one-more-time-2023/nytg--gillian.json",
+      "once-upon-a-one-more-time-2023/ew--emlyn-travis.json",
+      "once-upon-a-one-more-time-2023/ew--emlyn.json",
+      "once-upon-a-one-more-time-2023/thewrap--robert-hofler.json"
     ]
   }
 }
