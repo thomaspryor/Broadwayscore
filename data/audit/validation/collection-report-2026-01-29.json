@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-29T15:24:50.346Z",
+  "runDate": "2026-01-29T15:25:06.827Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 25,
     "priority": "all",
-    "showFilter": "the-cottage-2023",
+    "showFilter": "six-2021",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 64,
-    "failed": 180,
+    "failed": 186,
     "skipped": 0,
-    "successRate": "26.2%"
+    "successRate": "25.6%"
   },
   "tierBreakdown": {
     "playwright": 10,
@@ -23,16 +23,16 @@
     "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 10,
     "tier1Success": 0,
-    "tier2Attempts": 3,
+    "tier2Attempts": 10,
     "tier2Success": 0,
-    "tier3Attempts": 3,
+    "tier3Attempts": 10,
     "tier3Success": 1,
-    "tier4Attempts": 6,
-    "tier4Success": 1,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 20
+    "tier4Attempts": 22,
+    "tier4Success": 0,
+    "totalFailed": 10,
+    "scrapingBeeCreditsUsed": 40
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -277,10 +277,16 @@
     "hells-kitchen-2024/usatoday--charles-isherwood.json",
     "hells-kitchen-2024/usatoday--david-rooney.json",
     "hells-kitchen-2024/washpost--peter-marks.json",
-    "the-cottage-2023/observer--jesse-green.json",
-    "the-cottage-2023/observer--rex-reed.json",
-    "the-cottage-2023/theatermania--adam-feldman.json",
-    "the-cottage-2023/wsj--charles-isherwood.json"
+    "six-2021/variety--peter-marks.json",
+    "six-2021/deadline--pete-hammond.json",
+    "six-2021/ew--ruth-kinane.json",
+    "six-2021/guardian--adrian-horton.json",
+    "six-2021/observer--david-cote.json",
+    "six-2021/theatermania--jesse-green.json",
+    "six-2021/thewrap--robert-hofler.json",
+    "six-2021/wsj--charles-isherwood.json",
+    "six-2021/amny--matt-windman.json",
+    "six-2021/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
     "playwright": [
