@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "\"'Wicked's' at its cleverest with the girl stuff; the streamlining of Maguire’s story – reducing a totalitarian allegory to an animal-rights flap – weakens the narrative logic. Catchy Stephen Schwartz songs compensate for a dreary opening number, but it’s the 'Wicked' witches who really make magic.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
   "sources": [
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"Two of the producers of the musical Wicked bear the name Platt, which (in German) means flat, and one the name Stone, which (in English) means heavy. Why not also one called Long, although it is too much to ask for one called Boring, all of which apply to the show.\"\n\nRead more"
+  "showScoreExcerpt": "\"Two of the producers of the musical Wicked bear the name Platt, which (in German) means flat, and one the name Stone, which (in English) means heavy. Why not also one called Long, although it is too much to ask for one called Boring, all of which apply to the show.\"\n\nRead more",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": 92,
+      "performances": 95,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "I'm in love with this show; I'm in love with the message it sends",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "With tears streaming down my cheeks, I couldn't help thinking about how hard Mariand has worked all of these years, and it's so obvious, as it was at that first audition, that she was meant to fly",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "My first experience of Wicked was as a 12 year old in 2006 and I saw it with my mom... each time, the show continues to get deeper and deeper and better and better",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The reviewer expresses overwhelming love and admiration for the show, describes crying during performances, praises all aspects from performances to political relevance, and explicitly states being 'in love' with the production. | GPT-4o-mini: The review expresses unqualified enthusiasm for the show, highlighting emotional impact, strong performances, and a relevant message, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:35:01.583Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
