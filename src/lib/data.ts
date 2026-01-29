@@ -1169,14 +1169,18 @@ export function getShowsApproachingRecoupment(): ApproachingRecoupmentShow[] {
 }
 
 /**
- * Get shows at risk (below break-even or declining trajectory)
+ * Get shows truly at risk (below break-even AND below 30% recouped)
+ *
+ * This uses strict criteria to avoid flagging shows that are just in
+ * seasonal slow periods (Jan/Feb are historically slow on Broadway).
+ * A show must be BOTH losing money weekly AND far from recoupment.
  */
 export function getShowsAtRisk(): AtRiskShow[] {
   const allShows = getAllShows();
   const results: AtRiskShow[] = [];
 
   for (const [slug, data] of Object.entries(commercial.shows)) {
-    // Only TBD shows
+    // Only TBD shows (not yet recouped)
     if (data.designation !== 'TBD') continue;
 
     const show = allShows.find(s => s.slug === slug);
@@ -1187,12 +1191,19 @@ export function getShowsAtRisk(): AtRiskShow[] {
     const weeklyGross = grossData?.thisWeek?.gross;
     const weeklyRunningCost = data.weeklyRunningCost;
 
-    // Include if: declining trend OR operating below break-even
-    const isBelowBreakEven = weeklyGross && weeklyRunningCost && weeklyGross < weeklyRunningCost;
-    const isDeclining = trend === 'declining';
-
-    if (!isBelowBreakEven && !isDeclining) continue;
     if (!weeklyGross || !weeklyRunningCost) continue;
+
+    // Strict criteria: BOTH conditions must be true
+    // 1. Actually below break-even (losing money weekly)
+    const isBelowBreakEven = weeklyGross < weeklyRunningCost;
+
+    // 2. Below 30% recouped (far from recoupment)
+    // estimatedRecoupmentPct is [low, high] tuple - use high estimate for this check
+    const estRecoupmentHigh = data.estimatedRecoupmentPct?.[1] || 0;
+    const isBelowRecoupmentThreshold = estRecoupmentHigh < 30;
+
+    // Must meet BOTH criteria to be truly "at risk"
+    if (!isBelowBreakEven || !isBelowRecoupmentThreshold) continue;
 
     results.push({
       slug,
@@ -1205,7 +1216,7 @@ export function getShowsAtRisk(): AtRiskShow[] {
     });
   }
 
-  // Sort by severity: below break-even first, then by deficit amount
+  // Sort by severity: largest weekly deficit first
   return results.sort((a, b) => {
     const deficitA = a.weeklyRunningCost - a.weeklyGross;
     const deficitB = b.weeklyRunningCost - b.weeklyGross;

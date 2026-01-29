@@ -334,10 +334,22 @@ POST https://web.archive.org/save/{url}
 ## Implementation Checklist
 
 ### High Impact (Do First)
-- [ ] **Implement Guardian Open Platform API** - 47 reviews, free API, high success expected
+- [x] **Implement Guardian Open Platform API** - 47 reviews, free API, high success expected
+  - COMPLETED 2026-01-28: Created `scripts/fetch-guardian-reviews.js`
+  - Created GitHub workflow: `.github/workflows/fetch-guardian-reviews.yml`
+  - Requires GUARDIAN_API_KEY secret (free at https://open-platform.theguardian.com/access/)
+  - Run: `gh workflow run "Fetch Guardian Reviews via API"`
 - [ ] **Add stealth_proxy targeting for theguardian.com** - fallback if API fails
-- [ ] **Implement excerpt-based scoring mode** - allows scoring 350+ reviews with 2+ excerpts
-- [ ] **Debug WSJ login** (check scripts/collect-review-texts.js loginToSite function)
+- [x] **Implement excerpt-based scoring mode** - allows scoring 350+ reviews with 2+ excerpts
+  - ALREADY IMPLEMENTED: LLM scoring in `scripts/llm-scoring/index.ts` (lines 303-333)
+  - Combines dtliExcerpt + bwwExcerpt + showScoreExcerpt when fullText unavailable
+  - 743 reviews already scored on excerpts (356 with 2+ excerpts)
+  - Created `scripts/mark-excerpt-scores.js` for tracking textSource
+- [x] **Debug WSJ login** (check scripts/collect-review-texts.js loginToSite function)
+  - ANALYZED 2026-01-28: NOT A BUG - see `data/audit/wsj-login-debug-findings.md`
+  - WSJ is in archiveFirstSites, so Archive.org tried first (not login)
+  - Actual success rate: 45% (36/80 reviews have fullText via Archive.org)
+  - Login code exists and is correct, just rarely reached
 
 ### Medium Impact
 - [ ] Test Variety with stealth_proxy (small batch of 5-10 first)

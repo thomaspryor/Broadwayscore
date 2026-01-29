@@ -1,0 +1,87 @@
+name: Fetch Guardian Reviews via API
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Max reviews to process (0 = all)'
+        required: false
+        default: '0'
+        type: string
+      shows:
+        description: 'Comma-separated show IDs to process (empty = all)'
+        required: false
+        default: ''
+        type: string
+      dry_run:
+        description: 'Dry run (do not save changes)'
+        required: false
+        default: false
+        type: boolean
+
+# Run weekly to catch any new Guardian reviews
+  schedule:
+    - cron: '0 8 * * 3' # Wednesdays at 8 AM UTC
+
+jobs:
+  fetch-guardian:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch Guardian reviews
+        env:
+          GUARDIAN_API_KEY: ${{ secrets.GUARDIAN_API_KEY }}
+        run: |
+          ARGS=""
+
+          if [ "${{ github.event.inputs.limit }}" != "0" ] && [ -n "${{ github.event.inputs.limit }}" ]; then
+            ARGS="$ARGS --limit=${{ github.event.inputs.limit }}"
+          fi
+
+          if [ -n "${{ github.event.inputs.shows }}" ]; then
+            ARGS="$ARGS --shows=${{ github.event.inputs.shows }}"
+          fi
+
+          if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+
+          node scripts/fetch-guardian-reviews.js $ARGS
+
+      - name: Commit changes
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+
+          git add data/review-texts/
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: Fetch Guardian reviews via API
+
+            Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>"
+
+            # Push with retry logic
+            for i in 1 2 3 4 5; do
+              git pull --rebase origin main && git push origin main && break
+              echo "Push attempt $i failed, retrying..."
+              sleep $((i * 2))
+            done
+          fi
