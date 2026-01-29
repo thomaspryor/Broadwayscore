@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T06:43:36.730Z",
+  "runDate": "2026-01-29T06:45:19.223Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "mother-play-2024",
+    "showFilter": "days-of-wine-and-roses-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 63,
-    "failed": 113,
+    "processed": 62,
+    "failed": 116,
     "skipped": 0,
-    "successRate": "35.8%"
+    "successRate": "34.8%"
   },
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 11,
     "scrapingbee": 5,
     "brightdata": 6,
     "archive": 40
   },
   "statistics": {
-    "tier1Attempts": 14,
-    "tier1Success": 4,
-    "tier2Attempts": 10,
+    "tier1Attempts": 17,
+    "tier1Success": 3,
+    "tier2Attempts": 14,
     "tier2Success": 1,
-    "tier3Attempts": 9,
-    "tier3Success": 1,
-    "tier4Attempts": 24,
+    "tier3Attempts": 13,
+    "tier3Success": 2,
+    "tier4Attempts": 28,
     "tier4Success": 4,
-    "totalFailed": 8,
-    "scrapingBeeCreditsUsed": 40
+    "totalFailed": 11,
+    "scrapingBeeCreditsUsed": 70
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -88,16 +88,15 @@
     "hadestown-2019/dcmetro--deb-miller.json",
     "patriots-2024/broadwaynews--brittani-samuel.json",
     "patriots-2024/amny--matt-windman.json",
-    "mother-play-2024/nyt-theater--jonathan-mandell.json",
-    "mother-play-2024/nytg--allison-considine.json",
-    "mother-play-2024/nytimes--alexis-soloski.json",
-    "mother-play-2024/broadwaynews--brittani-samuel.json",
-    "mother-play-2024/ew--christian-holub.json",
-    "mother-play-2024/nydailynews--chris.json",
-    "mother-play-2024/theatermania--rachel-graham.json",
-    "mother-play-2024/nysr--frank-scheck.json",
-    "mother-play-2024/nysr--steven-suskin.json",
-    "mother-play-2024/talkinbroadway--howard-miller.json"
+    "days-of-wine-and-roses-2024/nyt-theater--jonathan-mandell.json",
+    "days-of-wine-and-roses-2024/nytg--gillian-russo.json",
+    "days-of-wine-and-roses-2024/nytg--gillian.json",
+    "days-of-wine-and-roses-2024/nydailynews--chris-jones.json",
+    "days-of-wine-and-roses-2024/nydailynews--chris.json",
+    "days-of-wine-and-roses-2024/cititour--brian-scott-lipton.json",
+    "days-of-wine-and-roses-2024/dailybeast--tim-teeman.json",
+    "days-of-wine-and-roses-2024/nysr--bob-verini.json",
+    "days-of-wine-and-roses-2024/nysr--david-finkle.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -205,14 +204,17 @@
     "gutenberg-2023/thewrap--steve-pond.json",
     "gutenberg-2023/wsj--charles-isherwood.json",
     "gutenberg-2023/wsj--charles.json",
-    "mother-play-2024/hollywood-reporter--david-rooney.json",
-    "mother-play-2024/nytimes--jesse-green.json",
-    "mother-play-2024/guardian--adrian-horton.json",
-    "mother-play-2024/guardian--benjamin-lee.json",
-    "mother-play-2024/nydailynews--chris-jones.json",
-    "mother-play-2024/nypost--johnny-oleksinski.json",
-    "mother-play-2024/wsj--charles-isherwood.json",
-    "mother-play-2024/wsj--charles.json"
+    "days-of-wine-and-roses-2024/nytimes--jesse-green.json",
+    "days-of-wine-and-roses-2024/variety--frank-rizzo.json",
+    "days-of-wine-and-roses-2024/guardian--lauren-mechling.json",
+    "days-of-wine-and-roses-2024/nypost--johnny-oleksinski.json",
+    "days-of-wine-and-roses-2024/observer--rex-reed.json",
+    "days-of-wine-and-roses-2024/theatermania--adam-feldman.json",
+    "days-of-wine-and-roses-2024/wsj--charles-isherwood.json",
+    "days-of-wine-and-roses-2024/wsj--terry-teachout.json",
+    "days-of-wine-and-roses-2024/talkinbroadway--matthew-murray.json",
+    "days-of-wine-and-roses-2024/washpost--naveen-kumar.json",
+    "days-of-wine-and-roses-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -224,17 +226,16 @@
       "stranger-things-2024/londontheatre--marianka-swain.json",
       "hadestown-2019/broadwaynews--charles-isherwood.json",
       "hadestown-2019/dcmetro--deb-miller.json",
-      "mother-play-2024/nyt-theater--jonathan-mandell.json",
-      "mother-play-2024/broadwaynews--brittani-samuel.json",
-      "mother-play-2024/nysr--frank-scheck.json",
-      "mother-play-2024/nysr--steven-suskin.json"
+      "days-of-wine-and-roses-2024/nyt-theater--jonathan-mandell.json",
+      "days-of-wine-and-roses-2024/nysr--bob-verini.json",
+      "days-of-wine-and-roses-2024/nysr--david-finkle.json"
     ],
     "scrapingbee": [
       "spamalot-2023/cititour--brian-scott-lipton.json",
       "spamalot-2023/chicagotribune--chris-jones.json",
       "lempicka-2024/cititour--brian-scott-lipton.json",
       "stranger-things-2024/thestage--dave-fargnoli.json",
-      "mother-play-2024/ew--christian-holub.json"
+      "days-of-wine-and-roses-2024/cititour--brian-scott-lipton.json"
     ],
     "brightdata": [
       "harmony-2023/observer--jesse-green.json",
@@ -242,7 +243,7 @@
       "harmony-2023/chicagotribune--chris-jones.json",
       "lempicka-2024/nyt-theater--jonathan-mandell.json",
       "moulin-rouge-2019/observer--rex-reed.json",
-      "mother-play-2024/talkinbroadway--howard-miller.json"
+      "days-of-wine-and-roses-2024/dailybeast--tim-teeman.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
@@ -281,10 +282,10 @@
       "hadestown-2019/nydailynews--chris-jones.json",
       "patriots-2024/broadwaynews--brittani-samuel.json",
       "patriots-2024/amny--matt-windman.json",
-      "mother-play-2024/nytg--allison-considine.json",
-      "mother-play-2024/nytimes--alexis-soloski.json",
-      "mother-play-2024/nydailynews--chris.json",
-      "mother-play-2024/theatermania--rachel-graham.json"
+      "days-of-wine-and-roses-2024/nytg--gillian-russo.json",
+      "days-of-wine-and-roses-2024/nytg--gillian.json",
+      "days-of-wine-and-roses-2024/nydailynews--chris-jones.json",
+      "days-of-wine-and-roses-2024/nydailynews--chris.json"
     ]
   }
 }
