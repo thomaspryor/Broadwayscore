@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Barry Manilow and Bruce Sussman's musical about the Comedian Harmonists finally makes it to Broadway after a long journey, and while it has its flaws, the score is gorgeous and the performances are committed.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,5 +19,61 @@
   "needsScoring": true,
   "sources": [
     "web-search"
-  ]
+  ],
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 60.5,
+      "high": 75.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": 80,
+      "performances": 75,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "while it has its flaws",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "the score is gorgeous",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the performances are committed",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges flaws but praises the music and performances, suggesting a qualified positive recommendation despite reservations. | GPT-4o-mini: The review highlights strong music and performances but acknowledges flaws, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:35:09.418Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 70,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

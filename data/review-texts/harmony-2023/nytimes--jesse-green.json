@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Wherever it can — in the plot, in the characterizations and in the sometimes bombastic orchestrations for a heavily synthed and amped orchestra of nine — “Harmony” wields a truncheon instead of the needle it needs. It might have helped if the supposedly comic numbers were actually funny, but neither Manilow and Sussman nor Carlyle excel at that here.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 46,
   "source": "dtli",
   "dtliThumb": "Down",
   "dtliUrl": null,
@@ -22,7 +22,62 @@
     "web-search",
     "dtli"
   ],
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": 70,
+      "performances": 60,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "wields a truncheon instead of the needle it needs",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Manilow's vocal arrangements, written with John O'Neill, the show's music director, are marvelous",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a rough ride of an evening",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Despite praise for Manilow's music and arrangements, Green delivers harsh criticism of the book, characterization, and overall execution, describing it as heavy-handed and dramatically ineffective. | GPT-4o-mini: The review presents a mixed perspective, with significant praise for the music but strong criticisms of the book and overall execution, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:35:23.272Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 50,
+    "scoreDelta": 8,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (46 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }

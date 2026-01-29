@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Timely it may sadly be, but a theatrical triumph it still isn’t. I reviewed the show back in 1997, and while it is changed and improved, it rarely rises above a level of admirable, hard-working professionalism.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "web-search",
   "dtliThumb": "Down",
   "dtliUrl": null,
@@ -22,7 +22,62 @@
     "web-search",
     "dtli"
   ],
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 50,
+    "confidence": "high",
+    "range": {
+      "low": 45,
+      "high": 55
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "longtime passion project",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "finally made it to off-Broadway last year, and now caps its long journey with an arrival on Broadway",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "It’s no secret that the musical 'Harmony' has been a longtime passion project for its authors",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: This appears to be only an introduction or excerpt with no critical assessment, making it impossible to determine the critic's recommendation. | GPT-4o-mini: The review provides no clear recommendation or critique, indicating a neutral stance on the show's quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:35:50.850Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 50,
+    "openaiScore": 50,
+    "scoreDelta": 0,
+    "thumbsMatch": false,
+    "expectedThumb": "Down",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (50 → Flat) conflicts with aggregator thumbs (Down)"
+    ]
+  }
 }
