@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-29T18:49:39.375Z",
+  "runDate": "2026-01-29T18:49:50.077Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 25,
     "priority": "all",
-    "showFilter": "cabaret-2024",
+    "showFilter": "patriots-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 65,
-    "failed": 225,
+    "failed": 228,
     "skipped": 0,
-    "successRate": "22.4%"
+    "successRate": "22.2%"
   },
   "tierBreakdown": {
     "playwright": 10,
@@ -23,16 +23,16 @@
     "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 6,
+    "tier1Attempts": 9,
     "tier1Success": 0,
-    "tier2Attempts": 6,
+    "tier2Attempts": 9,
     "tier2Success": 0,
-    "tier3Attempts": 6,
+    "tier3Attempts": 9,
     "tier3Success": 0,
-    "tier4Attempts": 14,
+    "tier4Attempts": 21,
     "tier4Success": 2,
-    "totalFailed": 8,
-    "scrapingBeeCreditsUsed": 30
+    "totalFailed": 11,
+    "scrapingBeeCreditsUsed": 50
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -319,14 +319,17 @@
     "here-lies-love-2023/indiewire--chris-ofalt.json",
     "here-lies-love-2023/observer--rex-reed.json",
     "here-lies-love-2023/theatermania--adam-feldman.json",
-    "cabaret-2024/variety--aramide-tinubu.json",
-    "cabaret-2024/variety--frank-rizzo.json",
-    "cabaret-2024/observer--rex-reed.json",
-    "cabaret-2024/theatermania--jesse-green.json",
-    "cabaret-2024/wsj--charles-isherwood.json",
-    "cabaret-2024/wsj--charles.json",
-    "cabaret-2024/queerty--matthew-wexler.json",
-    "cabaret-2024/village-voice--michael-musto.json"
+    "patriots-2024/variety--charles-isherwood.json",
+    "patriots-2024/guardian--adrian-horton.json",
+    "patriots-2024/new-york-sun--elysa-gardner.json",
+    "patriots-2024/new-york-sun--elysa.json",
+    "patriots-2024/nypost--johnny-oleksinski.json",
+    "patriots-2024/theatermania--david-gordon.json",
+    "patriots-2024/wsj--charles-isherwood.json",
+    "patriots-2024/wsj--charles.json",
+    "patriots-2024/nysr--frank-scheck.json",
+    "patriots-2024/nysr--frank.json",
+    "patriots-2024/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
     "playwright": [
