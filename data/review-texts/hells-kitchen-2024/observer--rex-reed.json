@@ -8,7 +8,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Hell's Kitchen is a jukebox musical that works because it's not really a jukebox musical at all—it's a deeply personal story that happens to be told through the songs of Alicia Keys.",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -54,18 +54,57 @@
     "Word count too low: 98 (min: 300)",
     "Show title not found in text"
   ],
-  "llmScore": null,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a jukebox musical that works",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "deeply personal story",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "it's a deeply personal story",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic clearly states the musical 'works' and praises it as a 'deeply personal story,' indicating positive reception, but the excerpt is too brief to determine the full scope of recommendation. | GPT-4o-mini: The review indicates a strong positive sentiment towards the show's storytelling, suggesting a clear recommendation despite the lack of explicit praise for specific elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T02:35:40.272Z",
+    "scoredAt": "2026-01-29T20:35:15.289Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 0,
-    "scoreDelta": 0,
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
