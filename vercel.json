@@ -1,6 +1,11 @@
 {
   "redirects": [
     {
+      "source": "/biz-buzz",
+      "destination": "/biz",
+      "permanent": true
+    },
+    {
       "source": "/(.*)",
       "has": [
         {
