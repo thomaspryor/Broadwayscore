@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-29T05:28:19.460Z",
+  "runDate": "2026-01-29T05:34:59.894Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "book-of-mormon-2011",
+    "showFilter": "the-lion-king-1997",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 48,
-    "failed": 87,
+    "failed": 86,
     "skipped": 0,
-    "successRate": "35.6%"
+    "successRate": "35.8%"
   },
   "tierBreakdown": {
     "playwright": 6,
@@ -23,16 +23,16 @@
     "archive": 33
   },
   "statistics": {
-    "tier1Attempts": 14,
+    "tier1Attempts": 10,
     "tier1Success": 0,
-    "tier2Attempts": 14,
+    "tier2Attempts": 10,
     "tier2Success": 0,
-    "tier3Attempts": 14,
+    "tier3Attempts": 10,
     "tier3Success": 0,
-    "tier4Attempts": 32,
-    "tier4Success": 1,
-    "totalFailed": 14,
-    "scrapingBeeCreditsUsed": 50
+    "tier4Attempts": 23,
+    "tier4Success": 0,
+    "totalFailed": 10,
+    "scrapingBeeCreditsUsed": 10
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -82,7 +82,7 @@
     "the-outsiders-2024/nytg--joe-dziemianowicz.json",
     "the-outsiders-2024/thewrap--robert-hofler.json",
     "the-outsiders-2024/washpost--elisabeth-vincentelli.json",
-    "book-of-mormon-2011/washpost--unknown.json"
+    "chicago-1996/ap--michael-kuchwara.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -158,20 +158,19 @@
     "the-outsiders-2024/dailybeast--tim-teeman.json",
     "the-outsiders-2024/rollingstone--brittany-spanos.json",
     "the-outsiders-2024/talkinbroadway--walter-bilderback.json",
-    "book-of-mormon-2011/variety--marilyn-stasio.json",
-    "book-of-mormon-2011/vulture--jesse-green.json",
-    "book-of-mormon-2011/ew--thom-geier.json",
-    "book-of-mormon-2011/guardian--brian-logan.json",
-    "book-of-mormon-2011/newsday--linda-winer.json",
-    "book-of-mormon-2011/theatermania--charles-isherwood.json",
-    "book-of-mormon-2011/theatermania--david-finkle.json",
-    "book-of-mormon-2011/wsj--terry-teachout.json",
-    "book-of-mormon-2011/ap--mark-kennedy.json",
-    "book-of-mormon-2011/backstage--david-sheward.json",
-    "book-of-mormon-2011/dailybeast--john-anderson.json",
-    "book-of-mormon-2011/the-philadelphia-inquirer--howard-shapiro.json",
-    "book-of-mormon-2011/the-village-voice--michael-musto.json",
-    "book-of-mormon-2011/usatoday--elysa-gardner.json"
+    "chicago-1996/nydailynews--howard-kissel.json",
+    "chicago-1996/theatermania--unknown.json",
+    "chicago-1996/time--unknown.json",
+    "the-lion-king-1997/hollywood-reporter--frank-scheck.json",
+    "the-lion-king-1997/variety--charles-isherwood.json",
+    "the-lion-king-1997/variety--matt-wolf.json",
+    "the-lion-king-1997/ew--bruce-handy.json",
+    "the-lion-king-1997/nypost--clive-barnes.json",
+    "the-lion-king-1997/USATODAY--david-patrick-stearns.json",
+    "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+    "the-lion-king-1997/njcom--michael-sommers.json",
+    "the-lion-king-1997/talkinbroadway--matthew-murray.json",
+    "the-lion-king-1997/washpost--lloyd-rose.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -228,7 +227,7 @@
       "the-outsiders-2024/nytg--joe-dziemianowicz.json",
       "the-outsiders-2024/thewrap--robert-hofler.json",
       "the-outsiders-2024/washpost--elisabeth-vincentelli.json",
-      "book-of-mormon-2011/washpost--unknown.json"
+      "chicago-1996/ap--michael-kuchwara.json"
     ]
   }
 }
