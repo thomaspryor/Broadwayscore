@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T15:26:01.547Z",
+  "runDate": "2026-01-29T15:26:37.726Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 25,
     "priority": "all",
-    "showFilter": "here-lies-love-2023",
+    "showFilter": "maybe-happy-ending-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 64,
-    "failed": 191,
+    "processed": 65,
+    "failed": 183,
     "skipped": 0,
-    "successRate": "25.1%"
+    "successRate": "26.2%"
   },
   "tierBreakdown": {
     "playwright": 10,
     "scrapingbee": 6,
     "brightdata": 6,
-    "archive": 42
+    "archive": 43
   },
   "statistics": {
-    "tier1Attempts": 15,
+    "tier1Attempts": 7,
     "tier1Success": 0,
-    "tier2Attempts": 15,
+    "tier2Attempts": 7,
     "tier2Success": 0,
-    "tier3Attempts": 15,
+    "tier3Attempts": 7,
     "tier3Success": 0,
-    "tier4Attempts": 33,
-    "tier4Success": 0,
-    "totalFailed": 15,
-    "scrapingBeeCreditsUsed": 40
+    "tier4Attempts": 17,
+    "tier4Success": 1,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 10
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -98,7 +98,8 @@
     "queen-versailles-2025/latimes--charles-mcnulty.json",
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
-    "suffs-2024/the-times--nancy-durrant.json"
+    "suffs-2024/the-times--nancy-durrant.json",
+    "maybe-happy-ending-2024/washpost--naveen-kumar.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -277,21 +278,13 @@
     "hells-kitchen-2024/usatoday--charles-isherwood.json",
     "hells-kitchen-2024/usatoday--david-rooney.json",
     "hells-kitchen-2024/washpost--peter-marks.json",
-    "here-lies-love-2023/hollywood-reporter--angie-han.json",
-    "here-lies-love-2023/variety--aramide-tinubu.json",
-    "here-lies-love-2023/variety--jesse-green.json",
-    "here-lies-love-2023/variety--peter-marks.json",
-    "here-lies-love-2023/vulture--sara-holdren.json",
-    "here-lies-love-2023/deadline--pete-hammond.json",
-    "here-lies-love-2023/guardian--adrian-horton.json",
-    "here-lies-love-2023/indiewire--chris-ofalt.json",
-    "here-lies-love-2023/observer--rex-reed.json",
-    "here-lies-love-2023/theatermania--adam-feldman.json",
-    "here-lies-love-2023/bergen-record--robert-feldberg.json",
-    "here-lies-love-2023/rollingstone--brittany-spanos.json",
-    "here-lies-love-2023/talkinbroadway--matthew-murray.json",
-    "here-lies-love-2023/usatoday--charles-isherwood.json",
-    "here-lies-love-2023/washpost--peter-marks.json"
+    "maybe-happy-ending-2024/variety--aramide-tinubu.json",
+    "maybe-happy-ending-2024/ew--shania-russell.json",
+    "maybe-happy-ending-2024/nydailynews--chris-jones.json",
+    "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+    "maybe-happy-ending-2024/wsj--terry-teachout.json",
+    "maybe-happy-ending-2024/talkinbroadway--matthew-murray.json",
+    "maybe-happy-ending-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -364,7 +357,8 @@
       "queen-versailles-2025/vulture--sara-holdren-and-jesse-david-fox.json",
       "queen-versailles-2025/vulture--sara-holdren.json",
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
-      "suffs-2024/the-times--nancy-durrant.json"
+      "suffs-2024/the-times--nancy-durrant.json",
+      "maybe-happy-ending-2024/washpost--naveen-kumar.json"
     ]
   }
 }
