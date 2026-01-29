@@ -9,11 +9,67 @@
   "isFullReview": false,
   "dtliExcerpt": "\"It is an act of prestidigitation: Entertainment and real emotional engagement are pulled out of thin air.\"\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 90,
+    "confidence": "high",
+    "range": {
+      "low": 83,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 82,
+      "performances": 94,
+      "direction": 89
+    },
+    "keyPhrases": [
+      {
+        "quote": "bringing a lightning shaft of unalloyed rom-com charm to Broadway's Longacre Theatre is a smashing little British import",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "If Dougal and Robin can carry a cake across New York, you should be able to carry yourself across New York to see them do it",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Two Strangers (Carry a Cake Across New York) *****",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The review gives the show 5 out of 5 stars with effusive praise for performances, direction, and design, explicitly recommending audiences see it despite acknowledging familiar rom-com tropes. | GPT-4o-mini: The review is overwhelmingly positive, praising the performances, direction, and overall charm of the musical, indicating a strong recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T05:52:54.925Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
