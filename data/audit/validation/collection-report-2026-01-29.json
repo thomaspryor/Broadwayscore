@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T05:15:39.262Z",
+  "runDate": "2026-01-29T05:16:48.513Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "back-to-the-future-2023",
+    "showFilter": "an-enemy-of-the-people-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 50,
+    "processed": 45,
     "failed": 76,
     "skipped": 0,
-    "successRate": "39.7%"
+    "successRate": "37.2%"
   },
   "tierBreakdown": {
-    "playwright": 7,
-    "scrapingbee": 6,
-    "brightdata": 7,
-    "archive": 30
+    "playwright": 6,
+    "scrapingbee": 4,
+    "brightdata": 6,
+    "archive": 29
   },
   "statistics": {
-    "tier1Attempts": 21,
-    "tier1Success": 2,
-    "tier2Attempts": 19,
-    "tier2Success": 3,
-    "tier3Attempts": 16,
-    "tier3Success": 3,
-    "tier4Attempts": 34,
-    "tier4Success": 1,
+    "tier1Attempts": 17,
+    "tier1Success": 0,
+    "tier2Attempts": 17,
+    "tier2Success": 0,
+    "tier3Attempts": 17,
+    "tier3Success": 1,
+    "tier4Attempts": 32,
+    "tier4Success": 0,
     "totalFailed": 16,
-    "scrapingBeeCreditsUsed": 70
+    "scrapingBeeCreditsUsed": 40
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -79,12 +79,7 @@
     "stranger-things-2024/nytg--kyle-turner.json",
     "stranger-things-2024/londontheatre--marianka-swain.json",
     "stranger-things-2024/thestage--dave-fargnoli.json",
-    "back-to-the-future-2023/theatrely--kobi-kassal.json",
-    "back-to-the-future-2023/chicagotribune--chris-jones.json",
-    "back-to-the-future-2023/dailybeast--tim-teeman.json",
-    "back-to-the-future-2023/slash-film--caroline-cao.json",
-    "back-to-the-future-2023/talkinbroadway--howard-miller.json",
-    "back-to-the-future-2023/usatoday--patrick-ryan.json"
+    "an-enemy-of-the-people-2024/talkinbroadway--matthew-murray.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -147,22 +142,22 @@
     "stranger-things-2024/wsj--charles-isherwood.json",
     "stranger-things-2024/theatrely--olivia-clement.json",
     "stranger-things-2024/tickertv--cheryl-king.json",
-    "back-to-the-future-2023/hollywood-reporter--frank-scheck.json",
-    "back-to-the-future-2023/variety--aramide-tinubu.json",
-    "back-to-the-future-2023/variety--charles-isherwood.json",
-    "back-to-the-future-2023/chelsea-community-news--michael-musto.json",
-    "back-to-the-future-2023/ew--dalton-ross.json",
-    "back-to-the-future-2023/nypost--johnny-oleksinski.json",
-    "back-to-the-future-2023/observer--david-cote.json",
-    "back-to-the-future-2023/theatermania--adam-feldman.json",
-    "back-to-the-future-2023/thewrap--robert-hofler.json",
-    "back-to-the-future-2023/timeout--adam-feldman.json",
-    "back-to-the-future-2023/wsj--charles-isherwood.json",
-    "back-to-the-future-2023/wsj--terry-teachout.json",
-    "back-to-the-future-2023/nysr--elysa-gardner.json",
-    "back-to-the-future-2023/nysr--steven-suskin.json",
-    "back-to-the-future-2023/queerty--matthew-wexler.json",
-    "back-to-the-future-2023/rollingstone--brittany-spanos.json"
+    "an-enemy-of-the-people-2024/hollywood-reporter--angie-han.json",
+    "an-enemy-of-the-people-2024/nytg--david-gordon.json",
+    "an-enemy-of-the-people-2024/variety--aramide-tinubu.json",
+    "an-enemy-of-the-people-2024/variety--peter-marks.json",
+    "an-enemy-of-the-people-2024/vulture--helen-shaw.json",
+    "an-enemy-of-the-people-2024/guardian--adrian-horton.json",
+    "an-enemy-of-the-people-2024/nydailynews--chris-jones.json",
+    "an-enemy-of-the-people-2024/nydailynews--chris.json",
+    "an-enemy-of-the-people-2024/theatermania--jesse-green.json",
+    "an-enemy-of-the-people-2024/wsj--terry-teachout.json",
+    "an-enemy-of-the-people-2024/backstage--suzt-evans.json",
+    "an-enemy-of-the-people-2024/bergen-record--robert-feldberg.json",
+    "an-enemy-of-the-people-2024/bloomberg--andnbspjeremy-gerard.json",
+    "an-enemy-of-the-people-2024/philadelphia-inquirer--howard-shapiro.json",
+    "an-enemy-of-the-people-2024/washpost--naveen-kumar.json",
+    "an-enemy-of-the-people-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -171,16 +166,13 @@
       "harmony-2023/nysr--sandy-macdonald.json",
       "spamalot-2023/nysr--melissa-rose-bernardo.json",
       "lempicka-2024/nysr--david-finkle.json",
-      "stranger-things-2024/londontheatre--marianka-swain.json",
-      "back-to-the-future-2023/slash-film--caroline-cao.json"
+      "stranger-things-2024/londontheatre--marianka-swain.json"
     ],
     "scrapingbee": [
       "spamalot-2023/cititour--brian-scott-lipton.json",
       "spamalot-2023/chicagotribune--chris-jones.json",
       "lempicka-2024/cititour--brian-scott-lipton.json",
-      "stranger-things-2024/thestage--dave-fargnoli.json",
-      "back-to-the-future-2023/theatrely--kobi-kassal.json",
-      "back-to-the-future-2023/chicagotribune--chris-jones.json"
+      "stranger-things-2024/thestage--dave-fargnoli.json"
     ],
     "brightdata": [
       "harmony-2023/observer--jesse-green.json",
@@ -188,8 +180,7 @@
       "harmony-2023/chicagotribune--chris-jones.json",
       "lempicka-2024/nyt-theater--jonathan-mandell.json",
       "moulin-rouge-2019/observer--rex-reed.json",
-      "back-to-the-future-2023/talkinbroadway--howard-miller.json",
-      "back-to-the-future-2023/usatoday--patrick-ryan.json"
+      "an-enemy-of-the-people-2024/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
@@ -220,8 +211,7 @@
       "lempicka-2024/slantmagazine--dan-rubins.json",
       "lempicka-2024/washpost--philip-kennicott.json",
       "moulin-rouge-2019/theater-news-online--jeremy-gerard.json",
-      "stranger-things-2024/nytg--kyle-turner.json",
-      "back-to-the-future-2023/dailybeast--tim-teeman.json"
+      "stranger-things-2024/nytg--kyle-turner.json"
     ]
   }
 }
