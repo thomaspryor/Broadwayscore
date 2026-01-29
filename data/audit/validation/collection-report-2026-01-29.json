@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T18:49:50.077Z",
+  "runDate": "2026-01-29T18:50:44.676Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 25,
+    "maxReviews": 15,
     "priority": "all",
-    "showFilter": "patriots-2024",
+    "showFilter": "the-wiz-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 65,
-    "failed": 228,
+    "processed": 66,
+    "failed": 221,
     "skipped": 0,
-    "successRate": "22.2%"
+    "successRate": "23.0%"
   },
   "tierBreakdown": {
     "playwright": 10,
     "scrapingbee": 6,
     "brightdata": 7,
-    "archive": 42
+    "archive": 43
   },
   "statistics": {
-    "tier1Attempts": 9,
+    "tier1Attempts": 4,
     "tier1Success": 0,
-    "tier2Attempts": 9,
-    "tier2Success": 0,
-    "tier3Attempts": 9,
+    "tier2Attempts": 4,
+    "tier2Success": 1,
+    "tier3Attempts": 3,
     "tier3Success": 0,
-    "tier4Attempts": 21,
-    "tier4Success": 2,
-    "totalFailed": 11,
-    "scrapingBeeCreditsUsed": 50
+    "tier4Attempts": 7,
+    "tier4Success": 1,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 20
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -99,7 +99,8 @@
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
     "suffs-2024/the-times--nancy-durrant.json",
-    "mj-2022/usatoday--david-rooney.json"
+    "mj-2022/usatoday--david-rooney.json",
+    "the-wiz-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -319,17 +320,10 @@
     "here-lies-love-2023/indiewire--chris-ofalt.json",
     "here-lies-love-2023/observer--rex-reed.json",
     "here-lies-love-2023/theatermania--adam-feldman.json",
-    "patriots-2024/variety--charles-isherwood.json",
-    "patriots-2024/guardian--adrian-horton.json",
-    "patriots-2024/new-york-sun--elysa-gardner.json",
-    "patriots-2024/new-york-sun--elysa.json",
-    "patriots-2024/nypost--johnny-oleksinski.json",
-    "patriots-2024/theatermania--david-gordon.json",
-    "patriots-2024/wsj--charles-isherwood.json",
-    "patriots-2024/wsj--charles.json",
-    "patriots-2024/nysr--frank-scheck.json",
-    "patriots-2024/nysr--frank.json",
-    "patriots-2024/talkinbroadway--matthew-murray.json"
+    "the-wiz-2024/nydailynews--chris-jones.json",
+    "the-wiz-2024/nydailynews--chris.json",
+    "the-wiz-2024/wsj--charles-isherwood.json",
+    "the-wiz-2024/thestage--lane-williamson.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -403,7 +397,8 @@
       "queen-versailles-2025/vulture--sara-holdren-and-jesse-david-fox.json",
       "queen-versailles-2025/vulture--sara-holdren.json",
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
-      "suffs-2024/the-times--nancy-durrant.json"
+      "suffs-2024/the-times--nancy-durrant.json",
+      "the-wiz-2024/broadwaynews--brittani-samuel.json"
     ]
   }
 }
