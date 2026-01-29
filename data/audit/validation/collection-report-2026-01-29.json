@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-29T18:10:19.828Z",
+  "runDate": "2026-01-29T18:10:44.057Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 10,
+    "maxReviews": 25,
     "priority": "all",
-    "showFilter": "jajas-african-hair-braiding-2023",
+    "showFilter": "appropriate-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 65,
-    "failed": 213,
+    "failed": 217,
     "skipped": 0,
-    "successRate": "23.4%"
+    "successRate": "23.0%"
   },
   "tierBreakdown": {
     "playwright": 10,
@@ -23,15 +23,15 @@
     "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 6,
+    "tier1Attempts": 8,
     "tier1Success": 0,
-    "tier2Attempts": 6,
+    "tier2Attempts": 8,
     "tier2Success": 0,
-    "tier3Attempts": 6,
+    "tier3Attempts": 8,
     "tier3Success": 1,
-    "tier4Attempts": 10,
-    "tier4Success": 0,
-    "totalFailed": 6,
+    "tier4Attempts": 19,
+    "tier4Success": 3,
+    "totalFailed": 10,
     "scrapingBeeCreditsUsed": 20
   },
   "processed": [
@@ -309,12 +309,16 @@
     "stereophonic-2024/guardian--gloria-oladipo.json",
     "stereophonic-2024/observer--rex-reed.json",
     "stereophonic-2024/theatermania--adam-feldman.json",
-    "jajas-african-hair-braiding-2023/variety--maya-phillips.json",
-    "jajas-african-hair-braiding-2023/guardian--gloria-oladipo.json",
-    "jajas-african-hair-braiding-2023/nydailynews--chris-jones.json",
-    "jajas-african-hair-braiding-2023/nydailynews--chris.json",
-    "jajas-african-hair-braiding-2023/timeout--adam-feldman.json",
-    "jajas-african-hair-braiding-2023/wsj--charles-isherwood.json"
+    "appropriate-2023/hollywood-reporter--david-rooney.json",
+    "appropriate-2023/vulture--jackson-mchenry.json",
+    "appropriate-2023/deadline--greg-evans.json",
+    "appropriate-2023/guardian--adrian-horton.json",
+    "appropriate-2023/nypost--johnny-oleksinski.json",
+    "appropriate-2023/observer--david-cote.json",
+    "appropriate-2023/timeout--adam-feldman.json",
+    "appropriate-2023/wsj--charles-isherwood.json",
+    "appropriate-2023/talkinbroadway--matthew-murray.json",
+    "appropriate-2023/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
