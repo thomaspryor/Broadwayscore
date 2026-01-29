@@ -869,6 +869,41 @@ interface CommercialFile {
 const commercial = commercialData as unknown as CommercialFile;
 
 /**
+ * Calculate weeks to recoup from opening date and recoup date
+ * This is the source of truth - never use manually stored recoupedWeeks
+ */
+export function calculateWeeksToRecoup(openingDate: string | null, recoupedDate: string | null): number | null {
+  if (!openingDate || !recoupedDate) return null;
+
+  try {
+    const openDate = new Date(openingDate);
+    if (isNaN(openDate.getTime())) return null;
+
+    // Parse recoup date (formats: "YYYY-MM" or "YYYY")
+    let recoupDate: Date;
+    if (/^\d{4}-\d{2}$/.test(recoupedDate)) {
+      // YYYY-MM format - use last day of month
+      const [year, month] = recoupedDate.split('-');
+      recoupDate = new Date(parseInt(year), parseInt(month), 0); // Last day of month
+    } else if (/^\d{4}$/.test(recoupedDate)) {
+      // YYYY format - use end of year
+      recoupDate = new Date(parseInt(recoupedDate), 11, 31);
+    } else {
+      return null;
+    }
+
+    if (isNaN(recoupDate.getTime())) return null;
+
+    const diffMs = recoupDate.getTime() - openDate.getTime();
+    if (diffMs < 0) return null; // Recoup date before opening?
+
+    return Math.round(diffMs / (7 * 24 * 60 * 60 * 1000));
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Get commercial data for a specific show by slug
  */
 export function getShowCommercial(slug: string): ShowCommercial | undefined {
@@ -1035,6 +1070,29 @@ export function getSeason(dateString: string | null | undefined): string | null 
   } else {
     return `${year - 1}-${year}`;
   }
+}
+
+/**
+ * Get all seasons that have commercial data, sorted by most recent first
+ * Automatically discovers seasons from the data - no hardcoding needed
+ */
+export function getSeasonsWithCommercialData(): string[] {
+  const allShows = getAllShows();
+  const seasonsSet = new Set<string>();
+
+  for (const slug of Object.keys(commercial.shows)) {
+    const show = allShows.find(s => s.slug === slug);
+    if (!show) continue;
+
+    const season = getSeason(show.openingDate);
+    if (season) {
+      seasonsSet.add(season);
+    }
+  }
+
+  // Sort by season (most recent first)
+  // Season format: "2024-2025", so we can sort alphabetically descending
+  return Array.from(seasonsSet).sort((a, b) => b.localeCompare(a));
 }
 
 /**
@@ -1234,7 +1292,7 @@ export function getRecentRecoupments(months: number = 24): RecentRecoupmentShow[
   cutoffDate.setMonth(cutoffDate.getMonth() - months);
 
   for (const [slug, data] of Object.entries(commercial.shows)) {
-    if (!data.recouped || !data.recoupedDate || !data.recoupedWeeks) continue;
+    if (!data.recouped || !data.recoupedDate) continue;
 
     // Parse recoup date (formats vary: "2025-01", "2024-06", "2022-12")
     const recoupDate = new Date(data.recoupedDate + '-01'); // Add day for parsing
@@ -1243,11 +1301,15 @@ export function getRecentRecoupments(months: number = 24): RecentRecoupmentShow[
     const show = allShows.find(s => s.slug === slug);
     if (!show) continue;
 
+    // Calculate weeks from opening date to recoup date (source of truth)
+    const weeksToRecoup = calculateWeeksToRecoup(show.openingDate, data.recoupedDate);
+    if (weeksToRecoup === null) continue;
+
     results.push({
       slug,
       title: show.title,
       season: getSeason(show.openingDate) || 'Unknown',
-      weeksToRecoup: data.recoupedWeeks,
+      weeksToRecoup,
       capitalization: data.capitalization || 0,
       recoupDate: data.recoupedDate,
     });
@@ -1392,7 +1454,8 @@ export function getAllOpenShowsWithCommercial(): Array<{
       estimatedRecoupmentPct: data.estimatedRecoupmentPct || null,
       trend: getRecoupmentTrend(slug),
       recouped: data.recouped,
-      recoupedWeeks: data.recoupedWeeks,
+      // Calculate weeks from dates - this is the source of truth
+      recoupedWeeks: calculateWeeksToRecoup(show.openingDate, data.recoupedDate),
     });
   }
 
@@ -1452,7 +1515,8 @@ export function getShowsBySeasonWithCommercial(season: string): Array<{
       estimatedRecoupmentPct: data.estimatedRecoupmentPct || null,
       trend: getRecoupmentTrend(slug),
       recouped: data.recouped,
-      recoupedWeeks: data.recoupedWeeks,
+      // Calculate weeks from dates - this is the source of truth
+      recoupedWeeks: calculateWeeksToRecoup(show.openingDate, data.recoupedDate),
     });
   }
 

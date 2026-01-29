@@ -7,6 +7,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 import {
+  getSeasonsWithCommercialData,
   getSeasonStats,
   getShowsApproachingRecoupment,
   getShowsAtRisk,
@@ -123,9 +124,11 @@ function generateRecentDevelopments(): DevelopmentItem[] {
 
 export default function BizDashboard() {
   // Get data for all sections
-  // Only show recent seasons with complete data
-  const season2425 = getSeasonStats('2024-2025');
-  const season2324 = getSeasonStats('2023-2024');
+  // Dynamically get seasons with commercial data (most recent first)
+  const allSeasons = getSeasonsWithCommercialData();
+  // Show up to 4 most recent seasons
+  const displaySeasons = allSeasons.slice(0, 4);
+  const seasonStats = displaySeasons.map(season => getSeasonStats(season));
 
   const approachingRecoupment = getShowsApproachingRecoupment();
   const atRiskShows = getShowsAtRisk();
@@ -200,9 +203,10 @@ export default function BizDashboard() {
           <h2 className="text-sm font-medium text-gray-400 uppercase tracking-wide mb-3">
             By Season
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <SeasonStatsCard {...season2425} />
-            <SeasonStatsCard {...season2324} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {seasonStats.map((stats) => (
+              <SeasonStatsCard key={stats.season} {...stats} />
+            ))}
           </div>
         </section>
 
