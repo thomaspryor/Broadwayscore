@@ -7,7 +7,7 @@
   "publishDate": "March 24, 2011",
   "fullText": "I know, I know: You’ve been indulging for years in a little scatological side business called “South Park.” But now, you’ve discovered your true calling — as the wit-spewing class clowns of Broadway.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "dtliThumb": "Up",
   "source": "dtli",
   "dtliExcerpt": "I know, I know: You’ve been indulging for years in a little scatological side business called “South Park.” But now, you’ve discovered your true calling — as the wit-spewing class clowns of Broadway.",
@@ -15,7 +15,55 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "you've discovered your true calling",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "wit-spewing class clowns of Broadway",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The fragment suggests the creators have found their theatrical voice and are succeeding as clever entertainers on Broadway, but the excerpt is too brief to determine full recommendation strength. | GPT-4o-mini: The review indicates a positive sentiment towards the production's humor and wit, suggesting a clear recommendation despite lacking detailed critique.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:08:52.443Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "This cheerfully vulgar and shamelessly politically incorrect musical about a pair of Mormon missionaries in Uganda is so good-natured in its equal-opportunity offensiveness that it's almost impossible to take offense.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This cheerfully vulgar and shamelessly politically incorrect musical about a pair of Mormon missionaries in Uganda is so good-natured in its equal-opportunity offensiveness that it's almost impossible to take offense.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "so good-natured in its equal-opportunity offensiveness",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "almost impossible to take offense",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "cheerfully vulgar and shamelessly politically incorrect",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic frames potentially controversial elements as positives, emphasizing the show's good-natured quality and suggesting it succeeds in its comedic approach without being truly offensive. | GPT-4o-mini: The review expresses strong positive sentiment towards the musical's humor and tone, indicating a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:08:40.204Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
