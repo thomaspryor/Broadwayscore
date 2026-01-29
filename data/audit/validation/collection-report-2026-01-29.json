@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-29T18:08:27.309Z",
+  "runDate": "2026-01-29T18:09:52.931Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 25,
     "priority": "all",
-    "showFilter": "cabaret-2024",
+    "showFilter": "the-lion-king-1997",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 65,
-    "failed": 215,
+    "failed": 217,
     "skipped": 0,
-    "successRate": "23.2%"
+    "successRate": "23.0%"
   },
   "tierBreakdown": {
     "playwright": 10,
@@ -23,16 +23,16 @@
     "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 5,
+    "tier1Attempts": 10,
     "tier1Success": 0,
-    "tier2Attempts": 5,
+    "tier2Attempts": 10,
     "tier2Success": 0,
-    "tier3Attempts": 5,
+    "tier3Attempts": 10,
     "tier3Success": 0,
-    "tier4Attempts": 13,
-    "tier4Success": 3,
-    "totalFailed": 8,
-    "scrapingBeeCreditsUsed": 30
+    "tier4Attempts": 24,
+    "tier4Success": 0,
+    "totalFailed": 10,
+    "scrapingBeeCreditsUsed": 20
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -309,14 +309,16 @@
     "stereophonic-2024/guardian--gloria-oladipo.json",
     "stereophonic-2024/observer--rex-reed.json",
     "stereophonic-2024/theatermania--adam-feldman.json",
-    "cabaret-2024/variety--aramide-tinubu.json",
-    "cabaret-2024/variety--frank-rizzo.json",
-    "cabaret-2024/observer--rex-reed.json",
-    "cabaret-2024/theatermania--jesse-green.json",
-    "cabaret-2024/wsj--charles-isherwood.json",
-    "cabaret-2024/wsj--charles.json",
-    "cabaret-2024/queerty--matthew-wexler.json",
-    "cabaret-2024/village-voice--michael-musto.json"
+    "the-lion-king-1997/hollywood-reporter--frank-scheck.json",
+    "the-lion-king-1997/variety--charles-isherwood.json",
+    "the-lion-king-1997/variety--matt-wolf.json",
+    "the-lion-king-1997/ew--bruce-handy.json",
+    "the-lion-king-1997/nypost--clive-barnes.json",
+    "the-lion-king-1997/USATODAY--david-patrick-stearns.json",
+    "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+    "the-lion-king-1997/njcom--michael-sommers.json",
+    "the-lion-king-1997/talkinbroadway--matthew-murray.json",
+    "the-lion-king-1997/washpost--lloyd-rose.json"
   ],
   "tierDetails": {
     "playwright": [
