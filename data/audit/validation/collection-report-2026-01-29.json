@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-29T15:19:52.653Z",
+  "runDate": "2026-01-29T15:20:16.618Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 25,
     "priority": "all",
-    "showFilter": "hamilton-2015",
+    "showFilter": "an-enemy-of-the-people-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 64,
-    "failed": 195,
+    "failed": 192,
     "skipped": 0,
-    "successRate": "24.7%"
+    "successRate": "25.0%"
   },
   "tierBreakdown": {
     "playwright": 10,
@@ -23,16 +23,16 @@
     "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 18,
+    "tier1Attempts": 16,
     "tier1Success": 0,
-    "tier2Attempts": 18,
+    "tier2Attempts": 16,
     "tier2Success": 0,
-    "tier3Attempts": 18,
-    "tier3Success": 2,
-    "tier4Attempts": 37,
+    "tier3Attempts": 16,
+    "tier3Success": 0,
+    "tier4Attempts": 31,
     "tier4Success": 1,
-    "totalFailed": 19,
-    "scrapingBeeCreditsUsed": 40
+    "totalFailed": 16,
+    "scrapingBeeCreditsUsed": 70
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -277,25 +277,22 @@
     "hells-kitchen-2024/usatoday--charles-isherwood.json",
     "hells-kitchen-2024/usatoday--david-rooney.json",
     "hells-kitchen-2024/washpost--peter-marks.json",
-    "hamilton-2015/hollywood-reporter--david-rooney.json",
-    "hamilton-2015/ew--tim-stack.json",
-    "hamilton-2015/guardian--jesse-green.json",
-    "hamilton-2015/nbcnews--elysa-gardner.json",
-    "hamilton-2015/nbcnews--kristy-puchko.json",
-    "hamilton-2015/nbcnews--melissa-locker.json",
-    "hamilton-2015/newsday--linda-winer.json",
-    "hamilton-2015/nypost--jesse-green.json",
-    "hamilton-2015/nypost--johnny-oleksinski.json",
-    "hamilton-2015/observer--david-cote.json",
-    "hamilton-2015/observer--rex-reed.json",
-    "hamilton-2015/theatermania--adam-feldman.json",
-    "hamilton-2015/theatermania--charles-isherwood.json",
-    "hamilton-2015/wsj--terry-teachout.json",
-    "hamilton-2015/ap--mark-kennedy.json",
-    "hamilton-2015/backstage-barbie--backstage-barbie.json",
-    "hamilton-2015/dailybeast--tim-teeman.json",
-    "hamilton-2015/rollingstone--rob-sheffield.json",
-    "hamilton-2015/the-clyde-fitch-report--david-finkle.json"
+    "an-enemy-of-the-people-2024/hollywood-reporter--angie-han.json",
+    "an-enemy-of-the-people-2024/nytg--david-gordon.json",
+    "an-enemy-of-the-people-2024/variety--aramide-tinubu.json",
+    "an-enemy-of-the-people-2024/variety--peter-marks.json",
+    "an-enemy-of-the-people-2024/vulture--helen-shaw.json",
+    "an-enemy-of-the-people-2024/guardian--adrian-horton.json",
+    "an-enemy-of-the-people-2024/nydailynews--chris-jones.json",
+    "an-enemy-of-the-people-2024/nydailynews--chris.json",
+    "an-enemy-of-the-people-2024/theatermania--jesse-green.json",
+    "an-enemy-of-the-people-2024/wsj--terry-teachout.json",
+    "an-enemy-of-the-people-2024/backstage--suzt-evans.json",
+    "an-enemy-of-the-people-2024/bergen-record--robert-feldberg.json",
+    "an-enemy-of-the-people-2024/bloomberg--andnbspjeremy-gerard.json",
+    "an-enemy-of-the-people-2024/philadelphia-inquirer--howard-shapiro.json",
+    "an-enemy-of-the-people-2024/washpost--naveen-kumar.json",
+    "an-enemy-of-the-people-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
