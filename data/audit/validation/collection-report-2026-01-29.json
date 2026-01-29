@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T01:52:25.422Z",
+  "runDate": "2026-01-29T01:52:43.635Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "grey-house-2023",
+    "showFilter": "the-notebook-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 28,
-    "failed": 25,
+    "processed": 19,
+    "failed": 35,
     "skipped": 0,
-    "successRate": "52.8%"
+    "successRate": "35.2%"
   },
   "tierBreakdown": {
     "playwright": 3,
-    "scrapingbee": 3,
-    "brightdata": 4,
-    "archive": 18
+    "scrapingbee": 0,
+    "brightdata": 3,
+    "archive": 13
   },
   "statistics": {
-    "tier1Attempts": 13,
+    "tier1Attempts": 19,
     "tier1Success": 0,
-    "tier2Attempts": 13,
-    "tier2Success": 3,
-    "tier3Attempts": 10,
-    "tier3Success": 1,
-    "tier4Attempts": 27,
-    "tier4Success": 9,
-    "totalFailed": 9,
-    "scrapingBeeCreditsUsed": 80
+    "tier2Attempts": 19,
+    "tier2Success": 0,
+    "tier3Attempts": 19,
+    "tier3Success": 0,
+    "tier4Attempts": 45,
+    "tier4Success": 4,
+    "totalFailed": 19,
+    "scrapingBeeCreditsUsed": 110
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -50,19 +50,10 @@
     "harmony-2023/nysr--sandy-macdonald.json",
     "harmony-2023/talkinbroadway--matthew-murray.json",
     "harmony-2023/washpost--peter-marks.json",
-    "grey-house-2023/nytg--joe-dziemianowicz.json",
-    "grey-house-2023/variety--a-d-amorosi.json",
-    "grey-house-2023/ew--emlyn-travis.json",
-    "grey-house-2023/nydailynews--chris-jones.json",
-    "grey-house-2023/nypost--johnny-oleksinski.json",
-    "grey-house-2023/timeout--adam-feldman.json",
-    "grey-house-2023/cititour--brian-scott-lipton.json",
-    "grey-house-2023/theatrely--kobi-kassal.json",
-    "grey-house-2023/chicagotribune--chris.json",
-    "grey-house-2023/nysr--david-finkle.json",
-    "grey-house-2023/nysr--frank-scheck.json",
-    "grey-house-2023/talkinbroadway--howard-miller.json",
-    "grey-house-2023/washpost--peter-marks.json"
+    "the-notebook-2024/nypost--johnny-oleksinski.json",
+    "the-notebook-2024/wsj--charles-isherwood.json",
+    "the-notebook-2024/wsj--charles.json",
+    "the-notebook-2024/vu--sara-holdren.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -81,15 +72,25 @@
     "harmony-2023/theatrely--michael-appler.json",
     "harmony-2023/stageandcinema--matthew-murray.json",
     "harmony-2023/usatoday--charles-isherwood.json",
-    "grey-house-2023/hollywood-reporter--angie-han.json",
-    "grey-house-2023/hollywood-reporter--david-rooney.json",
-    "grey-house-2023/newyorker--dan-stahl.json",
-    "grey-house-2023/variety--charles-isherwood.json",
-    "grey-house-2023/variety--peter-marks.json",
-    "grey-house-2023/vulture--helen-shaw.json",
-    "grey-house-2023/observer--david-cote.json",
-    "grey-house-2023/thewrap--robert-hofler.json",
-    "grey-house-2023/wsj--charles-isherwood.json"
+    "the-notebook-2024/hollywood-reporter--angie-han.json",
+    "the-notebook-2024/nytg--andy-propst.json",
+    "the-notebook-2024/variety--aramide-tinubu.json",
+    "the-notebook-2024/vulture--jackson-mchenry.json",
+    "the-notebook-2024/deadline--pete-hammond.json",
+    "the-notebook-2024/ew--alex-zalben.json",
+    "the-notebook-2024/guardian--adrian-horton.json",
+    "the-notebook-2024/guardian--gloria-oladipo.json",
+    "the-notebook-2024/guardian--jesse-green.json",
+    "the-notebook-2024/indiewire--christian-lewis.json",
+    "the-notebook-2024/indiewire--david-ehrlich.json",
+    "the-notebook-2024/nydailynews--chris-jones.json",
+    "the-notebook-2024/nydailynews--chris.json",
+    "the-notebook-2024/theatermania--adam-feldman.json",
+    "the-notebook-2024/theatermania--jesse-green.json",
+    "the-notebook-2024/theatrely--andy-lefkowitz.json",
+    "the-notebook-2024/theatrely--jackson-mchenry.json",
+    "the-notebook-2024/amny--david-gordon.json",
+    "the-notebook-2024/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -97,16 +98,11 @@
       "harmony-2023/nysr--david-finkle.json",
       "harmony-2023/nysr--sandy-macdonald.json"
     ],
-    "scrapingbee": [
-      "grey-house-2023/timeout--adam-feldman.json",
-      "grey-house-2023/cititour--brian-scott-lipton.json",
-      "grey-house-2023/theatrely--kobi-kassal.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [
       "harmony-2023/observer--jesse-green.json",
       "harmony-2023/observer--rex-reed.json",
-      "harmony-2023/chicagotribune--chris-jones.json",
-      "grey-house-2023/talkinbroadway--howard-miller.json"
+      "harmony-2023/chicagotribune--chris-jones.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
@@ -118,15 +114,10 @@
       "harmony-2023/amny--matt-windman.json",
       "harmony-2023/talkinbroadway--matthew-murray.json",
       "harmony-2023/washpost--peter-marks.json",
-      "grey-house-2023/nytg--joe-dziemianowicz.json",
-      "grey-house-2023/variety--a-d-amorosi.json",
-      "grey-house-2023/ew--emlyn-travis.json",
-      "grey-house-2023/nydailynews--chris-jones.json",
-      "grey-house-2023/nypost--johnny-oleksinski.json",
-      "grey-house-2023/chicagotribune--chris.json",
-      "grey-house-2023/nysr--david-finkle.json",
-      "grey-house-2023/nysr--frank-scheck.json",
-      "grey-house-2023/washpost--peter-marks.json"
+      "the-notebook-2024/nypost--johnny-oleksinski.json",
+      "the-notebook-2024/wsj--charles-isherwood.json",
+      "the-notebook-2024/wsj--charles.json",
+      "the-notebook-2024/vu--sara-holdren.json"
     ]
   }
 }
