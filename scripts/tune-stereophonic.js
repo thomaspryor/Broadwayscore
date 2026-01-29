@@ -51,7 +51,7 @@ fixes.forEach(fix => {
 const additionalReviews = [
   {
     showId: 'stereophonic-2024',
-    outletId: 'EW',
+    outletId: 'ew',
     outlet: 'Entertainment Weekly',
     assignedScore: 95,
     bucket: 'Rave',
@@ -62,7 +62,7 @@ const additionalReviews = [
   },
   {
     showId: 'stereophonic-2024',
-    outletId: 'AP',
+    outletId: 'ap',
     outlet: 'Associated Press',
     assignedScore: 90,
     bucket: 'Rave',
