@@ -7,7 +7,7 @@
   "publishDate": "April 24, 2024",
   "fullText": "But the audience’s three-camera sit-com chuckle does reveal this “Vanya”’s chief shortcoming straightaway. While the production has got the jokes down pat, it is quite a bit shakier when it comes to the pathos and hardship that spring from them.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "dtliThumb": "Meh",
   "source": "dtli",
   "dtliExcerpt": "But the audience’s three-camera sit-com chuckle does reveal this “Vanya”’s chief shortcoming straightaway. While the production has got the jokes down pat, it is quite a bit shakier when it comes to the pathos and hardship that spring from them.",
@@ -15,7 +15,60 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 54,
+    "confidence": "high",
+    "range": {
+      "low": 47.5,
+      "high": 60.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 65,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "the production has got the jokes down pat",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "it is quite a bit shakier when it comes to the pathos and hardship",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "three-camera sit-com chuckle does reveal this \"Vanya\"'s chief shortcoming",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review identifies a fundamental flaw where the production succeeds with comedy but fails at the emotional depth that makes Chekhov meaningful, suggesting a mixed experience that doesn't fully work. | GPT-4o-mini: The review indicates a mixed response, praising the humor but criticizing the emotional depth, leading to a conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T06:38:40.557Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 52,
+    "openaiScore": 55,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -7,7 +7,7 @@
   "publishDate": "April 7, 2025",
   "fullText": "The alternating worlds are meant to be playful, but Toontown especially gets exhausting quickly, with characters mugging, clowning and amplifying every limp punchline. But the real world is not much subtler, limiting the emotional weight the show might have.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
   "dtliThumb": "Meh",
   "source": "dtli",
   "dtliExcerpt": "The alternating worlds are meant to be playful, but Toontown especially gets exhausting quickly, with characters mugging, clowning and amplifying every limp punchline. But the real world is not much subtler, limiting the emotional weight the show might have.",
@@ -15,7 +15,62 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": "“Boop!” shows that cartoon makeovers may be an enticing novelty, but to really succeed it first needs to be well drawn.",
   "bwwThumb": "Meh",
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 38,
+    "confidence": "high",
+    "range": {
+      "low": 30.5,
+      "high": 45.5
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 33,
+      "music": null,
+      "performances": 30,
+      "direction": 38
+    },
+    "keyPhrases": [
+      {
+        "quote": "gets exhausting quickly, with characters mugging, clowning and amplifying every limp punchline",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the real world is not much subtler, limiting the emotional weight the show might have",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The alternating worlds are meant to be playful",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review criticizes both the comedic elements as exhausting and the dramatic elements as lacking emotional weight, with no redeeming qualities mentioned. | GPT-4o-mini: The review expresses significant dissatisfaction with the show's execution and humor, indicating a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T06:38:07.079Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 35,
+    "scoreDelta": 5,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (38 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }

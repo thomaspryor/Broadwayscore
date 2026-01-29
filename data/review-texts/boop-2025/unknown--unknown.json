@@ -9,11 +9,67 @@
   "isFullReview": false,
   "dtliExcerpt": "“..such lively, lighthearted fun…you might as well sit back and surrender.”\n\nRead more",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "needsScoring": true,
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 53,
+      "music": 78,
+      "performances": 87,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "Boop! has nothing to offer an audience but a bunch of sly laughs, kicky tunes, dazzling staging, inventive design, a company of pros, and a star being born eight times a week. I'm afraid theatergoers will simply have to make do.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "whatever is going on at the Broadhurst is often surprisingly sophisticated and filled with an unquenchable spirit of fun. Boop! is one musical that earns its exclamation point.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Martin and company can't outrun the many questions the book leaves unanswered. Instead of finding a satisfying resolution, they throw their hands in the air",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Despite significant criticism of the weak book and plot holes, the critic clearly recommends the show based on stellar performances, dazzling production values, and infectious entertainment value. | GPT-4o-mini: The review highlights strong performances and lively music while acknowledging significant weaknesses in the book, leading to a clear but qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T06:38:01.138Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

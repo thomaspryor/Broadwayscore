@@ -9,13 +9,66 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 31,
   "dtliThumb": "Down",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 31,
+    "confidence": "high",
+    "range": {
+      "low": 25,
+      "high": 37
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 35,
+      "direction": 25
+    },
+    "keyPhrases": [
+      {
+        "quote": "so disconnected and alienating",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "had so failed to cohere",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Did something go wrong?",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic describes the production as 'disconnected and alienating' and questions how such talented actors 'failed to cohere,' indicating fundamental problems with the production despite the star power. | GPT-4o-mini: The review expresses significant disappointment with the production, highlighting a lack of coherence and connection despite a talented cast, leading to a clear pan.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T06:38:35.174Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 32,
+    "openaiScore": 30,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
