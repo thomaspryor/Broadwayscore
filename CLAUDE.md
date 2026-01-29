@@ -442,6 +442,7 @@ node scripts/lib/source-validator.js --test        # Test source validation
 - `src/app/page.tsx` - Homepage with show grid
 - `src/app/show/[slug]/page.tsx` - Individual show pages
 - `src/config/scoring.ts` - Scoring rules, tier weights, outlet mappings
+- `src/config/commercial.ts` - **Single source of truth** for commercial designations (colors, sort orders, descriptions, icons, badge styles). All biz components import from here - never hardcode designation config elsewhere.
 - `src/components/BoxOfficeStats.tsx` - Box office stats display component
 - `scripts/discover-new-shows.js` - Discovers new/upcoming shows from Broadway.org (runs daily)
 - `scripts/discover-historical-shows.js` - Discovers closed shows from past seasons (manual trigger)
@@ -1010,6 +1011,22 @@ node /tmp/analyze-fulltext-potential.js  # If script exists
   - Displayed on show pages between synopsis and reviews
   - Script: `scripts/generate-critic-consensus.js`
   - Data: `data/critic-consensus.json`
+
+### Broadway Investment Tracker (`/biz`)
+A dedicated section for recoupment tracking and investment analysis.
+
+**Routes:**
+- `/biz` - Dashboard with season stats, recent developments, approaching recoupment, at-risk shows, all open shows table
+- `/biz/season/[season]` - Season detail pages (auto-generated from data via `getSeasonsWithCommercialData()`)
+
+**Key patterns:**
+- **Seasons are dynamic** - discovered from `commercial.json` data, not hardcoded. New seasons appear automatically when shows are added.
+- **`calculateWeeksToRecoup(openingDate, recoupedDate)`** in `data.ts` is the source of truth for recoupment weeks. Never use manually stored `recoupedWeeks` values.
+- **`recouped: true` requires `recoupedDate`** - validation enforces this in `validate-data.js`
+- **"Current season" filter** computes dynamically (Sept = new season start)
+- **Centralized config** - All designation colors, sort orders, icons, and badge styles live in `src/config/commercial.ts`. Components import from there.
+
+**Components:** `src/components/biz/` (AllShowsTable, SeasonStatsCard, ApproachingRecoupmentCard, AtRiskCard, RecoupmentTable, RecentDevelopmentsList, DesignationLegend)
 
 ### Box Office Stats
 Show pages display box office data in two rows of stat cards:
