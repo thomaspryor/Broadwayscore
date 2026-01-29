@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-29T15:33:21.006Z",
+  "runDate": "2026-01-29T15:34:39.908Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 25,
     "priority": "all",
-    "showFilter": "illinoise-2024",
+    "showFilter": "the-roommate-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 66,
-    "failed": 195,
+    "failed": 191,
     "skipped": 0,
-    "successRate": "25.3%"
+    "successRate": "25.7%"
   },
   "tierBreakdown": {
     "playwright": 10,
@@ -23,16 +23,16 @@
     "archive": 44
   },
   "statistics": {
-    "tier1Attempts": 20,
+    "tier1Attempts": 14,
     "tier1Success": 0,
-    "tier2Attempts": 20,
+    "tier2Attempts": 14,
     "tier2Success": 0,
-    "tier3Attempts": 20,
-    "tier3Success": 2,
-    "tier4Attempts": 43,
-    "tier4Success": 2,
-    "totalFailed": 19,
-    "scrapingBeeCreditsUsed": 70
+    "tier3Attempts": 14,
+    "tier3Success": 0,
+    "tier4Attempts": 33,
+    "tier4Success": 3,
+    "totalFailed": 15,
+    "scrapingBeeCreditsUsed": 40
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -99,8 +99,8 @@
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
     "suffs-2024/the-times--nancy-durrant.json",
-    "illinoise-2024/nytg--amelia-merrill.json",
-    "illinoise-2024/broadwaynews--brittani-samuel.json"
+    "the-roommate-2024/nydailynews--chris-jones.json",
+    "the-roommate-2024/washpost--naveen-kumar.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -279,25 +279,21 @@
     "hells-kitchen-2024/usatoday--charles-isherwood.json",
     "hells-kitchen-2024/usatoday--david-rooney.json",
     "hells-kitchen-2024/washpost--peter-marks.json",
-    "illinoise-2024/hollywood-reporter--angie-han.json",
-    "illinoise-2024/variety--aramide-tinubu.json",
-    "illinoise-2024/variety--charles-isherwood.json",
-    "illinoise-2024/vulture--jackson-mchenry.json",
-    "illinoise-2024/deadline--pete-hammond.json",
-    "illinoise-2024/ew--kristen-baldwin.json",
-    "illinoise-2024/guardian--adrian-horton.json",
-    "illinoise-2024/observer--jesse-green.json",
-    "illinoise-2024/theatermania--jesse-green.json",
-    "illinoise-2024/thewrap--steve-pond.json",
-    "illinoise-2024/timeout--adam-feldman.json",
-    "illinoise-2024/wsj--charles-isherwood.json",
-    "illinoise-2024/theatrely--zachary-stewart.json",
-    "illinoise-2024/ap--mark-kennedy.json",
-    "illinoise-2024/billboard--demetrios-matheou.json",
-    "illinoise-2024/talkinbroadway--matthew-murray.json",
-    "illinoise-2024/usatoday--david-oliver.json",
-    "illinoise-2024/washpost--gloria-oladipo.json",
-    "illinoise-2024/washpost--peter-marks.json"
+    "the-roommate-2024/hollywood-reporter--angie-han.json",
+    "the-roommate-2024/variety--aramide-tinubu.json",
+    "the-roommate-2024/variety--charles-isherwood.json",
+    "the-roommate-2024/variety--frank-rizzo.json",
+    "the-roommate-2024/vulture--jackson-mchenry.json",
+    "the-roommate-2024/deadline--pete-hammond.json",
+    "the-roommate-2024/guardian--adrian-horton.json",
+    "the-roommate-2024/nypost--johnny-oleksinski.json",
+    "the-roommate-2024/theatermania--jesse-green.json",
+    "the-roommate-2024/wsj--charles-isherwood.json",
+    "the-roommate-2024/billboard--greg-evans.json",
+    "the-roommate-2024/dailybeast--tim-teeman.json",
+    "the-roommate-2024/rollingstone--alexis-soloski.json",
+    "the-roommate-2024/talkinbroadway--matthew-murray.json",
+    "the-roommate-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -371,8 +367,8 @@
       "queen-versailles-2025/vulture--sara-holdren.json",
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
       "suffs-2024/the-times--nancy-durrant.json",
-      "illinoise-2024/nytg--amelia-merrill.json",
-      "illinoise-2024/broadwaynews--brittani-samuel.json"
+      "the-roommate-2024/nydailynews--chris-jones.json",
+      "the-roommate-2024/washpost--naveen-kumar.json"
     ]
   }
 }
