@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T15:28:07.229Z",
+  "runDate": "2026-01-29T15:28:12.847Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 25,
     "priority": "all",
-    "showFilter": "uncle-vanya-2024",
+    "showFilter": "the-shark-is-broken-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 73,
-    "failed": 183,
+    "processed": 66,
+    "failed": 181,
     "skipped": 0,
-    "successRate": "28.5%"
+    "successRate": "26.7%"
   },
   "tierBreakdown": {
-    "playwright": 11,
+    "playwright": 10,
     "scrapingbee": 6,
     "brightdata": 6,
-    "archive": 50
+    "archive": 44
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 1,
+    "tier1Attempts": 5,
+    "tier1Success": 0,
     "tier2Attempts": 5,
     "tier2Success": 0,
     "tier3Attempts": 5,
     "tier3Success": 0,
-    "tier4Attempts": 23,
-    "tier4Success": 10,
-    "totalFailed": 7,
-    "scrapingBeeCreditsUsed": 0
+    "tier4Attempts": 11,
+    "tier4Success": 3,
+    "totalFailed": 5,
+    "scrapingBeeCreditsUsed": 20
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -99,15 +99,8 @@
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
     "suffs-2024/the-times--nancy-durrant.json",
-    "uncle-vanya-2024/nytg--joe-dziemianowicz.json",
-    "uncle-vanya-2024/nytimes--jesse-green.json",
-    "uncle-vanya-2024/vulture--sara-holdren.json",
-    "uncle-vanya-2024/broadwaynews--brittani-samuel.json",
-    "uncle-vanya-2024/ew--shania-russell.json",
-    "uncle-vanya-2024/nydailynews--chris-jones.json",
-    "uncle-vanya-2024/nydailynews--chris.json",
-    "uncle-vanya-2024/nypost--johnny-oleksinski.json",
-    "uncle-vanya-2024/theatermania--david-gordon.json"
+    "the-shark-is-broken-2023/variety--trish-deitch.json",
+    "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -286,13 +279,11 @@
     "hells-kitchen-2024/usatoday--charles-isherwood.json",
     "hells-kitchen-2024/usatoday--david-rooney.json",
     "hells-kitchen-2024/washpost--peter-marks.json",
-    "uncle-vanya-2024/variety--david-rooney.json",
-    "uncle-vanya-2024/vulture--helen-shaw.json",
-    "uncle-vanya-2024/ew--kristen-baldwin.json",
-    "uncle-vanya-2024/guardian--adrian-horton.json",
-    "uncle-vanya-2024/thewrap--robert-hofler.json",
-    "uncle-vanya-2024/thewrap--robert.json",
-    "uncle-vanya-2024/wsj--charles-isherwood.json"
+    "the-shark-is-broken-2023/observer--david-cote.json",
+    "the-shark-is-broken-2023/theatermania--jesse-green.json",
+    "the-shark-is-broken-2023/wsj--terry-teachout.json",
+    "the-shark-is-broken-2023/talkinbroadway--matthew-murray.json",
+    "the-shark-is-broken-2023/usatoday--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -305,8 +296,7 @@
       "hadestown-2019/broadwaynews--charles-isherwood.json",
       "hadestown-2019/dcmetro--deb-miller.json",
       "queen-versailles-2025/advertisement--jonathan-mandell.json",
-      "queen-versailles-2025/nysr--david-finkle.json",
-      "uncle-vanya-2024/nytg--joe-dziemianowicz.json"
+      "queen-versailles-2025/nysr--david-finkle.json"
     ],
     "scrapingbee": [
       "spamalot-2023/cititour--brian-scott-lipton.json",
@@ -367,14 +357,8 @@
       "queen-versailles-2025/vulture--sara-holdren.json",
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
       "suffs-2024/the-times--nancy-durrant.json",
-      "uncle-vanya-2024/nytimes--jesse-green.json",
-      "uncle-vanya-2024/vulture--sara-holdren.json",
-      "uncle-vanya-2024/broadwaynews--brittani-samuel.json",
-      "uncle-vanya-2024/ew--shania-russell.json",
-      "uncle-vanya-2024/nydailynews--chris-jones.json",
-      "uncle-vanya-2024/nydailynews--chris.json",
-      "uncle-vanya-2024/nypost--johnny-oleksinski.json",
-      "uncle-vanya-2024/theatermania--david-gordon.json"
+      "the-shark-is-broken-2023/variety--trish-deitch.json",
+      "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json"
     ]
   }
 }
