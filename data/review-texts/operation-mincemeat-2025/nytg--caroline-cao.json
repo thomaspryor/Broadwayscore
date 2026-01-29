@@ -9,15 +9,68 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": "Operation Mincemeat is a cup of British comedy, sometimes with drawn-out humor to a fault — not for every American. But it also captures the Hollywood hagiographic, the self-deprecating, the ironic, and the tragic that will make you gasp.",
   "bwwThumb": "Up",
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 71,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 77
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 75,
+      "performances": null,
+      "direction": 77
+    },
+    "keyPhrases": [
+      {
+        "quote": "sometimes with drawn-out humor to a fault — not for every American",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "will make you gasp",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "well-oiled engine of comedic and dramatic moving parts",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges significant flaws in the humor while praising the direction, choreography, and emotional impact, suggesting a qualified positive recommendation despite reservations. | GPT-4o-mini: The review highlights both strengths in direction and humor but notes potential issues with pacing and audience appeal, leading to a mixed-positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T02:27:56.455Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 70,
+    "scoreDelta": 2,
+    "thumbsMatch": true,
+    "expectedThumb": "Up",
+    "needsReview": false,
+    "needsReviewReasons": []
+  },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250121",
   "designation": "Recommended"
 }
