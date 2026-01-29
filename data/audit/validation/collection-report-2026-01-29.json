@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T15:20:31.495Z",
+  "runDate": "2026-01-29T15:20:47.837Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 25,
     "priority": "all",
-    "showFilter": "the-notebook-2024",
+    "showFilter": "appropriate-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 64,
-    "failed": 197,
+    "processed": 65,
+    "failed": 187,
     "skipped": 0,
-    "successRate": "24.5%"
+    "successRate": "25.8%"
   },
   "tierBreakdown": {
     "playwright": 10,
     "scrapingbee": 6,
     "brightdata": 6,
-    "archive": 42
+    "archive": 43
   },
   "statistics": {
-    "tier1Attempts": 19,
+    "tier1Attempts": 9,
     "tier1Success": 0,
-    "tier2Attempts": 19,
+    "tier2Attempts": 9,
     "tier2Success": 0,
-    "tier3Attempts": 19,
-    "tier3Success": 0,
-    "tier4Attempts": 43,
-    "tier4Success": 2,
-    "totalFailed": 21,
-    "scrapingBeeCreditsUsed": 110
+    "tier3Attempts": 9,
+    "tier3Success": 1,
+    "tier4Attempts": 22,
+    "tier4Success": 4,
+    "totalFailed": 11,
+    "scrapingBeeCreditsUsed": 20
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -98,7 +98,8 @@
     "queen-versailles-2025/latimes--charles-mcnulty.json",
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
-    "suffs-2024/the-times--nancy-durrant.json"
+    "suffs-2024/the-times--nancy-durrant.json",
+    "appropriate-2023/hollywood-reporter--lovia-gyarkye.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -277,27 +278,17 @@
     "hells-kitchen-2024/usatoday--charles-isherwood.json",
     "hells-kitchen-2024/usatoday--david-rooney.json",
     "hells-kitchen-2024/washpost--peter-marks.json",
-    "the-notebook-2024/hollywood-reporter--angie-han.json",
-    "the-notebook-2024/nytg--andy-propst.json",
-    "the-notebook-2024/variety--aramide-tinubu.json",
-    "the-notebook-2024/vulture--jackson-mchenry.json",
-    "the-notebook-2024/deadline--pete-hammond.json",
-    "the-notebook-2024/ew--alex-zalben.json",
-    "the-notebook-2024/guardian--adrian-horton.json",
-    "the-notebook-2024/guardian--gloria-oladipo.json",
-    "the-notebook-2024/guardian--jesse-green.json",
-    "the-notebook-2024/indiewire--christian-lewis.json",
-    "the-notebook-2024/indiewire--david-ehrlich.json",
-    "the-notebook-2024/nydailynews--chris-jones.json",
-    "the-notebook-2024/nydailynews--chris.json",
-    "the-notebook-2024/theatermania--adam-feldman.json",
-    "the-notebook-2024/theatermania--jesse-green.json",
-    "the-notebook-2024/wsj--charles-isherwood.json",
-    "the-notebook-2024/wsj--charles.json",
-    "the-notebook-2024/theatrely--andy-lefkowitz.json",
-    "the-notebook-2024/theatrely--jackson-mchenry.json",
-    "the-notebook-2024/amny--david-gordon.json",
-    "the-notebook-2024/talkinbroadway--matthew-murray.json"
+    "appropriate-2023/hollywood-reporter--david-rooney.json",
+    "appropriate-2023/nytimes--jesse-green.json",
+    "appropriate-2023/vulture--jackson-mchenry.json",
+    "appropriate-2023/deadline--greg-evans.json",
+    "appropriate-2023/guardian--adrian-horton.json",
+    "appropriate-2023/nypost--johnny-oleksinski.json",
+    "appropriate-2023/observer--david-cote.json",
+    "appropriate-2023/timeout--adam-feldman.json",
+    "appropriate-2023/wsj--charles-isherwood.json",
+    "appropriate-2023/talkinbroadway--matthew-murray.json",
+    "appropriate-2023/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -370,7 +361,8 @@
       "queen-versailles-2025/vulture--sara-holdren-and-jesse-david-fox.json",
       "queen-versailles-2025/vulture--sara-holdren.json",
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
-      "suffs-2024/the-times--nancy-durrant.json"
+      "suffs-2024/the-times--nancy-durrant.json",
+      "appropriate-2023/hollywood-reporter--lovia-gyarkye.json"
     ]
   }
 }
