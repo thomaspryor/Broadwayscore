@@ -15,6 +15,7 @@ interface ShowData {
   designation: CommercialDesignation;
   capitalization: number | null;
   weeklyGross: number | null;
+  totalGross?: number | null;
   estimatedRecoupmentPct: [number, number] | null;
   trend: RecoupmentTrend;
   recouped: boolean | null;
@@ -26,11 +27,14 @@ interface AllShowsTableProps {
   initialLimit?: number;
 }
 
-type SortColumn = 'title' | 'designation' | 'capitalization' | 'gross' | 'recoupment';
+type SortColumn = 'title' | 'designation' | 'capitalization' | 'gross' | 'totalGross' | 'recoupment';
 type SortDirection = 'asc' | 'desc';
 
 function formatCurrency(amount: number | null): string {
   if (amount === null) return '—';
+  if (amount >= 1_000_000_000) {
+    return `$${(amount / 1_000_000_000).toFixed(1)}B`;
+  }
   if (amount >= 1_000_000) {
     return `$${(amount / 1_000_000).toFixed(1)}M`;
   }
@@ -150,6 +154,9 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
         case 'gross':
           comparison = (a.weeklyGross || 0) - (b.weeklyGross || 0);
           break;
+        case 'totalGross':
+          comparison = (a.totalGross || 0) - (b.totalGross || 0);
+          break;
         case 'recoupment':
           const aVal = a.recouped ? 100 : (a.estimatedRecoupmentPct?.[1] || 0);
           const bVal = b.recouped ? 100 : (b.estimatedRecoupmentPct?.[1] || 0);
@@ -210,6 +217,14 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
               </th>
               <th
                 className="py-3 px-4 font-medium cursor-pointer hover:text-white transition-colors select-none group hidden lg:table-cell"
+                onClick={() => handleSort('totalGross')}
+                aria-sort={sortColumn === 'totalGross' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
+              >
+                Total Gross
+                <SortIcon active={sortColumn === 'totalGross'} direction={sortDirection} />
+              </th>
+              <th
+                className="py-3 px-4 font-medium cursor-pointer hover:text-white transition-colors select-none group hidden xl:table-cell"
                 onClick={() => handleSort('recoupment')}
                 aria-sort={sortColumn === 'recoupment' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
               >
@@ -245,6 +260,9 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                     {formatCurrency(show.weeklyGross)}
                   </td>
                   <td className="py-3 px-4 hidden lg:table-cell">
+                    {formatCurrency(show.totalGross || null)}
+                  </td>
+                  <td className="py-3 px-4 hidden xl:table-cell">
                     {show.recouped ? (
                       <span className="text-emerald-400">Recouped</span>
                     ) : show.estimatedRecoupmentPct ? (
