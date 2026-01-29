@@ -21,6 +21,7 @@
       "capitalization": 12500000,
       "capitalizationSource": "SEC filing / press reports",
       "weeklyRunningCost": 643000,
+      "costMethodology": "industry-estimate",
       "recouped": true,
       "recoupedDate": "2015-10",
       "recoupedWeeks": 26,
@@ -131,6 +132,7 @@
       "capitalization": 35500000,
       "capitalizationSource": "Broadway News / Broadway Journal",
       "weeklyRunningCost": 1000000,
+      "costMethodology": "industry-estimate",
       "isEstimate": {
         "weeklyRunningCost": true
       },
@@ -167,6 +169,7 @@
       "capitalization": 22000000,
       "capitalizationSource": "NY Times",
       "weeklyRunningCost": 775000,
+      "costMethodology": "reddit-standard",
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
@@ -181,6 +184,7 @@
       "capitalization": 26000000,
       "capitalizationSource": "Broadway Journal / Playbill",
       "weeklyRunningCost": 1500000,
+      "costMethodology": "industry-estimate",
       "isEstimate": {
         "weeklyRunningCost": true
       },
@@ -195,6 +199,7 @@
       "capitalization": 25000000,
       "capitalizationSource": "SEC filing / NY Times",
       "weeklyRunningCost": 960000,
+      "costMethodology": "industry-estimate",
       "isEstimate": {
         "weeklyRunningCost": true
       },
@@ -242,6 +247,7 @@
       "capitalization": 26000000,
       "capitalizationSource": "NY Times",
       "weeklyRunningCost": 817000,
+      "costMethodology": "industry-estimate",
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
@@ -253,10 +259,10 @@
       "capitalization": 4800000,
       "capitalizationSource": "SEC filing / Reddit",
       "weeklyRunningCost": null,
-      "recouped": null,
+      "recouped": true,
       "recoupedDate": null,
       "recoupedWeeks": null,
-      "recoupedSource": null,
+      "recoupedSource": "Inferred from Easy Winner designation",
       "notes": "Star vehicle for Patti LuPone and Mia Farrow. Limited run closed as scheduled. Low capitalization compared to other Broadway shows."
     },
     "our-town": {
@@ -264,10 +270,10 @@
       "capitalization": 20000000,
       "capitalizationSource": "NY Times / Broadway Stars",
       "weeklyRunningCost": null,
-      "recouped": null,
+      "recouped": true,
       "recoupedDate": null,
       "recoupedWeeks": null,
-      "recoupedSource": null,
+      "recoupedSource": "Inferred from Easy Winner designation",
       "notes": "Limited run with Jim Parsons. First Thornton Wilder play to gross $1M+ in a week. Strong final weeks. Capitalized at $20M."
     },
     "death-becomes-her": {
@@ -276,6 +282,7 @@
       "capitalizationSource": "Forbes / Broadway World",
       "weeklyRunningCost": 900000,
       "weeklyRunningCostSource": "Deep Research: $1.0-1.1M weekly operating costs",
+      "costMethodology": "industry-estimate",
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
@@ -289,6 +296,12 @@
       "isEstimate": {
         "weeklyRunningCost": true
       },
+      "deepResearch": {
+        "verifiedFields": ["estimatedRecoupmentPct", "weeklyRunningCost"],
+        "verifiedDate": "2026-01-28",
+        "verifiedBy": "manual",
+        "notes": "Deep Research found 70-80% recoupment range. Note: Reddit r/Broadway claimed 10-30% - our analysis shows higher actual progress."
+      },
       "notes": "Most expensive show of 2024-2025 season. Grossed $63M+ in 46 weeks with $1.0-1.1M weekly costs. On track to recoup Spring 2026. Eligible for $3M NY tax credit (25% of costs up to $12M). Break-even ~$1.2M weekly."
     },
     "the-great-gatsby": {
@@ -297,6 +310,7 @@
       "capitalizationSource": "Producer Chunsoo Shin (Gordon Cox / Korea Times)",
       "weeklyRunningCost": 850000,
       "weeklyRunningCostSource": "Producer interview (Gordon Cox): 'weekly running costs ringing in at more than $900,000'",
+      "costMethodology": "producer-confirmed",
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
@@ -317,9 +331,10 @@
       "capitalization": 22000000,
       "capitalizationSource": "Press announcement / SEC filing",
       "weeklyRunningCost": 725000,
+      "costMethodology": "reddit-standard",
       "recouped": true,
-      "recoupedDate": "2025-12-28",
-      "recoupedWeeks": 744,
+      "recoupedDate": "2025-12",
+      "recoupedWeeks": 38,
       "recoupedSource": "Reddit Grosses Analysis / Broadway Journal",
       "notes": "Won Best Musical Tony 2024. Recouped $22M investment week ending December 28, 2025 after 744 performances and $121M total grosses. First new musical to recoup since 2022. Post-Tony grosses hit $1.4M/week record at Bernard B. Jacobs Theatre.",
       "isEstimate": {
@@ -331,12 +346,19 @@
       "capitalization": 20000000,
       "capitalizationSource": "Deep Research: $20M+ (revised from earlier $25M estimates)",
       "weeklyRunningCost": 1000000,
+      "costMethodology": "industry-estimate",
       "recouped": true,
       "recoupedDate": "2025-12",
       "recoupedWeeks": 40,
       "recoupedSource": "Deep Research / Industry analysis (Dec 2025 recoupment)",
       "isEstimate": {
         "weeklyRunningCost": true
+      },
+      "deepResearch": {
+        "verifiedFields": ["capitalization", "recouped", "recoupedDate"],
+        "verifiedDate": "2026-01-28",
+        "verifiedBy": "manual",
+        "notes": "Deep Research revised capitalization from $25M to $20M and confirmed Dec 2025 recoupment."
       },
       "notes": "Netflix/Sonia Friedman production. Won 4 Tony Awards 2025. RECOUPED December 2025 - grossed $57M+ in 40 weeks with $1M/week costs = $17M+ profit toward $20M cap. Set Marquis Theatre record of $2.51M during Christmas week 2025. Season 5 finale boosted ticket sales significantly."
     },
@@ -346,6 +368,7 @@
       "capitalizationSource": "SEC Form D filing (Al Día News, Sept 2024)",
       "weeklyRunningCost": 700000,
       "weeklyRunningCostSource": "Reddit Grosses Analysis",
+      "costMethodology": "reddit-standard",
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
@@ -369,6 +392,7 @@
       "capitalActualSource": "Bloomberg",
       "weeklyRunningCost": 500000,
       "weeklyRunningCostSource": "Deep Research: $500K weekly (5x London's £100K)",
+      "costMethodology": "industry-estimate",
       "isEstimate": {
         "weeklyRunningCost": false
       },
@@ -376,6 +400,12 @@
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
+      "deepResearch": {
+        "verifiedFields": ["weeklyRunningCost", "estimatedRecoupmentPct"],
+        "verifiedDate": "2026-01-28",
+        "verifiedBy": "manual",
+        "notes": "Deep Research verified $500K weekly costs (5x London's £100K) and below break-even status."
+      },
       "notes": "West End hit transferred to Broadway. Weekly costs $500K vs London's £100K. Break-even ~$600K weekly but averaging $580K - running below break-even. Extended through Feb 2026 on strong word-of-mouth despite soft grosses.",
       "estimatedRecoupmentPct": [
         0,
@@ -390,6 +420,7 @@
       "capitalizationSource": "Broadway Journal",
       "weeklyRunningCost": 600000,
       "weeklyRunningCostSource": "Deep Research: $600K weekly operating costs",
+      "costMethodology": "industry-estimate",
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
@@ -403,6 +434,12 @@
       "isEstimate": {
         "weeklyRunningCost": false
       },
+      "deepResearch": {
+        "verifiedFields": ["weeklyRunningCost", "estimatedRecoupmentPct"],
+        "verifiedDate": "2026-01-28",
+        "verifiedBy": "manual",
+        "notes": "Deep Research verified $600K weekly costs and 90+% recoupment status."
+      },
       "notes": "Jonathan Groff star vehicle. Bobby Darin jukebox musical with $9.4M cap and $600K weekly costs. Averaging $1.2M+ weekly gross - recoupment imminent (likely Feb 2026). Strong reviews and Groff's star power driving consistent sales."
     },
     "two-strangers": {
@@ -411,6 +448,7 @@
       "capitalizationSource": "Forbes (Marc Hershberg)",
       "weeklyRunningCost": 480000,
       "weeklyRunningCostSource": "Forbes / Reddit Grosses Analysis",
+      "costMethodology": "trade-reported",
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
@@ -432,6 +470,7 @@
       "capitalizationSource": "Accio business blog (industry analysis)",
       "weeklyRunningCost": 900000,
       "weeklyRunningCostSource": "Reddit Grosses Analysis / BroadwayWorld forum ('weekly nut just shy of $1 million')",
+      "costMethodology": "reddit-standard",
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
@@ -452,6 +491,7 @@
       "capitalization": null,
       "capitalizationSource": null,
       "weeklyRunningCost": 850000,
+      "costMethodology": "industry-estimate",
       "recouped": null,
       "recoupedDate": null,
       "recoupedWeeks": null,
@@ -467,6 +507,7 @@
       "capitalization": 18250000,
       "capitalizationSource": "SEC filing / Broadway Journal",
       "weeklyRunningCost": 765000,
+      "costMethodology": "reddit-standard",
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
@@ -488,6 +529,7 @@
       "capitalizationSource": "Industry estimates ($5-8M range, comparable plays like Grey House at $8M)",
       "weeklyRunningCost": 450000,
       "weeklyRunningCostSource": "Industry estimates (mid six-figures for straight play)",
+      "costMethodology": "industry-estimate",
       "isEstimate": {
         "weeklyRunningCost": true,
         "capitalization": true
@@ -539,6 +581,7 @@
       "capitalizationSource": "LA Times / industry estimates ($12-15M reported, some insiders estimated ~$20M)",
       "weeklyRunningCost": 750000,
       "weeklyRunningCostSource": "Industry estimates ($700K-$900K range)",
+      "costMethodology": "industry-estimate",
       "isEstimate": {
         "weeklyRunningCost": true
       },
@@ -555,6 +598,7 @@
       "capitalization": null,
       "capitalizationSource": null,
       "weeklyRunningCost": 750000,
+      "costMethodology": "industry-estimate",
       "recouped": null,
       "recoupedDate": null,
       "recoupedWeeks": null,
@@ -592,6 +636,7 @@
       "capitalizationSource": "SEC filing (All In was $4.8M, All Out comparable)",
       "weeklyRunningCost": 250000,
       "weeklyRunningCostSource": "Deep Research: $200-300K weekly (lean 4-performer format)",
+      "costMethodology": "industry-estimate",
       "isEstimate": {
         "weeklyRunningCost": false
       },
@@ -605,6 +650,12 @@
       ],
       "estimatedRecoupmentSource": "Deep Research: $2M+ weekly gross with $250K costs = strong profit margin",
       "estimatedRecoupmentDate": "2026-01-28",
+      "deepResearch": {
+        "verifiedFields": ["weeklyRunningCost", "estimatedRecoupmentPct"],
+        "verifiedDate": "2026-01-28",
+        "verifiedBy": "manual",
+        "notes": "Deep Research verified $200-300K weekly costs and 60-80% recoupment progress."
+      },
       "notes": "Sequel to All In: Comedy About Love which recouped its $4.8M in just 10 weeks. Same format: rotating celebrity comedians with live band. Hit $2M+ weekly gross (record for a play). Very lean $200-300K weekly costs with 4-performer format. LIMITED RUN through March 8, 2026 - did NOT receive NY tax credit (missed application deadline by 2 months). Stars include Sarah Silverman, Ray Romano, Jason Mantzoukas."
     },
     "art-2025": {

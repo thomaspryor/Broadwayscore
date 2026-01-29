@@ -15,11 +15,13 @@ const require = createRequire(import.meta.url);
 const {
   SOURCE_WEIGHTS,
   OVERRIDE_SLUGS,
+  METHODOLOGY_COMPATIBILITY,
   calculateConfidence,
   findCorroboration,
   validateChange,
   getSourceWeight,
-  valuesMatch
+  valuesMatch,
+  methodologiesAreComparable
 } = require('../../scripts/lib/source-validator');
 
 describe('Source Validator', () => {
@@ -45,7 +47,7 @@ describe('Source Validator', () => {
       });
     });
 
-    it('all weights are numbers between 0.1 and 1.0', () => {
+    it('all weights are numbers between 0.1 and 1.2', () => {
       Object.entries(SOURCE_WEIGHTS).forEach(([source, weight]) => {
         assert.strictEqual(
           typeof weight,
@@ -53,13 +55,19 @@ describe('Source Validator', () => {
           `Weight for ${source} is not a number`
         );
         assert.ok(
-          weight >= 0.1 && weight <= 1.0,
-          `Weight for ${source} (${weight}) is out of range [0.1, 1.0]`
+          weight >= 0.1 && weight <= 1.2,
+          `Weight for ${source} (${weight}) is out of range [0.1, 1.2]`
         );
       });
     });
 
-    it('SEC Form D has highest weight (1.0)', () => {
+    it('should have Deep Research as highest weight', () => {
+      assert.strictEqual(SOURCE_WEIGHTS['Deep Research'], 1.2);
+      // Verify it's higher than SEC Form D
+      assert.ok(SOURCE_WEIGHTS['Deep Research'] > SOURCE_WEIGHTS['SEC Form D']);
+    });
+
+    it('SEC Form D has weight 1.0', () => {
       assert.strictEqual(SOURCE_WEIGHTS['SEC Form D'], 1.0);
     });
 
@@ -428,6 +436,118 @@ describe('Source Validator', () => {
       // Original fields preserved
       assert.strictEqual(result.confidence, 'medium');
       assert.strictEqual(result.showSlug, 'hadestown-2019');
+    });
+  });
+
+  describe('METHODOLOGY_COMPATIBILITY', () => {
+    it('should have reddit-standard only compatible with itself', () => {
+      assert.deepStrictEqual(METHODOLOGY_COMPATIBILITY['reddit-standard'], ['reddit-standard']);
+    });
+
+    it('should have deep-research compatible with all', () => {
+      assert.strictEqual(METHODOLOGY_COMPATIBILITY['deep-research'], 'all');
+    });
+
+    it('should have trade-reported compatible with multiple sources', () => {
+      const compat = METHODOLOGY_COMPATIBILITY['trade-reported'];
+      assert.ok(Array.isArray(compat));
+      assert.ok(compat.includes('trade-reported'));
+      assert.ok(compat.includes('sec-filing'));
+      assert.ok(compat.includes('deep-research'));
+    });
+
+    it('should have industry-estimate only compatible with itself', () => {
+      assert.deepStrictEqual(METHODOLOGY_COMPATIBILITY['industry-estimate'], ['industry-estimate']);
+    });
+  });
+
+  describe('methodologiesAreComparable', () => {
+    it('should return true when both are null (backward compat)', () => {
+      assert.strictEqual(methodologiesAreComparable(null, null), true);
+    });
+
+    it('should return true when one is null', () => {
+      assert.strictEqual(methodologiesAreComparable('reddit-standard', null), true);
+    });
+
+    it('should return false for reddit-standard vs trade-reported', () => {
+      assert.strictEqual(methodologiesAreComparable('reddit-standard', 'trade-reported'), false);
+    });
+
+    it('should return true for reddit-standard vs reddit-standard', () => {
+      assert.strictEqual(methodologiesAreComparable('reddit-standard', 'reddit-standard'), true);
+    });
+
+    it('should return true for deep-research vs anything', () => {
+      assert.strictEqual(methodologiesAreComparable('deep-research', 'reddit-standard'), true);
+      assert.strictEqual(methodologiesAreComparable('deep-research', 'trade-reported'), true);
+      assert.strictEqual(methodologiesAreComparable('industry-estimate', 'deep-research'), true);
+    });
+
+    it('should return true for trade-reported vs sec-filing', () => {
+      assert.strictEqual(methodologiesAreComparable('trade-reported', 'sec-filing'), true);
+    });
+
+    it('should return false for industry-estimate vs trade-reported', () => {
+      assert.strictEqual(methodologiesAreComparable('industry-estimate', 'trade-reported'), false);
+    });
+  });
+
+  describe('findCorroboration with methodology', () => {
+    it('should skip incompatible methodologies for cost fields', () => {
+      const change = {
+        showSlug: 'test-show',
+        field: 'weeklyRunningCost',
+        newValue: 850000
+      };
+      const sources = [
+        { showSlug: 'test-show', field: 'weeklyRunningCost', value: 900000, sourceType: 'Reddit', methodology: 'reddit-standard' }
+      ];
+      // Change has trade-reported methodology, source has reddit-standard
+      const result = findCorroboration(change, sources, 'trade-reported');
+      assert.strictEqual(result.contradicting.length, 0);  // Should NOT flag as contradicting
+    });
+
+    it('should include compatible methodologies', () => {
+      const change = {
+        showSlug: 'test-show',
+        field: 'weeklyRunningCost',
+        newValue: 850000
+      };
+      const sources = [
+        { showSlug: 'test-show', field: 'weeklyRunningCost', value: 1200000, sourceType: 'Deadline', methodology: 'trade-reported' }
+      ];
+      const result = findCorroboration(change, sources, 'trade-reported');
+      // Trade-reported compares to trade-reported, values differ by >10%, so should find contradicting source
+      assert.strictEqual(result.contradicting.length, 1);
+    });
+
+    it('should ignore methodology for non-cost fields', () => {
+      const change = {
+        showSlug: 'test-show',
+        field: 'designation',
+        newValue: 'Windfall'
+      };
+      const sources = [
+        { showSlug: 'test-show', field: 'designation', value: 'Flop', sourceType: 'Reddit', methodology: 'reddit-standard' }
+      ];
+      // Methodology doesn't apply to designation, so should still find contradicting
+      const result = findCorroboration(change, sources, 'trade-reported');
+      assert.strictEqual(result.contradicting.length, 1);
+    });
+
+    it('should support deep-research comparing to all methodologies', () => {
+      const change = {
+        showSlug: 'test-show',
+        field: 'weeklyRunningCost',
+        newValue: 850000
+      };
+      const sources = [
+        { showSlug: 'test-show', field: 'weeklyRunningCost', value: 1200000, sourceType: 'Reddit', methodology: 'reddit-standard' }
+      ];
+      // Deep research compares to everything, values differ by >10%, so should find contradicting source
+      const result = findCorroboration(change, sources, 'deep-research');
+      assert.strictEqual(result.contradicting.length, 1);
     });
   });
 });
