@@ -1,37 +1,37 @@
 {
-  "runDate": "2026-01-29T01:48:19.695Z",
+  "runDate": "2026-01-29T01:49:38.091Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "the-shark-is-broken-2023",
+    "showFilter": "how-to-dance-in-ohio-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 33,
-    "failed": 22,
+    "processed": 28,
+    "failed": 24,
     "skipped": 0,
-    "successRate": "60.0%"
+    "successRate": "53.8%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 4,
     "scrapingbee": 0,
-    "brightdata": 5,
-    "archive": 25
+    "brightdata": 4,
+    "archive": 20
   },
   "statistics": {
-    "tier1Attempts": 10,
-    "tier1Success": 0,
-    "tier2Attempts": 10,
+    "tier1Attempts": 12,
+    "tier1Success": 1,
+    "tier2Attempts": 11,
     "tier2Success": 0,
-    "tier3Attempts": 10,
-    "tier3Success": 2,
-    "tier4Attempts": 27,
-    "tier4Success": 16,
-    "totalFailed": 6,
+    "tier3Attempts": 11,
+    "tier3Success": 1,
+    "tier4Attempts": 30,
+    "tier4Success": 11,
+    "totalFailed": 8,
     "scrapingBeeCreditsUsed": 60
   },
   "processed": [
@@ -50,24 +50,19 @@
     "harmony-2023/nysr--sandy-macdonald.json",
     "harmony-2023/talkinbroadway--matthew-murray.json",
     "harmony-2023/washpost--peter-marks.json",
-    "the-shark-is-broken-2023/nyt-theater--jonathan-mandell.json",
-    "the-shark-is-broken-2023/nytg--joe-dziemianowicz.json",
-    "the-shark-is-broken-2023/nytimes--jesse-green.json",
-    "the-shark-is-broken-2023/vulture--jackson-mchenry.json",
-    "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json",
-    "the-shark-is-broken-2023/deadline--greg-evans.json",
-    "the-shark-is-broken-2023/ew--dalton-ross.json",
-    "the-shark-is-broken-2023/ew--dalton.json",
-    "the-shark-is-broken-2023/nydailynews--chris-jones.json",
-    "the-shark-is-broken-2023/nydailynews--chris.json",
-    "the-shark-is-broken-2023/thewrap--robert-hofler.json",
-    "the-shark-is-broken-2023/wsj--charles-isherwood.json",
-    "the-shark-is-broken-2023/wsj--charles.json",
-    "the-shark-is-broken-2023/mashable--kristy-puchko.json",
-    "the-shark-is-broken-2023/nysr--bob-verini.json",
-    "the-shark-is-broken-2023/nysr--steven-suskin.json",
-    "the-shark-is-broken-2023/queerty--matthew-wexler.json",
-    "the-shark-is-broken-2023/talkinbroadway--howard-miller.json"
+    "how-to-dance-in-ohio-2023/nyt-theater--jonathan-mandell.json",
+    "how-to-dance-in-ohio-2023/nytg--joe-dziemianowicz.json",
+    "how-to-dance-in-ohio-2023/nytimes--jesse-green.json",
+    "how-to-dance-in-ohio-2023/variety--frank-rizzo.json",
+    "how-to-dance-in-ohio-2023/vulture--jackson-mchenry.json",
+    "how-to-dance-in-ohio-2023/ew--dalton-ross.json",
+    "how-to-dance-in-ohio-2023/ew--dalton.json",
+    "how-to-dance-in-ohio-2023/nydailynews--chris-jones.json",
+    "how-to-dance-in-ohio-2023/nydailynews--chris.json",
+    "how-to-dance-in-ohio-2023/observer--david-cote.json",
+    "how-to-dance-in-ohio-2023/observer--jesse-green.json",
+    "how-to-dance-in-ohio-2023/nysr--sandy-macdonald.json",
+    "how-to-dance-in-ohio-2023/nysr--steven-suskin.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -86,26 +81,28 @@
     "harmony-2023/theatrely--michael-appler.json",
     "harmony-2023/stageandcinema--matthew-murray.json",
     "harmony-2023/usatoday--charles-isherwood.json",
-    "the-shark-is-broken-2023/variety--trish-deitch.json",
-    "the-shark-is-broken-2023/observer--david-cote.json",
-    "the-shark-is-broken-2023/theatermania--jesse-green.json",
-    "the-shark-is-broken-2023/wsj--terry-teachout.json",
-    "the-shark-is-broken-2023/talkinbroadway--matthew-murray.json",
-    "the-shark-is-broken-2023/usatoday--charles-isherwood.json"
+    "how-to-dance-in-ohio-2023/variety--aramide-tinubu.json",
+    "how-to-dance-in-ohio-2023/variety--maya-phillips.json",
+    "how-to-dance-in-ohio-2023/variety--peter-marks.json",
+    "how-to-dance-in-ohio-2023/theatermania--adam-feldman.json",
+    "how-to-dance-in-ohio-2023/theatermania--david-gordon.json",
+    "how-to-dance-in-ohio-2023/wsj--charles-isherwood.json",
+    "how-to-dance-in-ohio-2023/talkinbroadway--matthew-murray.json",
+    "how-to-dance-in-ohio-2023/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
       "harmony-2023/nyt-theater--jonathan-mandell.json",
       "harmony-2023/nysr--david-finkle.json",
-      "harmony-2023/nysr--sandy-macdonald.json"
+      "harmony-2023/nysr--sandy-macdonald.json",
+      "how-to-dance-in-ohio-2023/nyt-theater--jonathan-mandell.json"
     ],
     "scrapingbee": [],
     "brightdata": [
       "harmony-2023/observer--jesse-green.json",
       "harmony-2023/observer--rex-reed.json",
       "harmony-2023/chicagotribune--chris-jones.json",
-      "the-shark-is-broken-2023/nyt-theater--jonathan-mandell.json",
-      "the-shark-is-broken-2023/mashable--kristy-puchko.json"
+      "how-to-dance-in-ohio-2023/observer--jesse-green.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
@@ -117,22 +114,17 @@
       "harmony-2023/amny--matt-windman.json",
       "harmony-2023/talkinbroadway--matthew-murray.json",
       "harmony-2023/washpost--peter-marks.json",
-      "the-shark-is-broken-2023/nytg--joe-dziemianowicz.json",
-      "the-shark-is-broken-2023/nytimes--jesse-green.json",
-      "the-shark-is-broken-2023/vulture--jackson-mchenry.json",
-      "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json",
-      "the-shark-is-broken-2023/deadline--greg-evans.json",
-      "the-shark-is-broken-2023/ew--dalton-ross.json",
-      "the-shark-is-broken-2023/ew--dalton.json",
-      "the-shark-is-broken-2023/nydailynews--chris-jones.json",
-      "the-shark-is-broken-2023/nydailynews--chris.json",
-      "the-shark-is-broken-2023/thewrap--robert-hofler.json",
-      "the-shark-is-broken-2023/wsj--charles-isherwood.json",
-      "the-shark-is-broken-2023/wsj--charles.json",
-      "the-shark-is-broken-2023/nysr--bob-verini.json",
-      "the-shark-is-broken-2023/nysr--steven-suskin.json",
-      "the-shark-is-broken-2023/queerty--matthew-wexler.json",
-      "the-shark-is-broken-2023/talkinbroadway--howard-miller.json"
+      "how-to-dance-in-ohio-2023/nytg--joe-dziemianowicz.json",
+      "how-to-dance-in-ohio-2023/nytimes--jesse-green.json",
+      "how-to-dance-in-ohio-2023/variety--frank-rizzo.json",
+      "how-to-dance-in-ohio-2023/vulture--jackson-mchenry.json",
+      "how-to-dance-in-ohio-2023/ew--dalton-ross.json",
+      "how-to-dance-in-ohio-2023/ew--dalton.json",
+      "how-to-dance-in-ohio-2023/nydailynews--chris-jones.json",
+      "how-to-dance-in-ohio-2023/nydailynews--chris.json",
+      "how-to-dance-in-ohio-2023/observer--david-cote.json",
+      "how-to-dance-in-ohio-2023/nysr--sandy-macdonald.json",
+      "how-to-dance-in-ohio-2023/nysr--steven-suskin.json"
     ]
   }
 }
