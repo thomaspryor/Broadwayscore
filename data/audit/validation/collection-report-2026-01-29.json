@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-29T18:14:34.368Z",
+  "runDate": "2026-01-29T18:14:58.901Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 10,
+    "maxReviews": 25,
     "priority": "all",
-    "showFilter": "the-cottage-2023",
+    "showFilter": "hamilton-2015",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 65,
-    "failed": 211,
+    "failed": 226,
     "skipped": 0,
-    "successRate": "23.6%"
+    "successRate": "22.3%"
   },
   "tierBreakdown": {
     "playwright": 10,
@@ -23,16 +23,16 @@
     "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 18,
     "tier1Success": 0,
-    "tier2Attempts": 3,
+    "tier2Attempts": 18,
     "tier2Success": 0,
-    "tier3Attempts": 3,
-    "tier3Success": 1,
-    "tier4Attempts": 6,
-    "tier4Success": 2,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 10
+    "tier3Attempts": 18,
+    "tier3Success": 2,
+    "tier4Attempts": 37,
+    "tier4Success": 1,
+    "totalFailed": 19,
+    "scrapingBeeCreditsUsed": 70
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -309,10 +309,25 @@
     "stereophonic-2024/guardian--gloria-oladipo.json",
     "stereophonic-2024/observer--rex-reed.json",
     "stereophonic-2024/theatermania--adam-feldman.json",
-    "the-cottage-2023/observer--jesse-green.json",
-    "the-cottage-2023/observer--rex-reed.json",
-    "the-cottage-2023/theatermania--adam-feldman.json",
-    "the-cottage-2023/wsj--charles-isherwood.json"
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/ew--tim-stack.json",
+    "hamilton-2015/guardian--jesse-green.json",
+    "hamilton-2015/nbcnews--elysa-gardner.json",
+    "hamilton-2015/nbcnews--kristy-puchko.json",
+    "hamilton-2015/nbcnews--melissa-locker.json",
+    "hamilton-2015/newsday--linda-winer.json",
+    "hamilton-2015/nypost--jesse-green.json",
+    "hamilton-2015/nypost--johnny-oleksinski.json",
+    "hamilton-2015/observer--david-cote.json",
+    "hamilton-2015/observer--rex-reed.json",
+    "hamilton-2015/theatermania--adam-feldman.json",
+    "hamilton-2015/theatermania--charles-isherwood.json",
+    "hamilton-2015/wsj--terry-teachout.json",
+    "hamilton-2015/ap--mark-kennedy.json",
+    "hamilton-2015/backstage-barbie--backstage-barbie.json",
+    "hamilton-2015/dailybeast--tim-teeman.json",
+    "hamilton-2015/rollingstone--rob-sheffield.json",
+    "hamilton-2015/the-clyde-fitch-report--david-finkle.json"
   ],
   "tierDetails": {
     "playwright": [
