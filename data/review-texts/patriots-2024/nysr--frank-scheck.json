@@ -9,13 +9,66 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 83,
+    "confidence": "high",
+    "range": {
+      "low": 75.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 90,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "brilliant performances by Michael Stuhlbarg",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "gripping real-life drama",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "only makes you want to learn more",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for performances and story quality with enthusiastic language ('brilliant', 'gripping') suggests clear recommendation despite brief excerpt. | GPT-4o-mini: The review highlights the brilliant performances and gripping nature of the drama, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T05:34:03.179Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 85,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

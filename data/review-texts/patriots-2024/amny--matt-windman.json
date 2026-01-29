@@ -7,7 +7,7 @@
   "publishDate": "April 23, 2024",
   "fullText": "“Patriots,” which comes to Broadway following a London debut in a seamless, tech-savvy production by Rupert Goold (“Ink,” “American Psycho”) is an action-packed, engaging saga that follows Putin’s rise to power, going from Deputy Mayor of St. Petersburg, to Prime Minister, to President of Russia following the sudden resignation of Boris Yeltsin on the eve of the new millennium.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "dtliThumb": "Up",
   "source": "dtli",
   "dtliExcerpt": "“Patriots,” which comes to Broadway following a London debut in a seamless, tech-savvy production by Rupert Goold (“Ink,” “American Psycho”) is an action-packed, engaging saga that follows Putin’s rise to power, going from Deputy Mayor of St. Petersburg, to Prime Minister, to President of Russia following the sudden resignation of Boris Yeltsin on the eve of the new millennium.",
@@ -15,7 +15,60 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 70.5,
+      "high": 83.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "seamless, tech-savvy production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "action-packed, engaging saga",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "follows Putin's rise to power",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review uses consistently positive descriptors like 'seamless,' 'tech-savvy,' 'action-packed,' and 'engaging' without any negative qualifiers, suggesting a clear positive recommendation despite the brief excerpt. | GPT-4o-mini: The review highlights the engaging and well-produced nature of the show, suggesting a clear recommendation despite lacking specific praise for performances or script.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T05:33:36.491Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
