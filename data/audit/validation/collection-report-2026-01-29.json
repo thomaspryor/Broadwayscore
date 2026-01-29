@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T15:19:13.932Z",
+  "runDate": "2026-01-29T15:19:49.520Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 25,
     "priority": "all",
-    "showFilter": "jajas-african-hair-braiding-2023",
+    "showFilter": "purlie-victorious-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 65,
-    "failed": 182,
+    "processed": 68,
+    "failed": 177,
     "skipped": 0,
-    "successRate": "26.3%"
+    "successRate": "27.8%"
   },
   "tierBreakdown": {
     "playwright": 10,
     "scrapingbee": 6,
-    "brightdata": 6,
-    "archive": 43
+    "brightdata": 7,
+    "archive": 45
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 1,
-    "tier2Attempts": 5,
+    "tier1Attempts": 2,
+    "tier1Success": 0,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 5,
-    "tier3Success": 0,
-    "tier4Attempts": 11,
-    "tier4Success": 1,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 40
+    "tier3Attempts": 2,
+    "tier3Success": 1,
+    "tier4Attempts": 5,
+    "tier4Success": 3,
+    "totalFailed": 1,
+    "scrapingBeeCreditsUsed": 20
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -99,7 +99,10 @@
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
     "suffs-2024/the-times--nancy-durrant.json",
-    "jajas-african-hair-braiding-2023/nytimes--jesse-green.json"
+    "purlie-victorious-2023/nytimes--jesse-green.json",
+    "purlie-victorious-2023/nydailynews--chris-jones.json",
+    "purlie-victorious-2023/nydailynews--chris.json",
+    "purlie-victorious-2023/washpost--peter-marks.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -278,12 +281,7 @@
     "hells-kitchen-2024/usatoday--charles-isherwood.json",
     "hells-kitchen-2024/usatoday--david-rooney.json",
     "hells-kitchen-2024/washpost--peter-marks.json",
-    "jajas-african-hair-braiding-2023/variety--maya-phillips.json",
-    "jajas-african-hair-braiding-2023/guardian--gloria-oladipo.json",
-    "jajas-african-hair-braiding-2023/nydailynews--chris-jones.json",
-    "jajas-african-hair-braiding-2023/nydailynews--chris.json",
-    "jajas-african-hair-braiding-2023/timeout--adam-feldman.json",
-    "jajas-african-hair-braiding-2023/wsj--charles-isherwood.json"
+    "purlie-victorious-2023/guardian--jesse-hassenger.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -312,7 +310,8 @@
       "harmony-2023/chicagotribune--chris-jones.json",
       "lempicka-2024/nyt-theater--jonathan-mandell.json",
       "moulin-rouge-2019/observer--rex-reed.json",
-      "aladdin-2014/usatoday--elysa-gardner.json"
+      "aladdin-2014/usatoday--elysa-gardner.json",
+      "purlie-victorious-2023/washpost--peter-marks.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
@@ -357,7 +356,9 @@
       "queen-versailles-2025/vulture--sara-holdren.json",
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
       "suffs-2024/the-times--nancy-durrant.json",
-      "jajas-african-hair-braiding-2023/nytimes--jesse-green.json"
+      "purlie-victorious-2023/nytimes--jesse-green.json",
+      "purlie-victorious-2023/nydailynews--chris-jones.json",
+      "purlie-victorious-2023/nydailynews--chris.json"
     ]
   }
 }
