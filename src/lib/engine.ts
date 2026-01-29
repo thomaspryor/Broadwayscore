@@ -74,6 +74,11 @@ export interface RawShow {
   creativeTeam?: CreativeMember[];
   tags?: string[];             // Musical, Comedy, Romance, New, etc.
   theaterAddress?: string;
+  // Revival and historical tracking
+  isRevival?: boolean;                 // true for revival productions
+  originalProductionId?: string | null; // ID of the original production (e.g., "cabaret-1966")
+  productionNumber?: number;            // 1 for original, 2 for first revival, etc.
+  season?: string;                      // Broadway season (e.g., "2024-2025")
 }
 
 export interface RawReview {
@@ -208,6 +213,11 @@ export interface ComputedShow {
   creativeTeam?: CreativeMember[];
   tags?: string[];
   theaterAddress?: string;
+  // Revival and historical tracking
+  isRevival?: boolean;
+  originalProductionId?: string | null;
+  productionNumber?: number;
+  season?: string;
   // Scores
   criticScore: CriticScoreResult | null;
   audienceScore: AudienceScoreResult | null;
@@ -577,6 +587,11 @@ export function computeShowData(
     creativeTeam: show.creativeTeam,
     tags: show.tags,
     theaterAddress: show.theaterAddress,
+    // Revival and historical tracking
+    isRevival: show.isRevival,
+    originalProductionId: show.originalProductionId,
+    productionNumber: show.productionNumber,
+    season: show.season,
     // Scores
     criticScore,
     audienceScore: null,
