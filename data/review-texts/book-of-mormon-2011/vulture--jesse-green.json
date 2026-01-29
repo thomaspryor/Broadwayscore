@@ -6,7 +6,7 @@
   "url": "https://www.vulture.com/2011/03/book-of-mormon-broadway-review.html",
   "publishDate": "2011-03-24",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 94,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "textStatus": "partial",
@@ -23,18 +23,57 @@
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
   "showScoreExcerpt": "\"The Book of Mormon, arriving after months of hype, somehow delivers even more than its ridiculously felicitous advance buzz promised: It’s an often uproarious, spiritually up-tempo satire not just of Mormonism, and not just religion in general, but of (no kidding) Occidental civilization itself.\"",
-  "llmScore": null,
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 87.5,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "delivers even more than its ridiculously felicitous advance buzz promised",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "an often uproarious, spiritually up-tempo satire",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The Book of Mormon, arriving after months of hype, somehow delivers",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic expresses unqualified enthusiasm, stating the show 'delivers even more' than promised hype and calling it 'uproarious,' indicating a clear rave recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm and high praise for the show's delivery beyond expectations, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:05:11.994Z",
+    "scoredAt": "2026-01-29T20:35:03.120Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 0,
-    "scoreDelta": 0,
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

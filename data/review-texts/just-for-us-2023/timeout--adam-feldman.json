@@ -8,7 +8,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Kessler's show is a master class in the art of storytelling, weaving together personal anecdotes with broader reflections on identity, belonging and the complexities of being Jewish in America today.",
   "originalScore": 80,
-  "assignedScore": 50,
+  "assignedScore": 88,
   "source": "web-search",
   "dtliThumb": null,
   "needsScoring": true,
@@ -48,18 +48,57 @@
     "Word count too low: 228 (min: 300)",
     "Show title not found in text"
   ],
-  "llmScore": null,
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "master class in the art of storytelling",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "weaving together personal anecdotes with broader reflections",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "complexities of being Jewish in America today",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The phrase 'master class' indicates exceptional quality and strong praise for the storytelling craft, warranting a clear positive recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the storytelling and thematic depth, indicating a must-see experience.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:16:08.179Z",
+    "scoredAt": "2026-01-29T20:35:05.984Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 0,
-    "scoreDelta": 0,
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

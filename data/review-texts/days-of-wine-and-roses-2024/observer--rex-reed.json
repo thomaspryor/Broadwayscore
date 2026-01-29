@@ -8,7 +8,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a show that gets under your skin and stays there, thanks to powerhouse performances from Brian d'Arcy James and Kelli O'Hara that are nothing short of extraordinary.",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "needsScoring": true,
@@ -44,18 +44,57 @@
     "Word count too low: 98 (min: 300)",
     "Show title not found in text"
   ],
-  "llmScore": null,
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 70.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 93,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "gets under your skin and stays there",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "powerhouse performances",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "nothing short of extraordinary",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Strong praise for performances with memorable impact language, but excerpt is too brief to assess overall show recommendation with high confidence. | GPT-4o-mini: The review expresses strong enthusiasm for the performances, indicating a must-see experience. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:16:51.283Z",
+    "scoredAt": "2026-01-29T20:34:55.738Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 0,
-    "scoreDelta": 0,
+    "claudeScore": 75,
+    "openaiScore": 90,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
