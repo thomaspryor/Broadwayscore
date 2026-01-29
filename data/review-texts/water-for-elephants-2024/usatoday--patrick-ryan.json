@@ -5,8 +5,8 @@
   "criticName": "Patrick Ryan",
   "url": "https://www.usatoday.com/story/entertainment/music/2024/03/21/water-for-elephants-musical-review/73012972007/",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "MUSICBroadway TheatreAdd TopicReview: ‘Water for Elephants’ on Broadway is a three-ring circus with zero intrigue Patrick RyanUSA TODAYMarch 21, 2024, 9:01 p.m. ETNEW YORK – “Water for Elephants” is hardly the greatest show on Earth. But for a few exquisite moments, a horse might convince you otherwise.\n\nIn an early scene of the Broadway musical, which opened Thursday at the Imperial Theatre, the star stallion of a traveling circus is gravely injured. As his owner, Marlena (Isabelle McCalla) caresses and sings to him, a striking performer (Antoine Boissereau) slowly removes his equine headpiece and soars above the stage: lithely conveying the animal’s majestic, restless spirit through an aerial silk ballet. It’s a breathtaking blend of dance and acrobatics, and one of the show’s rare instances of earned emotion.\n\nIt's too bad, then, that the production around him is so earthbound. Adapted from Sara Gruen’s 2006 best-seller, the story follows the young Jacob Jankowski (Grant Gustin), a vet school dropout who stumbles into a job with a down-and-out circus in the early 1930s. There, he falls for the married Marlena and helps her train an elephant, Rosie, who was once thought to be untamable. Forbidden romance and a disastrous stampede ensue.\n\n“Water” is directed by Tony Award winner Jessica Stone (last year’s heart-tugging “Kimberly Akimbo”), with a book by Rick Elice (“Jersey Boys”). It features a functional folk-pop score by PigPen, a theater collective known for blending Mumford & Sons-style melodies with shadow puppetry and DIY aesthetics.\n\nCarrying a price tag of more than $20 million, the production is awkwardly caught between its spectacular ambitions and the troupe’s more modest roots. The bare-bones scenic design by Takeshi Kata is mostly comprised of carts, poles and ladders, which struggle to fill the vast Imperial stage as they’re repurposed into train cars and gambling tents, among other things. David Bengali's crisp, blue-sky projections clash with the set's earthy tones, while the varied circus animals lack any visual cohesion. (The dog and elephant puppets are exceedingly literal, while an orangutan is just a dancer wearing shaggy sleeves. Other big cats are mere floating heads.)\n\nLike the book and 2011 movie, which starred Robert Pattinson and Reese Witherspoon, the show is saddled with a maudlin framing device of an elderly Jacob (Gregg Edelman) looking back on his life. The second act, in particular, is mired by the dreary love triangle between Jacob, Marlena and her abusive husband (Paul Alexander Nolan), although the compelling McCalla tries her damnedest with the little that her leading men give her. As a trio of savvy circus vets, Sara Gettelfinger, Stan Brown and Joe DePaul offer a welcome dose of levity to the at times interminable proceedings.\n\nA life raft in this troubled “Water” is the production's elastic ensemble, which jolts you awake with their spring-loaded flips and death-defying stunts, ranging from aerial hoops to tightrope walks to trapeze swings. A sequence of the cast pitching a big top is wondrous to behold, as is the effortless athleticism they bring to numbers like \"Zostan.\"\n\nIn these moments, the show feels like a divine celebration of those restless spirits who run off to join the circus. But the magic is fleeting, and by the final curtain, those in the audience may wish they'd just stayed at home.",
+  "isFullReview": true,
   "bwwExcerpt": "A life raft in this troubled “Water” is the production's elastic ensemble, which jolts you awake with their spring-loaded flips and death-defying stunts, ranging from aerial hoops to tightrope walks to trapeze swings. A sequence of the cast pitching a big top is wondrous to behold, as is the effortless athleticism they bring to numbers like \"Zostan.\" In these moments, the show feels like a divine celebration of those restless spirits who run off to join the circus. But the magic is fleeting, and",
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
@@ -73,5 +73,36 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 66,
+  "textWordCount": 546,
+  "archivePath": "data/archives/reviews/water-for-elephants-2024/usatoday--patrick-ryan_2026-01-29.html",
+  "textFetchedAt": "2026-01-29T02:38:11.014Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata"
 }
