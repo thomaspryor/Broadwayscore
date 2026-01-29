@@ -9,17 +9,23 @@
   "assignedScore": 50,
   "source": "reviews-json-stub",
   "needsFullText": true,
-  "textStatus": "partial",
-  "textQuality": "excerpt_only",
+  "textStatus": "truncated",
+  "textQuality": "truncated",
   "sourceMethod": "brightdata",
   "scoreStatus": "TO_BE_CALCULATED",
   "scoreSource": null,
   "isFullReview": false,
   "textWordCount": 86,
-  "archivePath": "data/archives/reviews/and-juliet-2022/citi--brian-scott-lipton_2026-01-26.html",
-  "textFetchedAt": "2026-01-26T19:59:07.749Z",
+  "archivePath": "data/archives/reviews/and-juliet-2022/cititour--brian-scott-lipton_2026-01-29.html",
+  "textFetchedAt": "2026-01-29T07:07:33.346Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
     {
       "tier": 1,
       "method": "playwright",
@@ -83,5 +89,10 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true
+  "needsRescore": true,
+  "fullText": "NYC Events, Restaurants, Music, & Nightlife\n\nCititour.com is your guide to interesting places throughout New York City. Use our listings to locate restaurants, exciting clubs and nightlife, bars and pubs, shopping destinations, landmarks and parks; and shows, concerts, and other events too.\n\nCititour.com is your guide to interesting places throughout New York City. Use our listings to locate restaurants, exciting clubs and nightlife, bars and pubs, shopping destinations, landmarks and parks; and shows, concerts, and other events too.\n\nAbout Us | Editorial Guidelines | Contact Us",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "possible_mid_word_cutoff"
+  ]
 }
