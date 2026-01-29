@@ -5,18 +5,17 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8f98eb22",
   "publishDate": "2026-01-08T20:31:45-05:00",
-  "fullText": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8f98eb22\n\nCarrie Coon and Namir Smallwood Matthew MurphyNew York\n\nCarrie Coon is unleashed from her corsets—and every other stitch of clothing—in the blistering Broadway revival of her husband Tracy Letts’s macabre thriller “Bug,” being presented by Manhattan Theatre Club roughly 20 years after it was first seen in New York off-Broadway. (Due to the prevalence of nudity, audiences must turn off their phones and have them put in secure pouches for the show’s duration.)\n\nCopyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\n‘The Queen of Versailles’ Review: Kristin Chenoweth’s Musical of Gilded Dreams",
   "isFullReview": false,
   "bwwExcerpt": "Carrie Coon is unleashed from her corsets—and every other stitch of clothing—in the blistering Broadway revival of her husband Tracy Letts’s macabre thriller “Bug,” being presented by Manhattan Theatre Club roughly 20 years after it was first seen in New York off-Broadway. (Due to the prevalence of nudity, audiences must turn off their phones and have them put in secure pouches for the show’s duration.)",
   "originalScore": null,
   "assignedScore": 65,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Carrie-Coon-Namir-Smallwood-and-More-Star-in-BUG-on-Broadway-20260108",
-  "textStatus": "truncated",
+  "textStatus": "garbage_cleared",
   "urlSource": "show-score",
   "urlUpdatedAt": "2026-01-25T14:20:46.927Z",
   "showScoreExcerpt": "\"Itâs a thriller that turns the screws so unnoticeably you begin squirming before you notice how efficiently the play has gotten, well, under your skin.\"",
-  "textQuality": "truncated",
+  "textQuality": "excerpt_only",
   "sourceMethod": "archive",
   "scoreSource": null,
   "llmScore": {
@@ -122,5 +121,8 @@
   "bwwThumb": "Up",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 84,
-  "rescoreCompletedAt": "2026-01-29T01:41:15.051Z"
+  "rescoreCompletedAt": "2026-01-29T01:41:15.051Z",
+  "garbageFullText": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8f98eb22\n\nCarrie Coon and Namir Smallwood Matthew MurphyNew York\n\nCarrie Coon is unleashed from her corsets—and every other stitch of clothing—in the blistering Broadway revival of her husband Tracy Letts’s macabre thriller “Bug,” being presented by Manhattan Theatre Club roughly 20 years after it was first seen in New York off-Broadway. (Due to the prevalence of nudity, audiences must turn off their phones and have them put in secure pouches for the show’s duration.)\n\nCopyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\n‘The Queen of Versailles’ Review: Kristin Chenoweth’s Musical of Gilded Dreams",
+  "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
+  "garbageFixedAt": "2026-01-29T22:45:22.734Z"
 }

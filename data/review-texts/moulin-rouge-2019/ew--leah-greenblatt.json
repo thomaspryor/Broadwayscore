@@ -5,13 +5,12 @@
   "criticName": "Leah Greenblatt",
   "url": "https://ew.com/moulin-rouge-broadway-review/",
   "publishDate": "2019-07-25",
-  "fullText": "​ Page Not Found This is not the page you are looking for. We hope you can go about your business by using our menu or search option. By clicking “Accept All Cookies”, you agree to the storing of cookies on your device to enhance site navigation, analyze site usage, and assist in our marketing efforts. Accept All Cookies",
   "isFullReview": false,
   "bwwExcerpt": "A smart, shameless and extravagantly entertaining production.",
   "originalScore": "B+",
   "assignedScore": 87,
   "source": "reviews-json-stub",
-  "textStatus": "partial",
+  "textStatus": "garbage_cleared",
   "textWordCount": 59,
   "archivePath": "data/archives/reviews/moulin-rouge-2019/ew--leah-greenblatt_2026-01-25.html",
   "textFetchedAt": "2026-01-25T04:58:23.710Z",
@@ -19,7 +18,7 @@
     "Word count too low: 59 (min: 300)",
     "Show title not found in text"
   ],
-  "textQuality": "excerpt",
+  "textQuality": "excerpt_only",
   "sourceMethod": "stub",
   "showScoreExcerpt": "\"A Millennial Reboot of Chekhov, and 'Moulin Rouge!' on Broadway. Halley Feiffer translates 'Three Sisters' into Internet-speak, and Baz Luhrmannâs glitzy movie comes into its own onstage.\"",
   "llmScore": {
@@ -77,5 +76,8 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "garbageFullText": "​ Page Not Found This is not the page you are looking for. We hope you can go about your business by using our menu or search option. By clicking “Accept All Cookies”, you agree to the storing of cookies on your device to enhance site navigation, analyze site usage, and assist in our marketing efforts. Accept All Cookies",
+  "garbageReason": "/page not found/i",
+  "garbageFixedAt": "2026-01-29T22:45:23.033Z"
 }

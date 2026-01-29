@@ -5,7 +5,6 @@
   "criticName": "Charles",
   "url": "https://www.wsj.com/articles/i-need-that-review-danny-devito-theresa-rebeck-lucy-devito-broadway-roundabout-a6902a53",
   "publishDate": "November 2, 2023",
-  "fullText": "https://www.wsj.com/articles/i-need-that-review-danny-devito-theresa-rebeck-lucy-devito-broadway-roundabout-a6902a53\n\nDanny DeVito Photo: Joan Marcus\n\nThe national pastime—I refer not to baseball, but to the acquisition of too much stuff and the refusal to get rid of a single dog-eared book, worn pair of shoes or old Playbill, as if life weren’t worth living without each—comes under sympathetic scrutiny in “I Need That,” a modest but likable, sentiment-spritzed comedy by Theresa Rebeck, on Broadway in a Roundabout Theatre Company production.\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nTop stories chosen by WSJ editors\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved",
   "isFullReview": false,
   "dtliExcerpt": "The national pastime—I refer not to baseball, but to the acquisition of too much stuff and the refusal to get rid of a single dog-eared book, worn pair of shoes or old Playbill, as if life weren’t worth living without each—comes under sympathetic scrutiny in “I Need That,” a modest but likable, sentiment-spritzed comedy by Theresa Rebeck, on Broadway in a Roundabout Theatre Company production.",
   "originalScore": null,
@@ -90,18 +89,21 @@
     }
   ],
   "fetchTier": 4,
-  "textQuality": "truncated",
+  "textQuality": "excerpt_only",
   "truncationSignals": [
     "no_ending_punctuation",
     "has_footer_text",
     "shorter_than_excerpt",
     "possible_mid_word_cutoff"
   ],
-  "textStatus": "truncated",
+  "textStatus": "garbage_cleared",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240217213718",
   "archiveOrgUrl": "http://web.archive.org/web/20240217213718/https://www.wsj.com/articles/i-need-that-review-danny-devito-theresa-rebeck-lucy-devito-broadway-roundabout-a6902a53",
   "textIssues": [
     "Word count too low: 98 (min: 300)"
-  ]
+  ],
+  "garbageFullText": "https://www.wsj.com/articles/i-need-that-review-danny-devito-theresa-rebeck-lucy-devito-broadway-roundabout-a6902a53\n\nDanny DeVito Photo: Joan Marcus\n\nThe national pastime—I refer not to baseball, but to the acquisition of too much stuff and the refusal to get rid of a single dog-eared book, worn pair of shoes or old Playbill, as if life weren’t worth living without each—comes under sympathetic scrutiny in “I Need That,” a modest but likable, sentiment-spritzed comedy by Theresa Rebeck, on Broadway in a Roundabout Theatre Company production.\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nTop stories chosen by WSJ editors\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved",
+  "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
+  "garbageFixedAt": "2026-01-29T22:45:22.924Z"
 }

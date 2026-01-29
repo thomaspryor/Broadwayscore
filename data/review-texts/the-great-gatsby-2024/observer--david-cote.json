@@ -5,7 +5,6 @@
   "criticName": "David Cote",
   "url": "https://observer.com/2024/04/the-great-gatsby-broadway-review/",
   "publishDate": "2024-04-25",
-  "fullText": "We noticed you're using an ad blocker.\n\t\t\tWe get it: you like to have control of your own internet experience. But advertising revenue helps support our journalism. To read our full stories, please turn off your ad blocker.We'd really appreciate it.\n\nBelow are steps you can take in order to whitelist Observer.com on your browser:\n\nClick the AdBlock button on your browser and select Don't run on pages on this domain.\n\nClick the AdBlock Plus button on your browser and select Enabled on this site.\n\nClick the AdBlock Plus button on your browser and select Disable on Observer.com.",
   "isFullReview": false,
   "bwwExcerpt": "p dancers. That not-since-“Carrie” spectacle sums up what goes wrong with the new musical “The Great Gatsby,” with book by Kati Kerrigan and score by composer Jason Howland and lyricist Nathan Tysen. David Cote, Observer: Don’t misunderstand me: The Great Gatsby is not a smart, tasteful musical that can’t compete with tackier ones. It simply fails to be tacky enough. The jazz-based score by composer Jason Howland and lyricist Nathan Tysen (Paradise Square) ventures into funk, Disney princess ballad, and a touch of Britpop. Despite the eclecticism of the musical palette, none of the songs stick in the ear, despite strenuous vocalizing by Jeremy Jordan (Newsies) and Eva Noblezada (Hadestown). Average Rating: 47.6% REVIEW ROUNDUP REAL-TIME ALERTS To read more reviews, click here ! Discuss the show on the BroadwayWorld Forum Buy Tickets to The Great Gatsby Opening Night Coverage Photos: The Cast of THE GREAT GATSBY Takes Opening Night Bows Photos: Jeremy Jordan, Eva Noblezada & the Company",
   "originalScore": null,
@@ -13,8 +12,8 @@
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
-  "textStatus": "truncated",
-  "textQuality": "truncated",
+  "textStatus": "garbage_cleared",
+  "textQuality": "excerpt_only",
   "sourceMethod": "brightdata",
   "scoreSource": "sentiment-mixed-positive",
   "scoreConfidence": "low",
@@ -115,5 +114,8 @@
   "bwwThumb": "Meh",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 36,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.074Z"
+  "rescoreCompletedAt": "2026-01-29T14:31:52.074Z",
+  "garbageFullText": "We noticed you're using an ad blocker.\n\t\t\tWe get it: you like to have control of your own internet experience. But advertising revenue helps support our journalism. To read our full stories, please turn off your ad blocker.We'd really appreciate it.\n\nBelow are steps you can take in order to whitelist Observer.com on your browser:\n\nClick the AdBlock button on your browser and select Don't run on pages on this domain.\n\nClick the AdBlock Plus button on your browser and select Enabled on this site.\n\nClick the AdBlock Plus button on your browser and select Disable on Observer.com.",
+  "garbageReason": "/ad ?block(er)?/i",
+  "garbageFixedAt": "2026-01-29T22:45:23.256Z"
 }

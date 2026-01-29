@@ -5,15 +5,14 @@
   "criticName": "Terry Teachout",
   "url": "http://www.wsj.com/articles/SB106748686155075900",
   "publishDate": "October 31, 2003",
-  "fullText": "https://www.wsj.com/articles/SB106748686155075900\n\nBroadway's got itself a great big expensive new musical, complete with\nsmoke, mirrors and (no fooling) flying monkeys. Kristin Chenoweth finally\nhas a full-fledged star part that's worthy of her. Stephen Schwartz has\nwritten a ballad with legs. And Joel Grey, God bless him, is back on stage.\nSo what's not to like? Not much, really. \"Wicked,\" which opened last night at the Gershwin Theatre,\nisn't perfect, but it's more than good enough to run for a decade or two.\nIf it doesn't please you, you're too tough to please.\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nTop stories chosen by WSJ editors\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved",
   "isFullReview": false,
   "showScoreExcerpt": "\"The best moments in 'Wicked' come when the stage is least crowded. I'm done niggling. 'Wicked' is funny and touching and full of beans (not to mention child-friendly). It'll make a great movie one of these days, and it's going to make Kristin Chenoweth a star right this minute. Go.\"",
   "originalScore": null,
   "assignedScore": 84,
   "source": "show-score",
   "needsFullText": true,
-  "textStatus": "truncated",
-  "textQuality": "truncated",
+  "textStatus": "garbage_cleared",
+  "textQuality": "excerpt_only",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
@@ -98,5 +97,8 @@
   "designation": "Recommended",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 84,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.159Z"
+  "rescoreCompletedAt": "2026-01-29T14:31:52.159Z",
+  "garbageFullText": "https://www.wsj.com/articles/SB106748686155075900\n\nBroadway's got itself a great big expensive new musical, complete with\nsmoke, mirrors and (no fooling) flying monkeys. Kristin Chenoweth finally\nhas a full-fledged star part that's worthy of her. Stephen Schwartz has\nwritten a ballad with legs. And Joel Grey, God bless him, is back on stage.\nSo what's not to like? Not much, really. \"Wicked,\" which opened last night at the Gershwin Theatre,\nisn't perfect, but it's more than good enough to run for a decade or two.\nIf it doesn't please you, you're too tough to please.\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nTop stories chosen by WSJ editors\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved",
+  "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
+  "garbageFixedAt": "2026-01-29T22:45:23.519Z"
 }

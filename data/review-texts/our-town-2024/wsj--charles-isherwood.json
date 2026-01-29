@@ -5,7 +5,6 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.wsj.com/articles/our-town-review-thornton-wilder-back-on-broadway-23333989",
   "publishDate": "October 10, 2024",
-  "fullText": "https://www.wsj.com/articles/our-town-review-thornton-wilder-back-on-broadway-23333989\n\nJim Parsons and the cast of ‘Our Town.’ Daniel RaderNew York\n\nPromoted as an “Our Town” for “our time,” the new Broadway production of Thornton Wilder’s play has overlooked an olfactory trigger warning—odd given the sometimes comical list of possibly alarming elements you see at the theater in programs and on placards these days. Vegans and vegetarians should know that an overwhelming smell of frying bacon wafts through the theater in the final act. I suppose those allergic to heliotrope—the scent of the flower, which is referred to more than once in the first act, is also discernible at one point—should also be alerted to this aromatic aspect of the production’s approach to Wilder’s canonical American play.\n\nCopyright ©2025 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nopinionRent Control as a Constitutional Taking\n\nopinionThe Bidding War for New York Refugees\n\n‘The Queen of Versailles’ Review: Kristin Chenoweth’s Musical of Gilded Dreams\n\nHow a Skyscraper Shaped Like a Radiator Helped Create the Modern Corporation\n\nJPMorgan Chase’s Soaring Skyscraper With Human Spirit",
   "isFullReview": false,
   "bwwExcerpt": "Mr. Leon’s “Our Town” is polished and marked by moments of humor and melancholy, but they do not cohere into a powerfully affecting production. For theatergoers who saw the director David Cromer’s hyper-intimate 2009 off-Broadway production—which ran for almost 650 performances, the longest run in the play’s history—its indelible impact (it ranks as one of the best theatrical productions I have seen) will inevitably lead to disappointing comparisons, unfairly or not.",
   "bwwRoundupUrl": null,
@@ -91,18 +90,21 @@
     }
   ],
   "fetchTier": 4,
-  "textQuality": "truncated",
+  "textQuality": "excerpt_only",
   "truncationSignals": [
     "no_ending_punctuation",
     "has_footer_text",
     "possible_mid_word_cutoff"
   ],
-  "textStatus": "truncated",
+  "textStatus": "garbage_cleared",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251125015720",
   "archiveOrgUrl": "http://web.archive.org/web/20251125015720/https://www.wsj.com/articles/our-town-review-thornton-wilder-back-on-broadway-23333989",
   "textIssues": [
     "Word count too low: 172 (min: 300)"
   ],
-  "rescoreCompletedAt": "2026-01-29T14:31:51.957Z"
+  "rescoreCompletedAt": "2026-01-29T14:31:51.957Z",
+  "garbageFullText": "https://www.wsj.com/articles/our-town-review-thornton-wilder-back-on-broadway-23333989\n\nJim Parsons and the cast of ‘Our Town.’ Daniel RaderNew York\n\nPromoted as an “Our Town” for “our time,” the new Broadway production of Thornton Wilder’s play has overlooked an olfactory trigger warning—odd given the sometimes comical list of possibly alarming elements you see at the theater in programs and on placards these days. Vegans and vegetarians should know that an overwhelming smell of frying bacon wafts through the theater in the final act. I suppose those allergic to heliotrope—the scent of the flower, which is referred to more than once in the first act, is also discernible at one point—should also be alerted to this aromatic aspect of the production’s approach to Wilder’s canonical American play.\n\nCopyright ©2025 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nopinionRent Control as a Constitutional Taking\n\nopinionThe Bidding War for New York Refugees\n\n‘The Queen of Versailles’ Review: Kristin Chenoweth’s Musical of Gilded Dreams\n\nHow a Skyscraper Shaped Like a Radiator Helped Create the Modern Corporation\n\nJPMorgan Chase’s Soaring Skyscraper With Human Spirit",
+  "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
+  "garbageFixedAt": "2026-01-29T22:45:23.092Z"
 }

@@ -5,7 +5,6 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.wsj.com/articles/redwood-review-idina-menzel-climbs-back-to-broadway-f8998fae",
   "publishDate": "February 13th, 2025",
-  "fullText": "https://www.wsj.com/articles/redwood-review-idina-menzel-climbs-back-to-broadway-f8998fae\n\nIdina Menzel Matthew Murphy and Evan ZimmermanNew York\n\nIdina Menzel is defying gravity again on Broadway in the new musical “Redwood.” On this occasion she gets an assist from a more substantial piece of wood than the spindly broomstick that sent her skyward in her Tony-winning turn in “Wicked.” Portraying a woman in flight from grief who finds herself entranced by the majestic beauty of an ancient forest in California, Ms. Menzel is rigged up to a massive facsimile of a redwood tree, and proceeds to leap, twirl and deploy her steel-belted powerhouse of a voice from a dozen feet above the stage.\n\nCopyright ©2025 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8",
   "isFullReview": false,
   "showScoreExcerpt": "\"They wrap the show in visually alluring wallpaper. \"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/redwood-broadway",
@@ -78,16 +77,19 @@
     }
   ],
   "fetchTier": 4,
-  "textQuality": "truncated",
+  "textQuality": "excerpt_only",
   "truncationSignals": [
     "no_ending_punctuation",
     "has_footer_text"
   ],
-  "textStatus": "truncated",
+  "textStatus": "garbage_cleared",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251119171401",
   "archiveOrgUrl": "http://web.archive.org/web/20251119171401/https://www.wsj.com/articles/redwood-review-idina-menzel-climbs-back-to-broadway-f8998fae",
   "textIssues": [
     "Word count too low: 115 (min: 300)"
-  ]
+  ],
+  "garbageFullText": "https://www.wsj.com/articles/redwood-review-idina-menzel-climbs-back-to-broadway-f8998fae\n\nIdina Menzel Matthew Murphy and Evan ZimmermanNew York\n\nIdina Menzel is defying gravity again on Broadway in the new musical “Redwood.” On this occasion she gets an assist from a more substantial piece of wood than the spindly broomstick that sent her skyward in her Tony-winning turn in “Wicked.” Portraying a woman in flight from grief who finds herself entranced by the majestic beauty of an ancient forest in California, Ms. Menzel is rigged up to a massive facsimile of a redwood tree, and proceeds to leap, twirl and deploy her steel-belted powerhouse of a voice from a dozen feet above the stage.\n\nCopyright ©2025 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8",
+  "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
+  "garbageFixedAt": "2026-01-29T22:45:23.176Z"
 }

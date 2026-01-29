@@ -301,12 +301,24 @@ async function main(): Promise<void> {
 
   // Helper to get scorable text (fullText or excerpts)
   const getScorableText = (data: ReviewTextFile): string | null => {
-    // Check fullText first (but not if it's an error page)
+    // Check fullText first (but not if it's an error page or garbage)
     if (data.fullText && data.fullText.length >= 100) {
       const lower = data.fullText.toLowerCase();
-      if (!lower.includes('page not found') &&
-          !lower.includes('404') &&
-          !lower.includes('access denied')) {
+
+      // Basic garbage checks - error pages
+      const isErrorPage = lower.includes('page not found') ||
+                          lower.includes('404') ||
+                          lower.includes('access denied');
+
+      // Additional garbage checks - common paywall/ad blocker patterns
+      const isGarbage = lower.includes('ad blocker') ||
+                        lower.includes('adblocker') ||
+                        lower.includes('subscribe to continue') ||
+                        lower.includes('sign in to continue') ||
+                        lower.includes('please turn off') ||
+                        (lower.includes('whitelist') && lower.includes('browser'));
+
+      if (!isErrorPage && !isGarbage) {
         return data.fullText;
       }
     }
@@ -393,19 +405,31 @@ async function main(): Promise<void> {
       const qualityResult: ContentQualityResult = assessTextQuality(reviewFile.fullText, showTitle);
 
       if (qualityResult.quality === 'garbage' && qualityResult.confidence === 'high') {
-        // Skip scoring - content is garbage with high confidence
-        console.log(`SKIPPED (garbage: ${qualityResult.issues[0] || 'invalid content'})`);
-        garbageSkipped++;
-        garbageSkips.push({
-          showId: reviewFile.showId,
-          outletId: reviewFile.outletId || '',
-          filePath,
-          quality: qualityResult.quality,
-          confidence: qualityResult.confidence,
-          issues: qualityResult.issues,
-          skippedAt: new Date().toISOString()
-        });
-        continue;
+        // Check if we have good excerpts to fall back to
+        const hasGoodExcerpts = (reviewFile.bwwExcerpt && reviewFile.bwwExcerpt.length >= 50) ||
+                                (reviewFile.dtliExcerpt && reviewFile.dtliExcerpt.length >= 50) ||
+                                (reviewFile.showScoreExcerpt && reviewFile.showScoreExcerpt.length >= 50);
+
+        if (!hasGoodExcerpts) {
+          // Skip scoring - content is garbage AND no excerpts to fall back to
+          console.log(`SKIPPED (garbage: ${qualityResult.issues[0] || 'invalid content'})`);
+          garbageSkipped++;
+          garbageSkips.push({
+            showId: reviewFile.showId,
+            outletId: reviewFile.outletId || '',
+            filePath,
+            quality: qualityResult.quality,
+            confidence: qualityResult.confidence,
+            issues: qualityResult.issues,
+            skippedAt: new Date().toISOString()
+          });
+          continue;
+        } else {
+          // fullText is garbage but we have excerpts - use excerpts for scoring
+          console.log(`(using excerpts, fullText garbage) `);
+          suspiciousWarnings++;
+          // The getScorableText() will return excerpts since fullText will fail quality check
+        }
       }
 
       if (qualityResult.quality === 'suspicious' || qualityResult.quality === 'garbage') {

@@ -5,17 +5,16 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.wsj.com/articles/oedipus-review-brilliantly-reimagining-sophocles-on-broadway-b9416144",
   "publishDate": "2025-11-13",
-  "fullText": "https://www.wsj.com/articles/oedipus-review-brilliantly-reimagining-sophocles-on-broadway-b9416144\n\nThe cast of ‘Oedipus.’ Julieta CervantesNew York\n\nA powerful politician’s night of triumph descends precipitously into waking-nightmare territory in the transfixing “Oedipus,” an adaptation of Sophocles’ tragedy from the British writer-director Robert Icke. In this ingeniously reimagined contemporary staging on Broadway (“created by” Mr. Icke “after” Sophocles), the Theban king of the original becomes a hard-driving candidate hoping to lead his country as he gathers with his family on election night to await the returns, while a dark fate gradually encircles him like a snake ready to spring.\n\nCopyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nNew York State to Loosen Environmental Rules to Speed Up Homebuilding\n\nThousands of New York City Nurses Go On Strike\n\nopinionBreads Lines in Mamdani’s New York\n\nopinionHow Mamdani and Cea Weaver Plan to End Private Housing\n\n‘Bug’ Review: A Broadway Drama of Insidious Delusion",
   "showScoreExcerpt": "\"I thought what might follow would be Mr. Ickeâs most provocativeâand logical and interestingâdeparture from Sophocles, an ending of a more ambiguous and less gruesome kind. \"",
   "originalScore": null,
   "assignedScore": 53,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "I thought what might follow would be Mr. Icke’s most provocative—and logical and interesting—departure from Sophocles, an ending of a more ambiguous and less gruesome kind. Instead he reverts to tradition. It’s an understandable move: Many might feel shortchanged if Mr. Icke had chosen otherwise. Ne...",
-  "textStatus": "partial",
+  "textStatus": "garbage_cleared",
   "urlSource": "show-score",
   "urlUpdatedAt": "2026-01-25T14:20:46.959Z",
-  "textQuality": "partial",
+  "textQuality": "excerpt_only",
   "sourceMethod": "archive",
   "scoreSource": null,
   "llmScore": {
@@ -113,5 +112,8 @@
   "bwwThumb": "Up",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 53,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.924Z"
+  "rescoreCompletedAt": "2026-01-29T14:31:51.924Z",
+  "garbageFullText": "https://www.wsj.com/articles/oedipus-review-brilliantly-reimagining-sophocles-on-broadway-b9416144\n\nThe cast of ‘Oedipus.’ Julieta CervantesNew York\n\nA powerful politician’s night of triumph descends precipitously into waking-nightmare territory in the transfixing “Oedipus,” an adaptation of Sophocles’ tragedy from the British writer-director Robert Icke. In this ingeniously reimagined contemporary staging on Broadway (“created by” Mr. Icke “after” Sophocles), the Theban king of the original becomes a hard-driving candidate hoping to lead his country as he gathers with his family on election night to await the returns, while a dark fate gradually encircles him like a snake ready to spring.\n\nCopyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nNew York State to Loosen Environmental Rules to Speed Up Homebuilding\n\nThousands of New York City Nurses Go On Strike\n\nopinionBreads Lines in Mamdani’s New York\n\nopinionHow Mamdani and Cea Weaver Plan to End Private Housing\n\n‘Bug’ Review: A Broadway Drama of Insidious Delusion",
+  "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
+  "garbageFixedAt": "2026-01-29T22:45:23.051Z"
 }

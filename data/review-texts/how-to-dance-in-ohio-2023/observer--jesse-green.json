@@ -5,7 +5,6 @@
   "criticName": "Jesse Green",
   "url": "https://observer.com/2023/12/how-to-dance-in-ohio-broadway-review/",
   "publishDate": "December 10, 2023",
-  "fullText": "We noticed you're using an ad blocker.\n\t\t\tWe get it: you like to have control of your own internet experience. But advertising revenue helps support our journalism. To read our full stories, please turn off your ad blocker.We'd really appreciate it.\n\nBelow are steps you can take in order to whitelist Observer.com on your browser:\n\nClick the AdBlock button on your browser and select Don't run on pages on this domain.\n\nClick the AdBlock Plus button on your browser and select Enabled on this site.\n\nClick the AdBlock Plus button on your browser and select Disable on Observer.com.",
   "isFullReview": false,
   "dtliExcerpt": "The musical, based on the 2015 documentary of the same name, follows a group of autistic young adults preparing for a spring formal dance, and it handles its subject matter with remarkable sensitivity and authenticity.",
   "originalScore": null,
@@ -98,12 +97,15 @@
     }
   ],
   "fetchTier": 3,
-  "textQuality": "partial",
+  "textQuality": "excerpt_only",
   "truncationSignals": [],
-  "textStatus": "incomplete",
+  "textStatus": "garbage_cleared",
   "sourceMethod": "brightdata",
   "textIssues": [
     "Word count too low: 98 (min: 300)",
     "Show title not found in text"
-  ]
+  ],
+  "garbageFullText": "We noticed you're using an ad blocker.\n\t\t\tWe get it: you like to have control of your own internet experience. But advertising revenue helps support our journalism. To read our full stories, please turn off your ad blocker.We'd really appreciate it.\n\nBelow are steps you can take in order to whitelist Observer.com on your browser:\n\nClick the AdBlock button on your browser and select Don't run on pages on this domain.\n\nClick the AdBlock Plus button on your browser and select Enabled on this site.\n\nClick the AdBlock Plus button on your browser and select Disable on Observer.com.",
+  "garbageReason": "/ad ?block(er)?/i",
+  "garbageFixedAt": "2026-01-29T22:45:22.914Z"
 }
