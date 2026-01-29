@@ -5,8 +5,8 @@
   "criticName": "Howard Miller",
   "url": "https://www.talkinbroadway.com/page/world/MotherPlay.html",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "Microphone audio gearTheatre news updatesLincoln Center for the Performing ArtsActing classes workshopsTheatre-related booksBroadway themed experiencesYou Will Get SickPlaywriting workshopsTheatre review subscriptionCostume design supplies\n\n\n\n\n\n\n\n\n\n\n            \t\t                  \n                                            \n \n\n\t\n\n\n \n \n\n\n\n Past ReviewsBroadway Reviews\n\nTheatre Review by Howard Miller - April 25, 2024\n\nMother Play by Paula Vogel. Directed by Tina Landau. Dance choreography by Christopher Gattelli. Scenic design by David Zinn. Costume design by Toni-Leslie James. Lighting design by Jen Schriever. Sound design by Jill BC Du Boff. Projection design by Shawn Duan. Hair and wig design by Matthew Armentrout. Vocal coach Bibi Buffington.\nCast: Celia Keenan-Bolger, Jessica Lange, and Jim Parsons.\nTheater: Hayes Theater\nTickets:  2ST.com\n\nThankfully, the roaches are only projections (credit or blame designer Shawn Duan for this one), and while they may either entertain or creep you out, they are significant components to the play which is subtitled: \"A Play in Five Evictions.\"\n\nAs with The Baltimore Waltz and the far richer Pulitzer Prize-winning How I Learned to Drive, Vogel has drawn from her own experiences in crafting this work, which mixes wry comedy with doses of serious drama, sifted through jiggered memories and a writer's prerogative to veer from reality.\n\nWe first meet Phyllis and her two children, 13-year-old Carl and 11-year-old Martha (who also serves as the play's narrator), as they are moving into a small, low-rent apartment following Phyllis's divorce from their father. It's all they can afford, as Phyllis repeatedly reminds them, though that never seems to interfere with her ability to add to her collection of designer outfits. It is the custodian's apartment in the basement, and it sits adjacent to the building's trash room, whence come the first round of roaches.\n\nEarly on, it's all mined for dark comedy. But over time, as the play races through the years from the 1960s to the present, there will be multiple moves and multiple shifts in tone as Vogel reveals carefully meted out bits of information.\n\nThere are really two sets of character studies going on here. While Parsons and Keenan-Bolger are both very good actors, it's difficult to see Carl and Martha as anything other than idealized versions of siblings who have each other's backs through thick and thin. There is never a break or discord between them, from the time they are teenagers to when they are older and independent, and both are living openly gay lives, much to their mother's horror and disdain.\n\nIt is Phyllis's story that is truly compelling, though. She is, after all, the mother of Mother Play and the focus of Vogel's scrutiny. Most of us probably have some relative with whom we'd rather spend as little time as possible. Imagine, though, what we might learn if we were to try to understand them. That's what it is like watching Jessica Lange's Phyllis.\n\nSomewhere about two thirds of the way through, we are met with a long scene played out mostly in silence. Vogel refers to it in the script as \"The Phyllis Ballet,\" and it occurs at a point in the story when she is living alone (in a much nicer condo than the earlier roach-infested places they have called home). It is a straightforward portrait of Phyllis when no one is watching. Nothing much happens. A little television. A little music on the radio. A bite of microwaved dinner. A drink of gin. A cigarette. It's odd. It's reality. It's certainly a bold move that director Tina Landau, who has shown no qualms about ramping up the earlier offbeat comedy or sometimes ugly confrontations, doubles down on.\n\nWith their underwritten parts, Parsons gives us flamboyance and occasional anger, while Keenan-Bolger mostly serves as our quiet and patient guide. But it is Lange who stands at the center, giving a performance that throughout is full of nuance as she portrays this complicated mess of a woman. At one point, we are even allowed to hope for a genuine change in Phyllis's deeply embedded homophobia. But she is who she is, and even with whatever magical thinking Vogel has applied to her portrait, there is precious little redemption to be found here, except, perhaps, in the lessons that her daughter Martha, presumably the playwright's stand-in, has accrued. And maybe that's the raison d'être for the play itself: understanding and forgiveness.",
+  "isFullReview": true,
   "bwwExcerpt": "With their underwritten parts, Parsons gives us flamboyance and occasional anger, while Keenan-Bolger mostly serves as our quiet and patient guide. But it is Lange who stands at the center, giving a performance that throughout is full of nuance as she portrays this complicated mess of a woman. At one point, we are even allowed to hope for a genuine change in Phyllis's deeply embedded homophobia. But she is who she is, and even with whatever magical thinking Vogel has applied to her portrait, the",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "bwwThumb": "Up",
@@ -75,5 +75,36 @@
     "needsReviewReasons": [
       "Models disagree by 20 points (Claude: 45, OpenAI: 65)"
     ]
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 55,
+  "textWordCount": 708,
+  "archivePath": "data/archives/reviews/mother-play-2024/talkinbroadway--howard-miller_2026-01-29.html",
+  "textFetchedAt": "2026-01-29T06:43:34.298Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata"
 }
