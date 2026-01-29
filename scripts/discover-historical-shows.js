@@ -16,6 +16,9 @@ const { JSDOM } = require('jsdom');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const { checkKnownShow, detectPlayFromTitle } = require('./lib/known-shows');
 const { slugify, checkForDuplicate } = require('./lib/deduplication');
+const { isOfficialBroadwayTheater, getCanonicalVenueName, validateVenue } = require('./lib/broadway-theaters');
+const { isTourProduction, validateBroadwayProduction } = require('./lib/tour-detection');
+const { getSeasonForDate, validateSeason } = require('./lib/broadway-seasons');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'historical-shows-pending.json');
@@ -171,9 +174,52 @@ async function discoverHistoricalShows() {
   // Find new shows not in our database using improved duplicate detection
   const newShows = [];
   const skippedDuplicates = [];
+  const skippedTours = [];
+  const skippedInvalidVenue = [];
 
   for (const show of allDiscoveredShows) {
-    // Use the new comprehensive duplicate check
+    // STEP 1: Tour detection - reject non-Broadway productions
+    const tourCheck = isTourProduction(show);
+    if (tourCheck.isTour) {
+      skippedTours.push({
+        title: show.title,
+        season: show.season,
+        reason: tourCheck.reason,
+        type: tourCheck.type
+      });
+      continue;
+    }
+
+    // STEP 2: Venue validation - normalize and validate
+    const venueValidation = validateVenue(show.venue);
+    if (!venueValidation.isValid && show.venue && show.venue !== 'TBA') {
+      skippedInvalidVenue.push({
+        title: show.title,
+        season: show.season,
+        venue: show.venue,
+        reason: venueValidation.reason
+      });
+      continue;
+    }
+
+    // Normalize venue name to canonical form
+    if (venueValidation.isValid) {
+      show.venue = venueValidation.canonical;
+    }
+
+    // STEP 3: Season validation
+    if (show.openingDate) {
+      try {
+        const computedSeason = getSeasonForDate(show.openingDate);
+        if (computedSeason !== show.season) {
+          console.log(`  ⚠️  Season mismatch for "${show.title}": listed as ${show.season}, date suggests ${computedSeason}`);
+        }
+      } catch (e) {
+        // Date parsing issue - will be handled later
+      }
+    }
+
+    // STEP 4: Duplicate check
     const duplicateCheck = checkForDuplicate(show, data.shows);
 
     if (duplicateCheck.isDuplicate) {
@@ -213,6 +259,24 @@ async function discoverHistoricalShows() {
       openingDate,
       closingDate,
     });
+  }
+
+  // Log skipped tours
+  if (skippedTours.length > 0) {
+    console.log(`🚫 Rejected ${skippedTours.length} tour/non-Broadway production(s):`);
+    for (const skip of skippedTours) {
+      console.log(`   - "${skip.title}" [${skip.season}] (${skip.type}: ${skip.reason})`);
+    }
+    console.log('');
+  }
+
+  // Log skipped invalid venues
+  if (skippedInvalidVenue.length > 0) {
+    console.log(`⚠️  Skipped ${skippedInvalidVenue.length} show(s) with unrecognized venues:`);
+    for (const skip of skippedInvalidVenue) {
+      console.log(`   - "${skip.title}" at "${skip.venue}" [${skip.season}]`);
+    }
+    console.log('');
   }
 
   // Log skipped duplicates for debugging
@@ -273,6 +337,24 @@ async function discoverHistoricalShows() {
         tags.push('revival');
       }
 
+      // Find existing productions of this show for revival linking
+      let originalProductionId = null;
+      let productionNumber = 1;
+
+      if (detection.isRevival) {
+        // Look for existing productions with similar title
+        const existingProductions = data.shows.filter(s => {
+          const sBase = s.slug.replace(/-\d{4}$/, '');
+          const newBase = show.slug.replace(/-\d{4}$/, '');
+          return sBase === newBase && s.id !== show.id;
+        }).sort((a, b) => (a.openingDate || '').localeCompare(b.openingDate || ''));
+
+        if (existingProductions.length > 0) {
+          originalProductionId = existingProductions[0].id;
+          productionNumber = existingProductions.length + 1;
+        }
+      }
+
       data.shows.push({
         id: show.id,
         title: show.title,
@@ -281,7 +363,7 @@ async function discoverHistoricalShows() {
         openingDate: show.openingDate || new Date().toISOString().split('T')[0],
         closingDate: show.closingDate,
         status: 'closed',
-        type: detection.detectedType, // Auto-detected with revival logic
+        type: detection.detectedType === 'revival' ? (detection.isPlay ? 'play' : 'musical') : detection.detectedType,
         runtime: null,
         intermissions: null,
         images: {},
@@ -292,6 +374,12 @@ async function discoverHistoricalShows() {
         ticketLinks: [],
         cast: [],
         creativeTeam: [],
+        // Revival metadata
+        isRevival: detection.isRevival,
+        originalProductionId: originalProductionId,
+        productionNumber: productionNumber,
+        // Season tracking
+        season: show.season,
       });
     }
 
