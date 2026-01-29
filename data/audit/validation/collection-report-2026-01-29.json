@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T05:09:11.917Z",
+  "runDate": "2026-01-29T05:15:23.160Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "the-outsiders-2024",
+    "showFilter": "chicago-1996",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 47,
-    "failed": 73,
+    "processed": 48,
+    "failed": 76,
     "skipped": 0,
-    "successRate": "39.2%"
+    "successRate": "38.7%"
   },
   "tierBreakdown": {
     "playwright": 6,
     "scrapingbee": 4,
     "brightdata": 5,
-    "archive": 32
+    "archive": 33
   },
   "statistics": {
-    "tier1Attempts": 14,
+    "tier1Attempts": 3,
     "tier1Success": 0,
-    "tier2Attempts": 14,
-    "tier2Success": 1,
-    "tier3Attempts": 13,
+    "tier2Attempts": 3,
+    "tier2Success": 0,
+    "tier3Attempts": 3,
     "tier3Success": 0,
-    "tier4Attempts": 30,
-    "tier4Success": 3,
-    "totalFailed": 13,
-    "scrapingBeeCreditsUsed": 50
+    "tier4Attempts": 7,
+    "tier4Success": 1,
+    "totalFailed": 3,
+    "scrapingBeeCreditsUsed": 10
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -81,7 +81,8 @@
     "stranger-things-2024/thestage--dave-fargnoli.json",
     "the-outsiders-2024/nytg--joe-dziemianowicz.json",
     "the-outsiders-2024/thewrap--robert-hofler.json",
-    "the-outsiders-2024/washpost--elisabeth-vincentelli.json"
+    "the-outsiders-2024/washpost--elisabeth-vincentelli.json",
+    "chicago-1996/ap--michael-kuchwara.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -156,7 +157,10 @@
     "the-outsiders-2024/amny--matt-windman.json",
     "the-outsiders-2024/dailybeast--tim-teeman.json",
     "the-outsiders-2024/rollingstone--brittany-spanos.json",
-    "the-outsiders-2024/talkinbroadway--walter-bilderback.json"
+    "the-outsiders-2024/talkinbroadway--walter-bilderback.json",
+    "chicago-1996/nydailynews--howard-kissel.json",
+    "chicago-1996/theatermania--unknown.json",
+    "chicago-1996/time--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -212,7 +216,8 @@
       "stranger-things-2024/nytg--kyle-turner.json",
       "the-outsiders-2024/nytg--joe-dziemianowicz.json",
       "the-outsiders-2024/thewrap--robert-hofler.json",
-      "the-outsiders-2024/washpost--elisabeth-vincentelli.json"
+      "the-outsiders-2024/washpost--elisabeth-vincentelli.json",
+      "chicago-1996/ap--michael-kuchwara.json"
     ]
   }
 }
