@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T18:49:04.816Z",
+  "runDate": "2026-01-29T18:49:31.894Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 25,
     "priority": "all",
-    "showFilter": "heart-of-rock-and-roll-2024",
+    "showFilter": "the-lion-king-1997",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 66,
-    "failed": 223,
+    "processed": 65,
+    "failed": 227,
     "skipped": 0,
-    "successRate": "22.8%"
+    "successRate": "22.3%"
   },
   "tierBreakdown": {
     "playwright": 10,
     "scrapingbee": 6,
     "brightdata": 7,
-    "archive": 43
+    "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 6,
+    "tier1Attempts": 10,
     "tier1Success": 0,
-    "tier2Attempts": 6,
-    "tier2Success": 1,
-    "tier3Attempts": 5,
+    "tier2Attempts": 10,
+    "tier2Success": 0,
+    "tier3Attempts": 10,
     "tier3Success": 0,
-    "tier4Attempts": 10,
-    "tier4Success": 1,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 40
+    "tier4Attempts": 23,
+    "tier4Success": 0,
+    "totalFailed": 10,
+    "scrapingBeeCreditsUsed": 30
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -99,8 +99,7 @@
     "queen-versailles-2025/nysr--david-finkle.json",
     "queen-versailles-2025/slantmagazine--dan-rubins.json",
     "suffs-2024/the-times--nancy-durrant.json",
-    "mj-2022/usatoday--david-rooney.json",
-    "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json"
+    "mj-2022/usatoday--david-rooney.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -320,12 +319,16 @@
     "here-lies-love-2023/indiewire--chris-ofalt.json",
     "here-lies-love-2023/observer--rex-reed.json",
     "here-lies-love-2023/theatermania--adam-feldman.json",
-    "heart-of-rock-and-roll-2024/nytimes--jesse-green.json",
-    "heart-of-rock-and-roll-2024/variety--aramide-tinubu.json",
-    "heart-of-rock-and-roll-2024/nydailynews--chris-jones.json",
-    "heart-of-rock-and-roll-2024/nydailynews--chris.json",
-    "heart-of-rock-and-roll-2024/the-new-york-sun--elysa-gardner.json",
-    "heart-of-rock-and-roll-2024/timeout--regina-robbins.json"
+    "the-lion-king-1997/hollywood-reporter--frank-scheck.json",
+    "the-lion-king-1997/variety--charles-isherwood.json",
+    "the-lion-king-1997/variety--matt-wolf.json",
+    "the-lion-king-1997/ew--bruce-handy.json",
+    "the-lion-king-1997/nypost--clive-barnes.json",
+    "the-lion-king-1997/USATODAY--david-patrick-stearns.json",
+    "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+    "the-lion-king-1997/njcom--michael-sommers.json",
+    "the-lion-king-1997/talkinbroadway--matthew-murray.json",
+    "the-lion-king-1997/washpost--lloyd-rose.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -399,8 +402,7 @@
       "queen-versailles-2025/vulture--sara-holdren-and-jesse-david-fox.json",
       "queen-versailles-2025/vulture--sara-holdren.json",
       "queen-versailles-2025/slantmagazine--dan-rubins.json",
-      "suffs-2024/the-times--nancy-durrant.json",
-      "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json"
+      "suffs-2024/the-times--nancy-durrant.json"
     ]
   }
 }
