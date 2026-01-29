@@ -7,7 +7,7 @@
   "publishDate": "April 21, 2024",
   "fullText": "None of this would matter, arguably, if the production within this naked attempt to offer a value-added experience to increase revenue was worth seeing. Alas, outside of Bebe Neuwirth’s and Steven Skybell’s Fraulein Schneider and Herr Schultz, it’s not.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 30,
   "dtliThumb": "Down",
   "source": "dtli",
   "dtliExcerpt": "None of this would matter, arguably, if the production within this naked attempt to offer a value-added experience to increase revenue was worth seeing. Alas, outside of Bebe Neuwirth’s and Steven Skybell’s Fraulein Schneider and Herr Schultz, it’s not.",
@@ -15,7 +15,60 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "llmScore": {
+    "score": 30,
+    "confidence": "medium",
+    "range": {
+      "low": 20,
+      "high": 40
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 68,
+      "direction": 20
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's not",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "naked attempt to offer a value-added experience to increase revenue",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "outside of Bebe Neuwirth's and Steven Skybell's Fraulein Schneider and Herr Schultz",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic explicitly states the production is 'not worth seeing' except for two specific performances, indicating a clear negative recommendation despite praising individual actors. | GPT-4o-mini: The review strongly criticizes the production overall, only acknowledging the performances of two actors as a redeeming quality, leading to a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:03:08.428Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 35,
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

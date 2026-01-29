@@ -11,8 +11,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 23,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 23,
+    "confidence": "high",
+    "range": {
+      "low": 15.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "selling a dinner \"upgrade\" to the \"Pineapple Room\" offends me",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "How gross",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "fruit is a symbol of generosity and love in a world of horrors. It's not a flavor of costly cocktail nor a high-end status symbol",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic is deeply offended by the production's commercialization of symbolic elements, viewing the dinner upgrade as a gross misunderstanding of the show's themes, suggesting fundamental problems with the production's integrity. | GPT-4o-mini: The review expresses strong disapproval of the show's commercialization of a significant symbol, indicating a clear negative sentiment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:03:24.854Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "scoreDelta": 5,
+    "thumbsMatch": true,
+    "expectedThumb": "Down",
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

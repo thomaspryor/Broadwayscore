@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -19,5 +19,63 @@
   "sources": [
     "dtli",
     "bww-roundup"
-  ]
+  ],
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 67.5,
+      "high": 80.5
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": 73
+    },
+    "keyPhrases": [
+      {
+        "quote": "making inventive use of the stage space",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "suggestive more of 'RuPaul's Drag Race' than a seedy European club of the period",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "undoubtedly add to the show's arresting visual allure",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: This excerpt shows mixed sentiment - praising choreographic innovation and visual appeal while questioning period authenticity, with no clear overall recommendation. | GPT-4o-mini: The review highlights innovative choreography and visual appeal, indicating a positive recommendation despite not explicitly urging attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T03:03:47.542Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "scoreDelta": 3,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (74 → Up) conflicts with aggregator thumbs (Flat)"
+    ]
+  }
 }
