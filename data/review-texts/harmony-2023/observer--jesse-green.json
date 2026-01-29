@@ -8,7 +8,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Barry Manilow and Bruce Sussman's musical about the Comedian Harmonists has heart and history, but the songs don't quite soar.",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -54,18 +54,52 @@
     "Word count too low: 98 (min: 300)",
     "Show title not found in text"
   ],
-  "llmScore": null,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 65,
+      "music": 50,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "has heart and history",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the songs don't quite soar",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review acknowledges positive elements (heart, history) but delivers a significant criticism of the music in a musical, creating a mixed assessment that leans slightly positive. | GPT-4o-mini: The review acknowledges some positive aspects but ultimately indicates that the musical's songs fall short, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T02:35:33.261Z",
+    "scoredAt": "2026-01-29T20:35:05.439Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 0,
-    "scoreDelta": 0,
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
