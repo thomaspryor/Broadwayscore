@@ -3592,18 +3592,6 @@
     "timestamp": "2026-01-29T05:03:58.265Z"
   },
   {
-    "reviewId": "appropriate-2023/timeout--adam-feldman.json",
-    "showId": "appropriate-2023",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/appropriate-review",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Error/404 page: \"we can't find the page\"",
-    "textLength": 16892,
-    "timestamp": "2026-01-29T05:07:59.970Z"
-  },
-  {
     "reviewId": "hadestown-2019/observer--david-cote.json",
     "showId": "hadestown-2019",
     "outlet": "Observer",
@@ -3758,5 +3746,29 @@
     "garbageReason": "Paywall/subscription prompt: \"paywall\"",
     "textLength": 7593,
     "timestamp": "2026-01-29T06:59:05.444Z"
+  },
+  {
+    "reviewId": "appropriate-2023/deadline--greg-evans.json",
+    "showId": "appropriate-2023",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/2023/12/appropriate-broadway-review-1235671187/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
+    "textLength": 7903,
+    "timestamp": "2026-01-29T07:12:46.624Z"
+  },
+  {
+    "reviewId": "appropriate-2023/timeout--adam-feldman.json",
+    "showId": "appropriate-2023",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/appropriate-review",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 1379,
+    "timestamp": "2026-01-29T07:14:57.701Z"
   }
 ]
