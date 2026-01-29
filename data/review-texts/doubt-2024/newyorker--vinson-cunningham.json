@@ -10,7 +10,7 @@
   "showScoreExcerpt": "\"At its best, 'Doubt' is about formality.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/doubt-a-parable",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -32,5 +32,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250725135255",
-  "archiveOrgUrl": "http://web.archive.org/web/20250725135255/https://www.newyorker.com/magazine/2024/03/18/john-patrick-shanley-wrestles-with-god-and-destiny"
+  "archiveOrgUrl": "http://web.archive.org/web/20250725135255/https://www.newyorker.com/magazine/2024/03/18/john-patrick-shanley-wrestles-with-god-and-destiny",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 81,
+      "music": null,
+      "performances": 83,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "Shanley's plays are, in some ways, perfect examples of the form",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "At its best, 'Doubt' is about formality",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The unending volley of speech in Shanley's plays, one utterance after another, is its own homegrown theology",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The review provides sustained intellectual praise for Shanley's dramaturgy and thematic depth, highlighting strong performances and thoughtful direction, with only minor implied reservations through qualifying phrases like 'at its best.' | GPT-4o-mini: The review expresses strong appreciation for the performances and thematic depth, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T15:40:06.270Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

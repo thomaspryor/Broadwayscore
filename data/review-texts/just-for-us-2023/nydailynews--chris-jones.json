@@ -10,7 +10,7 @@
   "showScoreExcerpt": "“Silly, sure, but humanizing at the same time.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/alex-edelman-just-for-us-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,5 +31,61 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20230627200613",
-  "archiveOrgUrl": "http://web.archive.org/web/20230627200613/https://www.nydailynews.com/entertainment/broadway/ny-broadway-alex-edelman-just-for-us-broadway-review-20230627-i7u44ducibe7rhxkzcvo4fluxq-story.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20230627200613/https://www.nydailynews.com/entertainment/broadway/ny-broadway-alex-edelman-just-for-us-broadway-review-20230627-i7u44ducibe7rhxkzcvo4fluxq-story.html",
+  "llmScore": {
+    "score": 84,
+    "confidence": "high",
+    "range": {
+      "low": 77.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 83,
+      "music": null,
+      "performances": 89,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's very clever and very funny",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I suspect if this Broadway show does well this summer, as it surely should, he will be back",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "These gags are often hilarious",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic consistently praises Edelman's performance, writing, and comedic structure with phrases like 'very clever and very funny' and predicts success, indicating a clear positive recommendation despite no explicit star rating. | GPT-4o-mini: The review expresses strong enthusiasm for Edelman's performance and humor, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T15:40:18.612Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
