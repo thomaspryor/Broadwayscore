@@ -8,7 +8,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Sarah Paulson delivers a powerhouse performance in this searing family drama that confronts uncomfortable truths about legacy and prejudice.",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "needsScoring": true,
@@ -43,18 +43,57 @@
   "textIssues": [
     "Show title not found in text"
   ],
-  "llmScore": null,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 73.5,
+      "high": 90.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 88,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "powerhouse performance",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "searing family drama",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "confronts uncomfortable truths",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: Strong praise for Paulson's performance and the drama's impact, but this brief excerpt lacks explicit recommendation language or broader production assessment. | GPT-4o-mini: The review highlights a standout performance and addresses significant themes, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:16:50.390Z",
+    "scoredAt": "2026-01-29T20:34:57.775Z",
     "promptVersion": "3.0.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 0,
-    "scoreDelta": 0,
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
