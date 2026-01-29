@@ -330,6 +330,93 @@ This gives more weight to sources with larger sample sizes.
 - **Mezzanine**: Aggregates audience reviews with star ratings (manual - iOS app only)
 - **Reddit**: Sentiment analysis from r/Broadway discussions (monthly automated)
 
+### Commercial Data Schema (commercial.json)
+
+The `data/commercial.json` file tracks financial and business metrics for Broadway shows:
+
+```typescript
+{
+  _meta: { lastUpdated, sources, notes },
+  shows: {
+    [showId: string]: {
+      title: string,
+      weeklyRunningCost: number | null,      // Weekly operating expenses
+      weeklyRunningCostRange?: { min, max }, // Range if exact unknown
+      capitalization: number | null,         // Total investment to open
+      recouped: boolean | null,              // Has show recouped?
+      recoupedDate: string | null,           // When it recouped (YYYY-MM-DD)
+      estimatedRecoupmentPct: number | null, // % toward recoupment (0-100+)
+      profitMargin: number | null,           // Weekly profit margin %
+      costMethodology: string,               // How costs were calculated (see below)
+      sources: [{                            // Data provenance
+        type: "reddit" | "trade" | "sec" | "manual",
+        url: string,
+        date: string,
+        excerpt?: string
+      }],
+      deepResearch?: {                       // Protection for manually-verified data
+        verifiedFields: string[],
+        verifiedDate: string,
+        verifiedBy: string,
+        notes?: string
+      },
+      lastUpdated: string
+    }
+  }
+}
+```
+
+### Cost Methodology Tracking
+
+The `costMethodology` field tracks how weekly running costs and other financial estimates are calculated:
+
+| Methodology | Description | Reliability |
+|-------------|-------------|-------------|
+| `reddit-standard` | Reddit Grosses Analysis methodology (may exclude theater's ~9% cut, producer fee, royalty pools, marketing) | Medium |
+| `trade-reported` | Figures from trade press (Deadline, Variety, Broadway News) | High |
+| `sec-filing` | Official SEC Form D filings | Very High |
+| `producer-confirmed` | Direct producer confirmation | Very High |
+| `deep-research` | Extensively verified through multiple authoritative sources | Very High |
+| `industry-estimate` | General estimate based on comparable shows | Low |
+
+**Why methodology matters:** Reddit analyst estimates may calculate costs differently than official sources. For example, the Reddit methodology often excludes the theater's ~9% cut from weekly operating costs. When comparing data from different sources, incompatible methodologies are not flagged as contradictions.
+
+### Deep Research Protection
+
+Shows with manually-verified commercial data are protected from automated overwrites via the `deepResearch` object:
+
+```json
+"deepResearch": {
+  "verifiedFields": ["estimatedRecoupmentPct", "weeklyRunningCost"],
+  "verifiedDate": "2026-01-28",
+  "verifiedBy": "manual",
+  "notes": "Verified through multi-source research"
+}
+```
+
+**How it works:**
+1. When automated updates propose changes to a verified field, the change is **blocked** (not applied)
+2. A GitHub issue is automatically created for manual review
+3. Critical/High severity conflicts are always blocked
+
+**To mark a field as Deep Research verified:**
+1. Add/update the `deepResearch` object in `data/commercial.json`
+2. List field names in `verifiedFields` array
+3. Set `verifiedDate` to today's date (YYYY-MM-DD format)
+4. Optionally add notes explaining the verification
+
+**Conflict resolution:**
+- If the automated data is correct: Update the verified value and adjust `verifiedDate`
+- If the verified data is correct: No action needed (change was correctly blocked)
+- If verification is no longer needed: Remove the field from `verifiedFields`
+
+**Shows with Deep Research protection:**
+- death-becomes-her (estimatedRecoupmentPct, weeklyRunningCost)
+- stranger-things (capitalization, recouped, recoupedDate)
+- operation-mincemeat (weeklyRunningCost, estimatedRecoupmentPct)
+- just-in-time (weeklyRunningCost, estimatedRecoupmentPct)
+- all-out (weeklyRunningCost, estimatedRecoupmentPct)
+
 ## Key Files
 - `src/lib/engine.ts` - Scoring engine + TypeScript interfaces
 - `src/lib/data.ts` - Data loading layer (includes grosses data functions)

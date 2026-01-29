@@ -813,6 +813,21 @@ export type CommercialDesignation =
   | 'TBD'          // Too early to tell
   | 'Tour Stop';   // National tour engagement on Broadway
 
+export type CostMethodologyType =
+  | 'reddit-standard'      // Reddit analyst methodology (may exclude theater cut)
+  | 'trade-reported'       // Trade press reported figures
+  | 'sec-filing'           // Official SEC Form D filings
+  | 'producer-confirmed'   // Direct producer confirmation
+  | 'deep-research'        // Verified through extensive research
+  | 'industry-estimate';   // General industry estimate
+
+export interface DeepResearchMetadata {
+  verifiedFields: string[];    // Fields that have been verified (e.g., ['estimatedRecoupmentPct', 'weeklyRunningCost'])
+  verifiedDate: string;        // ISO date when verification was done
+  verifiedBy?: string;         // Optional: who verified (e.g., 'manual', 'claude-deep-research')
+  notes?: string;              // Optional: verification notes
+}
+
 export interface ShowCommercial {
   designation: CommercialDesignation;
   capitalization: number | null;
@@ -837,6 +852,8 @@ export interface ShowCommercial {
   };
   productionType?: 'original' | 'tour-stop' | 'return-engagement';
   originalProductionId?: string;
+  costMethodology?: CostMethodologyType;
+  deepResearch?: DeepResearchMetadata;
 }
 
 interface CommercialFile {
