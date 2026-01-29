@@ -41,11 +41,16 @@ interface ProGateProviderProps {
   pageViewThreshold?: number;
 }
 
-export function ProGateProvider({ children, pageViewThreshold = 3 }: ProGateProviderProps) {
+// Triggers that block the user from dismissing the modal
+const BLOCKING_TRIGGERS: GateTrigger[] = ['csv_download', 'json_download', 'page_view_limit'];
+
+export function ProGateProvider({ children, pageViewThreshold = 2 }: ProGateProviderProps) {
   const [hasEmail, setHasEmail] = useState(false);
   const [userData, setUserData] = useState<CapturedUserData | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalTrigger, setModalTrigger] = useState<GateTrigger>('page_view_limit');
+  const [modalBlocking, setModalBlocking] = useState(false);
+  const [exitIntentFired, setExitIntentFired] = useState(false);
   const [isClient, setIsClient] = useState(false);
 
   // Load saved user data on mount
@@ -77,13 +82,32 @@ export function ProGateProvider({ children, pageViewThreshold = 3 }: ProGateProv
 
   const triggerGate = useCallback((trigger: GateTrigger) => {
     if (hasEmail) return; // Don't show if already have email
+    if (modalOpen) return; // Don't stack modals
     setModalTrigger(trigger);
+    setModalBlocking(BLOCKING_TRIGGERS.includes(trigger));
     setModalOpen(true);
-  }, [hasEmail]);
+  }, [hasEmail, modalOpen]);
 
   const handleModalClose = useCallback(() => {
+    if (modalBlocking) return; // Can't close blocking modals
     setModalOpen(false);
-  }, []);
+  }, [modalBlocking]);
+
+  // Exit intent detection - fires when mouse leaves viewport toward top
+  useEffect(() => {
+    if (!isClient || hasEmail || exitIntentFired) return;
+
+    const handleMouseLeave = (e: MouseEvent) => {
+      // Only trigger when mouse leaves through the top of the viewport
+      if (e.clientY <= 0 && !modalOpen) {
+        setExitIntentFired(true);
+        triggerGate('exit_intent');
+      }
+    };
+
+    document.addEventListener('mouseleave', handleMouseLeave);
+    return () => document.removeEventListener('mouseleave', handleMouseLeave);
+  }, [isClient, hasEmail, exitIntentFired, modalOpen, triggerGate]);
 
   const handleModalSubmit = useCallback((data: CapturedUserData) => {
     // Save to localStorage
@@ -157,6 +181,7 @@ export function ProGateProvider({ children, pageViewThreshold = 3 }: ProGateProv
         onClose={handleModalClose}
         onSubmit={handleModalSubmit}
         trigger={modalTrigger}
+        blocking={modalBlocking}
       />
     </ProGateContext.Provider>
   );
