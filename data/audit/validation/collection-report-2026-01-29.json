@@ -1,38 +1,38 @@
 {
-  "runDate": "2026-01-29T01:44:53.292Z",
+  "runDate": "2026-01-29T01:46:38.458Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "gutenberg-2023",
+    "showFilter": "real-women-have-curves-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 29,
-    "failed": 22,
+    "processed": 37,
+    "failed": 17,
     "skipped": 0,
-    "successRate": "56.9%"
+    "successRate": "68.5%"
   },
   "tierBreakdown": {
-    "playwright": 3,
-    "scrapingbee": 0,
-    "brightdata": 4,
+    "playwright": 5,
+    "scrapingbee": 4,
+    "brightdata": 6,
     "archive": 22
   },
   "statistics": {
-    "tier1Attempts": 7,
-    "tier1Success": 0,
-    "tier2Attempts": 7,
-    "tier2Success": 0,
-    "tier3Attempts": 7,
-    "tier3Success": 1,
-    "tier4Attempts": 26,
+    "tier1Attempts": 10,
+    "tier1Success": 2,
+    "tier2Attempts": 8,
+    "tier2Success": 4,
+    "tier3Attempts": 4,
+    "tier3Success": 3,
+    "tier4Attempts": 19,
     "tier4Success": 13,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 20
+    "totalFailed": 1,
+    "scrapingBeeCreditsUsed": 60
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -50,20 +50,28 @@
     "harmony-2023/nysr--sandy-macdonald.json",
     "harmony-2023/talkinbroadway--matthew-murray.json",
     "harmony-2023/washpost--peter-marks.json",
-    "gutenberg-2023/nyt-theater--jonathan-mandell.json",
-    "gutenberg-2023/nytg--joe-dziemianowicz.json",
-    "gutenberg-2023/nytimes--jesse-green.json",
-    "gutenberg-2023/nytimes--korea-jesse-green.json",
-    "gutenberg-2023/deadline--greg-evans.json",
-    "gutenberg-2023/nydailynews--chris-jones.json",
-    "gutenberg-2023/theatermania--zachary-stewart.json",
-    "gutenberg-2023/thewrap--robert-hofler.json",
-    "gutenberg-2023/wsj--charles-isherwood.json",
-    "gutenberg-2023/wsj--charles.json",
-    "gutenberg-2023/chicagotribune--chris-jones.json",
-    "gutenberg-2023/nysr--frank-scheck.json",
-    "gutenberg-2023/nysr--roma-torre.json",
-    "gutenberg-2023/washpost--peter-marks.json"
+    "real-women-have-curves-2025/nyt-theater--jonathan-mandell.json",
+    "real-women-have-curves-2025/nytg--kyle-turner.json",
+    "real-women-have-curves-2025/nytimes--laura-collins-hughes.json",
+    "real-women-have-curves-2025/variety--frank-rizzo.json",
+    "real-women-have-curves-2025/broadwaynews--brittani-samuel.json",
+    "real-women-have-curves-2025/ew--shania-russell.json",
+    "real-women-have-curves-2025/new-york-sun--elysa-gardner.json",
+    "real-women-have-curves-2025/nydailynews--chris-jones.json",
+    "real-women-have-curves-2025/nydailynews--chris.json",
+    "real-women-have-curves-2025/theatermania--meg-masseron.json",
+    "real-women-have-curves-2025/thewrap--robert-hofler.json",
+    "real-women-have-curves-2025/timeout--adam-feldman.json",
+    "real-women-have-curves-2025/cititour--brian-scott-lipton.json",
+    "real-women-have-curves-2025/theatrely--juan-a-ramirez.json",
+    "real-women-have-curves-2025/chicagotribune--chris-jones.json",
+    "real-women-have-curves-2025/dailybeast--tim-teeman.json",
+    "real-women-have-curves-2025/nysr--melissa-rose-bernardo.json",
+    "real-women-have-curves-2025/nysr--melissa-rose.json",
+    "real-women-have-curves-2025/nysr--roma-torre.json",
+    "real-women-have-curves-2025/talkinbroadway--kimberly-ramirez.json",
+    "real-women-have-curves-2025/theater-scene--victor-gluck.json",
+    "real-women-have-curves-2025/washpost--naveen-kumar.json"
   ],
   "failed": [
     "harmony-2023/hollywood-reporter--angie-han.json",
@@ -82,25 +90,29 @@
     "harmony-2023/theatrely--michael-appler.json",
     "harmony-2023/stageandcinema--matthew-murray.json",
     "harmony-2023/usatoday--charles-isherwood.json",
-    "gutenberg-2023/variety--aramide-tinubu.json",
-    "gutenberg-2023/vulture--helen-shaw.json",
-    "gutenberg-2023/nypost--johnny-oleksinski.json",
-    "gutenberg-2023/observer--david-cote.json",
-    "gutenberg-2023/theatermania--adam-feldman.json",
-    "gutenberg-2023/thewrap--steve-pond.json"
+    "real-women-have-curves-2025/vulture--sara-holdren.json"
   ],
   "tierDetails": {
     "playwright": [
       "harmony-2023/nyt-theater--jonathan-mandell.json",
       "harmony-2023/nysr--david-finkle.json",
-      "harmony-2023/nysr--sandy-macdonald.json"
+      "harmony-2023/nysr--sandy-macdonald.json",
+      "real-women-have-curves-2025/nytg--kyle-turner.json",
+      "real-women-have-curves-2025/theater-scene--victor-gluck.json"
     ],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "real-women-have-curves-2025/broadwaynews--brittani-samuel.json",
+      "real-women-have-curves-2025/ew--shania-russell.json",
+      "real-women-have-curves-2025/cititour--brian-scott-lipton.json",
+      "real-women-have-curves-2025/theatrely--juan-a-ramirez.json"
+    ],
     "brightdata": [
       "harmony-2023/observer--jesse-green.json",
       "harmony-2023/observer--rex-reed.json",
       "harmony-2023/chicagotribune--chris-jones.json",
-      "gutenberg-2023/nyt-theater--jonathan-mandell.json"
+      "real-women-have-curves-2025/nyt-theater--jonathan-mandell.json",
+      "real-women-have-curves-2025/dailybeast--tim-teeman.json",
+      "real-women-have-curves-2025/talkinbroadway--kimberly-ramirez.json"
     ],
     "archive": [
       "harmony-2023/variety--trish-deitch.json",
@@ -112,19 +124,19 @@
       "harmony-2023/amny--matt-windman.json",
       "harmony-2023/talkinbroadway--matthew-murray.json",
       "harmony-2023/washpost--peter-marks.json",
-      "gutenberg-2023/nytg--joe-dziemianowicz.json",
-      "gutenberg-2023/nytimes--jesse-green.json",
-      "gutenberg-2023/nytimes--korea-jesse-green.json",
-      "gutenberg-2023/deadline--greg-evans.json",
-      "gutenberg-2023/nydailynews--chris-jones.json",
-      "gutenberg-2023/theatermania--zachary-stewart.json",
-      "gutenberg-2023/thewrap--robert-hofler.json",
-      "gutenberg-2023/wsj--charles-isherwood.json",
-      "gutenberg-2023/wsj--charles.json",
-      "gutenberg-2023/chicagotribune--chris-jones.json",
-      "gutenberg-2023/nysr--frank-scheck.json",
-      "gutenberg-2023/nysr--roma-torre.json",
-      "gutenberg-2023/washpost--peter-marks.json"
+      "real-women-have-curves-2025/nytimes--laura-collins-hughes.json",
+      "real-women-have-curves-2025/variety--frank-rizzo.json",
+      "real-women-have-curves-2025/new-york-sun--elysa-gardner.json",
+      "real-women-have-curves-2025/nydailynews--chris-jones.json",
+      "real-women-have-curves-2025/nydailynews--chris.json",
+      "real-women-have-curves-2025/theatermania--meg-masseron.json",
+      "real-women-have-curves-2025/thewrap--robert-hofler.json",
+      "real-women-have-curves-2025/timeout--adam-feldman.json",
+      "real-women-have-curves-2025/chicagotribune--chris-jones.json",
+      "real-women-have-curves-2025/nysr--melissa-rose-bernardo.json",
+      "real-women-have-curves-2025/nysr--melissa-rose.json",
+      "real-women-have-curves-2025/nysr--roma-torre.json",
+      "real-women-have-curves-2025/washpost--naveen-kumar.json"
     ]
   }
 }
