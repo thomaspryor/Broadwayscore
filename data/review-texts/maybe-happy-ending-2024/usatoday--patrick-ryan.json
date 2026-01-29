@@ -5,16 +5,16 @@
   "criticName": "Patrick Ryan",
   "url": "https://www.usatoday.com/story/entertainment/music/2024/11/12/maybe-happy-ending-review-broadway-darren-criss/76193072007/",
   "publishDate": "2024-11-12T14:05:31-05:00",
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "MUSICBroadway TheatreAdd Topic‘Maybe Happy Ending’ review: Darren Criss shines in one of the best musicals in years Patrick RyanUSA TODAYNov. 12, 2024Updated Nov. 26, 2024, 8:13 p.m. ETNEW YORK – On paper, nothing about “Maybe Happy Ending” should work.\n\nThe ambitious new musical, which opened Nov. 12 at the Belasco Theatre, follows two lonely robots as they take a road trip and fall in love in late 21st century South Korea. It’s a bit like if Rosey from “The Jetsons” rolled into her very own Nora Ephron romantic comedy, with dashes of “La La Land” and Charlie Kaufman thrown in for good measure.\n\nBut somehow, all these disparate elements congeal into something wildly inventive and profoundly moving, thanks to a remarkable pair of lead performances and awe-inspiring direction by Tony Award winner Michael Arden (last year’s “Parade”).\n\nThe show opens with the fastidious android Oliver (Darren Criss), who patiently waits for his owner, James (Marcus Choi), to come retrieve him from a lofty apartment complex for out-of-date robots. He lives in contented solitude with his houseplant and myriad jazz records, until one day he receives a frantic knock on the door from his across-the-hall neighbor, a gumptious “helperbot” named Claire (Helen J. Shen), whose charger is on the fritz and needs to borrow his.\n\nTheir early scenes have a familiar screwball rhythm, as the sheepish droids try to suss out the giddy new feelings bubbling up inside of them. But their playful bickering soon blossoms into something beautiful and soul-baring: Claire, whose battery is on its last legs, has always longed to see fireflies light up a night sky; and Oliver is hopelessly determined to track down James, who moved from Seoul to Jeju Island years ago with nary a postcard to say hello.\n\nAnd so, the motley machines venture out into the world together. Criss, on Broadway for a fourth time, is delightful as the eager-to-please Oliver, whose sunny outlook gets clouded by the sobering realities of life. Portraying a fish out of water, one could easily overdo the robot’s wide-eyed wonderment and stiff, mechanical movements. But the “Glee” star is smartly subtle, deftly landing many of the show’s funniest punchlines and sight gags. (In a clever bit of stage magic, Oliver briefly short-circuits and smokes up after nervously downing a cocktail.)\n\nShen, meanwhile, is radiant in her Broadway debut. The young actor imbues Claire with magnetic wit and heart-wrenching fragility, as the android is forced to confront her limited shelf life. Shen’s gorgeous voice is perfectly suited to Will Aronson and Hue Park’s lush score, which is one of the very best to hit Broadway in years. (Dez Duron’s burnished vocals also soar, playing a swoony jazz crooner whom Oliver idolizes.)\n\nThe show is not without its minor faults. Even at a lean 100 minutes with no intermission, the pace occasionally drags in the busy final third, and some of the dramatic revelations about Oliver and Claire’s ex-owners feel hackneyed. But those quibbles are easy to excuse when there is so much else to love about Arden’s dazzling production, which is unexpectedly lavish for what is essentially an intimate, two-hander musical.\n\nClint Ramos’ vibrant costumes and Ben Stanton’s painterly lighting are a visual feast, and Dane Laffrey pulls off a tremendous feat of technical wizardry with his scenic design, which seamlessly transforms into everything from a sleazy roadside motel to a verdant field brimming with fireflies. George Reeves’ stylish projections are brilliantly used to enhance the story, immersing the audience in the deep recesses of Claire and Oliver’s memories.\n\n“Maybe Happy Ending” is undoubtedly the most original musical to grace Broadway since 2022’s “Kimberly Akimbo,” another small story with big ideas and even bigger emotions. With gentle humor and pathos, Park and Aronson manage to tap into the most human of questions: Is it still worthwhile to love, knowing that pain and loss are inevitable?\n\nIt’s the kind of show that’s hardwired to make you cry. But judging by the resounding sniffles from our audience, there’s nothing artificial about this rare, tender gift of a musical.",
+  "isFullReview": true,
   "bwwExcerpt": "“Maybe Happy Ending” is undoubtedly the most original musical to grace Broadway since 2022’s “Kimberly Akimbo,” another small story with big ideas and even bigger emotions. With gentle humor and pathos, Park and Aronson manage to tap into the most human of questions: Is it still worthwhile to love, knowing that pain and loss are inevitable?",
   "originalScore": null,
   "assignedScore": 85,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MAYBE-HAPPY-ENDING-Starring-Darren-Criss-and-Helen-J-Shen-20241112",
-  "textStatus": "missing",
-  "textQuality": "missing",
-  "sourceMethod": "bww-roundup",
+  "textStatus": "complete",
+  "textQuality": "full",
+  "sourceMethod": "brightdata",
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -76,5 +76,39 @@
   "dtliThumb": "Up",
   "dtliExcerpt": "“Maybe Happy Ending” is undoubtedly the most original musical to grace Broadway since 2022’s “Kimberly Akimbo,” another small story with big ideas and even bigger emotions.",
   "showScoreExcerpt": null,
-  "bwwThumb": null
+  "bwwThumb": null,
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 85,
+  "textWordCount": 678,
+  "archivePath": "data/archives/reviews/maybe-happy-ending-2024/usatoday--patrick-ryan_2026-01-29.html",
+  "textFetchedAt": "2026-01-29T07:21:26.518Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "Request failed with status code 503"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": []
 }
