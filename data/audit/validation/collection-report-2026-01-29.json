@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-29T18:51:51.054Z",
+  "runDate": "2026-01-29T18:52:01.990Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 10,
+    "maxReviews": 15,
     "priority": "all",
-    "showFilter": "chess-2025",
+    "showFilter": "oh-mary-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 65,
-    "failed": 220,
+    "failed": 232,
     "skipped": 0,
-    "successRate": "22.8%"
+    "successRate": "21.9%"
   },
   "tierBreakdown": {
     "playwright": 10,
@@ -23,16 +23,16 @@
     "archive": 42
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 14,
     "tier1Success": 0,
-    "tier2Attempts": 3,
+    "tier2Attempts": 14,
     "tier2Success": 0,
-    "tier3Attempts": 3,
-    "tier3Success": 0,
-    "tier4Attempts": 6,
-    "tier4Success": 0,
-    "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 20
+    "tier3Attempts": 14,
+    "tier3Success": 2,
+    "tier4Attempts": 32,
+    "tier4Success": 1,
+    "totalFailed": 15,
+    "scrapingBeeCreditsUsed": 50
   },
   "processed": [
     "harmony-2023/nyt-theater--jonathan-mandell.json",
@@ -319,9 +319,21 @@
     "here-lies-love-2023/indiewire--chris-ofalt.json",
     "here-lies-love-2023/observer--rex-reed.json",
     "here-lies-love-2023/theatermania--adam-feldman.json",
-    "chess-2025/nytimes--elisabeth-vincentelli.json",
-    "chess-2025/wsj--charles-isherwood.json",
-    "chess-2025/washpost--naveen-kumar.json"
+    "oh-mary-2024/hollywood-reporter--angie-han.json",
+    "oh-mary-2024/nyt-theater--jonathan-mandell.json",
+    "oh-mary-2024/variety--aramide-tinubu.json",
+    "oh-mary-2024/variety--charles-isherwood.json",
+    "oh-mary-2024/vulture--helen-shaw.json",
+    "oh-mary-2024/ew--christian-holub.json",
+    "oh-mary-2024/ew--kristen-baldwin.json",
+    "oh-mary-2024/guardian--adrian-horton.json",
+    "oh-mary-2024/nydailynews--chris-jones.json",
+    "oh-mary-2024/observer--david-cote.json",
+    "oh-mary-2024/observer--jesse-green.json",
+    "oh-mary-2024/theatermania--adam-feldman.json",
+    "oh-mary-2024/wsj--charles-isherwood.json",
+    "oh-mary-2024/the-interested-bystander--cary-wong.json",
+    "oh-mary-2024/usatoday--patrick-ryan.json"
   ],
   "tierDetails": {
     "playwright": [
