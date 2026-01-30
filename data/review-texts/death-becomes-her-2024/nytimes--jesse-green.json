@@ -86,5 +86,11 @@
   "designation": "Critics_Pick",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 39,
-  "rescoreCompletedAt": "2026-01-29T01:47:04.826Z"
+  "rescoreCompletedAt": "2026-01-29T01:47:04.826Z",
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_read_more_prompt",
+    "possible_mid_word_cutoff"
+  ]
 }

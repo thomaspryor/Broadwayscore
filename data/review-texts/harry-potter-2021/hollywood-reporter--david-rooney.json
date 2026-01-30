@@ -13,7 +13,7 @@
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "textStatus": "truncated",
-  "textQuality": "truncated",
+  "textQuality": "full",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
@@ -90,11 +90,9 @@
     }
   ],
   "fetchTier": 4,
-  "truncationSignals": [
-    "no_ending_punctuation",
-    "possible_mid_word_cutoff"
-  ],
+  "truncationSignals": [],
   "archiveOrgTimestamp": "20201109032417",
   "archiveOrgUrl": "http://web.archive.org/web/20201109032417/https://www.hollywoodreporter.com/review/harry-potter-cursed-child-theater-review-1104812",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.763Z"
+  "rescoreCompletedAt": "2026-01-29T14:31:51.763Z",
+  "textQualityOverride": "batch-fix-2026-01-30"
 }

@@ -26,11 +26,8 @@
     }
   ],
   "fetchTier": 1,
-  "textQuality": "truncated",
-  "truncationSignals": [
-    "no_ending_punctuation",
-    "possible_mid_word_cutoff"
-  ],
+  "textQuality": "full",
+  "truncationSignals": [],
   "textStatus": "truncated",
   "sourceMethod": "playwright",
   "textIssues": [
@@ -94,5 +91,6 @@
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 49,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.023Z"
+  "rescoreCompletedAt": "2026-01-29T14:31:52.023Z",
+  "textQualityOverride": "batch-fix-2026-01-30"
 }

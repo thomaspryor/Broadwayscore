@@ -70,5 +70,9 @@
     "needsReviewReasons": [
       "Models disagree by 45 points (Claude: 45, OpenAI: 90)"
     ]
-  }
+  },
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "shorter_than_excerpt"
+  ]
 }

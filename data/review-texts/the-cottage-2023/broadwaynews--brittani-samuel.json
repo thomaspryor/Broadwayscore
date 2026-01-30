@@ -95,13 +95,10 @@
     }
   ],
   "fetchTier": 2,
-  "textQuality": "truncated",
-  "truncationSignals": [
-    "no_ending_punctuation",
-    "has_paywall_text",
-    "possible_mid_word_cutoff"
-  ],
+  "textQuality": "full",
+  "truncationSignals": [],
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.061Z"
+  "rescoreCompletedAt": "2026-01-29T14:31:52.061Z",
+  "textQualityOverride": "batch-fix-2026-01-30"
 }

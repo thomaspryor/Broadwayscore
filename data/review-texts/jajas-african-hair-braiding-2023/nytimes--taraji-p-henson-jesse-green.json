@@ -79,5 +79,11 @@
   ],
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 77,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.827Z"
+  "rescoreCompletedAt": "2026-01-29T14:31:51.827Z",
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_read_more_prompt",
+    "possible_mid_word_cutoff"
+  ]
 }

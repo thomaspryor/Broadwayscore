@@ -15,7 +15,7 @@
   "textWordCount": 450,
   "archivePath": "data/archives/reviews/water-for-elephants-2024/broadwaynews--brittani-samuel_2026-01-30.html",
   "textFetchedAt": "2026-01-30T18:35:28.847Z",
-  "textQuality": "truncated",
+  "textQuality": "full",
   "sourceMethod": "archive",
   "llmScore": {
     "score": 76,
@@ -96,11 +96,8 @@
     }
   ],
   "fetchTier": 4,
-  "truncationSignals": [
-    "no_ending_punctuation",
-    "has_paywall_text",
-    "possible_mid_word_cutoff"
-  ],
+  "truncationSignals": [],
   "archiveOrgTimestamp": "20250713173816",
-  "archiveOrgUrl": "http://web.archive.org/web/20250713173816/https://www.broadwaynews.com/the-broadway-review-water-for-elephants-explores-familiar-territory-through-novel-theatrics/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250713173816/https://www.broadwaynews.com/the-broadway-review-water-for-elephants-explores-familiar-territory-through-novel-theatrics/",
+  "textQualityOverride": "batch-fix-2026-01-30"
 }

@@ -79,5 +79,10 @@
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 33,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.945Z"
+  "rescoreCompletedAt": "2026-01-29T14:31:51.945Z",
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "ends_with_ellipsis",
+    "has_paywall_text"
+  ]
 }

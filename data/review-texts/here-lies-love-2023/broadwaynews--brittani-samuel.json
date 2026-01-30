@@ -76,5 +76,11 @@
   "bwwThumb": null,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 54,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.792Z"
+  "rescoreCompletedAt": "2026-01-29T14:31:51.792Z",
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_paywall_text",
+    "possible_mid_word_cutoff"
+  ]
 }

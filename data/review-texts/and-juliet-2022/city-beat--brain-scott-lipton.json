@@ -85,13 +85,12 @@
     }
   ],
   "fetchTier": 4,
-  "textQuality": "truncated",
-  "truncationSignals": [
-    "has_read_more_prompt"
-  ],
+  "textQuality": "full",
+  "truncationSignals": [],
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250709004305",
   "archiveOrgUrl": "http://web.archive.org/web/20250709004305/https://cititour.com/NYC_Broadway/Juliet/1111",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.645Z"
+  "rescoreCompletedAt": "2026-01-29T14:31:51.645Z",
+  "textQualityOverride": "batch-fix-2026-01-30"
 }

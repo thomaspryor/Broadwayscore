@@ -85,11 +85,9 @@
     }
   ],
   "fetchTier": 1,
-  "textQuality": "truncated",
-  "truncationSignals": [
-    "no_ending_punctuation",
-    "possible_mid_word_cutoff"
-  ],
+  "textQuality": "full",
+  "truncationSignals": [],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "textQualityOverride": "batch-fix-2026-01-30"
 }

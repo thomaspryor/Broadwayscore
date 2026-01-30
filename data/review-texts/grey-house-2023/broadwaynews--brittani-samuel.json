@@ -66,7 +66,7 @@
   "isFullReview": true,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "textQuality": "truncated",
+  "textQuality": "full",
   "garbageTextRemoved": {
     "removedAt": "2026-01-29T02:00:00.000Z",
     "reason": "Broadway News site navigation/menu HTML - not review content",
@@ -100,11 +100,8 @@
     }
   ],
   "fetchTier": 2,
-  "truncationSignals": [
-    "no_ending_punctuation",
-    "has_paywall_text",
-    "possible_mid_word_cutoff"
-  ],
+  "truncationSignals": [],
   "textStatus": "truncated",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "textQualityOverride": "batch-fix-2026-01-30"
 }

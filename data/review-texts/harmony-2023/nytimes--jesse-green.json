@@ -79,5 +79,11 @@
     "needsReviewReasons": [
       "Score (46 → Down) conflicts with aggregator thumbs (Flat)"
     ]
-  }
+  },
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_read_more_prompt",
+    "possible_mid_word_cutoff"
+  ]
 }

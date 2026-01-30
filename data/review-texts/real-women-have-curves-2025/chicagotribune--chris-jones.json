@@ -92,15 +92,13 @@
     }
   ],
   "fetchTier": 4,
-  "textQuality": "truncated",
-  "truncationSignals": [
-    "no_ending_punctuation",
-    "possible_mid_word_cutoff"
-  ],
+  "textQuality": "full",
+  "truncationSignals": [],
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250726005319",
   "archiveOrgUrl": "http://web.archive.org/web/20250726005319/https://www.chicagotribune.com/2025/04/27/review-real-women-have-curves-the-musical-on-broadway/",
   "rescoreCompletedAt": "2026-01-29T14:31:52.004Z",
-  "dateSource": "extracted-from-url"
+  "dateSource": "extracted-from-url",
+  "textQualityOverride": "batch-fix-2026-01-30"
 }

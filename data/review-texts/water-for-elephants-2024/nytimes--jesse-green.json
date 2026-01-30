@@ -78,5 +78,11 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "designation": "Critics_Pick"
+  "designation": "Critics_Pick",
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_read_more_prompt",
+    "possible_mid_word_cutoff"
+  ]
 }

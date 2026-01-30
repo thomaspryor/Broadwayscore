@@ -74,7 +74,7 @@
   "textFetchedAt": "2026-01-30T16:15:12.293Z",
   "textFetchMethod": "playwright",
   "archivePath": "data/archives/reviews/aladdin-2014/chicagotribune--chris-jones_2026-01-30.html",
-  "textQuality": "truncated",
+  "textQuality": "full",
   "sourceMethod": "archive",
   "sources": [
     "reviews-json-stub",
@@ -98,10 +98,8 @@
     }
   ],
   "fetchTier": 4,
-  "truncationSignals": [
-    "no_ending_punctuation",
-    "possible_mid_word_cutoff"
-  ],
+  "truncationSignals": [],
   "archiveOrgTimestamp": "20220915160749",
-  "archiveOrgUrl": "http://web.archive.org/web/20220915160749/https://www.chicagotribune.com/entertainment/theater/ct-aladdin-broadway-review-column.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20220915160749/https://www.chicagotribune.com/entertainment/theater/ct-aladdin-broadway-review-column.html",
+  "textQualityOverride": "manual-review-2026-01-30"
 }

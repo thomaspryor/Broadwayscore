@@ -77,5 +77,11 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": []
-  }
+  },
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_read_more_prompt",
+    "possible_mid_word_cutoff"
+  ]
 }

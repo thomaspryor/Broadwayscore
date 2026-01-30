@@ -72,7 +72,7 @@
   "textWordCount": 573,
   "archivePath": "data/archives/reviews/stranger-things-2024/broadwaynews--brittani-samuel_2026-01-30.html",
   "textFetchedAt": "2026-01-30T18:28:40.272Z",
-  "textQuality": "truncated",
+  "textQuality": "full",
   "sourceMethod": "scrapingbee",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
@@ -106,9 +106,6 @@
     }
   ],
   "fetchTier": 2,
-  "truncationSignals": [
-    "no_ending_punctuation",
-    "has_paywall_text",
-    "possible_mid_word_cutoff"
-  ]
+  "truncationSignals": [],
+  "textQualityOverride": "batch-fix-2026-01-30"
 }

@@ -74,7 +74,7 @@
   "textWordCount": 584,
   "archivePath": "data/archives/reviews/buena-vista-social-club-2025/broadwaynews--brittani-samuel_2026-01-30.html",
   "textFetchedAt": "2026-01-30T18:36:19.044Z",
-  "textQuality": "truncated",
+  "textQuality": "full",
   "sourceMethod": "scrapingbee",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
@@ -108,9 +108,6 @@
     }
   ],
   "fetchTier": 2,
-  "truncationSignals": [
-    "no_ending_punctuation",
-    "has_paywall_text",
-    "possible_mid_word_cutoff"
-  ]
+  "truncationSignals": [],
+  "textQualityOverride": "batch-fix-2026-01-30"
 }

@@ -1240,15 +1240,83 @@ function archiveHtml(html, review, method) {
   return archivePath;
 }
 
+// Junk patterns to strip from end of reviews (newsletter promos, login prompts, site footers)
+const TRAILING_JUNK_PATTERNS = [
+  // TheaterMania newsletter promos
+  /\s*Get the latest news, discounts and updates on theater and shows by signing up for TheaterMania.*$/is,
+  /\s*TheaterMania&#039;s newsletter today!.*$/is,
+  // BroadwayNews login prompts
+  /\s*Already have an account\?\s*(Sign in|Log in).*$/is,
+  // amNY "Read more" promos
+  /\s*Read more:\s*[^\n]+$/i,
+  // Vulture/NY Mag signup junk
+  /\s*This email will be used to sign into all New York sites.*$/is,
+  /\s*By submitting your email, you agree to our Terms and Privacy Policy.*$/is,
+  /\s*Password must be at least 8 characters.*$/is,
+  /\s*You're in!\s*As part of your account.*$/is,
+  /\s*which you can opt out of anytime\.\s*$/i,
+  /\s*occasional updates and offers from New York.*$/is,
+  // Generic newsletter/promo junk
+  /\s*Sign up for our newsletter.*$/is,
+  /\s*Subscribe to our newsletter.*$/is,
+  // Site footers
+  /\s*About Us\s*\|\s*Editorial Guidelines\s*\|\s*Contact Us.*$/is,
+  /\s*Share full article\d*Related Content.*$/is,
+  /\s*Copyright\s*©?\s*\d{4}.*$/is,
+  /\s*All rights reserved\.?\s*$/i,
+  /\s*Excerpts and links to the content may be used.*$/is,
+  // NYT bio junk
+  /\s*is the chief theater critic for The Times\..*$/is,
+  /\s*is a theater critic for The Times\..*$/is,
+];
+
+// Strip trailing junk (newsletter promos, login prompts) from review text
+function stripTrailingJunk(text) {
+  if (!text) return text;
+  let cleaned = text;
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const pattern of TRAILING_JUNK_PATTERNS) {
+      const before = cleaned;
+      cleaned = cleaned.replace(pattern, '').trim();
+      if (cleaned !== before) changed = true;
+    }
+  }
+  return cleaned;
+}
+
+// Patterns that indicate a legitimate review ending (not truncation)
+const LEGITIMATE_ENDING_PATTERNS = [
+  /\d{3}[-.\s]?\d{3}[-.\s]?\d{4}$/,           // Phone number
+  /\.(com|org|net|co\.uk)$/i,                  // URL ending
+  /\d+\s+(W\.|West|E\.|East|Broadway|Street|St\.|Ave|Avenue)/i,  // Address
+  /tickets?\s+(at|available|info)/i,           // Ticket info
+  /Productions?$/i,                            // Production credits
+  /Studios?$/i,
+  /Entertainment$/i,
+  /intermission$/i,                            // Runtime info
+  /Open run$/i,
+];
+
+// Check if text has a legitimate ending (theater info, credits, etc.)
+function hasLegitimateEnding(text) {
+  const last100 = text.slice(-100).trim();
+  return LEGITIMATE_ENDING_PATTERNS.some(p => p.test(last100));
+}
+
 // Detect truncation signals in text
 // Returns object with detected signals and whether likely truncated
 function detectTruncationSignals(text, excerptLength = 0) {
   if (!text || text.trim().length === 0) {
-    return { signals: [], likelyTruncated: false };
+    return { signals: [], likelyTruncated: false, cleanedText: text };
   }
 
+  // First strip trailing junk
+  const cleanedText = stripTrailingJunk(text);
+
   const signals = [];
-  const trimmedText = text.trim();
+  const trimmedText = cleanedText.trim();
   const lastChar = trimmedText.slice(-1);
   const last50 = trimmedText.slice(-50);
   const last500 = trimmedText.slice(-500).toLowerCase();
@@ -1292,9 +1360,15 @@ function detectTruncationSignals(text, excerptLength = 0) {
   // Determine if likely truncated based on signals
   const severeSignals = ['has_paywall_text', 'has_read_more_prompt', 'ends_with_ellipsis', 'shorter_than_excerpt'];
   const hasSevereSignal = signals.some(s => severeSignals.includes(s));
-  const likelyTruncated = hasSevereSignal || signals.length >= 2;
 
-  return { signals, likelyTruncated };
+  // Check for legitimate endings (theater info, credits, URLs) that aren't truncation
+  const legitimateEnding = hasLegitimateEnding(trimmedText);
+
+  // Only weak signals (no_ending_punctuation, possible_mid_word_cutoff) + legitimate ending = NOT truncated
+  const weakSignalsOnly = signals.every(s => ['no_ending_punctuation', 'possible_mid_word_cutoff'].includes(s));
+  const likelyTruncated = hasSevereSignal || (signals.length >= 2 && !(weakSignalsOnly && legitimateEnding));
+
+  return { signals, likelyTruncated, cleanedText, legitimateEnding };
 }
 
 // Classify text quality based on rules:
@@ -1305,42 +1379,47 @@ function detectTruncationSignals(text, excerptLength = 0) {
 // - missing: no text
 function classifyTextQuality(text, showId, wordCount, excerptLength = 0) {
   if (!text || text.trim().length === 0) {
-    return { quality: 'missing', truncationSignals: [] };
+    return { quality: 'missing', truncationSignals: [], cleanedText: text };
   }
 
-  const charCount = text.length;
+  // Detect truncation signals (also strips junk and checks for legitimate endings)
+  const { signals, likelyTruncated, cleanedText, legitimateEnding } = detectTruncationSignals(text, excerptLength);
+
+  // Use cleaned text for analysis
+  const charCount = cleanedText.length;
+  const cleanedWordCount = cleanedText.split(/\s+/).filter(w => w.length > 0).length;
+
   // Extract title from showId (e.g., "hamilton-2015" -> "hamilton")
   const titleLower = showId ? showId.replace(/-\d{4}$/, '').replace(/-/g, ' ').toLowerCase() : '';
-  const textLower = text.toLowerCase();
+  const textLower = cleanedText.toLowerCase();
   const hasShowTitle = titleLower && textLower.includes(titleLower);
-
-  // Detect truncation signals
-  const { signals, likelyTruncated } = detectTruncationSignals(text, excerptLength);
 
   // If truncation detected, mark as truncated regardless of length
   if (likelyTruncated) {
-    return { quality: 'truncated', truncationSignals: signals };
+    return { quality: 'truncated', truncationSignals: signals, cleanedText };
   }
 
-  // Full: >1500 chars AND mentions show title AND >300 words AND no truncation
-  if (charCount > 1500 && hasShowTitle && wordCount > 300 && signals.length === 0) {
-    return { quality: 'full', truncationSignals: signals };
+  // Full: >1500 chars AND mentions show title AND >300 words AND no severe truncation
+  // Allow weak signals (no_ending_punctuation, possible_mid_word_cutoff) if legitimate ending
+  const weakSignalsOnly = signals.every(s => ['no_ending_punctuation', 'possible_mid_word_cutoff'].includes(s));
+  if (charCount > 1500 && hasShowTitle && cleanedWordCount > 300 && (signals.length === 0 || (weakSignalsOnly && legitimateEnding))) {
+    return { quality: 'full', truncationSignals: signals.length === 0 ? [] : signals, cleanedText };
   }
 
   // Partial: 500-1500 chars OR larger but missing criteria
   if (charCount >= 500 && charCount <= 1500) {
-    return { quality: 'partial', truncationSignals: signals };
+    return { quality: 'partial', truncationSignals: signals, cleanedText };
   }
-  if (charCount > 1500 && (!hasShowTitle || wordCount <= 300)) {
-    return { quality: 'partial', truncationSignals: signals };
+  if (charCount > 1500 && (!hasShowTitle || cleanedWordCount <= 300)) {
+    return { quality: 'partial', truncationSignals: signals, cleanedText };
   }
 
   // Excerpt: <500 chars
   if (charCount < 500) {
-    return { quality: 'excerpt', truncationSignals: signals };
+    return { quality: 'excerpt', truncationSignals: signals, cleanedText };
   }
 
-  return { quality: 'partial', truncationSignals: signals };
+  return { quality: 'partial', truncationSignals: signals, cleanedText };
 }
 
 // Map fetch method to standardized sourceMethod
@@ -1381,9 +1460,14 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
     console.log(`    → Flagged for rescore: was scored at ${data.llmScore.score} on excerpt, now has ${text.length} char fullText`);
   }
 
-  data.fullText = text;
-  data.isFullReview = text.length > 1500;
-  data.textWordCount = validation.wordCount;
+  // Text quality classification with truncation detection (also cleans trailing junk)
+  const qualityResult = classifyTextQuality(text, review.showId || data.showId, validation.wordCount, excerptLength);
+
+  // Use cleaned text (junk stripped) if available, otherwise original
+  const cleanedText = qualityResult.cleanedText || text;
+  data.fullText = cleanedText;
+  data.isFullReview = cleanedText.length > 1500;
+  data.textWordCount = cleanedText.split(/\s+/).filter(w => w.length > 0).length;
   data.archivePath = archivePath;
   data.textFetchedAt = new Date().toISOString();
 
@@ -1414,8 +1498,7 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
   data.fetchAttempts = attempts;
   data.fetchTier = method === 'playwright' ? 1 : method === 'browserbase' ? 1.5 : method === 'scrapingbee' ? 2 : method === 'brightdata' ? 3 : 4;
 
-  // Text quality classification with truncation detection
-  const qualityResult = classifyTextQuality(text, review.showId || data.showId, validation.wordCount, excerptLength);
+  // Set quality fields from earlier classification
   data.textQuality = qualityResult.quality;
   data.truncationSignals = qualityResult.truncationSignals;
 
