@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T19:58:21.376Z",
+  "runDate": "2026-01-30T19:58:34.611Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "oh-mary-2024",
+    "showFilter": "mary-jane-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 4,
-    "failed": 72,
+    "failed": 64,
     "skipped": 0,
-    "successRate": "5.3%"
+    "successRate": "5.9%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -24,18 +24,18 @@
     "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 15,
+    "tier1Attempts": 8,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 15,
+    "tier2Attempts": 8,
     "tier2Success": 0,
-    "tier3Attempts": 15,
-    "tier3Success": 2,
-    "tier4Attempts": 38,
-    "tier4Success": 3,
-    "totalFailed": 17,
-    "scrapingBeeCreditsUsed": 50,
+    "tier3Attempts": 8,
+    "tier3Success": 0,
+    "tier4Attempts": 20,
+    "tier4Success": 2,
+    "totalFailed": 9,
+    "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
@@ -43,7 +43,7 @@
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
     "wicked-2003/ew--alice-king.json",
-    "oh-mary-2024/broadwaynews--brittani-samuel.json"
+    "mary-jane-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -101,23 +101,15 @@
     "wicked-2003/njcom-star-ledger--michael-sommers.json",
     "wicked-2003/village-voice--michael-feingold.json",
     "wicked-2003/washpost--peter-marks.json",
-    "oh-mary-2024/hollywood-reporter--angie-han.json",
-    "oh-mary-2024/nyt-theater--jonathan-mandell.json",
-    "oh-mary-2024/variety--aramide-tinubu.json",
-    "oh-mary-2024/variety--charles-isherwood.json",
-    "oh-mary-2024/vulture--helen-shaw.json",
-    "oh-mary-2024/deadline--greg-evans.json",
-    "oh-mary-2024/ew--christian-holub.json",
-    "oh-mary-2024/ew--kristen-baldwin.json",
-    "oh-mary-2024/guardian--adrian-horton.json",
-    "oh-mary-2024/nydailynews--chris-jones.json",
-    "oh-mary-2024/observer--david-cote.json",
-    "oh-mary-2024/observer--jesse-green.json",
-    "oh-mary-2024/theatermania--adam-feldman.json",
-    "oh-mary-2024/timeout--adam-feldman.json",
-    "oh-mary-2024/wsj--charles-isherwood.json",
-    "oh-mary-2024/the-interested-bystander--cary-wong.json",
-    "oh-mary-2024/washpost--peter-marks.json"
+    "mary-jane-2024/hollywood-reporter--angie-han.json",
+    "mary-jane-2024/nytg--david-gordon.json",
+    "mary-jane-2024/guardian--adrian-horton.json",
+    "mary-jane-2024/nypost--johnny-oleksinski.json",
+    "mary-jane-2024/timeout--adam-feldman.json",
+    "mary-jane-2024/wsj--charles-isherwood.json",
+    "mary-jane-2024/theatrely--olivia-clement.json",
+    "mary-jane-2024/talkinbroadway--matthew-murray.json",
+    "mary-jane-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -127,7 +119,7 @@
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json",
       "wicked-2003/ew--alice-king.json",
-      "oh-mary-2024/broadwaynews--brittani-samuel.json"
+      "mary-jane-2024/broadwaynews--brittani-samuel.json"
     ]
   }
 }
