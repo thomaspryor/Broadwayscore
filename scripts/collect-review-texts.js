@@ -3,15 +3,17 @@
  *
  * TIER 0: Archive.org (for archiveFirstSites - paywalled domains where Archive.org excels)
  * TIER 1: Playwright-extra with stealth plugin + login for paywalls
+ * TIER 1.5: Browserbase (managed browser cloud with CAPTCHA solving) - SPENDING LIMITS APPLY
  * TIER 2: ScrapingBee API
  * TIER 3: Bright Data Web Unlocker
  * TIER 4: Archive.org Wayback Machine (final fallback)
  *
  * SUCCESS RATES (Jan 2026 data):
- *   Archive.org: 11.1% (best performer!)
- *   Playwright:   6.7%
- *   ScrapingBee:  3.6%
- *   BrightData:   3.7%
+ *   Archive.org:  11.1% (best performer!)
+ *   Playwright:    6.7%
+ *   Browserbase:   NEW - $0.10/browser hour, has CAPTCHA solving
+ *   ScrapingBee:   3.6%
+ *   BrightData:    3.7%
  *
  * Environment variables:
  *   NYT_EMAIL, NYT_PASSWORD - New York Times credentials
@@ -20,6 +22,11 @@
  *   SCRAPINGBEE_API_KEY - ScrapingBee API key
  *   BRIGHTDATA_API_KEY - Bright Data API key
  *   BRIGHTDATA_CUSTOMER_ID - Bright Data customer ID
+ *   BROWSERBASE_API_KEY - Browserbase API key (for managed browser cloud)
+ *   BROWSERBASE_PROJECT_ID - Browserbase project ID
+ *   BROWSERBASE_ENABLED - 'true' to enable Browserbase tier
+ *   BROWSERBASE_MAX_SESSIONS_PER_DAY - Daily limit (default: 30 = ~$3/day)
+ *   BROWSERBASE_MAX_SESSIONS_PER_RUN - Per-run limit (default: 10)
  *   BATCH_SIZE - Reviews per batch (default: 10)
  *   MAX_REVIEWS - Max reviews to process (default: 50, 0 = all)
  *   PRIORITY - 'tier1' or 'all' (default: all)
@@ -104,6 +111,14 @@ const CONFIG = {
   scrapingBeeKey: process.env.SCRAPINGBEE_API_KEY || '',
   brightDataKey: process.env.BRIGHTDATA_API_KEY || '',
   brightDataCustomerId: process.env.BRIGHTDATA_CUSTOMER_ID || '',
+  browserbaseApiKey: process.env.BROWSERBASE_API_KEY || '',
+  browserbaseProjectId: process.env.BROWSERBASE_PROJECT_ID || '',
+
+  // Browserbase spending limits (to control costs - $0.10/browser hour)
+  browserbaseEnabled: process.env.BROWSERBASE_ENABLED === 'true',
+  browserbaseMaxSessionsPerDay: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY || '30'), // ~$3/day max
+  browserbaseMaxSessionsPerRun: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_RUN || '10'), // Per workflow run
+  browserbaseUsageFile: 'data/collection-state/browserbase-usage.json',
 
   // Directories
   reviewTextsDir: 'data/review-texts',
@@ -180,6 +195,8 @@ const CONFIG = {
 const stats = {
   tier1Attempts: 0,
   tier1Success: 0,
+  tier1_5Attempts: 0,  // Browserbase
+  tier1_5Success: 0,
   tier2Attempts: 0,
   tier2Success: 0,
   tier3Attempts: 0,
@@ -188,6 +205,8 @@ const stats = {
   tier4Success: 0,
   totalFailed: 0,
   scrapingBeeCreditsUsed: 0,
+  browserbaseSessionsUsed: 0,
+  browserbaseMinutesUsed: 0,
 };
 
 // State tracking
@@ -197,12 +216,22 @@ let state = {
   skipped: [],
   tierBreakdown: {
     playwright: [],
+    browserbase: [],
     scrapingbee: [],
     brightdata: [],
     archive: [],
   },
   startTime: new Date().toISOString(),
   lastProcessed: null,
+};
+
+// Browserbase usage tracking (persisted to disk)
+let browserbaseUsage = {
+  date: new Date().toISOString().split('T')[0],
+  sessionsToday: 0,
+  sessionsThisRun: 0,
+  minutesToday: 0,
+  history: [],
 };
 
 // Browser and context (reused)
@@ -400,6 +429,227 @@ async function loginToSite(domain, email, password) {
   } catch (e) {
     console.log(`    ✗ Login error: ${e.message}`);
     return false;
+  }
+}
+
+// ============================================================================
+// TIER 1.5: Browserbase (Managed Browser Cloud with CAPTCHA solving)
+// Cost: $0.10/browser hour - USE SPARINGLY with spending limits
+// ============================================================================
+
+/**
+ * Load Browserbase usage from disk (tracks daily spending)
+ */
+function loadBrowserbaseUsage() {
+  const usagePath = CONFIG.browserbaseUsageFile;
+  const today = new Date().toISOString().split('T')[0];
+
+  try {
+    if (fs.existsSync(usagePath)) {
+      const saved = JSON.parse(fs.readFileSync(usagePath, 'utf8'));
+
+      // Reset if it's a new day
+      if (saved.date === today) {
+        browserbaseUsage = saved;
+        browserbaseUsage.sessionsThisRun = 0; // Reset per-run counter
+        console.log(`  Browserbase usage loaded: ${browserbaseUsage.sessionsToday}/${CONFIG.browserbaseMaxSessionsPerDay} sessions today`);
+      } else {
+        // New day - archive previous day and reset
+        browserbaseUsage.history.push({
+          date: saved.date,
+          sessions: saved.sessionsToday,
+          minutes: saved.minutesToday
+        });
+        browserbaseUsage.date = today;
+        browserbaseUsage.sessionsToday = 0;
+        browserbaseUsage.sessionsThisRun = 0;
+        browserbaseUsage.minutesToday = 0;
+        console.log(`  Browserbase: New day - reset usage counters`);
+      }
+    }
+  } catch (e) {
+    console.log(`  Could not load Browserbase usage: ${e.message}`);
+  }
+}
+
+/**
+ * Save Browserbase usage to disk
+ */
+function saveBrowserbaseUsage() {
+  fs.mkdirSync(path.dirname(CONFIG.browserbaseUsageFile), { recursive: true });
+  fs.writeFileSync(CONFIG.browserbaseUsageFile, JSON.stringify(browserbaseUsage, null, 2));
+}
+
+/**
+ * Check if we can use Browserbase (within spending limits)
+ */
+function canUseBrowserbase() {
+  if (!CONFIG.browserbaseEnabled) return false;
+  if (!CONFIG.browserbaseApiKey) return false;
+
+  // Check daily limit
+  if (browserbaseUsage.sessionsToday >= CONFIG.browserbaseMaxSessionsPerDay) {
+    console.log(`    ⚠ Browserbase daily limit reached (${browserbaseUsage.sessionsToday}/${CONFIG.browserbaseMaxSessionsPerDay})`);
+    return false;
+  }
+
+  // Check per-run limit
+  if (browserbaseUsage.sessionsThisRun >= CONFIG.browserbaseMaxSessionsPerRun) {
+    console.log(`    ⚠ Browserbase per-run limit reached (${browserbaseUsage.sessionsThisRun}/${CONFIG.browserbaseMaxSessionsPerRun})`);
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * Fetch with Browserbase - managed browser cloud with CAPTCHA solving
+ * Uses their API to create a browser session and control it
+ */
+async function fetchWithBrowserbase(url, review) {
+  if (!canUseBrowserbase()) {
+    throw new Error('Browserbase unavailable (limits reached or not configured)');
+  }
+
+  stats.tier1_5Attempts++;
+  const startTime = Date.now();
+
+  // Track usage BEFORE attempting (we pay even if it fails)
+  browserbaseUsage.sessionsToday++;
+  browserbaseUsage.sessionsThisRun++;
+  stats.browserbaseSessionsUsed++;
+
+  console.log(`    Browserbase session ${browserbaseUsage.sessionsThisRun}/${CONFIG.browserbaseMaxSessionsPerRun} (${browserbaseUsage.sessionsToday}/${CONFIG.browserbaseMaxSessionsPerDay} today)`);
+
+  let bbBrowser = null;
+  let bbPage = null;
+
+  try {
+    // Browserbase SDK approach - use their connect endpoint
+    const { chromium: bbChromium } = require('playwright');
+
+    // Create session via Browserbase API
+    const sessionResponse = await axios.post(
+      'https://www.browserbase.com/v1/sessions',
+      {
+        projectId: CONFIG.browserbaseProjectId,
+        browserSettings: {
+          // Enable stealth and CAPTCHA solving
+          solveCaptchas: true,
+          fingerprint: {
+            // Use residential-like fingerprint
+            locales: ['en-US'],
+            operatingSystems: ['macos', 'windows'],
+          },
+        },
+      },
+      {
+        headers: {
+          'x-bb-api-key': CONFIG.browserbaseApiKey,
+          'Content-Type': 'application/json',
+        },
+        timeout: 30000,
+      }
+    );
+
+    const sessionId = sessionResponse.data.id;
+    const connectUrl = `wss://connect.browserbase.com?apiKey=${CONFIG.browserbaseApiKey}&sessionId=${sessionId}`;
+
+    console.log(`    → Browserbase session created: ${sessionId.substring(0, 8)}...`);
+
+    // Connect via Playwright CDP
+    bbBrowser = await bbChromium.connectOverCDP(connectUrl);
+    const contexts = bbBrowser.contexts();
+    const bbContext = contexts[0] || await bbBrowser.newContext();
+    bbPage = await bbContext.newPage();
+
+    // Navigate to the URL
+    await bbPage.goto(url, {
+      waitUntil: 'domcontentloaded',
+      timeout: CONFIG.pageTimeout,
+    });
+
+    // Wait for content
+    await Promise.race([
+      bbPage.waitForSelector('article', { timeout: 15000 }),
+      bbPage.waitForSelector('[class*="article"]', { timeout: 15000 }),
+      bbPage.waitForSelector('main p', { timeout: 15000 }),
+      bbPage.waitForTimeout(10000),
+    ]).catch(() => {});
+
+    // Extra wait for JS rendering and CAPTCHA solving
+    await bbPage.waitForTimeout(5000);
+
+    const html = await bbPage.content();
+
+    // Check for blocking
+    if (isBlocked(html)) {
+      throw new Error('CAPTCHA or access blocked (even with Browserbase)');
+    }
+
+    // Check for paywall
+    if (isPaywalled(html)) {
+      throw new Error('Paywall detected');
+    }
+
+    // Extract text using same method as Playwright
+    const text = await bbPage.evaluate(() => {
+      const selectors = [
+        'article .entry-content', 'article .post-content', 'article .article-body',
+        '[data-testid="article-body"]', '.article-body', '.story-body', '.entry-content',
+        '.post-content', '.review-content', '.article__body', '.article-content',
+        '.rich-text', '[class*="ArticleBody"]', '[class*="article-body"]',
+        '[class*="story-body"]', '[class*="StoryBody"]', 'main article',
+        '.story-content', '[role="article"]', 'article', 'main',
+      ];
+
+      let bestText = '';
+      for (const selector of selectors) {
+        try {
+          const el = document.querySelector(selector);
+          if (el) {
+            const paragraphs = el.querySelectorAll('p');
+            if (paragraphs.length > 0) {
+              const text = Array.from(paragraphs)
+                .map(p => p.textContent.trim())
+                .filter(t => t.length > 30)
+                .join('\n\n');
+              if (text.length > bestText.length) bestText = text;
+            }
+          }
+        } catch (e) {}
+      }
+      return bestText.replace(/\s+/g, ' ').trim();
+    });
+
+    // Track time used
+    const minutesUsed = (Date.now() - startTime) / 60000;
+    browserbaseUsage.minutesToday += minutesUsed;
+    stats.browserbaseMinutesUsed += minutesUsed;
+
+    if (text && text.length > 500) {
+      stats.tier1_5Success++;
+      saveBrowserbaseUsage();
+      return { html, text };
+    }
+
+    throw new Error(`Insufficient text: ${text?.length || 0} chars`);
+
+  } catch (error) {
+    // Track time even on failure
+    const minutesUsed = (Date.now() - startTime) / 60000;
+    browserbaseUsage.minutesToday += minutesUsed;
+    stats.browserbaseMinutesUsed += minutesUsed;
+    saveBrowserbaseUsage();
+
+    throw error;
+  } finally {
+    // Always close the browser
+    if (bbBrowser) {
+      try {
+        await bbBrowser.close();
+      } catch (e) {}
+    }
   }
 }
 
@@ -617,12 +867,15 @@ async function fetchReviewText(review) {
 
   // Force specific tier if requested
   if (CLI.forceTier) {
-    const tier = parseInt(CLI.forceTier);
+    const tier = parseFloat(CLI.forceTier);
     try {
       switch (tier) {
         case 1:
           const r1 = await fetchWithPlaywright(url, review);
           return { html: r1.html, text: r1.text, method: 'playwright', attempts: [{ tier: 1, method: 'playwright', success: true }] };
+        case 1.5:
+          const r1_5 = await fetchWithBrowserbase(url, review);
+          return { html: r1_5.html, text: r1_5.text, method: 'browserbase', attempts: [{ tier: 1.5, method: 'browserbase', success: true }] };
         case 2:
           const r2 = await fetchWithScrapingBee(url);
           return { html: r2.html, text: r2.text, method: 'scrapingbee', attempts: [{ tier: 2, method: 'scrapingbee', success: true }] };
@@ -690,6 +943,28 @@ async function fetchReviewText(review) {
   } else {
     console.log('  [Tier 1] Skipped (known-blocked site + aggressive mode)');
     attempts.push({ tier: 1, method: 'playwright', success: false, error: 'Skipped - known blocked site' });
+  }
+
+  // TIER 1.5: Browserbase (managed browser cloud with CAPTCHA solving)
+  // Only use for known-blocked sites or when Playwright fails with CAPTCHA
+  const lastAttempt = attempts[attempts.length - 1];
+  const playwrightHitCaptcha = lastAttempt?.error?.includes('CAPTCHA') || lastAttempt?.error?.includes('blocked');
+  const shouldTryBrowserbase = CONFIG.browserbaseEnabled && (isKnownBlocked || playwrightHitCaptcha);
+
+  if (shouldTryBrowserbase && canUseBrowserbase()) {
+    console.log('  [Tier 1.5] Browserbase (managed browser + CAPTCHA solving)...');
+    try {
+      const result = await fetchWithBrowserbase(url, review);
+      html = result.html;
+      text = result.text;
+      method = 'browserbase';
+      attempts.push({ tier: 1.5, method: 'browserbase', success: true });
+      state.tierBreakdown.browserbase.push(review.filePath);
+      return { html, text, method, attempts };
+    } catch (error) {
+      attempts.push({ tier: 1.5, method: 'browserbase', success: false, error: error.message });
+      console.log(`    ✗ Failed: ${error.message}`);
+    }
   }
 
   // TIER 2: ScrapingBee (with stealth retry if --stealth-proxy flag)
@@ -1073,6 +1348,7 @@ function mapSourceMethod(method) {
   const map = {
     'playwright': 'playwright',
     'playwright-stealth': 'playwright',
+    'browserbase': 'browserbase',
     'scrapingbee': 'scrapingbee',
     'brightdata': 'brightdata',
     'archive.org': 'archive',
@@ -1136,7 +1412,7 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
   // New tracking fields
   data.fetchMethod = method;
   data.fetchAttempts = attempts;
-  data.fetchTier = method === 'playwright' ? 1 : method === 'scrapingbee' ? 2 : method === 'brightdata' ? 3 : 4;
+  data.fetchTier = method === 'playwright' ? 1 : method === 'browserbase' ? 1.5 : method === 'scrapingbee' ? 2 : method === 'brightdata' ? 3 : 4;
 
   // Text quality classification with truncation detection
   const qualityResult = classifyTextQuality(text, review.showId || data.showId, validation.wordCount, excerptLength);
@@ -1835,6 +2111,7 @@ function generateReport() {
     },
     tierBreakdown: {
       playwright: state.tierBreakdown.playwright.length,
+      browserbase: state.tierBreakdown.browserbase?.length || 0,
       scrapingbee: state.tierBreakdown.scrapingbee.length,
       brightdata: state.tierBreakdown.brightdata.length,
       archive: state.tierBreakdown.archive.length,
@@ -1842,6 +2119,8 @@ function generateReport() {
     statistics: {
       tier1Attempts: stats.tier1Attempts,
       tier1Success: stats.tier1Success,
+      tier1_5Attempts: stats.tier1_5Attempts,
+      tier1_5Success: stats.tier1_5Success,
       tier2Attempts: stats.tier2Attempts,
       tier2Success: stats.tier2Success,
       tier3Attempts: stats.tier3Attempts,
@@ -1850,6 +2129,8 @@ function generateReport() {
       tier4Success: stats.tier4Success,
       totalFailed: stats.totalFailed,
       scrapingBeeCreditsUsed: stats.scrapingBeeCreditsUsed,
+      browserbaseSessionsUsed: stats.browserbaseSessionsUsed,
+      browserbaseMinutesUsed: Math.round(stats.browserbaseMinutesUsed * 10) / 10,
     },
     processed: state.processed,
     failed: state.failed,
@@ -1870,12 +2151,14 @@ function generateReport() {
   console.log(`${'╠' + '═'.repeat(58) + '╣'}`);
   console.log(`║ TIER BREAKDOWN                                           ║`);
   console.log(`║ ├─ Tier 1 (Playwright):  ${String(report.tierBreakdown.playwright).padStart(31)} ║`);
+  console.log(`║ ├─ Tier 1.5 (Browserbase):${String(report.tierBreakdown.browserbase).padStart(30)} ║`);
   console.log(`║ ├─ Tier 2 (ScrapingBee): ${String(report.tierBreakdown.scrapingbee).padStart(31)} ║`);
   console.log(`║ ├─ Tier 3 (Bright Data): ${String(report.tierBreakdown.brightdata).padStart(31)} ║`);
   console.log(`║ └─ Tier 4 (Archive.org): ${String(report.tierBreakdown.archive).padStart(31)} ║`);
   console.log(`${'╠' + '═'.repeat(58) + '╣'}`);
   console.log(`║ API USAGE                                                ║`);
-  console.log(`║ └─ ScrapingBee credits: ${String(stats.scrapingBeeCreditsUsed).padStart(32)} ║`);
+  console.log(`║ ├─ ScrapingBee credits: ${String(stats.scrapingBeeCreditsUsed).padStart(32)} ║`);
+  console.log(`║ └─ Browserbase sessions: ${String(stats.browserbaseSessionsUsed).padStart(31)} ║`);
   console.log(`${'╚' + '═'.repeat(58) + '╝'}`);
   console.log(`Report saved: ${reportPath}`);
 
@@ -1906,10 +2189,16 @@ async function main() {
   console.log(`\nAPI Status:`);
   console.log(`  ScrapingBee: ${CONFIG.scrapingBeeKey ? '✓ configured' : '✗ not configured'}`);
   console.log(`  Bright Data: ${CONFIG.brightDataKey ? '✓ configured' : '✗ not configured'}`);
+  console.log(`  Browserbase: ${CONFIG.browserbaseEnabled ? `✓ enabled (limit: ${CONFIG.browserbaseMaxSessionsPerDay}/day)` : '✗ disabled'}`);
   console.log(`  Stealth Plugin: ${stealthLoaded ? '✓ loaded' : '⚠ using fallback'}`);
 
   // Load previous state if resuming
   loadState();
+
+  // Load Browserbase usage tracking (for spending limits)
+  if (CONFIG.browserbaseEnabled) {
+    loadBrowserbaseUsage();
+  }
 
   // Find reviews to process
   const reviews = findReviewsToProcess();
