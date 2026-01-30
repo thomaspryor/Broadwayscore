@@ -15,6 +15,7 @@ import { track } from '@vercel/analytics';
 import EmailCaptureModal, { type GateTrigger, type CapturedUserData } from '@/components/EmailCaptureModal';
 
 const STORAGE_KEY = 'bsc_user_data';
+const SUBSCRIBED_KEY = 'bsc_email_subscribed';
 const PAGE_VIEW_KEY = 'bsc_page_views';
 const LAST_VISIT_KEY = 'bsc_last_visit';
 
@@ -58,9 +59,15 @@ export function ProGateProvider({ children, pageViewThreshold = 2 }: ProGateProv
     setIsClient(true);
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
+      const loopsSubscribed = localStorage.getItem(SUBSCRIBED_KEY) === 'true';
+
       if (saved) {
         const parsed = JSON.parse(saved) as CapturedUserData;
         setUserData(parsed);
+        setHasEmail(true);
+      } else if (loopsSubscribed) {
+        // User subscribed via Loops (header, footer, homepage banner, show follow)
+        // Treat as having email so we don't nag them again
         setHasEmail(true);
       }
 
