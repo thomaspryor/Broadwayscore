@@ -7,6 +7,7 @@ import { getAllShows, ComputedShow, getDataStats, getUpcomingShows, getAudienceB
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import ScoreTooltip from '@/components/ScoreTooltip';
+import HomepageEmailBanner from '@/components/HomepageEmailBanner';
 
 // URL parameter values
 type StatusParam = 'now_playing' | 'closed' | 'upcoming' | 'closing_soon' | 'all';
@@ -293,8 +294,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
           sources={[
             show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'thumbnail') : null,
           ]}
-          alt=""
-          ariaHidden
+          alt={`${show.title} Broadway ${show.type}`}
           priority={index < 4}
           loading={index < 4 ? "eager" : "lazy"}
           width={112}
@@ -407,8 +407,7 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: { sh
             show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'card') : null,
             show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'card') : null,
           ]}
-          alt=""
-          ariaHidden
+          alt={`${show.title} Broadway ${show.type}`}
           priority={priority}
           loading={priority ? "eager" : "lazy"}
           className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
@@ -726,6 +725,8 @@ function HomePageInner() {
   const shouldHideStatus = statusFilter !== 'all';
 
   return (
+    <>
+    <HomepageEmailBanner />
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       {/* Hero - Large heading on desktop only */}
       <div className="mb-6 sm:mb-8">
@@ -950,6 +951,7 @@ function HomePageInner() {
         </p>
       </div>
     </div>
+    </>
   );
 }
 
