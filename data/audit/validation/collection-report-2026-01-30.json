@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T03:19:52.493Z",
+  "runDate": "2026-01-30T03:20:18.021Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "tier1",
-    "showFilter": "merrily-we-roll-along-2023",
+    "showFilter": "oh-mary-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 4,
+    "failed": 5,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -23,23 +23,24 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 4,
+    "tier1Attempts": 5,
     "tier1Success": 0,
-    "tier2Attempts": 4,
+    "tier2Attempts": 5,
     "tier2Success": 0,
-    "tier3Attempts": 4,
+    "tier3Attempts": 5,
     "tier3Success": 0,
-    "tier4Attempts": 9,
+    "tier4Attempts": 12,
     "tier4Success": 0,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 10
+    "totalFailed": 5,
+    "scrapingBeeCreditsUsed": 20
   },
   "processed": [],
   "failed": [
-    "merrily-we-roll-along-2023/hollywood-reporter--angie-han.json",
-    "merrily-we-roll-along-2023/variety--aramide-tinubu.json",
-    "merrily-we-roll-along-2023/variety--charles-isherwood.json",
-    "merrily-we-roll-along-2023/vulture--jackson-mchenry.json"
+    "oh-mary-2024/hollywood-reporter--angie-han.json",
+    "oh-mary-2024/nyt-theater--jonathan-mandell.json",
+    "oh-mary-2024/variety--aramide-tinubu.json",
+    "oh-mary-2024/variety--charles-isherwood.json",
+    "oh-mary-2024/vulture--helen-shaw.json"
   ],
   "tierDetails": {
     "playwright": [],
