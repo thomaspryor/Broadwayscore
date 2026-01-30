@@ -73,6 +73,8 @@ const KNOWN_DUPLICATES = {
   'tammy faye': ['tammy faye', 'eyes of tammy faye', 'tammy faye the musical'],
   'swept away': ['swept away', 'swept away the musical'],
   'eureka day': ['eureka day', 'eureka'],
+  'all out': ['all out', 'all out comedy about ambition'],
+  'stranger things': ['stranger things', 'stranger things the first shadow'],
 };
 
 /**
