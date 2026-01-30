@@ -1,72 +1,69 @@
 {
-  "runDate": "2026-01-30T16:15:35.999Z",
+  "runDate": "2026-01-30T16:15:41.554Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "the-roommate-2024",
+    "showFilter": "moulin-rouge-2019",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 20,
+    "processed": 0,
+    "failed": 23,
     "skipped": 0,
-    "successRate": "9.1%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 2
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 16,
+    "tier1Attempts": 19,
     "tier1Success": 0,
-    "tier2Attempts": 16,
-    "tier2Success": 1,
-    "tier3Attempts": 15,
-    "tier3Success": 0,
-    "tier4Attempts": 36,
-    "tier4Success": 6,
-    "totalFailed": 19,
-    "scrapingBeeCreditsUsed": 70
+    "tier2Attempts": 19,
+    "tier2Success": 0,
+    "tier3Attempts": 19,
+    "tier3Success": 1,
+    "tier4Attempts": 47,
+    "tier4Success": 3,
+    "totalFailed": 22,
+    "scrapingBeeCreditsUsed": 40
   },
-  "processed": [
-    "the-roommate-2024/broadwaynews--brittani-samuel.json",
-    "the-roommate-2024/nydailynews--chris-jones.json"
-  ],
+  "processed": [],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
-    "the-roommate-2024/hollywood-reporter--angie-han.json",
-    "the-roommate-2024/variety--aramide-tinubu.json",
-    "the-roommate-2024/variety--charles-isherwood.json",
-    "the-roommate-2024/variety--frank-rizzo.json",
-    "the-roommate-2024/vulture--jackson-mchenry.json",
-    "the-roommate-2024/deadline--greg-evans.json",
-    "the-roommate-2024/deadline--pete-hammond.json",
-    "the-roommate-2024/guardian--adrian-horton.json",
-    "the-roommate-2024/nypost--johnny-oleksinski.json",
-    "the-roommate-2024/observer--rex-reed.json",
-    "the-roommate-2024/theatermania--jesse-green.json",
-    "the-roommate-2024/timeout--adam-feldman.json",
-    "the-roommate-2024/wsj--charles-isherwood.json",
-    "the-roommate-2024/billboard--greg-evans.json",
-    "the-roommate-2024/dailybeast--tim-teeman.json",
-    "the-roommate-2024/rollingstone--alexis-soloski.json",
-    "the-roommate-2024/talkinbroadway--matthew-murray.json",
-    "the-roommate-2024/the-village-voice--michael-musto.json",
-    "the-roommate-2024/washpost--peter-marks.json"
+    "moulin-rouge-2019/nytimes--jesse-green.json",
+    "moulin-rouge-2019/vulture--jesse-green.json",
+    "moulin-rouge-2019/deadline--greg-evans.json",
+    "moulin-rouge-2019/deadline--pete-hammond.json",
+    "moulin-rouge-2019/ew--joey-nolfi.json",
+    "moulin-rouge-2019/ew--leah-greenblatt.json",
+    "moulin-rouge-2019/guardian--alexis-soloski.json",
+    "moulin-rouge-2019/guardian--jesse-oxfeld.json",
+    "moulin-rouge-2019/nydailynews--joe-dziemianowicz.json",
+    "moulin-rouge-2019/nypost--johnny-oleksinski.json",
+    "moulin-rouge-2019/observer--david-cote.json",
+    "moulin-rouge-2019/observer--rex-reed.json",
+    "moulin-rouge-2019/theatermania--jesse-green.json",
+    "moulin-rouge-2019/thewrap--robert-hofler.json",
+    "moulin-rouge-2019/timeout--adam-feldman.json",
+    "moulin-rouge-2019/wsj--terry-teachout.json",
+    "moulin-rouge-2019/amny--matt-windman.json",
+    "moulin-rouge-2019/dailybeast--tim-teeman.json",
+    "moulin-rouge-2019/nysr--jesse-oxfeld.json",
+    "moulin-rouge-2019/rollingstone--alan-light.json",
+    "moulin-rouge-2019/usatoday--kelly-lawler.json",
+    "moulin-rouge-2019/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archive": [
-      "the-roommate-2024/broadwaynews--brittani-samuel.json",
-      "the-roommate-2024/nydailynews--chris-jones.json"
-    ]
+    "archive": []
   }
 }
