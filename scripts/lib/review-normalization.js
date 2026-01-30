@@ -703,9 +703,27 @@ function getOutletDisplayName(outletId) {
   return displayNames[outletId] || outletId;
 }
 
+/**
+ * Normalize a publish date string to a consistent format.
+ * - Strips ordinal suffixes (1st, 2nd, 3rd, 4th, etc.)
+ * - Returns the cleaned date string
+ *
+ * Examples:
+ *   "November 16th, 2025" -> "November 16, 2025"
+ *   "March 1st, 2024" -> "March 1, 2024"
+ *   "April 22nd, 2024" -> "April 22, 2024"
+ */
+function normalizePublishDate(dateStr) {
+  if (!dateStr) return dateStr;
+
+  // Strip ordinal suffixes (1st, 2nd, 3rd, 4th, 5th, etc.)
+  return dateStr.replace(/(\d+)(st|nd|rd|th)/gi, '$1');
+}
+
 module.exports = {
   normalizeOutlet,
   normalizeCritic,
+  normalizePublishDate,
   generateReviewFilename,
   generateReviewKey,
   slugify,

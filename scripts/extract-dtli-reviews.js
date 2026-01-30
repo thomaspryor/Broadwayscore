@@ -9,7 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, slugify } = require('./lib/review-normalization');
+const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, slugify, normalizePublishDate } = require('./lib/review-normalization');
 
 const dtliDir = path.join(__dirname, '../data/aggregator-archive/dtli');
 const outputDir = path.join(__dirname, '../data/review-texts');
@@ -194,7 +194,7 @@ function extractReviewsFromDTLI(content, showId) {
       outlet: outlet.name,
       criticName,
       url,
-      publishDate: dateStr,
+      publishDate: normalizePublishDate(dateStr),
       dtliExcerpt: fullText,  // Store as excerpt since DTLI only provides excerpts
       fullText: null,          // Don't claim it's full text
       isFullReview: false,
