@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T18:26:48.254Z",
+  "runDate": "2026-01-30T18:27:09.867Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "hells-kitchen-2024",
+    "showFilter": "cabaret-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,37 +12,37 @@
   },
   "summary": {
     "processed": 3,
-    "failed": 72,
+    "failed": 56,
     "skipped": 0,
-    "successRate": "4.0%"
+    "successRate": "5.1%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 2
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 25,
-    "tier1Success": 1,
+    "tier1Attempts": 5,
+    "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 24,
+    "tier2Attempts": 5,
     "tier2Success": 0,
-    "tier3Attempts": 24,
-    "tier3Success": 2,
-    "tier4Attempts": 55,
-    "tier4Success": 2,
-    "totalFailed": 26,
-    "scrapingBeeCreditsUsed": 90,
+    "tier3Attempts": 5,
+    "tier3Success": 0,
+    "tier4Attempts": 16,
+    "tier4Success": 6,
+    "totalFailed": 10,
+    "scrapingBeeCreditsUsed": 10,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "hells-kitchen-2024/broadwaynews--brittani-samuel.json"
+    "cabaret-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -91,42 +91,25 @@
     "i-need-that-2023/timeout--will-gleason.json",
     "i-need-that-2023/wsj--charles-isherwood.json",
     "i-need-that-2023/wsj--charles.json",
-    "hells-kitchen-2024/hollywood-reporter--angie-han.json",
-    "hells-kitchen-2024/nytg--david-nounou.json",
-    "hells-kitchen-2024/nytimes--jesse-green.json",
-    "hells-kitchen-2024/vulture--helen-shaw.json",
-    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
-    "hells-kitchen-2024/deadline--greg-evans.json",
-    "hells-kitchen-2024/deadline--pete-hammond.json",
-    "hells-kitchen-2024/ew--joey-nolfi.json",
-    "hells-kitchen-2024/ew--kristen-baldwin.json",
-    "hells-kitchen-2024/guardian--adrian-horton.json",
-    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
-    "hells-kitchen-2024/observer--jesse-green.json",
-    "hells-kitchen-2024/observer--rex-reed.json",
-    "hells-kitchen-2024/theatermania--adam-feldman.json",
-    "hells-kitchen-2024/theatermania--david-gordon.json",
-    "hells-kitchen-2024/timeout--adam-feldman.json",
-    "hells-kitchen-2024/wsj--charles-isherwood.json",
-    "hells-kitchen-2024/ap--mark-kennedy.json",
-    "hells-kitchen-2024/billboard--david-rooney.json",
-    "hells-kitchen-2024/billboard--isabela-raygoza.json",
-    "hells-kitchen-2024/billboard--juan-a-ramirez.json",
-    "hells-kitchen-2024/culturesauce--thom-geier.json",
-    "hells-kitchen-2024/dailybeast--tim-teeman.json",
-    "hells-kitchen-2024/stageandcinema--victor-gluck.json",
-    "hells-kitchen-2024/usatoday--charles-isherwood.json",
-    "hells-kitchen-2024/usatoday--david-rooney.json"
+    "cabaret-2024/variety--aramide-tinubu.json",
+    "cabaret-2024/variety--frank-rizzo.json",
+    "cabaret-2024/deadline--greg-evans.json",
+    "cabaret-2024/observer--rex-reed.json",
+    "cabaret-2024/theatermania--jesse-green.json",
+    "cabaret-2024/timeout--adam-feldman.json",
+    "cabaret-2024/wsj--charles-isherwood.json",
+    "cabaret-2024/wsj--charles.json",
+    "cabaret-2024/queerty--matthew-wexler.json",
+    "cabaret-2024/village-voice--michael-musto.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "hells-kitchen-2024/broadwaynews--brittani-samuel.json"
-    ],
+    "playwright": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
-      "the-roommate-2024/nydailynews--chris-jones.json"
+      "the-roommate-2024/nydailynews--chris-jones.json",
+      "cabaret-2024/broadwaynews--brittani-samuel.json"
     ]
   }
 }
