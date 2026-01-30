@@ -1,47 +1,48 @@
 {
-  "runDate": "2026-01-30T18:39:05.379Z",
+  "runDate": "2026-01-30T18:39:09.742Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "liberation-2025",
+    "showFilter": "buena-vista-social-club-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 51,
+    "processed": 3,
+    "failed": 53,
     "skipped": 0,
-    "successRate": "3.8%"
+    "successRate": "5.4%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 5,
+    "tier1Attempts": 7,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 5,
+    "tier2Attempts": 7,
     "tier2Success": 1,
-    "tier3Attempts": 4,
+    "tier3Attempts": 6,
     "tier3Success": 0,
-    "tier4Attempts": 7,
-    "tier4Success": 0,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 40,
+    "tier4Attempts": 14,
+    "tier4Success": 1,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 30,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
-    "the-roommate-2024/nydailynews--chris-jones.json"
+    "the-roommate-2024/nydailynews--chris-jones.json",
+    "buena-vista-social-club-2025/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -90,15 +91,19 @@
     "i-need-that-2023/timeout--will-gleason.json",
     "i-need-that-2023/wsj--charles-isherwood.json",
     "i-need-that-2023/wsj--charles.json",
-    "liberation-2025/guardian--adrian-horton.json",
-    "liberation-2025/nydailynews--chris-jones.json",
-    "liberation-2025/timeout--adam-feldman.json",
-    "liberation-2025/wsj--charles-isherwood.json",
-    "liberation-2025/washpost--naveen-kumar.json"
+    "buena-vista-social-club-2025/hollywood-reporter--angie-han.json",
+    "buena-vista-social-club-2025/nytimes--jesse-oxfeld.json",
+    "buena-vista-social-club-2025/variety--aramide-tinubu.json",
+    "buena-vista-social-club-2025/variety--peter-marks.json",
+    "buena-vista-social-club-2025/nydailynews--chris-jones.json",
+    "buena-vista-social-club-2025/timeout--adam-feldman.json",
+    "buena-vista-social-club-2025/wsj--terry-teachout.json"
   ],
   "tierDetails": {
     "playwright": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "buena-vista-social-club-2025/broadwaynews--brittani-samuel.json"
+    ],
     "brightdata": [],
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
