@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T20:01:13.775Z",
+  "runDate": "2026-01-30T20:01:23.483Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "lempicka-2024",
+    "showFilter": "the-shark-is-broken-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 4,
-    "failed": 63,
+    "failed": 64,
     "skipped": 0,
-    "successRate": "6.0%"
+    "successRate": "5.9%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -29,13 +29,13 @@
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 6,
-    "tier2Success": 0,
-    "tier3Attempts": 6,
+    "tier2Success": 1,
+    "tier3Attempts": 5,
     "tier3Success": 0,
     "tier4Attempts": 15,
-    "tier4Success": 3,
-    "totalFailed": 8,
-    "scrapingBeeCreditsUsed": 40,
+    "tier4Success": 4,
+    "totalFailed": 9,
+    "scrapingBeeCreditsUsed": 30,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
@@ -43,7 +43,7 @@
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
     "wicked-2003/ew--alice-king.json",
-    "lempicka-2024/broadwaynews--brittani-samuel.json"
+    "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -101,14 +101,15 @@
     "wicked-2003/njcom-star-ledger--michael-sommers.json",
     "wicked-2003/village-voice--michael-feingold.json",
     "wicked-2003/washpost--peter-marks.json",
-    "lempicka-2024/hollywood-reporter--angie-han.json",
-    "lempicka-2024/vulture--jackson-mchenry.json",
-    "lempicka-2024/deadline--greg-evans.json",
-    "lempicka-2024/new-york-sun--elysa-gardner.json",
-    "lempicka-2024/nydailynews--chris-jones.json",
-    "lempicka-2024/nydailynews--chris.json",
-    "lempicka-2024/timeout--adam-feldman.json",
-    "lempicka-2024/wsj--charles-isherwood.json"
+    "the-shark-is-broken-2023/deadline--greg-evans.json",
+    "the-shark-is-broken-2023/observer--david-cote.json",
+    "the-shark-is-broken-2023/theatermania--jesse-green.json",
+    "the-shark-is-broken-2023/timeout--adam-feldman.json",
+    "the-shark-is-broken-2023/wsj--charles-isherwood.json",
+    "the-shark-is-broken-2023/wsj--charles.json",
+    "the-shark-is-broken-2023/wsj--terry-teachout.json",
+    "the-shark-is-broken-2023/talkinbroadway--matthew-murray.json",
+    "the-shark-is-broken-2023/usatoday--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -118,7 +119,7 @@
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json",
       "wicked-2003/ew--alice-king.json",
-      "lempicka-2024/broadwaynews--brittani-samuel.json"
+      "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json"
     ]
   }
 }
