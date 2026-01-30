@@ -1,26 +1,26 @@
 {
-  "runDate": "2026-01-30T18:39:42.856Z",
+  "runDate": "2026-01-30T18:40:27.144Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "oedipus-2025",
+    "showFilter": "marjorie-prime-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
+    "processed": 3,
     "failed": 50,
     "skipped": 0,
-    "successRate": "7.4%"
+    "successRate": "5.7%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
+    "brightdata": 0,
     "archive": 3
   },
   "statistics": {
@@ -32,8 +32,8 @@
     "tier2Success": 1,
     "tier3Attempts": 3,
     "tier3Success": 1,
-    "tier4Attempts": 7,
-    "tier4Success": 2,
+    "tier4Attempts": 5,
+    "tier4Success": 1,
     "totalFailed": 4,
     "scrapingBeeCreditsUsed": 30,
     "browserbaseSessionsUsed": 0,
@@ -42,8 +42,7 @@
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "oedipus-2025/chicagotribune--chris-jones.json",
-    "oedipus-2025/latimes--charles-mcnulty.json"
+    "marjorie-prime-2025/nydailynews--chris-jones.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -92,21 +91,19 @@
     "i-need-that-2023/timeout--will-gleason.json",
     "i-need-that-2023/wsj--charles-isherwood.json",
     "i-need-that-2023/wsj--charles.json",
-    "oedipus-2025/nytimes--alexis-soloski.json",
-    "oedipus-2025/timeout--adam-feldman.json",
-    "oedipus-2025/wsj--charles-isherwood.json",
-    "oedipus-2025/washpost--naveen-kumar.json"
+    "marjorie-prime-2025/nytimes--elisabeth-vincentelli.json",
+    "marjorie-prime-2025/guardian--richard-lawson.json",
+    "marjorie-prime-2025/observer--david-cote.json",
+    "marjorie-prime-2025/timeout--adam-feldman.json"
   ],
   "tierDetails": {
     "playwright": [],
     "scrapingbee": [],
-    "brightdata": [
-      "oedipus-2025/latimes--charles-mcnulty.json"
-    ],
+    "brightdata": [],
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json",
-      "oedipus-2025/chicagotribune--chris-jones.json"
+      "marjorie-prime-2025/nydailynews--chris-jones.json"
     ]
   }
 }
