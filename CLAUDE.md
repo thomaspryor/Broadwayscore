@@ -255,6 +255,30 @@ data/
 
 In Jan 2026, we discovered 147 misattributed reviews (7%) where critics were incorrectly attributed to wrong outlets. `validate-data.js` now catches these. **Always run validation after bulk data changes.**
 
+### Text Quality Classification
+
+`collect-review-texts.js` classifies scraped text quality and strips trailing junk:
+
+**Quality levels:**
+- `full` - >1500 chars, mentions show title, >300 words, no truncation signals
+- `partial` - 500-1500 chars or larger but missing criteria
+- `truncated` - Has paywall/login text, "read more" prompts, or severe signals
+- `excerpt` - <500 chars
+
+**Automatic junk stripping:** Removes newsletter promos (TheaterMania), login prompts (BroadwayNews), "Read more" links (amNY), signup forms (Vulture/NY Mag) from end of scraped text.
+
+**Legitimate endings recognized:** Theater addresses, URLs, production credits, ticket info - these don't trigger false truncation.
+
+**Truncation signals detected:**
+- `has_paywall_text` - "subscribe", "sign in", "members only"
+- `has_read_more_prompt` - "continue reading", "read more"
+- `has_footer_text` - "privacy policy", "terms of use"
+- `shorter_than_excerpt` - fullText shorter than aggregator excerpt
+- `no_ending_punctuation` - Doesn't end with .!?"')
+- `possible_mid_word_cutoff` - Ends with lowercase letter
+
+**Validation script:** `node /tmp/text-quality-audit.js` audits all reviews and shows quality breakdown.
+
 ## Automated Testing
 
 **Always run `node scripts/validate-data.js` before pushing changes to shows.json.** If validation fails, do not push.
