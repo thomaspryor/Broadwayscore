@@ -1,48 +1,49 @@
 {
-  "runDate": "2026-01-30T18:35:30.825Z",
+  "runDate": "2026-01-30T18:35:47.659Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "heart-of-rock-and-roll-2024",
+    "showFilter": "queen-versailles-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 52,
+    "processed": 4,
+    "failed": 48,
     "skipped": 0,
-    "successRate": "5.5%"
+    "successRate": "7.7%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 3
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 6,
+    "tier1Attempts": 3,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 6,
+    "tier2Attempts": 3,
     "tier2Success": 1,
-    "tier3Attempts": 5,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier4Attempts": 10,
+    "tier4Attempts": 4,
     "tier4Success": 2,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 40,
+    "totalFailed": 2,
+    "scrapingBeeCreditsUsed": 30,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json"
+    "queen-versailles-2025/nydailynews--chris-jones.json",
+    "queen-versailles-2025/oneminutecritic--matthew-wexler.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -91,12 +92,8 @@
     "i-need-that-2023/timeout--will-gleason.json",
     "i-need-that-2023/wsj--charles-isherwood.json",
     "i-need-that-2023/wsj--charles.json",
-    "heart-of-rock-and-roll-2024/nytimes--jesse-green.json",
-    "heart-of-rock-and-roll-2024/variety--aramide-tinubu.json",
-    "heart-of-rock-and-roll-2024/nydailynews--chris-jones.json",
-    "heart-of-rock-and-roll-2024/nydailynews--chris.json",
-    "heart-of-rock-and-roll-2024/the-new-york-sun--elysa-gardner.json",
-    "heart-of-rock-and-roll-2024/timeout--regina-robbins.json"
+    "queen-versailles-2025/timeout--adam-feldman.json",
+    "queen-versailles-2025/washpost--naveen-kumar.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -105,7 +102,8 @@
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json",
-      "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json"
+      "queen-versailles-2025/nydailynews--chris-jones.json",
+      "queen-versailles-2025/oneminutecritic--matthew-wexler.json"
     ]
   }
 }
