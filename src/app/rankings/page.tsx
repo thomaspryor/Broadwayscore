@@ -124,11 +124,49 @@ export default function RankingsPage() {
     { name: 'Rankings', url: `${BASE_URL}/rankings` },
   ]);
 
+  const topShows = openShows
+    .filter(s => s.criticScore?.score)
+    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
+    .slice(0, 5);
+
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'What are the highest-rated Broadway shows right now?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: topShows.length > 0
+            ? `The top-rated Broadway shows are: ${topShows.map((s, i) => `${i + 1}. ${s.title} (${Math.round(s.criticScore!.score)}/100)`).join(', ')}. Rankings are based on aggregated professional critic reviews.`
+            : 'Visit Broadway Scorecard for the latest rankings based on aggregated critic reviews.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'How are Broadway shows ranked on Broadway Scorecard?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Broadway Scorecard aggregates professional critic reviews from outlets like The New York Times, Vulture, Variety, and more. Each review is scored on a 0-100 scale, and the composite score uses a tier-weighted average that gives more weight to major publications.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'How can I find cheap Broadway tickets?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Broadway Scorecard tracks lottery tickets ($10-60 digital lotteries), rush tickets (same-day discounted seats), and standing room options. Visit our Discount Tickets section to compare all available deals by show.',
+        },
+      },
+    ],
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, faqSchema]) }}
       />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">

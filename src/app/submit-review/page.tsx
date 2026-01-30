@@ -1,9 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
+
 export const metadata: Metadata = {
-  title: 'Submit Missing Review',
+  title: 'Submit a Missing Broadway Review | Broadway Scorecard',
   description: 'Help us expand our database by submitting missing Broadway reviews from professional critics.',
+  alternates: {
+    canonical: `${BASE_URL}/submit-review`,
+  },
 };
 
 const GITHUB_ISSUE_URL = 'https://github.com/thomaspryor/Broadwayscore/issues/new?template=missing-review.yml';
