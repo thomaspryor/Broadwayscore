@@ -23,7 +23,7 @@ export default function FooterEmailCapture() {
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
-          <span>Subscribed</span>
+          <span>Subscribed &mdash; new show alerts start Friday</span>
         </div>
       </div>
     );
@@ -31,8 +31,8 @@ export default function FooterEmailCapture() {
 
   return (
     <div className="py-4">
-      <p className="text-sm font-semibold text-white mb-1">Stay Updated on Broadway</p>
-      <p className="text-xs text-gray-500 mb-3">Get notified when new reviews drop. No spam.</p>
+      <p className="text-sm font-semibold text-white mb-1">Never Miss a New Broadway Show</p>
+      <p className="text-xs text-gray-500 mb-3">Opening night scores, closing alerts, and weekly highlights. One email a week.</p>
       <form onSubmit={handleSubmit} className="flex gap-2">
         <label htmlFor="footer-email" className="sr-only">Email address</label>
         <input
