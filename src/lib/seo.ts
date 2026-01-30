@@ -101,8 +101,13 @@ export function generateShowSchema(show: ComputedShow) {
     startDate: show.openingDate,
     ...(show.closingDate && { endDate: show.closingDate }),
     ...(show.images?.hero && { image: show.images.hero }),
-    eventStatus: show.status === 'open' ? 'https://schema.org/EventScheduled' : 'https://schema.org/EventCancelled',
+    eventStatus: show.status === 'closed' ? 'https://schema.org/EventCancelled' : 'https://schema.org/EventScheduled',
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    organizer: {
+      '@type': 'Organization',
+      name: 'Broadway Scorecard',
+      url: BASE_URL,
+    },
   };
 
   // Add aggregate rating if we have scores
@@ -209,36 +214,108 @@ export function generateTheaterSchema(theater: {
   };
 }
 
-// ItemList Schema - For best-of pages
+// ItemList Schema - For browse/best-of pages
 export function generateItemListSchema(items: {
   name: string;
   url: string;
   image?: string;
   score?: number;
+  reviewCount?: number;
+  venue?: string;
+  theaterAddress?: string;
+  startDate?: string;
+  endDate?: string | null;
+  description?: string;
+  status?: string;
+  cast?: { name: string }[];
+  ticketLinks?: { platform: string; url: string; priceFrom?: number }[];
 }[], listName: string) {
   return {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     name: listName,
     numberOfItems: items.length,
-    itemListElement: items.map((item, index) => ({
-      '@type': 'ListItem',
-      position: index + 1,
-      item: {
+    itemListElement: items.map((item, index) => {
+      const event: Record<string, unknown> = {
         '@type': 'TheaterEvent',
         name: item.name,
         url: item.url,
         ...(item.image && { image: item.image }),
-        ...(item.score && {
-          aggregateRating: {
-            '@type': 'AggregateRating',
-            ratingValue: item.score,
-            bestRating: 100,
-            worstRating: 0,
+        ...(item.description && { description: item.description }),
+      };
+
+      // Location (required for TheaterEvent)
+      if (item.venue) {
+        event.location = {
+          '@type': 'PerformingArtsTheater',
+          name: item.venue,
+          address: item.theaterAddress || item.venue,
+        };
+      }
+
+      // Dates
+      if (item.startDate) {
+        event.startDate = item.startDate;
+      }
+      if (item.endDate) {
+        event.endDate = item.endDate;
+      }
+
+      // Event status
+      if (item.status) {
+        event.eventStatus = item.status === 'open' || item.status === 'previews'
+          ? 'https://schema.org/EventScheduled'
+          : 'https://schema.org/EventCancelled';
+        event.eventAttendanceMode = 'https://schema.org/OfflineEventAttendanceMode';
+      }
+
+      // Performers
+      if (item.cast && item.cast.length > 0) {
+        event.performer = item.cast.slice(0, 5).map(c => ({
+          '@type': 'Person',
+          name: c.name,
+        }));
+      }
+
+      // Organizer
+      event.organizer = {
+        '@type': 'Organization',
+        name: 'Broadway Scorecard',
+        url: BASE_URL,
+      };
+
+      // Aggregate rating (with required reviewCount)
+      if (item.score && item.reviewCount) {
+        event.aggregateRating = {
+          '@type': 'AggregateRating',
+          ratingValue: item.score,
+          bestRating: 100,
+          worstRating: 0,
+          reviewCount: item.reviewCount,
+        };
+      }
+
+      // Ticket offers
+      if (item.ticketLinks && item.ticketLinks.length > 0) {
+        event.offers = item.ticketLinks.map(link => ({
+          '@type': 'Offer',
+          url: link.url,
+          priceCurrency: 'USD',
+          ...(link.priceFrom && { price: link.priceFrom }),
+          availability: 'https://schema.org/InStock',
+          seller: {
+            '@type': 'Organization',
+            name: link.platform,
           },
-        }),
-      },
-    })),
+        }));
+      }
+
+      return {
+        '@type': 'ListItem',
+        position: index + 1,
+        item: event,
+      };
+    }),
   };
 }
 
