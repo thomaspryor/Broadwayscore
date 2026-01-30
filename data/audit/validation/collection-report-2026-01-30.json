@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T20:06:02.416Z",
+  "runDate": "2026-01-30T20:06:13.456Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "redwood-2025",
+    "showFilter": "doubt-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 3,
-    "failed": 63,
+    "failed": 65,
     "skipped": 0,
-    "successRate": "4.5%"
+    "successRate": "4.4%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -24,18 +24,18 @@
     "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 0,
+    "tier1Attempts": 5,
+    "tier1Success": 1,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 4,
-    "tier2Success": 0,
-    "tier3Attempts": 4,
+    "tier2Success": 1,
+    "tier3Attempts": 3,
     "tier3Success": 0,
     "tier4Attempts": 11,
-    "tier4Success": 5,
-    "totalFailed": 8,
-    "scrapingBeeCreditsUsed": 40,
+    "tier4Success": 6,
+    "totalFailed": 10,
+    "scrapingBeeCreditsUsed": 20,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
@@ -100,14 +100,16 @@
     "wicked-2003/njcom-star-ledger--michael-sommers.json",
     "wicked-2003/village-voice--michael-feingold.json",
     "wicked-2003/washpost--peter-marks.json",
-    "redwood-2025/deadline--greg-evans.json",
-    "redwood-2025/guardian--adrian-horton.json",
-    "redwood-2025/guardian--adrian.json",
-    "redwood-2025/observer--david-cote.json",
-    "redwood-2025/timeout--adam-feldman.json",
-    "redwood-2025/wsj--charles-isherwood.json",
-    "redwood-2025/nysr--melissa-rose-bernardo.json",
-    "redwood-2025/nysr--melissa-rose.json"
+    "doubt-2024/vulture--helen-shaw.json",
+    "doubt-2024/deadline--greg-evans.json",
+    "doubt-2024/guardian--adrian-horton.json",
+    "doubt-2024/nydailynews--chris-jones.json",
+    "doubt-2024/nydailynews--chris.json",
+    "doubt-2024/observer--david-cote.json",
+    "doubt-2024/timeout--adam-feldman.json",
+    "doubt-2024/wsj--charles-isherwood.json",
+    "doubt-2024/wsj--charles.json",
+    "doubt-2024/thestage--lane-williamson.json"
   ],
   "tierDetails": {
     "playwright": [],
