@@ -1,39 +1,39 @@
 {
-  "runDate": "2026-01-30T18:32:19.530Z",
+  "runDate": "2026-01-30T18:32:28.831Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "merrily-we-roll-along-2023",
+    "showFilter": "just-for-us-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
+    "processed": 3,
     "failed": 59,
     "skipped": 0,
-    "successRate": "3.3%"
+    "successRate": "4.8%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 11,
+    "tier1Attempts": 13,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 11,
+    "tier2Attempts": 13,
     "tier2Success": 1,
-    "tier3Attempts": 10,
-    "tier3Success": 0,
-    "tier4Attempts": 24,
-    "tier4Success": 2,
+    "tier3Attempts": 12,
+    "tier3Success": 2,
+    "tier4Attempts": 22,
+    "tier4Success": 3,
     "totalFailed": 13,
     "scrapingBeeCreditsUsed": 40,
     "browserbaseSessionsUsed": 0,
@@ -41,7 +41,8 @@
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
-    "the-roommate-2024/nydailynews--chris-jones.json"
+    "the-roommate-2024/nydailynews--chris-jones.json",
+    "just-for-us-2023/usatoday--charles-isherwood.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -90,24 +91,26 @@
     "i-need-that-2023/timeout--will-gleason.json",
     "i-need-that-2023/wsj--charles-isherwood.json",
     "i-need-that-2023/wsj--charles.json",
-    "merrily-we-roll-along-2023/hollywood-reporter--angie-han.json",
-    "merrily-we-roll-along-2023/variety--aramide-tinubu.json",
-    "merrily-we-roll-along-2023/variety--charles-isherwood.json",
-    "merrily-we-roll-along-2023/vulture--jackson-mchenry.json",
-    "merrily-we-roll-along-2023/deadline--greg-evans.json",
-    "merrily-we-roll-along-2023/theatermania--jesse-green.json",
-    "merrily-we-roll-along-2023/timeout--adam-feldman.json",
-    "merrily-we-roll-along-2023/wsj--charles-isherwood.json",
-    "merrily-we-roll-along-2023/wsj--terry-teachout.json",
-    "merrily-we-roll-along-2023/the-times--will-pavia.json",
-    "merrily-we-roll-along-2023/the-village-voice--michael-musto.json",
-    "merrily-we-roll-along-2023/usatoday--charles-isherwood.json",
-    "merrily-we-roll-along-2023/usatoday--david-rooney.json"
+    "just-for-us-2023/hollywood-reporter--angie-han.json",
+    "just-for-us-2023/hollywood-reporter--david-rooney.json",
+    "just-for-us-2023/variety--aramide-tinubu.json",
+    "just-for-us-2023/vulture--helen-shaw.json",
+    "just-for-us-2023/deadline--greg-evans.json",
+    "just-for-us-2023/nypost--johnny-oleksinski.json",
+    "just-for-us-2023/observer--david-cote.json",
+    "just-for-us-2023/theatermania--jesse-green.json",
+    "just-for-us-2023/timeout--adam-feldman.json",
+    "just-for-us-2023/timeout--raven-snook.json",
+    "just-for-us-2023/wsj--charles-isherwood.json",
+    "just-for-us-2023/next-magazine--michael-hollett.json",
+    "just-for-us-2023/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
     "playwright": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "just-for-us-2023/usatoday--charles-isherwood.json"
+    ],
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json"
