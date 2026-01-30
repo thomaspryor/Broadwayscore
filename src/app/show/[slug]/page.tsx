@@ -163,14 +163,19 @@ function TierBadge({ tier }: { tier: number }) {
 }
 
 // Use UTC-based formatting to avoid timezone-related hydration mismatch
-function formatDate(dateStr: string): string {
+function formatDate(dateStr: string | null | undefined): string {
+  // Return empty string for null/undefined/empty dates
+  if (!dateStr) {
+    return '';
+  }
+
   // Strip ordinal suffixes (1st, 2nd, 3rd, 4th, etc.) that break Date parsing
   const cleanedDateStr = dateStr.replace(/(\d+)(st|nd|rd|th)/gi, '$1');
   const date = new Date(cleanedDateStr);
 
-  // Check for invalid date
-  if (isNaN(date.getTime())) {
-    return dateStr; // Return original if we can't parse it
+  // Check for invalid date or Unix epoch (which indicates missing date)
+  if (isNaN(date.getTime()) || date.getFullYear() < 1990) {
+    return ''; // Hide date instead of showing garbage
   }
 
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
