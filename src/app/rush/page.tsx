@@ -98,7 +98,7 @@ function RushShowCard({ show, rushData, index }: RushShowCardProps) {
             src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
             alt={`${show.title} Broadway ${show.type}`}
             loading={index < 6 ? "eager" : "lazy"}
-            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-gray-600">
