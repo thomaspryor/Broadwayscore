@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T18:38:18.859Z",
+  "runDate": "2026-01-30T18:38:26.329Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "chess-2025",
+    "showFilter": "ragtime-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 3,
-    "failed": 51,
+    "failed": 50,
     "skipped": 0,
-    "successRate": "5.6%"
+    "successRate": "5.7%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -24,25 +24,25 @@
     "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 6,
+    "tier1Attempts": 2,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 6,
+    "tier2Attempts": 2,
     "tier2Success": 1,
-    "tier3Attempts": 5,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier4Attempts": 9,
-    "tier4Success": 1,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 50,
+    "tier4Attempts": 5,
+    "tier4Success": 3,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 20,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "chess-2025/theatermania--david-gordon.json"
+    "ragtime-2025/variety--frank-rizzo.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -91,11 +91,10 @@
     "i-need-that-2023/timeout--will-gleason.json",
     "i-need-that-2023/wsj--charles-isherwood.json",
     "i-need-that-2023/wsj--charles.json",
-    "chess-2025/nytimes--elisabeth-vincentelli.json",
-    "chess-2025/nydailynews--chris-jones.json",
-    "chess-2025/timeout--adam-feldman.json",
-    "chess-2025/wsj--charles-isherwood.json",
-    "chess-2025/washpost--naveen-kumar.json"
+    "ragtime-2025/deadline--greg-evans.json",
+    "ragtime-2025/timeout--adam-feldman.json",
+    "ragtime-2025/wsj--charles-isherwood.json",
+    "ragtime-2025/washpost--naveen-kumar.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -104,7 +103,7 @@
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json",
-      "chess-2025/theatermania--david-gordon.json"
+      "ragtime-2025/variety--frank-rizzo.json"
     ]
   }
 }
