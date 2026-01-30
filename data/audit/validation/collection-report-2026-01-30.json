@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T20:16:25.968Z",
+  "runDate": "2026-01-30T22:29:55.931Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 30,
+    "maxReviews": 20,
     "priority": "all",
-    "showFilter": "stranger-things-2024",
+    "showFilter": "liberation-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 3,
-    "failed": 65,
+    "failed": 70,
     "skipped": 0,
-    "successRate": "4.4%"
+    "successRate": "4.1%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -24,18 +24,18 @@
     "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 10,
+    "tier1Attempts": 4,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 10,
-    "tier2Success": 2,
-    "tier3Attempts": 8,
+    "tier2Attempts": 4,
+    "tier2Success": 1,
+    "tier3Attempts": 3,
     "tier3Success": 0,
-    "tier4Attempts": 17,
-    "tier4Success": 0,
-    "totalFailed": 10,
-    "scrapingBeeCreditsUsed": 50,
+    "tier4Attempts": 6,
+    "tier4Success": 1,
+    "totalFailed": 5,
+    "scrapingBeeCreditsUsed": 40,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
@@ -109,7 +109,12 @@
     "stranger-things-2024/wsj--charles-isherwood.json",
     "stranger-things-2024/theatrely--olivia-clement.json",
     "stranger-things-2024/thestage--dave-fargnoli.json",
-    "stranger-things-2024/tickertv--cheryl-king.json"
+    "stranger-things-2024/tickertv--cheryl-king.json",
+    "liberation-2025/guardian--adrian-horton.json",
+    "liberation-2025/nydailynews--chris-jones.json",
+    "liberation-2025/timeout--adam-feldman.json",
+    "liberation-2025/wsj--charles-isherwood.json",
+    "liberation-2025/washpost--naveen-kumar.json"
   ],
   "tierDetails": {
     "playwright": [],
