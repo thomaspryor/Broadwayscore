@@ -1,49 +1,48 @@
 {
-  "runDate": "2026-01-30T20:05:35.393Z",
+  "runDate": "2026-01-30T20:05:46.797Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "the-wiz-2024",
+    "showFilter": "ragtime-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 62,
+    "processed": 3,
+    "failed": 59,
     "skipped": 0,
-    "successRate": "6.1%"
+    "successRate": "4.8%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 7,
-    "tier1Success": 1,
+    "tier1Attempts": 2,
+    "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 6,
-    "tier2Success": 2,
-    "tier3Attempts": 4,
+    "tier2Attempts": 2,
+    "tier2Success": 1,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier4Attempts": 9,
+    "tier4Attempts": 4,
     "tier4Success": 2,
-    "totalFailed": 7,
-    "scrapingBeeCreditsUsed": 50,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 20,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "wicked-2003/ew--alice-king.json",
-    "the-wiz-2024/broadwaynews--brittani-samuel.json"
+    "wicked-2003/ew--alice-king.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -101,18 +100,13 @@
     "wicked-2003/njcom-star-ledger--michael-sommers.json",
     "wicked-2003/village-voice--michael-feingold.json",
     "wicked-2003/washpost--peter-marks.json",
-    "the-wiz-2024/ny-sun--elysa-gardner.json",
-    "the-wiz-2024/nydailynews--chris-jones.json",
-    "the-wiz-2024/nydailynews--chris.json",
-    "the-wiz-2024/wsj--charles-isherwood.json",
-    "the-wiz-2024/thestage--lane-williamson.json",
-    "the-wiz-2024/village-voice--michael-musto.json",
-    "the-wiz-2024/washpost--gloria-oladipo.json"
+    "ragtime-2025/deadline--greg-evans.json",
+    "ragtime-2025/timeout--adam-feldman.json",
+    "ragtime-2025/wsj--charles-isherwood.json",
+    "ragtime-2025/washpost--naveen-kumar.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "the-wiz-2024/broadwaynews--brittani-samuel.json"
-    ],
+    "playwright": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
