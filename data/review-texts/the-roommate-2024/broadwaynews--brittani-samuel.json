@@ -11,12 +11,12 @@
   "assignedScore": 50,
   "source": "dtli",
   "dtliThumb": "Meh",
-  "textStatus": "garbage_cleared",
-  "textWordCount": 346,
-  "archivePath": "data/archives/reviews/the-roommate-2024/broadway-news--brittani-samuel_2026-01-25.html",
-  "textFetchedAt": "2026-01-25T05:28:50.187Z",
-  "textQuality": "excerpt_only",
-  "sourceMethod": "dtli",
+  "textStatus": "truncated",
+  "textWordCount": 134,
+  "archivePath": "data/archives/reviews/the-roommate-2024/broadwaynews--brittani-samuel_2026-01-30.html",
+  "textFetchedAt": "2026-01-30T16:06:02.237Z",
+  "textQuality": "truncated",
+  "sourceMethod": "archive",
   "llmScore": {
     "score": 50,
     "confidence": "medium",
@@ -84,5 +84,25 @@
   "rescoreCompletedAt": "2026-01-29T14:31:52.102Z",
   "garbageFullText": "Review — The Roommate The Broadway Review: Jen Silverman’s ‘The Roommate’ is bolstered by its stars Megawatt performers Patti LuPone and Mia Farrow sprinkle stardust on playwright Jen Silverman’s hollow comedy about 60-something roommates. , and Brittani Samuel September 13, 2024 . 1:36 AM 11 min read Share on Twitter Share on Facebook Share on LinkedIn Share via Email (L-R) Patti LuPone and Mia Farrow in “The Roommate” on Broadway, 2024 (Credit: Matthew Murphy) Good morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “The Roommate.” RUNDOWN(L-R) Patti LuPone and Mia Farrow in “The Roommate” on Broadway, 2024 (Credit: Matthew Murphy)Hollywood-star power and the brazen use of pre-show bows for its performers aside, “The Roommate” is less a bold, blockbuster-worthy event and more a slow-burn play. Playwright Jen Silverman’s slightly dark comedy, written nearly a decade ago, employs a familiar structure: two actors, one act, zero frills. The show drops us into the lives of a pair of 60-something women — the timid Sharon (Mia Farrow) and the mysterious Robyn (Patti LuPone) — who become roommates in Sharon’s modest Iowan home. This post is for paying subscribers only Subscribe now Already have an account? Sign in Review — The Roommate — News — Jen Silverman — Jack O’Brien — Mia Farrow — Patti LuPone — Bob Crowley — Mikaal Sulaiman — Natasha Katz — David Yazbek Introductory Offer $1/month for 3 months Subscribe Already have an account? Log in Latest Closer Look What does it take to actually revise a musical? Closer Look How the original company of ‘Ragtime’ was cast Insights Loyalty Report: January 22, 2026 Closer Look How ‘Riverdance’ revolutionized the world of dance Podcast 30 years ago, Tracy Letts wrote a play tailor-made for today with ‘Bug’ Personnel Neil Mazzella steps down as CEO of Hudson entities Books The original music director of ‘Rent’ reveals scenes from the very first auditions Closer Look Christian Cowan uses detail and taste to make ‘The Queen of Versailles’ shine",
   "garbageReason": "Paywall/subscription prompt: \"subscribers only\"",
-  "garbageFixedAt": "2026-01-29T22:45:23.298Z"
+  "garbageFixedAt": "2026-01-29T22:45:23.298Z",
+  "fullText": "Megawatt performers Patti LuPone and Mia Farrow sprinkle stardust on playwright Jen Silverman’s hollow comedy about 60-something roommates.\n\nGood morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “The Roommate.”\n\nHollywood-star power and the brazen use of pre-show bows for its performers aside, “The Roommate” is less a bold, blockbuster-worthy event and more a slow-burn play. Playwright Jen Silverman’s slightly dark comedy, written nearly a decade ago, employs a familiar structure: two actors, one act, zero frills. The show drops us into the lives of a pair of 60-something women — the timid Sharon (Mia Farrow) and the mysterious Robyn (Patti LuPone) — who become roommates in Sharon’s modest Iowan home.\n\nAlready have an account?\n              Log in",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_paywall_text",
+    "possible_mid_word_cutoff"
+  ],
+  "archiveOrgTimestamp": "20251115065526",
+  "archiveOrgUrl": "http://web.archive.org/web/20251115065526/https://www.broadwaynews.com/the-broadway-review-jen-silvermans-the-roommate-is-bolstered-by-its-stars/",
+  "textIssues": [
+    "Word count too low: 134 (min: 300)"
+  ]
 }
