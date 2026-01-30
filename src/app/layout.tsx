@@ -136,20 +136,11 @@ export default function RootLayout({
                   <Link href="/" className="nav-link nav-link-active">
                     Shows
                   </Link>
-                  <Link href="/rankings" className="nav-link">
-                    Rankings
-                  </Link>
-                  <Link href="/biz" className="nav-link">
-                    Biz
-                  </Link>
-                  <Link href="/methodology" className="nav-link">
-                    How It Works
-                  </Link>
-                  <Link href="/submit-review" className="nav-link">
-                    Submit Review
-                  </Link>
-                  <Link href="/feedback" className="nav-link">
-                    Feedback
+                  <Link
+                    href="/#subscribe"
+                    className="ml-1 px-3 py-1.5 text-sm font-semibold text-white bg-brand hover:bg-brand-hover rounded-lg transition-colors"
+                  >
+                    Subscribe
                   </Link>
                 </div>
                 <HeaderSearch shows={searchShows} />
