@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T19:57:03.144Z",
+  "runDate": "2026-01-30T19:57:12.036Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "the-whos-tommy-2024",
+    "showFilter": "mother-play-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,29 +12,29 @@
   },
   "summary": {
     "processed": 4,
-    "failed": 60,
+    "failed": 63,
     "skipped": 0,
-    "successRate": "6.3%"
+    "successRate": "6.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 3
+    "brightdata": 0,
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 1,
+    "tier1Attempts": 6,
+    "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 0,
-    "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier4Attempts": 7,
+    "tier2Attempts": 6,
+    "tier2Success": 1,
+    "tier3Attempts": 5,
+    "tier3Success": 0,
+    "tier4Attempts": 14,
     "tier4Success": 3,
-    "totalFailed": 5,
+    "totalFailed": 8,
     "scrapingBeeCreditsUsed": 20,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
@@ -43,7 +43,7 @@
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
     "wicked-2003/ew--alice-king.json",
-    "the-whos-tommy-2024/washpost--elisabeth-vincentelli.json"
+    "mother-play-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -101,22 +101,24 @@
     "wicked-2003/njcom-star-ledger--michael-sommers.json",
     "wicked-2003/village-voice--michael-feingold.json",
     "wicked-2003/washpost--peter-marks.json",
-    "the-whos-tommy-2024/variety--frank-rizzo.json",
-    "the-whos-tommy-2024/deadline--greg-evans.json",
-    "the-whos-tommy-2024/timeout--adam-feldman.json",
-    "the-whos-tommy-2024/wsj--charles-isherwood.json",
-    "the-whos-tommy-2024/wsj--charles.json"
+    "mother-play-2024/hollywood-reporter--david-rooney.json",
+    "mother-play-2024/nytimes--jesse-green.json",
+    "mother-play-2024/guardian--adrian-horton.json",
+    "mother-play-2024/guardian--benjamin-lee.json",
+    "mother-play-2024/nypost--johnny-oleksinski.json",
+    "mother-play-2024/timeout--adam-feldman.json",
+    "mother-play-2024/wsj--charles-isherwood.json",
+    "mother-play-2024/wsj--charles.json"
   ],
   "tierDetails": {
     "playwright": [],
     "scrapingbee": [],
-    "brightdata": [
-      "the-whos-tommy-2024/washpost--elisabeth-vincentelli.json"
-    ],
+    "brightdata": [],
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json",
-      "wicked-2003/ew--alice-king.json"
+      "wicked-2003/ew--alice-king.json",
+      "mother-play-2024/broadwaynews--brittani-samuel.json"
     ]
   }
 }
