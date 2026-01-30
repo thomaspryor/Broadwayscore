@@ -58,8 +58,14 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: node scripts/discover-new-shows.js
 
-      # Step 3: Check for any changes
+      # Step 3: Validate data before committing
+      - name: Validate data
+        id: validate
+        run: node scripts/validate-data.js
+
+      # Step 4: Check for any changes
       - name: Check for changes
+        if: steps.validate.outcome == 'success'
         id: git-check
         run: |
           git diff --exit-code data/shows.json || echo "changes=true" >> $GITHUB_OUTPUT
@@ -67,9 +73,9 @@ jobs:
             echo "has_pending=true" >> $GITHUB_OUTPUT
           fi
 
-      # Step 4: Commit and push changes
+      # Step 5: Commit and push changes
       - name: Commit and push changes
-        if: steps.git-check.outputs.changes == 'true'
+        if: steps.git-check.outputs.changes == 'true' && steps.validate.outcome == 'success'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
