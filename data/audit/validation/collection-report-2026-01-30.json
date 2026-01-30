@@ -1,68 +1,66 @@
 {
-  "runDate": "2026-01-30T16:11:48.916Z",
+  "runDate": "2026-01-30T16:15:20.766Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "oh-mary-2024",
+    "showFilter": "here-lies-love-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 18,
+    "processed": 0,
+    "failed": 20,
     "skipped": 0,
-    "successRate": "5.3%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 14,
+    "tier1Attempts": 15,
     "tier1Success": 0,
-    "tier2Attempts": 14,
+    "tier2Attempts": 15,
     "tier2Success": 0,
-    "tier3Attempts": 14,
-    "tier3Success": 2,
+    "tier3Attempts": 15,
+    "tier3Success": 1,
     "tier4Attempts": 36,
     "tier4Success": 4,
-    "totalFailed": 17,
-    "scrapingBeeCreditsUsed": 50
+    "totalFailed": 19,
+    "scrapingBeeCreditsUsed": 60
   },
-  "processed": [
-    "oh-mary-2024/broadwaynews--brittani-samuel.json"
-  ],
+  "processed": [],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
-    "oh-mary-2024/hollywood-reporter--angie-han.json",
-    "oh-mary-2024/nyt-theater--jonathan-mandell.json",
-    "oh-mary-2024/variety--aramide-tinubu.json",
-    "oh-mary-2024/variety--charles-isherwood.json",
-    "oh-mary-2024/vulture--helen-shaw.json",
-    "oh-mary-2024/deadline--greg-evans.json",
-    "oh-mary-2024/ew--christian-holub.json",
-    "oh-mary-2024/ew--kristen-baldwin.json",
-    "oh-mary-2024/guardian--adrian-horton.json",
-    "oh-mary-2024/nydailynews--chris-jones.json",
-    "oh-mary-2024/observer--david-cote.json",
-    "oh-mary-2024/observer--jesse-green.json",
-    "oh-mary-2024/theatermania--adam-feldman.json",
-    "oh-mary-2024/timeout--adam-feldman.json",
-    "oh-mary-2024/wsj--charles-isherwood.json",
-    "oh-mary-2024/the-interested-bystander--cary-wong.json",
-    "oh-mary-2024/washpost--peter-marks.json"
+    "here-lies-love-2023/hollywood-reporter--angie-han.json",
+    "here-lies-love-2023/variety--aramide-tinubu.json",
+    "here-lies-love-2023/variety--jesse-green.json",
+    "here-lies-love-2023/variety--peter-marks.json",
+    "here-lies-love-2023/vulture--sara-holdren.json",
+    "here-lies-love-2023/deadline--greg-evans.json",
+    "here-lies-love-2023/deadline--pete-hammond.json",
+    "here-lies-love-2023/guardian--adrian-horton.json",
+    "here-lies-love-2023/indiewire--chris-ofalt.json",
+    "here-lies-love-2023/observer--rex-reed.json",
+    "here-lies-love-2023/theatermania--adam-feldman.json",
+    "here-lies-love-2023/timeout--adam-feldman.json",
+    "here-lies-love-2023/wsj--charles-isherwood.json",
+    "here-lies-love-2023/wsj--charles.json",
+    "here-lies-love-2023/bergen-record--robert-feldberg.json",
+    "here-lies-love-2023/rollingstone--brittany-spanos.json",
+    "here-lies-love-2023/talkinbroadway--matthew-murray.json",
+    "here-lies-love-2023/usatoday--charles-isherwood.json",
+    "here-lies-love-2023/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archive": [
-      "oh-mary-2024/broadwaynews--brittani-samuel.json"
-    ]
+    "archive": []
   }
 }
