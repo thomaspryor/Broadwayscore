@@ -23,6 +23,7 @@ import {
   AUDIENCE_DIVERGENCE_THRESHOLD,
   getCriticLabel,
 } from '@/config/scoring';
+import { toScoringId } from './outlet-id-mapper';
 
 // ===========================================
 // TYPES
@@ -233,11 +234,20 @@ export interface ComputedShow {
 // HELPER: GET OUTLET CONFIG
 // ===========================================
 
-function getOutletConfig(outletId?: string, outletName?: string) {
-  // Try by ID first
+export function getOutletConfig(outletId?: string, outletName?: string) {
+  // Try direct lookup first (for uppercase IDs like 'NYT')
   if (outletId && OUTLET_TIERS[outletId]) {
     return { ...OUTLET_TIERS[outletId], id: outletId };
   }
+
+  // Try mapping from registry format (lowercase) to scoring format (uppercase)
+  if (outletId) {
+    const scoringId = toScoringId(outletId);
+    if (scoringId && OUTLET_TIERS[scoringId]) {
+      return { ...OUTLET_TIERS[scoringId], id: outletId };
+    }
+  }
+
   // Fallback to name lookup
   if (outletName) {
     for (const [id, config] of Object.entries(OUTLET_TIERS)) {
@@ -246,6 +256,7 @@ function getOutletConfig(outletId?: string, outletName?: string) {
       }
     }
   }
+
   // Default tier 3
   return {
     tier: DEFAULT_TIER as 1 | 2 | 3,

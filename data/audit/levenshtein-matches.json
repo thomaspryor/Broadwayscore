@@ -1,0 +1,56 @@
+{
+  "generatedAt": "2026-01-30T20:49:58.597Z",
+  "summary": {
+    "totalPairsChecked": 29405,
+    "exactMatches": 0,
+    "aliasMatches": 1,
+    "levenshteinMatches": 3
+  },
+  "levenshteinMatches": [
+    {
+      "name1": "a d amorosi",
+      "name2": "ad amorosi",
+      "distance": 1,
+      "showCount": 1,
+      "shows": [
+        "grey-house-2023"
+      ],
+      "sampleFiles": [
+        "variety--a-d-amorosi.json",
+        "variety--ad-amorosi.json"
+      ],
+      "verdict": "true_positive",
+      "notes": "Same critic - A.D. Amorosi from Variety. Name variation with/without spaces in initials. Should add to CRITIC_ALIASES."
+    },
+    {
+      "name1": "elisabeth vincentelli",
+      "name2": "elizabeth vincentelli",
+      "distance": 1,
+      "showCount": 1,
+      "shows": [
+        "hells-kitchen-2024"
+      ],
+      "sampleFiles": [
+        "nytimes--elisabeth-vincentelli.json",
+        "nytimes--elizabeth-vincentelli.json"
+      ],
+      "verdict": "true_positive",
+      "notes": "Same critic - Elisabeth Vincentelli from NYT. 's' vs 'z' spelling variation (Elisabeth/Elizabeth). Should add to CRITIC_ALIASES."
+    },
+    {
+      "name1": "charles mcnulty",
+      "name2": "charlesmcnulty",
+      "distance": 1,
+      "showCount": 1,
+      "shows": [
+        "queen-versailles-2025"
+      ],
+      "sampleFiles": [
+        "latimes--charles-mcnulty.json",
+        "latimes--charlesmcnulty.json"
+      ],
+      "verdict": "true_positive",
+      "notes": "Same critic - Charles McNulty from LA Times. Missing space in name. Should add to CRITIC_ALIASES."
+    }
+  ]
+}
