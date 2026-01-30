@@ -13,6 +13,11 @@ on:
         required: false
         default: ''
         type: string
+      include_closed:
+        description: 'Also check closed shows for review gaps'
+        required: false
+        default: 'false'
+        type: boolean
       force_collection:
         description: 'Force review collection even if no new reviews detected'
         required: false
@@ -67,6 +72,7 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           SHOW_FILTER: ${{ inputs.show_filter }}
+          INCLUDE_CLOSED: ${{ inputs.include_closed }}
           IS_AWARDS_SEASON: ${{ steps.season.outputs.is_awards_season }}
         run: |
           node << 'SCRIPT'
@@ -77,9 +83,22 @@ jobs:
           const showsData = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
           const reviewsData = JSON.parse(fs.readFileSync('data/reviews.json', 'utf8'));
 
-          // Get open shows (or filtered show)
+          // Get shows to check
           const showFilter = process.env.SHOW_FILTER;
-          let showsToCheck = showsData.shows.filter(s => s.status === 'open' || s.status === 'previews');
+          const includeClosed = process.env.INCLUDE_CLOSED === 'true';
+
+          // On 1st Monday of each month, automatically include closed shows
+          const today = new Date();
+          const isFirstWeek = today.getDate() <= 7;
+          const checkAllShows = includeClosed || isFirstWeek;
+
+          let showsToCheck;
+          if (checkAllShows) {
+            showsToCheck = showsData.shows;
+            console.log('Including ALL shows (open + closed) in gap check');
+          } else {
+            showsToCheck = showsData.shows.filter(s => s.status === 'open' || s.status === 'previews');
+          }
 
           if (showFilter) {
             showsToCheck = showsToCheck.filter(s => s.id === showFilter || s.slug === showFilter);
@@ -164,7 +183,7 @@ jobs:
             showsNeedingUpdate: uniqueShows,
             reviewCounts: currentReviewCounts,
             showScoreCounts: Object.fromEntries(
-              showsToCheck.map(s => [s.id, showScoreData[s.id]?.criticReviewCount || 0])
+              showsToCheck.map(s => [s.id, showScoreData.shows?.[s.id]?.criticReviewCount || 0])
             )
           };
 
@@ -293,15 +312,13 @@ jobs:
                 await github.rest.actions.createWorkflowDispatch({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  workflow_id: 'collect-review-texts.yml',
+                  workflow_id: 'gather-reviews.yml',
                   ref: 'main',
                   inputs: {
-                    show_filter: show.trim(),
-                    max_reviews: '100',
-                    priority: 'all'
+                    shows: show.trim()
                   }
                 });
-                console.log(`  Triggered collection for: ${show}`);
+                console.log(`  Triggered review discovery for: ${show}`);
                 triggered++;
                 // Brief pause to avoid API rate limits
                 await new Promise(r => setTimeout(r, 2000));
