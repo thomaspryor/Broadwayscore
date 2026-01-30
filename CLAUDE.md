@@ -277,7 +277,10 @@ In Jan 2026, we discovered 147 misattributed reviews (7%) where critics were inc
 - `no_ending_punctuation` - Doesn't end with .!?"')
 - `possible_mid_word_cutoff` - Ends with lowercase letter
 
-**Validation script:** `node /tmp/text-quality-audit.js` audits all reviews and shows quality breakdown.
+**Automated quality checks:**
+- `scripts/audit-text-quality.js` - Runs in CI, enforces thresholds (35% full, <40% truncated, <5% unknown)
+- Quality classification happens automatically during `collect-review-texts.js`
+- `review-refresh.yml` now rebuilds `reviews.json` after collecting new reviews
 
 ## Automated Testing
 
