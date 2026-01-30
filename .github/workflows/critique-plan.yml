@@ -75,7 +75,7 @@ ${plan}`;
 
       - name: Critique with Google Gemini
         env:
-          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           node << 'EOF'
           const fs = require('fs');
@@ -106,10 +106,10 @@ Be specific and actionable. Don't validate - find problems.
 THE PLAN TO CRITIQUE:
 ${plan}`;
 
-            const apiKey = process.env.GOOGLE_API_KEY;
+            const apiKey = process.env.GEMINI_API_KEY;
             if (!apiKey) {
               console.log('=== GOOGLE GEMINI CRITIQUE ===\n');
-              console.log('SKIPPED: No GOOGLE_API_KEY secret configured');
+              console.log('SKIPPED: No GEMINI_API_KEY secret configured');
               return;
             }
 
