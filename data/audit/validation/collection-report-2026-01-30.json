@@ -1,47 +1,48 @@
 {
-  "runDate": "2026-01-30T18:36:47.229Z",
+  "runDate": "2026-01-30T18:37:04.566Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "boop-2025",
+    "showFilter": "operation-mincemeat-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 47,
+    "processed": 3,
+    "failed": 50,
     "skipped": 0,
-    "successRate": "4.1%"
+    "successRate": "5.7%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 2
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 0,
+    "tier1Attempts": 1,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier4Attempts": 1,
-    "tier4Success": 1,
-    "totalFailed": 1,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier4Attempts": 6,
+    "tier4Success": 4,
+    "totalFailed": 4,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
-    "the-roommate-2024/nydailynews--chris-jones.json"
+    "the-roommate-2024/nydailynews--chris-jones.json",
+    "operation-mincemeat-2025/nydailynews--chris-jones.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -90,7 +91,10 @@
     "i-need-that-2023/timeout--will-gleason.json",
     "i-need-that-2023/wsj--charles-isherwood.json",
     "i-need-that-2023/wsj--charles.json",
-    "boop-2025/timeout--adam-feldman.json"
+    "operation-mincemeat-2025/observer--david-cote.json",
+    "operation-mincemeat-2025/timeout--adam-feldman.json",
+    "operation-mincemeat-2025/wsj--charles-isherwood.json",
+    "operation-mincemeat-2025/wsj--charles.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -98,7 +102,8 @@
     "brightdata": [],
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
-      "the-roommate-2024/nydailynews--chris-jones.json"
+      "the-roommate-2024/nydailynews--chris-jones.json",
+      "operation-mincemeat-2025/nydailynews--chris-jones.json"
     ]
   }
 }
