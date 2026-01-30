@@ -294,6 +294,8 @@ All automation runs via GitHub Actions - no local commands needed. See `.github/
 | `ANTHROPIC_API_KEY` | Claude API for AI features |
 | `BRIGHTDATA_TOKEN` | Web scraping (primary) |
 | `SCRAPINGBEE_API_KEY` | Web scraping (fallback) |
+| `BROWSERBASE_API_KEY` | Managed browser cloud with CAPTCHA solving ($0.10/session) |
+| `BROWSERBASE_PROJECT_ID` | Browserbase project identifier |
 | `FORMSPREE_TOKEN` | Feedback form |
 
 **When creating/editing workflows:** Always check if the script needs API keys and add the appropriate `env:` block.
