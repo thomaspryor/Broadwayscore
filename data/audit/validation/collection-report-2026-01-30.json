@@ -1,41 +1,41 @@
 {
-  "runDate": "2026-01-30T19:55:21.146Z",
+  "runDate": "2026-01-30T19:57:03.144Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "spamalot-2023",
+    "showFilter": "the-whos-tommy-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 6,
-    "failed": 65,
+    "processed": 4,
+    "failed": 60,
     "skipped": 0,
-    "successRate": "8.5%"
+    "successRate": "6.3%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 6
+    "brightdata": 1,
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 8,
-    "tier1Success": 0,
+    "tier1Attempts": 3,
+    "tier1Success": 1,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 8,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 8,
-    "tier3Success": 0,
-    "tier4Attempts": 22,
-    "tier4Success": 5,
-    "totalFailed": 10,
-    "scrapingBeeCreditsUsed": 40,
+    "tier3Attempts": 2,
+    "tier3Success": 1,
+    "tier4Attempts": 7,
+    "tier4Success": 3,
+    "totalFailed": 5,
+    "scrapingBeeCreditsUsed": 20,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
@@ -43,9 +43,7 @@
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
     "wicked-2003/ew--alice-king.json",
-    "spamalot-2023/nydailynews--chris-jones.json",
-    "spamalot-2023/nydailynews--chris.json",
-    "spamalot-2023/nypost--johnny-oleksinski.json"
+    "the-whos-tommy-2024/washpost--elisabeth-vincentelli.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -103,28 +101,22 @@
     "wicked-2003/njcom-star-ledger--michael-sommers.json",
     "wicked-2003/village-voice--michael-feingold.json",
     "wicked-2003/washpost--peter-marks.json",
-    "spamalot-2023/variety--charles-isherwood.json",
-    "spamalot-2023/variety--peter-marks.json",
-    "spamalot-2023/vulture--jackson-mchenry.json",
-    "spamalot-2023/deadline--greg-evans.json",
-    "spamalot-2023/theatermania--david-gordon.json",
-    "spamalot-2023/theatermania--jesse-green.json",
-    "spamalot-2023/timeout--adam-feldman.json",
-    "spamalot-2023/wsj--charles-isherwood.json",
-    "spamalot-2023/wsj--charles.json",
-    "spamalot-2023/talkinbroadway--matthew-murray.json"
+    "the-whos-tommy-2024/variety--frank-rizzo.json",
+    "the-whos-tommy-2024/deadline--greg-evans.json",
+    "the-whos-tommy-2024/timeout--adam-feldman.json",
+    "the-whos-tommy-2024/wsj--charles-isherwood.json",
+    "the-whos-tommy-2024/wsj--charles.json"
   ],
   "tierDetails": {
     "playwright": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "the-whos-tommy-2024/washpost--elisabeth-vincentelli.json"
+    ],
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json",
-      "wicked-2003/ew--alice-king.json",
-      "spamalot-2023/nydailynews--chris-jones.json",
-      "spamalot-2023/nydailynews--chris.json",
-      "spamalot-2023/nypost--johnny-oleksinski.json"
+      "wicked-2003/ew--alice-king.json"
     ]
   }
 }
