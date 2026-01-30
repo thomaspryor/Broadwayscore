@@ -1,26 +1,26 @@
 {
-  "runDate": "2026-01-30T03:20:56.741Z",
+  "runDate": "2026-01-30T03:21:22.057Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "tier1",
-    "showFilter": "cabaret-2024",
+    "showFilter": "days-of-wine-and-roses-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
+    "processed": 0,
     "failed": 2,
     "skipped": 0,
-    "successRate": "33.3%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
     "tier1Attempts": 2,
@@ -29,24 +29,20 @@
     "tier2Success": 0,
     "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier4Attempts": 5,
-    "tier4Success": 1,
+    "tier4Attempts": 4,
+    "tier4Success": 0,
     "totalFailed": 2,
     "scrapingBeeCreditsUsed": 10
   },
-  "processed": [
-    "cabaret-2024/vulture--sara-holdren.json"
-  ],
+  "processed": [],
   "failed": [
-    "cabaret-2024/variety--aramide-tinubu.json",
-    "cabaret-2024/variety--frank-rizzo.json"
+    "days-of-wine-and-roses-2024/nytimes--jesse-green.json",
+    "days-of-wine-and-roses-2024/variety--frank-rizzo.json"
   ],
   "tierDetails": {
     "playwright": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archive": [
-      "cabaret-2024/vulture--sara-holdren.json"
-    ]
+    "archive": []
   }
 }
