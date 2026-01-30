@@ -1,27 +1,27 @@
 {
-  "runDate": "2026-01-30T19:57:19.082Z",
+  "runDate": "2026-01-30T19:57:23.482Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "jajas-african-hair-braiding-2023",
+    "showFilter": "cabaret-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 61,
+    "processed": 4,
+    "failed": 65,
     "skipped": 0,
-    "successRate": "4.7%"
+    "successRate": "5.8%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 3
+    "archive": 4
   },
   "statistics": {
     "tier1Attempts": 6,
@@ -29,20 +29,21 @@
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 6,
-    "tier2Success": 0,
-    "tier3Attempts": 6,
-    "tier3Success": 1,
-    "tier4Attempts": 10,
-    "tier4Success": 0,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 40,
+    "tier2Success": 1,
+    "tier3Attempts": 5,
+    "tier3Success": 0,
+    "tier4Attempts": 16,
+    "tier4Success": 5,
+    "totalFailed": 10,
+    "scrapingBeeCreditsUsed": 20,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "wicked-2003/ew--alice-king.json"
+    "wicked-2003/ew--alice-king.json",
+    "cabaret-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -100,12 +101,16 @@
     "wicked-2003/njcom-star-ledger--michael-sommers.json",
     "wicked-2003/village-voice--michael-feingold.json",
     "wicked-2003/washpost--peter-marks.json",
-    "jajas-african-hair-braiding-2023/variety--maya-phillips.json",
-    "jajas-african-hair-braiding-2023/guardian--gloria-oladipo.json",
-    "jajas-african-hair-braiding-2023/nydailynews--chris-jones.json",
-    "jajas-african-hair-braiding-2023/nydailynews--chris.json",
-    "jajas-african-hair-braiding-2023/timeout--adam-feldman.json",
-    "jajas-african-hair-braiding-2023/wsj--charles-isherwood.json"
+    "cabaret-2024/variety--aramide-tinubu.json",
+    "cabaret-2024/variety--frank-rizzo.json",
+    "cabaret-2024/deadline--greg-evans.json",
+    "cabaret-2024/observer--rex-reed.json",
+    "cabaret-2024/theatermania--jesse-green.json",
+    "cabaret-2024/timeout--adam-feldman.json",
+    "cabaret-2024/wsj--charles-isherwood.json",
+    "cabaret-2024/wsj--charles.json",
+    "cabaret-2024/queerty--matthew-wexler.json",
+    "cabaret-2024/village-voice--michael-musto.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -114,7 +119,8 @@
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json",
-      "wicked-2003/ew--alice-king.json"
+      "wicked-2003/ew--alice-king.json",
+      "cabaret-2024/broadwaynews--brittani-samuel.json"
     ]
   }
 }
