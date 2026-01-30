@@ -300,7 +300,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
           width={112}
           height={112}
           decoding="async"
-          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 will-change-transform"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 will-change-transform"
           fallback={
             <div className="w-full h-full flex flex-col items-center justify-center text-gray-600 px-2" aria-hidden="true">
               <div className="text-2xl mb-0.5">🎭</div>
@@ -391,7 +391,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
 
 // Compact card for featured rows
 // NOTE: Poster images use 2:3 aspect ratio (standard Broadway poster format, e.g., 480x720)
-// Always preserve original aspect ratio - never crop show artwork
+// Never use a landscape/hero image as a poster — source proper portrait images instead
 const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: { show: ComputedShow; priority?: boolean }) {
   const score = show.criticScore?.score;
 
@@ -410,7 +410,7 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: { sh
           alt={`${show.title} Broadway ${show.type}`}
           priority={priority}
           loading={priority ? "eager" : "lazy"}
-          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           fallback={
             <div className="w-full h-full flex flex-col items-center justify-center text-gray-600 px-2" aria-hidden="true">
               <div className="text-2xl mb-1">🎭</div>
