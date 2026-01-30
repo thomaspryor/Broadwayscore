@@ -164,7 +164,15 @@ function TierBadge({ tier }: { tier: number }) {
 
 // Use UTC-based formatting to avoid timezone-related hydration mismatch
 function formatDate(dateStr: string): string {
-  const date = new Date(dateStr);
+  // Strip ordinal suffixes (1st, 2nd, 3rd, 4th, etc.) that break Date parsing
+  const cleanedDateStr = dateStr.replace(/(\d+)(st|nd|rd|th)/gi, '$1');
+  const date = new Date(cleanedDateStr);
+
+  // Check for invalid date
+  if (isNaN(date.getTime())) {
+    return dateStr; // Return original if we can't parse it
+  }
+
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   return `${months[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
 }
