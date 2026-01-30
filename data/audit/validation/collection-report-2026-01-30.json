@@ -1,49 +1,48 @@
 {
-  "runDate": "2026-01-30T20:06:36.534Z",
+  "runDate": "2026-01-30T20:16:25.968Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "chess-2025",
+    "showFilter": "stranger-things-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 59,
+    "processed": 3,
+    "failed": 65,
     "skipped": 0,
-    "successRate": "6.3%"
+    "successRate": "4.4%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 4
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 4,
+    "tier1Attempts": 10,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 4,
-    "tier2Success": 1,
-    "tier3Attempts": 3,
+    "tier2Attempts": 10,
+    "tier2Success": 2,
+    "tier3Attempts": 8,
     "tier3Success": 0,
-    "tier4Attempts": 7,
-    "tier4Success": 1,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 20,
+    "tier4Attempts": 17,
+    "tier4Success": 0,
+    "totalFailed": 10,
+    "scrapingBeeCreditsUsed": 50,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "wicked-2003/ew--alice-king.json",
-    "chess-2025/nydailynews--chris-jones.json"
+    "wicked-2003/ew--alice-king.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -101,10 +100,16 @@
     "wicked-2003/njcom-star-ledger--michael-sommers.json",
     "wicked-2003/village-voice--michael-feingold.json",
     "wicked-2003/washpost--peter-marks.json",
-    "chess-2025/nytimes--elisabeth-vincentelli.json",
-    "chess-2025/timeout--adam-feldman.json",
-    "chess-2025/wsj--charles-isherwood.json",
-    "chess-2025/washpost--naveen-kumar.json"
+    "stranger-things-2024/variety--aramide-tinubu.json",
+    "stranger-things-2024/deadline--greg-evans.json",
+    "stranger-things-2024/ew--emlyn-travis.json",
+    "stranger-things-2024/nydailynews--chris-jones.json",
+    "stranger-things-2024/theatermania--adam-feldman.json",
+    "stranger-things-2024/timeout--adam-feldman.json",
+    "stranger-things-2024/wsj--charles-isherwood.json",
+    "stranger-things-2024/theatrely--olivia-clement.json",
+    "stranger-things-2024/thestage--dave-fargnoli.json",
+    "stranger-things-2024/tickertv--cheryl-king.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -113,8 +118,7 @@
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json",
-      "wicked-2003/ew--alice-king.json",
-      "chess-2025/nydailynews--chris-jones.json"
+      "wicked-2003/ew--alice-king.json"
     ]
   }
 }
