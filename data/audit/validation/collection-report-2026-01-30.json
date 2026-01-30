@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T20:02:47.313Z",
+  "runDate": "2026-01-30T20:02:49.715Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "chicago-1996",
+    "showFilter": "just-in-time-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 3,
-    "failed": 56,
+    "failed": 58,
     "skipped": 0,
-    "successRate": "5.1%"
+    "successRate": "4.9%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -32,10 +32,10 @@
     "tier2Success": 0,
     "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier4Attempts": 2,
-    "tier4Success": 0,
-    "totalFailed": 1,
-    "scrapingBeeCreditsUsed": 0,
+    "tier4Attempts": 4,
+    "tier4Success": 2,
+    "totalFailed": 3,
+    "scrapingBeeCreditsUsed": 10,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
@@ -100,7 +100,9 @@
     "wicked-2003/njcom-star-ledger--michael-sommers.json",
     "wicked-2003/village-voice--michael-feingold.json",
     "wicked-2003/washpost--peter-marks.json",
-    "chicago-1996/nydailynews--howard-kissel.json"
+    "just-in-time-2025/deadline--greg-evans.json",
+    "just-in-time-2025/guardian--adrian-horton.json",
+    "just-in-time-2025/timeout--adam-feldman.json"
   ],
   "tierDetails": {
     "playwright": [],
