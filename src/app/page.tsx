@@ -7,7 +7,7 @@ import { getAllShows, ComputedShow, getDataStats, getUpcomingShows, getAudienceB
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import ScoreTooltip from '@/components/ScoreTooltip';
-import HomepageEmailBanner from '@/components/HomepageEmailBanner';
+import FooterEmailCapture from '@/components/FooterEmailCapture';
 
 // URL parameter values
 type StatusParam = 'now_playing' | 'closed' | 'upcoming' | 'closing_soon' | 'all';
@@ -725,8 +725,6 @@ function HomePageInner() {
   const shouldHideStatus = statusFilter !== 'all';
 
   return (
-    <>
-    <HomepageEmailBanner />
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       {/* Hero - Large heading on desktop only */}
       <div className="mb-6 sm:mb-8">
@@ -900,8 +898,13 @@ function HomePageInner() {
         </div>
       </div>
 
+      {/* Email Capture */}
+      <div id="subscribe" className="mt-8 max-w-md mx-auto">
+        <FooterEmailCapture />
+      </div>
+
       {/* Featured Rows */}
-      <div className="mt-12 pt-8 border-t border-white/5">
+      <div className="mt-8 pt-8 border-t border-white/5">
         <FeaturedRow
           title="Best Recent Musicals"
           shows={bestNewMusicals}
@@ -951,7 +954,6 @@ function HomePageInner() {
         </p>
       </div>
     </div>
-    </>
   );
 }
 
