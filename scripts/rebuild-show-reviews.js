@@ -6,6 +6,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { getOutletDisplayName } = require('./lib/review-normalization');
 
 const SHOWS_TO_FIX = ['queen-versailles-2025', 'stereophonic-2024'];
 
@@ -357,7 +358,7 @@ SHOWS_TO_FIX.forEach(showId => {
     const review = {
       showId: showId,
       outletId: data.outletId || outletNorm,
-      outlet: data.outlet || data.outletId,
+      outlet: getOutletDisplayName(data.outletId) || data.outlet || data.outletId,
       assignedScore: score,
       bucket: scoreToBucket(score),
       thumb: scoreToThumb(score),
