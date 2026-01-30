@@ -1,48 +1,47 @@
 {
-  "runDate": "2026-01-30T18:32:05.893Z",
+  "runDate": "2026-01-30T18:32:19.530Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "patriots-2024",
+    "showFilter": "merrily-we-roll-along-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
+    "processed": 2,
     "failed": 59,
     "skipped": 0,
-    "successRate": "4.8%"
+    "successRate": "3.3%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 3
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 8,
+    "tier1Attempts": 11,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 8,
+    "tier2Attempts": 11,
     "tier2Success": 1,
-    "tier3Attempts": 7,
+    "tier3Attempts": 10,
     "tier3Success": 0,
-    "tier4Attempts": 21,
-    "tier4Success": 6,
+    "tier4Attempts": 24,
+    "tier4Success": 2,
     "totalFailed": 13,
-    "scrapingBeeCreditsUsed": 50,
+    "scrapingBeeCreditsUsed": 40,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
-    "the-roommate-2024/nydailynews--chris-jones.json",
-    "patriots-2024/broadwaynews--brittani-samuel.json"
+    "the-roommate-2024/nydailynews--chris-jones.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -91,19 +90,19 @@
     "i-need-that-2023/timeout--will-gleason.json",
     "i-need-that-2023/wsj--charles-isherwood.json",
     "i-need-that-2023/wsj--charles.json",
-    "patriots-2024/variety--charles-isherwood.json",
-    "patriots-2024/deadline--greg-evans.json",
-    "patriots-2024/guardian--adrian-horton.json",
-    "patriots-2024/new-york-sun--elysa-gardner.json",
-    "patriots-2024/new-york-sun--elysa.json",
-    "patriots-2024/nypost--johnny-oleksinski.json",
-    "patriots-2024/theatermania--david-gordon.json",
-    "patriots-2024/timeout--raven-snook.json",
-    "patriots-2024/wsj--charles-isherwood.json",
-    "patriots-2024/wsj--charles.json",
-    "patriots-2024/nysr--frank-scheck.json",
-    "patriots-2024/nysr--frank.json",
-    "patriots-2024/talkinbroadway--matthew-murray.json"
+    "merrily-we-roll-along-2023/hollywood-reporter--angie-han.json",
+    "merrily-we-roll-along-2023/variety--aramide-tinubu.json",
+    "merrily-we-roll-along-2023/variety--charles-isherwood.json",
+    "merrily-we-roll-along-2023/vulture--jackson-mchenry.json",
+    "merrily-we-roll-along-2023/deadline--greg-evans.json",
+    "merrily-we-roll-along-2023/theatermania--jesse-green.json",
+    "merrily-we-roll-along-2023/timeout--adam-feldman.json",
+    "merrily-we-roll-along-2023/wsj--charles-isherwood.json",
+    "merrily-we-roll-along-2023/wsj--terry-teachout.json",
+    "merrily-we-roll-along-2023/the-times--will-pavia.json",
+    "merrily-we-roll-along-2023/the-village-voice--michael-musto.json",
+    "merrily-we-roll-along-2023/usatoday--charles-isherwood.json",
+    "merrily-we-roll-along-2023/usatoday--david-rooney.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -111,8 +110,7 @@
     "brightdata": [],
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
-      "the-roommate-2024/nydailynews--chris-jones.json",
-      "patriots-2024/broadwaynews--brittani-samuel.json"
+      "the-roommate-2024/nydailynews--chris-jones.json"
     ]
   }
 }
