@@ -1,47 +1,48 @@
 {
-  "runDate": "2026-01-30T18:19:30.889Z",
+  "runDate": "2026-01-30T18:20:12.153Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "hamilton-2015",
+    "showFilter": "suffs-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 66,
+    "processed": 3,
+    "failed": 61,
     "skipped": 0,
-    "successRate": "2.9%"
+    "successRate": "4.7%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 2
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 18,
-    "tier1Success": 0,
+    "tier1Attempts": 14,
+    "tier1Success": 1,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 18,
-    "tier2Success": 1,
-    "tier3Attempts": 17,
-    "tier3Success": 2,
-    "tier4Attempts": 36,
+    "tier2Attempts": 13,
+    "tier2Success": 0,
+    "tier3Attempts": 13,
+    "tier3Success": 1,
+    "tier4Attempts": 31,
     "tier4Success": 2,
-    "totalFailed": 20,
-    "scrapingBeeCreditsUsed": 70,
+    "totalFailed": 15,
+    "scrapingBeeCreditsUsed": 30,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
-    "the-roommate-2024/nydailynews--chris-jones.json"
+    "the-roommate-2024/nydailynews--chris-jones.json",
+    "suffs-2024/washpost--elisabeth-vincentelli.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -90,26 +91,21 @@
     "i-need-that-2023/timeout--will-gleason.json",
     "i-need-that-2023/wsj--charles-isherwood.json",
     "i-need-that-2023/wsj--charles.json",
-    "hamilton-2015/hollywood-reporter--david-rooney.json",
-    "hamilton-2015/ew--tim-stack.json",
-    "hamilton-2015/guardian--jesse-green.json",
-    "hamilton-2015/nbcnews--elysa-gardner.json",
-    "hamilton-2015/nbcnews--kristy-puchko.json",
-    "hamilton-2015/nbcnews--melissa-locker.json",
-    "hamilton-2015/newsday--linda-winer.json",
-    "hamilton-2015/nypost--jesse-green.json",
-    "hamilton-2015/nypost--johnny-oleksinski.json",
-    "hamilton-2015/observer--david-cote.json",
-    "hamilton-2015/observer--rex-reed.json",
-    "hamilton-2015/theatermania--adam-feldman.json",
-    "hamilton-2015/theatermania--charles-isherwood.json",
-    "hamilton-2015/timeout--david-cote.json",
-    "hamilton-2015/wsj--terry-teachout.json",
-    "hamilton-2015/ap--mark-kennedy.json",
-    "hamilton-2015/dailybeast--tim-teeman.json",
-    "hamilton-2015/rollingstone--rob-sheffield.json",
-    "hamilton-2015/the-clyde-fitch-report--david-finkle.json",
-    "hamilton-2015/thisbroadsway--sandra-mcfarland.json"
+    "suffs-2024/hollywood-reporter--angie-han.json",
+    "suffs-2024/nytimes--jesse-green.json",
+    "suffs-2024/variety--aramide-tinubu.json",
+    "suffs-2024/variety--peter-marks.json",
+    "suffs-2024/chelsea-community-news--michael-musto.json",
+    "suffs-2024/ew--kristen-baldwin.json",
+    "suffs-2024/guardian--adrian-horton.json",
+    "suffs-2024/guardian--jesse-green.json",
+    "suffs-2024/observer--rex-reed.json",
+    "suffs-2024/theatermania--jesse-green.json",
+    "suffs-2024/timeout--regina-robbins.json",
+    "suffs-2024/wsj--charles-isherwood.json",
+    "suffs-2024/talkinbroadway--matthew-murray.json",
+    "suffs-2024/the-times--nancy-durrant.json",
+    "suffs-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -117,7 +113,8 @@
     "brightdata": [],
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
-      "the-roommate-2024/nydailynews--chris-jones.json"
+      "the-roommate-2024/nydailynews--chris-jones.json",
+      "suffs-2024/washpost--elisabeth-vincentelli.json"
     ]
   }
 }
