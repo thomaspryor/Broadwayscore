@@ -1,0 +1,101 @@
+{
+  "generatedAt": "2026-01-30T21:08:29.047Z",
+  "summary": {
+    "totalOutletsInReviews": 156,
+    "inRegistry": 155,
+    "missing": 1,
+    "unused": 12
+  },
+  "missingOutlets": [
+    {
+      "outletId": "unknown",
+      "count": 9,
+      "shows": [
+        "appropriate-2023",
+        "back-to-the-future-2023",
+        "chicago-1996",
+        "harry-potter-2021",
+        "i-need-that-2023",
+        "jajas-african-hair-braiding-2023",
+        "the-cottage-2023",
+        "the-shark-is-broken-2023",
+        "wicked-2003"
+      ],
+      "exampleFile": "/Users/tompryor/Broadwayscore/data/review-texts/appropriate-2023/unknown--unknown.json"
+    }
+  ],
+  "unusedInRegistry": [
+    {
+      "outletId": "playbill",
+      "displayName": "Playbill"
+    },
+    {
+      "outletId": "bloomberg",
+      "displayName": "Bloomberg"
+    },
+    {
+      "outletId": "perez-hilton",
+      "displayName": "Perez Hilton"
+    },
+    {
+      "outletId": "john-patrick-shanley",
+      "displayName": "John Patrick Shanley"
+    },
+    {
+      "outletId": "carole-di-tosti",
+      "displayName": "Carole Di Tosti"
+    },
+    {
+      "outletId": "backstage-barbie",
+      "displayName": "BackStage Barbie"
+    },
+    {
+      "outletId": "roy-berko-info",
+      "displayName": "Roy Berko"
+    },
+    {
+      "outletId": "katrina-stuart-santiago",
+      "displayName": "Katrina Stuart Santiago"
+    },
+    {
+      "outletId": "vladimir-bunoan",
+      "displayName": "Vladimir Bunoan"
+    },
+    {
+      "outletId": "wanggo-gallaga",
+      "displayName": "Wanggo Gallaga"
+    },
+    {
+      "outletId": "fredericksburgcom",
+      "displayName": "Fredericksburg.com"
+    },
+    {
+      "outletId": "barbara-hershey-and-ty-simpkins-in-insidious",
+      "displayName": "Barbara Hershey and Ty Simpkins in INSIDIOUS"
+    }
+  ],
+  "suggestedAdditions": [
+    {
+      "outletId": "unknown",
+      "displayName": "unknown",
+      "tier": 3,
+      "aliases": [
+        "unknown"
+      ]
+    }
+  ],
+  "displayNameMismatches": [],
+  "needsNormalization": [
+    {
+      "showId": "the-lion-king-1997",
+      "currentOutletId": "USATODAY",
+      "canonicalId": "usatoday",
+      "displayName": "USA Today",
+      "files": [
+        "/Users/tompryor/Broadwayscore/data/review-texts/the-lion-king-1997/USATODAY--david-patrick-stearns.json"
+      ],
+      "count": 1
+    }
+  ],
+  "registryNormalizationConflicts": []
+}

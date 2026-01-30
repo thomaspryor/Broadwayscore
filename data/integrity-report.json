@@ -1,0 +1,36 @@
+{
+  "timestamp": "2026-01-30T21:10:39.832Z",
+  "hasIssues": false,
+  "current": {
+    "date": "2026-01-30",
+    "totalReviews": 2111,
+    "unknownOutlets": 0,
+    "duplicates": 0,
+    "syncDelta": 14
+  },
+  "previous": {
+    "date": "2026-01-30",
+    "totalReviews": 2120,
+    "unknownOutlets": 9,
+    "duplicates": 0,
+    "syncDelta": 22
+  },
+  "issues": [
+    {
+      "type": "review_count_decrease",
+      "severity": "warning",
+      "message": "Review count decreased by 9 (0.4%) from 2120 to 2111"
+    },
+    {
+      "type": "sync_delta",
+      "severity": "warning",
+      "message": "review-texts (2111) and reviews.json (2097) are out of sync by 14 reviews"
+    }
+  ],
+  "summary": {
+    "totalReviews": 2111,
+    "unknownOutlets": 0,
+    "duplicates": 0,
+    "syncDelta": 14
+  }
+}
