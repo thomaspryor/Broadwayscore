@@ -1,69 +1,78 @@
 {
-  "runDate": "2026-01-30T16:15:41.554Z",
+  "runDate": "2026-01-30T16:16:12.179Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "moulin-rouge-2019",
+    "showFilter": "aladdin-2014",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 23,
+    "processed": 4,
+    "failed": 22,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "15.4%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 0
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 19,
-    "tier1Success": 0,
-    "tier2Attempts": 19,
-    "tier2Success": 0,
-    "tier3Attempts": 19,
+    "tier1Attempts": 18,
+    "tier1Success": 1,
+    "tier2Attempts": 17,
+    "tier2Success": 1,
+    "tier3Attempts": 16,
     "tier3Success": 1,
-    "tier4Attempts": 47,
-    "tier4Success": 3,
-    "totalFailed": 22,
-    "scrapingBeeCreditsUsed": 40
+    "tier4Attempts": 42,
+    "tier4Success": 7,
+    "totalFailed": 21,
+    "scrapingBeeCreditsUsed": 80
   },
-  "processed": [],
+  "processed": [
+    "aladdin-2014/theatermania--zachary-stewart.json",
+    "aladdin-2014/chicagotribune--chris-jones.json",
+    "aladdin-2014/classicalite--patricia-reaney.json",
+    "aladdin-2014/huffpost--steven-suskin.json"
+  ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
-    "moulin-rouge-2019/nytimes--jesse-green.json",
-    "moulin-rouge-2019/vulture--jesse-green.json",
-    "moulin-rouge-2019/deadline--greg-evans.json",
-    "moulin-rouge-2019/deadline--pete-hammond.json",
-    "moulin-rouge-2019/ew--joey-nolfi.json",
-    "moulin-rouge-2019/ew--leah-greenblatt.json",
-    "moulin-rouge-2019/guardian--alexis-soloski.json",
-    "moulin-rouge-2019/guardian--jesse-oxfeld.json",
-    "moulin-rouge-2019/nydailynews--joe-dziemianowicz.json",
-    "moulin-rouge-2019/nypost--johnny-oleksinski.json",
-    "moulin-rouge-2019/observer--david-cote.json",
-    "moulin-rouge-2019/observer--rex-reed.json",
-    "moulin-rouge-2019/theatermania--jesse-green.json",
-    "moulin-rouge-2019/thewrap--robert-hofler.json",
-    "moulin-rouge-2019/timeout--adam-feldman.json",
-    "moulin-rouge-2019/wsj--terry-teachout.json",
-    "moulin-rouge-2019/amny--matt-windman.json",
-    "moulin-rouge-2019/dailybeast--tim-teeman.json",
-    "moulin-rouge-2019/nysr--jesse-oxfeld.json",
-    "moulin-rouge-2019/rollingstone--alan-light.json",
-    "moulin-rouge-2019/usatoday--kelly-lawler.json",
-    "moulin-rouge-2019/washpost--peter-marks.json"
+    "aladdin-2014/hollywood-reporter--david-rooney.json",
+    "aladdin-2014/nytimes--ben-brantley.json",
+    "aladdin-2014/deadline--pete-hammond.json",
+    "aladdin-2014/guardian--jesse-green.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "aladdin-2014/newsday--linda-winer.json",
+    "aladdin-2014/nypost--elisabeth-vincentelli.json",
+    "aladdin-2014/observer--rex-reed.json",
+    "aladdin-2014/theatermania--adam-feldman.json",
+    "aladdin-2014/theatermania--andy-propst.json",
+    "aladdin-2014/theatermania--charles-isherwood.json",
+    "aladdin-2014/theatermania--david-finkle.json",
+    "aladdin-2014/timeout--adam-feldman.json",
+    "aladdin-2014/wsj--terry-teachout.json",
+    "aladdin-2014/ap--mark-kennedy.json",
+    "aladdin-2014/billboard--bob-verini.json",
+    "aladdin-2014/broadway-voice--kristen-balzano.json",
+    "aladdin-2014/catholic-transcript--bernard-carragher.json",
+    "aladdin-2014/theater-pizzazz--sandi-durell.json",
+    "aladdin-2014/thestage--mark-shenton.json",
+    "aladdin-2014/thisbroadsway--sandra-mcfarland.json"
   ],
   "tierDetails": {
     "playwright": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archive": []
+    "archive": [
+      "aladdin-2014/theatermania--zachary-stewart.json",
+      "aladdin-2014/chicagotribune--chris-jones.json",
+      "aladdin-2014/classicalite--patricia-reaney.json",
+      "aladdin-2014/huffpost--steven-suskin.json"
+    ]
   }
 }
