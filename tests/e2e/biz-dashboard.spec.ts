@@ -37,8 +37,8 @@ test.describe('/biz Dashboard - Basic Tests', () => {
   });
 
   test('download buttons are present', async ({ page }) => {
-    await expect(page.getByRole('link', { name: /JSON/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: /CSV/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /JSON/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /CSV/i })).toBeVisible();
   });
 
   test('back link returns to homepage', async ({ page }) => {
