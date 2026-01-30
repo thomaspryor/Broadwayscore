@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T18:35:26.103Z",
+  "runDate": "2026-01-30T18:35:30.825Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "mother-play-2024",
+    "showFilter": "heart-of-rock-and-roll-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 3,
-    "failed": 54,
+    "failed": 52,
     "skipped": 0,
-    "successRate": "5.3%"
+    "successRate": "5.5%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -25,24 +25,24 @@
   },
   "statistics": {
     "tier1Attempts": 6,
-    "tier1Success": 1,
+    "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 5,
-    "tier2Success": 0,
+    "tier2Attempts": 6,
+    "tier2Success": 1,
     "tier3Attempts": 5,
     "tier3Success": 0,
-    "tier4Attempts": 14,
-    "tier4Success": 3,
-    "totalFailed": 8,
-    "scrapingBeeCreditsUsed": 30,
+    "tier4Attempts": 10,
+    "tier4Success": 2,
+    "totalFailed": 6,
+    "scrapingBeeCreditsUsed": 40,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "mother-play-2024/broadwaynews--brittani-samuel.json"
+    "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -91,14 +91,12 @@
     "i-need-that-2023/timeout--will-gleason.json",
     "i-need-that-2023/wsj--charles-isherwood.json",
     "i-need-that-2023/wsj--charles.json",
-    "mother-play-2024/hollywood-reporter--david-rooney.json",
-    "mother-play-2024/nytimes--jesse-green.json",
-    "mother-play-2024/guardian--adrian-horton.json",
-    "mother-play-2024/guardian--benjamin-lee.json",
-    "mother-play-2024/nypost--johnny-oleksinski.json",
-    "mother-play-2024/timeout--adam-feldman.json",
-    "mother-play-2024/wsj--charles-isherwood.json",
-    "mother-play-2024/wsj--charles.json"
+    "heart-of-rock-and-roll-2024/nytimes--jesse-green.json",
+    "heart-of-rock-and-roll-2024/variety--aramide-tinubu.json",
+    "heart-of-rock-and-roll-2024/nydailynews--chris-jones.json",
+    "heart-of-rock-and-roll-2024/nydailynews--chris.json",
+    "heart-of-rock-and-roll-2024/the-new-york-sun--elysa-gardner.json",
+    "heart-of-rock-and-roll-2024/timeout--regina-robbins.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -107,7 +105,7 @@
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json",
-      "mother-play-2024/broadwaynews--brittani-samuel.json"
+      "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json"
     ]
   }
 }
