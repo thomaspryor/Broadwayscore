@@ -1,48 +1,49 @@
 {
-  "runDate": "2026-01-30T22:38:43.537Z",
+  "runDate": "2026-01-30T22:39:11.497Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 25,
+    "maxReviews": 30,
     "priority": "all",
-    "showFilter": "the-roommate-2024",
+    "showFilter": "book-of-mormon-2011",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 71,
+    "processed": 4,
+    "failed": 81,
     "skipped": 0,
-    "successRate": "4.1%"
+    "successRate": "4.7%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 3
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 6,
+    "tier1Attempts": 14,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 6,
-    "tier2Success": 1,
-    "tier3Attempts": 5,
-    "tier3Success": 0,
-    "tier4Attempts": 11,
-    "tier4Success": 0,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 10,
+    "tier2Attempts": 14,
+    "tier2Success": 0,
+    "tier3Attempts": 14,
+    "tier3Success": 1,
+    "tier4Attempts": 33,
+    "tier4Success": 4,
+    "totalFailed": 16,
+    "scrapingBeeCreditsUsed": 40,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "wicked-2003/ew--alice-king.json"
+    "wicked-2003/ew--alice-king.json",
+    "book-of-mormon-2011/backstage--david-sheward.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -110,12 +111,22 @@
     "stranger-things-2024/theatrely--olivia-clement.json",
     "stranger-things-2024/thestage--dave-fargnoli.json",
     "stranger-things-2024/tickertv--cheryl-king.json",
-    "the-roommate-2024/billboard--greg-evans.json",
-    "the-roommate-2024/dailybeast--tim-teeman.json",
-    "the-roommate-2024/rollingstone--alexis-soloski.json",
-    "the-roommate-2024/talkinbroadway--matthew-murray.json",
-    "the-roommate-2024/the-village-voice--michael-musto.json",
-    "the-roommate-2024/washpost--peter-marks.json"
+    "book-of-mormon-2011/variety--marilyn-stasio.json",
+    "book-of-mormon-2011/vulture--jesse-green.json",
+    "book-of-mormon-2011/ew--thom-geier.json",
+    "book-of-mormon-2011/guardian--brian-logan.json",
+    "book-of-mormon-2011/newsday--linda-winer.json",
+    "book-of-mormon-2011/theatermania--charles-isherwood.json",
+    "book-of-mormon-2011/theatermania--david-finkle.json",
+    "book-of-mormon-2011/timeout--david-cote.json",
+    "book-of-mormon-2011/wsj--terry-teachout.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/dailybeast--john-anderson.json",
+    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+    "book-of-mormon-2011/ny-1--roma-torre.json",
+    "book-of-mormon-2011/the-philadelphia-inquirer--howard-shapiro.json",
+    "book-of-mormon-2011/the-village-voice--michael-musto.json",
+    "book-of-mormon-2011/usatoday--elysa-gardner.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -124,7 +135,8 @@
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json",
-      "wicked-2003/ew--alice-king.json"
+      "wicked-2003/ew--alice-king.json",
+      "book-of-mormon-2011/backstage--david-sheward.json"
     ]
   }
 }
