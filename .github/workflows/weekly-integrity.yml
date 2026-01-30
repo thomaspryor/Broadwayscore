@@ -40,6 +40,10 @@ jobs:
         run: |
           node scripts/generate-integrity-report.js
           echo "has_issues=$(cat data/integrity-report.json | jq '.hasIssues')" >> $GITHUB_OUTPUT
+          echo "total_reviews=$(cat data/integrity-report.json | jq '.summary.totalReviews')" >> $GITHUB_OUTPUT
+          echo "unknown_outlets=$(cat data/integrity-report.json | jq '.summary.unknownOutlets')" >> $GITHUB_OUTPUT
+          echo "duplicates=$(cat data/integrity-report.json | jq '.summary.duplicates')" >> $GITHUB_OUTPUT
+          echo "sync_delta=$(cat data/integrity-report.json | jq '.summary.syncDelta')" >> $GITHUB_OUTPUT
 
       - name: Commit history update
         run: |
@@ -52,6 +56,49 @@ jobs:
             git commit -m "data: Update integrity history"
             git push origin main
           fi
+
+      - name: Send Discord notification
+        if: always()
+        env:
+          DISCORD_WEBHOOK_REPORTS: ${{ secrets.DISCORD_WEBHOOK_REPORTS }}
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+        run: |
+          node -e "
+            const { sendReport, sendAlert } = require('./scripts/lib/discord-notify.js');
+
+            const hasIssues = '${{ steps.check.outputs.has_issues }}' === 'true';
+            const metrics = {
+              totalReviews: parseInt('${{ steps.check.outputs.total_reviews }}') || 0,
+              unknownOutlets: parseInt('${{ steps.check.outputs.unknown_outlets }}') || 0,
+              duplicates: parseInt('${{ steps.check.outputs.duplicates }}') || 0,
+              syncDelta: parseInt('${{ steps.check.outputs.sync_delta }}') || 0
+            };
+
+            // Send to #weekly-reports
+            sendReport({
+              title: 'Weekly Data Integrity Report',
+              summary: hasIssues
+                ? 'Issues detected that need attention'
+                : 'All metrics look healthy',
+              metrics,
+              hasIssues,
+              url: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+            }).catch(e => console.error('Report notification failed:', e.message));
+
+            // Also send to #alerts if there are critical issues
+            if (metrics.unknownOutlets > 0 || metrics.duplicates > 0) {
+              sendAlert({
+                title: 'Data Quality Alert',
+                description: 'Critical data quality issues detected',
+                severity: 'error',
+                fields: [
+                  { name: 'Unknown Outlets', value: String(metrics.unknownOutlets) },
+                  { name: 'Duplicates', value: String(metrics.duplicates) }
+                ],
+                url: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+              }).catch(e => console.error('Alert notification failed:', e.message));
+            }
+          "
 
       - name: Create issue if problems found
         if: steps.check.outputs.has_issues == 'true' || inputs.force_issue == 'true'

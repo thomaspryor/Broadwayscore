@@ -164,7 +164,7 @@ describe('Outlet ID Mapper', () => {
       { alias: 'rolling-stone', scoring: 'ROLLSTONE' },
       { alias: 'broadway-world', scoring: 'BWW' },
       { alias: 'stage-and-cinema', scoring: 'STGCNMA' },
-      { alias: 'newyorker', scoring: 'NYT' }, // New Yorker maps to tier 1
+      { alias: 'newyorker', scoring: 'NEWYORKER' }, // New Yorker has its own tier 1 entry
     ];
 
     for (const { alias, scoring } of aliasTestCases) {
