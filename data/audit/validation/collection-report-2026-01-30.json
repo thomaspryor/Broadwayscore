@@ -1,78 +1,79 @@
 {
-  "runDate": "2026-01-30T16:20:28.764Z",
+  "runDate": "2026-01-30T16:20:59.700Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "hells-kitchen-2024",
+    "showFilter": "mj-2022",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 28,
+    "processed": 3,
+    "failed": 24,
     "skipped": 0,
-    "successRate": "3.4%"
+    "successRate": "11.1%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 1
+    "brightdata": 1,
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 25,
-    "tier1Success": 0,
-    "tier2Attempts": 25,
+    "tier1Attempts": 23,
+    "tier1Success": 1,
+    "tier2Attempts": 22,
     "tier2Success": 0,
-    "tier3Attempts": 25,
-    "tier3Success": 2,
-    "tier4Attempts": 55,
+    "tier3Attempts": 22,
+    "tier3Success": 1,
+    "tier4Attempts": 52,
     "tier4Success": 3,
-    "totalFailed": 27,
-    "scrapingBeeCreditsUsed": 90
+    "totalFailed": 23,
+    "scrapingBeeCreditsUsed": 50
   },
   "processed": [
-    "hells-kitchen-2024/broadwaynews--brittani-samuel.json"
+    "mj-2022/broadwaynews--charles-isherwood.json",
+    "mj-2022/nydailynews--chris-jones.json",
+    "mj-2022/usatoday--david-rooney.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
-    "hells-kitchen-2024/hollywood-reporter--angie-han.json",
-    "hells-kitchen-2024/nytg--david-nounou.json",
-    "hells-kitchen-2024/nytimes--jesse-green.json",
-    "hells-kitchen-2024/vulture--helen-shaw.json",
-    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
-    "hells-kitchen-2024/deadline--greg-evans.json",
-    "hells-kitchen-2024/deadline--pete-hammond.json",
-    "hells-kitchen-2024/ew--joey-nolfi.json",
-    "hells-kitchen-2024/ew--kristen-baldwin.json",
-    "hells-kitchen-2024/guardian--adrian-horton.json",
-    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
-    "hells-kitchen-2024/observer--jesse-green.json",
-    "hells-kitchen-2024/observer--rex-reed.json",
-    "hells-kitchen-2024/the-new-york-sun--elysa-gardner.json",
-    "hells-kitchen-2024/theatermania--adam-feldman.json",
-    "hells-kitchen-2024/theatermania--david-gordon.json",
-    "hells-kitchen-2024/timeout--adam-feldman.json",
-    "hells-kitchen-2024/wsj--charles-isherwood.json",
-    "hells-kitchen-2024/ap--mark-kennedy.json",
-    "hells-kitchen-2024/billboard--david-rooney.json",
-    "hells-kitchen-2024/billboard--isabela-raygoza.json",
-    "hells-kitchen-2024/billboard--juan-a-ramirez.json",
-    "hells-kitchen-2024/culturesauce--thom-geier.json",
-    "hells-kitchen-2024/dailybeast--tim-teeman.json",
-    "hells-kitchen-2024/stageandcinema--victor-gluck.json",
-    "hells-kitchen-2024/usatoday--charles-isherwood.json",
-    "hells-kitchen-2024/usatoday--david-rooney.json"
+    "mj-2022/hollywood-reporter--angie-han.json",
+    "mj-2022/hollywood-reporter--david-rooney.json",
+    "mj-2022/variety--aramide-tinubu.json",
+    "mj-2022/variety--charles-isherwood.json",
+    "mj-2022/variety--frank-rizzo.json",
+    "mj-2022/vulture--jackson-mchenry.json",
+    "mj-2022/deadline--greg-evans.json",
+    "mj-2022/deadline--pete-hammond.json",
+    "mj-2022/ew--david-rooney.json",
+    "mj-2022/ew--kristen-baldwin.json",
+    "mj-2022/guardian--adrian-horton.json",
+    "mj-2022/nydailynews--joe-dziemianowicz.json",
+    "mj-2022/theatermania--adam-feldman.json",
+    "mj-2022/theatermania--david-gordon.json",
+    "mj-2022/theatermania--jesse-green.json",
+    "mj-2022/timeout--adam-feldman.json",
+    "mj-2022/wsj--charles-isherwood.json",
+    "mj-2022/wsj--terry-teachout.json",
+    "mj-2022/ap--mark-kennedy.json",
+    "mj-2022/nysr--mark-dundas-wood.json",
+    "mj-2022/talkinbroadway--john-olson.json",
+    "mj-2022/talkinbroadway--matthew-murray.json",
+    "mj-2022/usatoday--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "mj-2022/usatoday--david-rooney.json"
+    ],
     "archive": [
-      "hells-kitchen-2024/broadwaynews--brittani-samuel.json"
+      "mj-2022/broadwaynews--charles-isherwood.json",
+      "mj-2022/nydailynews--chris-jones.json"
     ]
   }
 }
