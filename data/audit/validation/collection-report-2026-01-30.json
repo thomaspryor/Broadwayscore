@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T03:21:28.587Z",
+  "runDate": "2026-01-30T03:21:34.807Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 50,
+    "maxReviews": 30,
     "priority": "tier1",
-    "showFilter": "once-upon-a-one-more-time-2023",
+    "showFilter": "appropriate-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 6,
+    "failed": 2,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -23,25 +23,21 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 6,
+    "tier1Attempts": 2,
     "tier1Success": 0,
-    "tier2Attempts": 6,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 6,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier4Attempts": 13,
+    "tier4Attempts": 5,
     "tier4Success": 0,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 40
+    "totalFailed": 2,
+    "scrapingBeeCreditsUsed": 0
   },
   "processed": [],
   "failed": [
-    "once-upon-a-one-more-time-2023/hollywood-reporter--angie-han.json",
-    "once-upon-a-one-more-time-2023/nytimes--jesse-green.json",
-    "once-upon-a-one-more-time-2023/variety--aramide-tinubu.json",
-    "once-upon-a-one-more-time-2023/variety--bob-verini.json",
-    "once-upon-a-one-more-time-2023/variety--charles-isherwood.json",
-    "once-upon-a-one-more-time-2023/vulture--helen-shaw.json"
+    "appropriate-2023/hollywood-reporter--david-rooney.json",
+    "appropriate-2023/vulture--jackson-mchenry.json"
   ],
   "tierDetails": {
     "playwright": [],
