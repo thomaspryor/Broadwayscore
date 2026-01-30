@@ -1,26 +1,26 @@
 {
-  "runDate": "2026-01-30T03:17:23.373Z",
+  "runDate": "2026-01-30T03:17:41.229Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "tier1",
-    "showFilter": "the-outsiders-2024",
+    "showFilter": "mother-play-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
+    "processed": 0,
     "failed": 2,
     "skipped": 0,
-    "successRate": "33.3%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
     "tier1Attempts": 2,
@@ -29,24 +29,20 @@
     "tier2Success": 0,
     "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier4Attempts": 5,
-    "tier4Success": 1,
+    "tier4Attempts": 4,
+    "tier4Success": 0,
     "totalFailed": 2,
     "scrapingBeeCreditsUsed": 0
   },
-  "processed": [
-    "the-outsiders-2024/nytimes--jesse-green.json"
-  ],
+  "processed": [],
   "failed": [
-    "the-outsiders-2024/hollywood-reporter--angie-han.json",
-    "the-outsiders-2024/hollywood-reporter--david-rooney.json"
+    "mother-play-2024/hollywood-reporter--david-rooney.json",
+    "mother-play-2024/nytimes--jesse-green.json"
   ],
   "tierDetails": {
     "playwright": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archive": [
-      "the-outsiders-2024/nytimes--jesse-green.json"
-    ]
+    "archive": []
   }
 }
