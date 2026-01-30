@@ -1,0 +1,69 @@
+name: Weekly Data Integrity Check
+
+on:
+  schedule:
+    - cron: '0 3 * * 0'  # Sundays 3 AM UTC
+  workflow_dispatch:
+    inputs:
+      force_issue:
+        description: 'Create issue even if no problems found'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  integrity-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run integrity check
+        id: check
+        run: |
+          node scripts/generate-integrity-report.js
+          echo "has_issues=$(cat data/integrity-report.json | jq '.hasIssues')" >> $GITHUB_OUTPUT
+
+      - name: Commit history update
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/integrity-history.json data/integrity-report.json data/integrity-report.md
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "data: Update integrity history"
+            git push origin main
+          fi
+
+      - name: Create issue if problems found
+        if: steps.check.outputs.has_issues == 'true' || inputs.force_issue == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('data/integrity-report.md', 'utf8');
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Data Integrity Issues - ${new Date().toISOString().split('T')[0]}`,
+              body: report,
+              labels: ['data-quality', 'automated']
+            });
