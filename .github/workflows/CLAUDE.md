@@ -73,10 +73,15 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 
 ## `fetch-all-image-formats.yml`
 - **Runs:** Twice weekly (Mon & Thu at 6 AM UTC), or triggered by show discovery
-- **Does:** Fetches poster/thumbnail/hero from TodayTix CDN, archives locally as WebP, backs up CDN URLs to `data/image-sources.json`, updates `shows.json` to use local paths
+- **Does:** Fetches poster/thumbnail/hero images, archives locally as WebP, updates `shows.json` to use local paths
+- **Image sourcing (3-tier fallback):**
+  1. **TodayTix API** (open shows) — batch-fetches all active NYC shows from `api.todaytix.com/api/v2/shows`, uses native `posterImageSquare` (1080x1080), `posterImage` (480x720), `appHeroImage`. No ScrapingBee needed.
+  2. **TodayTix page scrape** (closed shows) — discovers TodayTix page via Google SERP, scrapes Contentful image URLs, crops portrait to square via Contentful transforms
+  3. **Playbill fallback** — OG image only (landscape, used as hero)
 - **Scripts:** `scripts/fetch-show-images-auto.js` → `scripts/archive-show-images.js`
 - **Triggered by:** `update-show-status.yml` and `discover-historical-shows.yml`
-- **Image formats:** Poster 720x1080, Thumbnail 540x540, Hero 1920x800 (all WebP)
+- **Image formats:** Poster 720x1080 (portrait), Thumbnail 1080x1080 (square), Hero 1920x800 (landscape) — all WebP
+- **Flags:** `--missing` (only shows without images), `--bad-images` (re-source shows with identical Playbill images), `--show=ID` (single show)
 
 ## `weekly-grosses.yml`
 - **Runs:** Every Tuesday & Wednesday at 3pm UTC (10am ET)

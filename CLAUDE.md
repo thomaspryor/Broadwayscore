@@ -84,7 +84,7 @@ A website aggregating Broadway show reviews into composite scores (independent B
 - **1,150+ critic reviews** across all shows in `data/review-texts/`
 - **Critics-only scoring** (V1 approach)
 - **TodayTix-inspired UI** with card layout, hero images, show detail pages
-- **Locally archived images** in `public/images/shows/`, CDN URL backups in `data/image-sources.json`
+- **Locally archived images** in `public/images/shows/`, CDN URL backups in `data/image-sources.json`. Open shows use native square thumbnails (1080x1080) from TodayTix API; closed shows use cropped-from-portrait squares via Contentful transforms
 - **URL-based filtering** with shareable filter state
 
 ### Shows Database
@@ -238,6 +238,8 @@ data/
 - `scripts/rebuild-show-reviews.js` - Rebuilds reviews.json from review-texts data
 - `scripts/update-commercial-data.js` - Weekly commercial data automation
 - `scripts/generate-critic-consensus.js` - LLM editorial summaries
+- `scripts/fetch-show-images-auto.js` - Image fetcher: TodayTix API (open shows) → page scrape → Playbill fallback
+- `scripts/archive-show-images.js` - Downloads CDN images to local WebP files
 
 **Tests:**
 - `tests/unit/` - Unit tests (parse-grosses, commercial filtering, source-validator, etc.)
