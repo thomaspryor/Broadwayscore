@@ -1,49 +1,48 @@
 {
-  "runDate": "2026-01-30T22:42:52.573Z",
+  "runDate": "2026-01-30T22:43:26.587Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 20,
+    "maxReviews": 35,
     "priority": "all",
-    "showFilter": "maybe-happy-ending-2024",
+    "showFilter": "the-notebook-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 74,
+    "processed": 3,
+    "failed": 88,
     "skipped": 0,
-    "successRate": "5.1%"
+    "successRate": "3.3%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 4
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 7,
+    "tier1Attempts": 19,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 7,
+    "tier2Attempts": 19,
     "tier2Success": 0,
-    "tier3Attempts": 7,
+    "tier3Attempts": 19,
     "tier3Success": 0,
-    "tier4Attempts": 19,
-    "tier4Success": 3,
-    "totalFailed": 9,
-    "scrapingBeeCreditsUsed": 10,
+    "tier4Attempts": 45,
+    "tier4Success": 4,
+    "totalFailed": 23,
+    "scrapingBeeCreditsUsed": 80,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "wicked-2003/ew--alice-king.json",
-    "maybe-happy-ending-2024/washpost--naveen-kumar.json"
+    "wicked-2003/ew--alice-king.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -111,15 +110,29 @@
     "stranger-things-2024/theatrely--olivia-clement.json",
     "stranger-things-2024/thestage--dave-fargnoli.json",
     "stranger-things-2024/tickertv--cheryl-king.json",
-    "maybe-happy-ending-2024/variety--aramide-tinubu.json",
-    "maybe-happy-ending-2024/deadline--greg-evans.json",
-    "maybe-happy-ending-2024/ew--shania-russell.json",
-    "maybe-happy-ending-2024/nydailynews--chris-jones.json",
-    "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
-    "maybe-happy-ending-2024/timeout--adam-feldman.json",
-    "maybe-happy-ending-2024/wsj--terry-teachout.json",
-    "maybe-happy-ending-2024/talkinbroadway--matthew-murray.json",
-    "maybe-happy-ending-2024/washpost--peter-marks.json"
+    "the-notebook-2024/hollywood-reporter--angie-han.json",
+    "the-notebook-2024/nytg--andy-propst.json",
+    "the-notebook-2024/variety--aramide-tinubu.json",
+    "the-notebook-2024/vulture--jackson-mchenry.json",
+    "the-notebook-2024/deadline--greg-evans.json",
+    "the-notebook-2024/deadline--pete-hammond.json",
+    "the-notebook-2024/ew--alex-zalben.json",
+    "the-notebook-2024/guardian--adrian-horton.json",
+    "the-notebook-2024/guardian--gloria-oladipo.json",
+    "the-notebook-2024/guardian--jesse-green.json",
+    "the-notebook-2024/indiewire--christian-lewis.json",
+    "the-notebook-2024/indiewire--david-ehrlich.json",
+    "the-notebook-2024/nydailynews--chris-jones.json",
+    "the-notebook-2024/nydailynews--chris.json",
+    "the-notebook-2024/theatermania--adam-feldman.json",
+    "the-notebook-2024/theatermania--jesse-green.json",
+    "the-notebook-2024/timeout--adam-feldman.json",
+    "the-notebook-2024/wsj--charles-isherwood.json",
+    "the-notebook-2024/wsj--charles.json",
+    "the-notebook-2024/theatrely--andy-lefkowitz.json",
+    "the-notebook-2024/theatrely--jackson-mchenry.json",
+    "the-notebook-2024/amny--david-gordon.json",
+    "the-notebook-2024/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -128,8 +141,7 @@
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json",
-      "wicked-2003/ew--alice-king.json",
-      "maybe-happy-ending-2024/washpost--naveen-kumar.json"
+      "wicked-2003/ew--alice-king.json"
     ]
   }
 }
