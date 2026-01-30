@@ -174,8 +174,9 @@ async function fetchAllTodayTixShows() {
   console.log(`   Found ${allShows.length} active shows from API\n`);
 
   // Fix protocol-relative URLs (API returns //images.ctfassets.net/...)
+  // Some fields may be objects or numbers instead of strings
   const fixUrl = (url) => {
-    if (!url) return null;
+    if (!url || typeof url !== 'string') return null;
     if (url.startsWith('//')) return 'https:' + url;
     return url;
   };
