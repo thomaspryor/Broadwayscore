@@ -50,6 +50,9 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  alternates: {
+    canonical: BASE_URL,
+  },
 };
 
 
@@ -77,7 +80,6 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="canonical" href={BASE_URL} />
         {/* Preconnect to image CDN for faster LCP */}
         <link
           rel="preconnect"

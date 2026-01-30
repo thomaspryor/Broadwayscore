@@ -408,6 +408,82 @@ export function generateShowFAQSchema(show: ComputedShow) {
   };
 }
 
+// FAQPage Schema for browse/category pages
+export function generateBrowseFAQSchema(
+  pageTitle: string,
+  shows: { title: string; slug: string; venue?: string; criticScore?: { score: number; reviewCount: number } | null; status?: string; closingDate?: string | null; type?: string }[],
+) {
+  if (shows.length === 0) return null;
+
+  const faqs: { question: string; answer: string }[] = [];
+
+  // Q: What are the best shows in this category?
+  const topShows = shows
+    .filter(s => s.criticScore?.score && s.criticScore.reviewCount >= 5)
+    .slice(0, 5);
+
+  if (topShows.length >= 2) {
+    const listStr = topShows
+      .map((s, i) => `${i + 1}. ${s.title} (${Math.round(s.criticScore!.score)}/100)`)
+      .join(', ');
+    faqs.push({
+      question: `What are the ${pageTitle.toLowerCase()}?`,
+      answer: `Based on aggregated critic reviews, the top-rated are: ${listStr}. Scores are based on reviews from major outlets including The New York Times, Vulture, and Variety.`,
+    });
+  }
+
+  // Q: How many shows are in this category?
+  const openShows = shows.filter(s => s.status === 'open' || s.status === 'previews');
+  if (openShows.length > 0) {
+    faqs.push({
+      question: `How many ${pageTitle.toLowerCase().replace('best ', '')} are currently on Broadway?`,
+      answer: `There are currently ${openShows.length} ${pageTitle.toLowerCase().replace('best ', '')} playing on Broadway.`,
+    });
+  }
+
+  // Q: What is the highest rated?
+  const topShow = topShows[0];
+  if (topShow?.criticScore) {
+    faqs.push({
+      question: `What is the highest-rated among the ${pageTitle.toLowerCase()}?`,
+      answer: `${topShow.title} is the highest-rated with a critic score of ${Math.round(topShow.criticScore.score)}/100 based on ${topShow.criticScore.reviewCount} professional reviews.`,
+    });
+  }
+
+  // Q: Shows closing soon (if relevant)
+  const closingShows = shows.filter(s => {
+    if (!s.closingDate || s.status !== 'open') return false;
+    const closing = new Date(s.closingDate);
+    const now = new Date();
+    const diffDays = Math.ceil((closing.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+    return diffDays > 0 && diffDays <= 90;
+  });
+  if (closingShows.length > 0) {
+    const closingStr = closingShows.slice(0, 3).map(s =>
+      `${s.title} (closes ${new Date(s.closingDate!).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })})`
+    ).join(', ');
+    faqs.push({
+      question: `Which of these shows are closing soon?`,
+      answer: `Shows closing soon: ${closingStr}. See them before they're gone.`,
+    });
+  }
+
+  if (faqs.length === 0) return null;
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(faq => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  };
+}
+
 // Helper to render schema as JSON-LD script
 export function schemaToJsonLd(schema: Record<string, unknown> | Record<string, unknown>[]) {
   return JSON.stringify(schema);
