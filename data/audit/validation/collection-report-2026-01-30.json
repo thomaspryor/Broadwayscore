@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T18:31:20.783Z",
+  "runDate": "2026-01-30T18:32:05.893Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "six-2021",
+    "showFilter": "patriots-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 3,
-    "failed": 57,
+    "failed": 59,
     "skipped": 0,
-    "successRate": "5.0%"
+    "successRate": "4.8%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -24,17 +24,17 @@
     "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 11,
+    "tier1Attempts": 8,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 11,
+    "tier2Attempts": 8,
     "tier2Success": 1,
-    "tier3Attempts": 10,
-    "tier3Success": 1,
-    "tier4Attempts": 23,
-    "tier4Success": 2,
-    "totalFailed": 11,
+    "tier3Attempts": 7,
+    "tier3Success": 0,
+    "tier4Attempts": 21,
+    "tier4Success": 6,
+    "totalFailed": 13,
     "scrapingBeeCreditsUsed": 50,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
@@ -42,7 +42,7 @@
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "six-2021/broadwaynews--charles-isherwood.json"
+    "patriots-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -91,17 +91,19 @@
     "i-need-that-2023/timeout--will-gleason.json",
     "i-need-that-2023/wsj--charles-isherwood.json",
     "i-need-that-2023/wsj--charles.json",
-    "six-2021/variety--peter-marks.json",
-    "six-2021/deadline--pete-hammond.json",
-    "six-2021/ew--ruth-kinane.json",
-    "six-2021/guardian--adrian-horton.json",
-    "six-2021/observer--david-cote.json",
-    "six-2021/theatermania--jesse-green.json",
-    "six-2021/timeout--adam-feldman.json",
-    "six-2021/wsj--charles-isherwood.json",
-    "six-2021/amny--matt-windman.json",
-    "six-2021/front-row-center--tulis-mccall.json",
-    "six-2021/talkinbroadway--matthew-murray.json"
+    "patriots-2024/variety--charles-isherwood.json",
+    "patriots-2024/deadline--greg-evans.json",
+    "patriots-2024/guardian--adrian-horton.json",
+    "patriots-2024/new-york-sun--elysa-gardner.json",
+    "patriots-2024/new-york-sun--elysa.json",
+    "patriots-2024/nypost--johnny-oleksinski.json",
+    "patriots-2024/theatermania--david-gordon.json",
+    "patriots-2024/timeout--raven-snook.json",
+    "patriots-2024/wsj--charles-isherwood.json",
+    "patriots-2024/wsj--charles.json",
+    "patriots-2024/nysr--frank-scheck.json",
+    "patriots-2024/nysr--frank.json",
+    "patriots-2024/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -110,7 +112,7 @@
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json",
-      "six-2021/broadwaynews--charles-isherwood.json"
+      "patriots-2024/broadwaynews--brittani-samuel.json"
     ]
   }
 }
