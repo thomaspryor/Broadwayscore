@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { getBrowseList, getAllBrowseSlugs, getShowGrosses } from '@/lib/data';
-import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, generateItemListSchema, generateBrowseFAQSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getBrowsePageConfig, BROWSE_PAGES } from '@/config/browse-pages';
 
@@ -138,16 +138,31 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
     config.title
   );
 
+  const faqSchema = generateBrowseFAQSchema(
+    config.title,
+    shows.map(show => ({
+      title: show.title,
+      slug: show.slug,
+      venue: show.venue,
+      criticScore: show.criticScore ? { score: show.criticScore.score, reviewCount: show.criticScore.reviewCount } : null,
+      status: show.status,
+      closingDate: show.closingDate,
+      type: show.type,
+    })),
+  );
+
   // Get related pages info
   const relatedPages = config.relatedPages
     .map(slug => getBrowsePageConfig(slug))
     .filter((p): p is NonNullable<typeof p> => p !== undefined);
 
+  const schemas = [breadcrumbSchema, itemListSchema, faqSchema].filter(Boolean);
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, itemListSchema]) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
       />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">

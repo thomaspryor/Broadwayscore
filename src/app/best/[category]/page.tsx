@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { getBestOfList, getAllBestOfCategories, BestOfCategory } from '@/lib/data';
-import { generateBreadcrumbSchema, generateItemListSchema } from '@/lib/seo';
+import { generateBreadcrumbSchema, generateItemListSchema, generateBrowseFAQSchema } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
@@ -110,11 +110,26 @@ export default function BestOfPage({ params }: { params: { category: string } })
     list.title
   );
 
+  const faqSchema = generateBrowseFAQSchema(
+    list.title,
+    list.shows.map(show => ({
+      title: show.title,
+      slug: show.slug,
+      venue: show.venue,
+      criticScore: show.criticScore ? { score: show.criticScore.score, reviewCount: show.criticScore.reviewCount } : null,
+      status: show.status,
+      closingDate: show.closingDate,
+      type: show.type,
+    })),
+  );
+
+  const schemas = [breadcrumbSchema, itemListSchema, faqSchema].filter(Boolean);
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, itemListSchema]) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
       />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
