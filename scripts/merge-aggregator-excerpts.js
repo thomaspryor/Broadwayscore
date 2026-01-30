@@ -58,7 +58,8 @@ function extractBWWReviews(html, showId) {
           // Skip invalid entries
           if (outletRaw.length < 2 || outletRaw.length > 60) continue;
           if (/^(In|The|A|An|On|At|For|With|And|But|Or|If|So|As|By)$/i.test(outletRaw)) continue;
-          if (excerpt.length < 50) continue;
+          // Lowered minimum to 20 chars - some valid excerpts are short when critics from same outlet appear consecutively
+          if (excerpt.length < 20) continue;
 
           const outletId = normalizeOutlet(outletRaw);
 
