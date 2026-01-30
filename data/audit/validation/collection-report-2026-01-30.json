@@ -1,50 +1,52 @@
 {
-  "runDate": "2026-01-30T03:20:54.347Z",
+  "runDate": "2026-01-30T03:20:56.741Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 50,
+    "maxReviews": 30,
     "priority": "tier1",
-    "showFilter": "hells-kitchen-2024",
+    "showFilter": "cabaret-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 4,
+    "processed": 1,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "33.3%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 4,
+    "tier1Attempts": 2,
     "tier1Success": 0,
-    "tier2Attempts": 4,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 4,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier4Attempts": 9,
-    "tier4Success": 0,
-    "totalFailed": 4,
+    "tier4Attempts": 5,
+    "tier4Success": 1,
+    "totalFailed": 2,
     "scrapingBeeCreditsUsed": 10
   },
-  "processed": [],
+  "processed": [
+    "cabaret-2024/vulture--sara-holdren.json"
+  ],
   "failed": [
-    "hells-kitchen-2024/hollywood-reporter--angie-han.json",
-    "hells-kitchen-2024/nytg--david-nounou.json",
-    "hells-kitchen-2024/nytimes--jesse-green.json",
-    "hells-kitchen-2024/vulture--helen-shaw.json"
+    "cabaret-2024/variety--aramide-tinubu.json",
+    "cabaret-2024/variety--frank-rizzo.json"
   ],
   "tierDetails": {
     "playwright": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archive": []
+    "archive": [
+      "cabaret-2024/vulture--sara-holdren.json"
+    ]
   }
 }
