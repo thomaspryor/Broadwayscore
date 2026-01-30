@@ -505,14 +505,13 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   sources={[
                     show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'poster') : null,
                     show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'poster') : null,
-                    show.images?.hero ? getOptimizedImageUrl(show.images.hero, 'poster') : null,
                   ]}
                   alt={show.title}
                   width={176}
                   height={264}
                   decoding="async"
                   priority
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-cover"
                   fallback={
                     <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
                       <span className="text-4xl text-gray-600">🎭</span>

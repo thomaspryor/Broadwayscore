@@ -303,7 +303,8 @@ async function fetchFromPlaybill(show) {
       const imageUrl = extractOgImage(html);
       if (imageUrl) {
         console.log(`   ✓ Found via cached Playbill: ${imageUrl.substring(0, 60)}...`);
-        return { hero: imageUrl, thumbnail: imageUrl, poster: imageUrl };
+        // Playbill OG images are always landscape (1200x630) — only suitable as hero
+        return { hero: imageUrl, thumbnail: null, poster: null };
       }
     } catch (err) {
       console.log(`   ⚠ Cached URL failed: ${err.message}`);
@@ -324,7 +325,8 @@ async function fetchFromPlaybill(show) {
         console.log(`   ✓ Found via Playbill: ${imageUrl.substring(0, 60)}...`);
         playbillUrlCache.shows[show.id] = playbillUrl;
         savePlaybillUrls(playbillUrlCache);
-        return { hero: imageUrl, thumbnail: imageUrl, poster: imageUrl };
+        // Playbill OG images are always landscape (1200x630) — only suitable as hero
+        return { hero: imageUrl, thumbnail: null, poster: null };
       }
     } catch (err) {
       continue;
@@ -353,7 +355,8 @@ async function fetchFromPlaybill(show) {
         console.log(`   ✓ Found image: ${imageUrl.substring(0, 60)}...`);
         playbillUrlCache.shows[show.id] = discoveredUrl;
         savePlaybillUrls(playbillUrlCache);
-        return { hero: imageUrl, thumbnail: imageUrl, poster: imageUrl };
+        // Playbill OG images are always landscape (1200x630) — only suitable as hero
+        return { hero: imageUrl, thumbnail: null, poster: null };
       }
     }
   } catch (err) {

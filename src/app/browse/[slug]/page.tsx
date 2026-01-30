@@ -211,7 +211,7 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
                     <img
                       src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
                       alt={`${show.title} Broadway ${show.type}`}
-                      className="w-full h-full object-contain"
+                      className="w-full h-full object-cover"
                       loading="lazy"
                     />
                   ) : (
