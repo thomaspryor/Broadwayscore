@@ -13,6 +13,7 @@ import AudienceBuzzCard from '@/components/AudienceBuzzCard';
 import LotteryRushCard from '@/components/LotteryRushCard';
 import BizBuzzCard from '@/components/BizBuzzCard';
 import ScoreTooltip from '@/components/ScoreTooltip';
+import Breadcrumb from '@/components/Breadcrumb';
 
 export function generateStaticParams() {
   return getAllShowSlugs().map((slug) => ({ slug }));
@@ -475,11 +476,11 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
       <StickyScoreHeader title={show.title} score={score} />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8">
-        {/* Back Link */}
-        <Link href="/" className="inline-flex items-center gap-1.5 text-brand hover:text-brand-hover text-sm font-medium mb-4 transition-colors">
-          <BackArrow />
-          All Shows
-        </Link>
+        <Breadcrumb items={[
+          { label: 'Home', href: '/' },
+          { label: show.type === 'musical' || show.type === 'revival' ? 'Musicals' : 'Plays', href: `/browse/${show.type === 'musical' || show.type === 'revival' ? 'best-broadway-musicals' : 'best-broadway-dramas'}` },
+          { label: show.title },
+        ]} />
 
         {/* Metacritic-style Header: Poster + Title/Score integrated */}
         <div className="card p-4 sm:p-6 mb-6">

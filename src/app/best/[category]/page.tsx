@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 import { getBestOfList, getAllBestOfCategories, BestOfCategory } from '@/lib/data';
 import { generateBreadcrumbSchema, generateItemListSchema, generateBrowseFAQSchema } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -133,13 +134,10 @@ export default function BestOfPage({ params }: { params: { category: string } })
       />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
-        {/* Back Link */}
-        <Link href="/" className="inline-flex items-center gap-1.5 text-brand hover:text-brand-hover text-sm font-medium mb-6 transition-colors">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-          All Shows
-        </Link>
+        <Breadcrumb items={[
+          { label: 'Home', href: '/' },
+          { label: list.title },
+        ]} />
 
         {/* Header */}
         <div className="mb-8">
