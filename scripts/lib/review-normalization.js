@@ -477,7 +477,16 @@ function areReviewsDuplicates(review1, review2) {
 }
 
 /**
- * Calculate Levenshtein distance for fuzzy matching
+ * Calculate Levenshtein distance between two strings.
+ *
+ * NOTE: This function is exported for AUDIT/DEBUGGING purposes only.
+ * It is NOT used in production critic matching (areCriticsSimilar).
+ * Levenshtein matching was removed in Sprint 1 because it caused false positives
+ * (e.g., "Helen Smith" incorrectly matching "Helen Smyth").
+ *
+ * @param {string} str1 - First string
+ * @param {string} str2 - Second string
+ * @returns {number} Edit distance between the two strings
  */
 function levenshteinDistance(str1, str2) {
   const m = str1.length;

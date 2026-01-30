@@ -41,6 +41,7 @@ export const OUTLET_TIERS: Record<string, { tier: 1 | 2 | 3; name: string; score
   'GUARDIAN': { tier: 1, name: 'The Guardian', scoreFormat: 'stars', maxScale: 5 },
   'TIMEOUTNY': { tier: 1, name: 'Time Out New York', scoreFormat: 'stars', maxScale: 5 },
   'BWAYNEWS': { tier: 1, name: 'Broadway News', scoreFormat: 'text_bucket' },
+  'NEWYORKER': { tier: 1, name: 'The New Yorker', scoreFormat: 'text_bucket' },
 
   // Tier 2: Regional papers, trades, theatre-specific outlets
   'CHTRIB': { tier: 2, name: 'Chicago Tribune', scoreFormat: 'text_bucket' },

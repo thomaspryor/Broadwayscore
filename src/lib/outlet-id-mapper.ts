@@ -116,7 +116,7 @@ export const REGISTRY_ALIASES_TO_SCORING: Record<string, string> = {
   'exeunt': 'EXEUNT',
   'north-jersey': 'NORTHJERSEY',
   'nbc-new-york': 'NBC',
-  'newyorker': 'NYT', // New Yorker maps to tier 1 (not in OUTLET_TIERS but should be tier 1)
+  'newyorker': 'NEWYORKER',
 };
 
 // Reverse mapping: scoring format (uppercase) to registry format (lowercase)

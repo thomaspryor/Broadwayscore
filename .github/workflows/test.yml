@@ -57,6 +57,22 @@ jobs:
         # - No more than 40% truncated
         # - No more than 5% unknown quality
 
+      - name: Validate review-text files
+        continue-on-error: true  # TODO: Remove once unknown--unknown.json files are fixed (9 known issues)
+        run: |
+          echo "Validating individual review-text files..."
+          node scripts/validate-review-texts.js
+          echo ""
+          echo "Note: 9 unknown--unknown.json files are known issues pending cleanup"
+        # Validates review-text file structure:
+        # - Filename format: {outlet}--{critic}.json
+        # - Required fields: showId, outletId, outlet, criticName
+        # - Field consistency: outletId matches filename, showId matches directory
+        # - Score validity: assignedScore 0-100 if present
+        # This step uses continue-on-error because we have known data quality issues
+        # (9 unknown--unknown.json files) that need cleanup. Once Task 2.3 of the
+        # Data Quality Sprint completes the cleanup, this should be made strict.
+
       - name: Create issue on failure
         if: failure() && github.event_name == 'schedule'
         uses: actions/github-script@v7
