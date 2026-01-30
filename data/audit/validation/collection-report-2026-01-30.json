@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T03:18:39.148Z",
+  "runDate": "2026-01-30T03:18:46.738Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "tier1",
-    "showFilter": "appropriate-2023",
+    "showFilter": "buena-vista-social-club-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 2,
+    "failed": 4,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -23,21 +23,23 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
+    "tier1Attempts": 4,
     "tier1Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 4,
     "tier2Success": 0,
-    "tier3Attempts": 2,
+    "tier3Attempts": 4,
     "tier3Success": 0,
-    "tier4Attempts": 5,
+    "tier4Attempts": 8,
     "tier4Success": 0,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 0
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 10
   },
   "processed": [],
   "failed": [
-    "appropriate-2023/hollywood-reporter--david-rooney.json",
-    "appropriate-2023/vulture--jackson-mchenry.json"
+    "buena-vista-social-club-2025/hollywood-reporter--angie-han.json",
+    "buena-vista-social-club-2025/nytimes--jesse-oxfeld.json",
+    "buena-vista-social-club-2025/variety--aramide-tinubu.json",
+    "buena-vista-social-club-2025/variety--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [],
