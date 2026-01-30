@@ -82,8 +82,7 @@ function SROShowCard({ show, sroData, index }: SROShowCardProps) {
         {show.images?.thumbnail ? (
           <img
             src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
-            alt=""
-            aria-hidden="true"
+            alt={`${show.title} Broadway ${show.type}`}
             loading={index < 6 ? "eager" : "lazy"}
             className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
           />

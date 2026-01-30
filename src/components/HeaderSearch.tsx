@@ -184,7 +184,7 @@ export default function HeaderSearch({ shows }: HeaderSearchProps) {
                 {show.images?.thumbnail ? (
                   <img
                     src={show.images.thumbnail}
-                    alt=""
+                    alt={show.title}
                     className="w-10 h-10 rounded object-cover flex-shrink-0"
                   />
                 ) : (
@@ -280,7 +280,7 @@ export default function HeaderSearch({ shows }: HeaderSearchProps) {
                       {show.images?.thumbnail ? (
                         <img
                           src={show.images.thumbnail}
-                          alt=""
+                          alt={show.title}
                           className="w-12 h-12 rounded object-cover flex-shrink-0"
                         />
                       ) : (
