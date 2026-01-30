@@ -1,9 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
+
 export const metadata: Metadata = {
-  title: 'Feedback',
+  title: 'Feedback & Bug Reports | Broadway Scorecard',
   description: 'Share your feedback, report bugs, or suggest new features for Broadway Scorecard.',
+  alternates: {
+    canonical: `${BASE_URL}/feedback`,
+  },
 };
 
 const FORMSPREE_ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT || 'https://formspree.io/f/YOUR_FORM_ID';

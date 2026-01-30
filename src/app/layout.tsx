@@ -193,6 +193,8 @@ export default function RootLayout({
                   <li><Link href="/audience-buzz" className="hover:text-white transition-colors">Audience Scorecard</Link></li>
                   <li><Link href="/broadway-theaters-map" className="hover:text-white transition-colors">Theater Map</Link></li>
                   <li><Link href="/methodology" className="hover:text-white transition-colors">How It Works</Link></li>
+                  <li><Link href="/submit-review" className="hover:text-white transition-colors">Submit Review</Link></li>
+                  <li><Link href="/feedback" className="hover:text-white transition-colors">Feedback</Link></li>
                 </ul>
               </div>
             </div>

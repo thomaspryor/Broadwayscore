@@ -22,10 +22,20 @@ export function generateStaticParams() {
   }));
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
+
 export function generateMetadata({ params }: { params: { season: string } }): Metadata {
   return {
     title: `${params.season} Broadway Season | Investment Tracker`,
     description: `Commercial data and recoupment metrics for Broadway shows from the ${params.season} season.`,
+    alternates: {
+      canonical: `${BASE_URL}/biz/season/${params.season}`,
+    },
+    openGraph: {
+      title: `${params.season} Broadway Season`,
+      description: `Commercial data and recoupment metrics for the ${params.season} Broadway season.`,
+      url: `${BASE_URL}/biz/season/${params.season}`,
+    },
   };
 }
 
