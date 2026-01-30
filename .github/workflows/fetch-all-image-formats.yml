@@ -12,6 +12,11 @@ on:
         required: false
         default: 'true'
         type: boolean
+      bad_images:
+        description: 'Re-source shows with bad (identical Playbill) images via Google SERP discovery'
+        required: false
+        default: false
+        type: boolean
   schedule:
     - cron: '0 6 * * 1,4'  # Twice weekly on Monday and Thursday at 6 AM UTC
 
@@ -43,6 +48,8 @@ jobs:
           ARGS=""
           if [ -n "${{ inputs.show_id }}" ]; then
             ARGS="--show=${{ inputs.show_id }}"
+          elif [ "${{ inputs.bad_images }}" == "true" ]; then
+            ARGS="--bad-images"
           elif [ "${{ inputs.only_missing }}" == "true" ] || [ "${{ github.event_name }}" == "schedule" ]; then
             ARGS="--missing"
           fi
@@ -51,7 +58,11 @@ jobs:
       - name: Archive images locally
         run: |
           echo "Downloading CDN images to local storage..."
-          node scripts/archive-show-images.js
+          ARCHIVE_ARGS=""
+          if [ "${{ inputs.bad_images }}" == "true" ]; then
+            ARCHIVE_ARGS="--force"
+          fi
+          node scripts/archive-show-images.js $ARCHIVE_ARGS
 
       - name: Check for changes
         id: changes

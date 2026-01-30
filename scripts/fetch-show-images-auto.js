@@ -16,7 +16,7 @@
  *
  * No hardcoded IDs - works for any show!
  *
- * Usage: node scripts/fetch-show-images-auto.js [--show=show-id] [--missing]
+ * Usage: node scripts/fetch-show-images-auto.js [--show=show-id] [--missing] [--bad-images]
  */
 
 const https = require('https');
@@ -26,6 +26,7 @@ const path = require('path');
 const SHOWS_JSON_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const TODAYTIX_IDS_PATH = path.join(__dirname, '..', 'data', 'todaytix-ids.json');
 const PLAYBILL_URLS_PATH = path.join(__dirname, '..', 'data', 'playbill-urls.json');
+const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
 const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY;
 
 function sleep(ms) {
@@ -55,6 +56,61 @@ function fetchViaScrapingBee(url) {
   });
 }
 
+// Search Google via ScrapingBee SERP API for TodayTix pages (works for closed shows)
+function searchGoogleForTodayTix(showTitle) {
+  return new Promise((resolve, reject) => {
+    if (!SCRAPINGBEE_API_KEY) {
+      reject(new Error('SCRAPINGBEE_API_KEY not set'));
+      return;
+    }
+
+    const query = `site:todaytix.com "${showTitle}" broadway nyc`;
+    const serpUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_API_KEY}&search=${encodeURIComponent(query)}`;
+
+    https.get(serpUrl, (response) => {
+      if (response.statusCode !== 200) {
+        reject(new Error(`HTTP ${response.statusCode}`));
+        return;
+      }
+
+      let data = '';
+      response.on('data', chunk => data += chunk);
+      response.on('end', () => {
+        try {
+          resolve(JSON.parse(data));
+        } catch {
+          reject(new Error('Failed to parse Google SERP response'));
+        }
+      });
+      response.on('error', reject);
+    }).on('error', reject);
+  });
+}
+
+// Detect shows with bad images (identical poster/thumbnail/hero from Playbill)
+function hasBadImages(showId) {
+  const showDir = path.join(IMAGES_DIR, showId);
+  if (!fs.existsSync(showDir)) return false;
+
+  const sizes = {};
+  for (const format of ['poster', 'thumbnail', 'hero']) {
+    // Check both .jpg and .webp
+    const jpgPath = path.join(showDir, `${format}.jpg`);
+    const webpPath = path.join(showDir, `${format}.webp`);
+    const filePath = fs.existsSync(jpgPath) ? jpgPath : fs.existsSync(webpPath) ? webpPath : null;
+    if (filePath) {
+      sizes[format] = fs.statSync(filePath).size;
+    }
+  }
+
+  // Bad if poster and thumbnail exist and are the same size (identical Playbill image)
+  if (sizes.poster && sizes.thumbnail && sizes.poster === sizes.thumbnail) {
+    return true;
+  }
+
+  return false;
+}
+
 // Load or create TodayTix ID cache
 function loadTodayTixIds() {
   try {
@@ -73,6 +129,7 @@ function saveTodayTixIds(data) {
 async function discoverTodayTixId(showTitle) {
   console.log(`   Searching TodayTix for "${showTitle}"...`);
 
+  // Method 1: Direct TodayTix search (works for open shows)
   const searchUrl = `https://www.todaytix.com/nyc/shows?q=${encodeURIComponent(showTitle)}`;
 
   try {
@@ -95,13 +152,35 @@ async function discoverTodayTixId(showTitle) {
       console.log(`   ✓ Found TodayTix ID from JSON: ${id}`);
       return { id, slug: null };
     }
-
-    console.log(`   ✗ Could not find TodayTix ID`);
-    return null;
   } catch (err) {
-    console.log(`   ✗ Search error: ${err.message}`);
-    return null;
+    console.log(`   ⚠ Direct TodayTix search failed: ${err.message}`);
   }
+
+  // Method 2: Google SERP search (works for closed shows whose pages still exist)
+  console.log(`   Trying Google SERP search for TodayTix page...`);
+  try {
+    const serpData = await searchGoogleForTodayTix(showTitle);
+    const results = serpData?.organic_results || serpData?.results || [];
+
+    for (const result of results) {
+      const url = result.url || result.link || '';
+      // Match NYC show URLs only (reject /london/, /chicago/, etc.)
+      const match = url.match(/todaytix\.com\/nyc\/shows\/(\d+)-([a-z0-9-]+)/i);
+      if (match) {
+        const id = parseInt(match[1]);
+        const slug = match[2];
+        console.log(`   ✓ Found TodayTix ID via Google: ${id} (${slug})`);
+        return { id, slug };
+      }
+    }
+
+    console.log(`   ✗ No TodayTix NYC page found in Google results`);
+  } catch (err) {
+    console.log(`   ⚠ Google SERP search failed: ${err.message}`);
+  }
+
+  console.log(`   ✗ Could not find TodayTix ID`);
+  return null;
 }
 
 // Contentful URL transformation parameters - ONLY used as fallback
@@ -426,6 +505,7 @@ async function main() {
   const args = process.argv.slice(2);
   const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
   const onlyMissing = args.includes('--missing');
+  const badImagesOnly = args.includes('--bad-images');
 
   if (!SCRAPINGBEE_API_KEY) {
     console.error('ERROR: Set SCRAPINGBEE_API_KEY environment variable');
@@ -434,14 +514,15 @@ async function main() {
 
   console.log('='.repeat(60));
   console.log('AUTO-FETCH SHOW IMAGES');
+  if (badImagesOnly) console.log('MODE: Re-sourcing shows with bad (identical Playbill) images');
   console.log('='.repeat(60));
 
   const showsData = JSON.parse(fs.readFileSync(SHOWS_JSON_PATH, 'utf8'));
   const todayTixIds = loadTodayTixIds();
 
-  // Filter shows - include all statuses when fetching missing or specific shows
+  // Filter shows - include all statuses when fetching missing, bad-images, or specific shows
   let shows = showsData.shows;
-  if (!onlyMissing && !showFilter) {
+  if (!onlyMissing && !badImagesOnly && !showFilter) {
     shows = shows.filter(s => s.status === 'open' || s.status === 'previews');
   }
 
@@ -455,11 +536,24 @@ async function main() {
     console.log(`Processing only shows with missing images: ${shows.length}`);
   }
 
+  if (badImagesOnly) {
+    const badShows = shows.filter(s => hasBadImages(s.id));
+    console.log(`\nDetected ${badShows.length} shows with bad (identical) images:`);
+    badShows.forEach(s => console.log(`  - ${s.id}`));
+    shows = badShows;
+  }
+
   console.log(`\nProcessing ${shows.length} shows...\n`);
 
   const results = { success: [], failed: [], skipped: [] };
 
   for (const show of shows) {
+    // When re-sourcing bad images, clear the cached TodayTix ID so we re-discover
+    if (badImagesOnly && todayTixIds.shows[show.id]) {
+      console.log(`   Clearing cached TodayTix ID for ${show.id} (re-discovering)`);
+      delete todayTixIds.shows[show.id];
+    }
+
     // Check if we have TodayTix ID cached
     let todayTixInfo = todayTixIds.shows[show.id] || todayTixIds.shows[show.slug];
 
