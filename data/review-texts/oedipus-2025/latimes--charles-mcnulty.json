@@ -11,14 +11,14 @@
   "needsFullText": true,
   "textStatus": "incomplete",
   "isFullReview": false,
-  "textWordCount": 180,
+  "textWordCount": 207,
   "archivePath": "data/archives/reviews/oedipus-2025/latimes--charles-mcnulty_2026-01-30.html",
-  "textFetchedAt": "2026-01-30T18:38:18.486Z",
+  "textFetchedAt": "2026-01-30T20:02:26.483Z",
   "textIssues": [
-    "Word count too low: 180 (min: 300)",
+    "Word count too low: 207 (min: 300)",
     "Show title not found in text"
   ],
-  "textQuality": "partial",
+  "textQuality": "excerpt",
   "sourceMethod": "brightdata",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
@@ -96,7 +96,7 @@
   "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
-  "fullText": "Copyright © 2026, Los Angeles Times | Terms of Service | Privacy Policy | CA Notice of Collection | Do Not Sell or Share My Personal Information                       Sorry!   The page you were looking for cannot be found.\n\nThe page may no longer exist or may have moved to another web address. Try again to locate what you want by choosing a section from the navigation menu at left, viewing our Site Map or using the search box below.\n\nMost Read Stories                                California\n\nOnly later did Kristin Wright discover that Valerio was surrendered to the shelter after biting his previous owner’s elderly mother in the face.\n\nLemon was taken into custody early Friday in Los Angeles while covering the upcoming Grammy Awards. His arrest is related to an anti-ICE protest in Minnesota last week.\n\nHere are locations where ‘ICE Out’ protests are planned in Southern California.\n\nThe U.S. Space Force is seeking to expand the number of launches and attract aerospace companies in and around Vandenberg Space Force Base, where SpaceX launches already have riled up residents, state officials and environmentalists.",
+  "fullText": "Copyright © 2026, Los Angeles Times | Terms of Service | Privacy Policy | CA Notice of Collection | Do Not Sell or Share My Personal Information                       Sorry!   The page you were looking for cannot be found.\n\nThe page may no longer exist or may have moved to another web address. Try again to locate what you want by choosing a section from the navigation menu at left, viewing our Site Map or using the search box below.\n\nMost Read Stories                                California\n\nOnly later did Kristin Wright discover that Valerio was surrendered to the shelter after biting his previous owner’s elderly mother in the face.\n\nActor Catherine O’Hara, known for her roles on shows like ‘Schitt’s Creek’ and ‘The Studio’ as well as films like ‘Home Alone’ has died. She was 71.\n\nHere are locations where ‘ICE Out’ protests are planned in Southern California.\n\nLemon was taken into custody early Friday in Los Angeles while covering the upcoming Grammy Awards. His arrest is related to an anti-ICE protest in Minnesota last week.\n\nThe U.S. Space Force is seeking to expand the number of launches and attract aerospace companies in and around Vandenberg Space Force Base, where SpaceX launches already have riled up residents, state officials and environmentalists.",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -124,5 +124,7 @@
     }
   ],
   "fetchTier": 3,
-  "truncationSignals": []
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ]
 }
