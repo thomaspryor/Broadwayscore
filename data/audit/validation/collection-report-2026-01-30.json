@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T18:40:27.144Z",
+  "runDate": "2026-01-30T18:42:11.516Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "marjorie-prime-2025",
+    "showFilter": "the-wiz-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 3,
-    "failed": 50,
+    "failed": 53,
     "skipped": 0,
-    "successRate": "5.7%"
+    "successRate": "5.4%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -24,25 +24,25 @@
     "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 4,
+    "tier1Attempts": 6,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 4,
-    "tier2Success": 1,
-    "tier3Attempts": 3,
-    "tier3Success": 1,
-    "tier4Attempts": 5,
-    "tier4Success": 1,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 30,
+    "tier2Attempts": 6,
+    "tier2Success": 2,
+    "tier3Attempts": 4,
+    "tier3Success": 0,
+    "tier4Attempts": 9,
+    "tier4Success": 3,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 50,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "marjorie-prime-2025/nydailynews--chris-jones.json"
+    "the-wiz-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -91,10 +91,13 @@
     "i-need-that-2023/timeout--will-gleason.json",
     "i-need-that-2023/wsj--charles-isherwood.json",
     "i-need-that-2023/wsj--charles.json",
-    "marjorie-prime-2025/nytimes--elisabeth-vincentelli.json",
-    "marjorie-prime-2025/guardian--richard-lawson.json",
-    "marjorie-prime-2025/observer--david-cote.json",
-    "marjorie-prime-2025/timeout--adam-feldman.json"
+    "the-wiz-2024/ny-sun--elysa-gardner.json",
+    "the-wiz-2024/nydailynews--chris-jones.json",
+    "the-wiz-2024/nydailynews--chris.json",
+    "the-wiz-2024/wsj--charles-isherwood.json",
+    "the-wiz-2024/thestage--lane-williamson.json",
+    "the-wiz-2024/village-voice--michael-musto.json",
+    "the-wiz-2024/washpost--gloria-oladipo.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -103,7 +106,7 @@
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json",
-      "marjorie-prime-2025/nydailynews--chris-jones.json"
+      "the-wiz-2024/broadwaynews--brittani-samuel.json"
     ]
   }
 }
