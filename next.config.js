@@ -4,6 +4,7 @@ const isGitHubPages = process.env.GITHUB_PAGES === 'true';
 const nextConfig = {
   reactStrictMode: true,
   output: 'export',
+  trailingSlash: false,
   // Only use basePath for GitHub Pages, not for Vercel
   ...(isGitHubPages && { basePath: '/Broadwayscore' }),
   images: {

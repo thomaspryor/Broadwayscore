@@ -28,13 +28,19 @@ import DesignationLegend from '@/components/biz/DesignationLegend';
 import GatedDownloadButtons from '@/components/biz/GatedDownloadButtons';
 import BizPageTracker from '@/components/biz/BizPageTracker';
 
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
+
 export const metadata: Metadata = {
   title: 'Broadway Investment Tracker | Broadway Scorecard',
   description:
     'Recoupment data and investment metrics for Broadway shows. Track which shows have recouped, capital at risk, and financial trends.',
+  alternates: {
+    canonical: `${BASE_URL}/biz`,
+  },
   openGraph: {
     title: 'Broadway Investment Tracker',
     description: 'Recoupment data and investment metrics for industry insiders',
+    url: `${BASE_URL}/biz`,
   },
 };
 
@@ -140,7 +146,35 @@ export default function BizDashboard() {
   const recentDevelopments = generateRecentDevelopments();
   const lastUpdated = getCommercialLastUpdated();
 
+  const bizFaqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'What does it mean for a Broadway show to recoup?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Recoupment means a Broadway show has earned back its initial investment (capitalization) through ticket sales and other revenue. A show that has recouped is profitable for its investors. Most Broadway shows fail to recoup — only about 25% of shows earn back their investment.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'How much does it cost to produce a Broadway show?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Broadway capitalization varies widely. A straight play typically costs $3-8 million, while a musical ranges from $10-25 million. Large spectacle musicals can cost $25 million or more. Weekly running costs for a musical average $600,000-$900,000.',
+        },
+      },
+    ],
+  };
+
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(bizFaqSchema) }}
+      />
     <div className="min-h-screen bg-surface">
       {/* Track page views for gating */}
       <BizPageTracker page="biz-dashboard" />
@@ -308,5 +342,6 @@ export default function BizDashboard() {
         </footer>
       </div>
     </div>
+    </>
   );
 }

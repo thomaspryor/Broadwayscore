@@ -963,9 +963,9 @@ export default function HomePage() {
     <Suspense fallback={
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="mb-8 sm:mb-10">
-          <h1 className="text-4xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight">
+          <div className="text-4xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight" aria-hidden="true">
             Broadway<span className="text-gradient">Scorecard</span>
-          </h1>
+          </div>
           <p className="text-gray-400 text-lg sm:text-xl">
             Every show. Every review. One score.
           </p>
