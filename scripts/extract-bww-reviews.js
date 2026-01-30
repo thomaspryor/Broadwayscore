@@ -7,7 +7,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName } = require('./lib/review-normalization');
+const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, normalizePublishDate } = require('./lib/review-normalization');
 
 const bwwDir = path.join(__dirname, '../data/aggregator-archive/bww-roundups');
 
@@ -69,7 +69,7 @@ function extractFromArticleBody(articleBody, showId, publishDate) {
       outlet: outlet.name,
       criticName,
       url: null,
-      publishDate: publishDate || null,
+      publishDate: normalizePublishDate(publishDate) || null,
       assignedScore: null, // Will need to be filled in based on sentiment
       bucket: null,
       thumb: null,
@@ -119,7 +119,7 @@ function extractFromBlogPostings(content, showId) {
           outlet: outletInfo.name,
           criticName,
           url: json.url || null,
-          publishDate: json.datePublished || null,
+          publishDate: normalizePublishDate(json.datePublished) || null,
           assignedScore: null,
           bucket: null,
           thumb: null,

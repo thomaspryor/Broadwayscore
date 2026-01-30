@@ -38,6 +38,7 @@ const https = require('https');
 const {
   normalizeOutlet,
   normalizeCritic,
+  normalizePublishDate,
   generateReviewFilename,
   generateReviewKey,
   getOutletDisplayName,
@@ -725,7 +726,7 @@ function extractShowScoreReviews(html, showId) {
                 criticName: review.author?.name || 'Unknown',
                 url: review.url,
                 excerpt: review.reviewBody || null,
-                publishDate: review.datePublished || null,
+                publishDate: normalizePublishDate(review.datePublished) || null,
                 source: 'show-score'
               });
             }
@@ -938,7 +939,7 @@ function extractDTLIReviews(html, showId, dtliUrl) {
         outlet: outletName,
         criticName,
         url: urlMatch[1],
-        publishDate: date,
+        publishDate: normalizePublishDate(date),
         dtliExcerpt: excerpt,
         dtliThumb: thumb,
         source: 'dtli',
@@ -1163,7 +1164,7 @@ function createReviewFile(showId, reviewData) {
     outlet: getOutletDisplayName(normalizedOutletId),
     criticName: reviewData.criticName || 'Unknown',
     url: reviewData.url || null,
-    publishDate: reviewData.publishDate || null,
+    publishDate: normalizePublishDate(reviewData.publishDate) || null,
     fullText: reviewData.excerpt || null,
     isFullReview: false,
     dtliExcerpt: reviewData.dtliExcerpt || reviewData.excerpt || null,
@@ -1264,7 +1265,7 @@ async function gatherReviewsForShow(showId) {
           outletId,
           criticName: review.critic || 'Unknown',
           url: review.url,
-          publishDate: review.date || null,
+          publishDate: normalizePublishDate(review.date) || null,
           showScoreExcerpt: review.excerpt || null,
           source: 'show-score-playwright'
         });
@@ -1310,7 +1311,7 @@ async function gatherReviewsForShow(showId) {
         outlet: outlet.name,
         criticName: result.critic,
         url: result.url,
-        publishDate: result.publishDate,
+        publishDate: normalizePublishDate(result.publishDate),
         excerpt: result.excerpt,
         originalRating: result.originalRating,
         source: 'web-search'
