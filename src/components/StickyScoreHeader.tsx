@@ -75,7 +75,7 @@ export default function StickyScoreHeader({ title, score, showAfterPx = 200 }: S
         <div className="flex items-center gap-3 min-w-0">
           <Link
             href="/"
-            className="text-gray-400 hover:text-white transition-colors flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface rounded"
+            className="text-gray-400 hover:text-white transition-colors flex-shrink-0 inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface rounded"
             aria-label="Back to all shows"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
