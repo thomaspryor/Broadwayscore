@@ -194,6 +194,13 @@ jobs:
           node scripts/extract-show-score-reviews.js 2>/dev/null || true
           node scripts/extract-dtli-reviews.js 2>/dev/null || true
 
+      - name: Rebuild reviews.json from review-texts
+        if: steps.check.outputs.has_new_reviews == 'true' || inputs.force_collection == 'true'
+        run: |
+          echo "Rebuilding reviews.json from review-texts data..."
+          node scripts/rebuild-all-reviews.js
+          echo "Reviews rebuilt successfully"
+
       - name: Check for changes
         id: changes
         run: |

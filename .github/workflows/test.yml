@@ -49,6 +49,13 @@ jobs:
         # Compares local review counts to aggregator data
         # High-coverage shows (Tony winners, etc.) are exempt from strict ratio limits
 
+      - name: Audit text quality
+        run: node scripts/audit-text-quality.js
+        # Ensures review text quality meets thresholds:
+        # - At least 35% "full" quality
+        # - No more than 40% truncated
+        # - No more than 5% unknown quality
+
       - name: Create issue on failure
         if: failure() && github.event_name == 'schedule'
         uses: actions/github-script@v7
