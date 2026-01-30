@@ -179,6 +179,16 @@ async function main() {
         totalDownloaded++;
         totalBytes += size;
         showChanged = true;
+
+        // Clean up old file with different extension (e.g., .jpg replaced by .webp)
+        const otherExts = ['jpg', 'jpeg', 'png', 'webp'].filter(e => e !== ext);
+        for (const oldExt of otherExts) {
+          const oldPath = path.join(OUTPUT_DIR, show.id, `${format}.${oldExt}`);
+          if (fs.existsSync(oldPath)) {
+            fs.unlinkSync(oldPath);
+            console.log(`  🗑️  Cleaned up old ${format}.${oldExt}`);
+          }
+        }
       } catch (e) {
         console.error(`  ✗ ${show.title} ${format}: ${e.message}`);
         totalFailed++;
