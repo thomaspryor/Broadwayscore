@@ -1,0 +1,71 @@
+name: Review Sprint Plan with OpenAI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Review sprint plan
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          cat > review.js << 'SCRIPT'
+          const fs = require('fs');
+
+          const plan = fs.readFileSync('./docs/plans/sprint-plan-draft.md', 'utf8');
+
+          const prompt = `You are a senior engineering manager reviewing a sprint plan for a data governance project.
+
+          CONTEXT: This is a Broadway review aggregation site with data quality issues (bad display names, null dates, duplicates, etc.).
+
+          REVIEW THIS SPRINT PLAN for:
+          1. **Completeness**: Missing tasks or gaps?
+          2. **Task Atomicity**: Are tasks small enough?
+          3. **Validation**: Clear pass/fail criteria?
+          4. **Sprint Coherence**: Demoable software each sprint?
+          5. **Dependencies**: Proper ordering?
+          6. **Risks**: What could go wrong?
+
+          Be specific. Give actionable feedback.
+
+          THE PLAN:
+          ${plan}`;
+
+          (async () => {
+            const res = await fetch('https://api.openai.com/v1/chat/completions', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + process.env.OPENAI_API_KEY
+              },
+              body: JSON.stringify({
+                model: 'gpt-4o',
+                messages: [{ role: 'user', content: prompt }],
+                max_tokens: 2000
+              })
+            });
+            const data = await res.json();
+            const review = data.choices?.[0]?.message?.content || JSON.stringify(data.error);
+            console.log('=== OPENAI SPRINT PLAN REVIEW ===\n');
+            console.log(review);
+
+            // Save review to file
+            fs.writeFileSync('./openai-review.md', '# OpenAI Sprint Plan Review\n\n' + review);
+          })();
+          SCRIPT
+          node review.js
+
+      - name: Upload review
+        uses: actions/upload-artifact@v4
+        with:
+          name: openai-review
+          path: openai-review.md
