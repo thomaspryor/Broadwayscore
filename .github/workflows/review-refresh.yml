@@ -122,11 +122,11 @@ jobs:
             const showId = show.id;
             const currentCount = currentReviewCounts[showId] || 0;
             const fileCount = fileReviewCounts[showId] || 0;
-            const showScoreCount = showScoreData[showId]?.criticReviewCount || 0;
+            const showScoreCount = showScoreData.shows?.[showId]?.criticReviewCount || 0;
 
-            // Flag if Show Score reports more reviews than we have
-            if (showScoreCount > currentCount + 2) {
-              console.log(`  [NEW] ${show.title}: Show Score reports ${showScoreCount} reviews, we have ${currentCount}`);
+            // Flag if Show Score reports more reviews than we have (any gap matters)
+            if (showScoreCount > fileCount) {
+              console.log(`  [NEW] ${show.title}: Show Score has ${showScoreCount} reviews, we have ${fileCount} files`);
               showsNeedingUpdate.push(showId);
             }
             // During awards season, also check shows with few reviews

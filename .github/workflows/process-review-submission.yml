@@ -161,6 +161,10 @@ jobs:
           # Run review collection for this specific URL
           node scripts/collect-review-texts-v2.js --show "$SHOW_ID" --url "$REVIEW_URL"
 
+      - name: Rebuild reviews.json
+        if: success()
+        run: node scripts/rebuild-all-reviews.js
+
       - name: Commit and push changes
         if: success()
         run: |
