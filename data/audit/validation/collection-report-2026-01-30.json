@@ -1,48 +1,47 @@
 {
-  "runDate": "2026-01-30T18:21:31.581Z",
+  "runDate": "2026-01-30T18:22:23.089Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "book-of-mormon-2011",
+    "showFilter": "aladdin-2014",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 62,
+    "processed": 2,
+    "failed": 67,
     "skipped": 0,
-    "successRate": "4.6%"
+    "successRate": "2.9%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 3
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 15,
-    "tier1Success": 0,
+    "tier1Attempts": 18,
+    "tier1Success": 1,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 15,
+    "tier2Attempts": 17,
     "tier2Success": 1,
-    "tier3Attempts": 14,
-    "tier3Success": 1,
-    "tier4Attempts": 32,
+    "tier3Attempts": 16,
+    "tier3Success": 0,
+    "tier4Attempts": 38,
     "tier4Success": 3,
-    "totalFailed": 16,
-    "scrapingBeeCreditsUsed": 40,
+    "totalFailed": 21,
+    "scrapingBeeCreditsUsed": 60,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
-    "the-roommate-2024/nydailynews--chris-jones.json",
-    "book-of-mormon-2011/backstage--david-sheward.json"
+    "the-roommate-2024/nydailynews--chris-jones.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -91,22 +90,27 @@
     "i-need-that-2023/timeout--will-gleason.json",
     "i-need-that-2023/wsj--charles-isherwood.json",
     "i-need-that-2023/wsj--charles.json",
-    "book-of-mormon-2011/variety--marilyn-stasio.json",
-    "book-of-mormon-2011/vulture--jesse-green.json",
-    "book-of-mormon-2011/ew--thom-geier.json",
-    "book-of-mormon-2011/guardian--brian-logan.json",
-    "book-of-mormon-2011/newsday--linda-winer.json",
-    "book-of-mormon-2011/theatermania--charles-isherwood.json",
-    "book-of-mormon-2011/theatermania--david-finkle.json",
-    "book-of-mormon-2011/timeout--david-cote.json",
-    "book-of-mormon-2011/wsj--terry-teachout.json",
-    "book-of-mormon-2011/ap--mark-kennedy.json",
-    "book-of-mormon-2011/dailybeast--john-anderson.json",
-    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
-    "book-of-mormon-2011/ny-1--roma-torre.json",
-    "book-of-mormon-2011/the-philadelphia-inquirer--howard-shapiro.json",
-    "book-of-mormon-2011/the-village-voice--michael-musto.json",
-    "book-of-mormon-2011/usatoday--elysa-gardner.json"
+    "aladdin-2014/hollywood-reporter--david-rooney.json",
+    "aladdin-2014/nytimes--ben-brantley.json",
+    "aladdin-2014/deadline--pete-hammond.json",
+    "aladdin-2014/guardian--jesse-green.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "aladdin-2014/newsday--linda-winer.json",
+    "aladdin-2014/nypost--elisabeth-vincentelli.json",
+    "aladdin-2014/observer--rex-reed.json",
+    "aladdin-2014/theatermania--adam-feldman.json",
+    "aladdin-2014/theatermania--andy-propst.json",
+    "aladdin-2014/theatermania--charles-isherwood.json",
+    "aladdin-2014/theatermania--david-finkle.json",
+    "aladdin-2014/timeout--adam-feldman.json",
+    "aladdin-2014/wsj--terry-teachout.json",
+    "aladdin-2014/ap--mark-kennedy.json",
+    "aladdin-2014/billboard--bob-verini.json",
+    "aladdin-2014/broadway-voice--kristen-balzano.json",
+    "aladdin-2014/catholic-transcript--bernard-carragher.json",
+    "aladdin-2014/theater-pizzazz--sandi-durell.json",
+    "aladdin-2014/thestage--mark-shenton.json",
+    "aladdin-2014/thisbroadsway--sandra-mcfarland.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -114,8 +118,7 @@
     "brightdata": [],
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
-      "the-roommate-2024/nydailynews--chris-jones.json",
-      "book-of-mormon-2011/backstage--david-sheward.json"
+      "the-roommate-2024/nydailynews--chris-jones.json"
     ]
   }
 }
