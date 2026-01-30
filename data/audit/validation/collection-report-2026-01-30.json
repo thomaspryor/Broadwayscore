@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T20:02:49.715Z",
+  "runDate": "2026-01-30T20:03:06.656Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "just-in-time-2025",
+    "showFilter": "two-strangers-bway-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 3,
-    "failed": 58,
+    "failed": 57,
     "skipped": 0,
-    "successRate": "4.9%"
+    "successRate": "5.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -24,17 +24,17 @@
     "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 1,
+    "tier1Attempts": 2,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 1,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier4Attempts": 4,
-    "tier4Success": 2,
-    "totalFailed": 3,
+    "tier4Attempts": 5,
+    "tier4Success": 0,
+    "totalFailed": 2,
     "scrapingBeeCreditsUsed": 10,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
@@ -100,9 +100,8 @@
     "wicked-2003/njcom-star-ledger--michael-sommers.json",
     "wicked-2003/village-voice--michael-feingold.json",
     "wicked-2003/washpost--peter-marks.json",
-    "just-in-time-2025/deadline--greg-evans.json",
-    "just-in-time-2025/guardian--adrian-horton.json",
-    "just-in-time-2025/timeout--adam-feldman.json"
+    "two-strangers-bway-2025/nytimes--laura-collins-hughes.json",
+    "two-strangers-bway-2025/nysr--david-finkle.json"
   ],
   "tierDetails": {
     "playwright": [],
