@@ -1,68 +1,78 @@
 {
-  "runDate": "2026-01-30T16:11:48.916Z",
+  "runDate": "2026-01-30T16:16:12.179Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "oh-mary-2024",
+    "showFilter": "aladdin-2014",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 18,
+    "processed": 4,
+    "failed": 22,
     "skipped": 0,
-    "successRate": "5.3%"
+    "successRate": "15.4%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 1
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 14,
-    "tier1Success": 0,
-    "tier2Attempts": 14,
-    "tier2Success": 0,
-    "tier3Attempts": 14,
-    "tier3Success": 2,
-    "tier4Attempts": 36,
-    "tier4Success": 4,
-    "totalFailed": 17,
-    "scrapingBeeCreditsUsed": 50
+    "tier1Attempts": 18,
+    "tier1Success": 1,
+    "tier2Attempts": 17,
+    "tier2Success": 1,
+    "tier3Attempts": 16,
+    "tier3Success": 1,
+    "tier4Attempts": 42,
+    "tier4Success": 7,
+    "totalFailed": 21,
+    "scrapingBeeCreditsUsed": 80
   },
   "processed": [
-    "oh-mary-2024/broadwaynews--brittani-samuel.json"
+    "aladdin-2014/theatermania--zachary-stewart.json",
+    "aladdin-2014/chicagotribune--chris-jones.json",
+    "aladdin-2014/classicalite--patricia-reaney.json",
+    "aladdin-2014/huffpost--steven-suskin.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
-    "oh-mary-2024/hollywood-reporter--angie-han.json",
-    "oh-mary-2024/nyt-theater--jonathan-mandell.json",
-    "oh-mary-2024/variety--aramide-tinubu.json",
-    "oh-mary-2024/variety--charles-isherwood.json",
-    "oh-mary-2024/vulture--helen-shaw.json",
-    "oh-mary-2024/deadline--greg-evans.json",
-    "oh-mary-2024/ew--christian-holub.json",
-    "oh-mary-2024/ew--kristen-baldwin.json",
-    "oh-mary-2024/guardian--adrian-horton.json",
-    "oh-mary-2024/nydailynews--chris-jones.json",
-    "oh-mary-2024/observer--david-cote.json",
-    "oh-mary-2024/observer--jesse-green.json",
-    "oh-mary-2024/theatermania--adam-feldman.json",
-    "oh-mary-2024/timeout--adam-feldman.json",
-    "oh-mary-2024/wsj--charles-isherwood.json",
-    "oh-mary-2024/the-interested-bystander--cary-wong.json",
-    "oh-mary-2024/washpost--peter-marks.json"
+    "aladdin-2014/hollywood-reporter--david-rooney.json",
+    "aladdin-2014/nytimes--ben-brantley.json",
+    "aladdin-2014/deadline--pete-hammond.json",
+    "aladdin-2014/guardian--jesse-green.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "aladdin-2014/newsday--linda-winer.json",
+    "aladdin-2014/nypost--elisabeth-vincentelli.json",
+    "aladdin-2014/observer--rex-reed.json",
+    "aladdin-2014/theatermania--adam-feldman.json",
+    "aladdin-2014/theatermania--andy-propst.json",
+    "aladdin-2014/theatermania--charles-isherwood.json",
+    "aladdin-2014/theatermania--david-finkle.json",
+    "aladdin-2014/timeout--adam-feldman.json",
+    "aladdin-2014/wsj--terry-teachout.json",
+    "aladdin-2014/ap--mark-kennedy.json",
+    "aladdin-2014/billboard--bob-verini.json",
+    "aladdin-2014/broadway-voice--kristen-balzano.json",
+    "aladdin-2014/catholic-transcript--bernard-carragher.json",
+    "aladdin-2014/theater-pizzazz--sandi-durell.json",
+    "aladdin-2014/thestage--mark-shenton.json",
+    "aladdin-2014/thisbroadsway--sandra-mcfarland.json"
   ],
   "tierDetails": {
     "playwright": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "oh-mary-2024/broadwaynews--brittani-samuel.json"
+      "aladdin-2014/theatermania--zachary-stewart.json",
+      "aladdin-2014/chicagotribune--chris-jones.json",
+      "aladdin-2014/classicalite--patricia-reaney.json",
+      "aladdin-2014/huffpost--steven-suskin.json"
     ]
   }
 }
