@@ -82,6 +82,9 @@ export default function EmailCaptureModal({
 
   const copy = TRIGGER_COPY[trigger];
 
+  // Only show extra fields (name, company, role) for biz-specific triggers
+  const showExtraFields = trigger === 'csv_download' || trigger === 'json_download' || trigger === 'page_view_limit';
+
   // Track modal shown
   useEffect(() => {
     if (isOpen) {
@@ -223,55 +226,57 @@ export default function EmailCaptureModal({
               />
             </div>
 
-            {/* Name - Optional */}
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">
-                Name <span className="text-gray-500">(optional)</span>
-              </label>
-              <input
-                type="text"
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Jane Smith"
-                className="w-full px-4 py-3 bg-surface border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all"
-              />
-            </div>
+            {/* Name, Company, Role - Only for biz-specific triggers */}
+            {showExtraFields && (
+              <>
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">
+                    Name <span className="text-gray-500">(optional)</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Jane Smith"
+                    className="w-full px-4 py-3 bg-surface border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all"
+                  />
+                </div>
 
-            {/* Company - Optional */}
-            <div>
-              <label htmlFor="company" className="block text-sm font-medium text-gray-300 mb-1">
-                Company <span className="text-gray-500">(optional)</span>
-              </label>
-              <input
-                type="text"
-                id="company"
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
-                placeholder="Broadway Productions LLC"
-                className="w-full px-4 py-3 bg-surface border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all"
-              />
-            </div>
+                <div>
+                  <label htmlFor="company" className="block text-sm font-medium text-gray-300 mb-1">
+                    Company <span className="text-gray-500">(optional)</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="company"
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                    placeholder="Broadway Productions LLC"
+                    className="w-full px-4 py-3 bg-surface border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all"
+                  />
+                </div>
 
-            {/* Role - Optional dropdown */}
-            <div>
-              <label htmlFor="role" className="block text-sm font-medium text-gray-300 mb-1">
-                Role <span className="text-gray-500">(optional)</span>
-              </label>
-              <select
-                id="role"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                className="w-full px-4 py-3 bg-surface border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all appearance-none cursor-pointer"
-                style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center', backgroundSize: '20px' }}
-              >
-                {ROLE_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value} className="bg-surface-raised">
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+                <div>
+                  <label htmlFor="role" className="block text-sm font-medium text-gray-300 mb-1">
+                    Role <span className="text-gray-500">(optional)</span>
+                  </label>
+                  <select
+                    id="role"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                    className="w-full px-4 py-3 bg-surface border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all appearance-none cursor-pointer"
+                    style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center', backgroundSize: '20px' }}
+                  >
+                    {ROLE_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value} className="bg-surface-raised">
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </>
+            )}
           </div>
 
           {/* Error message */}
@@ -294,7 +299,7 @@ export default function EmailCaptureModal({
                 Submitting...
               </span>
             ) : (
-              'Get Early Access'
+              showExtraFields ? 'Get Early Access' : 'Subscribe'
             )}
           </button>
 
