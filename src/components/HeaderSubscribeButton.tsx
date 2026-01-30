@@ -15,7 +15,7 @@ export default function HeaderSubscribeButton() {
   // Auto-close on success
   useEffect(() => {
     if (status === 'success' || status === 'already_subscribed') {
-      const timer = setTimeout(() => setIsOpen(false), 2000);
+      const timer = setTimeout(() => setIsOpen(false), 2500);
       return () => clearTimeout(timer);
     }
   }, [status]);
@@ -73,7 +73,7 @@ export default function HeaderSubscribeButton() {
         onClick={() => setIsOpen(true)}
         className="ml-1 px-3 py-1.5 text-sm font-semibold text-white bg-brand hover:bg-brand-hover rounded-lg transition-colors"
       >
-        Subscribe
+        Get the Scorecard
       </button>
 
       {isOpen && (
@@ -103,13 +103,13 @@ export default function HeaderSubscribeButton() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <p className="text-white font-semibold">You&apos;re subscribed!</p>
-                <p className="text-sm text-gray-400 mt-1">We&apos;ll keep you posted on Broadway.</p>
+                <p className="text-white font-semibold">You&apos;re in!</p>
+                <p className="text-sm text-gray-400 mt-1">Your first Scorecard arrives Friday. We&apos;ll email you whenever a new show opens on Broadway.</p>
               </div>
             ) : (
               <>
-                <h2 className="text-lg font-bold text-white">Stay in the Know</h2>
-                <p className="text-sm text-gray-400 mt-1 mb-4">New reviews, score changes, and Broadway news. No spam.</p>
+                <h2 className="text-lg font-bold text-white">Never Miss a New Broadway Show</h2>
+                <p className="text-sm text-gray-400 mt-1 mb-4">Get opening night scores, closing alerts, and a weekly roundup of what&apos;s hot on Broadway. Every Friday, one email.</p>
 
                 <form onSubmit={handleSubmit}>
                   <label htmlFor="header-modal-email" className="sr-only">Email address</label>
@@ -135,6 +135,8 @@ export default function HeaderSubscribeButton() {
                 {status === 'error' && errorMessage && (
                   <p className="mt-2 text-xs text-red-400 text-center">{errorMessage}</p>
                 )}
+
+                <p className="mt-3 text-xs text-gray-500 text-center">One email a week. Unsubscribe anytime.</p>
               </>
             )}
           </div>
