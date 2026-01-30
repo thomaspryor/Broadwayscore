@@ -1,0 +1,2782 @@
+{
+  "timestamp": "2026-01-30T04:18:55.505Z",
+  "metrics": {
+    "duplicates": 0,
+    "nullCritics": 8,
+    "nullDates": 255,
+    "unknownOutlets": 1,
+    "badDisplayNames": 150
+  },
+  "details": {
+    "duplicates": [],
+    "nullCritics": [
+      {
+        "showId": "book-of-mormon-2011",
+        "outletId": "chicagotribune",
+        "file": "chicagotribune--unknown.json",
+        "filePath": "data/review-texts/book-of-mormon-2011/chicagotribune--unknown.json"
+      },
+      {
+        "showId": "book-of-mormon-2011",
+        "outletId": "hollywood-reporter",
+        "file": "hollywood-reporter--unknown.json",
+        "filePath": "data/review-texts/book-of-mormon-2011/hollywood-reporter--unknown.json"
+      },
+      {
+        "showId": "book-of-mormon-2011",
+        "outletId": "latimes",
+        "file": "latimes--unknown.json",
+        "filePath": "data/review-texts/book-of-mormon-2011/latimes--unknown.json"
+      },
+      {
+        "showId": "book-of-mormon-2011",
+        "outletId": "variety",
+        "file": "variety--unknown.json",
+        "filePath": "data/review-texts/book-of-mormon-2011/variety--unknown.json"
+      },
+      {
+        "showId": "book-of-mormon-2011",
+        "outletId": "washpost",
+        "file": "washpost--unknown.json",
+        "filePath": "data/review-texts/book-of-mormon-2011/washpost--unknown.json"
+      },
+      {
+        "showId": "chicago-1996",
+        "outletId": "theatermania",
+        "file": "theatermania--unknown.json",
+        "filePath": "data/review-texts/chicago-1996/theatermania--unknown.json"
+      },
+      {
+        "showId": "chicago-1996",
+        "outletId": "time",
+        "file": "time--unknown.json",
+        "filePath": "data/review-texts/chicago-1996/time--unknown.json"
+      },
+      {
+        "showId": "wicked-2003",
+        "outletId": "newyorker",
+        "file": "newyorker--unknown.json",
+        "filePath": "data/review-texts/wicked-2003/newyorker--unknown.json"
+      }
+    ],
+    "nullDates": [
+      {
+        "showId": "an-enemy-of-the-people-2024",
+        "file": "backstage--suzt-evans.json",
+        "outlet": "Backstage",
+        "critic": "Suzt Evans"
+      },
+      {
+        "showId": "an-enemy-of-the-people-2024",
+        "file": "bergen-record--robert-feldberg.json",
+        "outlet": "bergen-record",
+        "critic": "Robert Feldberg"
+      },
+      {
+        "showId": "an-enemy-of-the-people-2024",
+        "file": "bloomberg--andnbspjeremy-gerard.json",
+        "outlet": "bloomberg",
+        "critic": "&nbsp;Jeremy Gerard"
+      },
+      {
+        "showId": "an-enemy-of-the-people-2024",
+        "file": "bloomberg--jeremy-gerard.json",
+        "outlet": "Bloomberg",
+        "critic": "Jeremy Gerard"
+      },
+      {
+        "showId": "an-enemy-of-the-people-2024",
+        "file": "ew--adam-markavitz.json",
+        "outlet": "Entertainment Weekly",
+        "critic": "Adam Markavitz"
+      },
+      {
+        "showId": "an-enemy-of-the-people-2024",
+        "file": "newsday--linda-winer.json",
+        "outlet": "Newsday",
+        "critic": "Linda Winer"
+      },
+      {
+        "showId": "an-enemy-of-the-people-2024",
+        "file": "nydailynews--joe-dziemianowicz.json",
+        "outlet": "New York Daily News",
+        "critic": "Joe Dziemianowicz"
+      },
+      {
+        "showId": "an-enemy-of-the-people-2024",
+        "file": "philadelphia-inquirer--howard-shapiro.json",
+        "outlet": "Philadelphia Inquirer",
+        "critic": "Howard Shapiro"
+      },
+      {
+        "showId": "an-enemy-of-the-people-2024",
+        "file": "village-voice--michael-musto.json",
+        "outlet": "village-voice",
+        "critic": "Michael Musto"
+      },
+      {
+        "showId": "an-enemy-of-the-people-2024",
+        "file": "wallstreet-journal--terry-teachout.json",
+        "outlet": "Wallstreet Journal",
+        "critic": "Terry Teachout"
+      },
+      {
+        "showId": "appropriate-2023",
+        "file": "cititour--brian-scott-lipton.json",
+        "outlet": "Cititour",
+        "critic": "Brian Scott Lipton"
+      },
+      {
+        "showId": "appropriate-2023",
+        "file": "ew--allison-considine.json",
+        "outlet": "Entertainment Weekly",
+        "critic": "Allison Considine"
+      },
+      {
+        "showId": "appropriate-2023",
+        "file": "nysr--frank-scheck.json",
+        "outlet": "New York Stage Review",
+        "critic": "Frank Scheck"
+      },
+      {
+        "showId": "appropriate-2023",
+        "file": "nysr--melissa-rose-bernardo.json",
+        "outlet": "New York Stage Review",
+        "critic": "Melissa Rose Bernardo"
+      },
+      {
+        "showId": "appropriate-2023",
+        "file": "nyt-theater--jonathan-mandell.json",
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell"
+      },
+      {
+        "showId": "appropriate-2023",
+        "file": "observer--david-cote.json",
+        "outlet": "Observer",
+        "critic": "David Cote"
+      },
+      {
+        "showId": "back-to-the-future-2023",
+        "file": "chelsea-community-news--michael-musto.json",
+        "outlet": "chelsea-community-news",
+        "critic": "Michael Musto"
+      },
+      {
+        "showId": "back-to-the-future-2023",
+        "file": "queerty--matthew-wexler.json",
+        "outlet": "Queerty",
+        "critic": "Matthew Wexler"
+      },
+      {
+        "showId": "back-to-the-future-2023",
+        "file": "slash-film--caroline-cao.json",
+        "outlet": "Slash Film",
+        "critic": "Caroline Cao"
+      },
+      {
+        "showId": "back-to-the-future-2023",
+        "file": "talkinbroadway--howard-miller.json",
+        "outlet": "Talkin' Broadway",
+        "critic": "Howard Miller"
+      },
+      {
+        "showId": "book-of-mormon-2011",
+        "file": "ny-1--roma-torre.json",
+        "outlet": "NY 1",
+        "critic": "Roma Torre"
+      },
+      {
+        "showId": "boop-2025",
+        "file": "ew--bob-verini.json",
+        "outlet": "Entertainment Weekly",
+        "critic": "Bob Verini"
+      },
+      {
+        "showId": "cabaret-2024",
+        "file": "ew--amelia-merrill.json",
+        "outlet": "Entertainment Weekly",
+        "critic": "Amelia Merrill"
+      },
+      {
+        "showId": "cabaret-2024",
+        "file": "nydailynews--chris-jones.json",
+        "outlet": "New York Daily News",
+        "critic": "Chris Jones"
+      },
+      {
+        "showId": "days-of-wine-and-roses-2024",
+        "file": "cititour--brian-scott-lipton.json",
+        "outlet": "Cititour",
+        "critic": "Brian Scott Lipton"
+      },
+      {
+        "showId": "days-of-wine-and-roses-2024",
+        "file": "dailybeast--tim-teeman.json",
+        "outlet": "The Daily Beast",
+        "critic": "Tim Teeman"
+      },
+      {
+        "showId": "days-of-wine-and-roses-2024",
+        "file": "ew--bob-verini.json",
+        "outlet": "Entertainment Weekly",
+        "critic": "Bob Verini"
+      },
+      {
+        "showId": "days-of-wine-and-roses-2024",
+        "file": "ew--david-finkle.json",
+        "outlet": "Entertainment Weekly",
+        "critic": "David Finkle"
+      },
+      {
+        "showId": "days-of-wine-and-roses-2024",
+        "file": "guardian--lauren-mechling.json",
+        "outlet": "The Guardian",
+        "critic": "Lauren Mechling"
+      },
+      {
+        "showId": "days-of-wine-and-roses-2024",
+        "file": "nysr--bob-verini.json",
+        "outlet": "New York Stage Review",
+        "critic": "Bob Verini"
+      },
+      {
+        "showId": "days-of-wine-and-roses-2024",
+        "file": "nysr--david-finkle.json",
+        "outlet": "New York Stage Review",
+        "critic": "David Finkle"
+      },
+      {
+        "showId": "days-of-wine-and-roses-2024",
+        "file": "nyt-theater--jonathan-mandell.json",
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell"
+      },
+      {
+        "showId": "days-of-wine-and-roses-2024",
+        "file": "washpost--naveen-kumar.json",
+        "outlet": "The Washington Post",
+        "critic": "Naveen Kumar"
+      },
+      {
+        "showId": "doubt-2024",
+        "file": "cititour--brian-scott-lipton.json",
+        "outlet": "Cititour",
+        "critic": "Brian Scott Lipton"
+      },
+      {
+        "showId": "doubt-2024",
+        "file": "guardian--adrian-horton.json",
+        "outlet": "The Guardian",
+        "critic": "Adrian Horton"
+      },
+      {
+        "showId": "doubt-2024",
+        "file": "john-patrick-shanley--doubt-a-parable.json",
+        "outlet": "John Patrick Shanley",
+        "critic": "Doubt: A Parable"
+      },
+      {
+        "showId": "doubt-2024",
+        "file": "nysr--david-finkle.json",
+        "outlet": "New York Stage Review",
+        "critic": "David Finkle"
+      },
+      {
+        "showId": "doubt-2024",
+        "file": "nysr--melissa-rose-bernardo.json",
+        "outlet": "New York Stage Review",
+        "critic": "Melissa Rose Bernardo"
+      },
+      {
+        "showId": "doubt-2024",
+        "file": "nyt-theater--jonathan-mandell.json",
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell"
+      },
+      {
+        "showId": "doubt-2024",
+        "file": "observer--david-cote.json",
+        "outlet": "Observer",
+        "critic": "David Cote"
+      },
+      {
+        "showId": "doubt-2024",
+        "file": "thestage--lane-williamson.json",
+        "outlet": "The Stage",
+        "critic": "Lane Williamson"
+      },
+      {
+        "showId": "doubt-2024",
+        "file": "washpost--naveen-kumar.json",
+        "outlet": "The Washington Post",
+        "critic": "Naveen Kumar"
+      },
+      {
+        "showId": "grey-house-2023",
+        "file": "cititour--brian-scott-lipton.json",
+        "outlet": "Cititour",
+        "critic": "Brian Scott Lipton"
+      },
+      {
+        "showId": "grey-house-2023",
+        "file": "nysr--david-finkle.json",
+        "outlet": "New York Stage Review",
+        "critic": "David Finkle"
+      },
+      {
+        "showId": "grey-house-2023",
+        "file": "nysr--frank-scheck.json",
+        "outlet": "New York Stage Review",
+        "critic": "Frank Scheck"
+      },
+      {
+        "showId": "grey-house-2023",
+        "file": "observer--david-cote.json",
+        "outlet": "Observer",
+        "critic": "David Cote"
+      },
+      {
+        "showId": "grey-house-2023",
+        "file": "talkinbroadway--howard-miller.json",
+        "outlet": "Talkin' Broadway",
+        "critic": "Howard Miller"
+      },
+      {
+        "showId": "grey-house-2023",
+        "file": "theatrely--kobi-kassal.json",
+        "outlet": "Theatrely",
+        "critic": "Kobi Kassal"
+      },
+      {
+        "showId": "grey-house-2023",
+        "file": "thewrap--robert-hofler.json",
+        "outlet": "The Wrap",
+        "critic": "Robert Hofler"
+      },
+      {
+        "showId": "grey-house-2023",
+        "file": "variety--a-d-amorosi.json",
+        "outlet": "Variety",
+        "critic": "A. D. Amorosi"
+      },
+      {
+        "showId": "gutenberg-2023",
+        "file": "chicagotribune--chris-jones.json",
+        "outlet": "Chicago Tribune",
+        "critic": "Chris Jones"
+      },
+      {
+        "showId": "gutenberg-2023",
+        "file": "ew--roma-torre.json",
+        "outlet": "Entertainment Weekly",
+        "critic": "Roma Torre"
+      },
+      {
+        "showId": "gutenberg-2023",
+        "file": "nysr--frank-scheck.json",
+        "outlet": "New York Stage Review",
+        "critic": "Frank Scheck"
+      },
+      {
+        "showId": "gutenberg-2023",
+        "file": "nysr--roma-torre.json",
+        "outlet": "New York Stage Review",
+        "critic": "Roma Torre"
+      },
+      {
+        "showId": "gutenberg-2023",
+        "file": "nyt-theater--jonathan-mandell.json",
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell"
+      },
+      {
+        "showId": "gutenberg-2023",
+        "file": "observer--david-cote.json",
+        "outlet": "Observer",
+        "critic": "David Cote"
+      },
+      {
+        "showId": "gutenberg-2023",
+        "file": "washpost--peter-marks.json",
+        "outlet": "The Washington Post",
+        "critic": "Peter Marks"
+      },
+      {
+        "showId": "hadestown-2019",
+        "file": "nydailynews--chris-jones.json",
+        "outlet": "New York Daily News",
+        "critic": "Chris Jones"
+      },
+      {
+        "showId": "harmony-2023",
+        "file": "guardian--jesse-hassenger.json",
+        "outlet": "The Guardian",
+        "critic": "Jesse Hassenger"
+      },
+      {
+        "showId": "harmony-2023",
+        "file": "nysr--david-finkle.json",
+        "outlet": "New York Stage Review",
+        "critic": "David Finkle"
+      },
+      {
+        "showId": "harmony-2023",
+        "file": "nysr--sandy-macdonald.json",
+        "outlet": "New York Stage Review",
+        "critic": "Sandy MacDonald"
+      },
+      {
+        "showId": "harmony-2023",
+        "file": "nyt-theater--jonathan-mandell.json",
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell"
+      },
+      {
+        "showId": "harmony-2023",
+        "file": "observer--david-cote.json",
+        "outlet": "Observer",
+        "critic": "David Cote"
+      },
+      {
+        "showId": "harmony-2023",
+        "file": "the-new-york-sun--elysa-gardner.json",
+        "outlet": "The New York Sun",
+        "critic": "Elysa Gardner"
+      },
+      {
+        "showId": "harry-potter-2021",
+        "file": "guardian--alexis-soloski.json",
+        "outlet": "The Guardian",
+        "critic": "Alexis Soloski"
+      },
+      {
+        "showId": "heart-of-rock-and-roll-2024",
+        "file": "cititour--brian-scott-lipton.json",
+        "outlet": "Cititour",
+        "critic": "Brian Scott Lipton"
+      },
+      {
+        "showId": "heart-of-rock-and-roll-2024",
+        "file": "ew--elysa-gardner.json",
+        "outlet": "Entertainment Weekly",
+        "critic": "Elysa Gardner"
+      },
+      {
+        "showId": "heart-of-rock-and-roll-2024",
+        "file": "nysr--david-finkle.json",
+        "outlet": "New York Stage Review",
+        "critic": "David Finkle"
+      },
+      {
+        "showId": "heart-of-rock-and-roll-2024",
+        "file": "nyt-theater--jonathan-mandell.json",
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell"
+      },
+      {
+        "showId": "heart-of-rock-and-roll-2024",
+        "file": "the-new-york-sun--elysa-gardner.json",
+        "outlet": "The New York Sun",
+        "critic": "Elysa Gardner"
+      },
+      {
+        "showId": "heart-of-rock-and-roll-2024",
+        "file": "timeout--regina-robbins.json",
+        "outlet": "Time Out New York",
+        "critic": "Regina Robbins"
+      },
+      {
+        "showId": "hells-kitchen-2024",
+        "file": "the-new-york-sun--elysa-gardner.json",
+        "outlet": "The New York Sun",
+        "critic": "Elysa Gardner"
+      },
+      {
+        "showId": "here-lies-love-2023",
+        "file": "amny--matt-windman.json",
+        "outlet": "amny",
+        "critic": "Matt Windman"
+      },
+      {
+        "showId": "here-lies-love-2023",
+        "file": "bergen-record--robert-feldberg.json",
+        "outlet": "bergen-record",
+        "critic": "Robert Feldberg"
+      },
+      {
+        "showId": "here-lies-love-2023",
+        "file": "nytimes--ben-brantley.json",
+        "outlet": "The New York Times",
+        "critic": "Ben Brantley"
+      },
+      {
+        "showId": "how-to-dance-in-ohio-2023",
+        "file": "nysr--sandy-macdonald.json",
+        "outlet": "New York Stage Review",
+        "critic": "Sandy MacDonald"
+      },
+      {
+        "showId": "how-to-dance-in-ohio-2023",
+        "file": "nysr--steven-suskin.json",
+        "outlet": "New York Stage Review",
+        "critic": "Steven Suskin"
+      },
+      {
+        "showId": "how-to-dance-in-ohio-2023",
+        "file": "nyt-theater--jonathan-mandell.json",
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell"
+      },
+      {
+        "showId": "how-to-dance-in-ohio-2023",
+        "file": "observer--david-cote.json",
+        "outlet": "Observer",
+        "critic": "David Cote"
+      },
+      {
+        "showId": "i-need-that-2023",
+        "file": "guardian--gloria-oladipo.json",
+        "outlet": "The Guardian",
+        "critic": "Gloria Oladipo"
+      },
+      {
+        "showId": "i-need-that-2023",
+        "file": "nysr--frank-scheck.json",
+        "outlet": "New York Stage Review",
+        "critic": "Frank Scheck"
+      },
+      {
+        "showId": "i-need-that-2023",
+        "file": "nysr--melissa-rose-bernardo.json",
+        "outlet": "New York Stage Review",
+        "critic": "Melissa Rose Bernardo"
+      },
+      {
+        "showId": "i-need-that-2023",
+        "file": "nyt-theater--jonathan-mandell.json",
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell"
+      },
+      {
+        "showId": "i-need-that-2023",
+        "file": "observer--david-cote.json",
+        "outlet": "Observer",
+        "critic": "David Cote"
+      },
+      {
+        "showId": "i-need-that-2023",
+        "file": "timeout--will-gleason.json",
+        "outlet": "Time Out New York",
+        "critic": "Will Gleason"
+      },
+      {
+        "showId": "i-need-that-2023",
+        "file": "variety--trish-deitch.json",
+        "outlet": "Variety",
+        "critic": "Trish Deitch"
+      },
+      {
+        "showId": "illinoise-2024",
+        "file": "ew--roma-torre.json",
+        "outlet": "Entertainment Weekly",
+        "critic": "Roma Torre"
+      },
+      {
+        "showId": "illinoise-2024",
+        "file": "nyt-theater--jonathan-mandell.json",
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell"
+      },
+      {
+        "showId": "jajas-african-hair-braiding-2023",
+        "file": "chicagotribune--chris-jones.json",
+        "outlet": "Chicago Tribune",
+        "critic": "Chris Jones"
+      },
+      {
+        "showId": "jajas-african-hair-braiding-2023",
+        "file": "guardian--gloria-oladipo.json",
+        "outlet": "The Guardian",
+        "critic": "Gloria Oladipo"
+      },
+      {
+        "showId": "jajas-african-hair-braiding-2023",
+        "file": "nysr--david-finkle.json",
+        "outlet": "New York Stage Review",
+        "critic": "David Finkle"
+      },
+      {
+        "showId": "jajas-african-hair-braiding-2023",
+        "file": "washpost--peter-marks.json",
+        "outlet": "The Washington Post",
+        "critic": "Peter Marks"
+      },
+      {
+        "showId": "just-for-us-2023",
+        "file": "next-magazine--michael-hollett.json",
+        "outlet": "next-magazine",
+        "critic": "Michael Hollett"
+      },
+      {
+        "showId": "just-for-us-2023",
+        "file": "the-globe-and-mail--aisling-murphy.json",
+        "outlet": "The Globe and Mail",
+        "critic": "Aisling Murphy"
+      },
+      {
+        "showId": "just-for-us-2023",
+        "file": "toronto-star--philadelphia-joshua-chong.json",
+        "outlet": "Toronto Star",
+        "critic": "Philadelphia. Joshua Chong"
+      },
+      {
+        "showId": "just-in-time-2025",
+        "file": "chicagotribune--chris-jones.json",
+        "outlet": "chicagotribune",
+        "critic": "Chris Jones"
+      },
+      {
+        "showId": "just-in-time-2025",
+        "file": "culturesauce--thom-geier.json",
+        "outlet": "culturesauce",
+        "critic": "Thom Geier"
+      },
+      {
+        "showId": "lempicka-2024",
+        "file": "chicagotribune--chris-jones.json",
+        "outlet": "Chicago Tribune",
+        "critic": "Chris Jones"
+      },
+      {
+        "showId": "lempicka-2024",
+        "file": "cititour--brian-scott-lipton.json",
+        "outlet": "Cititour",
+        "critic": "Brian Scott Lipton"
+      },
+      {
+        "showId": "lempicka-2024",
+        "file": "dc-theater-arts--deb-miller.json",
+        "outlet": "DC Theater Arts",
+        "critic": "Deb Miller"
+      },
+      {
+        "showId": "lempicka-2024",
+        "file": "ew--elysa-gardner.json",
+        "outlet": "Entertainment Weekly",
+        "critic": "Elysa Gardner"
+      },
+      {
+        "showId": "lempicka-2024",
+        "file": "new-york-sun--elysa-gardner.json",
+        "outlet": "New York Sun",
+        "critic": "Elysa Gardner"
+      },
+      {
+        "showId": "lempicka-2024",
+        "file": "nypost--philip-kennicott.json",
+        "outlet": "New York Post",
+        "critic": "Philip Kennicott"
+      },
+      {
+        "showId": "lempicka-2024",
+        "file": "nysr--david-finkle.json",
+        "outlet": "New York Stage Review",
+        "critic": "David Finkle"
+      },
+      {
+        "showId": "lempicka-2024",
+        "file": "nysr--sandy-macdonald.json",
+        "outlet": "New York Stage Review",
+        "critic": "Sandy MacDonald"
+      },
+      {
+        "showId": "lempicka-2024",
+        "file": "nyt-theater--jonathan-mandell.json",
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell"
+      },
+      {
+        "showId": "lempicka-2024",
+        "file": "queerty--matthew-wexler.json",
+        "outlet": "Queerty",
+        "critic": "Matthew Wexler"
+      },
+      {
+        "showId": "lempicka-2024",
+        "file": "slantmagazine--dan-rubins.json",
+        "outlet": "Slant Magazine",
+        "critic": "Dan Rubins"
+      },
+      {
+        "showId": "lempicka-2024",
+        "file": "washpost--philip-kennicott.json",
+        "outlet": "The Washington Post",
+        "critic": "Philip Kennicott"
+      },
+      {
+        "showId": "mamma-mia-2025",
+        "file": "nypost--johnny-oleksinski.json",
+        "outlet": "New York Post",
+        "critic": "Johnny Oleksinki"
+      },
+      {
+        "showId": "mary-jane-2024",
+        "file": "ap--tapintonet.json",
+        "outlet": "Associated Press",
+        "critic": "TapInto.net"
+      },
+      {
+        "showId": "mary-jane-2024",
+        "file": "njcom--njcom.json",
+        "outlet": "NJ.com",
+        "critic": "NJ.com"
+      },
+      {
+        "showId": "mary-jane-2024",
+        "file": "northjerseycom--northjerseycom.json",
+        "outlet": "northjerseycom",
+        "critic": "NorthJersey.com"
+      },
+      {
+        "showId": "merrily-we-roll-along-2023",
+        "file": "nypost--johnny-oleksinski.json",
+        "outlet": "New York Post",
+        "critic": "Johnny Oleksinski"
+      },
+      {
+        "showId": "merrily-we-roll-along-2023",
+        "file": "nysr--melissa-rose-bernardo.json",
+        "outlet": "New York Stage Review",
+        "critic": "Melissa Rose Bernardo"
+      },
+      {
+        "showId": "merrily-we-roll-along-2023",
+        "file": "nysr--steven-suskin.json",
+        "outlet": "New York Stage Review",
+        "critic": "Steven Suskin"
+      },
+      {
+        "showId": "merrily-we-roll-along-2023",
+        "file": "slash-film--caroline-cao.json",
+        "outlet": "Slash Film",
+        "critic": "Caroline Cao"
+      },
+      {
+        "showId": "merrily-we-roll-along-2023",
+        "file": "the-times--will-pavia.json",
+        "outlet": "The Times",
+        "critic": "Will Pavia"
+      },
+      {
+        "showId": "merrily-we-roll-along-2023",
+        "file": "the-village-voice--michael-musto.json",
+        "outlet": "the-village-voice",
+        "critic": "Michael Musto"
+      },
+      {
+        "showId": "merrily-we-roll-along-2023",
+        "file": "usatoday--patrick-ryan.json",
+        "outlet": "USA Today",
+        "critic": "Patrick Ryan"
+      },
+      {
+        "showId": "merrily-we-roll-along-2023",
+        "file": "whatsonstage--david-gordon.json",
+        "outlet": "whatsonstage",
+        "critic": "David Gordon"
+      },
+      {
+        "showId": "mother-play-2024",
+        "file": "ew--allison-considine.json",
+        "outlet": "Entertainment Weekly",
+        "critic": "Allison Considine"
+      },
+      {
+        "showId": "mother-play-2024",
+        "file": "ew--steven-suskin.json",
+        "outlet": "Entertainment Weekly",
+        "critic": "Steve Suskin"
+      },
+      {
+        "showId": "mother-play-2024",
+        "file": "guardian--benjamin-lee.json",
+        "outlet": "The Guardian",
+        "critic": "Benjamin Lee"
+      },
+      {
+        "showId": "mother-play-2024",
+        "file": "nysr--frank-scheck.json",
+        "outlet": "New York Stage Review",
+        "critic": "Frank Scheck"
+      },
+      {
+        "showId": "mother-play-2024",
+        "file": "nysr--steven-suskin.json",
+        "outlet": "New York Stage Review",
+        "critic": "Steve Suskin"
+      },
+      {
+        "showId": "mother-play-2024",
+        "file": "nyt-theater--jonathan-mandell.json",
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell"
+      },
+      {
+        "showId": "mother-play-2024",
+        "file": "talkinbroadway--howard-miller.json",
+        "outlet": "Talkin' Broadway",
+        "critic": "Howard Miller"
+      },
+      {
+        "showId": "once-upon-a-one-more-time-2023",
+        "file": "broadwayworld--hannah-wing.json",
+        "outlet": "BroadwayWorld",
+        "critic": "Hannah Wing"
+      },
+      {
+        "showId": "our-town-2024",
+        "file": "deadline--greg-evans.json",
+        "outlet": "Deadline",
+        "critic": "Greg Evans"
+      },
+      {
+        "showId": "our-town-2024",
+        "file": "ny-sun--elysa-gardner.json",
+        "outlet": "NY Sun",
+        "critic": "Elysa Gardner"
+      },
+      {
+        "showId": "our-town-2024",
+        "file": "nydailynews--chris-jones.json",
+        "outlet": "New York Daily News",
+        "critic": "Chris Jones"
+      },
+      {
+        "showId": "our-town-2024",
+        "file": "nysr--david-finkle.json",
+        "outlet": "New York Stage Review",
+        "critic": "David Finkle"
+      },
+      {
+        "showId": "our-town-2024",
+        "file": "nysr--steven-suskin.json",
+        "outlet": "New York Stage Review",
+        "critic": "Steven Suskin"
+      },
+      {
+        "showId": "our-town-2024",
+        "file": "nytimes--jesse-green.json",
+        "outlet": "The New York Times",
+        "critic": "Jesse Green"
+      },
+      {
+        "showId": "our-town-2024",
+        "file": "slantmagazine--dan-rubins.json",
+        "outlet": "Slant Magazine",
+        "critic": "Dan Rubins"
+      },
+      {
+        "showId": "our-town-2024",
+        "file": "theatrely--juan-a-ramirez.json",
+        "outlet": "Theatrely",
+        "critic": "Juan A. Ramirez"
+      },
+      {
+        "showId": "our-town-2024",
+        "file": "thewrap--robert-hofler.json",
+        "outlet": "The Wrap",
+        "critic": "Robert Hofler"
+      },
+      {
+        "showId": "our-town-2024",
+        "file": "washpost--naveen-kumar.json",
+        "outlet": "The Washington Post",
+        "critic": "Naveen Kumar"
+      },
+      {
+        "showId": "patriots-2024",
+        "file": "barbara-hershey-and-ty-simpkins-in-insidious--lin-shaye.json",
+        "outlet": "Barbara Hershey and Ty Simpkins in INSIDIOUS",
+        "critic": "Lin Shaye"
+      },
+      {
+        "showId": "prayer-for-the-french-republic-2024",
+        "file": "cititour--brian-scott-lipton.json",
+        "outlet": "Cititour",
+        "critic": "Brian Scott Lipton"
+      },
+      {
+        "showId": "prayer-for-the-french-republic-2024",
+        "file": "ew--helen-shaw.json",
+        "outlet": "Entertainment Weekly",
+        "critic": "Helen Shaw"
+      },
+      {
+        "showId": "prayer-for-the-french-republic-2024",
+        "file": "ew--roma-torre.json",
+        "outlet": "Entertainment Weekly",
+        "critic": "Roma Torre"
+      },
+      {
+        "showId": "prayer-for-the-french-republic-2024",
+        "file": "newyorker--helen-shaw.json",
+        "outlet": "The New Yorker",
+        "critic": "Helen Shaw"
+      },
+      {
+        "showId": "prayer-for-the-french-republic-2024",
+        "file": "nysr--frank-scheck.json",
+        "outlet": "New York Stage Review",
+        "critic": "Frank Scheck"
+      },
+      {
+        "showId": "prayer-for-the-french-republic-2024",
+        "file": "nysr--roma-torre.json",
+        "outlet": "New York Stage Review",
+        "critic": "Roma Torre"
+      },
+      {
+        "showId": "prayer-for-the-french-republic-2024",
+        "file": "observer--david-cote.json",
+        "outlet": "Observer",
+        "critic": "David Cote"
+      },
+      {
+        "showId": "prayer-for-the-french-republic-2024",
+        "file": "wsj--charles-isherwood.json",
+        "outlet": "The Wall Street Journal",
+        "critic": "Charles Isherwood"
+      },
+      {
+        "showId": "purlie-victorious-2023",
+        "file": "chicagotribune--chris-jones.json",
+        "outlet": "Chicago Tribune",
+        "critic": "Chris Jones"
+      },
+      {
+        "showId": "purlie-victorious-2023",
+        "file": "ew--christian-holub.json",
+        "outlet": "Entertainment Weekly",
+        "critic": "Christian Holub"
+      },
+      {
+        "showId": "purlie-victorious-2023",
+        "file": "guardian--jesse-hassenger.json",
+        "outlet": "The Guardian",
+        "critic": "Jesse Hassenger"
+      },
+      {
+        "showId": "purlie-victorious-2023",
+        "file": "nysr--steven-suskin.json",
+        "outlet": "New York Stage Review",
+        "critic": "Steven Suskin"
+      },
+      {
+        "showId": "purlie-victorious-2023",
+        "file": "nyt-theater--jonathan-mandell.json",
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell"
+      },
+      {
+        "showId": "purlie-victorious-2023",
+        "file": "observer--david-cote.json",
+        "outlet": "Observer",
+        "critic": "David Cote"
+      },
+      {
+        "showId": "purlie-victorious-2023",
+        "file": "slantmagazine--dan-rubins.json",
+        "outlet": "Slant Magazine",
+        "critic": "Dan Rubins"
+      },
+      {
+        "showId": "purlie-victorious-2023",
+        "file": "talkinbroadway--howard-miller.json",
+        "outlet": "Talkin' Broadway",
+        "critic": "Howard Miller"
+      },
+      {
+        "showId": "purlie-victorious-2023",
+        "file": "washpost--peter-marks.json",
+        "outlet": "The Washington Post",
+        "critic": "Peter Marks"
+      },
+      {
+        "showId": "queen-versailles-2025",
+        "file": "ew--bob-verini.json",
+        "outlet": "Entertainment Weekly",
+        "critic": "Bob Verini"
+      },
+      {
+        "showId": "queen-versailles-2025",
+        "file": "latimes--charlesmcnulty.json",
+        "outlet": "Los Angeles Times",
+        "critic": "CharlesMcNulty"
+      },
+      {
+        "showId": "queen-versailles-2025",
+        "file": "vulture--sara-holdren-and-jesse-david-fox.json",
+        "outlet": "Vulture",
+        "critic": "Sara Holdren and Jesse David Fox"
+      },
+      {
+        "showId": "real-women-have-curves-2025",
+        "file": "chicagotribune--chris-jones.json",
+        "outlet": "Chicago Tribune",
+        "critic": "Chris Jones"
+      },
+      {
+        "showId": "real-women-have-curves-2025",
+        "file": "cititour--brian-scott-lipton.json",
+        "outlet": "Cititour",
+        "critic": "Brian Scott Lipton"
+      },
+      {
+        "showId": "real-women-have-curves-2025",
+        "file": "culturesauce--thom-geier.json",
+        "outlet": "Culture Sauce",
+        "critic": "Thom Geier"
+      },
+      {
+        "showId": "real-women-have-curves-2025",
+        "file": "nyt-theater--jonathan-mandell.json",
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell"
+      },
+      {
+        "showId": "real-women-have-curves-2025",
+        "file": "talkinbroadway--kimberly-ramirez.json",
+        "outlet": "Talkin' Broadway",
+        "critic": "Kimberly Ramirez"
+      },
+      {
+        "showId": "redwood-2025",
+        "file": "katrina-stuart-santiago--katrina-stuart-santiago.json",
+        "outlet": "Katrina Stuart Santiago",
+        "critic": "Katrina Stuart Santiago"
+      },
+      {
+        "showId": "redwood-2025",
+        "file": "vladimir-bunoan--vladimir-bunoan.json",
+        "outlet": "Vladimir Bunoan",
+        "critic": "Vladimir Bunoan"
+      },
+      {
+        "showId": "redwood-2025",
+        "file": "wanggo-gallaga--wanggo-gallaga.json",
+        "outlet": "Wanggo Gallaga",
+        "critic": "Wanggo Gallaga"
+      },
+      {
+        "showId": "six-2021",
+        "file": "nysr--steven-suskin.json",
+        "outlet": "New York Stage Review",
+        "critic": "Steven Suskin"
+      },
+      {
+        "showId": "six-2021",
+        "file": "washpost--peter-marks.json",
+        "outlet": "The Washington Post",
+        "critic": "Peter Marks"
+      },
+      {
+        "showId": "spamalot-2023",
+        "file": "chicagotribune--chris-jones.json",
+        "outlet": "Chicago Tribune",
+        "critic": "Chris Jones"
+      },
+      {
+        "showId": "spamalot-2023",
+        "file": "cititour--brian-scott-lipton.json",
+        "outlet": "Cititour",
+        "critic": "Brian Scott Lipton"
+      },
+      {
+        "showId": "spamalot-2023",
+        "file": "nysr--melissa-rose-bernardo.json",
+        "outlet": "New York Stage Review",
+        "critic": "Melissa Rose Bernardo"
+      },
+      {
+        "showId": "spamalot-2023",
+        "file": "nysr--sandy-macdonald.json",
+        "outlet": "New York Stage Review",
+        "critic": "Sandy MacDonald"
+      },
+      {
+        "showId": "spamalot-2023",
+        "file": "slantmagazine--dan-rubins.json",
+        "outlet": "Slant Magazine",
+        "critic": "Dan Rubins"
+      },
+      {
+        "showId": "stereophonic-2024",
+        "file": "ew--allison-considine.json",
+        "outlet": "Entertainment Weekly",
+        "critic": "Allison Considine"
+      },
+      {
+        "showId": "stereophonic-2024",
+        "file": "ew--bob-verini.json",
+        "outlet": "Entertainment Weekly",
+        "critic": "Bob Verini"
+      },
+      {
+        "showId": "stereophonic-2024",
+        "file": "nysr--melissa-rose-bernardo.json",
+        "outlet": "New York Stage Review",
+        "critic": "Melissa Rose Bernardo"
+      },
+      {
+        "showId": "stranger-things-2024",
+        "file": "bbc-news--neil-armstrong.json",
+        "outlet": "BBC News",
+        "critic": "Neil Armstrong"
+      },
+      {
+        "showId": "stranger-things-2024",
+        "file": "londontheatre--marianka-swain.json",
+        "outlet": "London Theatre",
+        "critic": "Marianka Swain"
+      },
+      {
+        "showId": "stranger-things-2024",
+        "file": "the-daily-mail--luke-jones.json",
+        "outlet": "The Daily Mail",
+        "critic": "Luke Jones"
+      },
+      {
+        "showId": "stranger-things-2024",
+        "file": "the-independent--alice-saville.json",
+        "outlet": "The Independent",
+        "critic": "Alice Saville"
+      },
+      {
+        "showId": "stranger-things-2024",
+        "file": "the-standard--nick-curtis.json",
+        "outlet": "The Standard",
+        "critic": "Nick Curtis"
+      },
+      {
+        "showId": "stranger-things-2024",
+        "file": "thestage--dave-fargnoli.json",
+        "outlet": "The Stage",
+        "critic": "Dave Fargnoli"
+      },
+      {
+        "showId": "stranger-things-2024",
+        "file": "tickertv--cheryl-king.json",
+        "outlet": "TickerTV",
+        "critic": "Cheryl King"
+      },
+      {
+        "showId": "suffs-2024",
+        "file": "chelsea-community-news--michael-musto.json",
+        "outlet": "chelsea-community-news",
+        "critic": "Michael Musto"
+      },
+      {
+        "showId": "suffs-2024",
+        "file": "cititour--brian-scott-lipton.json",
+        "outlet": "Cititour",
+        "critic": "Brian Scott Lipton"
+      },
+      {
+        "showId": "suffs-2024",
+        "file": "nydailynews--chris-jones.json",
+        "outlet": "New York Daily News",
+        "critic": "Chris Jones"
+      },
+      {
+        "showId": "suffs-2024",
+        "file": "nysr--roma-torre.json",
+        "outlet": "New York Stage Review",
+        "critic": "Roma Torre"
+      },
+      {
+        "showId": "suffs-2024",
+        "file": "nysr--steven-suskin.json",
+        "outlet": "New York Stage Review",
+        "critic": "Steven Suskin"
+      },
+      {
+        "showId": "suffs-2024",
+        "file": "nytg--amelia-merrill.json",
+        "outlet": "New York Theatre Guide",
+        "critic": "Amelia Merrill"
+      },
+      {
+        "showId": "suffs-2024",
+        "file": "the-times--nancy-durrant.json",
+        "outlet": "The Times",
+        "critic": "Nancy Durrant"
+      },
+      {
+        "showId": "suffs-2024",
+        "file": "theatrely--joey-sims.json",
+        "outlet": "Theatrely",
+        "critic": "Joey Sims"
+      },
+      {
+        "showId": "suffs-2024",
+        "file": "timeout--regina-robbins.json",
+        "outlet": "Time Out New York",
+        "critic": "Regina Robbins"
+      },
+      {
+        "showId": "suffs-2024",
+        "file": "variety--frank-rizzo.json",
+        "outlet": "Variety",
+        "critic": "Frank Rizzo"
+      },
+      {
+        "showId": "suffs-2024",
+        "file": "vulture--sara-holdren.json",
+        "outlet": "Vulture",
+        "critic": "Sara Holdren"
+      },
+      {
+        "showId": "suffs-2024",
+        "file": "washpost--elisabeth-vincentelli.json",
+        "outlet": "The Washington Post",
+        "critic": "Elisabeth Vincentelli"
+      },
+      {
+        "showId": "the-cottage-2023",
+        "file": "cititour--brian-scott-lipton.json",
+        "outlet": "Cititour",
+        "critic": "Brian Scott Lipton"
+      },
+      {
+        "showId": "the-cottage-2023",
+        "file": "nysr--frank-scheck.json",
+        "outlet": "New York Stage Review",
+        "critic": "Frank Scheck"
+      },
+      {
+        "showId": "the-cottage-2023",
+        "file": "nysr--melissa-rose-bernardo.json",
+        "outlet": "New York Stage Review",
+        "critic": "Melissa Rose Bernardo"
+      },
+      {
+        "showId": "the-cottage-2023",
+        "file": "queerty--matthew-wexler.json",
+        "outlet": "Queerty",
+        "critic": "Matthew Wexler"
+      },
+      {
+        "showId": "the-cottage-2023",
+        "file": "variety--naveen-kumar.json",
+        "outlet": "Variety",
+        "critic": "Naveen Kumar"
+      },
+      {
+        "showId": "the-notebook-2024",
+        "file": "ap--mark-kennedy.json",
+        "outlet": "Associated Press",
+        "critic": "Mark Kennedy"
+      },
+      {
+        "showId": "the-notebook-2024",
+        "file": "ew--emlyn-travis.json",
+        "outlet": "Entertainment Weekly",
+        "critic": "Emlyn Travis"
+      },
+      {
+        "showId": "the-notebook-2024",
+        "file": "guardian--gloria-oladipo.json",
+        "outlet": "The Guardian",
+        "critic": "Gloria Oladipo"
+      },
+      {
+        "showId": "the-notebook-2024",
+        "file": "indiewire--erin-strecker.json",
+        "outlet": "IndieWire",
+        "critic": "Erin Strecker"
+      },
+      {
+        "showId": "the-notebook-2024",
+        "file": "nyt-theater--jonathan-mandell.json",
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell"
+      },
+      {
+        "showId": "the-notebook-2024",
+        "file": "slantmagazine--dan-rubins.json",
+        "outlet": "Slant Magazine",
+        "critic": "Dan Rubins"
+      },
+      {
+        "showId": "the-notebook-2024",
+        "file": "variety--frank-rizzo.json",
+        "outlet": "Variety",
+        "critic": "Frank Rizzo"
+      },
+      {
+        "showId": "the-notebook-2024",
+        "file": "vu--sara-holdren.json",
+        "outlet": "Vu",
+        "critic": "Sara Holdren"
+      },
+      {
+        "showId": "the-notebook-2024",
+        "file": "washpost--naveen-kumar.json",
+        "outlet": "The Washington Post",
+        "critic": "Naveen Kumar"
+      },
+      {
+        "showId": "the-roommate-2024",
+        "file": "cititour--brian-scott-lipton.json",
+        "outlet": "Cititour",
+        "critic": "Brian Scott Lipton"
+      },
+      {
+        "showId": "the-roommate-2024",
+        "file": "nydailynews--chris-jones.json",
+        "outlet": "New York Daily News",
+        "critic": "Chris Jones"
+      },
+      {
+        "showId": "the-roommate-2024",
+        "file": "nyt-theater--jonathan-mandell.json",
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell"
+      },
+      {
+        "showId": "the-roommate-2024",
+        "file": "the-village-voice--michael-musto.json",
+        "outlet": "the-village-voice",
+        "critic": "Michael Musto"
+      },
+      {
+        "showId": "the-roommate-2024",
+        "file": "washpost--naveen-kumar.json",
+        "outlet": "The Washington Post",
+        "critic": "Naveen Kumar"
+      },
+      {
+        "showId": "the-roommate-2024",
+        "file": "wsj--charles-isherwood.json",
+        "outlet": "The Wall Street Journal",
+        "critic": "Charles Isherwood"
+      },
+      {
+        "showId": "the-shark-is-broken-2023",
+        "file": "mashable--kristy-puchko.json",
+        "outlet": "Mashable",
+        "critic": "Kristy Puchko"
+      },
+      {
+        "showId": "the-shark-is-broken-2023",
+        "file": "nysr--bob-verini.json",
+        "outlet": "New York Stage Review",
+        "critic": "Bob Verini"
+      },
+      {
+        "showId": "the-shark-is-broken-2023",
+        "file": "nysr--steven-suskin.json",
+        "outlet": "New York Stage Review",
+        "critic": "Steven Suskin"
+      },
+      {
+        "showId": "the-shark-is-broken-2023",
+        "file": "nyt-theater--jonathan-mandell.json",
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell"
+      },
+      {
+        "showId": "the-shark-is-broken-2023",
+        "file": "observer--david-cote.json",
+        "outlet": "Observer",
+        "critic": "David Cote"
+      },
+      {
+        "showId": "the-shark-is-broken-2023",
+        "file": "queerty--matthew-wexler.json",
+        "outlet": "Queerty",
+        "critic": "Matthew Wexler"
+      },
+      {
+        "showId": "the-shark-is-broken-2023",
+        "file": "talkinbroadway--howard-miller.json",
+        "outlet": "Talkin' Broadway",
+        "critic": "Howard Miller"
+      },
+      {
+        "showId": "the-whos-tommy-2024",
+        "file": "broadwayworld--jennifer-perry.json",
+        "outlet": "BroadwayWorld",
+        "critic": "Jennifer Perry"
+      },
+      {
+        "showId": "the-whos-tommy-2024",
+        "file": "cititour--brian-scott-lipton.json",
+        "outlet": "Cititour",
+        "critic": "Brian Scott Lipton"
+      },
+      {
+        "showId": "the-whos-tommy-2024",
+        "file": "fredericksburgcom--gail-choochan.json",
+        "outlet": "fredericksburgcom",
+        "critic": "Gail Choochan"
+      },
+      {
+        "showId": "the-whos-tommy-2024",
+        "file": "nysr--bob-verini.json",
+        "outlet": "New York Stage Review",
+        "critic": "Bob Verini"
+      },
+      {
+        "showId": "the-whos-tommy-2024",
+        "file": "nysr--david-finkle.json",
+        "outlet": "New York Stage Review",
+        "critic": "David Finkle"
+      },
+      {
+        "showId": "the-whos-tommy-2024",
+        "file": "nyt-theater--jonathan-mandell.json",
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell"
+      },
+      {
+        "showId": "the-whos-tommy-2024",
+        "file": "showbiz411--roger-friedman.json",
+        "outlet": "Showbiz411",
+        "critic": "Roger Friedman"
+      },
+      {
+        "showId": "the-wiz-2024",
+        "file": "chicagotribune--chris-jones.json",
+        "outlet": "Chicago Tribune",
+        "critic": "Chris Jones"
+      },
+      {
+        "showId": "the-wiz-2024",
+        "file": "cititour--brian-scott-lipton.json",
+        "outlet": "Cititour",
+        "critic": "Brian Scott Lipton"
+      },
+      {
+        "showId": "the-wiz-2024",
+        "file": "ny-sun--elysa-gardner.json",
+        "outlet": "NY Sun",
+        "critic": "Elysa Gardner"
+      },
+      {
+        "showId": "the-wiz-2024",
+        "file": "nysr--bob-verini.json",
+        "outlet": "New York Stage Review",
+        "critic": "Bob Verini"
+      },
+      {
+        "showId": "the-wiz-2024",
+        "file": "nysr--david-finkle.json",
+        "outlet": "New York Stage Review",
+        "critic": "David Finkle"
+      },
+      {
+        "showId": "the-wiz-2024",
+        "file": "nyt-theater--jonathan-mandell.json",
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell"
+      },
+      {
+        "showId": "the-wiz-2024",
+        "file": "queerty--matthew-wexler.json",
+        "outlet": "Queerty",
+        "critic": "Matthew Wexler"
+      },
+      {
+        "showId": "the-wiz-2024",
+        "file": "slantmagazine--dan-rubins.json",
+        "outlet": "Slant Magazine",
+        "critic": "Dan Rubins"
+      },
+      {
+        "showId": "the-wiz-2024",
+        "file": "thestage--lane-williamson.json",
+        "outlet": "The Stage",
+        "critic": "Lane Williamson"
+      },
+      {
+        "showId": "the-wiz-2024",
+        "file": "village-voice--michael-musto.json",
+        "outlet": "Village Voice",
+        "critic": "Michael Musto"
+      },
+      {
+        "showId": "two-strangers-bway-2025",
+        "file": "culturesauce--thom-geier.json",
+        "outlet": "culturesauce",
+        "critic": "Thom Geier"
+      },
+      {
+        "showId": "two-strangers-bway-2025",
+        "file": "frontmezzjunkies--ross.json",
+        "outlet": "Front Mezz Junkies",
+        "critic": "Ross"
+      },
+      {
+        "showId": "two-strangers-bway-2025",
+        "file": "the-recs--randall-david-cook.json",
+        "outlet": "The Recs",
+        "critic": "Randall David Cook"
+      },
+      {
+        "showId": "uncle-vanya-2024",
+        "file": "broadwayworld--gary-naylor.json",
+        "outlet": "BroadwayWorld",
+        "critic": "Gary Naylor"
+      },
+      {
+        "showId": "water-for-elephants-2024",
+        "file": "cititour--brian-scott-lipton.json",
+        "outlet": "Cititour",
+        "critic": "Brian Scott Lipton"
+      },
+      {
+        "showId": "water-for-elephants-2024",
+        "file": "nypost--elisabeth-vincentelli.json",
+        "outlet": "New York Post",
+        "critic": "Elisabeth Vincentelli"
+      },
+      {
+        "showId": "water-for-elephants-2024",
+        "file": "nysr--frank-scheck.json",
+        "outlet": "New York Stage Review",
+        "critic": "Frank Scheck"
+      },
+      {
+        "showId": "water-for-elephants-2024",
+        "file": "nysr--sandy-macdonald.json",
+        "outlet": "New York Stage Review",
+        "critic": "Sandy MacDonald"
+      },
+      {
+        "showId": "water-for-elephants-2024",
+        "file": "nyt-theater--jonathan-mandell.json",
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell"
+      },
+      {
+        "showId": "water-for-elephants-2024",
+        "file": "observer--rex-reed.json",
+        "outlet": "Observer",
+        "critic": "Rex Reed"
+      },
+      {
+        "showId": "water-for-elephants-2024",
+        "file": "splash-magazines--laurie-graff.json",
+        "outlet": "Splash Magazines",
+        "critic": "Laurie Graff"
+      },
+      {
+        "showId": "water-for-elephants-2024",
+        "file": "thestage--lane-williamson.json",
+        "outlet": "The Stage",
+        "critic": "Lane Williamson"
+      },
+      {
+        "showId": "water-for-elephants-2024",
+        "file": "usatoday--patrick-ryan.json",
+        "outlet": "USA Today",
+        "critic": "Patrick Ryan"
+      },
+      {
+        "showId": "water-for-elephants-2024",
+        "file": "washpost--elisabeth-vincentelli.json",
+        "outlet": "The Washington Post",
+        "critic": "Elisabeth Vincentelli"
+      }
+    ],
+    "unknownOutlets": [
+      {
+        "file": "the-great-gatsby-2024/unknown--david-sheward.json",
+        "outletId": "unknown",
+        "outlet": "unknown",
+        "criticName": "David Sheward",
+        "url": "https://theaterlife.com/hamlet-the-great-gatsby-the-immersive-show/"
+      }
+    ],
+    "badDisplayNames": [
+      {
+        "outlet": "chicagotribune",
+        "count": 14,
+        "reviews": [
+          {
+            "show": "aladdin-2014",
+            "file": "chicagotribune--chris-jones.json",
+            "critic": "Chris Jones"
+          },
+          {
+            "show": "book-of-mormon-2011",
+            "file": "chicagotribune--chris-jones.json",
+            "critic": "Chris Jones"
+          },
+          {
+            "show": "bug-2026",
+            "file": "chicagotribune--chris-jones.json",
+            "critic": "Chris Jones"
+          },
+          {
+            "show": "hadestown-2019",
+            "file": "chicagotribune--chris-jones.json",
+            "critic": "Chris Jones"
+          },
+          {
+            "show": "harry-potter-2021",
+            "file": "chicagotribune--chris-jones.json",
+            "critic": "Chris Jones"
+          },
+          {
+            "show": "just-in-time-2025",
+            "file": "chicagotribune--chris-jones.json",
+            "critic": "Chris Jones"
+          },
+          {
+            "show": "liberation-2025",
+            "file": "chicagotribune--chris-jones.json",
+            "critic": "Chris Jones"
+          },
+          {
+            "show": "mamma-mia-2025",
+            "file": "chicagotribune--chris-jones.json",
+            "critic": "Chris Jones"
+          },
+          {
+            "show": "marjorie-prime-2025",
+            "file": "chicagotribune--chris-jones.json",
+            "critic": "Chris Jones"
+          },
+          {
+            "show": "oedipus-2025",
+            "file": "chicagotribune--chris-jones.json",
+            "critic": "Chris Jones"
+          },
+          {
+            "show": "our-town-2024",
+            "file": "chicagotribune--chris-jones.json",
+            "critic": "Chris Jones"
+          },
+          {
+            "show": "ragtime-2025",
+            "file": "chicagotribune--chris-jones.json",
+            "critic": "Chris Jones"
+          },
+          {
+            "show": "the-great-gatsby-2024",
+            "file": "chicagotribune--chris-jones.json",
+            "critic": "Chris Jones"
+          },
+          {
+            "show": "the-lion-king-1997",
+            "file": "chicagotribune--richard-christiansen.json",
+            "critic": "Richard Christiansen"
+          }
+        ]
+      },
+      {
+        "outlet": "culturesauce",
+        "count": 10,
+        "reviews": [
+          {
+            "show": "hells-kitchen-2024",
+            "file": "culturesauce--thom-geier.json",
+            "critic": "Thom Geier"
+          },
+          {
+            "show": "just-in-time-2025",
+            "file": "culturesauce--thom-geier.json",
+            "critic": "Thom Geier"
+          },
+          {
+            "show": "mamma-mia-2025",
+            "file": "culturesauce--thom-geier.json",
+            "critic": "Thom Geier"
+          },
+          {
+            "show": "oedipus-2025",
+            "file": "culturesauce--thom-geier.json",
+            "critic": "Thom Geier"
+          },
+          {
+            "show": "oh-mary-2024",
+            "file": "culturesauce--thom-geier.json",
+            "critic": "Thom Geier"
+          },
+          {
+            "show": "ragtime-2025",
+            "file": "culturesauce--thom-geier.json",
+            "critic": "Thom Geier"
+          },
+          {
+            "show": "stereophonic-2024",
+            "file": "culturesauce--thom-geier.json",
+            "critic": "Thom Geier"
+          },
+          {
+            "show": "the-great-gatsby-2024",
+            "file": "culturesauce--thom-geier.json",
+            "critic": "Thom Geier"
+          },
+          {
+            "show": "the-outsiders-2024",
+            "file": "culturesauce--thom-geier.json",
+            "critic": "Thom Geier"
+          },
+          {
+            "show": "two-strangers-bway-2025",
+            "file": "culturesauce--thom-geier.json",
+            "critic": "Thom Geier"
+          }
+        ]
+      },
+      {
+        "outlet": "lighting-and-sound-america",
+        "count": 9,
+        "reviews": [
+          {
+            "show": "boop-2025",
+            "file": "lighting-and-sound-america--david-barbour.json",
+            "critic": "David Barbour"
+          },
+          {
+            "show": "harry-potter-2021",
+            "file": "lighting-and-sound-america--david-barbour.json",
+            "critic": "David Barbour"
+          },
+          {
+            "show": "heart-of-rock-and-roll-2024",
+            "file": "lighting-and-sound-america--david-barbour.json",
+            "critic": "David Barbour"
+          },
+          {
+            "show": "just-in-time-2025",
+            "file": "lighting-and-sound-america--david-barbour.json",
+            "critic": "David Barbour"
+          },
+          {
+            "show": "mary-jane-2024",
+            "file": "lighting-and-sound-america--david-barbour.json",
+            "critic": "David Barbour"
+          },
+          {
+            "show": "queen-versailles-2025",
+            "file": "lighting-and-sound-america--david-barbour.json",
+            "critic": "David Barbour"
+          },
+          {
+            "show": "six-2021",
+            "file": "lighting-and-sound-america--david-barbour.json",
+            "critic": "David Barbour"
+          },
+          {
+            "show": "stereophonic-2024",
+            "file": "lighting-and-sound-america--david-barbour.json",
+            "critic": "David Barbour"
+          },
+          {
+            "show": "the-roommate-2024",
+            "file": "lighting-and-sound-america--david-barbour.json",
+            "critic": "David Barbour"
+          }
+        ]
+      },
+      {
+        "outlet": "amny",
+        "count": 7,
+        "reviews": [
+          {
+            "show": "harmony-2023",
+            "file": "amny--matt.json",
+            "critic": "Matt"
+          },
+          {
+            "show": "here-lies-love-2023",
+            "file": "amny--matt-windman.json",
+            "critic": "Matt Windman"
+          },
+          {
+            "show": "patriots-2024",
+            "file": "amny--matt.json",
+            "critic": "Matt"
+          },
+          {
+            "show": "six-2021",
+            "file": "amny--matt-windman.json",
+            "critic": "Matt Windman"
+          },
+          {
+            "show": "the-notebook-2024",
+            "file": "amny--david-gordon.json",
+            "critic": "David Gordon"
+          },
+          {
+            "show": "the-outsiders-2024",
+            "file": "amny--matt.json",
+            "critic": "Matt"
+          },
+          {
+            "show": "the-wiz-2024",
+            "file": "amny--matt.json",
+            "critic": "Matt"
+          }
+        ]
+      },
+      {
+        "outlet": "theater-scene",
+        "count": 6,
+        "reviews": [
+          {
+            "show": "hadestown-2019",
+            "file": "theater-scene--victor-gluck.json",
+            "critic": "Victor Gluck"
+          },
+          {
+            "show": "hamilton-2015",
+            "file": "theater-scene--victor-gluck.json",
+            "critic": "Victor Gluck"
+          },
+          {
+            "show": "illinoise-2024",
+            "file": "theater-scene--victor-gluck.json",
+            "critic": "Victor Gluck"
+          },
+          {
+            "show": "queen-versailles-2025",
+            "file": "theater-scene--joseph-pisano.json",
+            "critic": "Joseph Pisano"
+          },
+          {
+            "show": "real-women-have-curves-2025",
+            "file": "theater-scene--victor-gluck.json",
+            "critic": "Victor Gluck"
+          },
+          {
+            "show": "six-2021",
+            "file": "theater-scene--joseph-pisano.json",
+            "critic": "Joseph Pisano"
+          }
+        ]
+      },
+      {
+        "outlet": "latimes",
+        "count": 5,
+        "reviews": [
+          {
+            "show": "book-of-mormon-2011",
+            "file": "latimes--charles-mcnulty.json",
+            "critic": "Charles McNulty"
+          },
+          {
+            "show": "hadestown-2019",
+            "file": "latimes--charles-mcnulty.json",
+            "critic": "Charles McNulty"
+          },
+          {
+            "show": "illinoise-2024",
+            "file": "latimes--charles.json",
+            "critic": "Charles"
+          },
+          {
+            "show": "oedipus-2025",
+            "file": "latimes--charles-mcnulty.json",
+            "critic": "Charles McNulty"
+          },
+          {
+            "show": "queen-versailles-2025",
+            "file": "latimes--charles.json",
+            "critic": "Charles"
+          }
+        ]
+      },
+      {
+        "outlet": "advertisement",
+        "count": 5,
+        "reviews": [
+          {
+            "show": "boop-2025",
+            "file": "advertisement--jonathan-mandell.json",
+            "critic": "Jonathan Mandell"
+          },
+          {
+            "show": "cabaret-2024",
+            "file": "advertisement--chris-jones.json",
+            "critic": "Chris Jones"
+          },
+          {
+            "show": "just-in-time-2025",
+            "file": "advertisement--chris-jones.json",
+            "critic": "Chris Jones"
+          },
+          {
+            "show": "queen-versailles-2025",
+            "file": "advertisement--jonathan-mandell.json",
+            "critic": "Jonathan Mandell"
+          },
+          {
+            "show": "the-whos-tommy-2024",
+            "file": "advertisement--joe-dziemianowicz.json",
+            "critic": "Joe Dziemianowicz"
+          }
+        ]
+      },
+      {
+        "outlet": "village-voice",
+        "count": 4,
+        "reviews": [
+          {
+            "show": "an-enemy-of-the-people-2024",
+            "file": "village-voice--michael-musto.json",
+            "critic": "Michael Musto"
+          },
+          {
+            "show": "cabaret-2024",
+            "file": "village-voice--michael-musto.json",
+            "critic": "Michael Musto"
+          },
+          {
+            "show": "harry-potter-2021",
+            "file": "village-voice--michael-feingold.json",
+            "critic": "Michael Feingold"
+          },
+          {
+            "show": "wicked-2003",
+            "file": "village-voice--michael-feingold.json",
+            "critic": "Michael Feingold"
+          }
+        ]
+      },
+      {
+        "outlet": "did-they-like-it",
+        "count": 4,
+        "reviews": [
+          {
+            "show": "and-juliet-2022",
+            "file": "did-they-like-it--juan-michael-porter-ii.json",
+            "critic": "Juan Michael Porter II"
+          },
+          {
+            "show": "harry-potter-2021",
+            "file": "did-they-like-it--ana-zambrana.json",
+            "critic": "Ana Zambrana"
+          },
+          {
+            "show": "mj-2022",
+            "file": "did-they-like-it--juan-michael-porter-ii.json",
+            "critic": "Juan Michael Porter II"
+          },
+          {
+            "show": "six-2021",
+            "file": "did-they-like-it--jose-sols.json",
+            "critic": "Jose Solís"
+          }
+        ]
+      },
+      {
+        "outlet": "new-york-sun",
+        "count": 4,
+        "reviews": [
+          {
+            "show": "hells-kitchen-2024",
+            "file": "new-york-sun--elysa-gardner.json",
+            "critic": "Elysa Gardner"
+          },
+          {
+            "show": "patriots-2024",
+            "file": "new-york-sun--elysa-gardner.json",
+            "critic": "Elysa Gardner"
+          },
+          {
+            "show": "patriots-2024",
+            "file": "new-york-sun--elysa.json",
+            "critic": "Elysa"
+          },
+          {
+            "show": "real-women-have-curves-2025",
+            "file": "new-york-sun--elysa-gardner.json",
+            "critic": "Elysa Gardner"
+          }
+        ]
+      },
+      {
+        "outlet": "northjerseycom",
+        "count": 3,
+        "reviews": [
+          {
+            "show": "aladdin-2014",
+            "file": "northjerseycom--robert-feldberg.json",
+            "critic": "Robert Feldberg"
+          },
+          {
+            "show": "hamilton-2015",
+            "file": "northjerseycom--robert-feldberg.json",
+            "critic": "Robert Feldberg"
+          },
+          {
+            "show": "mary-jane-2024",
+            "file": "northjerseycom--northjerseycom.json",
+            "critic": "NorthJersey.com"
+          }
+        ]
+      },
+      {
+        "outlet": "bergen-record",
+        "count": 3,
+        "reviews": [
+          {
+            "show": "an-enemy-of-the-people-2024",
+            "file": "bergen-record--robert-feldberg.json",
+            "critic": "Robert Feldberg"
+          },
+          {
+            "show": "here-lies-love-2023",
+            "file": "bergen-record--robert-feldberg.json",
+            "critic": "Robert Feldberg"
+          },
+          {
+            "show": "wicked-2003",
+            "file": "bergen-record--robert-feldberg.json",
+            "critic": "Robert Feldberg"
+          }
+        ]
+      },
+      {
+        "outlet": "chelsea-community-news",
+        "count": 3,
+        "reviews": [
+          {
+            "show": "back-to-the-future-2023",
+            "file": "chelsea-community-news--michael-musto.json",
+            "critic": "Michael Musto"
+          },
+          {
+            "show": "hells-kitchen-2024",
+            "file": "chelsea-community-news--michael-musto.json",
+            "critic": "Michael Musto"
+          },
+          {
+            "show": "suffs-2024",
+            "file": "chelsea-community-news--michael-musto.json",
+            "critic": "Michael Musto"
+          }
+        ]
+      },
+      {
+        "outlet": "the-village-voice",
+        "count": 3,
+        "reviews": [
+          {
+            "show": "book-of-mormon-2011",
+            "file": "the-village-voice--michael-musto.json",
+            "critic": "Michael Musto"
+          },
+          {
+            "show": "merrily-we-roll-along-2023",
+            "file": "the-village-voice--michael-musto.json",
+            "critic": "Michael Musto"
+          },
+          {
+            "show": "the-roommate-2024",
+            "file": "the-village-voice--michael-musto.json",
+            "critic": "Michael Musto"
+          }
+        ]
+      },
+      {
+        "outlet": "nbcnews",
+        "count": 3,
+        "reviews": [
+          {
+            "show": "hamilton-2015",
+            "file": "nbcnews--elysa-gardner.json",
+            "critic": "Elysa Gardner"
+          },
+          {
+            "show": "hamilton-2015",
+            "file": "nbcnews--kristy-puchko.json",
+            "critic": "Kristy Puchko"
+          },
+          {
+            "show": "hamilton-2015",
+            "file": "nbcnews--melissa-locker.json",
+            "critic": "Melissa Locker"
+          }
+        ]
+      },
+      {
+        "outlet": "financial-times-uk",
+        "count": 2,
+        "reviews": [
+          {
+            "show": "aladdin-2014",
+            "file": "financial-times-uk--brendan-lemon.json",
+            "critic": "Brendan Lemon"
+          },
+          {
+            "show": "harry-potter-2021",
+            "file": "financial-times-uk--charles-isherwood.json",
+            "critic": "Charles Isherwood"
+          }
+        ]
+      },
+      {
+        "outlet": "zeal-nyc",
+        "count": 2,
+        "reviews": [
+          {
+            "show": "aladdin-2014",
+            "file": "zeal-nyc--chris-caggiano.json",
+            "critic": "Chris Caggiano"
+          },
+          {
+            "show": "harry-potter-2021",
+            "file": "zeal-nyc--chris-caggiano.json",
+            "critic": "Chris Caggiano"
+          }
+        ]
+      },
+      {
+        "outlet": "dcmetro",
+        "count": 2,
+        "reviews": [
+          {
+            "show": "hadestown-2019",
+            "file": "dcmetro--deb-miller.json",
+            "critic": "Deb Miller"
+          },
+          {
+            "show": "harry-potter-2021",
+            "file": "dcmetro--deb-miller.json",
+            "critic": "Deb Miller"
+          }
+        ]
+      },
+      {
+        "outlet": "gotham-playgoer",
+        "count": 2,
+        "reviews": [
+          {
+            "show": "hadestown-2019",
+            "file": "gotham-playgoer--robert-sholiton.json",
+            "critic": "Robert Sholiton"
+          },
+          {
+            "show": "harry-potter-2021",
+            "file": "gotham-playgoer--robert-sholiton.json",
+            "critic": "Robert Sholiton"
+          }
+        ]
+      },
+      {
+        "outlet": "stage-left",
+        "count": 2,
+        "reviews": [
+          {
+            "show": "hadestown-2019",
+            "file": "stage-left--robert-russo.json",
+            "critic": "Robert Russo"
+          },
+          {
+            "show": "harry-potter-2021",
+            "file": "stage-left--robert-russo.json",
+            "critic": "Robert Russo"
+          }
+        ]
+      },
+      {
+        "outlet": "theatre-reviews-limited",
+        "count": 2,
+        "reviews": [
+          {
+            "show": "hamilton-2015",
+            "file": "theatre-reviews-limited--david-roberts.json",
+            "critic": "David Roberts"
+          },
+          {
+            "show": "queen-versailles-2025",
+            "file": "theatre-reviews-limited--david-roberts.json",
+            "critic": "David Roberts"
+          }
+        ]
+      },
+      {
+        "outlet": "njcom",
+        "count": 2,
+        "reviews": [
+          {
+            "show": "harry-potter-2021",
+            "file": "njcom--christopher-kelly.json",
+            "critic": "Christopher Kelly"
+          },
+          {
+            "show": "the-lion-king-1997",
+            "file": "njcom--michael-sommers.json",
+            "critic": "Michael Sommers"
+          }
+        ]
+      },
+      {
+        "outlet": "theaterscenecom",
+        "count": 2,
+        "reviews": [
+          {
+            "show": "harry-potter-2021",
+            "file": "theaterscenecom--julia-polinsky.json",
+            "critic": "Julia Polinsky"
+          },
+          {
+            "show": "oh-mary-2024",
+            "file": "theaterscenecom--deirdre-donovan.json",
+            "critic": "Deirdre Donovan"
+          }
+        ]
+      },
+      {
+        "outlet": "mashable",
+        "count": 2,
+        "reviews": [
+          {
+            "show": "moulin-rouge-2019",
+            "file": "mashable--erin-strecker.json",
+            "critic": "Erin Strecker"
+          },
+          {
+            "show": "six-2021",
+            "file": "mashable--erin-strecker.json",
+            "critic": "Erin Strecker"
+          }
+        ]
+      },
+      {
+        "outlet": "the-interested-bystander",
+        "count": 2,
+        "reviews": [
+          {
+            "show": "oh-mary-2024",
+            "file": "the-interested-bystander--cary-wong.json",
+            "critic": "Cary Wong"
+          },
+          {
+            "show": "queen-versailles-2025",
+            "file": "the-interested-bystander--cary-wong.json",
+            "critic": "Cary Wong"
+          }
+        ]
+      },
+      {
+        "outlet": "slantmagazine",
+        "count": 2,
+        "reviews": [
+          {
+            "show": "the-great-gatsby-2024",
+            "file": "slantmagazine--dan-rubins.json",
+            "critic": "Dan Rubins"
+          },
+          {
+            "show": "the-outsiders-2024",
+            "file": "slantmagazine--dan-rubins.json",
+            "critic": "Dan Rubins"
+          }
+        ]
+      },
+      {
+        "outlet": "broadway-voice",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "aladdin-2014",
+            "file": "broadway-voice--kristen-balzano.json",
+            "critic": "Kristen Balzano"
+          }
+        ]
+      },
+      {
+        "outlet": "huffpost",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "aladdin-2014",
+            "file": "huffpost--steven-suskin.json",
+            "critic": "Steven Suskin"
+          }
+        ]
+      },
+      {
+        "outlet": "new-jersey-newsroom",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "aladdin-2014",
+            "file": "new-jersey-newsroom--michael-sommers.json",
+            "critic": "Michael Sommers"
+          }
+        ]
+      },
+      {
+        "outlet": "bloomberg",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "an-enemy-of-the-people-2024",
+            "file": "bloomberg--andnbspjeremy-gerard.json",
+            "critic": "&nbsp;Jeremy Gerard"
+          }
+        ]
+      },
+      {
+        "outlet": "city-beat",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "and-juliet-2022",
+            "file": "city-beat--brain-scott-lipton.json",
+            "critic": "Brain Scott Lipton"
+          }
+        ]
+      },
+      {
+        "outlet": "backstage",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "book-of-mormon-2011",
+            "file": "backstage--david-sheward.json",
+            "critic": "David Sheward"
+          }
+        ]
+      },
+      {
+        "outlet": "financialtimes",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "book-of-mormon-2011",
+            "file": "financialtimes--brendan-lemon.json",
+            "critic": "Brendan Lemon"
+          }
+        ]
+      },
+      {
+        "outlet": "4columns",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "bug-2026",
+            "file": "4columns--david-cote.json",
+            "critic": "David Cote"
+          }
+        ]
+      },
+      {
+        "outlet": "broadway-and-me",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "hadestown-2019",
+            "file": "broadway-and-me--janice-c-simpson.json",
+            "critic": "Janice C. Simpson"
+          }
+        ]
+      },
+      {
+        "outlet": "cabaret-scenes",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "hadestown-2019",
+            "file": "cabaret-scenes--elizabeth-ahlfors.json",
+            "critic": "Elizabeth Ahlfors"
+          }
+        ]
+      },
+      {
+        "outlet": "carole-di-tosti",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "hadestown-2019",
+            "file": "carole-di-tosti--carole-di-tosti.json",
+            "critic": "Carole Di Tosti"
+          }
+        ]
+      },
+      {
+        "outlet": "evening-standard",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "hadestown-2019",
+            "file": "evening-standard--henry-hitchings.json",
+            "critic": "Henry Hitchings"
+          }
+        ]
+      },
+      {
+        "outlet": "musical-theatre-review",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "hadestown-2019",
+            "file": "musical-theatre-review--ron-cohen.json",
+            "critic": "Ron Cohen"
+          }
+        ]
+      },
+      {
+        "outlet": "newnownextcom",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "hadestown-2019",
+            "file": "newnownextcom--michael-musto.json",
+            "critic": "Michael Musto"
+          }
+        ]
+      },
+      {
+        "outlet": "off-script-with-dan-dwyer",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "hadestown-2019",
+            "file": "off-script-with-dan-dwyer--dan-dwyer.json",
+            "critic": "Dan Dwyer"
+          }
+        ]
+      },
+      {
+        "outlet": "pages-on-stages",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "hadestown-2019",
+            "file": "pages-on-stages--mason-pilevsky.json",
+            "critic": "Mason Pilevsky"
+          }
+        ]
+      },
+      {
+        "outlet": "reviews-off-broadway",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "hadestown-2019",
+            "file": "reviews-off-broadway--scott-mitchell.json",
+            "critic": "Scott Mitchell"
+          }
+        ]
+      },
+      {
+        "outlet": "show-showdown",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "hadestown-2019",
+            "file": "show-showdown--elizabeth-wollman.json",
+            "critic": "Elizabeth Wollman"
+          }
+        ]
+      },
+      {
+        "outlet": "stagezine",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "hadestown-2019",
+            "file": "stagezine--david-nounou.json",
+            "critic": "David NouNou"
+          }
+        ]
+      },
+      {
+        "outlet": "theater-reviews-from-my-seat",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "hadestown-2019",
+            "file": "theater-reviews-from-my-seat--joe-lombardi.json",
+            "critic": "Joe Lombardi"
+          }
+        ]
+      },
+      {
+        "outlet": "theatres-leiter-side",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "hadestown-2019",
+            "file": "theatres-leiter-side--samuel-l-leiter.json",
+            "critic": "Samuel L. Leiter"
+          }
+        ]
+      },
+      {
+        "outlet": "act-three-the-reviews",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "hamilton-2015",
+            "file": "act-three-the-reviews--doug-marino.json",
+            "critic": "Doug Marino"
+          }
+        ]
+      },
+      {
+        "outlet": "bobs-theater-blog",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "hamilton-2015",
+            "file": "bobs-theater-blog--robert-sholiton.json",
+            "critic": "Robert Sholiton"
+          }
+        ]
+      },
+      {
+        "outlet": "broadwayselect",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "hamilton-2015",
+            "file": "broadwayselect--peter-filichia.json",
+            "critic": "Peter Filichia"
+          }
+        ]
+      },
+      {
+        "outlet": "roy-berko-info",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "hamilton-2015",
+            "file": "roy-berko-info--roy-berko.json",
+            "critic": "Roy Berko"
+          }
+        ]
+      },
+      {
+        "outlet": "the-clyde-fitch-report",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "hamilton-2015",
+            "file": "the-clyde-fitch-report--david-finkle.json",
+            "critic": "David Finkle"
+          }
+        ]
+      },
+      {
+        "outlet": "the-three-tomatoes",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "hamilton-2015",
+            "file": "the-three-tomatoes--valerie-samaldone.json",
+            "critic": "Valerie Samaldone"
+          }
+        ]
+      },
+      {
+        "outlet": "drama-queen-nyc",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "harry-potter-2021",
+            "file": "drama-queen-nyc--jonathan-warman.json",
+            "critic": "Jonathan Warman"
+          }
+        ]
+      },
+      {
+        "outlet": "exeunt-magazine",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "harry-potter-2021",
+            "file": "exeunt-magazine--kev-berry.json",
+            "critic": "Kev Berry"
+          }
+        ]
+      },
+      {
+        "outlet": "fordham-observer",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "harry-potter-2021",
+            "file": "fordham-observer--michael-appler.json",
+            "critic": "Michael Appler"
+          }
+        ]
+      },
+      {
+        "outlet": "limelight-magazine-au",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "harry-potter-2021",
+            "file": "limelight-magazine-au--clive-paget.json",
+            "critic": "Clive Paget"
+          }
+        ]
+      },
+      {
+        "outlet": "the-stage-uk",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "harry-potter-2021",
+            "file": "the-stage-uk--mark-shenton.json",
+            "critic": "Mark Shenton"
+          }
+        ]
+      },
+      {
+        "outlet": "theater-pizzazz",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "harry-potter-2021",
+            "file": "theater-pizzazz--michael-bracken.json",
+            "critic": "Michael Bracken"
+          }
+        ]
+      },
+      {
+        "outlet": "next-magazine",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "just-for-us-2023",
+            "file": "next-magazine--michael-hollett.json",
+            "critic": "Michael Hollett"
+          }
+        ]
+      },
+      {
+        "outlet": "one-minute-critic",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "marjorie-prime-2025",
+            "file": "oneminutecritic--matthew-wexler.json",
+            "critic": "Matthew Wexler"
+          }
+        ]
+      },
+      {
+        "outlet": "whatsonstage",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "merrily-we-roll-along-2023",
+            "file": "whatsonstage--david-gordon.json",
+            "critic": "David Gordon"
+          }
+        ]
+      },
+      {
+        "outlet": "theater-news-online",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "moulin-rouge-2019",
+            "file": "theater-news-online--jeremy-gerard.json",
+            "critic": "Jeremy Gerard"
+          }
+        ]
+      },
+      {
+        "outlet": "this-week-in-new-york",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "oh-mary-2024",
+            "file": "this-week-in-new-york--mark-rifkin.json",
+            "critic": "Mark Rifkin"
+          }
+        ]
+      },
+      {
+        "outlet": "unknown",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "the-great-gatsby-2024",
+            "file": "unknown--david-sheward.json",
+            "critic": "David Sheward"
+          }
+        ]
+      },
+      {
+        "outlet": "columbus-dispatch",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "the-lion-king-1997",
+            "file": "columbus-dispatch--michael-grossberg.json",
+            "critic": "Michael Grossberg"
+          }
+        ]
+      },
+      {
+        "outlet": "fredericksburgcom",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "the-whos-tommy-2024",
+            "file": "fredericksburgcom--gail-choochan.json",
+            "critic": "Gail Choochan"
+          }
+        ]
+      },
+      {
+        "outlet": "oneminutecritic",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "two-strangers-bway-2025",
+            "file": "oneminutecritic--matthew-wexler.json",
+            "critic": "Matthew Wexler"
+          }
+        ]
+      },
+      {
+        "outlet": "njcom-star-ledger",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "wicked-2003",
+            "file": "njcom-star-ledger--michael-sommers.json",
+            "critic": "Michael Sommers"
+          }
+        ]
+      },
+      {
+        "outlet": "the-journal-news-lohud",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "wicked-2003",
+            "file": "the-journal-news-lohud--jacques-le-sourd.json",
+            "critic": "Jacques Le Sourd"
+          }
+        ]
+      },
+      {
+        "outlet": "theatre-is-easy",
+        "count": 1,
+        "reviews": [
+          {
+            "show": "wicked-2003",
+            "file": "theatre-is-easy--dan-dinero-and-molly-marinik.json",
+            "critic": "Dan Dinero & Molly Marinik"
+          }
+        ]
+      }
+    ]
+  }
+}
