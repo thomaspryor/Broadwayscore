@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T20:05:01.240Z",
+  "runDate": "2026-01-30T20:05:14.679Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "the-outsiders-2024",
+    "showFilter": "water-for-elephants-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 3,
-    "failed": 66,
+    "failed": 65,
     "skipped": 0,
-    "successRate": "4.3%"
+    "successRate": "4.4%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -24,18 +24,18 @@
     "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 8,
+    "tier1Attempts": 7,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 8,
-    "tier2Success": 0,
-    "tier3Attempts": 8,
+    "tier2Attempts": 7,
+    "tier2Success": 1,
+    "tier3Attempts": 6,
     "tier3Success": 0,
-    "tier4Attempts": 20,
-    "tier4Success": 3,
-    "totalFailed": 11,
-    "scrapingBeeCreditsUsed": 30,
+    "tier4Attempts": 15,
+    "tier4Success": 4,
+    "totalFailed": 10,
+    "scrapingBeeCreditsUsed": 50,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
@@ -100,17 +100,16 @@
     "wicked-2003/njcom-star-ledger--michael-sommers.json",
     "wicked-2003/village-voice--michael-feingold.json",
     "wicked-2003/washpost--peter-marks.json",
-    "the-outsiders-2024/hollywood-reporter--angie-han.json",
-    "the-outsiders-2024/hollywood-reporter--david-rooney.json",
-    "the-outsiders-2024/deadline--greg-evans.json",
-    "the-outsiders-2024/ew--emlyn-travis.json",
-    "the-outsiders-2024/nydailynews--chris-jones.json",
-    "the-outsiders-2024/theatermania--david-gordon.json",
-    "the-outsiders-2024/timeout--adam-feldman.json",
-    "the-outsiders-2024/timeout--adam.json",
-    "the-outsiders-2024/wsj--charles-isherwood.json",
-    "the-outsiders-2024/rollingstone--brittany-spanos.json",
-    "the-outsiders-2024/talkinbroadway--walter-bilderback.json"
+    "water-for-elephants-2024/variety--aramide-tinubu.json",
+    "water-for-elephants-2024/variety--charles-isherwood.json",
+    "water-for-elephants-2024/vulture--helen-shaw.json",
+    "water-for-elephants-2024/nypost--johnny-oleksinski.json",
+    "water-for-elephants-2024/observer--rex-reed.json",
+    "water-for-elephants-2024/theatermania--andy-propst.json",
+    "water-for-elephants-2024/timeout--adam-feldman.json",
+    "water-for-elephants-2024/wsj--charles-isherwood.json",
+    "water-for-elephants-2024/wsj--charles.json",
+    "water-for-elephants-2024/thestage--lane-williamson.json"
   ],
   "tierDetails": {
     "playwright": [],
