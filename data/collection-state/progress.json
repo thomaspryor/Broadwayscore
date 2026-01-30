@@ -2,7 +2,8 @@
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "wicked-2003/ew--alice-king.json"
+    "wicked-2003/ew--alice-king.json",
+    "hadestown-2019/broadwaynews--charles-isherwood.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -59,11 +60,22 @@
     "wicked-2003/front-row-center--stanford-friedman.json",
     "wicked-2003/njcom-star-ledger--michael-sommers.json",
     "wicked-2003/village-voice--michael-feingold.json",
-    "wicked-2003/washpost--peter-marks.json"
+    "wicked-2003/washpost--peter-marks.json",
+    "hadestown-2019/deadline--pete-hammond.json",
+    "hadestown-2019/ew--jessica-derschowitz.json",
+    "hadestown-2019/ew--kristen-baldwin.json",
+    "hadestown-2019/guardian--jesse-green.json",
+    "hadestown-2019/guardian--jesse-oxfeld.json",
+    "hadestown-2019/nypost--johnny-oleksinski.json",
+    "hadestown-2019/observer--david-cote.json",
+    "hadestown-2019/observer--rex-reed.json",
+    "hadestown-2019/reviews-off-broadway--scott-mitchell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "hadestown-2019/broadwaynews--charles-isherwood.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
@@ -73,5 +85,5 @@
     ]
   },
   "startTime": "2026-01-30T03:15:53.678Z",
-  "lastProcessed": "wicked-2003/washpost--peter-marks.json"
+  "lastProcessed": "hadestown-2019/reviews-off-broadway--scott-mitchell.json"
 }
