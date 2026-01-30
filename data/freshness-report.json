@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-01-26T00:06:18.972Z",
+  "generatedAt": "2026-01-30T06:39:42.783Z",
   "summary": {
-    "totalShows": 57,
-    "openShows": 32,
-    "closedShows": 9
+    "totalShows": 87,
+    "openShows": 31,
+    "closedShows": 40
   },
   "grosses": {
-    "lastUpdated": "2026-01-24T01:03:19.727Z",
-    "weekEnding": "1/18/2026",
-    "showCount": 38,
+    "lastUpdated": "2026-01-28T15:22:16.504Z",
+    "weekEnding": "1/25/2026",
+    "showCount": 77,
     "status": "ok",
     "daysStale": 1
   },
@@ -17,34 +17,46 @@
   },
   "closingSoon": [
     {
+      "id": "mamma-mia-2025",
+      "title": "Mamma Mia!",
+      "closingDate": "2026-02-01",
+      "daysLeft": 2
+    },
+    {
       "id": "liberation-2025",
       "title": "Liberation",
       "closingDate": "2026-02-01",
-      "daysLeft": 6
+      "daysLeft": 2
     },
     {
       "id": "oedipus-2025",
       "title": "Oedipus",
       "closingDate": "2026-02-08",
-      "daysLeft": 13
+      "daysLeft": 9
+    },
+    {
+      "id": "marjorie-prime-2025",
+      "title": "Marjorie Prime",
+      "closingDate": "2026-02-15",
+      "daysLeft": 16
     },
     {
       "id": "hells-kitchen-2024",
       "title": "Hell's Kitchen",
       "closingDate": "2026-02-22",
-      "daysLeft": 27
+      "daysLeft": 23
     },
     {
       "id": "bug-2026",
       "title": "Bug",
       "closingDate": "2026-02-22",
-      "daysLeft": 27
+      "daysLeft": 23
     },
     {
-      "id": "all-out-comedy-about-ambition-2026",
+      "id": "all-out-2025",
       "title": "All Out: Comedy About Ambition",
       "closingDate": "2026-03-08",
-      "daysLeft": 41
+      "daysLeft": 37
     }
   ],
   "dataQuality": {
@@ -284,10 +296,6 @@
           {
             "type": "missing_cast",
             "severity": "medium"
-          },
-          {
-            "type": "no_closing_date",
-            "severity": "info"
           }
         ]
       },
@@ -316,20 +324,6 @@
           {
             "type": "missing_creative",
             "severity": "medium"
-          }
-        ]
-      },
-      {
-        "id": "queen-versailles-2025",
-        "title": "The Queen of Versailles",
-        "issues": [
-          {
-            "type": "missing_creative",
-            "severity": "medium"
-          },
-          {
-            "type": "no_closing_date",
-            "severity": "info"
           }
         ]
       },
@@ -372,10 +366,6 @@
           {
             "type": "missing_cast",
             "severity": "medium"
-          },
-          {
-            "type": "no_closing_date",
-            "severity": "info"
           }
         ]
       },
@@ -412,40 +402,12 @@
         ]
       },
       {
-        "id": "all-out-comedy-about-ambition-2026",
+        "id": "all-out-2025",
         "title": "All Out: Comedy About Ambition",
         "issues": [
           {
-            "type": "missing_poster",
-            "severity": "high"
-          },
-          {
-            "type": "missing_hero",
-            "severity": "medium"
-          },
-          {
-            "type": "missing_thumbnail",
-            "severity": "low"
-          },
-          {
-            "type": "missing_synopsis",
-            "severity": "high"
-          },
-          {
-            "type": "missing_tickets",
-            "severity": "high"
-          },
-          {
             "type": "missing_cast",
             "severity": "medium"
-          },
-          {
-            "type": "missing_creative",
-            "severity": "medium"
-          },
-          {
-            "type": "missing_runtime",
-            "severity": "low"
           },
           {
             "type": "missing_age_rec",
@@ -496,41 +458,18 @@
         "The Book of Mormon",
         "& Juliet",
         "Harry Potter and the Cursed Child",
-        "Mamma Mia!",
         "Stranger Things: The First Shadow",
-        "The Queen of Versailles",
         "Death Becomes Her",
         "Buena Vista Social Club",
-        "Ragtime",
         "Chess",
         "Just in Time"
       ],
       "missing_creative": [
         "Oedipus",
         "Liberation",
-        "The Queen of Versailles",
         "Death Becomes Her",
         "Buena Vista Social Club",
-        "Just in Time",
-        "All Out: Comedy About Ambition"
-      ],
-      "missing_poster": [
-        "All Out: Comedy About Ambition"
-      ],
-      "missing_hero": [
-        "All Out: Comedy About Ambition"
-      ],
-      "missing_thumbnail": [
-        "All Out: Comedy About Ambition"
-      ],
-      "missing_synopsis": [
-        "All Out: Comedy About Ambition"
-      ],
-      "missing_tickets": [
-        "All Out: Comedy About Ambition"
-      ],
-      "missing_runtime": [
-        "All Out: Comedy About Ambition"
+        "Just in Time"
       ],
       "missing_age_rec": [
         "All Out: Comedy About Ambition"
