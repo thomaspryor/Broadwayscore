@@ -100,6 +100,16 @@ export function ProGateProvider({ children, pageViewThreshold = 2 }: ProGateProv
     setModalOpen(false);
   }, [modalBlocking]);
 
+  // Listen for mid-session subscriptions from inline forms (FooterEmailCapture, etc.)
+  useEffect(() => {
+    const handleSubscribed = () => {
+      setHasEmail(true);
+      setModalOpen(false);
+    };
+    window.addEventListener('bsc_subscribed', handleSubscribed);
+    return () => window.removeEventListener('bsc_subscribed', handleSubscribed);
+  }, []);
+
   // Exit intent detection - fires when mouse leaves viewport toward top
   useEffect(() => {
     if (!isClient || hasEmail || exitIntentFired) return;
