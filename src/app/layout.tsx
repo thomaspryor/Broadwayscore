@@ -3,6 +3,8 @@ import './globals.css';
 import Link from 'next/link';
 import ScrollToTop from '@/components/ScrollToTop';
 import HeaderSearch from '@/components/HeaderSearch';
+import HeaderSubscribeButton from '@/components/HeaderSubscribeButton';
+import FooterEmailCapture from '@/components/FooterEmailCapture';
 import { generateOrganizationSchema, generateWebSiteSchema, BASE_URL } from '@/lib/seo';
 import { getAllShows } from '@/lib/data';
 import { Analytics } from '@vercel/analytics/react';
@@ -136,12 +138,7 @@ export default function RootLayout({
                   <Link href="/" className="nav-link nav-link-active">
                     Shows
                   </Link>
-                  <Link
-                    href="/#subscribe"
-                    className="ml-1 px-3 py-1.5 text-sm font-semibold text-white bg-brand hover:bg-brand-hover rounded-lg transition-colors"
-                  >
-                    Subscribe
-                  </Link>
+                  <HeaderSubscribeButton />
                 </div>
                 <HeaderSearch shows={searchShows} />
               </div>
@@ -193,10 +190,32 @@ export default function RootLayout({
                   <li><Link href="/audience-buzz" className="hover:text-white transition-colors">Audience Scorecard</Link></li>
                   <li><Link href="/broadway-theaters-map" className="hover:text-white transition-colors">Theater Map</Link></li>
                   <li><Link href="/methodology" className="hover:text-white transition-colors">How It Works</Link></li>
-                  <li><Link href="/submit-review" className="hover:text-white transition-colors">Submit Review</Link></li>
-                  <li><Link href="/feedback" className="hover:text-white transition-colors">Feedback</Link></li>
                 </ul>
               </div>
+            </div>
+
+            {/* Community Links */}
+            <div className="mb-8 pb-8 border-b border-white/5 text-center">
+              <p className="text-sm font-semibold text-white mb-3">Help improve Broadway Scorecard</p>
+              <div className="flex items-center justify-center gap-3">
+                <Link
+                  href="/submit-review"
+                  className="px-5 py-2.5 text-sm font-semibold text-white border border-white/15 rounded-lg hover:bg-white/5 transition-colors"
+                >
+                  Submit a Review
+                </Link>
+                <Link
+                  href="/feedback"
+                  className="px-5 py-2.5 text-sm font-semibold text-white border border-white/15 rounded-lg hover:bg-white/5 transition-colors"
+                >
+                  Give Feedback
+                </Link>
+              </div>
+            </div>
+
+            {/* Email Capture */}
+            <div className="max-w-md mx-auto mb-8 pb-8 border-b border-white/5">
+              <FooterEmailCapture />
             </div>
 
             {/* Bottom */}
