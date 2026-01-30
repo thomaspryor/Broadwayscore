@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T18:38:43.475Z",
+  "runDate": "2026-01-30T18:38:48.559Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "water-for-elephants-2024",
+    "showFilter": "purlie-victorious-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,37 +12,37 @@
   },
   "summary": {
     "processed": 3,
-    "failed": 56,
+    "failed": 50,
     "skipped": 0,
-    "successRate": "5.1%"
+    "successRate": "5.7%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 3
+    "brightdata": 1,
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 7,
+    "tier1Attempts": 3,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 7,
-    "tier2Success": 1,
-    "tier3Attempts": 6,
-    "tier3Success": 0,
-    "tier4Attempts": 16,
-    "tier4Success": 5,
-    "totalFailed": 10,
-    "scrapingBeeCreditsUsed": 60,
+    "tier2Attempts": 3,
+    "tier2Success": 0,
+    "tier3Attempts": 3,
+    "tier3Success": 1,
+    "tier4Attempts": 5,
+    "tier4Success": 3,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 30,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "water-for-elephants-2024/broadwaynews--brittani-samuel.json"
+    "purlie-victorious-2023/washpost--peter-marks.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -91,25 +91,20 @@
     "i-need-that-2023/timeout--will-gleason.json",
     "i-need-that-2023/wsj--charles-isherwood.json",
     "i-need-that-2023/wsj--charles.json",
-    "water-for-elephants-2024/variety--aramide-tinubu.json",
-    "water-for-elephants-2024/variety--charles-isherwood.json",
-    "water-for-elephants-2024/vulture--helen-shaw.json",
-    "water-for-elephants-2024/nypost--johnny-oleksinski.json",
-    "water-for-elephants-2024/observer--rex-reed.json",
-    "water-for-elephants-2024/theatermania--andy-propst.json",
-    "water-for-elephants-2024/timeout--adam-feldman.json",
-    "water-for-elephants-2024/wsj--charles-isherwood.json",
-    "water-for-elephants-2024/wsj--charles.json",
-    "water-for-elephants-2024/thestage--lane-williamson.json"
+    "purlie-victorious-2023/deadline--greg-evans.json",
+    "purlie-victorious-2023/guardian--jesse-hassenger.json",
+    "purlie-victorious-2023/observer--david-cote.json",
+    "purlie-victorious-2023/timeout--adam-feldman.json"
   ],
   "tierDetails": {
     "playwright": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "purlie-victorious-2023/washpost--peter-marks.json"
+    ],
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
-      "the-roommate-2024/nydailynews--chris-jones.json",
-      "water-for-elephants-2024/broadwaynews--brittani-samuel.json"
+      "the-roommate-2024/nydailynews--chris-jones.json"
     ]
   }
 }
