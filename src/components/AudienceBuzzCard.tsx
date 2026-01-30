@@ -118,7 +118,7 @@ function SourceCard({ name, icon, score, reviewCount, starRating, url, comingSoo
     <div className={`flex-1 bg-surface-overlay rounded-lg p-3 border border-white/5 ${url ? 'hover:border-white/10 transition-colors' : ''} ${comingSoon ? 'opacity-50' : ''}`}>
       <div className="flex items-center gap-2 mb-2">
         {icon}
-        <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">{name}</span>
+        <span className="text-[10px] sm:text-xs font-medium text-gray-400 uppercase tracking-wide">{name}</span>
         {url && <ExternalLinkIcon className="text-gray-600 ml-auto" />}
       </div>
       {comingSoon ? (
@@ -142,7 +142,7 @@ function SourceCard({ name, icon, score, reviewCount, starRating, url, comingSoo
 
   if (url) {
     return (
-      <a href={url} target="_blank" rel="noopener noreferrer" className="flex-1 min-w-0">
+      <a href={url} target="_blank" rel="noopener noreferrer" className="flex-1 min-w-0 flex">
         {content}
       </a>
     );
@@ -175,7 +175,7 @@ export default function AudienceBuzzCard({ buzz, showScoreUrl }: AudienceBuzzCar
       </div>
 
       {/* Source Cards Row */}
-      <div className="flex gap-2 sm:gap-3">
+      <div className="flex gap-2 sm:gap-3 items-stretch">
         <SourceCard
           name="Show Score"
           icon={<ShowScoreIcon className="text-yellow-400" />}
