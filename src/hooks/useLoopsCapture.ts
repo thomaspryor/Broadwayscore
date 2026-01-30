@@ -49,6 +49,7 @@ export function useLoopsCapture(options: LoopsCaptureOptions): LoopsCaptureResul
     if (!FORM_ID) {
       try {
         localStorage.setItem(SUBSCRIBED_KEY, 'true');
+        window.dispatchEvent(new Event('bsc_subscribed'));
       } catch { /* noop */ }
       setIsSubscribed(true);
       setStatus('success');
@@ -81,6 +82,7 @@ export function useLoopsCapture(options: LoopsCaptureOptions): LoopsCaptureResul
         }
         try {
           localStorage.setItem(SUBSCRIBED_KEY, 'true');
+          window.dispatchEvent(new Event('bsc_subscribed'));
         } catch { /* noop */ }
         setIsSubscribed(true);
         track('email_captured', { source: options.source, userGroup: options.userGroup });
