@@ -414,9 +414,20 @@ describe('areCriticsSimilar', () => {
     assert.strictEqual(areCriticsSimilar('Helen Shaw', 'Helen'), false);
   });
 
-  test('returns true for typos within Levenshtein distance', () => {
-    // Names > 5 chars with distance <= 2 should match
+  test('returns true for known typos via CRITIC_ALIASES', () => {
+    // Known typos are now handled via explicit aliases, not Levenshtein
     assert.strictEqual(areCriticsSimilar('Johnny Oleksinski', 'Johnny Oleksinki'), true);
+    // New aliases added in Task 1.2
+    assert.strictEqual(areCriticsSimilar('elisabeth vincentelli', 'elizabeth vincentelli'), true);
+    assert.strictEqual(areCriticsSimilar('a d amorosi', 'ad amorosi'), true);
+    assert.strictEqual(areCriticsSimilar('charles mcnulty', 'charlesmcnulty'), true);
+  });
+
+  test('returns false for similar but non-aliased names (Levenshtein disabled)', () => {
+    // Levenshtein matching was removed because it caused false positives
+    // (e.g., "Helen Smith" would incorrectly match "Helen Smyth")
+    assert.strictEqual(areCriticsSimilar('Helen Smith', 'Helen Smyth'), false);
+    assert.strictEqual(areCriticsSimilar('John Williams', 'John Willians'), false);
   });
 
   test('returns false for different critics', () => {
