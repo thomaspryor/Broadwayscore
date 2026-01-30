@@ -1,70 +1,72 @@
 {
-  "runDate": "2026-01-30T16:16:59.876Z",
+  "runDate": "2026-01-30T16:17:32.172Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "harmony-2023",
+    "showFilter": "illinoise-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 24,
+    "processed": 1,
+    "failed": 22,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "4.3%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 21,
-    "tier1Success": 1,
-    "tier2Attempts": 20,
+    "tier1Attempts": 19,
+    "tier1Success": 0,
+    "tier2Attempts": 19,
     "tier2Success": 0,
-    "tier3Attempts": 20,
+    "tier3Attempts": 19,
     "tier3Success": 2,
-    "tier4Attempts": 41,
-    "tier4Success": 4,
-    "totalFailed": 23,
-    "scrapingBeeCreditsUsed": 70
+    "tier4Attempts": 44,
+    "tier4Success": 3,
+    "totalFailed": 21,
+    "scrapingBeeCreditsUsed": 50
   },
-  "processed": [],
+  "processed": [
+    "illinoise-2024/broadwaynews--brittani-samuel.json"
+  ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
-    "harmony-2023/hollywood-reporter--angie-han.json",
-    "harmony-2023/hollywood-reporter--david-rooney.json",
-    "harmony-2023/variety--aramide-tinubu.json",
-    "harmony-2023/variety--charles-isherwood.json",
-    "harmony-2023/variety--frank-rizzo.json",
-    "harmony-2023/variety--peter-marks.json",
-    "harmony-2023/vulture--helen-shaw.json",
-    "harmony-2023/deadline--greg-evans.json",
-    "harmony-2023/deadline--pete-hammond.json",
-    "harmony-2023/guardian--adrian-horton.json",
-    "harmony-2023/guardian--jesse-hassenger.json",
-    "harmony-2023/observer--david-cote.json",
-    "harmony-2023/observer--jesse-green.json",
-    "harmony-2023/observer--rex-reed.json",
-    "harmony-2023/the-new-york-sun--elysa-gardner.json",
-    "harmony-2023/theatermania--adam-feldman.json",
-    "harmony-2023/timeout--adam-feldman.json",
-    "harmony-2023/wsj--charles-isherwood.json",
-    "harmony-2023/forward--jesse-green.json",
-    "harmony-2023/theatrely--michael-appler.json",
-    "harmony-2023/stageandcinema--matthew-murray.json",
-    "harmony-2023/talkinbroadway--matthew-murray.json",
-    "harmony-2023/usatoday--charles-isherwood.json"
+    "illinoise-2024/hollywood-reporter--angie-han.json",
+    "illinoise-2024/nyt-theater--jonathan-mandell.json",
+    "illinoise-2024/variety--aramide-tinubu.json",
+    "illinoise-2024/variety--charles-isherwood.json",
+    "illinoise-2024/vulture--jackson-mchenry.json",
+    "illinoise-2024/deadline--greg-evans.json",
+    "illinoise-2024/deadline--pete-hammond.json",
+    "illinoise-2024/ew--kristen-baldwin.json",
+    "illinoise-2024/guardian--adrian-horton.json",
+    "illinoise-2024/observer--jesse-green.json",
+    "illinoise-2024/theatermania--jesse-green.json",
+    "illinoise-2024/thewrap--steve-pond.json",
+    "illinoise-2024/timeout--adam-feldman.json",
+    "illinoise-2024/wsj--charles-isherwood.json",
+    "illinoise-2024/theatrely--zachary-stewart.json",
+    "illinoise-2024/ap--mark-kennedy.json",
+    "illinoise-2024/billboard--demetrios-matheou.json",
+    "illinoise-2024/talkinbroadway--matthew-murray.json",
+    "illinoise-2024/usatoday--david-oliver.json",
+    "illinoise-2024/washpost--gloria-oladipo.json",
+    "illinoise-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archive": []
+    "archive": [
+      "illinoise-2024/broadwaynews--brittani-samuel.json"
+    ]
   }
 }
