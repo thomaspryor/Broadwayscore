@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T03:22:55.965Z",
+  "runDate": "2026-01-30T03:26:16.809Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "tier1",
-    "showFilter": "stereophonic-2024",
+    "showFilter": "grey-house-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 5,
+    "failed": 6,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -23,24 +23,25 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 5,
+    "tier1Attempts": 6,
     "tier1Success": 0,
-    "tier2Attempts": 5,
+    "tier2Attempts": 6,
     "tier2Success": 0,
-    "tier3Attempts": 5,
+    "tier3Attempts": 6,
     "tier3Success": 0,
-    "tier4Attempts": 11,
+    "tier4Attempts": 13,
     "tier4Success": 0,
-    "totalFailed": 5,
+    "totalFailed": 6,
     "scrapingBeeCreditsUsed": 30
   },
   "processed": [],
   "failed": [
-    "stereophonic-2024/hollywood-reporter--angie-han.json",
-    "stereophonic-2024/variety--aramide-tinubu.json",
-    "stereophonic-2024/variety--jesse-green.json",
-    "stereophonic-2024/variety--peter-marks.json",
-    "stereophonic-2024/vulture--helen-shaw.json"
+    "grey-house-2023/hollywood-reporter--angie-han.json",
+    "grey-house-2023/hollywood-reporter--david-rooney.json",
+    "grey-house-2023/newyorker--dan-stahl.json",
+    "grey-house-2023/variety--charles-isherwood.json",
+    "grey-house-2023/variety--peter-marks.json",
+    "grey-house-2023/vulture--helen-shaw.json"
   ],
   "tierDetails": {
     "playwright": [],
