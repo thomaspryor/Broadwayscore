@@ -1,48 +1,49 @@
 {
-  "runDate": "2026-01-30T19:51:09.709Z",
+  "runDate": "2026-01-30T19:52:14.196Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "stereophonic-2024",
+    "showFilter": "hells-kitchen-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 77,
+    "processed": 4,
+    "failed": 81,
     "skipped": 0,
-    "successRate": "3.8%"
+    "successRate": "4.7%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 3
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 20,
+    "tier1Attempts": 24,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 20,
+    "tier2Attempts": 24,
     "tier2Success": 0,
-    "tier3Attempts": 20,
+    "tier3Attempts": 24,
     "tier3Success": 2,
-    "tier4Attempts": 42,
+    "tier4Attempts": 55,
     "tier4Success": 3,
-    "totalFailed": 22,
-    "scrapingBeeCreditsUsed": 90,
+    "totalFailed": 26,
+    "scrapingBeeCreditsUsed": 80,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "wicked-2003/ew--alice-king.json"
+    "wicked-2003/ew--alice-king.json",
+    "hells-kitchen-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -100,28 +101,32 @@
     "wicked-2003/njcom-star-ledger--michael-sommers.json",
     "wicked-2003/village-voice--michael-feingold.json",
     "wicked-2003/washpost--peter-marks.json",
-    "stereophonic-2024/hollywood-reporter--angie-han.json",
-    "stereophonic-2024/variety--aramide-tinubu.json",
-    "stereophonic-2024/variety--jesse-green.json",
-    "stereophonic-2024/variety--peter-marks.json",
-    "stereophonic-2024/vulture--helen-shaw.json",
-    "stereophonic-2024/deadline--greg-evans.json",
-    "stereophonic-2024/deadline--pete-hammond.json",
-    "stereophonic-2024/guardian--adrian-horton.json",
-    "stereophonic-2024/guardian--gloria-oladipo.json",
-    "stereophonic-2024/observer--david-cote.json",
-    "stereophonic-2024/observer--rex-reed.json",
-    "stereophonic-2024/theatermania--adam-feldman.json",
-    "stereophonic-2024/theatermania--jesse-green.json",
-    "stereophonic-2024/theatermania--zachary-stewart.json",
-    "stereophonic-2024/timeout--adam-feldman.json",
-    "stereophonic-2024/wsj--charles-isherwood.json",
-    "stereophonic-2024/wsj--terry-teachout.json",
-    "stereophonic-2024/theatrely--juan-a-ramirez.json",
-    "stereophonic-2024/ap--mark-kennedy.json",
-    "stereophonic-2024/rollingstone--kalia-richardson.json",
-    "stereophonic-2024/usatoday--charles-isherwood.json",
-    "stereophonic-2024/washpost--peter-marks.json"
+    "hells-kitchen-2024/hollywood-reporter--angie-han.json",
+    "hells-kitchen-2024/nytg--david-nounou.json",
+    "hells-kitchen-2024/nytimes--jesse-green.json",
+    "hells-kitchen-2024/vulture--helen-shaw.json",
+    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
+    "hells-kitchen-2024/deadline--greg-evans.json",
+    "hells-kitchen-2024/deadline--pete-hammond.json",
+    "hells-kitchen-2024/ew--joey-nolfi.json",
+    "hells-kitchen-2024/ew--kristen-baldwin.json",
+    "hells-kitchen-2024/guardian--adrian-horton.json",
+    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
+    "hells-kitchen-2024/observer--jesse-green.json",
+    "hells-kitchen-2024/observer--rex-reed.json",
+    "hells-kitchen-2024/theatermania--adam-feldman.json",
+    "hells-kitchen-2024/theatermania--david-gordon.json",
+    "hells-kitchen-2024/timeout--adam-feldman.json",
+    "hells-kitchen-2024/wsj--charles-isherwood.json",
+    "hells-kitchen-2024/ap--mark-kennedy.json",
+    "hells-kitchen-2024/billboard--david-rooney.json",
+    "hells-kitchen-2024/billboard--isabela-raygoza.json",
+    "hells-kitchen-2024/billboard--juan-a-ramirez.json",
+    "hells-kitchen-2024/culturesauce--thom-geier.json",
+    "hells-kitchen-2024/dailybeast--tim-teeman.json",
+    "hells-kitchen-2024/stageandcinema--victor-gluck.json",
+    "hells-kitchen-2024/usatoday--charles-isherwood.json",
+    "hells-kitchen-2024/usatoday--david-rooney.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -130,7 +135,8 @@
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json",
-      "wicked-2003/ew--alice-king.json"
+      "wicked-2003/ew--alice-king.json",
+      "hells-kitchen-2024/broadwaynews--brittani-samuel.json"
     ]
   }
 }
