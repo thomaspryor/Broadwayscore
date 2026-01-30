@@ -1,48 +1,49 @@
 {
-  "runDate": "2026-01-30T19:59:50.166Z",
+  "runDate": "2026-01-30T19:59:55.363Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "and-juliet-2022",
+    "showFilter": "grey-house-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
+    "processed": 4,
     "failed": 65,
     "skipped": 0,
-    "successRate": "4.4%"
+    "successRate": "5.8%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 9,
-    "tier1Success": 0,
+    "tier1Attempts": 10,
+    "tier1Success": 1,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 9,
-    "tier2Success": 0,
-    "tier3Attempts": 9,
+    "tier2Success": 1,
+    "tier3Attempts": 8,
     "tier3Success": 0,
-    "tier4Attempts": 21,
-    "tier4Success": 1,
+    "tier4Attempts": 17,
+    "tier4Success": 2,
     "totalFailed": 10,
-    "scrapingBeeCreditsUsed": 30,
+    "scrapingBeeCreditsUsed": 40,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "wicked-2003/ew--alice-king.json"
+    "wicked-2003/ew--alice-king.json",
+    "grey-house-2023/cititour--brian-scott-lipton.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -100,20 +101,22 @@
     "wicked-2003/njcom-star-ledger--michael-sommers.json",
     "wicked-2003/village-voice--michael-feingold.json",
     "wicked-2003/washpost--peter-marks.json",
-    "and-juliet-2022/hollywood-reporter--angie-han.json",
-    "and-juliet-2022/variety--aramide-tinubu.json",
-    "and-juliet-2022/vulture--sara-holdren.json",
-    "and-juliet-2022/ew--leah-greenblatt.json",
-    "and-juliet-2022/theatermania--andy-propst.json",
-    "and-juliet-2022/theatermania--jesse-green.json",
-    "and-juliet-2022/thewrap--robert-hofler.json",
-    "and-juliet-2022/timeout--adam-feldman.json",
-    "and-juliet-2022/wsj--charles-isherwood.json",
-    "and-juliet-2022/talkinbroadway--nancy-grossman.json"
+    "grey-house-2023/hollywood-reporter--angie-han.json",
+    "grey-house-2023/hollywood-reporter--david-rooney.json",
+    "grey-house-2023/newyorker--dan-stahl.json",
+    "grey-house-2023/variety--charles-isherwood.json",
+    "grey-house-2023/variety--peter-marks.json",
+    "grey-house-2023/vulture--helen-shaw.json",
+    "grey-house-2023/deadline--greg-evans.json",
+    "grey-house-2023/observer--david-cote.json",
+    "grey-house-2023/timeout--adam-feldman.json",
+    "grey-house-2023/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "grey-house-2023/cititour--brian-scott-lipton.json"
+    ],
     "brightdata": [],
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
