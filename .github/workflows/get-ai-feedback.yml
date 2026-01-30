@@ -1,0 +1,170 @@
+name: Get AI Feedback on Musical Writer Plan
+
+on:
+  workflow_dispatch:
+
+jobs:
+  query-apis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: claude/musical-book-writing-47azR
+
+      - name: Create plan document
+        run: |
+          cat > plan.txt << 'EOF'
+          # Musical Book Writing Co-Writer Tool - Design Plan
+
+          ## User Requirements:
+          - Comedy musical writer (Book of Mormon style) needs AI co-writer
+          - Has Master Outline, needs help with plot development, scene writing, character voice/dialogue, Act II structure
+          - Wants conversational interface that gives feedback AND makes proactive suggestions
+          - Will purchase 10-15 musical scripts + craft books (digital PDFs) as reference materials
+          - Pure chat interface (mobile-friendly), no extra features - just conversation
+          - Tool should feel like a dramaturg who's read all the same materials
+
+          ## Proposed Technical Architecture:
+
+          ### RAG (Retrieval-Augmented Generation) Approach:
+          1. Index all purchased scripts + craft books into vector database (Pinecone)
+          2. User asks questions or shares scenes via chat interface
+          3. Semantic search finds relevant chunks from indexed materials
+          4. Send relevant excerpts + user message to Claude API
+          5. Claude responds as knowledgeable co-writer, drawing from materials
+
+          ### Key Components:
+          - Next.js web app (chat interface)
+          - OpenAI embeddings (text-embedding-3-small) for indexing
+          - Pinecone vector DB (free tier sufficient)
+          - Claude Sonnet API for responses
+          - Reference materials stored locally, not committed to Git
+
+          ### Co-Writer Behaviors:
+          - Answer craft questions with examples from books/scripts
+          - Analyze shared scenes and offer specific improvements
+          - Spot structural problems proactively
+          - Challenge weak choices and ask provocative questions
+          - Suggest multiple solutions, not just one answer
+          - Reference book principles and script examples naturally
+          - Help with brainstorming and getting unstuck
+
+          ### Cost Estimate:
+          - One-time indexing: ~$0.20
+          - Per conversation: ~$0.05-0.15
+          - Monthly (30 conversations): ~$1.50-4.50
+
+          ## Questions for Review:
+          1. Is RAG the right approach for this use case, or would you suggest alternatives?
+          2. Are there better embedding models or vector DBs for this purpose?
+          3. Should we use Claude, GPT-4, or another model for the co-writer responses?
+          4. Any missing features or considerations for a "proactive suggestion" experience?
+          5. Technical risks or challenges we should anticipate?
+          6. How can we make it feel most like a real collaborator vs. a search tool?
+
+          Please provide architectural feedback, technical suggestions, and any concerns about this approach.
+          EOF
+
+      - name: Query OpenAI GPT-4o
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          echo "============================================================"
+          echo "OPENAI GPT-4o FEEDBACK:"
+          echo "============================================================"
+
+          python3 << 'PYEOF'
+          import os
+          import json
+          import urllib.request
+
+          plan_text = open('plan.txt').read()
+
+          data = {
+              "model": "gpt-4o",
+              "messages": [
+                  {
+                      "role": "system",
+                      "content": "You are a senior software architect and AI systems expert. Provide detailed technical feedback on system designs."
+                  },
+                  {
+                      "role": "user",
+                      "content": plan_text
+                  }
+              ],
+              "temperature": 0.7,
+              "max_tokens": 2000
+          }
+
+          req = urllib.request.Request(
+              'https://api.openai.com/v1/chat/completions',
+              data=json.dumps(data).encode('utf-8'),
+              headers={
+                  'Content-Type': 'application/json',
+                  'Authorization': f'Bearer {os.environ["OPENAI_API_KEY"]}'
+              }
+          )
+
+          try:
+              with urllib.request.urlopen(req, timeout=30) as response:
+                  result = json.loads(response.read().decode('utf-8'))
+                  print(result['choices'][0]['message']['content'])
+          except Exception as e:
+              print(f"Error: {str(e)}")
+          PYEOF
+
+          echo ""
+          echo ""
+
+      - name: Query Google Gemini
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          echo "============================================================"
+          echo "GOOGLE GEMINI FEEDBACK:"
+          echo "============================================================"
+
+          python3 << 'PYEOF'
+          import os
+          import json
+          import urllib.request
+
+          plan_text = open('plan.txt').read()
+
+          data = {
+              "contents": [{
+                  "parts": [{
+                      "text": f"You are a senior software architect and AI systems expert. Provide detailed technical feedback on this system design:\n\n{plan_text}"
+                  }]
+              }],
+              "generationConfig": {
+                  "temperature": 0.7,
+                  "maxOutputTokens": 2000
+              }
+          }
+
+          url = f'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key={os.environ["GEMINI_API_KEY"]}'
+          req = urllib.request.Request(
+              url,
+              data=json.dumps(data).encode('utf-8'),
+              headers={'Content-Type': 'application/json'}
+          )
+
+          try:
+              with urllib.request.urlopen(req, timeout=30) as response:
+                  result = json.loads(response.read().decode('utf-8'))
+                  print(result['candidates'][0]['content']['parts'][0]['text'])
+          except Exception as e:
+              print(f"Error: {str(e)}")
+          PYEOF
+
+      - name: Summary
+        run: |
+          echo ""
+          echo "============================================================"
+          echo "Feedback collection complete!"
+          echo "Check the workflow logs above for responses from both models."
+          echo "============================================================"
