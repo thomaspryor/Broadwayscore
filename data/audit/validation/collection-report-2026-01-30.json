@@ -1,40 +1,40 @@
 {
-  "runDate": "2026-01-30T18:27:47.557Z",
+  "runDate": "2026-01-30T18:28:18.825Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "lempicka-2024",
+    "showFilter": "suffs-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 6,
-    "failed": 54,
+    "processed": 4,
+    "failed": 60,
     "skipped": 0,
-    "successRate": "10.0%"
+    "successRate": "6.3%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 6
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 6,
+    "tier1Attempts": 14,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 6,
-    "tier2Success": 1,
-    "tier3Attempts": 5,
-    "tier3Success": 0,
-    "tier4Attempts": 17,
-    "tier4Success": 6,
-    "totalFailed": 8,
+    "tier2Attempts": 14,
+    "tier2Success": 0,
+    "tier3Attempts": 14,
+    "tier3Success": 2,
+    "tier4Attempts": 31,
+    "tier4Success": 3,
+    "totalFailed": 14,
     "scrapingBeeCreditsUsed": 40,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
@@ -42,10 +42,8 @@
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "lempicka-2024/nytg--gillian-russo.json",
-    "lempicka-2024/nytg--gillian.json",
-    "lempicka-2024/nytimes--jesse-green.json",
-    "lempicka-2024/broadwaynews--brittani-samuel.json"
+    "suffs-2024/the-times--nancy-durrant.json",
+    "suffs-2024/washpost--elisabeth-vincentelli.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -94,14 +92,20 @@
     "i-need-that-2023/timeout--will-gleason.json",
     "i-need-that-2023/wsj--charles-isherwood.json",
     "i-need-that-2023/wsj--charles.json",
-    "lempicka-2024/hollywood-reporter--angie-han.json",
-    "lempicka-2024/vulture--jackson-mchenry.json",
-    "lempicka-2024/deadline--greg-evans.json",
-    "lempicka-2024/new-york-sun--elysa-gardner.json",
-    "lempicka-2024/nydailynews--chris-jones.json",
-    "lempicka-2024/nydailynews--chris.json",
-    "lempicka-2024/timeout--adam-feldman.json",
-    "lempicka-2024/wsj--charles-isherwood.json"
+    "suffs-2024/hollywood-reporter--angie-han.json",
+    "suffs-2024/nytimes--jesse-green.json",
+    "suffs-2024/variety--aramide-tinubu.json",
+    "suffs-2024/variety--peter-marks.json",
+    "suffs-2024/chelsea-community-news--michael-musto.json",
+    "suffs-2024/ew--kristen-baldwin.json",
+    "suffs-2024/guardian--adrian-horton.json",
+    "suffs-2024/guardian--jesse-green.json",
+    "suffs-2024/observer--rex-reed.json",
+    "suffs-2024/theatermania--jesse-green.json",
+    "suffs-2024/timeout--regina-robbins.json",
+    "suffs-2024/wsj--charles-isherwood.json",
+    "suffs-2024/talkinbroadway--matthew-murray.json",
+    "suffs-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -110,10 +114,8 @@
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json",
-      "lempicka-2024/nytg--gillian-russo.json",
-      "lempicka-2024/nytg--gillian.json",
-      "lempicka-2024/nytimes--jesse-green.json",
-      "lempicka-2024/broadwaynews--brittani-samuel.json"
+      "suffs-2024/the-times--nancy-durrant.json",
+      "suffs-2024/washpost--elisabeth-vincentelli.json"
     ]
   }
 }
