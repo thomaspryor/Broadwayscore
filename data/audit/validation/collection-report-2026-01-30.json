@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T03:19:24.534Z",
+  "runDate": "2026-01-30T03:19:39.473Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "tier1",
-    "showFilter": "and-juliet-2022",
+    "showFilter": "just-for-us-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 3,
+    "failed": 4,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -23,22 +23,23 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 4,
     "tier1Success": 0,
-    "tier2Attempts": 3,
+    "tier2Attempts": 4,
     "tier2Success": 0,
-    "tier3Attempts": 3,
+    "tier3Attempts": 4,
     "tier3Success": 0,
-    "tier4Attempts": 7,
+    "tier4Attempts": 9,
     "tier4Success": 0,
-    "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 10
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 0
   },
   "processed": [],
   "failed": [
-    "and-juliet-2022/hollywood-reporter--angie-han.json",
-    "and-juliet-2022/variety--aramide-tinubu.json",
-    "and-juliet-2022/vulture--sara-holdren.json"
+    "just-for-us-2023/hollywood-reporter--angie-han.json",
+    "just-for-us-2023/hollywood-reporter--david-rooney.json",
+    "just-for-us-2023/variety--aramide-tinubu.json",
+    "just-for-us-2023/vulture--helen-shaw.json"
   ],
   "tierDetails": {
     "playwright": [],
