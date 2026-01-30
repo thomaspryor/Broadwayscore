@@ -1,50 +1,47 @@
 {
-  "runDate": "2026-01-30T18:30:37.235Z",
+  "runDate": "2026-01-30T18:30:49.469Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "the-outsiders-2024",
+    "showFilter": "how-to-dance-in-ohio-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 57,
+    "processed": 2,
+    "failed": 58,
     "skipped": 0,
-    "successRate": "8.1%"
+    "successRate": "3.3%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 5
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 9,
+    "tier1Attempts": 10,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 9,
-    "tier2Success": 2,
-    "tier3Attempts": 7,
-    "tier3Success": 0,
-    "tier4Attempts": 22,
-    "tier4Success": 5,
-    "totalFailed": 11,
-    "scrapingBeeCreditsUsed": 30,
+    "tier2Attempts": 10,
+    "tier2Success": 0,
+    "tier3Attempts": 10,
+    "tier3Success": 1,
+    "tier4Attempts": 21,
+    "tier4Success": 2,
+    "totalFailed": 12,
+    "scrapingBeeCreditsUsed": 50,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
-    "the-roommate-2024/nydailynews--chris-jones.json",
-    "the-outsiders-2024/broadwaynews--brittani-samuel.json",
-    "the-outsiders-2024/nypost--johnny-oleksinski.json",
-    "the-outsiders-2024/amny--matt-windman.json"
+    "the-roommate-2024/nydailynews--chris-jones.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -93,17 +90,18 @@
     "i-need-that-2023/timeout--will-gleason.json",
     "i-need-that-2023/wsj--charles-isherwood.json",
     "i-need-that-2023/wsj--charles.json",
-    "the-outsiders-2024/hollywood-reporter--angie-han.json",
-    "the-outsiders-2024/hollywood-reporter--david-rooney.json",
-    "the-outsiders-2024/deadline--greg-evans.json",
-    "the-outsiders-2024/ew--emlyn-travis.json",
-    "the-outsiders-2024/nydailynews--chris-jones.json",
-    "the-outsiders-2024/theatermania--david-gordon.json",
-    "the-outsiders-2024/timeout--adam-feldman.json",
-    "the-outsiders-2024/timeout--adam.json",
-    "the-outsiders-2024/wsj--charles-isherwood.json",
-    "the-outsiders-2024/rollingstone--brittany-spanos.json",
-    "the-outsiders-2024/talkinbroadway--walter-bilderback.json"
+    "how-to-dance-in-ohio-2023/variety--aramide-tinubu.json",
+    "how-to-dance-in-ohio-2023/variety--maya-phillips.json",
+    "how-to-dance-in-ohio-2023/variety--peter-marks.json",
+    "how-to-dance-in-ohio-2023/deadline--greg-evans.json",
+    "how-to-dance-in-ohio-2023/observer--david-cote.json",
+    "how-to-dance-in-ohio-2023/observer--jesse-green.json",
+    "how-to-dance-in-ohio-2023/theatermania--adam-feldman.json",
+    "how-to-dance-in-ohio-2023/theatermania--david-gordon.json",
+    "how-to-dance-in-ohio-2023/timeout--adam-feldman.json",
+    "how-to-dance-in-ohio-2023/wsj--charles-isherwood.json",
+    "how-to-dance-in-ohio-2023/talkinbroadway--matthew-murray.json",
+    "how-to-dance-in-ohio-2023/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -111,10 +109,7 @@
     "brightdata": [],
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
-      "the-roommate-2024/nydailynews--chris-jones.json",
-      "the-outsiders-2024/broadwaynews--brittani-samuel.json",
-      "the-outsiders-2024/nypost--johnny-oleksinski.json",
-      "the-outsiders-2024/amny--matt-windman.json"
+      "the-roommate-2024/nydailynews--chris-jones.json"
     ]
   }
 }
