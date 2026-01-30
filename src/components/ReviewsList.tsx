@@ -65,7 +65,7 @@ function OutletLogo({ outlet }: { outlet: string }) {
       <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 overflow-hidden">
         <img
           src={logoUrl}
-          alt=""
+          alt={`${outlet} logo`}
           className="w-6 h-6 object-contain"
           onError={() => setImageError(true)}
         />
