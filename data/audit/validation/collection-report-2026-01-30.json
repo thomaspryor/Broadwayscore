@@ -1,78 +1,78 @@
 {
-  "runDate": "2026-01-30T16:16:12.179Z",
+  "runDate": "2026-01-30T16:16:52.808Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "aladdin-2014",
+    "showFilter": "hadestown-2019",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 22,
+    "processed": 2,
+    "failed": 25,
     "skipped": 0,
-    "successRate": "15.4%"
+    "successRate": "7.4%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 4
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 18,
+    "tier1Attempts": 22,
     "tier1Success": 1,
-    "tier2Attempts": 17,
-    "tier2Success": 1,
-    "tier3Attempts": 16,
-    "tier3Success": 1,
-    "tier4Attempts": 42,
-    "tier4Success": 7,
-    "totalFailed": 21,
-    "scrapingBeeCreditsUsed": 80
+    "tier2Attempts": 21,
+    "tier2Success": 0,
+    "tier3Attempts": 21,
+    "tier3Success": 2,
+    "tier4Attempts": 51,
+    "tier4Success": 4,
+    "totalFailed": 24,
+    "scrapingBeeCreditsUsed": 40
   },
   "processed": [
-    "aladdin-2014/theatermania--zachary-stewart.json",
-    "aladdin-2014/chicagotribune--chris-jones.json",
-    "aladdin-2014/classicalite--patricia-reaney.json",
-    "aladdin-2014/huffpost--steven-suskin.json"
+    "hadestown-2019/broadwaynews--charles-isherwood.json",
+    "hadestown-2019/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
-    "aladdin-2014/hollywood-reporter--david-rooney.json",
-    "aladdin-2014/nytimes--ben-brantley.json",
-    "aladdin-2014/deadline--pete-hammond.json",
-    "aladdin-2014/guardian--jesse-green.json",
-    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
-    "aladdin-2014/newsday--linda-winer.json",
-    "aladdin-2014/nypost--elisabeth-vincentelli.json",
-    "aladdin-2014/observer--rex-reed.json",
-    "aladdin-2014/theatermania--adam-feldman.json",
-    "aladdin-2014/theatermania--andy-propst.json",
-    "aladdin-2014/theatermania--charles-isherwood.json",
-    "aladdin-2014/theatermania--david-finkle.json",
-    "aladdin-2014/timeout--adam-feldman.json",
-    "aladdin-2014/wsj--terry-teachout.json",
-    "aladdin-2014/ap--mark-kennedy.json",
-    "aladdin-2014/billboard--bob-verini.json",
-    "aladdin-2014/broadway-voice--kristen-balzano.json",
-    "aladdin-2014/catholic-transcript--bernard-carragher.json",
-    "aladdin-2014/theater-pizzazz--sandi-durell.json",
-    "aladdin-2014/thestage--mark-shenton.json",
-    "aladdin-2014/thisbroadsway--sandra-mcfarland.json"
+    "hadestown-2019/deadline--pete-hammond.json",
+    "hadestown-2019/ew--jessica-derschowitz.json",
+    "hadestown-2019/ew--kristen-baldwin.json",
+    "hadestown-2019/guardian--jesse-green.json",
+    "hadestown-2019/guardian--jesse-oxfeld.json",
+    "hadestown-2019/nypost--johnny-oleksinski.json",
+    "hadestown-2019/observer--david-cote.json",
+    "hadestown-2019/observer--rex-reed.json",
+    "hadestown-2019/reviews-off-broadway--scott-mitchell.json",
+    "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
+    "hadestown-2019/theatermania--adam-feldman.json",
+    "hadestown-2019/theatermania--jesse-green.json",
+    "hadestown-2019/thewrap--thom-geier.json",
+    "hadestown-2019/timeout--adam-feldman.json",
+    "hadestown-2019/wsj--terry-teachout.json",
+    "hadestown-2019/chicagotribune--chris-jones.json",
+    "hadestown-2019/dailybeast--tim-teeman.json",
+    "hadestown-2019/medium--christian-lewis.json",
+    "hadestown-2019/rollingstone--rob-sheffield.json",
+    "hadestown-2019/talkinbroadway--nancy-grossman.json",
+    "hadestown-2019/usatoday--elysa-gardner.json",
+    "hadestown-2019/vox--constance-grady.json",
+    "hadestown-2019/washpost--peter-marks.json",
+    "hadestown-2019/wnyc--jennifer-vanasco.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "hadestown-2019/broadwaynews--charles-isherwood.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "aladdin-2014/theatermania--zachary-stewart.json",
-      "aladdin-2014/chicagotribune--chris-jones.json",
-      "aladdin-2014/classicalite--patricia-reaney.json",
-      "aladdin-2014/huffpost--steven-suskin.json"
+      "hadestown-2019/theatermania--zachary-stewart.json"
     ]
   }
 }
