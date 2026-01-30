@@ -7,7 +7,6 @@ import { generateOrganizationSchema, generateWebSiteSchema, BASE_URL } from '@/l
 import { getAllShows } from '@/lib/data';
 import { Analytics } from '@vercel/analytics/react';
 import { ProGateProvider } from '@/contexts/ProGateContext';
-import FooterEmailCapture from '@/components/FooterEmailCapture';
 
 // Static OG image (API routes don't work with static export)
 const homeOgImageUrl = `${BASE_URL}/og/home.png`;
@@ -205,11 +204,6 @@ export default function RootLayout({
                   <li><Link href="/methodology" className="hover:text-white transition-colors">How It Works</Link></li>
                 </ul>
               </div>
-            </div>
-
-            {/* Email Capture */}
-            <div className="mb-8 pb-8 border-b border-white/5 max-w-md mx-auto">
-              <FooterEmailCapture />
             </div>
 
             {/* Bottom */}
