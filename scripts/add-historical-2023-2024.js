@@ -7,13 +7,10 @@
 const fs = require('fs');
 const path = require('path');
 
+const { checkForDuplicate } = require('./lib/deduplication');
+
 const showsPath = path.join(__dirname, '../data/shows.json');
 const data = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
-
-// Check if show already exists
-function showExists(id) {
-  return data.shows.some(s => s.id === id);
-}
 
 // New shows to add from 2023-2024 season
 const newShows = [
@@ -716,11 +713,12 @@ const newShows = [
   }
 ];
 
-// Add shows that don't already exist
+// Add shows that don't already exist (using full dedup module)
 let addedCount = 0;
 newShows.forEach(show => {
-  if (showExists(show.id)) {
-    console.log(`SKIP: ${show.title} (${show.id}) already exists`);
+  const check = checkForDuplicate(show, data.shows);
+  if (check.isDuplicate) {
+    console.log(`SKIP: ${show.title} (${show.id}) — ${check.reason}`);
   } else {
     data.shows.push(show);
     addedCount++;

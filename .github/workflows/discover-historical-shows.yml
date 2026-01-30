@@ -55,9 +55,14 @@ jobs:
             node scripts/discover-historical-shows.js --seasons=${{ inputs.seasons }}
           fi
 
+      - name: Validate data
+        id: validate
+        if: ${{ inputs.dry_run != 'true' }}
+        run: node scripts/validate-data.js
+
       - name: Check for changes
         id: git-check
-        if: ${{ inputs.dry_run != 'true' }}
+        if: ${{ inputs.dry_run != 'true' }} && steps.validate.outcome == 'success'
         run: |
           git diff --exit-code data/shows.json || echo "changes=true" >> $GITHUB_OUTPUT
           if [ -f data/historical-shows-pending.json ]; then
@@ -65,7 +70,7 @@ jobs:
           fi
 
       - name: Commit and push changes
-        if: steps.git-check.outputs.changes == 'true' && inputs.dry_run != 'true'
+        if: steps.git-check.outputs.changes == 'true' && inputs.dry_run != 'true' && steps.validate.outcome == 'success'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"

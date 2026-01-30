@@ -259,6 +259,8 @@ In Jan 2026, we discovered 147 misattributed reviews (7%) where critics were inc
 
 **Always run `node scripts/validate-data.js` before pushing changes to shows.json.** If validation fails, do not push.
 
+**Build-time gate:** `scripts/validate-shows-prebuild.js` runs before every Vercel build and blocks deployment if duplicate shows exist in `shows.json`. This is the last line of defense — no duplicate can go live regardless of how it was introduced.
+
 ```bash
 npm run test:data    # Data validation only (fast)
 npm run test:e2e     # E2E browser tests

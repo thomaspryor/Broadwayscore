@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/generate-commercial-export.js",
+    "prebuild": "node scripts/validate-shows-prebuild.js && node scripts/generate-commercial-export.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
