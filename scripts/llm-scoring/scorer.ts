@@ -11,6 +11,10 @@ import Anthropic from '@anthropic-ai/sdk';
 import { LLMScoringResult, ScoredReviewFile, ReviewTextFile } from './types';
 import { SYSTEM_PROMPT, buildPrompt, scoreToBucket, scoreToThumb, PROMPT_VERSION } from './config';
 
+// Import text quality assessment module
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { getBestTextForScoring } = require('../lib/text-quality');
+
 // ========================================
 // TYPES
 // ========================================
@@ -243,21 +247,30 @@ export class ReviewScorer {
 
   /**
    * Score a review file and return the updated file content
+   * Uses intelligent text quality assessment to select the best text source
    */
   async scoreReviewFile(reviewFile: ReviewTextFile): Promise<{
     success: boolean;
     scoredFile?: ScoredReviewFile;
     error?: string;
   }> {
-    // Validate input
-    if (!reviewFile.fullText || reviewFile.fullText.length < 50) {
+    // Use text quality assessment to get the best text for scoring
+    const textSelection = getBestTextForScoring(reviewFile);
+
+    if (!textSelection.text || textSelection.confidence === 'none') {
       return {
         success: false,
-        error: 'Review text too short or missing'
+        error: textSelection.reasoning || 'No usable text found for scoring'
       };
     }
 
-    const outcome = await this.scoreReview(reviewFile.fullText);
+    if (this.options.verbose) {
+      console.log(`  Text source: ${textSelection.type} (${textSelection.status})`);
+      console.log(`  Confidence: ${textSelection.confidence}`);
+      console.log(`  Reasoning: ${textSelection.reasoning}`);
+    }
+
+    const outcome = await this.scoreReview(textSelection.text);
 
     if (!outcome.success || !outcome.result) {
       return {
@@ -275,7 +288,14 @@ export class ReviewScorer {
         scoredAt: new Date().toISOString(),
         promptVersion: PROMPT_VERSION,
         inputTokens: outcome.inputTokens,
-        outputTokens: outcome.outputTokens
+        outputTokens: outcome.outputTokens,
+        textSource: {
+          type: textSelection.type,
+          status: textSelection.status,
+          field: textSelection.field || textSelection.type,
+          confidence: textSelection.confidence,
+          reasoning: textSelection.reasoning
+        }
       }
     };
 
