@@ -125,6 +125,15 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
       url: `${BASE_URL}/show/${show.slug}`,
       image: show.images?.hero,
       score: show.criticScore?.score ? Math.round(show.criticScore.score) : undefined,
+      reviewCount: show.criticScore?.reviewCount,
+      venue: show.venue,
+      theaterAddress: show.theaterAddress,
+      startDate: show.openingDate,
+      endDate: show.closingDate,
+      description: show.synopsis,
+      status: show.status,
+      cast: show.cast,
+      ticketLinks: show.ticketLinks,
     })),
     config.title
   );
