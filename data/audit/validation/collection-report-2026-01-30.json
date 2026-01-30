@@ -1,76 +1,78 @@
 {
-  "runDate": "2026-01-30T16:17:52.873Z",
+  "runDate": "2026-01-30T16:20:28.764Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "the-notebook-2024",
+    "showFilter": "hells-kitchen-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 24,
+    "processed": 1,
+    "failed": 28,
     "skipped": 0,
-    "successRate": "7.7%"
+    "successRate": "3.4%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 2
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 21,
+    "tier1Attempts": 25,
     "tier1Success": 0,
-    "tier2Attempts": 21,
+    "tier2Attempts": 25,
     "tier2Success": 0,
-    "tier3Attempts": 21,
-    "tier3Success": 0,
-    "tier4Attempts": 47,
-    "tier4Success": 6,
-    "totalFailed": 23,
-    "scrapingBeeCreditsUsed": 120
+    "tier3Attempts": 25,
+    "tier3Success": 2,
+    "tier4Attempts": 55,
+    "tier4Success": 3,
+    "totalFailed": 27,
+    "scrapingBeeCreditsUsed": 90
   },
   "processed": [
-    "the-notebook-2024/broadwaynews--brittani-samuel.json",
-    "the-notebook-2024/slantmagazine--dan-rubins.json"
+    "hells-kitchen-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
-    "the-notebook-2024/hollywood-reporter--angie-han.json",
-    "the-notebook-2024/nytg--andy-propst.json",
-    "the-notebook-2024/variety--aramide-tinubu.json",
-    "the-notebook-2024/vulture--jackson-mchenry.json",
-    "the-notebook-2024/deadline--greg-evans.json",
-    "the-notebook-2024/deadline--pete-hammond.json",
-    "the-notebook-2024/ew--alex-zalben.json",
-    "the-notebook-2024/guardian--adrian-horton.json",
-    "the-notebook-2024/guardian--gloria-oladipo.json",
-    "the-notebook-2024/guardian--jesse-green.json",
-    "the-notebook-2024/indiewire--christian-lewis.json",
-    "the-notebook-2024/indiewire--david-ehrlich.json",
-    "the-notebook-2024/nydailynews--chris-jones.json",
-    "the-notebook-2024/nydailynews--chris.json",
-    "the-notebook-2024/theatermania--adam-feldman.json",
-    "the-notebook-2024/theatermania--jesse-green.json",
-    "the-notebook-2024/timeout--adam-feldman.json",
-    "the-notebook-2024/wsj--charles-isherwood.json",
-    "the-notebook-2024/wsj--charles.json",
-    "the-notebook-2024/theatrely--andy-lefkowitz.json",
-    "the-notebook-2024/theatrely--jackson-mchenry.json",
-    "the-notebook-2024/amny--david-gordon.json",
-    "the-notebook-2024/talkinbroadway--matthew-murray.json"
+    "hells-kitchen-2024/hollywood-reporter--angie-han.json",
+    "hells-kitchen-2024/nytg--david-nounou.json",
+    "hells-kitchen-2024/nytimes--jesse-green.json",
+    "hells-kitchen-2024/vulture--helen-shaw.json",
+    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
+    "hells-kitchen-2024/deadline--greg-evans.json",
+    "hells-kitchen-2024/deadline--pete-hammond.json",
+    "hells-kitchen-2024/ew--joey-nolfi.json",
+    "hells-kitchen-2024/ew--kristen-baldwin.json",
+    "hells-kitchen-2024/guardian--adrian-horton.json",
+    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
+    "hells-kitchen-2024/observer--jesse-green.json",
+    "hells-kitchen-2024/observer--rex-reed.json",
+    "hells-kitchen-2024/the-new-york-sun--elysa-gardner.json",
+    "hells-kitchen-2024/theatermania--adam-feldman.json",
+    "hells-kitchen-2024/theatermania--david-gordon.json",
+    "hells-kitchen-2024/timeout--adam-feldman.json",
+    "hells-kitchen-2024/wsj--charles-isherwood.json",
+    "hells-kitchen-2024/ap--mark-kennedy.json",
+    "hells-kitchen-2024/billboard--david-rooney.json",
+    "hells-kitchen-2024/billboard--isabela-raygoza.json",
+    "hells-kitchen-2024/billboard--juan-a-ramirez.json",
+    "hells-kitchen-2024/culturesauce--thom-geier.json",
+    "hells-kitchen-2024/dailybeast--tim-teeman.json",
+    "hells-kitchen-2024/stageandcinema--victor-gluck.json",
+    "hells-kitchen-2024/usatoday--charles-isherwood.json",
+    "hells-kitchen-2024/usatoday--david-rooney.json"
   ],
   "tierDetails": {
     "playwright": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "the-notebook-2024/broadwaynews--brittani-samuel.json",
-      "the-notebook-2024/slantmagazine--dan-rubins.json"
+      "hells-kitchen-2024/broadwaynews--brittani-samuel.json"
     ]
   }
 }
