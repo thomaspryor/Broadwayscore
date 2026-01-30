@@ -57,12 +57,12 @@ const TRIGGER_COPY: Record<GateTrigger, { heading: string; subheading: string }>
     subheading: 'Enter your email for full access to Broadway investment data.',
   },
   exit_intent: {
-    heading: 'Before you go...',
-    subheading: 'Get weekly updates on Broadway recoupments and box office trends.',
+    heading: 'Don\u2019t miss the next opening night',
+    subheading: 'We\u2019ll email you the Critic Score when new shows open, plus what\u2019s closing soon.',
   },
   return_visitor: {
-    heading: 'Welcome back!',
-    subheading: 'Join our mailing list for exclusive Broadway investment insights.',
+    heading: 'Never miss a new Broadway show',
+    subheading: 'Opening night scores, closing alerts, and a weekly roundup. Every Friday, one email.',
   },
 };
 

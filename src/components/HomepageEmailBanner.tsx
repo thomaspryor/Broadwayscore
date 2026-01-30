@@ -75,7 +75,7 @@ export default function HomepageEmailBanner() {
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
-          <span>Subscribed! You&apos;ll get weekly updates.</span>
+          <span>You&apos;re in! Opening night scores start Friday.</span>
         </div>
       </div>
     );
@@ -86,10 +86,10 @@ export default function HomepageEmailBanner() {
       <div className="max-w-3xl mx-auto px-4 py-2">
         <form onSubmit={handleSubmit} className="flex items-center gap-2 sm:gap-3">
           <p className="hidden sm:block text-sm text-gray-300 whitespace-nowrap">
-            <span className="font-semibold text-white">Weekly updates:</span> new reviews, scores & closing alerts
+            <span className="font-semibold text-white">Never miss a new Broadway show</span> &mdash; get opening night scores every Friday
           </p>
           <p className="sm:hidden text-xs text-gray-300 whitespace-nowrap font-medium">
-            Weekly Broadway updates
+            Opening night scores, every Friday
           </p>
           <label htmlFor="homepage-banner-email" className="sr-only">Email address</label>
           <input
