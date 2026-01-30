@@ -1,0 +1,128 @@
+# Rebuild reviews.json from review-texts source files
+# This is the PRIMARY sync mechanism - runs daily and can be triggered manually
+name: Rebuild Reviews Data
+
+on:
+  schedule:
+    # Daily at 4 AM UTC (11 PM EST) - after other workflows typically complete
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for manual rebuild (for commit message)'
+        required: false
+        default: 'Manual sync'
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    name: Rebuild reviews.json
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Get current review count
+        id: before
+        run: |
+          if [ -f data/reviews.json ]; then
+            COUNT=$(node -e "console.log(require('./data/reviews.json').reviews.length)")
+            echo "count=$COUNT" >> $GITHUB_OUTPUT
+          else
+            echo "count=0" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Rebuild reviews.json
+        run: node scripts/rebuild-all-reviews.js
+
+      - name: Get new review count
+        id: after
+        run: |
+          COUNT=$(node -e "console.log(require('./data/reviews.json').reviews.length)")
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet data/reviews.json; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes to reviews.json"
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Changes detected in reviews.json"
+            git diff --stat data/reviews.json
+          fi
+
+      - name: Commit and push changes
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add data/reviews.json
+
+          BEFORE=${{ steps.before.outputs.count }}
+          AFTER=${{ steps.after.outputs.count }}
+          DIFF=$((AFTER - BEFORE))
+
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            REASON="${{ inputs.reason }}"
+            MSG="data: Rebuild reviews.json - $REASON"
+          else
+            MSG="data: Scheduled rebuild of reviews.json"
+          fi
+
+          if [ $DIFF -ne 0 ]; then
+            if [ $DIFF -gt 0 ]; then
+              MSG="$MSG (+$DIFF reviews)"
+            else
+              MSG="$MSG ($DIFF reviews)"
+            fi
+          fi
+
+          git commit -m "$MSG
+
+          Reviews: $BEFORE → $AFTER
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          # Retry push with rebase in case of concurrent changes
+          for i in 1 2 3 4 5; do
+            if git push origin main; then
+              echo "Push succeeded on attempt $i"
+              break
+            fi
+            echo "Push failed (attempt $i), pulling and rebasing..."
+            git pull --rebase origin main
+            sleep $((RANDOM % 5 + 2))
+          done
+
+      - name: Summary
+        run: |
+          echo "## Reviews Rebuild Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Before:** ${{ steps.before.outputs.count }} reviews" >> $GITHUB_STEP_SUMMARY
+          echo "**After:** ${{ steps.after.outputs.count }} reviews" >> $GITHUB_STEP_SUMMARY
+          echo "**Changes:** ${{ steps.changes.outputs.has_changes }}" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "**Trigger:** Manual (${{ inputs.reason }})" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "**Trigger:** Scheduled (daily 4 AM UTC)" >> $GITHUB_STEP_SUMMARY
+          fi
