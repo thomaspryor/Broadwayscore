@@ -105,6 +105,26 @@ jobs:
               });
             }
 
+      - name: Send Discord alert on failure
+        if: failure()
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+        run: |
+          node -e "
+            const { sendAlert } = require('./scripts/lib/discord-notify.js');
+            sendAlert({
+              title: 'CI Failure: Data Validation',
+              description: 'Data validation checks failed. Review required.',
+              severity: 'error',
+              fields: [
+                { name: 'Workflow', value: 'Test Suite' },
+                { name: 'Job', value: 'Data Validation' },
+                { name: 'Trigger', value: '${{ github.event_name }}' }
+              ],
+              url: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+            }).catch(e => console.error('Discord notification failed:', e.message));
+          "
+
   e2e-tests:
     name: E2E Tests
     runs-on: ubuntu-latest
@@ -176,6 +196,26 @@ jobs:
                 labels: ['automated', 'bug', 'e2e']
               });
             }
+
+      - name: Send Discord alert on failure
+        if: failure()
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+        run: |
+          node -e "
+            const { sendAlert } = require('./scripts/lib/discord-notify.js');
+            sendAlert({
+              title: 'CI Failure: E2E Tests',
+              description: 'E2E tests failed on production site. Investigation needed.',
+              severity: 'error',
+              fields: [
+                { name: 'Workflow', value: 'Test Suite' },
+                { name: 'Job', value: 'E2E Tests' },
+                { name: 'Site', value: 'https://broadwayscorecard.com' }
+              ],
+              url: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+            }).catch(e => console.error('Discord notification failed:', e.message));
+          "
 
   test-summary:
     name: Test Summary
