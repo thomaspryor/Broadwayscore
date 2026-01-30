@@ -5,7 +5,7 @@
   "criticName": "Brittani Samuel",
   "url": "https://www.broadwaynews.com/review-once-upon-a-one-more-time-thrillingly-weds-fairy-tale-princesses-and-pop/",
   "publishDate": "June 22, 2023",
-  "fullText": "The musical of Britney Spears songs hits all the right notes of zaniness, creativity and unbridled joy.\n\nLiberation sits at the foundation of our favorite pop songs, and few superstars have more to say about freedom than Britney Spears. The Mississippi-born singer held on to juggernaut status in the pop arena for over a decade with an ample discography of hits she now lends to the new Broadway musical “Once Upon a One More Time.” But the music is where all direct connections to my namesake end.\n\nThe plot instead centers on a group of old-school princesses, including Cinderella (Briga Heelan), Snow White (Aisha Jackson), Little Mermaid (Lauren Zakrin) — the gals — whose lives change when the Original Fairy Godmother (Brooke Dillman) introduces “The Feminine Mystique” to their book, err sorry, scroll club. Friedan’s words tug at Cinderella’s already hankering suspicion that there is more to “happy ever after.” But the princess posse has to deal with obstacles in the form of their omnipotent male Narrator (Adam Godley) and Cinderella's Stepmother (Jennifer Simard, already gunning for her third Tony nomination with this deliciously vampy performance), who swiped the manifesto.\n\nAlready have an account?\n              Log in",
+  "fullText": "The musical of Britney Spears songs hits all the right notes of zaniness, creativity and unbridled joy. Liberation sits at the foundation of our favorite pop songs, and few superstars have more to say about freedom than Britney Spears. The Mississippi-born singer held on to juggernaut status in the pop arena for over a decade with an ample discography of hits she now lends to the new Broadway musical “Once Upon a One More Time.” But the music is where all direct connections to my namesake end. The plot instead centers on a group of old-school princesses, including Cinderella (Briga Heelan), Snow White (Aisha Jackson), Little Mermaid (Lauren Zakrin) — the gals — whose lives change when the Original Fairy Godmother (Brooke Dillman) introduces “The Feminine Mystique” to their book, err sorry, scroll club. Friedan’s words tug at Cinderella’s already hankering suspicion that there is more to “happy ever after.” But the princess posse has to deal with obstacles in the form of their omnipotent male Narrator (Adam Godley) and Cinderella's Stepmother (Jennifer Simard, already gunning for her third Tony nomination with this deliciously vampy performance), who swiped the manifesto.",
   "originalScore": null,
   "assignedScore": 85,
   "dtliThumb": "Up",
@@ -76,28 +76,30 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 85,
-  "textWordCount": 196,
-  "archivePath": "data/archives/reviews/once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel_2026-01-29.html",
-  "textFetchedAt": "2026-01-29T15:24:21.485Z",
-  "fetchMethod": "archive",
+  "textWordCount": 190,
+  "archivePath": "data/archives/reviews/once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel_2026-01-30.html",
+  "textFetchedAt": "2026-01-30T19:40:49.234Z",
+  "fetchMethod": "playwright",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
       "success": true
     }
   ],
-  "fetchTier": 4,
-  "textQuality": "truncated",
-  "truncationSignals": [
-    "no_ending_punctuation",
-    "has_paywall_text",
-    "possible_mid_word_cutoff"
-  ],
-  "textStatus": "truncated",
-  "sourceMethod": "archive",
+  "fetchTier": 1,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "playwright",
   "textIssues": [
-    "Word count too low: 196 (min: 300)"
+    "Word count too low: 202 (min: 300)"
   ],
   "rescoreCompletedAt": "2026-01-29T14:31:51.932Z",
   "archiveOrgTimestamp": "20251016161546",
