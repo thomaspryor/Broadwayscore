@@ -1,48 +1,49 @@
 {
-  "runDate": "2026-01-30T19:50:19.537Z",
+  "runDate": "2026-01-30T19:50:23.624Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "prayer-for-the-french-republic-2024",
+    "showFilter": "illinoise-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 69,
+    "processed": 4,
+    "failed": 76,
     "skipped": 0,
-    "successRate": "4.2%"
+    "successRate": "5.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 3
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 13,
+    "tier1Attempts": 19,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 13,
-    "tier2Success": 1,
-    "tier3Attempts": 12,
+    "tier2Attempts": 19,
+    "tier2Success": 0,
+    "tier3Attempts": 19,
     "tier3Success": 1,
-    "tier4Attempts": 26,
-    "tier4Success": 1,
-    "totalFailed": 14,
-    "scrapingBeeCreditsUsed": 60,
+    "tier4Attempts": 44,
+    "tier4Success": 3,
+    "totalFailed": 21,
+    "scrapingBeeCreditsUsed": 50,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "wicked-2003/ew--alice-king.json"
+    "wicked-2003/ew--alice-king.json",
+    "illinoise-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -100,20 +101,27 @@
     "wicked-2003/njcom-star-ledger--michael-sommers.json",
     "wicked-2003/village-voice--michael-feingold.json",
     "wicked-2003/washpost--peter-marks.json",
-    "prayer-for-the-french-republic-2024/hollywood-reporter--david-rooney.json",
-    "prayer-for-the-french-republic-2024/nytg--david-gordon.json",
-    "prayer-for-the-french-republic-2024/variety--aramide-tinubu.json",
-    "prayer-for-the-french-republic-2024/variety--jesse-green.json",
-    "prayer-for-the-french-republic-2024/vulture--helen-shaw.json",
-    "prayer-for-the-french-republic-2024/deadline--greg-evans.json",
-    "prayer-for-the-french-republic-2024/observer--david-cote.json",
-    "prayer-for-the-french-republic-2024/observer--rex-reed.json",
-    "prayer-for-the-french-republic-2024/theatermania--jesse-green.json",
-    "prayer-for-the-french-republic-2024/timeout--adam-feldman.json",
-    "prayer-for-the-french-republic-2024/wsj--charles-isherwood.json",
-    "prayer-for-the-french-republic-2024/forward--jesse-green.json",
-    "prayer-for-the-french-republic-2024/talkinbroadway--matthew-murray.json",
-    "prayer-for-the-french-republic-2024/washpost--peter-marks.json"
+    "illinoise-2024/hollywood-reporter--angie-han.json",
+    "illinoise-2024/nyt-theater--jonathan-mandell.json",
+    "illinoise-2024/variety--aramide-tinubu.json",
+    "illinoise-2024/variety--charles-isherwood.json",
+    "illinoise-2024/vulture--jackson-mchenry.json",
+    "illinoise-2024/deadline--greg-evans.json",
+    "illinoise-2024/deadline--pete-hammond.json",
+    "illinoise-2024/ew--kristen-baldwin.json",
+    "illinoise-2024/guardian--adrian-horton.json",
+    "illinoise-2024/observer--jesse-green.json",
+    "illinoise-2024/theatermania--jesse-green.json",
+    "illinoise-2024/thewrap--steve-pond.json",
+    "illinoise-2024/timeout--adam-feldman.json",
+    "illinoise-2024/wsj--charles-isherwood.json",
+    "illinoise-2024/theatrely--zachary-stewart.json",
+    "illinoise-2024/ap--mark-kennedy.json",
+    "illinoise-2024/billboard--demetrios-matheou.json",
+    "illinoise-2024/talkinbroadway--matthew-murray.json",
+    "illinoise-2024/usatoday--david-oliver.json",
+    "illinoise-2024/washpost--gloria-oladipo.json",
+    "illinoise-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -122,7 +130,8 @@
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json",
-      "wicked-2003/ew--alice-king.json"
+      "wicked-2003/ew--alice-king.json",
+      "illinoise-2024/broadwaynews--brittani-samuel.json"
     ]
   }
 }
