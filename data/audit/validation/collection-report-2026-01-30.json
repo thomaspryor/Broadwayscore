@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T20:00:41.379Z",
+  "runDate": "2026-01-30T20:01:03.281Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "the-cottage-2023",
+    "showFilter": "six-2021",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 3,
-    "failed": 59,
+    "failed": 66,
     "skipped": 0,
-    "successRate": "4.8%"
+    "successRate": "4.3%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -24,18 +24,18 @@
     "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 10,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 3,
+    "tier2Attempts": 10,
     "tier2Success": 0,
-    "tier3Attempts": 3,
+    "tier3Attempts": 10,
     "tier3Success": 1,
-    "tier4Attempts": 6,
+    "tier4Attempts": 21,
     "tier4Success": 2,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 20,
+    "totalFailed": 11,
+    "scrapingBeeCreditsUsed": 40,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
@@ -100,10 +100,17 @@
     "wicked-2003/njcom-star-ledger--michael-sommers.json",
     "wicked-2003/village-voice--michael-feingold.json",
     "wicked-2003/washpost--peter-marks.json",
-    "the-cottage-2023/observer--jesse-green.json",
-    "the-cottage-2023/observer--rex-reed.json",
-    "the-cottage-2023/theatermania--adam-feldman.json",
-    "the-cottage-2023/wsj--charles-isherwood.json"
+    "six-2021/variety--peter-marks.json",
+    "six-2021/deadline--pete-hammond.json",
+    "six-2021/ew--ruth-kinane.json",
+    "six-2021/guardian--adrian-horton.json",
+    "six-2021/observer--david-cote.json",
+    "six-2021/theatermania--jesse-green.json",
+    "six-2021/timeout--adam-feldman.json",
+    "six-2021/wsj--charles-isherwood.json",
+    "six-2021/amny--matt-windman.json",
+    "six-2021/front-row-center--tulis-mccall.json",
+    "six-2021/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
     "playwright": [],
