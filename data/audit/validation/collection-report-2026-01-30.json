@@ -1,49 +1,50 @@
 {
-  "runDate": "2026-01-30T18:29:46.809Z",
+  "runDate": "2026-01-30T18:29:56.463Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "and-juliet-2022",
+    "showFilter": "harry-potter-2021",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 56,
+    "processed": 5,
+    "failed": 68,
     "skipped": 0,
-    "successRate": "6.7%"
+    "successRate": "6.8%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 4
+    "brightdata": 1,
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 9,
-    "tier1Success": 0,
+    "tier1Attempts": 21,
+    "tier1Success": 2,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 9,
-    "tier2Success": 0,
-    "tier3Attempts": 9,
-    "tier3Success": 0,
-    "tier4Attempts": 23,
-    "tier4Success": 3,
-    "totalFailed": 10,
-    "scrapingBeeCreditsUsed": 30,
+    "tier2Attempts": 19,
+    "tier2Success": 1,
+    "tier3Attempts": 18,
+    "tier3Success": 1,
+    "tier4Attempts": 46,
+    "tier4Success": 4,
+    "totalFailed": 22,
+    "scrapingBeeCreditsUsed": 90,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "and-juliet-2022/broadwaynews--brittani-samuel.json",
-    "and-juliet-2022/chicagotribune--chris-jones.json"
+    "harry-potter-2021/cititour--brian-scott-lipton.json",
+    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+    "harry-potter-2021/the-times--ann-treneman.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -92,26 +93,41 @@
     "i-need-that-2023/timeout--will-gleason.json",
     "i-need-that-2023/wsj--charles-isherwood.json",
     "i-need-that-2023/wsj--charles.json",
-    "and-juliet-2022/hollywood-reporter--angie-han.json",
-    "and-juliet-2022/variety--aramide-tinubu.json",
-    "and-juliet-2022/vulture--sara-holdren.json",
-    "and-juliet-2022/ew--leah-greenblatt.json",
-    "and-juliet-2022/theatermania--andy-propst.json",
-    "and-juliet-2022/theatermania--jesse-green.json",
-    "and-juliet-2022/thewrap--robert-hofler.json",
-    "and-juliet-2022/timeout--adam-feldman.json",
-    "and-juliet-2022/wsj--charles-isherwood.json",
-    "and-juliet-2022/talkinbroadway--nancy-grossman.json"
+    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+    "harry-potter-2021/deadline--greg-evans.json",
+    "harry-potter-2021/guardian--alexis-soloski.json",
+    "harry-potter-2021/national-review--kyle-smith.json",
+    "harry-potter-2021/timeout--adam-feldman.json",
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "harry-potter-2021/broadway-blog--matthew-wexler.json",
+    "harry-potter-2021/curtainup--elyse-sommer.json",
+    "harry-potter-2021/exeunt-magazine--kev-berry.json",
+    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/frontmezzjunkies--steven-ross.json",
+    "harry-potter-2021/limelight-magazine-au--clive-paget.json",
+    "harry-potter-2021/medium--christian-lewis.json",
+    "harry-potter-2021/ny1--roma-torre.json",
+    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
+    "harry-potter-2021/troy-record--bob-goepfert.json",
+    "harry-potter-2021/washpost--peter-marks.json",
+    "harry-potter-2021/wnyc--jennifer-vanasco.json",
+    "harry-potter-2021/wolf-entertainment-guide--william-wolf.json",
+    "harry-potter-2021/woman-around-town--alix-cohen.json",
+    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
+    ],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "harry-potter-2021/cititour--brian-scott-lipton.json"
+    ],
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json",
-      "and-juliet-2022/broadwaynews--brittani-samuel.json",
-      "and-juliet-2022/chicagotribune--chris-jones.json"
+      "harry-potter-2021/the-times--ann-treneman.json"
     ]
   }
 }
