@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T03:18:46.738Z",
+  "runDate": "2026-01-30T03:19:10.324Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "tier1",
-    "showFilter": "buena-vista-social-club-2025",
+    "showFilter": "moulin-rouge-2019",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 4,
+    "failed": 2,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -23,23 +23,21 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 4,
+    "tier1Attempts": 2,
     "tier1Success": 0,
-    "tier2Attempts": 4,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 4,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier4Attempts": 8,
+    "tier4Attempts": 5,
     "tier4Success": 0,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 10
+    "totalFailed": 2,
+    "scrapingBeeCreditsUsed": 0
   },
   "processed": [],
   "failed": [
-    "buena-vista-social-club-2025/hollywood-reporter--angie-han.json",
-    "buena-vista-social-club-2025/nytimes--jesse-oxfeld.json",
-    "buena-vista-social-club-2025/variety--aramide-tinubu.json",
-    "buena-vista-social-club-2025/variety--peter-marks.json"
+    "moulin-rouge-2019/nytimes--jesse-green.json",
+    "moulin-rouge-2019/vulture--jesse-green.json"
   ],
   "tierDetails": {
     "playwright": [],
