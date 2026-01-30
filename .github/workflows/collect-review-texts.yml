@@ -39,6 +39,14 @@ on:
         description: 'Try Archive.org first for older reviews (true/false)'
         required: false
         default: 'true'
+      browserbase_enabled:
+        description: 'Enable Browserbase tier for CAPTCHA-heavy sites (costs ~$0.10/session)'
+        required: false
+        default: 'false'
+      browserbase_max_sessions:
+        description: 'Max Browserbase sessions per run (spending limit)'
+        required: false
+        default: '10'
 
 jobs:
   # Sequential single-job mode (default)
@@ -93,6 +101,10 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_API_KEY: ${{ secrets.BRIGHTDATA_API_KEY }}
           BRIGHTDATA_ZONE: mcp_unlocker
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_ENABLED: ${{ inputs.browserbase_enabled }}
+          BROWSERBASE_MAX_SESSIONS_PER_RUN: ${{ inputs.browserbase_max_sessions }}
           BATCH_SIZE: ${{ inputs.batch_size }}
           MAX_REVIEWS: ${{ inputs.max_reviews }}
           PRIORITY: ${{ inputs.priority }}
@@ -111,7 +123,7 @@ jobs:
 
       - name: Final commit and push
         run: |
-          git add data/review-texts/ data/archives/reviews/ data/audit/ data/collection-state/
+          git add data/review-texts/ data/archives/reviews/ data/audit/ data/collection-state/ || true
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
@@ -191,6 +203,10 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_API_KEY: ${{ secrets.BRIGHTDATA_API_KEY }}
           BRIGHTDATA_ZONE: mcp_unlocker
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_ENABLED: ${{ inputs.browserbase_enabled }}
+          BROWSERBASE_MAX_SESSIONS_PER_RUN: ${{ inputs.browserbase_max_sessions }}
           BATCH_SIZE: ${{ inputs.batch_size }}
           MAX_REVIEWS: ${{ inputs.max_reviews }}
           OUTLET_TIER: ${{ matrix.outlet_tier }}
