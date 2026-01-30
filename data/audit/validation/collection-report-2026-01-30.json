@@ -1,41 +1,41 @@
 {
-  "runDate": "2026-01-30T19:52:24.086Z",
+  "runDate": "2026-01-30T19:53:01.587Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "suffs-2024",
+    "showFilter": "harry-potter-2021",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 69,
+    "processed": 5,
+    "failed": 78,
     "skipped": 0,
-    "successRate": "5.5%"
+    "successRate": "6.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 4
+    "brightdata": 1,
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 14,
-    "tier1Success": 0,
+    "tier1Attempts": 23,
+    "tier1Success": 2,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 14,
+    "tier2Attempts": 21,
     "tier2Success": 1,
-    "tier3Attempts": 13,
+    "tier3Attempts": 20,
     "tier3Success": 1,
-    "tier4Attempts": 30,
+    "tier4Attempts": 49,
     "tier4Success": 2,
-    "totalFailed": 14,
-    "scrapingBeeCreditsUsed": 30,
+    "totalFailed": 23,
+    "scrapingBeeCreditsUsed": 90,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
@@ -43,7 +43,8 @@
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
     "wicked-2003/ew--alice-king.json",
-    "suffs-2024/the-times--nancy-durrant.json"
+    "harry-potter-2021/cititour--brian-scott-lipton.json",
+    "harry-potter-2021/melindas-malarky--melinda-pressler.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -101,30 +102,42 @@
     "wicked-2003/njcom-star-ledger--michael-sommers.json",
     "wicked-2003/village-voice--michael-feingold.json",
     "wicked-2003/washpost--peter-marks.json",
-    "suffs-2024/hollywood-reporter--angie-han.json",
-    "suffs-2024/nytimes--jesse-green.json",
-    "suffs-2024/variety--aramide-tinubu.json",
-    "suffs-2024/variety--peter-marks.json",
-    "suffs-2024/chelsea-community-news--michael-musto.json",
-    "suffs-2024/ew--kristen-baldwin.json",
-    "suffs-2024/guardian--adrian-horton.json",
-    "suffs-2024/guardian--jesse-green.json",
-    "suffs-2024/observer--rex-reed.json",
-    "suffs-2024/theatermania--jesse-green.json",
-    "suffs-2024/timeout--regina-robbins.json",
-    "suffs-2024/wsj--charles-isherwood.json",
-    "suffs-2024/talkinbroadway--matthew-murray.json",
-    "suffs-2024/washpost--peter-marks.json"
+    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+    "harry-potter-2021/deadline--greg-evans.json",
+    "harry-potter-2021/guardian--alexis-soloski.json",
+    "harry-potter-2021/national-review--kyle-smith.json",
+    "harry-potter-2021/timeout--adam-feldman.json",
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "harry-potter-2021/broadway-blog--matthew-wexler.json",
+    "harry-potter-2021/curtainup--elyse-sommer.json",
+    "harry-potter-2021/exeunt-magazine--kev-berry.json",
+    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/frontmezzjunkies--steven-ross.json",
+    "harry-potter-2021/limelight-magazine-au--clive-paget.json",
+    "harry-potter-2021/medium--christian-lewis.json",
+    "harry-potter-2021/ny1--roma-torre.json",
+    "harry-potter-2021/the-times--ann-treneman.json",
+    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
+    "harry-potter-2021/troy-record--bob-goepfert.json",
+    "harry-potter-2021/washpost--peter-marks.json",
+    "harry-potter-2021/wnyc--jennifer-vanasco.json",
+    "harry-potter-2021/wolf-entertainment-guide--william-wolf.json",
+    "harry-potter-2021/woman-around-town--alix-cohen.json",
+    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
+    ],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "harry-potter-2021/cititour--brian-scott-lipton.json"
+    ],
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json",
-      "wicked-2003/ew--alice-king.json",
-      "suffs-2024/the-times--nancy-durrant.json"
+      "wicked-2003/ew--alice-king.json"
     ]
   }
 }
