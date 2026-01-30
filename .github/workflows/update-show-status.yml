@@ -170,6 +170,32 @@ jobs:
               labels: ['new-show', 'needs-review-data', 'automated']
             });
 
+      - name: Send Discord notification for new shows
+        env:
+          DISCORD_WEBHOOK_NEWSHOWS: ${{ secrets.DISCORD_WEBHOOK_NEWSHOWS }}
+        run: |
+          node -e "
+            const fs = require('fs');
+            const { sendNewShowNotification } = require('./scripts/lib/discord-notify.js');
+
+            try {
+              const pendingData = JSON.parse(fs.readFileSync('data/new-shows-pending.json', 'utf8'));
+              const shows = pendingData.shows || [];
+
+              for (const show of shows) {
+                sendNewShowNotification({
+                  showTitle: show.title,
+                  venue: show.venue || 'TBA',
+                  openingDate: show.openingDate || 'TBA',
+                  event: show.status === 'previews' ? 'discovered' : 'opened',
+                  url: 'https://broadwayscorecard.com/show/' + show.slug
+                }).catch(e => console.error('Discord notification failed for ' + show.title + ':', e.message));
+              }
+            } catch (err) {
+              console.error('Failed to send Discord notifications:', err.message);
+            }
+          "
+
   # Optional: Trigger review data gathering workflow
   # Note: Only triggers for shows that have opened (not previews)
   trigger-data-agent:
