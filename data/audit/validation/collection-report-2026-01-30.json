@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T03:16:34.203Z",
+  "runDate": "2026-01-30T03:17:07.549Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "tier1",
-    "showFilter": "harry-potter-2021",
+    "showFilter": "aladdin-2014",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 1,
+    "failed": 2,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -29,14 +29,15 @@
     "tier2Success": 0,
     "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier4Attempts": 2,
-    "tier4Success": 0,
-    "totalFailed": 1,
+    "tier4Attempts": 3,
+    "tier4Success": 1,
+    "totalFailed": 2,
     "scrapingBeeCreditsUsed": 0
   },
   "processed": [],
   "failed": [
-    "harry-potter-2021/variety--peter-marks.json"
+    "aladdin-2014/hollywood-reporter--david-rooney.json",
+    "aladdin-2014/nytimes--ben-brantley.json"
   ],
   "tierDetails": {
     "playwright": [],
