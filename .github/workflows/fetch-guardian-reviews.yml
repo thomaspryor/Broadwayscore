@@ -63,13 +63,17 @@ jobs:
 
           node scripts/fetch-guardian-reviews.js $ARGS
 
+      - name: Rebuild reviews.json
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: node scripts/rebuild-all-reviews.js
+
       - name: Commit changes
         if: ${{ github.event.inputs.dry_run != 'true' }}
         run: |
           git config user.name "GitHub Action"
           git config user.email "action@github.com"
 
-          git add data/review-texts/
+          git add data/review-texts/ data/reviews.json
 
           if git diff --staged --quiet; then
             echo "No changes to commit"

@@ -2,6 +2,38 @@
 
 Detailed descriptions of all automated workflows. See root `CLAUDE.md` for secrets table and critical rules.
 
+## Data Sync Architecture
+
+**Source of truth:** `data/review-texts/{show-id}/*.json` (individual review files)
+**Derived file:** `data/reviews.json` (aggregated for website consumption)
+
+| Workflow | Modifies review-texts | Rebuilds reviews.json | Notes |
+|----------|----------------------|----------------------|-------|
+| `rebuild-reviews.yml` | ❌ | ✅ | **PRIMARY sync** - daily + manual trigger |
+| `review-refresh.yml` | ✅ | ✅ | Weekly extraction + rebuild |
+| `gather-reviews.yml` | ✅ | ❌ | Parallel-safe, relies on daily rebuild |
+| `collect-review-texts.yml` | ✅ | ❌ | Parallel-safe, relies on daily rebuild |
+| `fetch-guardian-reviews.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
+| `process-review-submission.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
+
+**For bulk imports (100s of shows):** Run parallel gather-reviews, then trigger manual rebuild via:
+```bash
+gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
+```
+
+---
+
+## `rebuild-reviews.yml`
+- **Runs:** Daily at 4 AM UTC (11 PM EST), or manually triggered
+- **Does:** Rebuilds `reviews.json` from `review-texts/` source files
+- **Manual trigger:** `gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"`
+- **Purpose:** PRIMARY sync mechanism for derived data
+- **When to use manually:**
+  - After bulk imports (100s of shows via parallel gather-reviews)
+  - After manual edits to review-texts files
+  - When reviews.json appears stale
+- **Script:** `scripts/rebuild-all-reviews.js`
+
 ## `update-show-status.yml`
 - **Runs:** Daily at 8 AM UTC (3 AM EST)
 - **Does:** Updates show statuses (open → closed, previews → open), discovers new shows on Broadway.org, auto-adds new shows with status "previews"
