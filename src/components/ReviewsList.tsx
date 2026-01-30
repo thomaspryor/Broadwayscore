@@ -154,7 +154,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
                 </span>
               )}
             </div>
-            <span className="text-xs text-gray-500 flex-shrink-0">{formatDate(review.publishDate)}</span>
+            <span className="text-xs text-gray-500 flex-shrink-0 pl-10 sm:pl-0">{formatDate(review.publishDate)}</span>
           </div>
 
           {/* Quote/Summary - larger text */}
@@ -175,7 +175,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
           )}
 
           {/* Author at BOTTOM + Full Review link */}
-          <div className="flex items-center justify-between mt-3">
+          <div className="flex items-center justify-between mt-1">
             {review.criticName && (
               <span className="text-sm text-gray-500">By {review.criticName}</span>
             )}
