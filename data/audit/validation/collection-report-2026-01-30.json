@@ -1,40 +1,40 @@
 {
-  "runDate": "2026-01-30T22:37:49.076Z",
+  "runDate": "2026-01-30T22:37:59.090Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 25,
+    "maxReviews": 20,
     "priority": "all",
-    "showFilter": "an-enemy-of-the-people-2024",
+    "showFilter": "just-for-us-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 79,
+    "processed": 4,
+    "failed": 78,
     "skipped": 0,
-    "successRate": "3.7%"
+    "successRate": "4.9%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archive": 3
   },
   "statistics": {
     "tier1Attempts": 12,
-    "tier1Success": 0,
+    "tier1Success": 1,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 12,
-    "tier2Success": 0,
-    "tier3Attempts": 12,
+    "tier2Attempts": 11,
+    "tier2Success": 2,
+    "tier3Attempts": 9,
     "tier3Success": 0,
-    "tier4Attempts": 29,
-    "tier4Success": 2,
-    "totalFailed": 14,
+    "tier4Attempts": 23,
+    "tier4Success": 3,
+    "totalFailed": 13,
     "scrapingBeeCreditsUsed": 40,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
@@ -42,7 +42,8 @@
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "wicked-2003/ew--alice-king.json"
+    "wicked-2003/ew--alice-king.json",
+    "just-for-us-2023/usatoday--charles-isherwood.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -110,24 +111,25 @@
     "stranger-things-2024/theatrely--olivia-clement.json",
     "stranger-things-2024/thestage--dave-fargnoli.json",
     "stranger-things-2024/tickertv--cheryl-king.json",
-    "an-enemy-of-the-people-2024/hollywood-reporter--angie-han.json",
-    "an-enemy-of-the-people-2024/nytg--david-gordon.json",
-    "an-enemy-of-the-people-2024/variety--aramide-tinubu.json",
-    "an-enemy-of-the-people-2024/variety--peter-marks.json",
-    "an-enemy-of-the-people-2024/vulture--helen-shaw.json",
-    "an-enemy-of-the-people-2024/deadline--greg-evans.json",
-    "an-enemy-of-the-people-2024/guardian--adrian-horton.json",
-    "an-enemy-of-the-people-2024/nydailynews--chris-jones.json",
-    "an-enemy-of-the-people-2024/nydailynews--chris.json",
-    "an-enemy-of-the-people-2024/theatermania--jesse-green.json",
-    "an-enemy-of-the-people-2024/timeout--adam-feldman.json",
-    "an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
-    "an-enemy-of-the-people-2024/washpost--naveen-kumar.json",
-    "an-enemy-of-the-people-2024/washpost--peter-marks.json"
+    "just-for-us-2023/hollywood-reporter--angie-han.json",
+    "just-for-us-2023/hollywood-reporter--david-rooney.json",
+    "just-for-us-2023/variety--aramide-tinubu.json",
+    "just-for-us-2023/vulture--helen-shaw.json",
+    "just-for-us-2023/deadline--greg-evans.json",
+    "just-for-us-2023/nypost--johnny-oleksinski.json",
+    "just-for-us-2023/observer--david-cote.json",
+    "just-for-us-2023/theatermania--jesse-green.json",
+    "just-for-us-2023/timeout--adam-feldman.json",
+    "just-for-us-2023/timeout--raven-snook.json",
+    "just-for-us-2023/wsj--charles-isherwood.json",
+    "just-for-us-2023/next-magazine--michael-hollett.json",
+    "just-for-us-2023/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
     "playwright": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "just-for-us-2023/usatoday--charles-isherwood.json"
+    ],
     "brightdata": [],
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
