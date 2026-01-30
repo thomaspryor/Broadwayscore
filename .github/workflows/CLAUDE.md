@@ -24,9 +24,10 @@ Detailed descriptions of all automated workflows. See root `CLAUDE.md` for secre
 
 ## `review-refresh.yml`
 - **Runs:** Weekly on Mondays at 9 AM UTC
-- **Does:** Checks all open shows for new reviews not yet in the database, compares aggregator review counts against local review-texts, triggers `collect-review-texts.yml` per show if new reviews found
+- **Does:** Checks all open shows for new reviews, extracts from aggregator archives, **rebuilds reviews.json**, triggers collection if needed
 - **Script:** `scripts/check-show-freshness.js`
-- **Note:** Discovers new reviews but does NOT rebuild `reviews.json`
+- **Key steps:** Extract reviews → Rebuild reviews.json → Commit → Trigger collection for shows with gaps
+- **Note:** Now automatically rebuilds `reviews.json` after extraction (fixed Jan 2026)
 
 ## `fetch-aggregator-pages.yml`
 - **Runs:** Manual trigger only
@@ -134,5 +135,6 @@ Detailed descriptions of all automated workflows. See root `CLAUDE.md` for secre
 
 ## `test.yml`
 - **Runs:** On push to `main`, daily at 6 AM UTC, manually
-- **Tests:** Data validation (duplicates, required fields, dates, status) + E2E (homepage, show pages, navigation, filters, mobile)
+- **Tests:** Data validation (duplicates, required fields, dates, status), **text quality audit** (35% full, <40% truncated, <5% unknown), E2E tests (homepage, show pages, navigation, filters, mobile)
+- **Quality thresholds:** Fails if review text quality drops below standards
 - **On Failure:** Auto-creates GitHub issue
