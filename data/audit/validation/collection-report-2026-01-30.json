@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T18:38:28.855Z",
+  "runDate": "2026-01-30T18:38:43.475Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "real-women-have-curves-2025",
+    "showFilter": "water-for-elephants-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 3,
-    "failed": 50,
+    "failed": 56,
     "skipped": 0,
-    "successRate": "5.7%"
+    "successRate": "5.1%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -24,25 +24,25 @@
     "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 0,
+    "tier1Attempts": 7,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier2Attempts": 7,
+    "tier2Success": 1,
+    "tier3Attempts": 6,
     "tier3Success": 0,
-    "tier4Attempts": 6,
-    "tier4Success": 6,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 0,
+    "tier4Attempts": 16,
+    "tier4Success": 5,
+    "totalFailed": 10,
+    "scrapingBeeCreditsUsed": 60,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "real-women-have-curves-2025/vulture--sara-holdren.json"
+    "water-for-elephants-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -91,11 +91,16 @@
     "i-need-that-2023/timeout--will-gleason.json",
     "i-need-that-2023/wsj--charles-isherwood.json",
     "i-need-that-2023/wsj--charles.json",
-    "real-women-have-curves-2025/deadline--greg-evans.json",
-    "real-women-have-curves-2025/new-york-sun--elysa-gardner.json",
-    "real-women-have-curves-2025/thewrap--robert-hofler.json",
-    "real-women-have-curves-2025/timeout--adam-feldman.json",
-    "real-women-have-curves-2025/washpost--naveen-kumar.json"
+    "water-for-elephants-2024/variety--aramide-tinubu.json",
+    "water-for-elephants-2024/variety--charles-isherwood.json",
+    "water-for-elephants-2024/vulture--helen-shaw.json",
+    "water-for-elephants-2024/nypost--johnny-oleksinski.json",
+    "water-for-elephants-2024/observer--rex-reed.json",
+    "water-for-elephants-2024/theatermania--andy-propst.json",
+    "water-for-elephants-2024/timeout--adam-feldman.json",
+    "water-for-elephants-2024/wsj--charles-isherwood.json",
+    "water-for-elephants-2024/wsj--charles.json",
+    "water-for-elephants-2024/thestage--lane-williamson.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -104,7 +109,7 @@
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json",
-      "real-women-have-curves-2025/vulture--sara-holdren.json"
+      "water-for-elephants-2024/broadwaynews--brittani-samuel.json"
     ]
   }
 }
