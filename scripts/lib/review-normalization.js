@@ -265,7 +265,7 @@ const CRITIC_ALIASES = {
   'vinson-cunningham': ['vinson cunningham', 'v. cunningham'],
   'naveen-kumar': ['naveen kumar', 'n. kumar'],
   'jonathan-mandell': ['jonathan mandell', 'j. mandell', 'jon mandell'],
-  'brian-scott-lipton': ['brian scott lipton', 'brian lipton', 'b. lipton'],
+  'brian-scott-lipton': ['brian scott lipton', 'brian lipton', 'b. lipton', 'scott lipton'],
   'melissa-rose-bernardo': ['melissa rose bernardo', 'melissa bernardo', 'm. bernardo'],
   'david-finkle': ['david finkle', 'd. finkle'],
   'david-cote': ['david cote', 'd. cote'],
@@ -317,7 +317,15 @@ function normalizeOutlet(outletName) {
 function normalizeCritic(criticName) {
   if (!criticName) return 'unknown';
 
-  const lower = criticName.toLowerCase().trim();
+  // Clean up garbage prefixes (CSA., MC., etc.) that sometimes appear
+  let cleaned = criticName
+    .replace(/^(CSA\.|MC\.|MS\.|MR\.|DR\.)\s*/i, '')
+    .replace(/^\s*&nbsp;\s*/i, '')
+    .trim();
+
+  if (!cleaned) return 'unknown';
+
+  const lower = cleaned.toLowerCase().trim();
 
   // Check against all aliases
   for (const [canonical, aliases] of Object.entries(CRITIC_ALIASES)) {
@@ -423,15 +431,9 @@ function areCriticsSimilar(critic1, critic2) {
   const n2 = normalizeCritic(critic2);
   if (n1 === n2) return true;
 
-  // First name match (for "Jesse" vs "Jesse Green")
-  const firstName1 = c1.split(/\s+/)[0];
-  const firstName2 = c2.split(/\s+/)[0];
-  if (firstName1 === firstName2 && firstName1.length > 2) {
-    // If first names match, check if one is a subset of the other
-    if (c1.startsWith(firstName2) || c2.startsWith(firstName1)) {
-      return true;
-    }
-  }
+  // REMOVED: First-name matching caused false positives
+  // "Jesse Green" matched "Jesse Oxfeld" (different critics!)
+  // Now rely only on explicit aliases in CRITIC_ALIASES
 
   // Levenshtein distance for typos (threshold: 2 chars difference for names > 5 chars)
   if (c1.length > 5 && c2.length > 5) {

@@ -21,6 +21,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { getOutletDisplayName } = require('./lib/review-normalization');
 
 // Score mappings
 const THUMB_TO_SCORE = { 'Up': 80, 'Meh': 60, 'Flat': 60, 'Down': 35 };
@@ -724,7 +725,7 @@ showDirs.forEach(showId => {
       const review = {
         showId: data.showId || showId,
         outletId: data.outletId || outletKey.toUpperCase(),
-        outlet: data.outlet || data.outletId || 'Unknown',
+        outlet: getOutletDisplayName(data.outletId) || data.outlet || data.outletId || 'Unknown',
         assignedScore: score,
         bucket: scoreToBucket(score),
         thumb: scoreToThumb(score),
