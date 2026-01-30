@@ -3688,42 +3688,6 @@
     "timestamp": "2026-01-29T06:47:13.656Z"
   },
   {
-    "reviewId": "back-to-the-future-2023/timeout--adam-feldman.json",
-    "showId": "back-to-the-future-2023",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/back-to-the-future-the-musical",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 5726,
-    "timestamp": "2026-01-29T06:55:08.985Z"
-  },
-  {
-    "reviewId": "back-to-the-future-2023/wsj--charles-isherwood.json",
-    "showId": "back-to-the-future-2023",
-    "outlet": "The Wall Street Journal",
-    "critic": "Charles Isherwood",
-    "url": "https://www.wsj.com/articles/back-to-the-future-the-musical-review-docs-delorean-on-broadway-silvestri-roger-bart-f9a2349d",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
-    "textLength": 729,
-    "timestamp": "2026-01-29T06:55:31.241Z"
-  },
-  {
-    "reviewId": "back-to-the-future-2023/queerty--matthew-wexler.json",
-    "showId": "back-to-the-future-2023",
-    "outlet": "Queerty",
-    "critic": "Matthew Wexler",
-    "url": "https://www.queerty.com/a-creative-flat-tire-sends-broadways-back-to-the-future-skidding-off-course-20230803",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Paywall/subscription prompt: \"paywall\"",
-    "textLength": 7593,
-    "timestamp": "2026-01-29T06:59:05.444Z"
-  },
-  {
     "reviewId": "appropriate-2023/deadline--greg-evans.json",
     "showId": "appropriate-2023",
     "outlet": "Deadline",
@@ -4010,5 +3974,41 @@
     "garbageReason": "Ad blocker message: \"ad blocker\"",
     "textLength": 582,
     "timestamp": "2026-01-30T16:04:09.670Z"
+  },
+  {
+    "reviewId": "back-to-the-future-2023/timeout--adam-feldman.json",
+    "showId": "back-to-the-future-2023",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/back-to-the-future-the-musical",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 5726,
+    "timestamp": "2026-01-30T16:05:17.556Z"
+  },
+  {
+    "reviewId": "back-to-the-future-2023/wsj--charles-isherwood.json",
+    "showId": "back-to-the-future-2023",
+    "outlet": "The Wall Street Journal",
+    "critic": "Charles Isherwood",
+    "url": "https://www.wsj.com/articles/back-to-the-future-the-musical-review-docs-delorean-on-broadway-silvestri-roger-bart-f9a2349d",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
+    "textLength": 729,
+    "timestamp": "2026-01-30T16:05:20.770Z"
+  },
+  {
+    "reviewId": "back-to-the-future-2023/queerty--matthew-wexler.json",
+    "showId": "back-to-the-future-2023",
+    "outlet": "Queerty",
+    "critic": "Matthew Wexler",
+    "url": "https://www.queerty.com/a-creative-flat-tire-sends-broadways-back-to-the-future-skidding-off-course-20230803",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"paywall\"",
+    "textLength": 7593,
+    "timestamp": "2026-01-30T16:09:05.907Z"
   }
 ]
