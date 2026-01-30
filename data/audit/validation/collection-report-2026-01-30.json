@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T18:42:11.516Z",
+  "runDate": "2026-01-30T18:44:02.422Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "the-wiz-2024",
+    "showFilter": "stranger-things-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,37 +12,37 @@
   },
   "summary": {
     "processed": 3,
-    "failed": 53,
+    "failed": 56,
     "skipped": 0,
-    "successRate": "5.4%"
+    "successRate": "5.1%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archive": 3
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 6,
+    "tier1Attempts": 9,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 6,
+    "tier2Attempts": 9,
     "tier2Success": 2,
-    "tier3Attempts": 4,
+    "tier3Attempts": 7,
     "tier3Success": 0,
-    "tier4Attempts": 9,
-    "tier4Success": 3,
-    "totalFailed": 7,
-    "scrapingBeeCreditsUsed": 50,
+    "tier4Attempts": 17,
+    "tier4Success": 2,
+    "totalFailed": 10,
+    "scrapingBeeCreditsUsed": 30,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "the-wiz-2024/broadwaynews--brittani-samuel.json"
+    "stranger-things-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -91,22 +91,26 @@
     "i-need-that-2023/timeout--will-gleason.json",
     "i-need-that-2023/wsj--charles-isherwood.json",
     "i-need-that-2023/wsj--charles.json",
-    "the-wiz-2024/ny-sun--elysa-gardner.json",
-    "the-wiz-2024/nydailynews--chris-jones.json",
-    "the-wiz-2024/nydailynews--chris.json",
-    "the-wiz-2024/wsj--charles-isherwood.json",
-    "the-wiz-2024/thestage--lane-williamson.json",
-    "the-wiz-2024/village-voice--michael-musto.json",
-    "the-wiz-2024/washpost--gloria-oladipo.json"
+    "stranger-things-2024/variety--aramide-tinubu.json",
+    "stranger-things-2024/deadline--greg-evans.json",
+    "stranger-things-2024/ew--emlyn-travis.json",
+    "stranger-things-2024/nydailynews--chris-jones.json",
+    "stranger-things-2024/theatermania--adam-feldman.json",
+    "stranger-things-2024/timeout--adam-feldman.json",
+    "stranger-things-2024/wsj--charles-isherwood.json",
+    "stranger-things-2024/theatrely--olivia-clement.json",
+    "stranger-things-2024/thestage--dave-fargnoli.json",
+    "stranger-things-2024/tickertv--cheryl-king.json"
   ],
   "tierDetails": {
     "playwright": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "stranger-things-2024/broadwaynews--brittani-samuel.json"
+    ],
     "brightdata": [],
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
-      "the-roommate-2024/nydailynews--chris-jones.json",
-      "the-wiz-2024/broadwaynews--brittani-samuel.json"
+      "the-roommate-2024/nydailynews--chris-jones.json"
     ]
   }
 }
