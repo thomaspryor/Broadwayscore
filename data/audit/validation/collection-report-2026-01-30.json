@@ -1,48 +1,47 @@
 {
-  "runDate": "2026-01-30T18:32:28.831Z",
+  "runDate": "2026-01-30T18:32:51.765Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "just-for-us-2023",
+    "showFilter": "the-lion-king-1997",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 59,
+    "processed": 2,
+    "failed": 58,
     "skipped": 0,
-    "successRate": "4.8%"
+    "successRate": "3.3%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
+    "brightdata": 0,
     "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 13,
+    "tier1Attempts": 10,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 13,
+    "tier2Attempts": 10,
     "tier2Success": 1,
-    "tier3Attempts": 12,
-    "tier3Success": 2,
-    "tier4Attempts": 22,
-    "tier4Success": 3,
-    "totalFailed": 13,
+    "tier3Attempts": 9,
+    "tier3Success": 0,
+    "tier4Attempts": 23,
+    "tier4Success": 2,
+    "totalFailed": 12,
     "scrapingBeeCreditsUsed": 40,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
-    "the-roommate-2024/nydailynews--chris-jones.json",
-    "just-for-us-2023/usatoday--charles-isherwood.json"
+    "the-roommate-2024/nydailynews--chris-jones.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -91,26 +90,23 @@
     "i-need-that-2023/timeout--will-gleason.json",
     "i-need-that-2023/wsj--charles-isherwood.json",
     "i-need-that-2023/wsj--charles.json",
-    "just-for-us-2023/hollywood-reporter--angie-han.json",
-    "just-for-us-2023/hollywood-reporter--david-rooney.json",
-    "just-for-us-2023/variety--aramide-tinubu.json",
-    "just-for-us-2023/vulture--helen-shaw.json",
-    "just-for-us-2023/deadline--greg-evans.json",
-    "just-for-us-2023/nypost--johnny-oleksinski.json",
-    "just-for-us-2023/observer--david-cote.json",
-    "just-for-us-2023/theatermania--jesse-green.json",
-    "just-for-us-2023/timeout--adam-feldman.json",
-    "just-for-us-2023/timeout--raven-snook.json",
-    "just-for-us-2023/wsj--charles-isherwood.json",
-    "just-for-us-2023/next-magazine--michael-hollett.json",
-    "just-for-us-2023/talkinbroadway--matthew-murray.json"
+    "the-lion-king-1997/hollywood-reporter--frank-scheck.json",
+    "the-lion-king-1997/variety--charles-isherwood.json",
+    "the-lion-king-1997/variety--matt-wolf.json",
+    "the-lion-king-1997/ew--bruce-handy.json",
+    "the-lion-king-1997/ew--jess-cagle.json",
+    "the-lion-king-1997/timeout--adam-feldman.json",
+    "the-lion-king-1997/timeout--jenna-scherer.json",
+    "the-lion-king-1997/USATODAY--david-patrick-stearns.json",
+    "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+    "the-lion-king-1997/njcom--michael-sommers.json",
+    "the-lion-king-1997/talkinbroadway--matthew-murray.json",
+    "the-lion-king-1997/washpost--lloyd-rose.json"
   ],
   "tierDetails": {
     "playwright": [],
     "scrapingbee": [],
-    "brightdata": [
-      "just-for-us-2023/usatoday--charles-isherwood.json"
-    ],
+    "brightdata": [],
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json"
