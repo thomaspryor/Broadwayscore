@@ -311,6 +311,10 @@ const CRITIC_ALIASES = {
   'ben-brantley': ['ben brantley', 'b. brantley'],
   'charles-isherwood': ['charles isherwood', 'c. isherwood'],
   'johnny-oleksinski': ['johnny oleksinski', 'johnny oleksinki', 'john oleksinski'], // Note: 'oleksinki' typo
+  // Added from Levenshtein audit (Task 1.2) - these were valid matches that need explicit aliases
+  'ad-amorosi': ['a.d. amorosi', 'ad amorosi', 'a d amorosi', 'a. d. amorosi'],
+  'elisabeth-vincentelli': ['elisabeth vincentelli', 'elizabeth vincentelli'], // 's' vs 'z' spelling
+  'charles-mcnulty': ['charles mcnulty', 'charlesmcnulty', 'charles-mcnulty'],
   'sara-holdren': ['sara holdren', 's. holdren'],
   'helen-shaw': ['helen shaw', 'h. shaw'],
   'adam-feldman': ['adam feldman', 'a. feldman'],
@@ -517,11 +521,10 @@ function areCriticsSimilar(critic1, critic2) {
   // "Jesse Green" matched "Jesse Oxfeld" (different critics!)
   // Now rely only on explicit aliases in CRITIC_ALIASES
 
-  // Levenshtein distance for typos (threshold: 2 chars difference for names > 5 chars)
-  if (c1.length > 5 && c2.length > 5) {
-    const distance = levenshteinDistance(c1, c2);
-    if (distance <= 2) return true;
-  }
+  // REMOVED (Task 1.2): Levenshtein matching caused false positives
+  // (e.g., "Helen Smith" matched "Helen Smyth" - different critics!)
+  // Now rely only on exact matches and explicit CRITIC_ALIASES.
+  // Valid typos discovered via audit were added to CRITIC_ALIASES above.
 
   return false;
 }
