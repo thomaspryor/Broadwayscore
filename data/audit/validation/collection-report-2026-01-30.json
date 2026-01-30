@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T22:37:59.090Z",
+  "runDate": "2026-01-30T22:38:38.451Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 20,
     "priority": "all",
-    "showFilter": "just-for-us-2023",
+    "showFilter": "suffs-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,30 +12,30 @@
   },
   "summary": {
     "processed": 4,
-    "failed": 78,
+    "failed": 79,
     "skipped": 0,
-    "successRate": "4.9%"
+    "successRate": "4.8%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 3
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 12,
-    "tier1Success": 1,
+    "tier1Attempts": 14,
+    "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 11,
-    "tier2Success": 2,
-    "tier3Attempts": 9,
-    "tier3Success": 0,
-    "tier4Attempts": 23,
-    "tier4Success": 3,
-    "totalFailed": 13,
-    "scrapingBeeCreditsUsed": 40,
+    "tier2Attempts": 14,
+    "tier2Success": 1,
+    "tier3Attempts": 13,
+    "tier3Success": 1,
+    "tier4Attempts": 29,
+    "tier4Success": 2,
+    "totalFailed": 14,
+    "scrapingBeeCreditsUsed": 30,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
@@ -43,7 +43,7 @@
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
     "wicked-2003/ew--alice-king.json",
-    "just-for-us-2023/usatoday--charles-isherwood.json"
+    "suffs-2024/the-times--nancy-durrant.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -111,30 +111,30 @@
     "stranger-things-2024/theatrely--olivia-clement.json",
     "stranger-things-2024/thestage--dave-fargnoli.json",
     "stranger-things-2024/tickertv--cheryl-king.json",
-    "just-for-us-2023/hollywood-reporter--angie-han.json",
-    "just-for-us-2023/hollywood-reporter--david-rooney.json",
-    "just-for-us-2023/variety--aramide-tinubu.json",
-    "just-for-us-2023/vulture--helen-shaw.json",
-    "just-for-us-2023/deadline--greg-evans.json",
-    "just-for-us-2023/nypost--johnny-oleksinski.json",
-    "just-for-us-2023/observer--david-cote.json",
-    "just-for-us-2023/theatermania--jesse-green.json",
-    "just-for-us-2023/timeout--adam-feldman.json",
-    "just-for-us-2023/timeout--raven-snook.json",
-    "just-for-us-2023/wsj--charles-isherwood.json",
-    "just-for-us-2023/next-magazine--michael-hollett.json",
-    "just-for-us-2023/talkinbroadway--matthew-murray.json"
+    "suffs-2024/hollywood-reporter--angie-han.json",
+    "suffs-2024/nytimes--jesse-green.json",
+    "suffs-2024/variety--aramide-tinubu.json",
+    "suffs-2024/variety--peter-marks.json",
+    "suffs-2024/chelsea-community-news--michael-musto.json",
+    "suffs-2024/ew--kristen-baldwin.json",
+    "suffs-2024/guardian--adrian-horton.json",
+    "suffs-2024/guardian--jesse-green.json",
+    "suffs-2024/observer--rex-reed.json",
+    "suffs-2024/theatermania--jesse-green.json",
+    "suffs-2024/timeout--regina-robbins.json",
+    "suffs-2024/wsj--charles-isherwood.json",
+    "suffs-2024/talkinbroadway--matthew-murray.json",
+    "suffs-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [],
-    "scrapingbee": [
-      "just-for-us-2023/usatoday--charles-isherwood.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json",
-      "wicked-2003/ew--alice-king.json"
+      "wicked-2003/ew--alice-king.json",
+      "suffs-2024/the-times--nancy-durrant.json"
     ]
   }
 }
