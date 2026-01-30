@@ -3,16 +3,18 @@
  * fetch-show-images-auto.js
  *
  * Automatically discovers and fetches images for ALL shows:
- * 1. Searches TodayTix for the show to get its TodayTix ID
- * 2. Fetches the show page and finds Contentful image URLs
- * 3. Uses Contentful's Image Transformation API to generate:
- *    - Square 1080x1080 (thumbnail for cards)
- *    - Portrait 720x1080 (poster for show pages)
- *    - Landscape 1920x800 (hero banner)
  *
- * KEY INSIGHT: TodayTix uses Contentful CDN which can transform ANY image
- * on the fly. We find the best source images (poster key art + production
- * photos) and request them in whatever dimensions we need via URL params.
+ * For OPEN shows (primary path - no ScrapingBee needed):
+ * 1. Batch-fetches all active NYC shows from TodayTix REST API
+ * 2. Matches our shows by title against API results
+ * 3. Uses native image assets: posterImageSquare (1080x1080), posterImage (480x720), appHeroImage
+ *
+ * For CLOSED shows (fallback path - uses ScrapingBee):
+ * 1. Discovers TodayTix page via Google SERP search
+ * 2. Scrapes the page for Contentful image URLs
+ * 3. Uses Contentful's Image Transformation API for sizing
+ *
+ * Last resort: Playbill OG images (landscape only, used as hero)
  *
  * No hardcoded IDs - works for any show!
  *
@@ -109,6 +111,129 @@ function hasBadImages(showId) {
   }
 
   return false;
+}
+
+// Normalize a show title for fuzzy matching against TodayTix API
+function normalizeTitle(title) {
+  return title
+    .toLowerCase()
+    .replace(/[''\u2018\u2019""\u201C\u201D:!?,.\-\u2013\u2014()&]/g, '')
+    .replace(/\bon broadway\b/g, '')
+    .replace(/\bthe musical\b/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// Fetch a page of shows from TodayTix REST API (no auth required)
+function fetchTodayTixApiPage(offset = 0, limit = 100) {
+  return new Promise((resolve, reject) => {
+    const url = `https://api.todaytix.com/api/v2/shows?location=1&limit=${limit}&offset=${offset}`;
+
+    https.get(url, (response) => {
+      if (response.statusCode !== 200) {
+        reject(new Error(`TodayTix API HTTP ${response.statusCode}`));
+        return;
+      }
+
+      let data = '';
+      response.on('data', chunk => data += chunk);
+      response.on('end', () => {
+        try {
+          resolve(JSON.parse(data));
+        } catch {
+          reject(new Error('Failed to parse TodayTix API response'));
+        }
+      });
+      response.on('error', reject);
+    }).on('error', reject);
+  });
+}
+
+// Fetch all active NYC shows from TodayTix API and build a lookup map
+// Returns { normalizedTitle: { id, displayName, square, poster, hero, ... } }
+async function fetchAllTodayTixShows() {
+  console.log('\nFetching active shows from TodayTix API...');
+  const allShows = [];
+  let offset = 0;
+  const limit = 100;
+
+  while (true) {
+    const response = await fetchTodayTixApiPage(offset, limit);
+    if (!response.data || response.data.length === 0) break;
+
+    allShows.push(...response.data);
+    const total = response.pagination?.total || '?';
+    console.log(`   Fetched ${allShows.length}/${total} shows...`);
+
+    if (allShows.length >= (response.pagination?.total || 0)) break;
+
+    offset += limit;
+    await sleep(500);
+  }
+
+  console.log(`   Found ${allShows.length} active shows from API\n`);
+
+  // Fix protocol-relative URLs (API returns //images.ctfassets.net/...)
+  const fixUrl = (url) => {
+    if (!url) return null;
+    if (url.startsWith('//')) return 'https:' + url;
+    return url;
+  };
+
+  const lookup = {};
+  for (const show of allShows) {
+    const name = show.displayName || show.name;
+    if (!name) continue;
+
+    const images = show.images?.productMedia || {};
+    const key = normalizeTitle(name);
+
+    lookup[key] = {
+      id: show.id,
+      displayName: name,
+      square: fixUrl(images.posterImageSquare),
+      poster: fixUrl(images.posterImage),
+      hero: fixUrl(images.appHeroImage),
+      imageForAds: fixUrl(images.imageForAds),
+      headerImage: fixUrl(images.headerImage),
+    };
+  }
+
+  return lookup;
+}
+
+// Match our show title against the TodayTix API lookup map
+function matchTodayTixShow(showTitle, apiLookup) {
+  if (!apiLookup || Object.keys(apiLookup).length === 0) return null;
+
+  const normalized = normalizeTitle(showTitle);
+
+  // 1. Exact normalized match
+  if (apiLookup[normalized]) {
+    return apiLookup[normalized];
+  }
+
+  // 2. Substring containment (either direction)
+  for (const [apiNorm, data] of Object.entries(apiLookup)) {
+    if (apiNorm.includes(normalized) || normalized.includes(apiNorm)) {
+      return data;
+    }
+  }
+
+  // 3. Strip year suffix from our title and retry (e.g., "hells kitchen 2024" → "hells kitchen")
+  const withoutYear = normalized.replace(/\s*\d{4}$/, '').trim();
+  if (withoutYear !== normalized && withoutYear.length > 2) {
+    if (apiLookup[withoutYear]) {
+      return apiLookup[withoutYear];
+    }
+    for (const [apiNorm, data] of Object.entries(apiLookup)) {
+      if (apiNorm.includes(withoutYear) || withoutYear.includes(apiNorm)) {
+        return data;
+      }
+    }
+  }
+
+  return null;
 }
 
 // Load or create TodayTix ID cache
@@ -446,10 +571,40 @@ async function fetchFromPlaybill(show) {
   return null;
 }
 
-async function fetchShowImages(show, todayTixInfo) {
+async function fetchShowImages(show, todayTixInfo, apiData) {
   console.log(`\n📽️  ${show.title}`);
 
-  // Try TodayTix first if we have an ID
+  // Step 1: Try TodayTix API data (native square images, no HTTP call needed)
+  if (apiData) {
+    console.log(`   Found in TodayTix API: "${apiData.displayName}" (ID: ${apiData.id})`);
+
+    const thumbnail = apiData.square || apiData.imageForAds || null;
+    const poster = apiData.poster || null;
+    const hero = apiData.hero || apiData.headerImage || null;
+
+    if (thumbnail || poster) {
+      // Add webp quality param to Contentful URLs that don't already have params
+      const addWebp = (url) => {
+        if (!url) return null;
+        if (url.includes('?')) return url;
+        return url + '?fm=webp&q=90';
+      };
+
+      console.log(`     - Square (thumbnail): ${thumbnail ? 'native square from API' : 'not available'}`);
+      console.log(`     - Portrait (poster): ${poster ? 'from API' : 'not available'}`);
+      console.log(`     - Landscape (hero): ${hero ? 'from API' : 'not available'}`);
+
+      return {
+        hero: addWebp(hero),
+        thumbnail: addWebp(thumbnail),
+        poster: addWebp(poster),
+      };
+    }
+
+    console.log(`   API match found but missing image data, falling back to page scrape`);
+  }
+
+  // Step 2: Try TodayTix page scrape if we have an ID
   if (todayTixInfo && todayTixInfo.id) {
     const slug = todayTixInfo.slug || show.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     const url = `https://www.todaytix.com/nyc/shows/${todayTixInfo.id}-${slug}`;
@@ -520,6 +675,15 @@ async function main() {
   const showsData = JSON.parse(fs.readFileSync(SHOWS_JSON_PATH, 'utf8'));
   const todayTixIds = loadTodayTixIds();
 
+  // Batch-fetch all active NYC shows from TodayTix API (free, no ScrapingBee needed)
+  let apiLookup = {};
+  try {
+    apiLookup = await fetchAllTodayTixShows();
+  } catch (err) {
+    console.log(`TodayTix API unavailable: ${err.message}`);
+    console.log('  Falling back to page-scrape method for all shows.\n');
+  }
+
   // Filter shows - include all statuses when fetching missing, bad-images, or specific shows
   let shows = showsData.shows;
   if (!onlyMissing && !badImagesOnly && !showFilter) {
@@ -548,17 +712,25 @@ async function main() {
   const results = { success: [], failed: [], skipped: [] };
 
   for (const show of shows) {
+    // Try matching against TodayTix API data (instant, no HTTP call)
+    const apiData = matchTodayTixShow(show.title, apiLookup);
+
+    // Cache API-discovered TodayTix ID
+    if (apiData && apiData.id) {
+      todayTixIds.shows[show.id] = { id: apiData.id, slug: null };
+      saveTodayTixIds(todayTixIds);
+    }
+
     // When re-sourcing bad images, clear the cached TodayTix ID so we re-discover
     if (badImagesOnly && todayTixIds.shows[show.id]) {
       console.log(`   Clearing cached TodayTix ID for ${show.id} (re-discovering)`);
       delete todayTixIds.shows[show.id];
     }
 
-    // Check if we have TodayTix ID cached
+    // If no API match, try page-scrape discovery
     let todayTixInfo = todayTixIds.shows[show.id] || todayTixIds.shows[show.slug];
 
-    // If not cached, try to discover it
-    if (!todayTixInfo) {
+    if (!todayTixInfo && !apiData) {
       todayTixInfo = await discoverTodayTixId(show.title);
       if (todayTixInfo) {
         todayTixIds.shows[show.id] = todayTixInfo;
@@ -567,8 +739,8 @@ async function main() {
       await sleep(2000); // Rate limit
     }
 
-    // Fetch images
-    const images = await fetchShowImages(show, todayTixInfo);
+    // Fetch images: API data → page scrape → Playbill fallback
+    const images = await fetchShowImages(show, todayTixInfo, apiData);
 
     if (images) {
       show.images = images;
@@ -577,7 +749,10 @@ async function main() {
       results.failed.push(show.title);
     }
 
-    await sleep(2000); // Rate limit between shows
+    // Only rate-limit if we made HTTP calls (API-sourced images are instant)
+    if (!apiData) {
+      await sleep(2000);
+    }
   }
 
   // Save updated shows
