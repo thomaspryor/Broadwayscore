@@ -1,40 +1,40 @@
 {
-  "runDate": "2026-01-30T22:32:44.221Z",
+  "runDate": "2026-01-30T22:34:55.685Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 20,
+    "maxReviews": 25,
     "priority": "all",
-    "showFilter": "death-becomes-her-2024",
+    "showFilter": "patriots-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 74,
+    "processed": 4,
+    "failed": 78,
     "skipped": 0,
-    "successRate": "3.9%"
+    "successRate": "4.9%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 3
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 7,
+    "tier1Attempts": 9,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 7,
-    "tier2Success": 0,
-    "tier3Attempts": 7,
+    "tier2Attempts": 9,
+    "tier2Success": 1,
+    "tier3Attempts": 8,
     "tier3Success": 0,
-    "tier4Attempts": 16,
-    "tier4Success": 2,
-    "totalFailed": 9,
+    "tier4Attempts": 23,
+    "tier4Success": 5,
+    "totalFailed": 13,
     "scrapingBeeCreditsUsed": 50,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
@@ -42,7 +42,8 @@
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "wicked-2003/ew--alice-king.json"
+    "wicked-2003/ew--alice-king.json",
+    "patriots-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -110,15 +111,19 @@
     "stranger-things-2024/theatrely--olivia-clement.json",
     "stranger-things-2024/thestage--dave-fargnoli.json",
     "stranger-things-2024/tickertv--cheryl-king.json",
-    "death-becomes-her-2024/variety--aramide-tinubu.json",
-    "death-becomes-her-2024/variety--peter-marks.json",
-    "death-becomes-her-2024/deadline--greg-evans.json",
-    "death-becomes-her-2024/guardian--benjamin-lee.json",
-    "death-becomes-her-2024/nypost--johnny-oleksinski.json",
-    "death-becomes-her-2024/theatermania--adam-feldman.json",
-    "death-becomes-her-2024/theatermania--jesse-green.json",
-    "death-becomes-her-2024/timeout--adam-feldman.json",
-    "death-becomes-her-2024/wsj--charles-isherwood.json"
+    "patriots-2024/variety--charles-isherwood.json",
+    "patriots-2024/deadline--greg-evans.json",
+    "patriots-2024/guardian--adrian-horton.json",
+    "patriots-2024/new-york-sun--elysa-gardner.json",
+    "patriots-2024/new-york-sun--elysa.json",
+    "patriots-2024/nypost--johnny-oleksinski.json",
+    "patriots-2024/theatermania--david-gordon.json",
+    "patriots-2024/timeout--raven-snook.json",
+    "patriots-2024/wsj--charles-isherwood.json",
+    "patriots-2024/wsj--charles.json",
+    "patriots-2024/nysr--frank-scheck.json",
+    "patriots-2024/nysr--frank.json",
+    "patriots-2024/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -127,7 +132,8 @@
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json",
-      "wicked-2003/ew--alice-king.json"
+      "wicked-2003/ew--alice-king.json",
+      "patriots-2024/broadwaynews--brittani-samuel.json"
     ]
   }
 }
