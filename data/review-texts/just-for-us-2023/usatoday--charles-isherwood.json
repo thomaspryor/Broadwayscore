@@ -75,8 +75,8 @@
   },
   "textWordCount": 94,
   "archivePath": "data/archives/reviews/just-for-us-2023/usatoday--charles-isherwood_2026-01-30.html",
-  "textFetchedAt": "2026-01-30T20:00:19.179Z",
-  "fetchMethod": "brightdata",
+  "textFetchedAt": "2026-01-30T22:37:57.310Z",
+  "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
       "tier": 0,
@@ -93,20 +93,14 @@
     {
       "tier": 2,
       "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 3,
+  "fetchTier": 2,
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "incomplete",
-  "sourceMethod": "brightdata",
+  "sourceMethod": "scrapingbee",
   "textIssues": [
     "Word count too low: 94 (min: 300)"
   ]
