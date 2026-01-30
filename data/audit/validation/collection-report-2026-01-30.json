@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-30T18:34:51.848Z",
+  "runDate": "2026-01-30T18:35:13.150Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "grey-house-2023",
+    "showFilter": "bug-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 3,
-    "failed": 56,
+    "failed": 52,
     "skipped": 0,
-    "successRate": "5.1%"
+    "successRate": "5.5%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -24,17 +24,17 @@
     "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 10,
-    "tier1Success": 1,
+    "tier1Attempts": 5,
+    "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 9,
-    "tier2Success": 1,
-    "tier3Attempts": 8,
+    "tier2Attempts": 5,
+    "tier2Success": 2,
+    "tier3Attempts": 3,
     "tier3Success": 0,
-    "tier4Attempts": 17,
+    "tier4Attempts": 8,
     "tier4Success": 2,
-    "totalFailed": 10,
+    "totalFailed": 6,
     "scrapingBeeCreditsUsed": 50,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
@@ -42,7 +42,7 @@
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "grey-house-2023/cititour--brian-scott-lipton.json"
+    "bug-2026/chicagotribune--chris-jones.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -91,21 +91,17 @@
     "i-need-that-2023/timeout--will-gleason.json",
     "i-need-that-2023/wsj--charles-isherwood.json",
     "i-need-that-2023/wsj--charles.json",
-    "grey-house-2023/hollywood-reporter--angie-han.json",
-    "grey-house-2023/hollywood-reporter--david-rooney.json",
-    "grey-house-2023/newyorker--dan-stahl.json",
-    "grey-house-2023/variety--charles-isherwood.json",
-    "grey-house-2023/variety--peter-marks.json",
-    "grey-house-2023/vulture--helen-shaw.json",
-    "grey-house-2023/deadline--greg-evans.json",
-    "grey-house-2023/observer--david-cote.json",
-    "grey-house-2023/timeout--adam-feldman.json",
-    "grey-house-2023/wsj--charles-isherwood.json"
+    "bug-2026/nytimes--jason-zinoman.json",
+    "bug-2026/deadline--greg-evans.json",
+    "bug-2026/guardian--jesse-hassenger.json",
+    "bug-2026/timeout--adam-feldman.json",
+    "bug-2026/wsj--charles-isherwood.json",
+    "bug-2026/washpost--naveen-kumar.json"
   ],
   "tierDetails": {
     "playwright": [],
     "scrapingbee": [
-      "grey-house-2023/cititour--brian-scott-lipton.json"
+      "bug-2026/chicagotribune--chris-jones.json"
     ],
     "brightdata": [],
     "archive": [
