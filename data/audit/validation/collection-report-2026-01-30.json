@@ -1,87 +1,75 @@
 {
-  "runDate": "2026-01-30T16:17:37.296Z",
+  "runDate": "2026-01-30T16:17:47.043Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "harry-potter-2021",
+    "showFilter": "stereophonic-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
+    "processed": 2,
     "failed": 23,
     "skipped": 0,
-    "successRate": "23.3%"
+    "successRate": "8.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 5
+    "brightdata": 0,
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 22,
-    "tier1Success": 2,
+    "tier1Attempts": 20,
+    "tier1Success": 0,
     "tier2Attempts": 20,
-    "tier2Success": 1,
-    "tier3Attempts": 19,
-    "tier3Success": 1,
-    "tier4Attempts": 52,
-    "tier4Success": 7,
+    "tier2Success": 0,
+    "tier3Attempts": 20,
+    "tier3Success": 2,
+    "tier4Attempts": 44,
+    "tier4Success": 5,
     "totalFailed": 22,
-    "scrapingBeeCreditsUsed": 100
+    "scrapingBeeCreditsUsed": 80
   },
   "processed": [
-    "harry-potter-2021/broadwaynews--charles-isherwood.json",
-    "harry-potter-2021/cititour--brian-scott-lipton.json",
-    "harry-potter-2021/forward--jay-michaelson.json",
-    "harry-potter-2021/broadwayworld--michael-dale.json",
-    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-    "harry-potter-2021/the-times--ann-treneman.json",
-    "harry-potter-2021/village-voice--michael-feingold.json"
+    "stereophonic-2024/broadwaynews--brittani-samuel.json",
+    "stereophonic-2024/chicagotribune--chris-jones.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
-    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-    "harry-potter-2021/deadline--greg-evans.json",
-    "harry-potter-2021/guardian--alexis-soloski.json",
-    "harry-potter-2021/national-review--kyle-smith.json",
-    "harry-potter-2021/timeout--adam-feldman.json",
-    "harry-potter-2021/wsj--terry-teachout.json",
-    "harry-potter-2021/broadway-blog--matthew-wexler.json",
-    "harry-potter-2021/curtainup--elyse-sommer.json",
-    "harry-potter-2021/exeunt-magazine--kev-berry.json",
-    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
-    "harry-potter-2021/front-row-center--tulis-mccall.json",
-    "harry-potter-2021/frontmezzjunkies--steven-ross.json",
-    "harry-potter-2021/limelight-magazine-au--clive-paget.json",
-    "harry-potter-2021/medium--christian-lewis.json",
-    "harry-potter-2021/ny1--roma-torre.json",
-    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
-    "harry-potter-2021/troy-record--bob-goepfert.json",
-    "harry-potter-2021/washpost--peter-marks.json",
-    "harry-potter-2021/wnyc--jennifer-vanasco.json",
-    "harry-potter-2021/wolf-entertainment-guide--william-wolf.json",
-    "harry-potter-2021/woman-around-town--alix-cohen.json",
-    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
+    "stereophonic-2024/hollywood-reporter--angie-han.json",
+    "stereophonic-2024/variety--aramide-tinubu.json",
+    "stereophonic-2024/variety--jesse-green.json",
+    "stereophonic-2024/variety--peter-marks.json",
+    "stereophonic-2024/vulture--helen-shaw.json",
+    "stereophonic-2024/deadline--greg-evans.json",
+    "stereophonic-2024/deadline--pete-hammond.json",
+    "stereophonic-2024/guardian--adrian-horton.json",
+    "stereophonic-2024/guardian--gloria-oladipo.json",
+    "stereophonic-2024/observer--david-cote.json",
+    "stereophonic-2024/observer--rex-reed.json",
+    "stereophonic-2024/theatermania--adam-feldman.json",
+    "stereophonic-2024/theatermania--jesse-green.json",
+    "stereophonic-2024/theatermania--zachary-stewart.json",
+    "stereophonic-2024/timeout--adam-feldman.json",
+    "stereophonic-2024/wsj--charles-isherwood.json",
+    "stereophonic-2024/wsj--terry-teachout.json",
+    "stereophonic-2024/theatrely--juan-a-ramirez.json",
+    "stereophonic-2024/ap--mark-kennedy.json",
+    "stereophonic-2024/rollingstone--kalia-richardson.json",
+    "stereophonic-2024/usatoday--charles-isherwood.json",
+    "stereophonic-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
-    ],
+    "playwright": [],
     "scrapingbee": [],
-    "brightdata": [
-      "harry-potter-2021/cititour--brian-scott-lipton.json"
-    ],
+    "brightdata": [],
     "archive": [
-      "harry-potter-2021/broadwaynews--charles-isherwood.json",
-      "harry-potter-2021/forward--jay-michaelson.json",
-      "harry-potter-2021/broadwayworld--michael-dale.json",
-      "harry-potter-2021/the-times--ann-treneman.json",
-      "harry-potter-2021/village-voice--michael-feingold.json"
+      "stereophonic-2024/broadwaynews--brittani-samuel.json",
+      "stereophonic-2024/chicagotribune--chris-jones.json"
     ]
   }
 }
