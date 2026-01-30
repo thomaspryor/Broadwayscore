@@ -143,6 +143,19 @@ export interface ScoredReviewFile extends ReviewTextFile {
     promptVersion: string;
     inputTokens: number;
     outputTokens: number;
+    /** Text source used for scoring */
+    textSource?: {
+      /** Type of text: 'fullText' or 'excerpt' */
+      type: 'fullText' | 'excerpt';
+      /** Status: 'complete', 'truncated', 'corrupted', 'curated' */
+      status: string;
+      /** Which field the text came from */
+      field: string;
+      /** Confidence level: 'high', 'medium', 'low' */
+      confidence: string;
+      /** Explanation for why this source was chosen */
+      reasoning: string;
+    };
   };
   /** Ensemble scoring data (when using dual-model approach) */
   ensembleData?: {
