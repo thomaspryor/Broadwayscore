@@ -1,49 +1,48 @@
 {
-  "runDate": "2026-01-30T18:34:29.458Z",
+  "runDate": "2026-01-30T18:34:32.256Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "mary-jane-2024",
+    "showFilter": "death-becomes-her-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
+    "processed": 3,
     "failed": 55,
     "skipped": 0,
-    "successRate": "6.8%"
+    "successRate": "5.2%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 4
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 9,
+    "tier1Attempts": 7,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 9,
-    "tier2Success": 1,
-    "tier3Attempts": 8,
+    "tier2Attempts": 7,
+    "tier2Success": 0,
+    "tier3Attempts": 7,
     "tier3Success": 0,
-    "tier4Attempts": 21,
-    "tier4Success": 2,
+    "tier4Attempts": 17,
+    "tier4Success": 4,
     "totalFailed": 9,
-    "scrapingBeeCreditsUsed": 10,
+    "scrapingBeeCreditsUsed": 60,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "mary-jane-2024/nytimes--jesse-green.json",
-    "mary-jane-2024/broadwaynews--brittani-samuel.json"
+    "death-becomes-her-2024/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -92,15 +91,15 @@
     "i-need-that-2023/timeout--will-gleason.json",
     "i-need-that-2023/wsj--charles-isherwood.json",
     "i-need-that-2023/wsj--charles.json",
-    "mary-jane-2024/hollywood-reporter--angie-han.json",
-    "mary-jane-2024/nytg--david-gordon.json",
-    "mary-jane-2024/guardian--adrian-horton.json",
-    "mary-jane-2024/nypost--johnny-oleksinski.json",
-    "mary-jane-2024/timeout--adam-feldman.json",
-    "mary-jane-2024/wsj--charles-isherwood.json",
-    "mary-jane-2024/theatrely--olivia-clement.json",
-    "mary-jane-2024/talkinbroadway--matthew-murray.json",
-    "mary-jane-2024/washpost--peter-marks.json"
+    "death-becomes-her-2024/variety--aramide-tinubu.json",
+    "death-becomes-her-2024/variety--peter-marks.json",
+    "death-becomes-her-2024/deadline--greg-evans.json",
+    "death-becomes-her-2024/guardian--benjamin-lee.json",
+    "death-becomes-her-2024/nypost--johnny-oleksinski.json",
+    "death-becomes-her-2024/theatermania--adam-feldman.json",
+    "death-becomes-her-2024/theatermania--jesse-green.json",
+    "death-becomes-her-2024/timeout--adam-feldman.json",
+    "death-becomes-her-2024/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -109,8 +108,7 @@
     "archive": [
       "the-roommate-2024/broadwaynews--brittani-samuel.json",
       "the-roommate-2024/nydailynews--chris-jones.json",
-      "mary-jane-2024/nytimes--jesse-green.json",
-      "mary-jane-2024/broadwaynews--brittani-samuel.json"
+      "death-becomes-her-2024/theatermania--zachary-stewart.json"
     ]
   }
 }
