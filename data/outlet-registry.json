@@ -1,0 +1,1048 @@
+{
+  "_meta": {
+    "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
+    "lastUpdated": "2026-01-29",
+    "version": "2.0.0"
+  },
+  "outlets": {
+    "nytimes": {
+      "displayName": "The New York Times",
+      "tier": 1,
+      "aliases": ["nytimes", "new york times", "the new york times", "ny times", "nyt", "newyorktimes", "the nyt"],
+      "domain": "nytimes.com"
+    },
+    "vulture": {
+      "displayName": "Vulture",
+      "tier": 1,
+      "aliases": ["vulture", "new york magazine / vulture", "ny mag", "nymag", "vult", "new york magazine", "nymag/vulture", "vulture/nymag", "ny-mag"],
+      "domain": "vulture.com"
+    },
+    "variety": {
+      "displayName": "Variety",
+      "tier": 1,
+      "aliases": ["variety", "variety magazine"],
+      "domain": "variety.com"
+    },
+    "hollywood-reporter": {
+      "displayName": "The Hollywood Reporter",
+      "tier": 1,
+      "aliases": ["hollywood-reporter", "the hollywood reporter", "hollywood reporter", "thr", "hollywoodreporter"],
+      "domain": "hollywoodreporter.com"
+    },
+    "newyorker": {
+      "displayName": "The New Yorker",
+      "tier": 1,
+      "aliases": ["newyorker", "new-yorker", "the new yorker", "new yorker"],
+      "domain": "newyorker.com"
+    },
+    "wsj": {
+      "displayName": "The Wall Street Journal",
+      "tier": 1,
+      "aliases": ["wsj", "wall-street-journal", "the wall street journal", "wall street journal", "wallstreetjournal", "wallstreet-journal", "wallstreet journal"],
+      "domain": "wsj.com"
+    },
+    "washpost": {
+      "displayName": "The Washington Post",
+      "tier": 1,
+      "aliases": ["washpost", "washington-post", "the washington post", "washington post", "wapo", "washingtonpost", "wash post"],
+      "domain": "washingtonpost.com"
+    },
+    "ew": {
+      "displayName": "Entertainment Weekly",
+      "tier": 1,
+      "aliases": ["ew", "entertainment-weekly", "entertainment weekly", "entertainmentweekly"],
+      "domain": "ew.com"
+    },
+    "ap": {
+      "displayName": "Associated Press",
+      "tier": 1,
+      "aliases": ["ap", "associated-press", "associated press", "the associated press", "ap news", "apnews"],
+      "domain": "apnews.com"
+    },
+    "nypost": {
+      "displayName": "New York Post",
+      "tier": 2,
+      "aliases": ["nypost", "ny-post", "new york post", "ny post", "the new york post", "post"],
+      "domain": "nypost.com"
+    },
+    "theatermania": {
+      "displayName": "TheaterMania",
+      "tier": 2,
+      "aliases": ["theatermania", "theater mania", "theatremania", "theatre mania"],
+      "domain": "theatermania.com"
+    },
+    "broadwayworld": {
+      "displayName": "BroadwayWorld",
+      "tier": 2,
+      "aliases": ["broadwayworld", "broadway-world", "broadway world", "bww"],
+      "domain": "broadwayworld.com"
+    },
+    "deadline": {
+      "displayName": "Deadline",
+      "tier": 2,
+      "aliases": ["deadline", "deadline hollywood", "deadline.com"],
+      "domain": "deadline.com"
+    },
+    "timeout": {
+      "displayName": "Time Out New York",
+      "tier": 2,
+      "aliases": ["timeout", "time-out-new-york", "time out new york", "time out ny", "timeout new york", "timeout ny", "time out"],
+      "domain": "timeout.com"
+    },
+    "amny": {
+      "displayName": "amNewYork",
+      "tier": 2,
+      "aliases": ["amny", "am-new-york", "amnewyork", "am new york", "am ny"],
+      "domain": "amny.com"
+    },
+    "nysr": {
+      "displayName": "New York Stage Review",
+      "tier": 2,
+      "aliases": ["nysr", "new-york-stage-review", "new york stage review", "ny stage review", "nystagereview"],
+      "domain": "nystagereview.com"
+    },
+    "chicagotribune": {
+      "displayName": "Chicago Tribune",
+      "tier": 2,
+      "aliases": ["chicagotribune", "chicago-tribune", "chicago tribune", "chi tribune"],
+      "domain": "chicagotribune.com"
+    },
+    "latimes": {
+      "displayName": "Los Angeles Times",
+      "tier": 2,
+      "aliases": ["latimes", "los-angeles-times", "los angeles times", "la times", "la-times", "the los angeles times"],
+      "domain": "latimes.com"
+    },
+    "usatoday": {
+      "displayName": "USA Today",
+      "tier": 2,
+      "aliases": ["usatoday", "usa-today", "usa today", "USATODAY"],
+      "domain": "usatoday.com"
+    },
+    "nydailynews": {
+      "displayName": "New York Daily News",
+      "tier": 2,
+      "aliases": ["nydailynews", "daily-news", "new york daily news", "ny daily news", "daily news"],
+      "domain": "nydailynews.com"
+    },
+    "newsday": {
+      "displayName": "Newsday",
+      "tier": 2,
+      "aliases": ["newsday"],
+      "domain": "newsday.com"
+    },
+    "guardian": {
+      "displayName": "The Guardian",
+      "tier": 2,
+      "aliases": ["guardian", "the-guardian", "the guardian", "theguardian"],
+      "domain": "theguardian.com"
+    },
+    "thewrap": {
+      "displayName": "TheWrap",
+      "tier": 2,
+      "aliases": ["thewrap", "the-wrap", "the wrap"],
+      "domain": "thewrap.com"
+    },
+    "observer": {
+      "displayName": "Observer",
+      "tier": 2,
+      "aliases": ["observer", "the observer", "new york observer"],
+      "domain": "observer.com"
+    },
+    "broadwaynews": {
+      "displayName": "Broadway News",
+      "tier": 2,
+      "aliases": ["broadwaynews", "broadway-news", "broadway news"],
+      "domain": "broadwaynews.com"
+    },
+    "playbill": {
+      "displayName": "Playbill",
+      "tier": 2,
+      "aliases": ["playbill", "playbill.com"],
+      "domain": "playbill.com"
+    },
+    "dailybeast": {
+      "displayName": "The Daily Beast",
+      "tier": 2,
+      "aliases": ["dailybeast", "the daily beast", "daily beast", "the-daily-beast"],
+      "domain": "thedailybeast.com"
+    },
+    "nytg": {
+      "displayName": "New York Theatre Guide",
+      "tier": 3,
+      "aliases": ["nytg", "new york theatre guide", "ny theatre guide", "newyorktheatreguide"],
+      "domain": "newyorktheatreguide.com"
+    },
+    "nyt-theater": {
+      "displayName": "New York Theater",
+      "tier": 3,
+      "aliases": ["nyt-theater", "new york theater", "newyorktheater"],
+      "domain": "newyorktheater.me"
+    },
+    "theatrely": {
+      "displayName": "Theatrely",
+      "tier": 3,
+      "aliases": ["theatrely", "THEATRELY"],
+      "domain": "theatrely.com"
+    },
+    "talkinbroadway": {
+      "displayName": "Talkin' Broadway",
+      "tier": 3,
+      "aliases": ["talkinbroadway", "talkin broadway", "talkin' broadway", "talking broadway"],
+      "domain": "talkinbroadway.com"
+    },
+    "cititour": {
+      "displayName": "Cititour",
+      "tier": 3,
+      "aliases": ["cititour"],
+      "domain": "cititour.com"
+    },
+    "culturesauce": {
+      "displayName": "Culture Sauce",
+      "tier": 3,
+      "aliases": ["culturesauce", "culture sauce", "culture-sauce"],
+      "domain": "culturesauce.io"
+    },
+    "slantmagazine": {
+      "displayName": "Slant Magazine",
+      "tier": 3,
+      "aliases": ["slantmagazine", "slant magazine", "slant-magazine", "slant"],
+      "domain": "slantmagazine.com"
+    },
+    "lighting-and-sound-america": {
+      "displayName": "Lighting & Sound America",
+      "tier": 3,
+      "aliases": ["lighting-and-sound-america", "lighting and sound america", "lsa"],
+      "domain": "lightingandsoundamerica.com"
+    },
+    "new-york-sun": {
+      "displayName": "The New York Sun",
+      "tier": 3,
+      "aliases": ["new-york-sun", "the-new-york-sun", "new york sun", "the new york sun", "ny-sun", "ny sun"],
+      "domain": "nysun.com"
+    },
+    "billboard": {
+      "displayName": "Billboard",
+      "tier": 3,
+      "aliases": ["billboard"],
+      "domain": "billboard.com"
+    },
+    "queerty": {
+      "displayName": "Queerty",
+      "tier": 3,
+      "aliases": ["queerty"],
+      "domain": "queerty.com"
+    },
+    "frontmezzjunkies": {
+      "displayName": "Front Mezz Junkies",
+      "tier": 3,
+      "aliases": ["frontmezzjunkies", "front mezz junkies", "front-mezz-junkies"],
+      "domain": "frontmezzjunkies.com"
+    },
+    "theater-scene": {
+      "displayName": "Theater Scene",
+      "tier": 3,
+      "aliases": ["theater-scene", "theaterscene", "theater scene", "theaterscenecom"],
+      "domain": "theaterscene.com"
+    },
+    "thestage": {
+      "displayName": "The Stage",
+      "tier": 3,
+      "aliases": ["thestage", "the stage", "the-stage", "the-stage-uk"],
+      "domain": "thestage.co.uk"
+    },
+    "village-voice": {
+      "displayName": "Village Voice",
+      "tier": 3,
+      "aliases": ["village-voice", "the-village-voice", "village voice", "the village voice", "villagevoice"],
+      "domain": "villagevoice.com"
+    },
+    "pages-on-stages": {
+      "displayName": "Pages on Stages",
+      "tier": 3,
+      "aliases": ["pages-on-stages", "pages on stages"],
+      "domain": "pagesonstages.com"
+    },
+    "forward": {
+      "displayName": "The Forward",
+      "tier": 3,
+      "aliases": ["forward", "the forward", "the-forward"],
+      "domain": "forward.com"
+    },
+    "stageandcinema": {
+      "displayName": "Stage and Cinema",
+      "tier": 3,
+      "aliases": ["stageandcinema", "stage and cinema", "stage-and-cinema"],
+      "domain": "stageandcinema.com"
+    },
+    "mashable": {
+      "displayName": "Mashable",
+      "tier": 3,
+      "aliases": ["mashable"],
+      "domain": "mashable.com"
+    },
+    "indiewire": {
+      "displayName": "IndieWire",
+      "tier": 3,
+      "aliases": ["indiewire", "indie wire", "indie-wire"],
+      "domain": "indiewire.com"
+    },
+    "northjerseycom": {
+      "displayName": "NorthJersey.com",
+      "tier": 3,
+      "aliases": ["northjerseycom", "northjersey.com", "north jersey", "northjersey"],
+      "domain": "northjersey.com"
+    },
+    "theater-pizzazz": {
+      "displayName": "Theater Pizzazz",
+      "tier": 3,
+      "aliases": ["theater-pizzazz", "theater pizzazz", "theaterpizzazz"],
+      "domain": "theaterpizzazz.com"
+    },
+    "zeal-nyc": {
+      "displayName": "Zeal NYC",
+      "tier": 3,
+      "aliases": ["zeal-nyc", "zeal nyc", "zealnyc"],
+      "domain": "zealnyc.com"
+    },
+    "bergen-record": {
+      "displayName": "The Record (Bergen)",
+      "tier": 3,
+      "aliases": ["bergen-record", "bergen record", "the record bergen", "northjersey record"],
+      "domain": "northjersey.com"
+    },
+    "chelsea-community-news": {
+      "displayName": "Chelsea Community News",
+      "tier": 3,
+      "aliases": ["chelsea-community-news", "chelsea community news"],
+      "domain": "chelseacommunitynews.com"
+    },
+    "one-minute-critic": {
+      "displayName": "One-Minute Critic",
+      "tier": 3,
+      "aliases": ["one-minute-critic", "one minute critic", "oneminutecritic", "one-minute critic"],
+      "domain": "oneminutecritic.com"
+    },
+    "curtainup": {
+      "displayName": "CurtainUp",
+      "tier": 3,
+      "aliases": ["curtainup", "curtain up", "curtain-up"],
+      "domain": "curtainup.com"
+    },
+    "dctheatrescene": {
+      "displayName": "DC Theatre Scene",
+      "tier": 3,
+      "aliases": ["dctheatrescene", "dc theatre scene", "dc-theatre-scene", "dcmetro"],
+      "domain": "dctheatrescene.com"
+    },
+    "ny1": {
+      "displayName": "NY1",
+      "tier": 3,
+      "aliases": ["ny1", "ny 1", "ny-1"],
+      "domain": "ny1.com"
+    },
+    "stagezine": {
+      "displayName": "StageZine",
+      "tier": 3,
+      "aliases": ["stagezine", "stage zine", "stage-zine"],
+      "domain": "stagezine.com"
+    },
+    "nbcnews": {
+      "displayName": "NBC News",
+      "tier": 3,
+      "aliases": ["nbcnews", "nbc news", "nbc-news"],
+      "domain": "nbcnews.com"
+    },
+    "front-row-center": {
+      "displayName": "Front Row Center",
+      "tier": 3,
+      "aliases": ["front-row-center", "front row center", "frontrowcenter"],
+      "domain": "frontrowcenter.com"
+    },
+    "njcom": {
+      "displayName": "NJ.com",
+      "tier": 3,
+      "aliases": ["njcom", "nj.com", "nj-com", "njcom-star-ledger", "nj.com star ledger"],
+      "domain": "nj.com"
+    },
+    "the-times": {
+      "displayName": "The Times",
+      "tier": 3,
+      "aliases": ["the-times", "the times", "times uk", "the times uk"],
+      "domain": "thetimes.co.uk"
+    },
+    "broadway-voice": {
+      "displayName": "Broadway Voice",
+      "tier": 3,
+      "aliases": ["broadway-voice", "broadway voice", "broadwayvoice"],
+      "domain": "broadwayvoice.com"
+    },
+    "financialtimes": {
+      "displayName": "Financial Times",
+      "tier": 3,
+      "aliases": ["financialtimes", "financial-times-uk", "financial times", "financial-times", "ft"],
+      "domain": "ft.com"
+    },
+    "huffpost": {
+      "displayName": "HuffPost",
+      "tier": 3,
+      "aliases": ["huffpost", "huffington post", "huff post", "huffingtonpost"],
+      "domain": "huffpost.com"
+    },
+    "nbcny": {
+      "displayName": "NBC New York",
+      "tier": 3,
+      "aliases": ["nbcny", "nbc new york", "nbc-new-york", "nbc ny"],
+      "domain": "nbcnewyork.com"
+    },
+    "thisbroadsway": {
+      "displayName": "This Broadway",
+      "tier": 3,
+      "aliases": ["thisbroadsway", "this broadway", "this-broadway"],
+      "domain": "thisbroadsway.com"
+    },
+    "time": {
+      "displayName": "Time",
+      "tier": 3,
+      "aliases": ["time", "time magazine"],
+      "domain": "time.com"
+    },
+    "backstage": {
+      "displayName": "Backstage",
+      "tier": 3,
+      "aliases": ["backstage", "back stage", "back-stage"],
+      "domain": "backstage.com"
+    },
+    "bloomberg": {
+      "displayName": "Bloomberg",
+      "tier": 3,
+      "aliases": ["bloomberg"],
+      "domain": "bloomberg.com"
+    },
+    "slash-film": {
+      "displayName": "SlashFilm",
+      "tier": 3,
+      "aliases": ["slash-film", "slashfilm", "slash film", "/film"],
+      "domain": "slashfilm.com"
+    },
+    "toronto-star": {
+      "displayName": "Toronto Star",
+      "tier": 3,
+      "aliases": ["toronto-star", "toronto star", "torontostar"],
+      "domain": "thestar.com"
+    },
+    "broadway-and-me": {
+      "displayName": "Broadway & Me",
+      "tier": 3,
+      "aliases": ["broadway-and-me", "broadway & me", "broadway and me"],
+      "domain": "broadwayandme.com"
+    },
+    "gotham-playgoer": {
+      "displayName": "Gotham Playgoer",
+      "tier": 3,
+      "aliases": ["gotham-playgoer", "gotham playgoer"],
+      "domain": "gothamplaygoer.com"
+    },
+    "medium": {
+      "displayName": "Medium",
+      "tier": 3,
+      "aliases": ["medium"],
+      "domain": "medium.com"
+    },
+    "stage-left": {
+      "displayName": "Stage Left",
+      "tier": 3,
+      "aliases": ["stage-left", "stage left", "stageleft"],
+      "domain": "stageleft.com"
+    },
+    "theatres-leiter-side": {
+      "displayName": "Theatre's Leiter Side",
+      "tier": 3,
+      "aliases": ["theatres-leiter-side", "theatre's leiter side", "theatres leiter side", "leiter side"],
+      "domain": "theatersleiterside.blogspot.com"
+    },
+    "towleroad": {
+      "displayName": "Towleroad",
+      "tier": 3,
+      "aliases": ["towleroad", "towle road"],
+      "domain": "towleroad.com"
+    },
+    "wnyc": {
+      "displayName": "WNYC",
+      "tier": 3,
+      "aliases": ["wnyc"],
+      "domain": "wnyc.org"
+    },
+    "theatre-is-easy": {
+      "displayName": "Theatre is Easy",
+      "tier": 3,
+      "aliases": ["theatre-is-easy", "theatre is easy", "theatreiseasy", "theater is easy"],
+      "domain": "theasy.com"
+    },
+    "theatre-reviews-limited": {
+      "displayName": "Theatre Reviews Limited",
+      "tier": 3,
+      "aliases": ["theatre-reviews-limited", "theatre reviews limited"],
+      "domain": "theatrereviewslimited.com"
+    },
+    "telegraph": {
+      "displayName": "The Telegraph",
+      "tier": 3,
+      "aliases": ["telegraph", "the telegraph", "the-telegraph", "daily telegraph"],
+      "domain": "telegraph.co.uk"
+    },
+    "showbiz411": {
+      "displayName": "Showbiz411",
+      "tier": 3,
+      "aliases": ["showbiz411", "showbiz 411", "showbiz-411"],
+      "domain": "showbiz411.com"
+    },
+    "dc-theater-arts": {
+      "displayName": "DC Theater Arts",
+      "tier": 3,
+      "aliases": ["dc-theater-arts", "dc theater arts", "dctheaterarts"],
+      "domain": "dctheaterarts.org"
+    },
+    "the-interested-bystander": {
+      "displayName": "The Interested Bystander",
+      "tier": 3,
+      "aliases": ["the-interested-bystander", "the interested bystander", "interested bystander"],
+      "domain": "theinterestedbystander.com"
+    },
+    "rollingstone": {
+      "displayName": "Rolling Stone",
+      "tier": 3,
+      "aliases": ["rollingstone", "rolling stone", "rolling-stone"],
+      "domain": "rollingstone.com"
+    },
+    "andygram": {
+      "displayName": "AndyGram",
+      "tier": 3,
+      "aliases": ["andygram", "andy gram"],
+      "domain": "andygram.com"
+    },
+    "becca-on-broadway": {
+      "displayName": "Becca on Broadway",
+      "tier": 3,
+      "aliases": ["becca-on-broadway", "becca on broadway"],
+      "domain": "beccaonbroadway.com"
+    },
+    "catholic-transcript": {
+      "displayName": "Catholic Transcript",
+      "tier": 3,
+      "aliases": ["catholic-transcript", "catholic transcript"],
+      "domain": "catholictranscript.com"
+    },
+    "classicalite": {
+      "displayName": "Classicalite",
+      "tier": 3,
+      "aliases": ["classicalite"],
+      "domain": "classicalite.com"
+    },
+    "gay-geeks-ny": {
+      "displayName": "Gay Geeks NY",
+      "tier": 3,
+      "aliases": ["gay-geeks-ny", "gay geeks ny"],
+      "domain": "gaygeeksny.com"
+    },
+    "jks-theatre-scene": {
+      "displayName": "JK's Theatre Scene",
+      "tier": 3,
+      "aliases": ["jks-theatre-scene", "jk's theatre scene", "jks theatre scene"],
+      "domain": "jkstheatrescene.com"
+    },
+    "new-jersey-newsroom": {
+      "displayName": "New Jersey Newsroom",
+      "tier": 3,
+      "aliases": ["new-jersey-newsroom", "new jersey newsroom", "nj newsroom"],
+      "domain": "newjerseynewsroom.com"
+    },
+    "perez-hilton": {
+      "displayName": "Perez Hilton",
+      "tier": 3,
+      "aliases": ["perez-hilton", "perez hilton", "perezhilton"],
+      "domain": "perezhilton.com"
+    },
+    "reflections-in-the-light": {
+      "displayName": "Reflections in the Light",
+      "tier": 3,
+      "aliases": ["reflections-in-the-light", "reflections in the light"],
+      "domain": "reflectionsinthelight.com"
+    },
+    "stu-on-broadway": {
+      "displayName": "Stu on Broadway",
+      "tier": 3,
+      "aliases": ["stu-on-broadway", "stu on broadway"],
+      "domain": "stuonbroadway.com"
+    },
+    "uinterview": {
+      "displayName": "UInterview",
+      "tier": 3,
+      "aliases": ["uinterview", "u interview"],
+      "domain": "uinterview.com"
+    },
+    "philadelphia-inquirer": {
+      "displayName": "The Philadelphia Inquirer",
+      "tier": 3,
+      "aliases": ["philadelphia-inquirer", "the-philadelphia-inquirer", "philadelphia inquirer", "the philadelphia inquirer", "philly inquirer"],
+      "domain": "inquirer.com"
+    },
+    "city-beat": {
+      "displayName": "CityBeat",
+      "tier": 3,
+      "aliases": ["city-beat", "citybeat", "city beat"],
+      "domain": "citybeat.com"
+    },
+    "4columns": {
+      "displayName": "4Columns",
+      "tier": 3,
+      "aliases": ["4columns", "4 columns", "four columns"],
+      "domain": "4columns.org"
+    },
+    "john-patrick-shanley": {
+      "displayName": "John Patrick Shanley",
+      "tier": 3,
+      "aliases": ["john-patrick-shanley", "john patrick shanley"],
+      "domain": null
+    },
+    "cabaret-scenes": {
+      "displayName": "Cabaret Scenes",
+      "tier": 3,
+      "aliases": ["cabaret-scenes", "cabaret scenes"],
+      "domain": "cabaretscenes.org"
+    },
+    "carole-di-tosti": {
+      "displayName": "Carole Di Tosti",
+      "tier": 3,
+      "aliases": ["carole-di-tosti", "carole di tosti"],
+      "domain": null
+    },
+    "evening-standard": {
+      "displayName": "Evening Standard",
+      "tier": 3,
+      "aliases": ["evening-standard", "evening standard", "london evening standard"],
+      "domain": "standard.co.uk"
+    },
+    "musical-theatre-review": {
+      "displayName": "Musical Theatre Review",
+      "tier": 3,
+      "aliases": ["musical-theatre-review", "musical theatre review", "musicaltheatrereview"],
+      "domain": "musicaltheatrereview.com"
+    },
+    "newnownextcom": {
+      "displayName": "NewNowNext",
+      "tier": 3,
+      "aliases": ["newnownextcom", "newnownext", "new now next"],
+      "domain": "newnownext.com"
+    },
+    "off-script-with-dan-dwyer": {
+      "displayName": "Off Script with Dan Dwyer",
+      "tier": 3,
+      "aliases": ["off-script-with-dan-dwyer", "off script with dan dwyer", "dan dwyer"],
+      "domain": null
+    },
+    "reviews-off-broadway": {
+      "displayName": "Reviews Off Broadway",
+      "tier": 3,
+      "aliases": ["reviews-off-broadway", "reviews off broadway"],
+      "domain": "reviewsoffbroadway.com"
+    },
+    "scribicide": {
+      "displayName": "Scribicide",
+      "tier": 3,
+      "aliases": ["scribicide"],
+      "domain": "scribicide.com"
+    },
+    "show-showdown": {
+      "displayName": "Show Showdown",
+      "tier": 3,
+      "aliases": ["show-showdown", "show showdown", "showshowdown"],
+      "domain": "showshowdown.com"
+    },
+    "theater-reviews-from-my-seat": {
+      "displayName": "Theater Reviews from My Seat",
+      "tier": 3,
+      "aliases": ["theater-reviews-from-my-seat", "theater reviews from my seat"],
+      "domain": null
+    },
+    "vox": {
+      "displayName": "Vox",
+      "tier": 3,
+      "aliases": ["vox"],
+      "domain": "vox.com"
+    },
+    "act-three-the-reviews": {
+      "displayName": "Act Three: The Reviews",
+      "tier": 3,
+      "aliases": ["act-three-the-reviews", "act three the reviews", "act three"],
+      "domain": null
+    },
+    "as-her-world-turns": {
+      "displayName": "As Her World Turns",
+      "tier": 3,
+      "aliases": ["as-her-world-turns", "as her world turns"],
+      "domain": null
+    },
+    "backstage-barbie": {
+      "displayName": "BackStage Barbie",
+      "tier": 3,
+      "aliases": ["backstage-barbie", "backstage barbie"],
+      "domain": null
+    },
+    "bobs-theater-blog": {
+      "displayName": "Bob's Theater Blog",
+      "tier": 3,
+      "aliases": ["bobs-theater-blog", "bob's theater blog", "bobs theater blog"],
+      "domain": null
+    },
+    "boston-globe": {
+      "displayName": "Boston Globe",
+      "tier": 3,
+      "aliases": ["boston-globe", "boston globe", "the boston globe"],
+      "domain": "bostonglobe.com"
+    },
+    "broadwayselect": {
+      "displayName": "Broadway Select",
+      "tier": 3,
+      "aliases": ["broadwayselect", "broadway select", "broadway-select"],
+      "domain": "broadwayselect.com"
+    },
+    "our-theater-blog": {
+      "displayName": "Our Theater Blog",
+      "tier": 3,
+      "aliases": ["our-theater-blog", "our theater blog"],
+      "domain": null
+    },
+    "roy-berko-info": {
+      "displayName": "Roy Berko",
+      "tier": 3,
+      "aliases": ["roy-berko-info", "roy berko", "royberko"],
+      "domain": null
+    },
+    "the-clyde-fitch-report": {
+      "displayName": "The Clyde Fitch Report",
+      "tier": 3,
+      "aliases": ["the-clyde-fitch-report", "the clyde fitch report", "clyde fitch report"],
+      "domain": "clydefitchreport.com"
+    },
+    "the-three-tomatoes": {
+      "displayName": "The Three Tomatoes",
+      "tier": 3,
+      "aliases": ["the-three-tomatoes", "the three tomatoes", "three tomatoes"],
+      "domain": "thethreetomatoes.com"
+    },
+    "broadway-blog": {
+      "displayName": "Broadway Blog",
+      "tier": 3,
+      "aliases": ["broadway-blog", "broadway blog"],
+      "domain": "broadwayblog.com"
+    },
+    "city-cabaret": {
+      "displayName": "City Cabaret",
+      "tier": 3,
+      "aliases": ["city-cabaret", "city cabaret"],
+      "domain": "citycabaret.com"
+    },
+    "drama-queen-nyc": {
+      "displayName": "Drama Queen NYC",
+      "tier": 3,
+      "aliases": ["drama-queen-nyc", "drama queen nyc"],
+      "domain": null
+    },
+    "exeunt-magazine": {
+      "displayName": "Exeunt Magazine",
+      "tier": 3,
+      "aliases": ["exeunt-magazine", "exeunt magazine", "exeunt"],
+      "domain": "exeuntmagazine.com"
+    },
+    "fordham-observer": {
+      "displayName": "Fordham Observer",
+      "tier": 3,
+      "aliases": ["fordham-observer", "fordham observer"],
+      "domain": "fordhamobserver.com"
+    },
+    "limelight-magazine-au": {
+      "displayName": "Limelight Magazine",
+      "tier": 3,
+      "aliases": ["limelight-magazine-au", "limelight magazine", "limelight"],
+      "domain": "limelightmagazine.com.au"
+    },
+    "melindas-malarky": {
+      "displayName": "Melinda's Malarky",
+      "tier": 3,
+      "aliases": ["melindas-malarky", "melinda's malarky", "melindas malarky"],
+      "domain": null
+    },
+    "national-review": {
+      "displayName": "National Review",
+      "tier": 3,
+      "aliases": ["national-review", "national review"],
+      "domain": "nationalreview.com"
+    },
+    "parade": {
+      "displayName": "Parade",
+      "tier": 3,
+      "aliases": ["parade", "parade magazine"],
+      "domain": "parade.com"
+    },
+    "people": {
+      "displayName": "People",
+      "tier": 3,
+      "aliases": ["people", "people magazine"],
+      "domain": "people.com"
+    },
+    "slate": {
+      "displayName": "Slate",
+      "tier": 3,
+      "aliases": ["slate", "slate magazine"],
+      "domain": "slate.com"
+    },
+    "theater-life": {
+      "displayName": "Theater Life",
+      "tier": 3,
+      "aliases": ["theater-life", "theater life", "theaterlife"],
+      "domain": "theaterlife.com"
+    },
+    "troy-record": {
+      "displayName": "Troy Record",
+      "tier": 3,
+      "aliases": ["troy-record", "troy record"],
+      "domain": "troyrecord.com"
+    },
+    "vanityfair": {
+      "displayName": "Vanity Fair",
+      "tier": 3,
+      "aliases": ["vanityfair", "vanity fair", "vanity-fair"],
+      "domain": "vanityfair.com"
+    },
+    "wolf-entertainment-guide": {
+      "displayName": "Wolf Entertainment Guide",
+      "tier": 3,
+      "aliases": ["wolf-entertainment-guide", "wolf entertainment guide"],
+      "domain": "wolfentertainmentguide.com"
+    },
+    "woman-around-town": {
+      "displayName": "Woman Around Town",
+      "tier": 3,
+      "aliases": ["woman-around-town", "woman around town"],
+      "domain": "womanaroundtown.com"
+    },
+    "metro-weekly": {
+      "displayName": "Metro Weekly",
+      "tier": 3,
+      "aliases": ["metro-weekly", "metro weekly", "metroweekly"],
+      "domain": "metroweekly.com"
+    },
+    "next-magazine": {
+      "displayName": "Next Magazine",
+      "tier": 3,
+      "aliases": ["next-magazine", "next magazine"],
+      "domain": "nextmagazine.com"
+    },
+    "the-globe-and-mail": {
+      "displayName": "The Globe and Mail",
+      "tier": 3,
+      "aliases": ["the-globe-and-mail", "the globe and mail", "globe and mail"],
+      "domain": "theglobeandmail.com"
+    },
+    "whatsonstage": {
+      "displayName": "WhatsOnStage",
+      "tier": 3,
+      "aliases": ["whatsonstage", "whats on stage", "what's on stage"],
+      "domain": "whatsonstage.com"
+    },
+    "theater-news-online": {
+      "displayName": "Theater News Online",
+      "tier": 3,
+      "aliases": ["theater-news-online", "theater news online"],
+      "domain": "theaternewsonline.com"
+    },
+    "this-week-in-new-york": {
+      "displayName": "This Week in New York",
+      "tier": 3,
+      "aliases": ["this-week-in-new-york", "this week in new york"],
+      "domain": "thisweekinnewyork.com"
+    },
+    "america-magazine": {
+      "displayName": "America Magazine",
+      "tier": 3,
+      "aliases": ["america-magazine", "america magazine", "america"],
+      "domain": "americamagazine.org"
+    },
+    "katrina-stuart-santiago": {
+      "displayName": "Katrina Stuart Santiago",
+      "tier": 3,
+      "aliases": ["katrina-stuart-santiago", "katrina stuart santiago"],
+      "domain": null
+    },
+    "vladimir-bunoan": {
+      "displayName": "Vladimir Bunoan",
+      "tier": 3,
+      "aliases": ["vladimir-bunoan", "vladimir bunoan"],
+      "domain": null
+    },
+    "wanggo-gallaga": {
+      "displayName": "Wanggo Gallaga",
+      "tier": 3,
+      "aliases": ["wanggo-gallaga", "wanggo gallaga"],
+      "domain": null
+    },
+    "bbc-news": {
+      "displayName": "BBC News",
+      "tier": 3,
+      "aliases": ["bbc-news", "bbc news", "bbc"],
+      "domain": "bbc.com"
+    },
+    "londontheatre": {
+      "displayName": "London Theatre",
+      "tier": 3,
+      "aliases": ["londontheatre", "london theatre", "london-theatre"],
+      "domain": "londontheatre.co.uk"
+    },
+    "the-daily-mail": {
+      "displayName": "The Daily Mail",
+      "tier": 3,
+      "aliases": ["the-daily-mail", "the daily mail", "daily mail", "dailymail"],
+      "domain": "dailymail.co.uk"
+    },
+    "the-independent": {
+      "displayName": "The Independent",
+      "tier": 3,
+      "aliases": ["the-independent", "the independent", "independent"],
+      "domain": "independent.co.uk"
+    },
+    "the-standard": {
+      "displayName": "The Standard",
+      "tier": 3,
+      "aliases": ["the-standard", "the standard"],
+      "domain": "standard.co.uk"
+    },
+    "tickertv": {
+      "displayName": "TickerTV",
+      "tier": 3,
+      "aliases": ["tickertv", "ticker tv"],
+      "domain": "tickertv.com"
+    },
+    "columbus-dispatch": {
+      "displayName": "Columbus Dispatch",
+      "tier": 3,
+      "aliases": ["columbus-dispatch", "columbus dispatch", "the columbus dispatch"],
+      "domain": "dispatch.com"
+    },
+    "denver-post": {
+      "displayName": "Denver Post",
+      "tier": 3,
+      "aliases": ["denver-post", "denver post", "the denver post"],
+      "domain": "denverpost.com"
+    },
+    "milwaukee-journal-sentinel": {
+      "displayName": "Milwaukee Journal Sentinel",
+      "tier": 3,
+      "aliases": ["milwaukee-journal-sentinel", "milwaukee journal sentinel"],
+      "domain": "jsonline.com"
+    },
+    "post-and-courier": {
+      "displayName": "Post and Courier",
+      "tier": 3,
+      "aliases": ["post-and-courier", "post and courier", "the post and courier"],
+      "domain": "postandcourier.com"
+    },
+    "sarasota-herald-tribune": {
+      "displayName": "Sarasota Herald-Tribune",
+      "tier": 3,
+      "aliases": ["sarasota-herald-tribune", "sarasota herald tribune", "sarasota herald-tribune"],
+      "domain": "heraldtribune.com"
+    },
+    "seattle-post-intelligencer": {
+      "displayName": "Seattle Post-Intelligencer",
+      "tier": 3,
+      "aliases": ["seattle-post-intelligencer", "seattle post-intelligencer", "seattle pi"],
+      "domain": "seattlepi.com"
+    },
+    "syracuse-herald-journal": {
+      "displayName": "Syracuse Herald Journal",
+      "tier": 3,
+      "aliases": ["syracuse-herald-journal", "syracuse herald journal"],
+      "domain": "syracuse.com"
+    },
+    "vu": {
+      "displayName": "Vu",
+      "tier": 3,
+      "aliases": ["vu"],
+      "domain": null
+    },
+    "fredericksburgcom": {
+      "displayName": "Fredericksburg.com",
+      "tier": 3,
+      "aliases": ["fredericksburgcom", "fredericksburg.com", "fredericksburg"],
+      "domain": "fredericksburg.com"
+    },
+    "the-recs": {
+      "displayName": "The Recs",
+      "tier": 3,
+      "aliases": ["the-recs", "the recs"],
+      "domain": "therecs.com"
+    },
+    "splash-magazines": {
+      "displayName": "Splash Magazines",
+      "tier": 3,
+      "aliases": ["splash-magazines", "splash magazines"],
+      "domain": "splashmagazines.com"
+    },
+    "the-journal-news-lohud": {
+      "displayName": "The Journal News (LoHud)",
+      "tier": 3,
+      "aliases": ["the-journal-news-lohud", "the journal news lohud", "lohud", "journal news"],
+      "domain": "lohud.com"
+    },
+    "barbara-hershey-and-ty-simpkins-in-insidious": {
+      "displayName": "Barbara Hershey and Ty Simpkins in INSIDIOUS",
+      "tier": 3,
+      "aliases": ["barbara-hershey-and-ty-simpkins-in-insidious"],
+      "domain": null,
+      "_note": "This appears to be a data error - not a real outlet"
+    }
+  },
+  "_aliasIndex": {
+    "_note": "This section maps common alternative outletIds to their canonical form for quick lookup",
+    "nyt": "nytimes",
+    "vult": "vulture",
+    "ny-mag": "vulture",
+    "wall-street-journal": "wsj",
+    "wallstreet-journal": "wsj",
+    "washington-post": "washpost",
+    "wapo": "washpost",
+    "ny-post": "nypost",
+    "entertainment-weekly": "ew",
+    "associated-press": "ap",
+    "the-guardian": "guardian",
+    "chicago-tribune": "chicagotribune",
+    "los-angeles-times": "latimes",
+    "la-times": "latimes",
+    "am-new-york": "amny",
+    "time-out-new-york": "timeout",
+    "hollywood-reporter": "hollywood-reporter",
+    "thr": "hollywood-reporter",
+    "new-yorker": "newyorker",
+    "broadway-world": "broadwayworld",
+    "the-wrap": "thewrap",
+    "daily-news": "nydailynews",
+    "usa-today": "usatoday",
+    "USATODAY": "usatoday",
+    "new-york-stage-review": "nysr",
+    "broadway-news": "broadwaynews",
+    "the-village-voice": "village-voice",
+    "theaterscenecom": "theater-scene",
+    "oneminutecritic": "one-minute-critic",
+    "financial-times-uk": "financialtimes",
+    "the-stage-uk": "thestage",
+    "the-new-york-sun": "new-york-sun",
+    "ny-sun": "new-york-sun",
+    "dcmetro": "dctheatrescene",
+    "njcom-star-ledger": "njcom",
+    "ny-1": "ny1",
+    "the-philadelphia-inquirer": "philadelphia-inquirer",
+    "exeunt": "exeunt-magazine",
+    "wallstreet journal": "wsj"
+  }
+}

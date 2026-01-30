@@ -9,12 +9,75 @@
  * - scripts/build-master-review-list.js (when deduplicating)
  * - scripts/cleanup-duplicate-reviews.js (for fixing existing duplicates)
  *
- * IMPORTANT: When adding new outlet variations, add them to OUTLET_ALIASES.
- * When adding known critic name variations, add them to CRITIC_ALIASES.
+ * IMPORTANT: The outlet-registry.json is the source of truth for outlet data.
+ * When adding new outlet variations, add them to data/outlet-registry.json.
+ * When adding known critic name variations, add them to CRITIC_ALIASES below.
  */
 
+const fs = require('fs');
+const path = require('path');
+
+// Cache for the outlet registry data
+let _registryCache = null;
+let _registryAliasMap = null;
+
 /**
- * Canonical outlet IDs and all known variations/aliases.
+ * Load and cache the outlet registry from JSON file.
+ * Returns the registry object with outlets and _aliasIndex.
+ */
+function loadOutletRegistry() {
+  if (_registryCache) return _registryCache;
+
+  try {
+    const registryPath = path.join(__dirname, '..', '..', 'data', 'outlet-registry.json');
+    const data = fs.readFileSync(registryPath, 'utf-8');
+    _registryCache = JSON.parse(data);
+    return _registryCache;
+  } catch (err) {
+    console.warn('Warning: Could not load outlet-registry.json, falling back to built-in aliases');
+    return null;
+  }
+}
+
+/**
+ * Build a complete alias-to-canonical mapping from the registry.
+ * Combines both the aliases arrays from each outlet and the _aliasIndex.
+ */
+function buildRegistryAliasMap() {
+  if (_registryAliasMap) return _registryAliasMap;
+
+  const registry = loadOutletRegistry();
+  _registryAliasMap = new Map();
+
+  if (registry) {
+    // Add all aliases from outlet definitions
+    for (const [outletId, outletData] of Object.entries(registry.outlets || {})) {
+      // Map the outlet ID itself
+      _registryAliasMap.set(outletId.toLowerCase(), outletId);
+
+      // Map all aliases
+      if (outletData.aliases) {
+        for (const alias of outletData.aliases) {
+          _registryAliasMap.set(alias.toLowerCase(), outletId);
+        }
+      }
+    }
+
+    // Add mappings from _aliasIndex (these may include slugified variations)
+    if (registry._aliasIndex) {
+      for (const [alias, canonicalId] of Object.entries(registry._aliasIndex)) {
+        if (alias !== '_note') {
+          _registryAliasMap.set(alias.toLowerCase(), canonicalId);
+        }
+      }
+    }
+  }
+
+  return _registryAliasMap;
+}
+
+/**
+ * Legacy outlet aliases - used as fallback if registry is not available.
  * The key is the canonical ID, values are all variations that should map to it.
  *
  * Format: 'canonical-id': ['variation1', 'variation2', ...]
@@ -286,19 +349,38 @@ const CRITIC_ALIASES = {
 /**
  * Normalize an outlet name to its canonical ID.
  * Returns the canonical outlet ID (lowercase, hyphenated).
+ *
+ * Priority:
+ * 1. Check outlet-registry.json (source of truth)
+ * 2. Fall back to built-in OUTLET_ALIASES
+ * 3. Generate slug from name
  */
 function normalizeOutlet(outletName) {
   if (!outletName) return 'unknown';
 
   const lower = outletName.toLowerCase().trim();
+  const withoutThe = lower.replace(/^the\s+/, '');
 
-  // Check against all aliases
+  // First, check the registry alias map (source of truth)
+  const registryAliasMap = buildRegistryAliasMap();
+  if (registryAliasMap.size > 0) {
+    // Try exact match
+    if (registryAliasMap.has(lower)) {
+      return registryAliasMap.get(lower);
+    }
+    // Try without "the " prefix
+    if (registryAliasMap.has(withoutThe)) {
+      return registryAliasMap.get(withoutThe);
+    }
+  }
+
+  // Fall back to built-in OUTLET_ALIASES
   for (const [canonical, aliases] of Object.entries(OUTLET_ALIASES)) {
     if (aliases.some(alias => {
       // Exact match
       if (lower === alias) return true;
       // Remove "the " prefix and check
-      if (lower.replace(/^the\s+/, '') === alias) return true;
+      if (withoutThe === alias) return true;
       if (alias.replace(/^the\s+/, '') === lower) return true;
       return false;
     })) {
@@ -514,9 +596,41 @@ function mergeReviews(existing, incoming) {
 }
 
 /**
+ * Get the full outlet object from the registry.
+ * Returns { displayName, tier, aliases, domain } or null if not found.
+ */
+function getOutletFromRegistry(outletId) {
+  const registry = loadOutletRegistry();
+  if (!registry || !registry.outlets) return null;
+
+  // First normalize the outlet ID
+  const normalizedId = normalizeOutlet(outletId);
+
+  // Look up in registry
+  return registry.outlets[normalizedId] || null;
+}
+
+/**
+ * Get the tier for an outlet (1, 2, or 3).
+ * Returns 3 (lowest tier) if not found in registry.
+ */
+function getOutletTier(outletId) {
+  const outlet = getOutletFromRegistry(outletId);
+  return outlet?.tier || 3;
+}
+
+/**
  * Get the canonical display name for an outlet ID.
+ * Priority: outlet-registry.json, then built-in fallback.
  */
 function getOutletDisplayName(outletId) {
+  // First check the registry (source of truth)
+  const outlet = getOutletFromRegistry(outletId);
+  if (outlet?.displayName) {
+    return outlet.displayName;
+  }
+
+  // Fall back to built-in display names for outlets not in registry
   const displayNames = {
     'nytimes': 'The New York Times',
     'vulture': 'Vulture',
@@ -600,6 +714,9 @@ module.exports = {
   areOutletsSame,
   mergeReviews,
   getOutletDisplayName,
+  getOutletFromRegistry,
+  getOutletTier,
+  loadOutletRegistry,
   levenshteinDistance,
   OUTLET_ALIASES,
   CRITIC_ALIASES,

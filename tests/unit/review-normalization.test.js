@@ -25,6 +25,9 @@ const {
   areReviewsDuplicates,
   levenshteinDistance,
   getOutletDisplayName,
+  getOutletFromRegistry,
+  getOutletTier,
+  loadOutletRegistry,
   OUTLET_ALIASES,
   CRITIC_ALIASES,
 } = require('../../scripts/lib/review-normalization.js');
@@ -403,9 +406,12 @@ describe('areCriticsSimilar', () => {
     assert.strictEqual(areCriticsSimilar('Johnny Oleksinski', 'johnny oleksinki'), true);
   });
 
-  test('returns true for first name match with one full name', () => {
-    assert.strictEqual(areCriticsSimilar('Jesse', 'Jesse Green'), true);
-    assert.strictEqual(areCriticsSimilar('Helen Shaw', 'Helen'), true);
+  test('returns FALSE for first name match with one full name (removed feature)', () => {
+    // First-name matching was intentionally REMOVED because it caused false positives
+    // e.g., "Jesse Oxfeld" was incorrectly matching "Jesse Green"
+    // Now, partial name matches return FALSE unless they're in CRITIC_ALIASES
+    assert.strictEqual(areCriticsSimilar('Jesse', 'Jesse Green'), false);
+    assert.strictEqual(areCriticsSimilar('Helen Shaw', 'Helen'), false);
   });
 
   test('returns true for typos within Levenshtein distance', () => {
@@ -705,5 +711,99 @@ describe('Alias consistency checks', () => {
     // Verify vulture wins for these aliases (comes first in iteration)
     assert.strictEqual(normalizeOutlet('new york magazine'), 'vulture');
     assert.strictEqual(normalizeOutlet('ny mag'), 'vulture');
+  });
+});
+
+// ============================================================================
+// Registry-based functions tests
+// ============================================================================
+
+describe('loadOutletRegistry', () => {
+  test('loads the outlet registry from JSON file', () => {
+    const registry = loadOutletRegistry();
+    assert.ok(registry, 'Registry should be loaded');
+    assert.ok(registry.outlets, 'Registry should have outlets');
+    assert.ok(registry._aliasIndex, 'Registry should have _aliasIndex');
+  });
+
+  test('registry contains expected tier 1 outlets', () => {
+    const registry = loadOutletRegistry();
+    assert.ok(registry.outlets['nytimes'], 'Should have nytimes');
+    assert.ok(registry.outlets['vulture'], 'Should have vulture');
+    assert.ok(registry.outlets['variety'], 'Should have variety');
+    assert.strictEqual(registry.outlets['nytimes'].tier, 1);
+    assert.strictEqual(registry.outlets['vulture'].tier, 1);
+    assert.strictEqual(registry.outlets['variety'].tier, 1);
+  });
+});
+
+describe('getOutletFromRegistry', () => {
+  test('returns outlet object for known outlets', () => {
+    const nytimes = getOutletFromRegistry('nytimes');
+    assert.ok(nytimes, 'Should return outlet for nytimes');
+    assert.strictEqual(nytimes.displayName, 'The New York Times');
+    assert.strictEqual(nytimes.tier, 1);
+    assert.ok(Array.isArray(nytimes.aliases), 'Should have aliases array');
+    assert.strictEqual(nytimes.domain, 'nytimes.com');
+  });
+
+  test('normalizes input before lookup', () => {
+    // Even if we pass a variation, it should normalize and find the outlet
+    const nytimes1 = getOutletFromRegistry('New York Times');
+    const nytimes2 = getOutletFromRegistry('nyt');
+    assert.ok(nytimes1, 'Should find outlet for "New York Times"');
+    assert.ok(nytimes2, 'Should find outlet for "nyt"');
+    assert.strictEqual(nytimes1.displayName, 'The New York Times');
+    assert.strictEqual(nytimes2.displayName, 'The New York Times');
+  });
+
+  test('returns null for unknown outlets', () => {
+    const unknown = getOutletFromRegistry('completely-unknown-outlet-xyz');
+    assert.strictEqual(unknown, null);
+  });
+});
+
+describe('getOutletTier', () => {
+  test('returns correct tier for tier 1 outlets', () => {
+    assert.strictEqual(getOutletTier('nytimes'), 1);
+    assert.strictEqual(getOutletTier('vulture'), 1);
+    assert.strictEqual(getOutletTier('variety'), 1);
+    assert.strictEqual(getOutletTier('hollywood-reporter'), 1);
+    assert.strictEqual(getOutletTier('newyorker'), 1);
+    assert.strictEqual(getOutletTier('wsj'), 1);
+    assert.strictEqual(getOutletTier('washpost'), 1);
+    assert.strictEqual(getOutletTier('ew'), 1);
+    assert.strictEqual(getOutletTier('ap'), 1);
+  });
+
+  test('returns correct tier for tier 2 outlets', () => {
+    assert.strictEqual(getOutletTier('nypost'), 2);
+    assert.strictEqual(getOutletTier('theatermania'), 2);
+    assert.strictEqual(getOutletTier('broadwayworld'), 2);
+    assert.strictEqual(getOutletTier('deadline'), 2);
+    assert.strictEqual(getOutletTier('timeout'), 2);
+    assert.strictEqual(getOutletTier('guardian'), 2);
+  });
+
+  test('returns correct tier for tier 3 outlets', () => {
+    assert.strictEqual(getOutletTier('nytg'), 3);
+    assert.strictEqual(getOutletTier('nyt-theater'), 3);
+    assert.strictEqual(getOutletTier('theatrely'), 3);
+    assert.strictEqual(getOutletTier('cititour'), 3);
+  });
+
+  test('returns 3 (default) for unknown outlets', () => {
+    assert.strictEqual(getOutletTier('unknown-outlet'), 3);
+    assert.strictEqual(getOutletTier('random-blog'), 3);
+  });
+
+  test('works with outlet variations (normalizes input)', () => {
+    // Tier 1
+    assert.strictEqual(getOutletTier('New York Times'), 1);
+    assert.strictEqual(getOutletTier('nyt'), 1);
+    assert.strictEqual(getOutletTier('The Wall Street Journal'), 1);
+    // Tier 2
+    assert.strictEqual(getOutletTier('Broadway World'), 2);
+    assert.strictEqual(getOutletTier('bww'), 2);
   });
 });
