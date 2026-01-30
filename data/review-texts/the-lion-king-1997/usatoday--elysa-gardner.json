@@ -9,12 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "The Lion King remains a stunning theatrical achievement, with Julie Taymor's visionary direction and design creating magic that transcends the source material.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The Lion King remains a stunning theatrical achievement, with Julie Taymor's visionary direction and design creating magic that transcends the source material.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 80.5,
+      "high": 95.5
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "stunning theatrical achievement",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "visionary direction and design creating magic",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "transcends the source material",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: Strong superlatives like 'stunning achievement' and 'visionary' with 'creating magic' indicate clear enthusiasm and recommendation despite the brief nature of the review. | GPT-4o-mini: The review expresses unqualified enthusiasm for the direction and design, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-30T23:17:21.827Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 90,
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

@@ -4,5 +4,62 @@
   "outlet": "Vulture",
   "criticName": "Sara Holdren",
   "bwwExcerpt": "The performance is forceful enough for this Bug to operate chiefly as a character study. Despite the cesspits of ­conspiracy-think that pollute contemporary politics, the specific paranoia of Letts’s ­characters — bugs under the skin, brainwashing, ­nefarious doctors in government labs — feels less blazingly relevant than comparatively quaint. At the same time, because Cromer and his designers opt to keep the audience at a remove from Peter and Agnes’s folie à deux, the monsters they behold don’t ever truly spook us. They are shadows­ only, never claws and flesh. In such a production, the fantasy at the story’s center can’t become contagious. We bear witness to two sad, mad people. We don’t question our own sanity.",
-  "source": "bww-roundup"
+  "source": "bww-roundup",
+  "assignedScore": 54,
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 45,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 72,
+      "direction": 50
+    },
+    "keyPhrases": [
+      {
+        "quote": "The performance is forceful enough for this Bug to operate chiefly as a character study",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "the specific paranoia of Letts's characters...feels less blazingly relevant than comparatively quaint",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the monsters they behold don't ever truly spook us...the fantasy at the story's center can't become contagious",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic acknowledges strong performances but finds the production fundamentally flawed in not creating the intended psychological impact, making it feel dated rather than urgent. | GPT-4o-mini: The review expresses significant concerns about the relevance and impact of the production, leading to a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-30T23:16:14.791Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 50,
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

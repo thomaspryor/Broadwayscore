@@ -4,5 +4,52 @@
   "outlet": "Variety",
   "criticName": "Aramide Tinubu",
   "bwwExcerpt": "“Bug” is as intimate as it is intense. The set, designed by",
-  "source": "bww-roundup"
+  "source": "bww-roundup",
+  "assignedScore": 70,
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bug is as intimate as it is intense.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "GPT-4o-mini: The review suggests a positive sentiment about the show's intimacy and intensity, but lacks detailed praise or strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-30T23:16:08.128Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 70,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

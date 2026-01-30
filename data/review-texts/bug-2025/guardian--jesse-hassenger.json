@@ -4,5 +4,62 @@
   "outlet": "The Guardian",
   "criticName": "Jesse Hassenger",
   "bwwExcerpt": "Audiences seeing Bug for the first time, then, may well be transfixed, albeit temporarily. Anyone familiar with an earlier production or the William Friedkin film (which introduces some ambiguities to the story’s ending) might start to wonder if maybe Agnes and Peter are ultimately a little thin as characters – if they’re worth the intensity that Coon and Smallwood invest into this production. It’s probably not fair to compare a 100-minute early work from Letts to a towering masterpiece like August:",
-  "source": "bww-roundup"
+  "source": "bww-roundup",
+  "assignedScore": 59,
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 48,
+      "music": null,
+      "performances": 73,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Audiences seeing Bug for the first time, then, may well be transfixed, albeit temporarily",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "might start to wonder if maybe Agnes and Peter are ultimately a little thin as characters",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "the intensity that Coon and Smallwood invest into this production",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review presents a qualified assessment that acknowledges audience engagement but questions the depth of the material and characters, with praise for the performers' commitment but overall ambivalence about the work's merit. | GPT-4o-mini: The review expresses a mixed sentiment, acknowledging strong performances but questioning the depth of the characters and overall impact.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-30T23:15:48.517Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

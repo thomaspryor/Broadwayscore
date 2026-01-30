@@ -6,5 +6,62 @@
   "url": "http://www.jasonraize.net/pr_tlk_ftu112397.html",
   "publishDate": "November 23rd, 1997",
   "showScoreExcerpt": "\"Make no mistake: The Lion King is a rare theater experience. The musical is intelligent spectacle, extravagance with a purpose -- and a heart. From the moment it begins, The Lion King offers astonishing stage magic. Performers walking on giant stilts become giraffes, birds, and a pride of lionesses, dance with a solemn gracefulness that is breathtaking.\"",
-  "source": "show-score"
+  "source": "show-score",
+  "assignedScore": 91,
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 90,
+      "direction": 93
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Lion King is a rare theater experience",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "astonishing stage magic",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "dance with a solemn gracefulness that is breathtaking",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: Unqualified praise with superlatives like 'rare,' 'astonishing,' and 'breathtaking,' describing it as 'intelligent spectacle' with 'heart' indicates a rave review. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its spectacle and emotional depth.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-30T23:17:13.749Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

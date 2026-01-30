@@ -6,5 +6,62 @@
   "url": "https://www.wsj.com/articles/marjorie-prime-review-broadways-family-drama-of-the-ai-future-fb508e75",
   "publishDate": "December 9th, 2025",
   "showScoreExcerpt": "\"People without people’s problems, humor or original insights—which is to say, hardly human at all.\"",
-  "source": "show-score"
+  "source": "show-score",
+  "assignedScore": 18,
+  "llmScore": {
+    "score": 18,
+    "confidence": "medium",
+    "range": {
+      "low": 5.5,
+      "high": 30.5
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": 25,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "People without people's problems, humor or original insights",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "hardly human at all",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "People without people’s problems, humor or original insights",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic delivers a scathing assessment that characters lack basic human qualities like problems, humor, and insights, suggesting fundamental failures in characterization and writing. | GPT-4o-mini: The review expresses a strong negative sentiment about the show's lack of human qualities, indicating a clear rejection of the production. | Note: Models differed by 15 points.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-30T23:16:46.962Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 10,
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

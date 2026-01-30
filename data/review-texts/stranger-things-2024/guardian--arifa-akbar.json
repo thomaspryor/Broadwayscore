@@ -4,5 +4,62 @@
   "outlet": "The Guardian",
   "criticName": "Arifa Akbar",
   "bwwExcerpt": "It starts with those floating red letters and that electro-ethereal music. The intro creates the surreal effect of Netflix’s sci-fi juggernaut being brought to life as a stage-sized facsimile before our eyes. But the big surprise about this prequel to the TV series, about high-schoolers who tap into the dangerous world of the",
-  "source": "bww-roundup"
+  "source": "bww-roundup",
+  "assignedScore": 60,
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the surreal effect of Netflix’s sci-fi juggernaut being brought to life",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "floating red letters and that electro-ethereal music",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "big surprise about this prequel",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "GPT-4o-mini: The review hints at an intriguing visual and auditory experience but lacks a clear recommendation or detailed critique of the overall production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-30T23:17:07.566Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 60,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }

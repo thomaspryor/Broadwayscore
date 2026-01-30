@@ -4,5 +4,62 @@
   "outlet": "The Hollywood Reporter",
   "criticName": "Demetrios Matheou",
   "bwwExcerpt": "Arguably the most difficult aspect of presenting Chekhov is finding the tonal balance in his tragicomedy. The characters' navel-gazing self-pity can be so demanding that sometimes you have to resist the urge to jump on stage and give them a good slap. There is no such issue in Conor McPherson's brilliant, buoyantly accessible adaptation of",
-  "source": "bww-roundup"
+  "source": "bww-roundup",
+  "assignedScore": 85,
+  "llmScore": {
+    "score": 85,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "brilliant, buoyantly accessible adaptation",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "There is no such issue",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Conor McPherson's brilliant, buoyantly accessible adaptation",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Claude: The excerpt calls McPherson's adaptation 'brilliant' and 'buoyantly accessible' while noting it avoids the common problems of Chekhov productions, suggesting strong praise despite the incomplete text. | GPT-4o-mini: The review expresses strong praise for the adaptation while acknowledging some challenges in the source material, leading to a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-30T23:17:44.006Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 85,
+    "openaiScore": 85,
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": []
+  }
 }
