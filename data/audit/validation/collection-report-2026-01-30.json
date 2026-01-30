@@ -1,49 +1,48 @@
 {
-  "runDate": "2026-01-30T19:47:37.267Z",
+  "runDate": "2026-01-30T19:48:13.446Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "the-great-gatsby-2024",
+    "showFilter": "book-of-mormon-2011",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 68,
+    "processed": 3,
+    "failed": 72,
     "skipped": 0,
-    "successRate": "5.6%"
+    "successRate": "4.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 13,
-    "tier1Success": 1,
+    "tier1Attempts": 16,
+    "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 12,
-    "tier2Success": 0,
-    "tier3Attempts": 12,
+    "tier2Attempts": 16,
+    "tier2Success": 1,
+    "tier3Attempts": 15,
     "tier3Success": 1,
-    "tier4Attempts": 28,
+    "tier4Attempts": 33,
     "tier4Success": 2,
-    "totalFailed": 13,
-    "scrapingBeeCreditsUsed": 30,
+    "totalFailed": 17,
+    "scrapingBeeCreditsUsed": 60,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
     "the-roommate-2024/broadwaynews--brittani-samuel.json",
     "the-roommate-2024/nydailynews--chris-jones.json",
-    "wicked-2003/ew--alice-king.json",
-    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
+    "wicked-2003/ew--alice-king.json"
   ],
   "failed": [
     "harry-potter-2021/variety--peter-marks.json",
@@ -101,24 +100,26 @@
     "wicked-2003/njcom-star-ledger--michael-sommers.json",
     "wicked-2003/village-voice--michael-feingold.json",
     "wicked-2003/washpost--peter-marks.json",
-    "the-great-gatsby-2024/variety--aramide-tinubu.json",
-    "the-great-gatsby-2024/guardian--gloria-oladipo.json",
-    "the-great-gatsby-2024/nydailynews--chris-jones.json",
-    "the-great-gatsby-2024/nypost--johnny-oleksinski.json",
-    "the-great-gatsby-2024/observer--david-cote.json",
-    "the-great-gatsby-2024/theatermania--adam-feldman.json",
-    "the-great-gatsby-2024/timeout--adam-feldman.json",
-    "the-great-gatsby-2024/wsj--terry-teachout.json",
-    "the-great-gatsby-2024/nysr--david-finkle.json",
-    "the-great-gatsby-2024/slantmagazine--dan-rubins.json",
-    "the-great-gatsby-2024/talkinbroadway--matthew-murray.json",
-    "the-great-gatsby-2024/theater-pizzazz--brian-scott-lipton.json",
-    "the-great-gatsby-2024/washpost--naveen-kumar.json"
+    "book-of-mormon-2011/variety--marilyn-stasio.json",
+    "book-of-mormon-2011/vulture--jesse-green.json",
+    "book-of-mormon-2011/ew--thom-geier.json",
+    "book-of-mormon-2011/guardian--brian-logan.json",
+    "book-of-mormon-2011/newsday--linda-winer.json",
+    "book-of-mormon-2011/theatermania--charles-isherwood.json",
+    "book-of-mormon-2011/theatermania--david-finkle.json",
+    "book-of-mormon-2011/timeout--david-cote.json",
+    "book-of-mormon-2011/wsj--terry-teachout.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "book-of-mormon-2011/dailybeast--john-anderson.json",
+    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+    "book-of-mormon-2011/ny-1--roma-torre.json",
+    "book-of-mormon-2011/the-philadelphia-inquirer--howard-shapiro.json",
+    "book-of-mormon-2011/the-village-voice--michael-musto.json",
+    "book-of-mormon-2011/usatoday--elysa-gardner.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
-    ],
+    "playwright": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
