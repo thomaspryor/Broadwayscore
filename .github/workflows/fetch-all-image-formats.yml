@@ -17,6 +17,11 @@ on:
         required: false
         default: false
         type: boolean
+      force_redownload:
+        description: 'Force re-download all images (use after switching to new image sources)'
+        required: false
+        default: false
+        type: boolean
   schedule:
     - cron: '0 6 * * 1,4'  # Twice weekly on Monday and Thursday at 6 AM UTC
 
@@ -59,7 +64,7 @@ jobs:
         run: |
           echo "Downloading CDN images to local storage..."
           ARCHIVE_ARGS=""
-          if [ "${{ inputs.bad_images }}" == "true" ]; then
+          if [ "${{ inputs.bad_images }}" == "true" ] || [ "${{ inputs.force_redownload }}" == "true" ]; then
             ARCHIVE_ARGS="--force"
           fi
           node scripts/archive-show-images.js $ARCHIVE_ARGS
