@@ -114,8 +114,8 @@ interface SourceCardProps {
 }
 
 function SourceCard({ name, icon, score, reviewCount, starRating, url, comingSoon }: SourceCardProps) {
-  const content = (
-    <div className={`flex-1 bg-surface-overlay rounded-lg p-3 border border-white/5 ${url ? 'hover:border-white/10 transition-colors' : ''} ${comingSoon ? 'opacity-50' : ''}`}>
+  const inner = (
+    <>
       <div className="flex items-center gap-2 mb-2">
         {icon}
         <span className="text-[10px] sm:text-xs font-medium text-gray-400 uppercase tracking-wide">{name}</span>
@@ -137,18 +137,20 @@ function SourceCard({ name, icon, score, reviewCount, starRating, url, comingSoo
       ) : (
         <div className="text-sm text-gray-500">No data</div>
       )}
-    </div>
+    </>
   );
+
+  const className = `flex-1 basis-0 min-w-0 bg-surface-overlay rounded-lg p-3 border border-white/5 ${url ? 'hover:border-white/10 transition-colors' : ''} ${comingSoon ? 'opacity-50' : ''}`;
 
   if (url) {
     return (
-      <a href={url} target="_blank" rel="noopener noreferrer" className="flex-1 min-w-0 flex">
-        {content}
+      <a href={url} target="_blank" rel="noopener noreferrer" className={className}>
+        {inner}
       </a>
     );
   }
 
-  return content;
+  return <div className={className}>{inner}</div>;
 }
 
 export default function AudienceBuzzCard({ buzz, showScoreUrl }: AudienceBuzzCardProps) {
