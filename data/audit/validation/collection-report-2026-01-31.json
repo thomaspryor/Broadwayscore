@@ -1,27 +1,27 @@
 {
-  "runDate": "2026-01-31T23:29:34.545Z",
+  "runDate": "2026-01-31T23:30:54.852Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "hadestown-2019",
+    "showFilter": "harry-potter-2021",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
+    "processed": 8,
     "failed": 54,
     "skipped": 0,
-    "successRate": "5.3%"
+    "successRate": "12.9%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 1
+    "brightdata": 1,
+    "archive": 6
   },
   "statistics": {
     "tier1Attempts": 22,
@@ -29,20 +29,25 @@
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 20,
-    "tier2Success": 0,
-    "tier3Attempts": 20,
-    "tier3Success": 2,
-    "tier4Attempts": 49,
-    "tier4Success": 4,
+    "tier2Success": 1,
+    "tier3Attempts": 19,
+    "tier3Success": 1,
+    "tier4Attempts": 54,
+    "tier4Success": 9,
     "totalFailed": 23,
-    "scrapingBeeCreditsUsed": 60,
+    "scrapingBeeCreditsUsed": 80,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
-    "hadestown-2019/nytimes--jesse-green.json",
-    "hadestown-2019/broadwaynews--charles-isherwood.json",
-    "hadestown-2019/dcmetro--deb-miller.json"
+    "harry-potter-2021/hollywood-reporter--david-rooney.json",
+    "harry-potter-2021/vulture--sara-holdren.json",
+    "harry-potter-2021/cititour--brian-scott-lipton.json",
+    "harry-potter-2021/broadwayworld--michael-dale.json",
+    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+    "harry-potter-2021/the-times--ann-treneman.json",
+    "harry-potter-2021/vanityfair--richard-lawson.json",
+    "harry-potter-2021/village-voice--michael-feingold.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -76,43 +81,63 @@
     "and-juliet-2022/hollywood-reporter--angie-han.json",
     "and-juliet-2022/variety--aramide-tinubu.json",
     "and-juliet-2022/vulture--sara-holdren.json",
-    "hadestown-2019/deadline--pete-hammond.json",
-    "hadestown-2019/ew--jessica-derschowitz.json",
-    "hadestown-2019/ew--kristen-baldwin.json",
-    "hadestown-2019/guardian--jesse-green.json",
-    "hadestown-2019/guardian--jesse-oxfeld.json",
-    "hadestown-2019/nypost--johnny-oleksinski.json",
-    "hadestown-2019/observer--david-cote.json",
-    "hadestown-2019/observer--rex-reed.json",
-    "hadestown-2019/reviews-off-broadway--scott-mitchell.json",
-    "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
-    "hadestown-2019/theatermania--adam-feldman.json",
-    "hadestown-2019/theatermania--jesse-green.json",
-    "hadestown-2019/thewrap--thom-geier.json",
-    "hadestown-2019/timeout--adam-feldman.json",
-    "hadestown-2019/chicagotribune--chris-jones.json",
-    "hadestown-2019/dailybeast--tim-teeman.json",
-    "hadestown-2019/medium--christian-lewis.json",
-    "hadestown-2019/rollingstone--rob-sheffield.json",
-    "hadestown-2019/talkinbroadway--nancy-grossman.json",
-    "hadestown-2019/usatoday--elysa-gardner.json",
-    "hadestown-2019/vox--constance-grady.json",
-    "hadestown-2019/washpost--peter-marks.json",
-    "hadestown-2019/wnyc--jennifer-vanasco.json"
+    "harry-potter-2021/variety--peter-marks.json",
+    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+    "harry-potter-2021/deadline--greg-evans.json",
+    "harry-potter-2021/guardian--alexis-soloski.json",
+    "harry-potter-2021/national-review--kyle-smith.json",
+    "harry-potter-2021/timeout--adam-feldman.json",
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "harry-potter-2021/broadway-blog--matthew-wexler.json",
+    "harry-potter-2021/curtainup--elyse-sommer.json",
+    "harry-potter-2021/exeunt-magazine--kev-berry.json",
+    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/frontmezzjunkies--steven-ross.json",
+    "harry-potter-2021/limelight-magazine-au--clive-paget.json",
+    "harry-potter-2021/medium--christian-lewis.json",
+    "harry-potter-2021/ny1--roma-torre.json",
+    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
+    "harry-potter-2021/troy-record--bob-goepfert.json",
+    "harry-potter-2021/washpost--peter-marks.json",
+    "harry-potter-2021/wnyc--jennifer-vanasco.json",
+    "harry-potter-2021/wolf-entertainment-guide--william-wolf.json",
+    "harry-potter-2021/woman-around-town--alix-cohen.json",
+    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
   ],
   "tierDetails": {
     "playwright": [
-      "hadestown-2019/broadwaynews--charles-isherwood.json",
-      "hadestown-2019/dcmetro--deb-miller.json"
+      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "harry-potter-2021/cititour--brian-scott-lipton.json"
+    ],
     "archive": [
-      "hadestown-2019/nytimes--jesse-green.json"
+      "harry-potter-2021/hollywood-reporter--david-rooney.json",
+      "harry-potter-2021/vulture--sara-holdren.json",
+      "harry-potter-2021/broadwayworld--michael-dale.json",
+      "harry-potter-2021/the-times--ann-treneman.json",
+      "harry-potter-2021/vanityfair--richard-lawson.json",
+      "harry-potter-2021/village-voice--michael-feingold.json"
     ]
   },
   "failuresByOutlet": {
+    "Variety": {
+      "count": 1,
+      "domain": "variety.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Broadway News": {
+      "count": 1,
+      "domain": "broadwaynews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
     "Deadline": {
       "count": 1,
       "domain": "deadline.com",
@@ -120,86 +145,72 @@
       "isPaywalled": false,
       "isKnownBlocked": true
     },
-    "Entertainment Weekly": {
-      "count": 2,
-      "domain": "ew.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
     "The Guardian": {
-      "count": 2,
+      "count": 1,
       "domain": "theguardian.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "New York Post": {
+    "Broadway Blog": {
       "count": 1,
-      "domain": "nypost.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Reviews Off Broadway": {
-      "count": 1,
-      "domain": "reviewsoffbroadway.blogspot.com",
+      "domain": "thebroadwayblog.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "Theater Reviews from My Seat": {
+    "CurtainUp": {
       "count": 1,
-      "domain": "theaterreviewsfrommyseat.com",
+      "domain": "curtainup.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "TheaterMania": {
-      "count": 2,
-      "domain": "theatermania.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "TheWrap": {
+    "Exeunt Magazine": {
       "count": 1,
-      "domain": "thewrap.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Chicago Tribune": {
-      "count": 1,
-      "domain": "chicagotribune.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "The Daily Beast": {
-      "count": 1,
-      "domain": "thedailybeast.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Rolling Stone": {
-      "count": 1,
-      "domain": "rollingstone.com",
+      "domain": "exeuntmagazine.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "Talkin' Broadway": {
+    "Front Row Center": {
       "count": 1,
-      "domain": "talkinbroadway.com",
+      "domain": "frontrowcenter.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "USA Today": {
+    "Front Mezz Junkies": {
       "count": 1,
-      "domain": "usatoday.com",
+      "domain": "frontmezzjunkies.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Medium": {
+      "count": 1,
+      "domain": "medium.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "NY1": {
+      "count": 1,
+      "domain": "ny1.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Theater Pizzazz": {
+      "count": 1,
+      "domain": "theaterpizzazz.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Troy Record": {
+      "count": 1,
+      "domain": "troyrecord.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -214,6 +225,27 @@
     "WNYC": {
       "count": 1,
       "domain": "wnyc.org",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Wolf Entertainment Guide": {
+      "count": 1,
+      "domain": "wolfentertainmentguide.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Woman Around Town": {
+      "count": 1,
+      "domain": "womanaroundtown.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Zeal NYC": {
+      "count": 1,
+      "domain": "zealnyc.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
