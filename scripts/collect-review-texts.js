@@ -1970,6 +1970,11 @@ function findReviewsToProcess() {
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
+        // Skip misattributed/wrong reviews entirely
+        if (data.wrongAttribution || data.wrongProduction || data.wrongShow) {
+          continue;
+        }
+
         // Skip if already has good text (unless retrying failed)
         const textLen = data.fullText ? data.fullText.length : 0;
         const isTruncated = data.textQuality === 'truncated' || data.textStatus === 'truncated';

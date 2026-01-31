@@ -676,6 +676,12 @@ showDirs.forEach(showId => {
         return;
       }
 
+      // Skip misattributed reviews (LLM-hallucinated critic/outlet combos)
+      if (data.wrongAttribution === true) {
+        stats.skippedWrongAttribution = (stats.skippedWrongAttribution || 0) + 1;
+        return;
+      }
+
       // Create deduplication key
       const outletKey = normalizeOutletId(data.outlet || data.outletId);
       const criticKey = normalizeOutletId(data.criticName || '');
