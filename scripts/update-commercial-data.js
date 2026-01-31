@@ -1460,6 +1460,13 @@ SPRINT 4 SEC PRIORITY RULES:
 13. If SEC data contradicts other sources, PREFER the SEC data and note the discrepancy.
 14. When SEC Form D shows totalOfferingAmount, use it as capitalization with high confidence.
 
+INVESTOR RETURN FIELDS:
+15. profitMargin: Actual investor return % (e.g., 6 means investors got 6% total return). Only propose when a source states a specific investor return figure.
+16. investorMultiple: Total returned / capitalization (e.g., 1.06 = investors got back 106% of their investment). Only propose when calculable from specific numbers.
+17. insiderProfitSharePct: Insider net profit participation % (producer fees, royalty pools, etc. as % of net profits). Only propose when explicitly stated in sources.
+18. sources: Array of source objects with type ("trade"|"reddit"|"sec"|"manual"), url, date (YYYY-MM-DD), and optional excerpt. Propose when you have specific URLs for financial claims.
+19. IMPORTANT: Gross revenue does NOT equal investor returns. A show can gross $456M and still return only 6% to investors (e.g., Harry Potter). Always distinguish between box office performance and investor returns.
+
 Respond with ONLY valid JSON (no markdown code fences):
 {
   "proposedChanges": [
@@ -1659,6 +1666,34 @@ function filterByConfidence(proposedChanges, commercialData) {
  */
 function applyChanges(applied, newEntries, commercial) {
   let changeCount = 0;
+
+  // Circuit breaker: count designation changes
+  const DESIGNATION_CHANGE_THRESHOLD = 3;
+  const designationChanges = applied.filter(c => c.field === 'designation' && commercial.shows[c.slug]);
+  if (designationChanges.length > DESIGNATION_CHANGE_THRESHOLD) {
+    console.log(`\n  ⚠️  CIRCUIT BREAKER TRIGGERED: ${designationChanges.length} designation changes proposed (threshold: ${DESIGNATION_CHANGE_THRESHOLD})`);
+    console.log('  Designation changes NOT applied. Manual review required.');
+    console.log('  Proposed designation changes:');
+    for (const dc of designationChanges) {
+      const current = commercial.shows[dc.slug]?.designation;
+      console.log(`    - ${dc.slug}: ${current} -> ${dc.newValue} (${dc.confidence}, source: ${dc.source})`);
+    }
+    // Filter out designation changes but keep all other changes
+    applied = applied.filter(c => c.field !== 'designation');
+    // Set flag for GitHub issue warning
+    applyChanges._circuitBreakerTriggered = {
+      count: designationChanges.length,
+      changes: designationChanges.map(dc => ({
+        slug: dc.slug,
+        from: commercial.shows[dc.slug]?.designation,
+        to: dc.newValue,
+        confidence: dc.confidence,
+        source: dc.source
+      }))
+    };
+  } else {
+    applyChanges._circuitBreakerTriggered = null;
+  }
 
   for (const change of applied) {
     const { slug, field, newValue } = change;
@@ -1915,6 +1950,18 @@ async function createGitHubIssue(summary) {
   const { applied, flagged, skipped, disagreements, newEntries, dateStr } = summary;
 
   let body = `## Commercial Data Auto-Update: ${dateStr}\n\n`;
+
+  // Circuit breaker warning (if triggered)
+  if (applyChanges._circuitBreakerTriggered) {
+    const cb = applyChanges._circuitBreakerTriggered;
+    body += `> **⚠️ CIRCUIT BREAKER: ${cb.count} designation changes proposed (threshold: 3). Designation changes NOT applied. Manual review required.**\n\n`;
+    body += '| Show | From | To | Confidence | Source |\n';
+    body += '|------|------|----|------------|--------|\n';
+    for (const dc of cb.changes) {
+      body += `| ${dc.slug} | ${dc.from} | ${dc.to} | ${dc.confidence} | ${dc.source} |\n`;
+    }
+    body += '\n';
+  }
 
   // Applied changes table (Sprint 4.11: Enhanced with validation details)
   if (applied.length > 0) {

@@ -857,6 +857,15 @@ export interface ShowCommercial {
   productionType?: 'original' | 'tour-stop' | 'return-engagement';
   originalProductionId?: string;
   costMethodology?: CostMethodologyType;
+  profitMargin?: number | null;
+  investorMultiple?: number | null;
+  insiderProfitSharePct?: number | null;
+  sources?: Array<{
+    type: 'trade' | 'reddit' | 'sec' | 'manual';
+    url: string;
+    date: string;
+    excerpt?: string;
+  }>;
   deepResearch?: DeepResearchMetadata;
 }
 

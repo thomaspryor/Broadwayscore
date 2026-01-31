@@ -238,7 +238,10 @@ function isFinancialField(field) {
     'weeklyGrossTarget',
     'breakEvenGross',
     'cumulativeGross',
-    'cumulativeProfit'
+    'cumulativeProfit',
+    'profitMargin',
+    'investorMultiple',
+    'insiderProfitSharePct'
   ].includes(field);
 }
 
