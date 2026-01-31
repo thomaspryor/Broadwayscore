@@ -71,10 +71,10 @@
   },
   "textStatus": "incomplete",
   "textWordCount": 227,
-  "archivePath": "data/archives/reviews/oh-mary-2024/broadwaynews--brittani-samuel_2026-01-30.html",
-  "textFetchedAt": "2026-01-30T22:40:03.976Z",
+  "archivePath": "data/archives/reviews/oh-mary-2024/broadwaynews--brittani-samuel_2026-01-31.html",
+  "textFetchedAt": "2026-01-31T16:21:35.102Z",
   "textQuality": "partial",
-  "sourceMethod": "archive",
+  "sourceMethod": "playwright",
   "designation": "Must_See",
   "scoreSource": "extracted-strong-positive",
   "scoreConfidence": "medium",
@@ -89,20 +89,26 @@
   "garbageReason": "Paywall/subscription prompt: \"subscribers only\"",
   "garbageFixedAt": "2026-01-29T22:45:23.051Z",
   "needsRescore": true,
-  "fullText": "The runaway First Family spoof continues its agenda of delirious, deranged and undeniable fun on Broadway.\n\nGood morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Oh, Mary!”\n\nUpon walking into the Lyceum Theatre for the new Broadway comedy “Oh, Mary!”, there’s a chance that you know little about its central character, former President Lincoln’s wife, other than her name: Mary Todd Lincoln. Walking out, you might know even less. That’s because Cole Escola’s wild hit, their first full-length play, is defiantly ahistorical. Escola, a proud ham and cabaret veteran, did not set out to make a damning political satire with “Oh, Mary!” The show, set against the backdrop of a nation mucking through war, disease and division, is exceedingly silly. President Lincoln calls on United States military generals to control his wife; Mary (played by Escola) is a booze-addicted slosh desperate to reignite a fledgling cabaret career; and nearly every person is queer and/or riddled with kink. Escola’s zany, imagined account of a major moment in American history — the play is specifically set in the leadup to Lincoln’s assassination — is a relief for anyone looking to have an intellect-less evening in the theater, though less satisfying for those who demand their comedy sit higher up the brow.",
-  "fetchMethod": "archive",
+  "fullText": "The runaway First Family spoof continues its agenda of delirious, deranged and undeniable fun on Broadway. Good morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Oh, Mary!” Upon walking into the Lyceum Theatre for the new Broadway comedy “Oh, Mary!”, there’s a chance that you know little about its central character, former President Lincoln’s wife, other than her name: Mary Todd Lincoln. Walking out, you might know even less. That’s because Cole Escola’s wild hit, their first full-length play, is defiantly ahistorical. Escola, a proud ham and cabaret veteran, did not set out to make a damning political satire with “Oh, Mary!” The show, set against the backdrop of a nation mucking through war, disease and division, is exceedingly silly. President Lincoln calls on United States military generals to control his wife; Mary (played by Escola) is a booze-addicted slosh desperate to reignite a fledgling cabaret career; and nearly every person is queer and/or riddled with kink. Escola’s zany, imagined account of a major moment in American history — the play is specifically set in the leadup to Lincoln’s assassination — is a relief for anyone looking to have an intellect-less evening in the theater, though less satisfying for those who demand their comedy sit higher up the brow.",
+  "fetchMethod": "playwright",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 1,
   "truncationSignals": [],
   "archiveOrgTimestamp": "20251206001553",
   "archiveOrgUrl": "http://web.archive.org/web/20251206001553/https://www.broadwaynews.com/the-broadway-review-in-oh-mary-cole-escola-is-a-tour-de-farce/",
   "textIssues": [
-    "Word count too low: 233 (min: 300)"
+    "Word count too low: 239 (min: 300)"
   ]
 }
