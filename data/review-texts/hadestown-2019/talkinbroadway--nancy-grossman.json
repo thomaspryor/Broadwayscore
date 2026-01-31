@@ -5,7 +5,7 @@
   "criticName": "Nancy Grossman",
   "url": "http://talkinbroadway.com/page/regional/boston/bos618.html",
   "publishDate": "June 15, 2019",
-  "fullText": "Hadestown is a haunting, beautiful, and ultimately heartbreaking retelling of the ancient Greek myth of Orpheus and Eurydice, set against the backdrop of an industrial wasteland that could be anywhere in America.",
+  "fullText": "Regional theatre directoryTheatre themed apparelOnline theatre streamingRegional theater ticketsMicrophone audio gearLocal theatre directoryPlaywrighting coursesLincoln CenterStudio TheatreTheater reviews\n\n\n\n\n\n\n\n\n\n\n            \t\t                  Page does not exist\n\nTheatre themed apparelMusical theatre scoresStage lighting equipmentMusicThe Repertory Theatre of St. LouisOff-Broadway theatre guide\n    \n                \n                \n                \n\n            \n             \n            \n                \n                    \n                        Share:",
   "isFullReview": false,
   "dtliExcerpt": "Hadestown is a haunting, beautiful, and ultimately heartbreaking retelling of the ancient Greek myth of Orpheus and Eurydice, set against the backdrop of an industrial wasteland that could be anywhere in America.",
   "originalScore": null,
@@ -71,8 +71,44 @@
       "Models disagree by 45 points (Claude: 45, OpenAI: 90)"
     ]
   },
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "truncationSignals": [
-    "shorter_than_excerpt"
+    "no_ending_punctuation"
+  ],
+  "textWordCount": 36,
+  "archivePath": "data/archives/reviews/hadestown-2019/talkinbroadway--nancy-grossman_2026-01-31.html",
+  "textFetchedAt": "2026-01-31T16:31:16.840Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 36 (min: 300)",
+    "Show title not found in text"
   ]
 }
