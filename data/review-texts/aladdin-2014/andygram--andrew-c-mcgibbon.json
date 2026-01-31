@@ -37,7 +37,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review delivers a clear positive recommendation, praising performances, technical elements, and concluding it's enjoyable family entertainment, though not quite enthusiastic enough for a rave. | GPT-4o: The review is overwhelmingly positive, highlighting the production's seamless transition to stage, impressive performances, and stunning design elements. The critic's enthusiastic tone and strong recommendation for families to enjoy the show suggest a rave review. | Gemini: The review is overwhelmingly positive, highlighting the enjoyable experience for both children and adults, the impressive performances, and the seamless transition of the movie to the stage. The reviewer explicitly states that the whole family will enjoy it.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is clearly positive with praise for performances, production values, and overall entertainment value, concluding with a direct recommendation that the show works well and will be enjoyed by families. | GPT-4o: The review is overwhelmingly positive, highlighting the impressive performances, stunning costumes, and seamless transition from film to stage. The critic's enthusiasm and use of phrases like 'lavish and magical' indicate a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the enjoyable experience for both children and adults, the impressive performances, and the seamless transition to the stage. The reviewer explicitly states that the whole family will enjoy it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -47,12 +47,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T05:41:50.286Z",
+    "scoredAt": "2026-01-31T05:44:44.501Z",
     "promptVersion": "5.0.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
