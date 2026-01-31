@@ -117,7 +117,7 @@ const CONFIG = {
   // Browserbase spending limits (to control costs - $0.10/browser hour)
   browserbaseEnabled: process.env.BROWSERBASE_ENABLED === 'true',
   browserbaseMaxSessionsPerDay: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY || '30'), // ~$3/day max
-  browserbaseMaxSessionsPerRun: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_RUN || '10'), // Per workflow run
+  browserbaseMaxSessionsPerRun: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_RUN || '5'), // Per workflow run (5 × 5 parallel = 25, under 30 daily cap)
   browserbaseUsageFile: 'data/collection-state/browserbase-usage.json',
 
   // Directories
@@ -207,6 +207,8 @@ const stats = {
   scrapingBeeCreditsUsed: 0,
   browserbaseSessionsUsed: 0,
   browserbaseMinutesUsed: 0,
+  // Track failures by outlet for end-of-run reporting
+  failuresByOutlet: {},  // { outletName: { count, urls: [], domain, hasCredentials, isPaywalled } }
 };
 
 // State tracking
@@ -1750,7 +1752,7 @@ function findReviewsToProcess() {
 
         // Skip if already has full text (unless retrying failed)
         const textLen = data.fullText ? data.fullText.length : 0;
-        if ((data.isFullReview === true || textLen > 1500) && !failedFetches.has(reviewId)) {
+        if ((data.isFullReview === true || data.textQuality === 'full' || textLen > 1500) && !failedFetches.has(reviewId)) {
           continue;
         }
 
@@ -2093,6 +2095,22 @@ async function processReview(review) {
   } catch (error) {
     console.log(`  ✗ FAILED: ${error.message}`);
     stats.totalFailed++;
+
+    // Track failures by outlet for end-of-run reporting
+    const outletName = review.outlet || review.outletId || 'unknown';
+    const urlDomain = (() => { try { return new URL(review.url).hostname.replace('www.', ''); } catch(e) { return 'unknown'; } })();
+    if (!stats.failuresByOutlet[outletName]) {
+      const paywallCreds = getPaywallCredentials(review.url);
+      stats.failuresByOutlet[outletName] = {
+        count: 0,
+        domain: urlDomain,
+        hasCredentials: paywallCreds ? !!(paywallCreds.email && paywallCreds.password) : false,
+        isPaywalled: !!paywallCreds,
+        isKnownBlocked: CONFIG.knownBlockedSites.some(s => urlDomain.includes(s)),
+      };
+    }
+    stats.failuresByOutlet[outletName].count++;
+
     return { success: false, error: error.message };
   }
 }
@@ -2218,6 +2236,7 @@ function generateReport() {
     processed: state.processed,
     failed: state.failed,
     tierDetails: state.tierBreakdown,
+    failuresByOutlet: stats.failuresByOutlet,
   };
 
   const date = new Date().toISOString().split('T')[0];
@@ -2243,6 +2262,23 @@ function generateReport() {
   console.log(`║ ├─ ScrapingBee credits: ${String(stats.scrapingBeeCreditsUsed).padStart(32)} ║`);
   console.log(`║ └─ Browserbase sessions: ${String(stats.browserbaseSessionsUsed).padStart(31)} ║`);
   console.log(`${'╚' + '═'.repeat(58) + '╝'}`);
+
+  // Print failures by outlet - helps identify which sites need subscriptions or better scraping
+  const outletFailures = Object.entries(stats.failuresByOutlet)
+    .sort((a, b) => b[1].count - a[1].count);
+  if (outletFailures.length > 0) {
+    console.log(`\n${'╔' + '═'.repeat(58) + '╗'}`);
+    console.log(`║${'FAILURES BY OUTLET'.padStart(38).padEnd(58)}║`);
+    console.log(`${'╠' + '═'.repeat(58) + '╣'}`);
+    for (const [outlet, info] of outletFailures.slice(0, 15)) {
+      const status = info.isPaywalled
+        ? (info.hasCredentials ? '🔑 has creds (login issue?)' : '🔒 NEEDS SUBSCRIPTION')
+        : (info.isKnownBlocked ? '🚫 bot-blocked' : '❌ scraping failed');
+      console.log(`║ ${String(info.count).padStart(3)} fails: ${outlet.padEnd(22)} ${status.padEnd(23)}║`);
+    }
+    console.log(`${'╚' + '═'.repeat(58) + '╝'}`);
+  }
+
   console.log(`Report saved: ${reportPath}`);
 
   return report;

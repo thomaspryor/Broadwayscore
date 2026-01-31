@@ -44,9 +44,13 @@ on:
         required: false
         default: 'false'
       browserbase_max_sessions:
-        description: 'Max Browserbase sessions per run (spending limit)'
+        description: 'Max Browserbase sessions per run (5 recommended for parallel runs, 30 daily cap)'
         required: false
-        default: '10'
+        default: '5'
+
+## PARALLEL RUNS: Max 5 simultaneous runs recommended.
+## Browserbase daily limit is 30 sessions; default 5/run × 5 runs = 25 (safe).
+## Launching >5 runs will cause Browserbase 429 rate limits.
 
 jobs:
   # Sequential single-job mode (default)
