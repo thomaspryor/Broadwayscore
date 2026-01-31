@@ -501,48 +501,75 @@ async function loginToSite(domain, email, password) {
     }
 
     if (domain === 'vulture.com' || domain === 'nymag.com' || domain === 'newyorker.com') {
-      // Condé Nast / Vox Media auth - try multiple login URLs
-      const loginUrls = [
-        'https://www.vulture.com/login',
-        'https://nymag.com/login',
-        'https://pyxis.nymag.com/auth/login',
-      ];
-
-      let loginLoaded = false;
-      for (const loginUrl of loginUrls) {
-        try {
-          await page.goto(loginUrl, { timeout: CONFIG.loginTimeout });
-          await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => {});
-          const hasForm = await page.$('input[type="email"], input[name="email"], input[type="text"]');
-          if (hasForm) { loginLoaded = true; break; }
-        } catch(e) { continue; }
-      }
-
-      if (!loginLoaded) {
-        console.log('    ✗ Vulture login FAILED (no login form found at any URL)');
+      // NY Magazine / Vox Media centralized auth at subs.nymag.com
+      // Two-step flow: 1) enter email + submit, 2) enter password + sign in
+      const loginUrl = 'https://subs.nymag.com/account';
+      try {
+        await page.goto(loginUrl, { timeout: CONFIG.loginTimeout });
+        await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => {});
+      } catch(e) {
+        console.log('    ✗ Vulture login FAILED (could not load subs.nymag.com/account)');
         return false;
       }
 
-      await page.fill('input[type="email"], input[name="email"]', email).catch(() => {});
-      await page.fill('input[type="password"], input[name="password"]', password).catch(() => {});
-      await page.click('button[type="submit"]').catch(() => {});
+      // Step 1: Enter email and submit
+      const emailField = await page.$('input[type="email"], input[name="email"], [role="textbox"]');
+      if (!emailField) {
+        console.log('    ✗ Vulture login FAILED (no email field found on subs.nymag.com)');
+        return false;
+      }
+      await emailField.fill(email);
+      await page.waitForTimeout(500);
+
+      // Click "Submit Email" button
+      const submitEmailBtn = await page.$('button:has-text("Submit Email"), button[type="submit"]');
+      if (submitEmailBtn) {
+        await submitEmailBtn.click();
+      } else {
+        await page.keyboard.press('Enter');
+      }
+      await page.waitForTimeout(3000);
+
+      // Step 2: Enter password (page transitions to password form)
+      const passwordField = await page.$('input[type="password"]');
+      if (!passwordField) {
+        console.log('    ✗ Vulture login FAILED (no password field after email submit - may be magic link flow)');
+        return false;
+      }
+      await passwordField.fill(password);
+      await page.waitForTimeout(500);
+
+      // Click "Sign In" button
+      const signInBtn = await page.$('button:has-text("Sign In"), button[type="submit"]');
+      if (signInBtn) {
+        await signInBtn.click();
+      } else {
+        await page.keyboard.press('Enter');
+      }
       await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
       await page.waitForTimeout(3000);
 
-      // Verify: check if login form is gone or if we're redirected
+      // Verify login success
       const postLoginUrl = page.url();
-      const stillOnLogin = postLoginUrl.includes('/login');
       const hasError = await page.$('[class*="error"], [class*="Error"], [role="alert"]').catch(() => null);
 
       if (hasError) {
-        console.log('    ✗ Vulture login FAILED (error shown - check credentials)');
+        const errorText = await hasError.textContent().catch(() => '');
+        console.log(`    ✗ Vulture login FAILED (error: ${errorText.substring(0, 80)})`);
         return false;
       }
-      if (!stillOnLogin) {
-        console.log('    ✓ Vulture login verified (redirected away from login page)');
+      // Success if redirected away from account page or if URL contains account (logged in state)
+      if (!postLoginUrl.includes('subs.nymag.com/account') || postLoginUrl.includes('#/account')) {
+        console.log('    ✓ Vulture login verified (authenticated via subs.nymag.com)');
         return true;
       }
-      console.log('    ⚠ Vulture login uncertain (still on login page) - continuing anyway');
+      // Check for user-specific elements that indicate logged-in state
+      const userElement = await page.$('[class*="account"], [class*="profile"], [class*="user"]').catch(() => null);
+      if (userElement) {
+        console.log('    ✓ Vulture login verified (user element detected)');
+        return true;
+      }
+      console.log('    ⚠ Vulture login uncertain (still on account page) - continuing anyway');
       return true;
     }
 
