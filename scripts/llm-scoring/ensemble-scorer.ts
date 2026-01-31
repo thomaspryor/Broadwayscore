@@ -20,7 +20,7 @@ import { ensembleScore, toModelScore } from './ensemble';
 export interface EnsembleScoringOptions {
   claudeModel: 'claude-sonnet-4-20250514' | 'claude-3-5-haiku-20241022';
   openaiModel: 'gpt-4o-mini' | 'gpt-4o';
-  geminiModel: 'gemini-1.5-pro' | 'gemini-1.5-flash';
+  geminiModel: 'gemini-2.0-flash' | 'gemini-1.5-flash';
   maxDelta: number;  // Maximum acceptable difference between models
   verbose: boolean;
   useV5Prompt: boolean;  // Use simplified bucket-first prompt
@@ -46,7 +46,7 @@ export class EnsembleReviewScorer {
     this.options = {
       claudeModel: options.claudeModel || 'claude-sonnet-4-20250514',
       openaiModel: options.openaiModel || 'gpt-4o',
-      geminiModel: options.geminiModel || 'gemini-1.5-pro',
+      geminiModel: options.geminiModel || 'gemini-2.0-flash',
       maxDelta: options.maxDelta ?? 15,
       verbose: options.verbose ?? false,
       useV5Prompt: options.useV5Prompt ?? true

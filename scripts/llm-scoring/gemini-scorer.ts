@@ -43,7 +43,7 @@ export class GeminiScorer {
   constructor(apiKey: string, options: Partial<GeminiScoringOptions> = {}) {
     this.client = new GoogleGenerativeAI(apiKey);
     this.options = {
-      model: options.model || 'gemini-1.5-pro',
+      model: options.model || 'gemini-2.0-flash',
       maxRetries: options.maxRetries ?? 3,
       verbose: options.verbose ?? false,
       temperature: options.temperature ?? 0.3

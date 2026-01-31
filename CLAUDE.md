@@ -345,7 +345,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 |--------|---------|
 | `ANTHROPIC_API_KEY` | Claude API for AI features |
 | `OPENAI_API_KEY` | GPT-4o for ensemble scoring |
-| `GEMINI_API_KEY` | Gemini 1.5 Pro for 3-model ensemble (optional) |
+| `GEMINI_API_KEY` | Gemini 2.0 Flash for 3-model ensemble (optional) |
 | `BRIGHTDATA_TOKEN` | Web scraping (primary) |
 | `SCRAPINGBEE_API_KEY` | Web scraping (fallback) |
 | `BROWSERBASE_API_KEY` | Managed browser cloud with CAPTCHA solving ($0.10/session) |
