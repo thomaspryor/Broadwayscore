@@ -165,10 +165,17 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 
 ## `llm-ensemble-score.yml`
 - **Runs:** Manual trigger only
-- **Does:** Scores reviews using Claude Sonnet + GPT-4o-mini ensemble, flags disagreements >15 points
-- **Options:** `show`, `limit`, `run_calibration` (default true), `dry_run`
+- **Does:** Scores reviews using 3-model ensemble (Claude Sonnet + GPT-4o + Gemini 1.5 Pro) with bucket-first approach
+  - **Bucket-first scoring:** Models classify into bucket (Rave/Positive/Mixed/Negative/Pan) first, then score within range
+  - **Voting logic:** Unanimous (all 3 agree) → Majority (2/3) → No consensus (uses median)
+  - **Graceful degradation:** 3→2→1 model fallback if any model fails
+  - **2-model mode:** If GEMINI_API_KEY not set, uses Claude + GPT-4o only
+- **Options:** `show`, `limit`, `run_calibration` (default true), `run_validation`, `dry_run`, `needs_rescore`
 - **Script:** `scripts/llm-scoring/index.ts`
 - **Requires:** ANTHROPIC_API_KEY, OPENAI_API_KEY
+- **Optional:** GEMINI_API_KEY (enables 3-model mode)
+- **Pre-flight test:** `npx ts-node scripts/llm-scoring/test-ensemble.ts` (tests ensemble logic with all 3 models)
+- **Ensemble calibration:** `npx ts-node scripts/llm-scoring/index.ts --ensemble-calibrate` (analyzes per-model performance)
 
 ## `test.yml`
 - **Runs:** On push to `main`, daily at 6 AM UTC, manually
