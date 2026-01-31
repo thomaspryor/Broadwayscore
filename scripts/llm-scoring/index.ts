@@ -245,6 +245,7 @@ async function main(): Promise<void> {
   // Check for API keys
   const claudeApiKey = process.env.ANTHROPIC_API_KEY;
   const openaiApiKey = process.env.OPENAI_API_KEY;
+  const geminiApiKey = process.env.GEMINI_API_KEY;
 
   if (!claudeApiKey) {
     console.error('Error: ANTHROPIC_API_KEY environment variable not set');
@@ -262,12 +263,21 @@ async function main(): Promise<void> {
   let scorer: ReviewScorer | EnsembleReviewScorer;
 
   if (options.ensemble) {
-    scorer = new EnsembleReviewScorer(claudeApiKey, openaiApiKey!, {
+    scorer = new EnsembleReviewScorer(claudeApiKey, openaiApiKey!, geminiApiKey, {
       claudeModel: options.model,
-      openaiModel: 'gpt-4o-mini',
+      openaiModel: 'gpt-4o',
+      geminiModel: 'gemini-1.5-pro',
       verbose: options.verbose
     });
-    console.log('Using ENSEMBLE mode (Claude + GPT-4o-mini)\n');
+    const modelCount = (scorer as EnsembleReviewScorer).getModelCount();
+    if (modelCount === 3) {
+      console.log('Using 3-MODEL ensemble mode (Claude Sonnet + GPT-4o + Gemini 1.5 Pro)\n');
+    } else {
+      console.log('Using 2-MODEL ensemble mode (Claude Sonnet + GPT-4o)\n');
+      if (!geminiApiKey) {
+        console.log('  (Set GEMINI_API_KEY to enable 3-model mode)\n');
+      }
+    }
   } else {
     scorer = new ReviewScorer(claudeApiKey, {
       model: options.model,
@@ -461,9 +471,12 @@ async function main(): Promise<void> {
         const confidence = result.scoredFile.llmScore.confidence;
 
         // Show ensemble details if available
-        const ensembleInfo = result.scoredFile.ensembleData
-          ? ` [C:${result.scoredFile.ensembleData.claudeScore} O:${result.scoredFile.ensembleData.openaiScore}${result.scoredFile.ensembleData.needsReview ? ' ⚠️' : ''}]`
-          : '';
+        const ed = result.scoredFile.ensembleData;
+        let ensembleInfo = '';
+        if (ed) {
+          const geminiPart = ed.geminiScore !== null && ed.geminiScore !== undefined ? ` G:${ed.geminiScore}` : '';
+          ensembleInfo = ` [C:${ed.claudeScore} O:${ed.openaiScore}${geminiPart}${ed.needsReview ? ' ⚠️' : ''}]`;
+        }
 
         console.log(`${score} (${bucket}, ${confidence})${ensembleInfo}`);
         processed++;
@@ -506,21 +519,34 @@ async function main(): Promise<void> {
   // Handle both single and ensemble scorer token usage
   if ('claude' in tokenUsage) {
     // Ensemble scorer
-    const ensembleUsage = tokenUsage as { claude: { input: number; output: number }; openai: { input: number; output: number }; total: number };
+    const ensembleUsage = tokenUsage as { claude: { input: number; output: number }; openai: { input: number; output: number }; gemini: { input: number; output: number } | null; total: number };
     console.log(`Claude tokens: ${(ensembleUsage.claude.input + ensembleUsage.claude.output).toLocaleString()} (in: ${ensembleUsage.claude.input.toLocaleString()}, out: ${ensembleUsage.claude.output.toLocaleString()})`);
     console.log(`OpenAI tokens: ${(ensembleUsage.openai.input + ensembleUsage.openai.output).toLocaleString()} (in: ${ensembleUsage.openai.input.toLocaleString()}, out: ${ensembleUsage.openai.output.toLocaleString()})`);
+    if (ensembleUsage.gemini) {
+      console.log(`Gemini tokens: ${(ensembleUsage.gemini.input + ensembleUsage.gemini.output).toLocaleString()} (in: ${ensembleUsage.gemini.input.toLocaleString()}, out: ${ensembleUsage.gemini.output.toLocaleString()})`);
+    }
 
     // Estimate cost
     const claudeInputCost = options.model.includes('haiku') ? 0.80 : 3.00;
     const claudeOutputCost = options.model.includes('haiku') ? 4.00 : 15.00;
-    const openaiInputCost = 0.15;  // gpt-4o-mini
-    const openaiOutputCost = 0.60;
+    const openaiInputCost = 2.50;  // gpt-4o
+    const openaiOutputCost = 10.00;
+    const geminiInputCost = 1.25;  // gemini-1.5-pro
+    const geminiOutputCost = 5.00;
 
     const claudeCost = (ensembleUsage.claude.input / 1_000_000) * claudeInputCost +
                        (ensembleUsage.claude.output / 1_000_000) * claudeOutputCost;
     const openaiCost = (ensembleUsage.openai.input / 1_000_000) * openaiInputCost +
                        (ensembleUsage.openai.output / 1_000_000) * openaiOutputCost;
-    console.log(`Estimated cost: $${(claudeCost + openaiCost).toFixed(4)} (Claude: $${claudeCost.toFixed(4)}, OpenAI: $${openaiCost.toFixed(4)})`);
+    const geminiCost = ensembleUsage.gemini
+      ? (ensembleUsage.gemini.input / 1_000_000) * geminiInputCost +
+        (ensembleUsage.gemini.output / 1_000_000) * geminiOutputCost
+      : 0;
+    const totalCost = claudeCost + openaiCost + geminiCost;
+    const costBreakdown = ensembleUsage.gemini
+      ? `Claude: $${claudeCost.toFixed(4)}, OpenAI: $${openaiCost.toFixed(4)}, Gemini: $${geminiCost.toFixed(4)}`
+      : `Claude: $${claudeCost.toFixed(4)}, OpenAI: $${openaiCost.toFixed(4)}`;
+    console.log(`Estimated cost: $${totalCost.toFixed(4)} (${costBreakdown})`);
   } else {
     // Single scorer
     const singleUsage = tokenUsage as { input: number; output: number; total: number };
