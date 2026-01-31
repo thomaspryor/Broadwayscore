@@ -3808,18 +3808,6 @@
     "timestamp": "2026-01-29T18:06:36.996Z"
   },
   {
-    "reviewId": "harry-potter-2021/financial-times-uk--charles-isherwood.json",
-    "showId": "harry-potter-2021",
-    "outlet": "financial-times-uk",
-    "critic": "Charles Isherwood",
-    "url": "https://www.ft.com/content/b7a31170-4481-11e8-97ce-ea0c2bf34a0b",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "No theater-related keywords found; Show title \"harry potter\" not mentioned; No theater-related keywords in short text",
-    "textLength": 779,
-    "timestamp": "2026-01-29T18:43:49.010Z"
-  },
-  {
     "reviewId": "oh-mary-2024/observer--jesse-green.json",
     "showId": "oh-mary-2024",
     "outlet": "Observer",
@@ -4346,5 +4334,29 @@
     "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
     "textLength": 1027,
     "timestamp": "2026-01-31T23:17:54.484Z"
+  },
+  {
+    "reviewId": "harry-potter-2021/financial-times-uk--charles-isherwood.json",
+    "showId": "harry-potter-2021",
+    "outlet": "Financial Times",
+    "critic": "Charles Isherwood",
+    "url": "https://www.ft.com/content/b7a31170-4481-11e8-97ce-ea0c2bf34a0b",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "No theater-related keywords found; Show title \"harry potter\" not mentioned; No theater-related keywords in short text",
+    "textLength": 779,
+    "timestamp": "2026-01-31T23:20:59.716Z"
+  },
+  {
+    "reviewId": "harry-potter-2021/limelight-magazine-au--clive-paget.json",
+    "showId": "harry-potter-2021",
+    "outlet": "Limelight Magazine",
+    "critic": "Clive Paget",
+    "url": "https://www.limelightmagazine.com.au/reviews/harry-potter-cursed-child-broadway/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"paywall\"",
+    "textLength": 10343,
+    "timestamp": "2026-01-31T23:22:17.591Z"
   }
 ]
