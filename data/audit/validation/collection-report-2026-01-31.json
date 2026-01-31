@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-31T16:27:55.145Z",
+  "runDate": "2026-01-31T16:28:04.469Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "prayer-for-the-french-republic-2024",
+    "showFilter": "just-for-us-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,15 +12,15 @@
   },
   "summary": {
     "processed": 1,
-    "failed": 14,
+    "failed": 13,
     "skipped": 0,
-    "successRate": "6.7%"
+    "successRate": "7.1%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archive": 0
   },
   "statistics": {
@@ -31,40 +31,39 @@
     "tier2Attempts": 11,
     "tier2Success": 0,
     "tier3Attempts": 11,
-    "tier3Success": 1,
-    "tier4Attempts": 25,
-    "tier4Success": 4,
-    "totalFailed": 14,
-    "scrapingBeeCreditsUsed": 50,
+    "tier3Success": 2,
+    "tier4Attempts": 23,
+    "tier4Success": 3,
+    "totalFailed": 13,
+    "scrapingBeeCreditsUsed": 30,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
   "processed": [
-    "prayer-for-the-french-republic-2024/ew--helen-shaw.json"
+    "just-for-us-2023/usatoday--charles-isherwood.json"
   ],
   "failed": [
-    "prayer-for-the-french-republic-2024/hollywood-reporter--david-rooney.json",
-    "prayer-for-the-french-republic-2024/nytg--david-gordon.json",
-    "prayer-for-the-french-republic-2024/variety--aramide-tinubu.json",
-    "prayer-for-the-french-republic-2024/variety--jesse-green.json",
-    "prayer-for-the-french-republic-2024/vulture--helen-shaw.json",
-    "prayer-for-the-french-republic-2024/deadline--greg-evans.json",
-    "prayer-for-the-french-republic-2024/observer--david-cote.json",
-    "prayer-for-the-french-republic-2024/observer--rex-reed.json",
-    "prayer-for-the-french-republic-2024/theatermania--jesse-green.json",
-    "prayer-for-the-french-republic-2024/timeout--adam-feldman.json",
-    "prayer-for-the-french-republic-2024/wsj--charles-isherwood.json",
-    "prayer-for-the-french-republic-2024/forward--jesse-green.json",
-    "prayer-for-the-french-republic-2024/talkinbroadway--matthew-murray.json",
-    "prayer-for-the-french-republic-2024/washpost--peter-marks.json"
+    "just-for-us-2023/hollywood-reporter--angie-han.json",
+    "just-for-us-2023/hollywood-reporter--david-rooney.json",
+    "just-for-us-2023/variety--aramide-tinubu.json",
+    "just-for-us-2023/vulture--helen-shaw.json",
+    "just-for-us-2023/deadline--greg-evans.json",
+    "just-for-us-2023/nypost--johnny-oleksinski.json",
+    "just-for-us-2023/observer--david-cote.json",
+    "just-for-us-2023/theatermania--jesse-green.json",
+    "just-for-us-2023/timeout--adam-feldman.json",
+    "just-for-us-2023/timeout--raven-snook.json",
+    "just-for-us-2023/wsj--charles-isherwood.json",
+    "just-for-us-2023/next-magazine--michael-hollett.json",
+    "just-for-us-2023/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "prayer-for-the-french-republic-2024/ew--helen-shaw.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "just-for-us-2023/usatoday--charles-isherwood.json"
+    ],
     "archive": []
   }
 }
