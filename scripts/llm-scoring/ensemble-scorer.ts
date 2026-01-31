@@ -1,54 +1,29 @@
 /**
- * Ensemble Scorer Module
+ * Ensemble Scorer Module v5
  *
- * Combines Claude Sonnet + GPT-4o-mini for robust scoring through triangulation.
- * Validates scores against DTLI/BWW thumbs data for quality assurance.
+ * Combines Claude Sonnet + GPT-4o + Gemini 1.5 Pro for robust scoring through triangulation.
+ * Uses bucket-first approach with graceful degradation (3→2→1 model fallback).
  */
 
 import { ReviewScorer } from './scorer';
 import { OpenAIReviewScorer } from './openai-scorer';
-import { LLMScoringResult, ReviewTextFile, ScoredReviewFile, ExtractedPhrase, ComponentScores } from './types';
-import { scoreToBucket, scoreToThumb, PROMPT_VERSION } from './config';
+import { GeminiScorer } from './gemini-scorer';
+import { ReviewTextFile, ScoredReviewFile, SimplifiedLLMResult, ModelScore, EnsembleResult as EnsembleResultType } from './types';
+import { PROMPT_VERSION, buildPromptV5, SYSTEM_PROMPT_V5 } from './config';
+import { buildScoringInput, ReviewInputData } from './input-builder';
+import { ensembleScore, toModelScore } from './ensemble';
 
 // ========================================
 // TYPES
 // ========================================
 
-export interface EnsembleResult {
-  // Final combined score
-  score: number;
-  confidence: 'high' | 'medium' | 'low';
-  bucket: 'Rave' | 'Positive' | 'Mixed' | 'Negative' | 'Pan';
-  thumb: 'Up' | 'Flat' | 'Down';
-
-  // Individual model scores
-  claudeScore: number | null;
-  openaiScore: number | null;
-  scoreDelta: number;
-
-  // Validation
-  thumbsMatch: boolean | null;  // null if no thumbs data available
-  expectedThumb: 'Up' | 'Flat' | 'Down' | null;
-
-  // Flags
-  needsReview: boolean;
-  needsReviewReasons: string[];
-
-  // Full results from each model
-  claudeResult: LLMScoringResult | null;
-  openaiResult: LLMScoringResult | null;
-
-  // Combined reasoning
-  reasoning: string;
-  keyPhrases: ExtractedPhrase[];
-  components: ComponentScores;
-}
-
 export interface EnsembleScoringOptions {
   claudeModel: 'claude-sonnet-4-20250514' | 'claude-3-5-haiku-20241022';
   openaiModel: 'gpt-4o-mini' | 'gpt-4o';
+  geminiModel: 'gemini-1.5-pro' | 'gemini-1.5-flash';
   maxDelta: number;  // Maximum acceptable difference between models
   verbose: boolean;
+  useV5Prompt: boolean;  // Use simplified bucket-first prompt
 }
 
 // ========================================
@@ -58,18 +33,23 @@ export interface EnsembleScoringOptions {
 export class EnsembleReviewScorer {
   private claudeScorer: ReviewScorer;
   private openaiScorer: OpenAIReviewScorer;
+  private geminiScorer: GeminiScorer | null;
   private options: EnsembleScoringOptions;
+  private modelCount: 2 | 3;
 
   constructor(
     claudeApiKey: string,
     openaiApiKey: string,
+    geminiApiKey?: string,
     options: Partial<EnsembleScoringOptions> = {}
   ) {
     this.options = {
       claudeModel: options.claudeModel || 'claude-sonnet-4-20250514',
-      openaiModel: options.openaiModel || 'gpt-4o-mini',
+      openaiModel: options.openaiModel || 'gpt-4o',
+      geminiModel: options.geminiModel || 'gemini-1.5-pro',
       maxDelta: options.maxDelta ?? 15,
-      verbose: options.verbose ?? false
+      verbose: options.verbose ?? false,
+      useV5Prompt: options.useV5Prompt ?? true
     };
 
     this.claudeScorer = new ReviewScorer(claudeApiKey, {
@@ -81,104 +61,104 @@ export class EnsembleReviewScorer {
       model: this.options.openaiModel,
       verbose: this.options.verbose
     });
+
+    // Gemini is optional - enables 3-model mode if provided
+    if (geminiApiKey) {
+      this.geminiScorer = new GeminiScorer(geminiApiKey, {
+        model: this.options.geminiModel,
+        verbose: this.options.verbose
+      });
+      this.modelCount = 3;
+    } else {
+      this.geminiScorer = null;
+      this.modelCount = 2;
+    }
   }
 
   /**
-   * Score a review using both models and combine results
+   * Get the number of models in use
+   */
+  getModelCount(): 2 | 3 {
+    return this.modelCount;
+  }
+
+  /**
+   * Score a review using all available models and combine results
    */
   async scoreReview(
     reviewText: string,
-    thumbsData?: { dtli?: 'Up' | 'Flat' | 'Down'; bww?: 'Up' | 'Flat' | 'Down' }
-  ): Promise<EnsembleResult> {
-    // Score with both models in parallel
-    const [claudeOutcome, openaiOutcome] = await Promise.all([
-      this.claudeScorer.scoreReview(reviewText),
-      this.openaiScorer.scoreReview(reviewText)
-    ]);
+    context: string = ''
+  ): Promise<EnsembleResultType> {
+    // Build promises for all available models
+    const promises: Promise<{ model: 'claude' | 'openai' | 'gemini'; result: SimplifiedLLMResult | null; error?: string }>[] = [];
 
-    const claudeScore = claudeOutcome.success && claudeOutcome.result ? claudeOutcome.result.score : null;
-    const openaiScore = openaiOutcome.success && openaiOutcome.result ? openaiOutcome.result.score : null;
+    // Claude
+    promises.push(
+      this.claudeScorer.scoreReviewV5(reviewText, context)
+        .then(outcome => ({
+          model: 'claude' as const,
+          result: outcome.success ? outcome.result! : null,
+          error: outcome.error
+        }))
+        .catch(err => ({
+          model: 'claude' as const,
+          result: null,
+          error: err.message
+        }))
+    );
 
-    // Calculate delta
-    const scoreDelta = claudeScore !== null && openaiScore !== null
-      ? Math.abs(claudeScore - openaiScore)
-      : 0;
+    // OpenAI
+    promises.push(
+      this.openaiScorer.scoreReviewV5(reviewText, context)
+        .then(outcome => ({
+          model: 'openai' as const,
+          result: outcome.success ? outcome.result! : null,
+          error: outcome.error
+        }))
+        .catch(err => ({
+          model: 'openai' as const,
+          result: null,
+          error: err.message
+        }))
+    );
 
-    // Determine final score
-    let finalScore: number;
-    let confidence: 'high' | 'medium' | 'low';
-
-    if (claudeScore !== null && openaiScore !== null) {
-      // Both models succeeded - use average
-      finalScore = Math.round((claudeScore + openaiScore) / 2);
-
-      if (scoreDelta <= 5) {
-        confidence = 'high';  // Models agree closely
-      } else if (scoreDelta <= this.options.maxDelta) {
-        confidence = 'medium';  // Reasonable agreement
-      } else {
-        confidence = 'low';  // Significant disagreement
-      }
-    } else if (claudeScore !== null) {
-      // Only Claude succeeded
-      finalScore = claudeScore;
-      confidence = 'medium';
-    } else if (openaiScore !== null) {
-      // Only OpenAI succeeded
-      finalScore = openaiScore;
-      confidence = 'medium';
-    } else {
-      // Both failed
-      finalScore = 50;  // Neutral fallback
-      confidence = 'low';
+    // Gemini (if available)
+    if (this.geminiScorer) {
+      promises.push(
+        this.geminiScorer.scoreReview(reviewText, context)
+          .then(outcome => ({
+            model: 'gemini' as const,
+            result: outcome.success ? outcome.result! : null,
+            error: outcome.error
+          }))
+          .catch(err => ({
+            model: 'gemini' as const,
+            result: null,
+            error: err.message
+          }))
+      );
     }
 
-    // Validate against thumbs data
-    const expectedThumb = this.getExpectedThumb(thumbsData);
-    const actualThumb = scoreToThumb(finalScore);
-    const thumbsMatch = expectedThumb ? actualThumb === expectedThumb : null;
+    // Run all models in parallel
+    const results = await Promise.all(promises);
 
-    // Determine if review is needed
-    const needsReviewReasons: string[] = [];
+    // Convert to ModelScore format
+    const claudeOutcome = results.find(r => r.model === 'claude');
+    const openaiOutcome = results.find(r => r.model === 'openai');
+    const geminiOutcome = results.find(r => r.model === 'gemini');
 
-    if (scoreDelta > this.options.maxDelta) {
-      needsReviewReasons.push(`Models disagree by ${scoreDelta} points (Claude: ${claudeScore}, OpenAI: ${openaiScore})`);
+    const claudeScore = claudeOutcome ? toModelScore(claudeOutcome.result, 'claude', claudeOutcome.error) : null;
+    const openaiScore = openaiOutcome ? toModelScore(openaiOutcome.result, 'openai', openaiOutcome.error) : null;
+    const geminiScore = geminiOutcome ? toModelScore(geminiOutcome.result, 'gemini', geminiOutcome.error) : null;
+
+    // Use ensemble voting logic
+    const ensembleResult = ensembleScore(claudeScore, openaiScore, geminiScore);
+
+    if (this.options.verbose) {
+      this.logVerbose(ensembleResult);
     }
 
-    if (thumbsMatch === false) {
-      needsReviewReasons.push(`Score (${finalScore} → ${actualThumb}) conflicts with aggregator thumbs (${expectedThumb})`);
-    }
-
-    if (claudeScore === null && openaiScore === null) {
-      needsReviewReasons.push('Both models failed to score');
-    }
-
-    // Combine key phrases and components from both models
-    const claudeResult = claudeOutcome.result || null;
-    const openaiResult = openaiOutcome.result || null;
-
-    const keyPhrases = this.combineKeyPhrases(claudeResult, openaiResult);
-    const components = this.combineComponents(claudeResult, openaiResult);
-    const reasoning = this.combineReasoning(claudeResult, openaiResult, scoreDelta);
-
-    return {
-      score: finalScore,
-      confidence,
-      bucket: scoreToBucket(finalScore),
-      thumb: actualThumb,
-      claudeScore,
-      openaiScore,
-      scoreDelta,
-      thumbsMatch,
-      expectedThumb,
-      needsReview: needsReviewReasons.length > 0,
-      needsReviewReasons,
-      claudeResult,
-      openaiResult,
-      reasoning,
-      keyPhrases,
-      components
-    };
+    return ensembleResult;
   }
 
   /**
@@ -187,108 +167,82 @@ export class EnsembleReviewScorer {
   async scoreReviewFile(reviewFile: ReviewTextFile): Promise<{
     success: boolean;
     scoredFile?: ScoredReviewFile;
-    ensembleResult?: EnsembleResult;
+    ensembleResult?: EnsembleResultType;
     error?: string;
   }> {
-    // Get text to score: prefer fullText, fall back to excerpts
-    let textToScore = reviewFile.fullText;
+    // Build rich input context using input-builder
+    const reviewData: ReviewInputData = {
+      showId: reviewFile.showId,
+      outletId: reviewFile.outletId,
+      outlet: reviewFile.outlet,
+      criticName: reviewFile.criticName,
+      publishDate: reviewFile.publishDate,
+      fullText: reviewFile.fullText,
+      bwwExcerpt: reviewFile.bwwExcerpt,
+      dtliExcerpt: reviewFile.dtliExcerpt,
+      showScoreExcerpt: reviewFile.showScoreExcerpt,
+      bwwThumb: reviewFile.bwwThumb,
+      dtliThumb: (reviewFile as any).dtliThumb,
+      originalScore: reviewFile.originalScore !== null ? String(reviewFile.originalScore) : null,
+      originalRating: (reviewFile as any).originalRating
+    };
 
-    // Check if fullText is valid (not an error page)
-    if (textToScore) {
-      const lower = textToScore.toLowerCase();
-      if (lower.includes('page not found') ||
-          lower.includes('404') ||
-          lower.includes('access denied')) {
-        textToScore = null;
-      }
-    }
+    const scoringInput = buildScoringInput(reviewData);
 
-    // Fall back to excerpts if no valid fullText
-    if (!textToScore || textToScore.length < 50) {
-      const excerpts: string[] = [];
-      if (reviewFile.bwwExcerpt) excerpts.push(reviewFile.bwwExcerpt);
-      if (reviewFile.dtliExcerpt && reviewFile.dtliExcerpt !== reviewFile.bwwExcerpt) {
-        excerpts.push(reviewFile.dtliExcerpt);
-      }
-      if (reviewFile.showScoreExcerpt &&
-          reviewFile.showScoreExcerpt !== reviewFile.bwwExcerpt &&
-          reviewFile.showScoreExcerpt !== reviewFile.dtliExcerpt) {
-        excerpts.push(reviewFile.showScoreExcerpt);
-      }
-      textToScore = excerpts.join('\n\n');
-    }
-
-    if (!textToScore || textToScore.length < 50) {
+    if (!scoringInput.text || scoringInput.text.length < 50) {
       return {
         success: false,
         error: 'Review text too short or missing'
       };
     }
 
-    // Get thumbs data if available
-    const thumbsData: { dtli?: 'Up' | 'Flat' | 'Down'; bww?: 'Up' | 'Flat' | 'Down' } = {};
+    // Score with ensemble
+    const ensembleResult = await this.scoreReview(scoringInput.text, scoringInput.context);
 
-    // Map bwwThumb to our format
-    if (reviewFile.bwwThumb) {
-      const bwwMap: Record<string, 'Up' | 'Flat' | 'Down'> = {
-        'Up': 'Up',
-        'Rave': 'Up',
-        'Positive': 'Up',
-        'Flat': 'Flat',
-        'Mixed': 'Flat',
-        'Meh': 'Flat',
-        'Down': 'Down',
-        'Pan': 'Down',
-        'Negative': 'Down'
-      };
-      thumbsData.bww = bwwMap[reviewFile.bwwThumb] || undefined;
-    }
-
-    const ensembleResult = await this.scoreReview(textToScore, thumbsData);
-
-    // Build the LLM score result for storage
-    const llmScore: LLMScoringResult = {
-      score: ensembleResult.score,
-      confidence: ensembleResult.confidence,
-      range: {
-        low: Math.max(0, ensembleResult.score - (ensembleResult.scoreDelta / 2 + 5)),
-        high: Math.min(100, ensembleResult.score + (ensembleResult.scoreDelta / 2 + 5))
-      },
-      bucket: ensembleResult.bucket,
-      thumb: ensembleResult.thumb,
-      components: ensembleResult.components,
-      keyPhrases: ensembleResult.keyPhrases,
-      reasoning: ensembleResult.reasoning,
-      flags: {
-        hasExplicitRecommendation: ensembleResult.claudeResult?.flags?.hasExplicitRecommendation ||
-                                    ensembleResult.openaiResult?.flags?.hasExplicitRecommendation || false,
-        focusedOnPerformances: ensembleResult.claudeResult?.flags?.focusedOnPerformances ||
-                                ensembleResult.openaiResult?.flags?.focusedOnPerformances || false,
-        comparesToPrevious: ensembleResult.claudeResult?.flags?.comparesToPrevious ||
-                             ensembleResult.openaiResult?.flags?.comparesToPrevious || false,
-        mixedSignals: ensembleResult.needsReview
-      }
-    };
-
+    // Build the scored file
     const scoredFile: ScoredReviewFile = {
       ...reviewFile,
       assignedScore: ensembleResult.score,
-      llmScore,
+      llmScore: {
+        score: ensembleResult.score,
+        confidence: ensembleResult.confidence,
+        range: { low: ensembleResult.score - 5, high: ensembleResult.score + 5 },
+        bucket: ensembleResult.bucket,
+        thumb: ensembleResult.bucket === 'Rave' || ensembleResult.bucket === 'Positive' ? 'Up' :
+               ensembleResult.bucket === 'Mixed' ? 'Flat' : 'Down',
+        components: { book: null, music: null, performances: null, direction: null },
+        keyPhrases: [],
+        reasoning: this.buildCombinedReasoning(ensembleResult),
+        flags: {
+          hasExplicitRecommendation: false,
+          focusedOnPerformances: false,
+          comparesToPrevious: false,
+          mixedSignals: ensembleResult.needsReview || false
+        }
+      },
       llmMetadata: {
-        model: `ensemble:${this.options.claudeModel}+${this.options.openaiModel}`,
+        model: `ensemble:${this.options.claudeModel}+${this.options.openaiModel}${this.geminiScorer ? `+${this.options.geminiModel}` : ''}`,
         scoredAt: new Date().toISOString(),
         promptVersion: PROMPT_VERSION,
-        inputTokens: 0,  // Combined below
-        outputTokens: 0
+        inputTokens: 0,
+        outputTokens: 0,
+        previousScore: reviewFile.assignedScore,
+        previousVersion: (reviewFile as any).llmMetadata?.promptVersion
       },
       ensembleData: {
-        claudeScore: ensembleResult.claudeScore,
-        openaiScore: ensembleResult.openaiScore,
-        scoreDelta: ensembleResult.scoreDelta,
-        thumbsMatch: ensembleResult.thumbsMatch,
-        expectedThumb: ensembleResult.expectedThumb,
-        needsReview: ensembleResult.needsReview,
-        needsReviewReasons: ensembleResult.needsReviewReasons
+        claudeScore: ensembleResult.modelResults.claude?.score ?? null,
+        openaiScore: ensembleResult.modelResults.openai?.score ?? null,
+        geminiScore: ensembleResult.modelResults.gemini?.score ?? null,
+        claudeBucket: ensembleResult.modelResults.claude?.bucket,
+        openaiBucket: ensembleResult.modelResults.openai?.bucket,
+        geminiBucket: ensembleResult.modelResults.gemini?.bucket,
+        scoreDelta: this.calculateScoreDelta(ensembleResult),
+        thumbsMatch: null, // TODO: Re-implement thumbs validation
+        expectedThumb: null,
+        needsReview: ensembleResult.needsReview || false,
+        needsReviewReasons: ensembleResult.reviewReason ? [ensembleResult.reviewReason] : [],
+        ensembleSource: ensembleResult.source,
+        modelAgreement: ensembleResult.agreement
       }
     };
 
@@ -300,133 +254,104 @@ export class EnsembleReviewScorer {
   }
 
   /**
-   * Get expected thumb from DTLI/BWW data
-   * Prefers DTLI over BWW if both available
+   * Calculate score delta from ensemble result
    */
-  private getExpectedThumb(
-    thumbsData?: { dtli?: 'Up' | 'Flat' | 'Down'; bww?: 'Up' | 'Flat' | 'Down' }
-  ): 'Up' | 'Flat' | 'Down' | null {
-    if (!thumbsData) return null;
+  private calculateScoreDelta(result: EnsembleResultType): number {
+    const scores: number[] = [];
 
-    // DTLI is generally more reliable
-    if (thumbsData.dtli) return thumbsData.dtli;
-    if (thumbsData.bww) return thumbsData.bww;
+    if (result.modelResults.claude && !result.modelResults.claude.error) {
+      scores.push(result.modelResults.claude.score);
+    }
+    if (result.modelResults.openai && !result.modelResults.openai.error) {
+      scores.push(result.modelResults.openai.score);
+    }
+    if (result.modelResults.gemini && !result.modelResults.gemini.error) {
+      scores.push(result.modelResults.gemini.score);
+    }
 
-    return null;
+    if (scores.length < 2) return 0;
+
+    return Math.max(...scores) - Math.min(...scores);
   }
 
   /**
-   * Combine key phrases from both models
+   * Build combined reasoning from model results
    */
-  private combineKeyPhrases(
-    claudeResult: LLMScoringResult | null,
-    openaiResult: LLMScoringResult | null
-  ): ExtractedPhrase[] {
-    const phrases: ExtractedPhrase[] = [];
-    const seen = new Set<string>();
-
-    // Add Claude phrases first
-    if (claudeResult?.keyPhrases) {
-      for (const phrase of claudeResult.keyPhrases) {
-        const normalized = phrase.quote.toLowerCase().trim();
-        if (!seen.has(normalized)) {
-          seen.add(normalized);
-          phrases.push(phrase);
-        }
-      }
-    }
-
-    // Add OpenAI phrases that aren't duplicates
-    if (openaiResult?.keyPhrases) {
-      for (const phrase of openaiResult.keyPhrases) {
-        const normalized = phrase.quote.toLowerCase().trim();
-        if (!seen.has(normalized) && phrases.length < 5) {
-          seen.add(normalized);
-          phrases.push(phrase);
-        }
-      }
-    }
-
-    return phrases.slice(0, 3);
-  }
-
-  /**
-   * Combine component scores from both models (average if both present)
-   */
-  private combineComponents(
-    claudeResult: LLMScoringResult | null,
-    openaiResult: LLMScoringResult | null
-  ): ComponentScores {
-    const components: ComponentScores = {
-      book: null,
-      music: null,
-      performances: null,
-      direction: null
-    };
-
-    const keys: (keyof ComponentScores)[] = ['book', 'music', 'performances', 'direction'];
-
-    for (const key of keys) {
-      const claudeVal = claudeResult?.components?.[key] ?? null;
-      const openaiVal = openaiResult?.components?.[key] ?? null;
-
-      if (claudeVal !== null && openaiVal !== null) {
-        components[key] = Math.round((claudeVal + openaiVal) / 2);
-      } else if (claudeVal !== null) {
-        components[key] = claudeVal;
-      } else if (openaiVal !== null) {
-        components[key] = openaiVal;
-      }
-    }
-
-    return components;
-  }
-
-  /**
-   * Combine reasoning from both models
-   */
-  private combineReasoning(
-    claudeResult: LLMScoringResult | null,
-    openaiResult: LLMScoringResult | null,
-    scoreDelta: number
-  ): string {
+  private buildCombinedReasoning(result: EnsembleResultType): string {
     const parts: string[] = [];
 
-    if (claudeResult?.reasoning) {
-      parts.push(`Claude: ${claudeResult.reasoning}`);
+    // Add ensemble summary
+    parts.push(`[${result.source}]`);
+
+    if (result.agreement) {
+      parts.push(result.agreement);
     }
 
-    if (openaiResult?.reasoning && openaiResult.reasoning !== claudeResult?.reasoning) {
-      parts.push(`GPT-4o-mini: ${openaiResult.reasoning}`);
+    // Add individual model reasoning if available
+    const modelResults = result.modelResults;
+
+    if (modelResults.claude?.reasoning) {
+      parts.push(`Claude: ${modelResults.claude.reasoning}`);
+    }
+    if (modelResults.openai?.reasoning) {
+      parts.push(`GPT-4o: ${modelResults.openai.reasoning}`);
+    }
+    if (modelResults.gemini?.reasoning) {
+      parts.push(`Gemini: ${modelResults.gemini.reasoning}`);
     }
 
-    if (scoreDelta > 10 && claudeResult && openaiResult) {
-      parts.push(`Note: Models differed by ${scoreDelta} points.`);
+    if (result.note) {
+      parts.push(result.note);
     }
 
-    return parts.join(' | ') || 'No reasoning available';
+    return parts.join(' | ');
   }
 
   /**
-   * Get combined token usage from both models
+   * Log verbose output
+   */
+  private logVerbose(result: EnsembleResultType): void {
+    console.log(`  Ensemble: ${result.source}`);
+    console.log(`    Claude: ${result.modelResults.claude?.bucket || 'N/A'} (${result.modelResults.claude?.score ?? 'N/A'})`);
+    console.log(`    OpenAI: ${result.modelResults.openai?.bucket || 'N/A'} (${result.modelResults.openai?.score ?? 'N/A'})`);
+    if (result.modelResults.gemini !== undefined) {
+      console.log(`    Gemini: ${result.modelResults.gemini?.bucket || 'N/A'} (${result.modelResults.gemini?.score ?? 'N/A'})`);
+    }
+    console.log(`    Final: ${result.bucket} (${result.score}) [${result.confidence}]`);
+    if (result.outlier) {
+      console.log(`    Outlier: ${result.outlier.model} chose ${result.outlier.bucket}`);
+    }
+    if (result.needsReview) {
+      console.log(`    ⚠️  Needs review: ${result.reviewReason}`);
+    }
+  }
+
+  /**
+   * Get combined token usage from all models
    */
   getTokenUsage(): {
     claude: { input: number; output: number };
     openai: { input: number; output: number };
+    gemini: { input: number; output: number } | null;
     total: number;
   } {
     const claudeUsage = this.claudeScorer.getTokenUsage();
     const openaiUsage = this.openaiScorer.getTokenUsage();
+    const geminiUsage = this.geminiScorer?.getTokenUsage() || null;
+
+    const total = claudeUsage.total + openaiUsage.total + (geminiUsage?.total || 0);
 
     return {
       claude: { input: claudeUsage.input, output: claudeUsage.output },
       openai: { input: openaiUsage.input, output: openaiUsage.output },
-      total: claudeUsage.total + openaiUsage.total
+      gemini: geminiUsage ? { input: geminiUsage.input, output: geminiUsage.output } : null,
+      total
     };
   }
 
   resetTokenUsage(): void {
     this.claudeScorer.resetTokenUsage();
     this.openaiScorer.resetTokenUsage();
+    this.geminiScorer?.resetTokenUsage();
   }
 }
