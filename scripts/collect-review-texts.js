@@ -245,6 +245,105 @@ let browserCrashCount = 0;
 const MAX_BROWSER_CRASHES = 5;
 
 // ============================================================================
+// PAGE HELPERS (scroll, paywall dismissal)
+// ============================================================================
+
+/**
+ * Scroll to bottom of page to trigger lazy-loaded content.
+ * Uses incremental scrolling to mimic human behavior and trigger scroll-based loaders.
+ */
+async function autoScroll(page) {
+  try {
+    await page.evaluate(async () => {
+      await new Promise((resolve) => {
+        let totalHeight = 0;
+        const distance = 400;
+        const timer = setInterval(() => {
+          window.scrollBy(0, distance);
+          totalHeight += distance;
+          if (totalHeight >= document.body.scrollHeight || totalHeight > 15000) {
+            clearInterval(timer);
+            // Scroll back to top so extraction starts from beginning
+            window.scrollTo(0, 0);
+            resolve();
+          }
+        }, 100);
+      });
+    });
+  } catch (e) {
+    // Non-fatal - continue with extraction even if scroll fails
+  }
+}
+
+/**
+ * Try to dismiss paywall overlays and expand hidden article content.
+ * Handles common paywall patterns from NYT, Vulture/Condé Nast, WSJ, WaPo.
+ */
+async function dismissPaywallOverlays(page) {
+  try {
+    await page.evaluate(() => {
+      // Remove common paywall overlay elements
+      const overlaySelectors = [
+        // NYT
+        '[data-testid="paywall"]', '[data-testid="inline-message"]',
+        '#gateway-content', '.css-mcm29f', '[class*="paywall"]',
+        // Condé Nast (Vulture, New Yorker, NY Mag)
+        '[class*="PaywallBarrier"]', '[class*="paywall-bar"]',
+        '[data-testid="PaywallBarrier"]', '.paywall-bar',
+        // WSJ
+        '.wsj-snippet-login', '#cx-snippet-overlay', '[class*="snippet"]',
+        // WaPo
+        '[data-qa="subscribe-promo"]', '.paywall-overlay',
+        // Generic
+        '[id*="paywall"]', '[class*="subscription-wall"]',
+        '[class*="meter-"]', '.overlay-gate', '#piano-modal',
+        '[class*="PianoBarrier"]',
+      ];
+
+      for (const sel of overlaySelectors) {
+        document.querySelectorAll(sel).forEach(el => el.remove());
+      }
+
+      // Unhide article content that may be CSS-hidden behind paywall
+      const hiddenContentSelectors = [
+        // NYT: article body paragraphs after paywall cutoff
+        'article p[style*="display: none"]',
+        'article p[style*="visibility: hidden"]',
+        // Generic hidden sections
+        '[class*="article-body"] [hidden]',
+        '[class*="ArticleBody"] [hidden]',
+        '[data-testid="article-body"] [hidden]',
+      ];
+
+      for (const sel of hiddenContentSelectors) {
+        document.querySelectorAll(sel).forEach(el => {
+          el.style.display = '';
+          el.style.visibility = '';
+          el.removeAttribute('hidden');
+        });
+      }
+
+      // Remove overflow:hidden from body (some paywalls lock scrolling)
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+
+      // Try to expand "continue reading" or "read more" sections
+      const expandButtons = document.querySelectorAll(
+        '[class*="continue-reading"], [class*="read-more"], [class*="expand"], [data-testid="continue-reading"]'
+      );
+      expandButtons.forEach(btn => {
+        try { btn.click(); } catch(e) {}
+      });
+    });
+
+    // Brief wait for any content expansion to render
+    await page.waitForTimeout(500);
+  } catch (e) {
+    // Non-fatal
+  }
+}
+
+// ============================================================================
 // TIER 1: Playwright with Stealth Plugin
 // ============================================================================
 
@@ -295,8 +394,14 @@ async function fetchWithPlaywright(url, review) {
         page.waitForTimeout(10000),
       ]).catch(() => {});
 
-      // Additional wait for JS rendering
-      await page.waitForTimeout(3000);
+      // Scroll to bottom to trigger lazy-loaded content
+      await autoScroll(page);
+
+      // Additional wait for JS rendering after scroll
+      await page.waitForTimeout(2000);
+
+      // Dismiss paywall overlays and expand hidden content
+      await dismissPaywallOverlays(page);
 
       // Get page content
       const html = await page.content();
@@ -354,44 +459,90 @@ async function loginToSite(domain, email, password) {
       await page.goto('https://myaccount.nytimes.com/auth/login', { timeout: CONFIG.loginTimeout });
       await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
 
-      // Email step
-      const emailInput = await page.$('input[name="email"]');
+      // Email step - try multiple selectors (NYT login form changes)
+      const emailInput = await page.$('input[name="email"], input[type="email"], #email');
       if (emailInput) {
         await emailInput.fill(email);
-        await page.click('button[data-testid="submit-email"]').catch(() => {});
+        await page.click('button[data-testid="submit-email"], button[type="submit"]').catch(() => {});
         await page.waitForTimeout(3000);
 
         // Password step
-        const passInput = await page.$('input[name="password"]');
+        const passInput = await page.$('input[name="password"], input[type="password"]');
         if (passInput) {
           await passInput.fill(password);
-          await page.click('button[data-testid="login-button"]').catch(() => {});
+          await page.click('button[data-testid="login-button"], button[type="submit"]').catch(() => {});
           await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
-          await page.waitForTimeout(2000);
+          await page.waitForTimeout(3000);
         }
       }
 
-      // Verify login by checking for user menu
-      const loggedIn = await page.$('[data-testid="user-menu"]').catch(() => null);
-      if (loggedIn) {
-        console.log('    ✓ NYT login successful');
+      // Verify: check for user menu, account link, or absence of login form
+      const verified = await page.evaluate(() => {
+        const userMenu = document.querySelector('[data-testid="user-menu"], [data-testid="user-settings-button"]');
+        const loginForm = document.querySelector('input[name="email"]');
+        const errorMsg = document.querySelector('[data-testid="error-message"]');
+        return { hasUserMenu: !!userMenu, hasLoginForm: !!loginForm, hasError: !!errorMsg };
+      });
+
+      if (verified.hasUserMenu) {
+        console.log('    ✓ NYT login verified (user menu found)');
         return true;
       }
-      console.log('    ⚠ NYT login may have failed');
-      return true; // Continue anyway
+      if (verified.hasError) {
+        console.log('    ✗ NYT login FAILED (error message shown - check credentials)');
+        return false;
+      }
+      if (!verified.hasLoginForm) {
+        console.log('    ✓ NYT login likely succeeded (login form gone)');
+        return true;
+      }
+      console.log('    ⚠ NYT login uncertain (login form still visible) - continuing anyway');
+      return true;
     }
 
     if (domain === 'vulture.com' || domain === 'nymag.com' || domain === 'newyorker.com') {
-      await page.goto('https://www.vulture.com/login', { timeout: CONFIG.loginTimeout });
-      await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+      // Condé Nast / Vox Media auth - try multiple login URLs
+      const loginUrls = [
+        'https://www.vulture.com/login',
+        'https://nymag.com/login',
+        'https://pyxis.nymag.com/auth/login',
+      ];
 
-      await page.fill('input[type="email"]', email).catch(() => {});
-      await page.fill('input[type="password"]', password).catch(() => {});
+      let loginLoaded = false;
+      for (const loginUrl of loginUrls) {
+        try {
+          await page.goto(loginUrl, { timeout: CONFIG.loginTimeout });
+          await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => {});
+          const hasForm = await page.$('input[type="email"], input[name="email"], input[type="text"]');
+          if (hasForm) { loginLoaded = true; break; }
+        } catch(e) { continue; }
+      }
+
+      if (!loginLoaded) {
+        console.log('    ✗ Vulture login FAILED (no login form found at any URL)');
+        return false;
+      }
+
+      await page.fill('input[type="email"], input[name="email"]', email).catch(() => {});
+      await page.fill('input[type="password"], input[name="password"]', password).catch(() => {});
       await page.click('button[type="submit"]').catch(() => {});
       await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(3000);
 
-      console.log('    ✓ Vulture/Condé Nast login attempted');
+      // Verify: check if login form is gone or if we're redirected
+      const postLoginUrl = page.url();
+      const stillOnLogin = postLoginUrl.includes('/login');
+      const hasError = await page.$('[class*="error"], [class*="Error"], [role="alert"]').catch(() => null);
+
+      if (hasError) {
+        console.log('    ✗ Vulture login FAILED (error shown - check credentials)');
+        return false;
+      }
+      if (!stillOnLogin) {
+        console.log('    ✓ Vulture login verified (redirected away from login page)');
+        return true;
+      }
+      console.log('    ⚠ Vulture login uncertain (still on login page) - continuing anyway');
       return true;
     }
 
@@ -399,13 +550,27 @@ async function loginToSite(domain, email, password) {
       await page.goto('https://www.washingtonpost.com/subscribe/signin/', { timeout: CONFIG.loginTimeout });
       await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
 
-      await page.fill('input[name="email"]', email).catch(() => {});
-      await page.fill('input[name="password"]', password).catch(() => {});
-      await page.click('button[type="submit"]').catch(() => {});
+      await page.fill('input[name="email"], input[type="email"]', email).catch(() => {});
+      await page.fill('input[name="password"], input[type="password"]', password).catch(() => {});
+      await page.click('button[type="submit"], [data-testid="sign-in-btn"]').catch(() => {});
       await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(3000);
 
-      console.log('    ✓ Washington Post login attempted');
+      // Verify: check if redirected away from signin or user indicator appears
+      const postUrl = page.url();
+      const signedIn = !postUrl.includes('signin');
+      const hasUserEl = await page.$('[data-qa="user-button"], [class*="signed-in"], [data-testid="user"]').catch(() => null);
+      const hasError = await page.$('[class*="error"], [data-testid="error"]').catch(() => null);
+
+      if (hasError) {
+        console.log('    ✗ WaPo login FAILED (error shown - check credentials)');
+        return false;
+      }
+      if (hasUserEl || signedIn) {
+        console.log('    ✓ WaPo login verified');
+        return true;
+      }
+      console.log('    ⚠ WaPo login uncertain - continuing anyway');
       return true;
     }
 
@@ -413,17 +578,30 @@ async function loginToSite(domain, email, password) {
       await page.goto('https://accounts.wsj.com/login', { timeout: CONFIG.loginTimeout });
       await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
 
-      // WSJ login form
-      await page.fill('input[name="username"]', email).catch(() => {});
-      await page.click('button[type="submit"]').catch(() => {}); // Continue button
-      await page.waitForTimeout(2000);
+      // WSJ has 2-step login: username first, then password
+      await page.fill('input[name="username"], input[name="email"], input[type="email"]', email).catch(() => {});
+      await page.click('button[type="submit"]').catch(() => {});
+      await page.waitForTimeout(3000);
 
-      await page.fill('input[name="password"]', password).catch(() => {});
-      await page.click('button[type="submit"]').catch(() => {}); // Sign in button
+      await page.fill('input[name="password"], input[type="password"]', password).catch(() => {});
+      await page.click('button[type="submit"]').catch(() => {});
       await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(3000);
 
-      console.log('    ✓ WSJ login attempted');
+      // Verify: check if redirected away from login
+      const postUrl = page.url();
+      const leftLogin = !postUrl.includes('accounts.wsj.com/login');
+      const hasError = await page.$('[class*="error"], [class*="Error"], .message--error').catch(() => null);
+
+      if (hasError) {
+        console.log('    ✗ WSJ login FAILED (error shown - check credentials)');
+        return false;
+      }
+      if (leftLogin) {
+        console.log('    ✓ WSJ login verified (left login page)');
+        return true;
+      }
+      console.log('    ⚠ WSJ login uncertain (still on login page) - continuing anyway');
       return true;
     }
 
@@ -1069,12 +1247,27 @@ function isPaywalled(html) {
 
 async function extractArticleText(page) {
   return await page.evaluate(() => {
+    // Site-specific selectors first (most precise), then generic fallbacks
     const selectors = [
+      // NYT
+      '[data-testid="article-body"]',
+      'section[name="articleBody"]',
+      // Vulture / NY Mag / Condé Nast
+      '[class*="ArticlePageChunks"]',
+      '[class*="RawHtmlBody"]',
+      // WSJ
+      '.article-content .wsj-snippet-body',
+      'div.article-content',
+      '[class*="article_body"]',
+      // WaPo
+      '[data-qa="article-body"]',
+      '.article-body',
+      // Entertainment Weekly / People
+      '[data-testid="article-body-content"]',
+      // Generic (ordered by specificity)
       'article .entry-content',
       'article .post-content',
       'article .article-body',
-      '[data-testid="article-body"]',
-      '.article-body',
       '.story-body',
       '.entry-content',
       '.post-content',
