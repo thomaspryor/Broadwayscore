@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-31T16:28:04.469Z",
+  "runDate": "2026-01-31T16:28:56.848Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "just-for-us-2023",
+    "showFilter": "oh-mary-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,58 +12,62 @@
   },
   "summary": {
     "processed": 1,
-    "failed": 13,
+    "failed": 17,
     "skipped": 0,
-    "successRate": "7.1%"
+    "successRate": "5.6%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
+    "brightdata": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 12,
+    "tier1Attempts": 16,
     "tier1Success": 1,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 8,
     "tier1_5Success": 0,
-    "tier2Attempts": 11,
+    "tier2Attempts": 15,
     "tier2Success": 0,
-    "tier3Attempts": 11,
+    "tier3Attempts": 15,
     "tier3Success": 2,
-    "tier4Attempts": 23,
-    "tier4Success": 3,
-    "totalFailed": 13,
-    "scrapingBeeCreditsUsed": 30,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0
+    "tier4Attempts": 38,
+    "tier4Success": 2,
+    "totalFailed": 17,
+    "scrapingBeeCreditsUsed": 50,
+    "browserbaseSessionsUsed": 8,
+    "browserbaseMinutesUsed": 1
   },
   "processed": [
-    "just-for-us-2023/usatoday--charles-isherwood.json"
+    "oh-mary-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
-    "just-for-us-2023/hollywood-reporter--angie-han.json",
-    "just-for-us-2023/hollywood-reporter--david-rooney.json",
-    "just-for-us-2023/variety--aramide-tinubu.json",
-    "just-for-us-2023/vulture--helen-shaw.json",
-    "just-for-us-2023/deadline--greg-evans.json",
-    "just-for-us-2023/nypost--johnny-oleksinski.json",
-    "just-for-us-2023/observer--david-cote.json",
-    "just-for-us-2023/theatermania--jesse-green.json",
-    "just-for-us-2023/timeout--adam-feldman.json",
-    "just-for-us-2023/timeout--raven-snook.json",
-    "just-for-us-2023/wsj--charles-isherwood.json",
-    "just-for-us-2023/next-magazine--michael-hollett.json",
-    "just-for-us-2023/talkinbroadway--matthew-murray.json"
+    "oh-mary-2024/hollywood-reporter--angie-han.json",
+    "oh-mary-2024/nyt-theater--jonathan-mandell.json",
+    "oh-mary-2024/variety--aramide-tinubu.json",
+    "oh-mary-2024/variety--charles-isherwood.json",
+    "oh-mary-2024/vulture--helen-shaw.json",
+    "oh-mary-2024/deadline--greg-evans.json",
+    "oh-mary-2024/ew--christian-holub.json",
+    "oh-mary-2024/ew--kristen-baldwin.json",
+    "oh-mary-2024/guardian--adrian-horton.json",
+    "oh-mary-2024/nydailynews--chris-jones.json",
+    "oh-mary-2024/observer--david-cote.json",
+    "oh-mary-2024/observer--jesse-green.json",
+    "oh-mary-2024/theatermania--adam-feldman.json",
+    "oh-mary-2024/timeout--adam-feldman.json",
+    "oh-mary-2024/wsj--charles-isherwood.json",
+    "oh-mary-2024/the-interested-bystander--cary-wong.json",
+    "oh-mary-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "oh-mary-2024/broadwaynews--brittani-samuel.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "just-for-us-2023/usatoday--charles-isherwood.json"
-    ],
+    "brightdata": [],
     "archive": []
   }
 }
