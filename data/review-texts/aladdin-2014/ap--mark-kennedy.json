@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review highlights strong direction, choreography, and performances, praising Disney's ability to appeal to both kids and adults, though the excerpt feels incomplete and may not capture the full verdict. | GPT-4o: The review highlights positive aspects such as direction, choreography, and performance, suggesting an enjoyable experience. The mention of a 'sweet spot' indicates a successful execution typical of Disney, though the tone is not overwhelmingly enthusiastic. | Gemini: The review highlights positive aspects like direction, choreography, and singing, while also mentioning the 'sweet spot' Disney productions aim for, suggesting an enjoyable experience despite potential reservations implied by 'saccharine' and 'vinegary quips'.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review highlights strong direction, choreography, and singing, praising the show's ability to appeal to both children and adults. The positive descriptors outweigh any minor critiques, though the truncated text limits confidence. | GPT-4o: The review highlights positive aspects such as the direction, choreography, and performance, suggesting it is enjoyable and well-executed. However, the text quality warning and lack of a full verdict introduce some uncertainty. | Gemini: The review highlights positive aspects like direction, choreography, and singing, suggesting it's enjoyable, but the 'saccharine fairy tale' aspect indicates it might not be for everyone, hence a positive but not rave score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,7 +42,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T05:44:47.804Z",
+    "scoredAt": "2026-01-31T05:51:20.260Z",
     "promptVersion": "5.0.0",
     "inputTokens": 0,
     "outputTokens": 0,

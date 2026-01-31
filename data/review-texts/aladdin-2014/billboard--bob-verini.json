@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Disney's 'Aladdin' is a visual feast that compensates for its narrative shortcomings with spectacular production values and genuinely funny moments.",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,38 +18,22 @@
   "showScoreExcerpt": "Disney's 'Aladdin' is a visual feast that compensates for its narrative shortcomings with spectacular production values and genuinely funny moments.",
   "needsScoring": true,
   "llmScore": {
-    "score": 69,
-    "confidence": "high",
+    "score": 75,
+    "confidence": "medium",
     "range": {
-      "low": 63,
-      "high": 75
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 83
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "visual feast",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "compensates for its narrative shortcomings",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "spectacular production values and genuinely funny moments",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Mixed review that acknowledges significant narrative problems while praising production values and humor, suggesting conditional recommendation for spectacle. | GPT-4o-mini: The review highlights strong production values and humor but acknowledges narrative weaknesses, leading to a mixed-positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges flaws but emphasizes positive elements that make it worth seeing, indicating a recommendation with reservations. | GPT-4o: The review highlights the show's strong production values and humor, suggesting it's worth seeing despite some narrative issues. | Gemini: The review acknowledges narrative shortcomings but highlights compensating factors like visuals and humor, suggesting a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -58,20 +42,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:07:56.465Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T05:51:26.305Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 69,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 68,
-    "openaiScore": 70,
-    "scoreDelta": 2,
+    "claudeScore": 72,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "textQuality": "truncated",
   "truncationSignals": [

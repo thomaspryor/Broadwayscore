@@ -23,59 +23,51 @@
   "scoreConfidence": "low",
   "llmScore": {
     "score": 64,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
-      "low": 57.5,
-      "high": 70.5
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 48,
-      "music": 70,
-      "performances": 78,
-      "direction": 58
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "if you go see Aladdin, I'm sure you'll enjoy yourself",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "this production is a huge and colorful spectacle, but ultimately, I thought it lacked heart",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "the Genie is the show... 'Friend Like Me' is an enormous production number and is the principal reason to buy a ticket",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The reviewer acknowledges the show's entertainment value and spectacle while expressing significant disappointment with its emotional depth and creative choices, resulting in a qualified, lukewarm recommendation. | GPT-4o-mini: The review expresses mixed feelings, praising performances and spectacle while criticizing the lack of emotional depth and missed opportunities.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges the show is fun and entertaining but expresses significant disappointment with missed opportunities, lack of heart, and poor creative choices. The lukewarm recommendation suggests neither strong endorsement nor discouragement. | GPT-4o: The review highlights significant criticisms, such as the lack of heart and missed opportunities, but acknowledges that the show is fun and entertaining for its target audience, with standout performances like the Genie. | Gemini: Despite many criticisms, the reviewer states that audiences will enjoy the show, making it a positive but not rave review. The reviewer highlights the Genie's performance as a primary reason to see the show, but also points out missed opportunities and a lack of heart.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:23:34.826Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T05:51:23.892Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 64,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "scoreDelta": 3,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 62,

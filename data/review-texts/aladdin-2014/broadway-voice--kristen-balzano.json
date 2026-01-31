@@ -9,7 +9,7 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"Enchanting but not extreme, magical without unnecessary fireworks, jaw-dropping without having to fly over the audience.\"",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 77,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "missing",
@@ -18,38 +18,22 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 74,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 83
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 78
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Enchanting but not extreme",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "magical without unnecessary fireworks",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "jaw-dropping",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The review uses consistently positive descriptors like 'enchanting,' 'magical,' and 'jaw-dropping' while praising the production's restraint and effectiveness, suggesting a clear positive recommendation despite the brief excerpt. | GPT-4o-mini: The review expresses positive sentiments about the show's enchanting qualities but lacks strong enthusiasm, indicating a mixed-positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses strongly positive descriptors like 'enchanting,' 'magical,' and 'jaw-dropping' while praising the production's restraint, indicating a positive recommendation despite the truncated text limiting full context. | GPT-4o: The review highlights positive aspects like being 'enchanting' and 'magical' while noting a lack of extreme or unnecessary elements, suggesting a positive but not overwhelmingly enthusiastic recommendation. | Gemini: The review uses positive language like \"enchanting,\" \"magical,\" and \"jaw-dropping,\" but the phrases \"not extreme\" and \"without unnecessary fireworks\" suggest a tempered enthusiasm, indicating a positive but not rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -58,19 +42,27 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T04:57:24.038Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T05:51:29.552Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 70,
-    "scoreDelta": 8,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   }
 }

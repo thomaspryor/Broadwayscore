@@ -9,7 +9,7 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"Mainly, this Aladdin is F-U-N because it was so craftily assembled. Aladdin is a treat for the eye and ear.\"",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 79,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "excerpt_only",
@@ -17,11 +17,11 @@
   "sourceMethod": "playwright",
   "scoreSource": null,
   "llmScore": {
-    "score": 84,
-    "confidence": "medium",
+    "score": 79,
+    "confidence": "high",
     "range": {
-      "low": 80,
-      "high": 88
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "Restored from previousLlmScore after garbage fullText was removed",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review emphasizes fun and describes the show as a 'treat,' indicating clear enjoyment and recommendation despite limited text available. | GPT-4o: The review emphasizes the fun and craftsmanship of the production, describing it as a treat, which indicates a positive recommendation. | Gemini: The review excerpt states that Aladdin is \"F-U-N\" and a \"treat,\" indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,20 +41,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:23:44.492Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T05:51:32.163Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 84,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 0,
-    "scoreDelta": 0,
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "textWordCount": 33,
   "archivePath": "data/archives/reviews/aladdin-2014/catholic-transcript--bernard-carragher_2026-01-27.html",
