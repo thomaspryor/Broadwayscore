@@ -7,7 +7,7 @@
   "publishDate": "2014-03-20",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 76,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "It's spritely directed and choreographed by Casey Nicholaw, well sung by a huge 35-person cast wearing an alarming number of harem pants, and hits that sweet spot Disney Theatrical Productions do so well, a saccharine fairy tale for the kids cut by some sly, vinegary quips for their parents......",
@@ -17,38 +17,22 @@
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 70.5,
-      "high": 83.5
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 75,
-      "performances": 78,
-      "direction": 81
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "spritely directed and choreographed by Casey Nicholaw",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "well sung by a huge 35-person cast",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "hits that sweet spot Disney Theatrical Productions do so well",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review consistently praises the direction, performances, and Disney's formula execution with no significant criticisms, indicating a solid positive recommendation. | GPT-4o-mini: The review highlights strong direction and performances but lacks a clear recommendation, suggesting a positive yet cautious endorsement.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review highlights effective direction/choreography, strong vocals, and successful appeal to both kids and adults. The positive language about hitting Disney's 'sweet spot' indicates a recommendation, though the curated excerpt limits full assessment. | GPT-4o: The review highlights positive aspects such as direction, choreography, and the performance of the cast, suggesting it's enjoyable for both children and adults. However, the lack of a full review text and the mention of 'saccharine' implies some reservations, leading to a positive but not rave classification. | Gemini: The review highlights positive aspects like direction, choreography, and singing, suggesting it's enjoyable for both kids and parents, indicating a positive but not overwhelmingly enthusiastic recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -57,19 +41,27 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T04:57:10.915Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T05:41:54.123Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 77,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 75,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   }
 }

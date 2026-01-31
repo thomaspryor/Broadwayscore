@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"The reason Aladdin works so well on the stage is that it always seemed destined for it. I'm happy to report that it makes the transition to stage seamlessly in a lavish and magical production.\"",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 79,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "complete",
@@ -22,60 +22,52 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 85,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 93
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
-      "music": 79,
-      "performances": 88,
-      "direction": 87
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "I'm happy to report that it makes the transition to stage seamlessly in a lavish and magical production that the whole family will enjoy",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "This eye-popping evening of candy-colored costumes and pyrotechnically enhanced effects",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The reason Aladdin works so well on the stage is that it always seemed destined for it",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The reviewer gives consistent praise across all production elements with enthusiastic language and a clear final recommendation for family audiences, indicating a strong positive review. | GPT-4o-mini: The review expresses strong enthusiasm for the production's performances, visuals, and overall enjoyment, leading to a clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review delivers a clear positive recommendation, praising performances, technical elements, and concluding it's enjoyable family entertainment, though not quite enthusiastic enough for a rave. | GPT-4o: The review is overwhelmingly positive, highlighting the production's seamless transition to stage, impressive performances, and stunning design elements. The critic's enthusiastic tone and strong recommendation for families to enjoy the show suggest a rave review. | Gemini: The review is overwhelmingly positive, highlighting the enjoyable experience for both children and adults, the impressive performances, and the seamless transition of the movie to the stage. The reviewer explicitly states that the whole family will enjoy it.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:23:26.607Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T05:41:50.286Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 88,
-    "scoreDelta": 6,
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 85,
