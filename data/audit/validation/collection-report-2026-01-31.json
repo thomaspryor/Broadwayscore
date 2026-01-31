@@ -1,85 +1,74 @@
 {
-  "runDate": "2026-01-31T16:31:54.012Z",
+  "runDate": "2026-01-31T16:32:11.500Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "harry-potter-2021",
+    "showFilter": "moulin-rouge-2019",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 23,
+    "processed": 0,
+    "failed": 22,
     "skipped": 0,
-    "successRate": "11.5%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 1
+    "brightdata": 0,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 22,
-    "tier1Success": 2,
+    "tier1Attempts": 19,
+    "tier1Success": 0,
     "tier1_5Attempts": 10,
     "tier1_5Success": 0,
-    "tier2Attempts": 20,
-    "tier2Success": 1,
+    "tier2Attempts": 19,
+    "tier2Success": 0,
     "tier3Attempts": 19,
     "tier3Success": 1,
-    "tier4Attempts": 49,
-    "tier4Success": 4,
-    "totalFailed": 23,
-    "scrapingBeeCreditsUsed": 110,
+    "tier4Attempts": 47,
+    "tier4Success": 3,
+    "totalFailed": 22,
+    "scrapingBeeCreditsUsed": 40,
     "browserbaseSessionsUsed": 10,
-    "browserbaseMinutesUsed": 0.8
+    "browserbaseMinutesUsed": 1.1
   },
-  "processed": [
-    "harry-potter-2021/cititour--brian-scott-lipton.json",
-    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-    "harry-potter-2021/the-times--ann-treneman.json"
-  ],
+  "processed": [],
   "failed": [
-    "harry-potter-2021/variety--peter-marks.json",
-    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-    "harry-potter-2021/deadline--greg-evans.json",
-    "harry-potter-2021/guardian--alexis-soloski.json",
-    "harry-potter-2021/national-review--kyle-smith.json",
-    "harry-potter-2021/timeout--adam-feldman.json",
-    "harry-potter-2021/wsj--terry-teachout.json",
-    "harry-potter-2021/broadway-blog--matthew-wexler.json",
-    "harry-potter-2021/curtainup--elyse-sommer.json",
-    "harry-potter-2021/exeunt-magazine--kev-berry.json",
-    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
-    "harry-potter-2021/front-row-center--tulis-mccall.json",
-    "harry-potter-2021/frontmezzjunkies--steven-ross.json",
-    "harry-potter-2021/limelight-magazine-au--clive-paget.json",
-    "harry-potter-2021/medium--christian-lewis.json",
-    "harry-potter-2021/ny1--roma-torre.json",
-    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
-    "harry-potter-2021/troy-record--bob-goepfert.json",
-    "harry-potter-2021/washpost--peter-marks.json",
-    "harry-potter-2021/wnyc--jennifer-vanasco.json",
-    "harry-potter-2021/wolf-entertainment-guide--william-wolf.json",
-    "harry-potter-2021/woman-around-town--alix-cohen.json",
-    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
+    "moulin-rouge-2019/nytimes--jesse-green.json",
+    "moulin-rouge-2019/vulture--jesse-green.json",
+    "moulin-rouge-2019/deadline--greg-evans.json",
+    "moulin-rouge-2019/deadline--pete-hammond.json",
+    "moulin-rouge-2019/ew--joey-nolfi.json",
+    "moulin-rouge-2019/ew--leah-greenblatt.json",
+    "moulin-rouge-2019/guardian--alexis-soloski.json",
+    "moulin-rouge-2019/guardian--jesse-oxfeld.json",
+    "moulin-rouge-2019/nydailynews--joe-dziemianowicz.json",
+    "moulin-rouge-2019/nypost--johnny-oleksinski.json",
+    "moulin-rouge-2019/observer--david-cote.json",
+    "moulin-rouge-2019/observer--rex-reed.json",
+    "moulin-rouge-2019/theatermania--jesse-green.json",
+    "moulin-rouge-2019/thewrap--robert-hofler.json",
+    "moulin-rouge-2019/timeout--adam-feldman.json",
+    "moulin-rouge-2019/wsj--terry-teachout.json",
+    "moulin-rouge-2019/amny--matt-windman.json",
+    "moulin-rouge-2019/dailybeast--tim-teeman.json",
+    "moulin-rouge-2019/nysr--jesse-oxfeld.json",
+    "moulin-rouge-2019/rollingstone--alan-light.json",
+    "moulin-rouge-2019/usatoday--kelly-lawler.json",
+    "moulin-rouge-2019/washpost--peter-marks.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "harry-potter-2021/cititour--brian-scott-lipton.json"
-    ],
-    "archive": [
-      "harry-potter-2021/the-times--ann-treneman.json"
-    ]
+    "brightdata": [],
+    "archive": []
   }
 }
