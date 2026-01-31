@@ -58,12 +58,87 @@ export interface ReviewEntry {
 }
 
 // ========================================
-// LLM OUTPUT TYPES
+// LLM OUTPUT TYPES (V5 - Simplified)
+// ========================================
+
+/**
+ * Bucket type for review classification
+ */
+export type Bucket = 'Rave' | 'Positive' | 'Mixed' | 'Negative' | 'Pan';
+
+/**
+ * Simplified LLM result for v5 scoring (bucket-first approach)
+ */
+export interface SimplifiedLLMResult {
+  /** Sentiment bucket (chosen first, then score within range) */
+  bucket: Bucket;
+  /** Score within the bucket's range */
+  score: number;
+  /** Confidence level */
+  confidence: 'high' | 'medium' | 'low';
+  /** 2-5 word verdict summary */
+  verdict: string;
+  /** Most indicative quote from the review */
+  keyQuote: string;
+  /** 1-2 sentence reasoning */
+  reasoning: string;
+}
+
+/**
+ * Individual model score for ensemble
+ */
+export interface ModelScore {
+  model: 'claude' | 'openai' | 'gemini';
+  bucket: Bucket;
+  score: number;
+  confidence: 'high' | 'medium' | 'low';
+  verdict?: string;
+  keyQuote?: string;
+  reasoning?: string;
+  error?: string;
+}
+
+/**
+ * Result from 3-model ensemble scoring
+ */
+export interface EnsembleResult {
+  /** Final score (from ensemble logic) */
+  score: number;
+  /** Final bucket */
+  bucket: Bucket;
+  /** Ensemble confidence */
+  confidence: 'high' | 'medium' | 'low';
+  /** How the score was determined */
+  source: 'ensemble-unanimous' | 'ensemble-majority' | 'ensemble-no-consensus' | 'two-model-fallback' | 'single-model-fallback';
+  /** Agreement description */
+  agreement?: string;
+  /** Note about score spread or other details */
+  note?: string;
+  /** Flag for manual review */
+  needsReview?: boolean;
+  /** Reason for needing review */
+  reviewReason?: string;
+  /** Individual model results */
+  modelResults: {
+    claude?: ModelScore;
+    openai?: ModelScore;
+    gemini?: ModelScore;
+  };
+  /** Outlier model if 2/3 agree */
+  outlier?: {
+    model: string;
+    bucket: Bucket;
+    score: number;
+  };
+}
+
+// ========================================
+// LLM OUTPUT TYPES (V3 - Legacy, kept for compatibility)
 // ========================================
 
 /**
  * Component scores for different aspects of the production
- * This helps identify mixed reviews (e.g., great performances, weak book)
+ * @deprecated Use SimplifiedLLMResult instead for v5+
  */
 export interface ComponentScores {
   /** Score for book/script/story (0-100) */
@@ -136,13 +211,18 @@ export interface LLMScoringResult {
  * Full output stored alongside the review text file
  */
 export interface ScoredReviewFile extends ReviewTextFile {
+  /** LLM scoring result (v3 format for backward compatibility) */
   llmScore: LLMScoringResult;
+  /** Simplified v5 result (when using v5+ scoring) */
+  llmScoreV5?: SimplifiedLLMResult;
   llmMetadata: {
     model: string;
     scoredAt: string;
     promptVersion: string;
     inputTokens: number;
     outputTokens: number;
+    /** Models used (v5: array of model names) */
+    models?: string[];
     /** Text source used for scoring */
     textSource?: {
       /** Type of text: 'fullText' or 'excerpt' */
@@ -156,16 +236,30 @@ export interface ScoredReviewFile extends ReviewTextFile {
       /** Explanation for why this source was chosen */
       reasoning: string;
     };
+    /** Previous score for rollback capability (v5+) */
+    previousScore?: number;
+    /** Previous prompt version for rollback capability (v5+) */
+    previousVersion?: string;
   };
-  /** Ensemble scoring data (when using dual-model approach) */
+  /** Ensemble scoring data (v5: supports 3 models) */
   ensembleData?: {
     claudeScore: number | null;
     openaiScore: number | null;
+    /** Gemini score (v5+) */
+    geminiScore?: number | null;
+    /** Bucket from each model (v5+) */
+    claudeBucket?: Bucket;
+    openaiBucket?: Bucket;
+    geminiBucket?: Bucket;
     scoreDelta: number;
     thumbsMatch: boolean | null;
     expectedThumb: 'Up' | 'Flat' | 'Down' | null;
     needsReview: boolean;
     needsReviewReasons: string[];
+    /** Ensemble source (v5+) */
+    ensembleSource?: 'ensemble-unanimous' | 'ensemble-majority' | 'ensemble-no-consensus' | 'two-model-fallback' | 'single-model-fallback';
+    /** Model agreement (v5+) */
+    modelAgreement?: string;
   };
 }
 
