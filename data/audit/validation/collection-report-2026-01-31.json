@@ -1,82 +1,73 @@
 {
-  "runDate": "2026-01-31T16:34:37.228Z",
+  "runDate": "2026-01-31T16:34:40.879Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "hadestown-2019",
+    "showFilter": "aladdin-2014",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 23,
+    "processed": 0,
+    "failed": 21,
     "skipped": 0,
-    "successRate": "8.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
+    "brightdata": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 22,
+    "tier1Attempts": 18,
     "tier1Success": 1,
-    "tier1_5Attempts": 10,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 21,
+    "tier2Attempts": 17,
     "tier2Success": 0,
-    "tier3Attempts": 21,
-    "tier3Success": 3,
-    "tier4Attempts": 49,
-    "tier4Success": 3,
-    "totalFailed": 23,
+    "tier3Attempts": 17,
+    "tier3Success": 1,
+    "tier4Attempts": 40,
+    "tier4Success": 4,
+    "totalFailed": 21,
     "scrapingBeeCreditsUsed": 50,
-    "browserbaseSessionsUsed": 10,
-    "browserbaseMinutesUsed": 1.5
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0
   },
-  "processed": [
-    "hadestown-2019/broadwaynews--charles-isherwood.json",
-    "hadestown-2019/talkinbroadway--nancy-grossman.json"
-  ],
+  "processed": [],
   "failed": [
-    "hadestown-2019/deadline--pete-hammond.json",
-    "hadestown-2019/ew--jessica-derschowitz.json",
-    "hadestown-2019/ew--kristen-baldwin.json",
-    "hadestown-2019/guardian--jesse-green.json",
-    "hadestown-2019/guardian--jesse-oxfeld.json",
-    "hadestown-2019/nypost--johnny-oleksinski.json",
-    "hadestown-2019/observer--david-cote.json",
-    "hadestown-2019/observer--rex-reed.json",
-    "hadestown-2019/reviews-off-broadway--scott-mitchell.json",
-    "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
-    "hadestown-2019/theatermania--adam-feldman.json",
-    "hadestown-2019/theatermania--jesse-green.json",
-    "hadestown-2019/thewrap--thom-geier.json",
-    "hadestown-2019/timeout--adam-feldman.json",
-    "hadestown-2019/wsj--terry-teachout.json",
-    "hadestown-2019/chicagotribune--chris-jones.json",
-    "hadestown-2019/dailybeast--tim-teeman.json",
-    "hadestown-2019/medium--christian-lewis.json",
-    "hadestown-2019/rollingstone--rob-sheffield.json",
-    "hadestown-2019/usatoday--elysa-gardner.json",
-    "hadestown-2019/vox--constance-grady.json",
-    "hadestown-2019/washpost--peter-marks.json",
-    "hadestown-2019/wnyc--jennifer-vanasco.json"
+    "aladdin-2014/hollywood-reporter--david-rooney.json",
+    "aladdin-2014/nytimes--ben-brantley.json",
+    "aladdin-2014/deadline--pete-hammond.json",
+    "aladdin-2014/guardian--jesse-green.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "aladdin-2014/newsday--linda-winer.json",
+    "aladdin-2014/nypost--elisabeth-vincentelli.json",
+    "aladdin-2014/observer--rex-reed.json",
+    "aladdin-2014/theatermania--adam-feldman.json",
+    "aladdin-2014/theatermania--andy-propst.json",
+    "aladdin-2014/theatermania--charles-isherwood.json",
+    "aladdin-2014/theatermania--david-finkle.json",
+    "aladdin-2014/timeout--adam-feldman.json",
+    "aladdin-2014/wsj--terry-teachout.json",
+    "aladdin-2014/ap--mark-kennedy.json",
+    "aladdin-2014/billboard--bob-verini.json",
+    "aladdin-2014/broadway-voice--kristen-balzano.json",
+    "aladdin-2014/catholic-transcript--bernard-carragher.json",
+    "aladdin-2014/theater-pizzazz--sandi-durell.json",
+    "aladdin-2014/thestage--mark-shenton.json",
+    "aladdin-2014/thisbroadsway--sandra-mcfarland.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "hadestown-2019/broadwaynews--charles-isherwood.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "hadestown-2019/talkinbroadway--nancy-grossman.json"
-    ],
+    "brightdata": [],
     "archive": []
   }
 }
