@@ -165,7 +165,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 
 ## `llm-ensemble-score.yml`
 - **Runs:** Manual trigger only
-- **Does:** Scores reviews using 3-model ensemble (Claude Sonnet + GPT-4o + Gemini 1.5 Pro) with bucket-first approach
+- **Does:** Scores reviews using 3-model ensemble (Claude Sonnet + GPT-4o + Gemini 2.0 Flash) with bucket-first approach
   - **Bucket-first scoring:** Models classify into bucket (Rave/Positive/Mixed/Negative/Pan) first, then score within range
   - **Voting logic:** Unanimous (all 3 agree) → Majority (2/3) → No consensus (uses median)
   - **Graceful degradation:** 3→2→1 model fallback if any model fails

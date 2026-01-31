@@ -140,7 +140,7 @@ jobs:
 
           git commit -m "feat: Ensemble LLM score reviews${SHOW_MSG}
 
-          Models: Claude Sonnet + GPT-4o + Gemini 1.5 Pro (v5)
+          Models: Claude Sonnet + GPT-4o + Gemini 2.0 Flash (v5)
           Triggered by: @${{ github.actor }}
 
           Co-Authored-By: Claude <noreply@anthropic.com>"
