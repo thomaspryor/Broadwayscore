@@ -9,65 +9,57 @@
   "isFullReview": false,
   "dtliExcerpt": "Strong's Dr. Stockmann is a man of principle who refuses to compromise his values, even when it means losing everything he holds dear. The actor brings a quiet intensity to the role that makes every moment feel urgent and necessary.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 79,
-    "confidence": "high",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 84,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "brings a quiet intensity to the role",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "makes every moment feel urgent and necessary",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Strong's Dr. Stockmann is a man of principle who refuses to compromise his values",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Strong praise for the lead performance with compelling descriptors, but excerpt is too brief to assess overall show recommendation with high confidence. | GPT-4o-mini: The review highlights strong performances and a compelling portrayal, indicating a clear recommendation despite the lack of details on other aspects of the production.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises Strong's performance with descriptors like 'quiet intensity' and 'urgent and necessary,' indicating a positive assessment, though the excerpt focuses only on one performance aspect without broader show evaluation. | GPT-4o: The review highlights the actor's compelling performance and the urgency of the production, indicating a strong recommendation. | Gemini: The review focuses on a strong performance and the urgency of the character, suggesting a positive experience overall. There are no caveats or negative comments to lower the score significantly.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:16:56.462Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:14:47.235Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 76,
+    "openaiScore": 81,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "textQuality": "truncated",
   "truncationSignals": [

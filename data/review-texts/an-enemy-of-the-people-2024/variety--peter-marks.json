@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Strong delivers a commanding performance as Dr. Thomas Stockmann, bringing both intellectual fire and physical intensity to Ibsen's idealistic physician who discovers his town's profitable spa is contaminated.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,60 +18,52 @@
   "showScoreExcerpt": "Strong delivers a commanding performance as Dr. Thomas Stockmann, bringing both intellectual fire and physical intensity to Ibsen's idealistic physician who discovers his town's profitable spa is contaminated.",
   "needsScoring": true,
   "llmScore": {
-    "score": 79,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 85,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "commanding performance",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "bringing both intellectual fire and physical intensity",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Strong delivers a commanding performance as Dr. Thomas Stockmann",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: Strong praise for the lead performance with vivid descriptors suggests positive reception, but the excerpt is too brief to determine overall show recommendation strength. | GPT-4o-mini: The review highlights a strong performance without any significant caveats, indicating a clear recommendation to see the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the lead performance as 'commanding' with 'intellectual fire and physical intensity,' indicating a positive recommendation, though the excerpt is brief and may not capture the full critical assessment. | GPT-4o: The review highlights a strong performance by the lead actor, suggesting a positive experience. However, without more context on the overall production, the recommendation is inferred rather than explicit. | Gemini: The review highlights a strong performance, suggesting a positive experience overall, even if it doesn't explicitly rave about the entire production.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:10:04.498Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:14:57.648Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 76,
     "openaiScore": 80,
-    "scoreDelta": 2,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "sources": [
     "web-search"

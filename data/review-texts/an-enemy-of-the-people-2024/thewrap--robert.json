@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Best of all is Jeremy Strong’s Dr. Thomas Stockmann, who vividly recalls Dr. Anthony Fauci, especially when this good Norwegian doctor is warning a town about the dangers of an impending epidemic. The only problem with making “Enemy” a blow-by-blow retelling of Trump and Fauci’s battles is that what we all endured in real life a few years ago was so much more dramatic than what’s being offered onstage under the direction of Sam Gold.",
   "originalScore": null,
-  "assignedScore": 71,
+  "assignedScore": 77,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/an-enemy-of-the-people/",
@@ -51,60 +51,52 @@
   "archiveOrgTimestamp": "20250918201449",
   "archiveOrgUrl": "http://web.archive.org/web/20250918201449/https://www.thewrap.com/an-enemy-of-the-people-broadway-review-jeremy-strong/",
   "llmScore": {
-    "score": 71,
-    "confidence": "high",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 65,
-      "high": 77
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
+      "book": null,
       "music": null,
-      "performances": 83,
-      "direction": 70
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Best of all is Jeremy Strong's Dr. Thomas Stockmann",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "what we all endured in real life a few years ago was so much more dramatic than what's being offered onstage",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Has there ever been a more pure hero and a more abused victim on stage than Strong's wonderful doctor?",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic praises Strong's performance extensively and appreciates the production's technical elements, but finds the adaptation less compelling than the real-life events it mirrors, resulting in qualified approval. | GPT-4o-mini: The review highlights strong performances, particularly by Jeremy Strong, but also expresses significant reservations about the adaptation's impact compared to real-life events.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises Strong's performance enthusiastically and finds Herzog's adaptation a 'vast improvement' over her previous work, though it critiques the production as heavy-handed agitprop and notes Gold's direction sticks closer to convention than his previous eccentric interpretations. | GPT-4o: The review highlights strong performances, particularly by Jeremy Strong, and some creative elements, but criticizes the production for being less dramatic than real-life events and turning into 'agitprop'. The mixed tone suggests appreciation for certain aspects but overall reservations about the execution. | Gemini: The review praises Jeremy Strong's performance and Herzog's rewriting as an improvement. While it critiques the 'agitprop' nature and some modern slang, the overall tone suggests a positive, albeit qualified, recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:28:20.526Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:14:41.164Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 71,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 70,
-    "scoreDelta": 2,
+    "claudeScore": 76,
+    "openaiScore": 67,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "sources": [
     "dtli"

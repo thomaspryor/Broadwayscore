@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Clear positive recommendation with prediction of commercial success and praise for entertainment value, though language is more commercial than artistic in its enthusiasm. | GPT-4o: The review describes the show as 'big, colorful, entertaining' and a 'winner', indicating a strong recommendation and high praise. | Gemini: The review is overwhelmingly positive, predicting a long run and calling it a 'winner'. This places it firmly in the Positive bucket, and the enthusiasm warrants a high score within that range.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Clear positive recommendation with prediction of long run success, though language is more commercially focused than artistically enthusiastic. | GPT-4o: The review is highly positive, describing the show as 'entertaining' and a 'winner', suggesting a strong recommendation. | Gemini: The review uses strong positive language like \"big, colorful, entertaining\" and predicts a long run, indicating a positive recommendation. The phrase \"another Broadway winner\" further reinforces this.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,12 +39,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T05:51:47.635Z",
+    "scoredAt": "2026-01-31T18:11:07.067Z",
     "promptVersion": "5.0.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 84,
-    "previousVersion": "3.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,

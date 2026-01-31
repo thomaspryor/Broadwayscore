@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses strongly positive descriptors like 'enchanting,' 'magical,' and 'jaw-dropping' while praising the production's restraint, indicating a positive recommendation despite the truncated text limiting full context. | GPT-4o: The review highlights positive aspects like being 'enchanting' and 'magical' while noting a lack of extreme or unnecessary elements, suggesting a positive but not overwhelmingly enthusiastic recommendation. | Gemini: The review uses positive language like \"enchanting,\" \"magical,\" and \"jaw-dropping,\" but the phrases \"not extreme\" and \"without unnecessary fireworks\" suggest a tempered enthusiasm, indicating a positive but not rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses strongly positive descriptors like 'enchanting,' 'magical,' and 'jaw-dropping' while praising the production's restraint. However, given the truncated nature and lack of explicit recommendation language, confidence is medium. | GPT-4o: The review uses positive descriptors like 'enchanting', 'magical', and 'jaw-dropping', suggesting a positive impression. However, the qualifiers 'but not extreme' and 'without unnecessary fireworks' indicate some reservations, leading to a positive but not rave classification. | Gemini: The review uses positive language like \"enchanting,\" \"magical,\" and \"jaw-dropping,\" but the qualifiers suggest a tempered enthusiasm, indicating a positive but not rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,12 +43,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T05:51:29.552Z",
+    "scoredAt": "2026-01-31T18:10:49.828Z",
     "promptVersion": "5.0.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
-    "previousVersion": "3.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,

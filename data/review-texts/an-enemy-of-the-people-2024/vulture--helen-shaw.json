@@ -9,65 +9,57 @@
   "isFullReview": false,
   "dtliExcerpt": "Jeremy Strong gives a performance of such volcanic intensity that it threatens to blow up the Circle in the Square Theatre. His Dr. Stockmann is a man possessed, and Strong plays him with the kind of full-body commitment that makes you worry for the actor's well-being.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 80.5,
-      "high": 95.5
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 95,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "gives a performance of such volcanic intensity that it threatens to blow up the Circle in the Square Theatre",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Strong plays him with the kind of full-body commitment that makes you worry for the actor's well-being",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Jeremy Strong gives a performance of such volcanic intensity",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The review expresses extraordinary enthusiasm for Jeremy Strong's performance using superlative language like 'volcanic intensity' and 'full-body commitment,' indicating a strong positive recommendation despite being an excerpt focused solely on the lead performance. | GPT-4o-mini: The review highlights Jeremy Strong's extraordinary performance with intense praise, indicating a strong recommendation to see the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review focuses on praising Strong's powerful performance with vivid, positive language, though the excerpt doesn't provide a full assessment of the overall production. | GPT-4o: The review uses highly enthusiastic language to describe Jeremy Strong's performance, indicating a strong recommendation to see the show. | Gemini: The review focuses heavily on Jeremy Strong's performance, praising its intensity. While it doesn't explicitly recommend the play itself, the strong focus on a positive aspect suggests a recommendation, albeit with reservations about the overall production.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:34:37.328Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:15:00.736Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
+    "claudeScore": 78,
     "openaiScore": 90,
-    "scoreDelta": 5,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "textQuality": "truncated",
   "truncationSignals": [

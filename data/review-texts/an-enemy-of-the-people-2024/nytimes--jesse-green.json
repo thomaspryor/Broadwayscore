@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "It’s too weak to say that this conspiracy of inaction makes “An Enemy of the People” relevant; its issues and ours are not similar but identical. And not just its issues. Its characters, too, are contemporary: doppelgängers of our own vicious demagogues, cowed editors, greasy both-sides-ists and defanged idealists.",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "Up",
   "dtliUrl": null,
@@ -23,62 +23,52 @@
   ],
   "bwwThumb": null,
   "llmScore": {
-    "score": 50,
-    "confidence": "low",
+    "score": 79,
+    "confidence": "high",
     "range": {
-      "low": 15,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 80
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "We are having trouble retrieving the article content",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Please enable JavaScript in your browser settings",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Sam Gold’s crackling and persuasive production",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: This appears to be a technical error page rather than an actual review, making it impossible to assess the critic's recommendation. | GPT-4o-mini: The review praises the production's direction and thematic depth while acknowledging some plot issues, leading to a strong but qualified recommendation. | Note: Models differed by 60 points.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises Gold's 'crackling and persuasive' production and notes it 'drove those views home despite having to regroup.' However, the text is truncated, preventing assessment of the full critical verdict. | GPT-4o: The review describes the production as 'crackling and persuasive,' indicating a positive assessment. Despite the interruption by protesters, the production's ability to convey its themes effectively is highlighted, suggesting a recommendation. | Gemini: The review praises the production as 'crackling and persuasive' and notes its power, indicating a positive experience. However, the truncated text and focus on the interruption make it difficult to gauge the full extent of the recommendation, leading to a slightly lower score within the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T05:23:23.733Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:14:19.576Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 50,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 20,
+    "claudeScore": 78,
     "openaiScore": 80,
-    "scoreDelta": 60,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 60 points (Claude: 20, OpenAI: 80)"
-    ]
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "textQuality": "full",
   "truncationSignals": []

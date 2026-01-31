@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical is a perfectly pleasant, family-friendly entertainment that hits all the expected marks without taking any real risks or offering any genuine surprises.",
   "originalScore": null,
-  "assignedScore": 59,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,38 +18,22 @@
   "showScoreExcerpt": "The musical is a perfectly pleasant, family-friendly entertainment that hits all the expected marks without taking any real risks or offering any genuine surprises.",
   "needsScoring": true,
   "llmScore": {
-    "score": 59,
+    "score": 75,
     "confidence": "medium",
     "range": {
-      "low": 50.5,
-      "high": 67.5
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "perfectly pleasant, family-friendly entertainment",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "hits all the expected marks without taking any real risks",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "without offering any genuine surprises",
-        "sentiment": "negative",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The review describes a competent but unremarkable production that meets expectations without exceeding them, suggesting a safe but uninspiring experience. | GPT-4o-mini: The review indicates a lack of excitement and originality, leading to a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review describes the show as 'pleasant' but criticizes it for being predictable and safe, indicating a lukewarm assessment that neither strongly recommends nor discourages attendance. | GPT-4o: The review describes the musical as 'perfectly pleasant' and 'family-friendly', indicating a positive but not enthusiastic recommendation. It notes a lack of risks or surprises, suggesting some reservations. | Gemini: The review describes the show as \"perfectly pleasant\" which indicates a positive experience, but the lack of risks or surprises suggests it's not a standout production, hence a score in the lower end of the Positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -58,20 +42,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:08:27.562Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:12:36.081Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 59,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 55,
-    "scoreDelta": 7,
+    "openaiScore": 75,
+    "geminiScore": 74,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "textQuality": "truncated",
   "truncationSignals": [

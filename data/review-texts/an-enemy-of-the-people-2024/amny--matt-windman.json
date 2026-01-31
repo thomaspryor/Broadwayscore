@@ -10,65 +10,57 @@
   "bwwExcerpt": "But these issues aside, \"An Enemy of the People\" makes for exciting, politically-charged theater. Gaines, one of our best stage actors, makes a credible transition into a determined dissident, while Thomas is a perfectly smug and dapper villain.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-2024",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "dtli",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "llmScore": {
-    "score": 62,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 53.5,
-      "high": 70.5
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 72,
+      "book": null,
       "music": null,
-      "performances": 68,
-      "direction": 53
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "this uneven production of a timely work",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Much of the acting feels stiff and stodgy",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The production truly works best in the town meeting sequence",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic calls it 'uneven' and criticizes design choices, lighting, and acting as 'stiff and stodgy,' but praises the material's relevance and highlights one sequence that 'truly works,' resulting in a mixed review with no clear recommendation. | GPT-4o-mini: The review presents a mixed view, highlighting strong moments in the production while also pointing out significant flaws in direction and performance quality.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly calls it an 'uneven production' and highlights significant problems (dim lighting, questionable design choices, stiff acting) while praising specific elements like the town meeting sequence and the political relevance. | GPT-4o: The review describes the production as 'uneven' and highlights both strengths and weaknesses. While it praises certain aspects like the environmental theater experience, it also criticizes design choices and acting. The verdict is mixed, with notable moments but overall inconsistency. | Gemini: The review highlights both strengths (Strong's performance, the town meeting scene) and weaknesses (design choices, stiff acting). The overall impression is that the production is uneven, preventing a clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:27:20.086Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:13:35.225Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
+    "claudeScore": 62,
     "openaiScore": 65,
-    "scoreDelta": 7,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "dtliExcerpt": "I wish I had been there (alas, I attended the following night), as it would have been an exciting addition to this uneven production of a timely work.",
   "sources": [

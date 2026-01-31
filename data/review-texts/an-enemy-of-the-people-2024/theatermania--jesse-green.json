@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jeremy Strong delivers a powerhouse performance in Amy Leach's adaptation of Ibsen's classic, bringing contemporary urgency to this tale of truth-telling and its consequences.",
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,60 +18,52 @@
   "showScoreExcerpt": "Jeremy Strong delivers a powerhouse performance in Amy Leach's adaptation of Ibsen's classic, bringing contemporary urgency to this tale of truth-telling and its consequences.",
   "needsScoring": true,
   "llmScore": {
-    "score": 83,
-    "confidence": "high",
+    "score": 76,
+    "confidence": "medium",
     "range": {
-      "low": 75.5,
-      "high": 90.5
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 80,
+      "book": null,
       "music": null,
-      "performances": 88,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "powerhouse performance",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "bringing contemporary urgency",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Jeremy Strong delivers a powerhouse performance",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: Strong praise for lead performance and adaptation approach suggests clear recommendation, but extremely brief review limits confidence in scoring. | GPT-4o-mini: The review highlights a standout performance with strong positive language, suggesting a solid recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Brief excerpt focuses on praising the lead performance and mentions 'contemporary urgency' positively, but lacks fuller context for a higher score or greater confidence. | GPT-4o: The review highlights a 'powerhouse performance' and 'contemporary urgency', suggesting a highly enthusiastic recommendation. | Gemini: The review highlights a strong performance and contemporary relevance, suggesting a positive experience overall.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T05:23:27.757Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:14:29.355Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 83,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": 85,
-    "scoreDelta": 5,
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "textQuality": "truncated",
   "truncationSignals": [

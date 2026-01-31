@@ -9,7 +9,7 @@
   "isFullReview": false,
   "bwwExcerpt": "The cartoonish musical is modelled after snappy 1960s Broadway musical comedies, complete with passing scenes staged \"in-one\" in front of a curtain to cover changes in décor. Sure, that's retro, but it suits the light-hearted material as well as a Disney crowd who probably prefers familiar formats. Casey Nicholaw, an ace director-choreographer, maintains a slightly tongue-in-cheek quality throughout the fast-moving show, especially in his frisky dances that, with their sinuous arm gestures, synchronized moves and general acrobatics, often suggest Bollywood production numbers. A lively and good-looking ensemble expertly undulates through the sometimes zany choreography.",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALADDIN-Opens-on-Broadway-Updating-LIVE-20140320",
   "textStatus": "missing",
@@ -18,38 +18,22 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 74,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 75,
-      "direction": 79
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Casey Nicholaw, an ace director-choreographer, maintains a slightly tongue-in-cheek quality throughout the fast-moving show",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "A lively and good-looking ensemble expertly undulates through the sometimes zany choreography",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "it suits the light-hearted material as well as a Disney crowd who probably prefers familiar formats",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The review praises the direction, choreography, and ensemble performances with terms like 'ace,' 'expertly,' and 'lively,' but focuses primarily on technical execution rather than overall artistic merit, suggesting qualified approval. | GPT-4o-mini: The review expresses clear praise for the direction and choreography while maintaining a positive tone overall, indicating a strong recommendation for audiences who enjoy light-hearted musicals.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses positive descriptors like 'ace director-choreographer', 'expertly', 'lively and good-looking' and appreciates the production's style and execution, though the tone suggests measured rather than enthusiastic praise. | GPT-4o: The review highlights the show's lively nature, expert choreography, and suitability for its audience, indicating a positive recommendation despite its retro style. | Gemini: The review highlights positive aspects like the choreography and ensemble, but the phrase \"suits the light-hearted material as well as a Disney crowd who probably prefers familiar formats\" suggests it might not appeal to everyone, indicating a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -58,19 +42,27 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T04:58:21.857Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:11:40.283Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   }
 }

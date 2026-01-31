@@ -8,7 +8,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"You're going to have a great time at Aladdin, despite its conflict-starved filler of a book. But are you really going for the dramaturgy? No, you're going to see sexy actors sing and dance.\"",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 77,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "complete",
@@ -21,68 +21,59 @@
   "scoreSource": "sentiment-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 43,
-      "music": 83,
-      "performances": 79,
-      "direction": 87
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "You're going to have a great time at Aladdin, despite its conflict-starved filler of a book",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "This is a huge waste of Freeman's considerable talent, not to mention this show's supremely impressive stagecraft",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "In that regard, Aladdin delivers in abundance",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Despite significant criticism of the book and villain characterization, the critic clearly states audiences will 'have a great time' and praises the spectacular production values, performances, and musical numbers, indicating a qualified but definite recommendation. | GPT-4o-mini: The review highlights impressive spectacle and performances but criticizes the book, resulting in a strong but qualified recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review criticizes the weak book and villain but enthusiastically praises the spectacle, performances, and entertainment value, concluding with a clear positive recommendation to see it. | GPT-4o: The review acknowledges several flaws, particularly with the story and character development, but ultimately emphasizes the show's spectacle, performances, and entertainment value as reasons to see it. | Gemini: The review acknowledges flaws in the story and book, but ultimately concludes that the spectacle, performances, and magic tricks make it an enjoyable experience. The final recommendation is positive despite the reservations.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:26:17.286Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:12:46.071Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 73,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 74,
-  "rescoreCompletedAt": "2026-01-28T23:26:17.286Z",
+  "rescoreCompletedAt": "2026-01-31T18:12:46.071Z",
   "garbageFullText": "This live-action version of the Disney animated classic is the definition of spectacle. You'd be wrong to assume that no one (even Disney) could bring the requisite magic to a live-action version of Aladdin, the 1992 animated feature with music by Alan Menken (Beauty and the Beast and The Little Mermaid) and lyrics by Tim Rice (The Lion King) and the late Howard Ashman (both shows with Menken). There's plenty of magic to go around on the stage of the New Amsterdam Theatre, where Disney's stage version of Aladdin is making its Broadway debut. Unfortunately, the theatrical sorcery runs out when it comes to the story. Chad Beguelin (Elf) contributes additional lyrics and a clunky book to this updated version. His addendum is not enough to derail an otherwise fantastic spectacle of a show, though it makes a good effort. The story takes place in Agrabah, an Arabian town where everyone has six-pack abs and a minor in dance. The city is ruled over by the Sultan (Clifton Davis) and his evil royal vizier Jafar (Jonathan Freeman). Princes travel from far and wide to woo the Sultan's daughter, Princess Jasmine (Courtney Reed), but she's having none of it. Tired of being locked up behind palace walls, she runs away to the bazaar where she meets Aladdin (Adam Jacobs), a poor street rat. The first sparks of love between the two emerge right as the palace guards catch up with them. Jafar bribes them to release Aladdin because he is the \"diamond in the rough,\" the only person who can retrieve the magic lamp from the Cave of Wonders. Jafar promises Aladdin great wealth if he delivers the lamp, which contains the all-powerful Genie (James Monroe Iglehart) who can make Jafar Sultan. Naturally, Jafar's plans go awry and Aladdin becomes master of the Genie, using his newfound power to become Prince Ali in an effort to win Jasmine's heart. While anyone who has seen the movie will be familiar with the basic plot, Beguelin has made a few smart changes for the stage. For instance, Aladdin's monkey sidekick Abu has been replaced with Babkak (Brian Gonzales), Omar (Jonathan Schwartz), and Kassim (Brandon O'Neill). These three musical vagrants are much funnier than a dude in a monkey costume. They bring much-needed levity to the second act with \"High Adventure,\" an original song by Menken and Ashman that was cut from the film score. Of course, all the classic Menken/Ashman songs from the film do appear. Beguelin's adaptation is witty and seemingly perfect for a story as comedic and self-referential as Aladdin. The book is also chock-full of baffling missed opportunities: In the film, Jafar is constantly scheming his way toward the throne. When the Genie plan doesn't work out, he finds an obscure clause in the law that will force Jasmine to marry him, solidifying his succession to the sultanate. Broadway's Jafar is a shadow of this Arabian Machiavelli, barely masking his ineptitude with an exaggerated evil laugh. Freeman actually voiced Jafar in the 1992 film, but his onstage presence is even more cartoonish and far less menacing. Sure, he's able to briefly imprison Aladdin in the second act, but he doesn't seem to have much of a plan beyond the Genie. What kind of villain piles all his eggs in one magic lamp? Even the final moments of the show, in which Jafar steals the lamp, are short-lived and anticlimactic. Jafar is as much of a threat as his clownish sidekick Iago (the hilarious Don Darryl Rivera), sapping the story of all genuine conflict. This is a huge waste of Freeman's considerable talent, not to mention this show's supremely impressive stagecraft. Bob Crowley's stunning set is a maze of constantly moving and expanding towers, garnished by complex latticework. Costume designer Gregg Barnes adorns this massive cast in rich fabrics and countless Swarovski crystals. The whole stage sparkles with a delicious mixture of fairy-tale orientalism and Broadway glitz, further enhanced by Director Casey Nicholaw's fresh and fun choreography. Disney magic abounds thanks to the astounding work of illusion designer Jim Steinmeyer. Props and actors disappear, only to magically reappear somewhere else on the stage. Chorus members materialize as if out of thin air. Indeed, when Aladdin takes Jasmine on a magic carpet ride, it's the stuff of dreams. They're actually flying and you don't see any wires. This moment would be one of the most miraculous on Broadway if Jasmine's \"indescribable feeling\" didn't appear to be terror. Reed really doesn't look like she enjoys being up there. She and Jacobs deliver a tepid version of \"A Whole New World\" before they are safely returned to earth; we all breathe a sigh of relief and disappointment. With the exception of that moment, most of this show is the breathtaking spectacle you'd expect. \"Friend Like Me\" is a showstopper in the truest sense of the term. (How often do you see a standing ovation in the middle of the first act?) This overwhelming audience response is largely thanks to the incredible showmanship and energy coming from Iglehart, who zips around the stage as if he really were a magical genie. For his part, Jacobs is everything you'd want in an Aladdin: He has a winning smile and a charming presence that makes you root for him and love the show, no matter its flaws. You're going to have a great time at Aladdin, despite its conflict-starved filler of a book. But are you really going for the dramaturgy? No, you're going to see sexy actors sing and dance while performing magic tricks. In that regard, Aladdin delivers in abundance. Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today! Broadway performances start on March 27 at the Majestic Theatre. Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today! By providing information about entertainment and cultural events on this site, TheaterMania.com shall not be deemed to endorse, recommend, approve and/or guarantee such events, or any facts, views, advice and/or information contained therein. ©1999-2026 TheaterMania.com, Inc. All Rights Reserved. Privacy Policy & Terms of Use",
   "garbageReason": "/privacy policy.*terms of use/i",
   "garbageFixedAt": "2026-01-29T22:45:22.648Z",
-  "needsRescore": true,
   "fullText": "You'd be wrong to assume that no one (even Disney) could bring the requisite magic to a live-action version of Aladdin, the 1992 animated feature with music by Alan Menken (Beauty and the Beast and The Little Mermaid) and lyrics by Tim Rice (The Lion King) and the late Howard Ashman (both shows with Menken). There's plenty of magic to go around on the stage of the New Amsterdam Theatre, where Disney's stage version of Aladdin is making its Broadway debut. Unfortunately, the theatrical sorcery runs out when it comes to the story. Chad Beguelin (Elf) contributes additional lyrics and a clunky book to this updated version. His addendum is not enough to derail an otherwise fantastic spectacle of a show, though it makes a good effort.\n\nThe story takes place in Agrabah, an Arabian town where everyone has six-pack abs and a minor in dance. The city is ruled over by the Sultan (Clifton Davis) and his evil royal vizier Jafar (Jonathan Freeman). Princes travel from far and wide to woo the Sultan's daughter, Princess Jasmine (Courtney Reed), but she's having none of it. Tired of being locked up behind palace walls, she runs away to the bazaar where she meets Aladdin (Adam Jacobs), a poor street rat. The first sparks of love between the two emerge right as the palace guards catch up with them. Jafar bribes them to release Aladdin because he is the \"diamond in the rough,\" the only person who can retrieve the magic lamp from the Cave of Wonders. Jafar promises Aladdin great wealth if he delivers the lamp, which contains the all-powerful Genie (James Monroe Iglehart) who can make Jafar Sultan. Naturally, Jafar's plans go awry and Aladdin becomes master of the Genie, using his newfound power to become Prince Ali in an effort to win Jasmine's heart.\n\nWhile anyone who has seen the movie will be familiar with the basic plot, Beguelin has made a few smart changes for the stage. For instance, Aladdin's monkey sidekick Abu has been replaced with Babkak (Brian Gonzales), Omar (Jonathan Schwartz), and Kassim (Brandon O'Neill). These three musical vagrants are much funnier than a dude in a monkey costume. They bring much-needed levity to the second act with \"High Adventure,\" an original song by Menken and Ashman that was cut from the film score. Of course, all the classic Menken/Ashman songs from the film do appear. Beguelin's adaptation is witty and seemingly perfect for a story as comedic and self-referential as Aladdin.\n\nThe book is also chock-full of baffling missed opportunities: In the film, Jafar is constantly scheming his way toward the throne. When the Genie plan doesn't work out, he finds an obscure clause in the law that will force Jasmine to marry him, solidifying his succession to the sultanate. Broadway's Jafar is a shadow of this Arabian Machiavelli, barely masking his ineptitude with an exaggerated evil laugh. Freeman actually voiced Jafar in the 1992 film, but his onstage presence is even more cartoonish and far less menacing. Sure, he's able to briefly imprison Aladdin in the second act, but he doesn't seem to have much of a plan beyond the Genie. What kind of villain piles all his eggs in one magic lamp? Even the final moments of the show, in which Jafar steals the lamp, are short-lived and anticlimactic. Jafar is as much of a threat as his clownish sidekick Iago (the hilarious Don Darryl Rivera), sapping the story of all genuine conflict. This is a huge waste of Freeman's considerable talent, not to mention this show's supremely impressive stagecraft.\n\nBob Crowley's stunning set is a maze of constantly moving and expanding towers, garnished by complex latticework. Costume designer Gregg Barnes adorns this massive cast in rich fabrics and countless Swarovski crystals. The whole stage sparkles with a delicious mixture of fairy-tale orientalism and Broadway glitz, further enhanced by Director Casey Nicholaw's fresh and fun choreography. Disney magic abounds thanks to the astounding work of illusion designer Jim Steinmeyer. Props and actors disappear, only to magically reappear somewhere else on the stage. Chorus members materialize as if out of thin air.\n\nIndeed, when Aladdin takes Jasmine on a magic carpet ride, it's the stuff of dreams. They're actually flying and you don't see any wires. This moment would be one of the most miraculous on Broadway if Jasmine's \"indescribable feeling\" didn't appear to be terror. Reed really doesn't look like she enjoys being up there. She and Jacobs deliver a tepid version of \"A Whole New World\" before they are safely returned to earth; we all breathe a sigh of relief and disappointment.\n\nWith the exception of that moment, most of this show is the breathtaking spectacle you'd expect. \"Friend Like Me\" is a showstopper in the truest sense of the term. (How often do you see a standing ovation in the middle of the first act?) This overwhelming audience response is largely thanks to the incredible showmanship and energy coming from Iglehart, who zips around the stage as if he really were a magical genie. For his part, Jacobs is everything you'd want in an Aladdin: He has a winning smile and a charming presence that makes you root for him and love the show, no matter its flaws.\n\nYou're going to have a great time at Aladdin, despite its conflict-starved filler of a book. But are you really going for the dramaturgy? No, you're going to see sexy actors sing and dance while performing magic tricks. In that regard, Aladdin delivers in abundance.\n\nGet theater news, interviews, videos, exclusive ticket discounts, and more.\n\nGet theater news, interviews, videos, exclusive ticket discounts, and more.",
   "fetchMethod": "archive",
   "fetchAttempts": [

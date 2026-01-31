@@ -9,65 +9,57 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a lavish spectacle that prioritizes eye candy over storytelling, but the visual feast and energetic performances make it an enjoyable if lightweight experience.",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 65,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 48,
+      "book": null,
       "music": null,
-      "performances": 75,
-      "direction": 75
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "prioritizes eye candy over storytelling",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "visual feast and energetic performances make it an enjoyable",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "lightweight experience",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The critic acknowledges significant storytelling weaknesses but finds the production enjoyable due to strong visual elements and performances, suggesting a qualified positive recommendation. | GPT-4o-mini: The review acknowledges enjoyable performances and visuals but critiques the lack of depth in storytelling, leading to a mixed-positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges significant flaws (prioritizes spectacle over story) but concludes with a positive recommendation using 'enjoyable', placing it at the lower end of positive. | GPT-4o: The review acknowledges the show's visual appeal and energetic performances, recommending it as enjoyable despite its lack of depth in storytelling. | Gemini: The review explicitly states the show is 'enjoyable,' indicating a positive recommendation, though it acknowledges the lack of depth in storytelling.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T02:46:59.412Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:11:53.162Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 65,
-    "scoreDelta": 0,
+    "claudeScore": 72,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwExcerpt": ": Disney's new \"Aladdin\" doesn't quite catch lightning in a bottle - but it lets a pretty nifty genie out of a lamp. That would be James Monroe Iglehart, in the role memorably voiced by Robin Williams in the 1992 animated hit. Every time this Genie's on stage, it's as if \"Aladdin\" were mainlining Red Bull. Iglehart works so hard during his big number, you fear for his health - that is, when you're not laughing your head off. And then there's the rest of the show...The whole vibe is like a throwb",
   "sources": [

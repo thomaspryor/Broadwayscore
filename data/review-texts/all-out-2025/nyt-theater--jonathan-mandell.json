@@ -11,7 +11,7 @@
   "bwwExcerpt": null,
   "showScoreExcerpt": "If you know what to expect, the show is sufficiently entertaining [but it is] not ambitious theater, nor is it even really about ambition. Although some of Simon Rich's individual stories are inherently theatrical, the selection overall feels random.",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 74,
   "bucket": "Tepid",
   "thumb": "Flat",
   "source": "playwright-scraped",
@@ -19,60 +19,52 @@
   "needsScoring": false,
   "scoringNotes": "Mixed review - 'sufficiently entertaining' at lottery prices but 'not ambitious theater', 'selection feels random', 'grab-bag'. Faint praise with significant reservations.",
   "llmScore": {
-    "score": 61,
-    "confidence": "high",
+    "score": 74,
+    "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 67
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 53,
-      "music": 71,
-      "performances": 65,
-      "direction": 50
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "If you know what to expect, the show is sufficiently entertaining to feel worth the (80 minute) time and ($45) expense",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "All Out: Comedy About Ambition is not ambitious theater, nor is it even really about ambition",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "the selection overall feels random... it's certainly a grab-bag",
-        "sentiment": "negative",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The critic gives a qualified recommendation dependent on ticket price and expectations, finding it 'sufficiently entertaining' at $45 but criticizing its lack of ambition and random structure. | GPT-4o-mini: The review presents a mixed perspective, acknowledging some entertainment value but also significant criticisms about the show's ambition and structure.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening with criticisms about pricing and marketing, the critic ultimately concludes the show is 'sufficiently entertaining' and worth seeing at the lottery price, delivering a cautious but positive recommendation. | GPT-4o: The review acknowledges the criticisms and issues with the production but also notes that it can be entertaining if expectations are managed and tickets are affordable. The tone is mixed, with both positive and negative aspects highlighted. | Gemini: Despite the initial setup discussing negative aspects and marketing concerns, the critic ultimately finds the show entertaining and worth the lottery-price expense, indicating a positive, albeit reserved, recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:27:14.396Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:13:31.513Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 61,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 60,
-    "scoreDelta": 2,
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "sources": [
     "playwright-scraped",

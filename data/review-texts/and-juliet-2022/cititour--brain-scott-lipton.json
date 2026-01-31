@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "While there’s not a bad performance to be found, this slightly tricky material rests on the legs and shoulders of Courtney, a relative newcomer, who delivers both her spoken and musical material with complete assurance",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "Up",
   "textStatus": "complete",
@@ -20,60 +20,52 @@
   "textQuality": "full",
   "sourceMethod": "dtli",
   "llmScore": {
-    "score": 89,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 88,
-      "music": 86,
-      "performances": 94,
-      "direction": 88
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "thoroughly enchanting 'jukebox musical'",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "you will definitely want to stand up and cheer for newcomer Maya Boyd, who gives a spectacular, strong-voiced performance",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Rest assured, though, this is no Shakespearean tragedy... The characters all do, and you will as well",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Critic uses consistently enthusiastic language throughout ('thoroughly enchanting,' 'spectacular,' 'sublime') with detailed praise for performances, direction, and book, concluding with strong audience satisfaction prediction. | GPT-4o-mini: The review expresses unqualified enthusiasm for the performances, music, and overall production quality, indicating a strong recommendation to see the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is clearly positive throughout, praising the lead performance as 'spectacular,' calling the musical 'thoroughly enchanting,' and highlighting multiple elements from cast to creative team. The critic expresses genuine enthusiasm and recommends the show strongly. | GPT-4o: The review is overwhelmingly positive, praising the performances, direction, and writing, and describing the show as enchanting and capable of captivating audiences. The critic's enthusiasm and the strong recommendation to see the show align with a 'Rave' classification. | Gemini: The review is overwhelmingly positive, highlighting the enchanting nature of the musical and the spectacular performance of the lead actress. The concluding sentence explicitly states that the audience will feel good, indicating a strong recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:29:18.884Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:15:48.653Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 89,

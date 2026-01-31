@@ -10,65 +10,57 @@
   "showScoreExcerpt": "\"Gold's production...skillfully balances the play’s history and its timeliness.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/an-enemy-of-the-people-broadway",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 79,
   "source": "show-score",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 85,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 93
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 89,
-      "direction": 83
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Director Sam Gold's production of An Enemy of the People skillfully balances the play's history and its timeliness",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Strong expertly portrays the demise... It's an impactful message",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "This production of An Enemy of the People may be driven by star power, but its enduring message packs a punch",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review consistently praises the performances, direction, and relevance of the production with specific examples of effective staging and Strong's compelling performance, while noting the show's contemporary resonance and innovative staging choices. | GPT-4o-mini: The review expresses strong praise for the production's relevance, performances, and direction while maintaining a positive tone throughout, indicating a clear recommendation to see the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review consistently praises Strong's performance, the production's balance of historical and contemporary elements, and concludes with a positive recommendation for both seasoned and new theatregoers, though it's more appreciative than enthusiastic. | GPT-4o: The review is highly positive, emphasizing the relevance and impact of the production, the strong performances, and the unique staging elements. The critic highlights the skillful balance of historical and contemporary themes, and the audience's enthusiastic response supports a strong recommendation. | Gemini: The review highlights the play's relevance and the production's skillful balance of history and timeliness. The critic praises Strong's performance and the integration of Nordic elements, ultimately concluding that the message packs a punch.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:28:01.532Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:14:13.747Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 88,
-    "scoreDelta": 6,
+    "claudeScore": 78,
+    "openaiScore": 92,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "dtliExcerpt": "This production of An Enemy of the People may be driven by star power, but its enduring message packs a punch for seasoned theatregoers and those new to Ibsen’s works. And audiences will be talking about the bar on stage for years to come.",
   "sources": [

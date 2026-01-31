@@ -9,65 +9,57 @@
   "bwwExcerpt": "Like its spiritual grandchild The Normal Heart, Ibsen’s drama scores hard points against real social ills while also suggesting that a passionate crusader, frozen in the spotlight of his truth, can sometimes be his own worst enemy. Adam Markavitz, Entertainment Weekly: Never mind that it takes place in 19th-century Norway. The battle between two brothers in An Enemy of the People, Henrik Ibsen's spitting-mad screed against political hypocrisy among polite small-towners, tackles more hot-button e",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-2024",
   "originalScore": "4/5",
-  "assignedScore": 79,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 79,
+    "score": 78,
     "confidence": "high",
     "range": {
       "low": 73,
-      "high": 85
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 78,
+      "book": null,
       "music": null,
-      "performances": 84,
-      "direction": 80
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "4 out of 5 stars",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "this engrossing new production",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "none that focused so intently and mournfully on the underlying issue of contamination, both of the environment and of public discourse",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: A 4/5 star review with consistent praise for the production's focus and relevance, strong performances, and effective direction, despite some minor reservations about character development. | GPT-4o-mini: The review expresses strong praise for the performances and direction while acknowledging some limitations in comparison to previous productions, leading to a solid recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 rating strongly indicates a positive recommendation, and 'pointedly modern' suggests relevance and effectiveness, though limited excerpt text prevents higher confidence. | GPT-4o: The original rating of 4/5 from the critic suggests a positive review, and the excerpt indicates a modern and potentially engaging interpretation. The aggregator context also supports a positive verdict. | Gemini: The 4/5 rating and 'feels pointedly modern' suggest a positive review, even with limited text. The aggregator context also indicates a positive reception.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:28:27.685Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:14:44.258Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 80,
+    "openaiScore": 79,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "showScoreExcerpt": "\"Gold’s 'An Enemy of the People'... feels pointedly modern\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/an-enemy-of-the-people-broadway",

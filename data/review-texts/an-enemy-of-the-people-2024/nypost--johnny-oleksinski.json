@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Avoiding the play’s pitfalls, Imperioli and the rest of the cast refrain from going overboard with shouts and violent lunges. They force the audience to listen closely to their arguments rather than cause us to quickly tone out the angriest voices.",
   "originalScore": null,
-  "assignedScore": 71,
+  "assignedScore": 77,
   "source": "dtli",
   "dtliThumb": "Up",
   "dtliUrl": null,
@@ -23,60 +23,52 @@
   ],
   "bwwThumb": null,
   "llmScore": {
-    "score": 71,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 77
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 73,
+      "book": null,
       "music": null,
-      "performances": 83,
-      "direction": 53
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Excellent performances like these are all this play needs to be forceful and pulse-pounding",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Gold, whose Broadway 'Macbeth' starring Daniel Craig was a bells-and-whistles disaster, nearly bungles it",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Strong is surrounded by great actors",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The review strongly praises the performances and adaptation while heavily criticizing the director's choices, creating a qualified recommendation that focuses on the strengths of the acting ensemble. | GPT-4o-mini: While the performances are praised and the adaptation is compelling, the direction and some choices detract from the overall experience, leading to a mixed-positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the compelling revival, excellent performances by Strong and the cast, and calls it 'forceful and pulse-pounding,' while criticizing only the director's gimmicky intermission choice that nearly 'bungles' an otherwise strong production. | GPT-4o: The review praises the performances, particularly Jeremy Strong's, and acknowledges the play's compelling nature. However, it notes a misstep with the onstage bar, suggesting some reservations. | Gemini: The review is generally positive, highlighting strong performances, but criticizes the director's choices. The final statement suggests that the play is worth seeing despite its flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T05:23:19.209Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:14:09.542Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 71,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 70,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "textQuality": "full",
   "truncationSignals": []

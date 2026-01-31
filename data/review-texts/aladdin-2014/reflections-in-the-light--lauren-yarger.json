@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"This larger-than-life, stunning visual production that sparkles on many levels really is a treat.\"",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 79,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "complete",
@@ -18,62 +18,52 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 64,
-    "confidence": "low",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 43,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 75,
-      "music": 63,
-      "performances": 83,
-      "direction": 88
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "I was enjoying the show – and far more than I expected to",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "this won't be a real review, because I was hit with the flu the evening I was scheduled to see this and only made it until intermission",
-        "sentiment": "neutral",
-        "strength": 5
-      },
-      {
-        "quote": "this larger-than-life, stunning visual production that sparkles on many levels really is a treat",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: While the critic expresses genuine enthusiasm for the production values and performances they saw, they explicitly state this isn't a real review since they only saw the first act due to illness, making any recommendation incomplete and tentative. | GPT-4o-mini: The review expresses strong enjoyment of the production's visuals and performances, with some reservations about the music and story, leading to a solid positive recommendation. | Note: Models differed by 32 points.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The language is clearly positive with 'stunning', 'sparkles', and 'treat', but limited excerpt prevents full assessment of any reservations or deeper critique. | GPT-4o: The review uses highly positive language such as 'stunning', 'sparkles', and 'a treat', indicating a strong recommendation to see the show. | Gemini: The review excerpt uses positive language like \"stunning visual production\" and \"really is a treat,\" indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:25:49.294Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:12:20.102Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 64,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 48,
-    "openaiScore": 80,
-    "scoreDelta": 32,
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 32 points (Claude: 48, OpenAI: 80)"
-    ]
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "textWordCount": 741,
   "archivePath": "data/archives/reviews/aladdin-2014/reflections-in-the-light--lauren-yarger_2026-01-26.html",

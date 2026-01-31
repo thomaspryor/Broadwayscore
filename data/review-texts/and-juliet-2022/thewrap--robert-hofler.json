@@ -7,7 +7,7 @@
   "publishDate": "2022-11-17",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 59,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "Luke Sheppard's direction of his actors effectively showcases many of the more appealing quirks in Read's characters. When Read's book turns conventional with the nonbinary May, Sheppard turns on the automatic pilot to strand Sullivan in a swamp of schmaltz. Unfortunately, that sticky morass claims many more victims in Act 2.",
@@ -17,38 +17,22 @@
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 44,
+    "score": 59,
     "confidence": "high",
     "range": {
-      "low": 37.5,
-      "high": 50.5
+      "low": 54,
+      "high": 64
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 35,
+      "book": null,
       "music": null,
-      "performances": 45,
-      "direction": 50
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "effectively showcases many of the more appealing quirks",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "turns on the automatic pilot to strand Sullivan in a swamp of schmaltz",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "that sticky morass claims",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review starts with qualified praise but quickly turns critical with vivid negative imagery about direction and performance being mired in schmaltz, suggesting significant problems outweigh the positives. | GPT-4o-mini: The review indicates some positive aspects of direction but is largely critical of the book and overall execution, leading to a negative recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review praises the direction and character work in parts but criticizes the second act as conventional and schmaltzy, suggesting an uneven production with both strengths and significant weaknesses. | GPT-4o: The review notes effective direction and appealing character quirks, but also highlights significant issues with the conventionality and sentimentality in the book, particularly in Act 2. This suggests a mixed reception with some positive elements. | Gemini: The review highlights both positive and negative aspects, indicating a mixed experience. The phrase 'swamp of schmaltz' suggests a significant downturn, but the earlier mention of 'appealing quirks' prevents a fully negative classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -57,20 +41,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:00:59.579Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:17:23.108Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 44,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 45,
-    "scoreDelta": 3,
+    "claudeScore": 58,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "sources": [
     "reviews-json-stub",

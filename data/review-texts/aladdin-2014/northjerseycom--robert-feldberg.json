@@ -9,7 +9,7 @@
   "isFullReview": true,
   "bwwExcerpt": "Large but agile, Iglehart then leads the singing and dancing in \"Friend Like Me,\" a wonderfully over-the-top moment of celebration. Casey Nicholaw hasn't directed the show very nimbly, but his choreography for this number is invigorating. \"Aladdin\" ends with the hero and Jasmine floating through the night sky on a magic carpet. It's a lovely image, but too little, too late.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "bwwThumb": null,
   "bwwUrl": "http://www.northjersey.com/arts-and-entertainment/theater/aladdin-loses-its-magic-1.747278",
@@ -19,60 +19,52 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 35,
-    "confidence": "high",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 30,
-      "high": 40
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 20,
-      "music": 58,
-      "performances": 63,
-      "direction": 35
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "tepid stage version of the hit animated film",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "the show is a flavorless rehash of what's been done much better before",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "their adults will likely find it a teeth-grinding experience",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic delivers a predominantly negative review calling the show 'tepid' and 'flavorless' with only James Monroe Iglehart's Genie performance and one production number receiving praise amid widespread criticism of the book, direction, and most performances. | GPT-4o-mini: The review is predominantly negative, criticizing the script and overall execution while only praising a standout performance, leading to a clear recommendation against seeing the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: Despite praising Iglehart's performance and one production number, the critic finds the show fundamentally flawed with tired jokes, poor chemistry, and hackneyed devices, concluding it's 'too little, too late.' | GPT-4o: The review consistently criticizes the show for being a 'flavorless rehash' with 'hackneyed Disney devices' and 'lame' jokes, despite acknowledging a strong performance by James Monroe Iglehart. The overall tone is negative, suggesting the production is not worth seeing. | Gemini: The review highlights significant flaws in the production, particularly the tired Disney formula and weak humor, but acknowledges the energetic performance of the Genie and one standout musical number. It suggests the show might appeal to young children but not to adults, indicating a mixed experience.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:25:07.032Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:11:46.708Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 35,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 35,
-    "openaiScore": 35,
-    "scoreDelta": 0,
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "textWordCount": 1296,
   "archivePath": "data/archives/reviews/aladdin-2014/northjersey--robert-feldberg_2026-01-26.html",

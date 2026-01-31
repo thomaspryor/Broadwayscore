@@ -10,66 +10,58 @@
   "dtliExcerpt": "If a genie had sprung from my teakettle last week and offered to grant me three wishes, I might impulsively have asked to be spared any more children’s musicals. Since a certain blockbuster feline arrived well over a decade ago, Broadway has been lapped by wave after wave of big, often gloppy songfests adapted from animated movies, mostly from the mother ship, Disney. So the prospect of Aladdin, promising another weary night in the presence of a spunky youngster and wisecracking animals, didn’t exactly set my heart racing. But this latest musical adapted from one of Disney’s popular movies, which opened on Thursday night at the New Amsterdam Theater, defied my dour expectations. As directed and choreographed (and choreographed, and choreographed) by Casey Nicholaw, and adapted by the book writer Chad Beguelin, Aladdin has an infectious and only mildly syrupy spirit. Not to mention enough baubles, bangles and beading to keep a whole season of RuPaul’s Drag Race contestants in runway attire.",
   "showScoreExcerpt": "\"This latest musical adapted from one of Disney’s popular movies defied my dour expectations...“Aladdin” has an infectious and only mildly syrupy spirit. Not to mention enough baubles, bangles and beading to keep a whole season of “RuPaul’s Drag Race” contestants in runway attire.\"",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 78,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALADDIN-Opens-on-Broadway-Updating-LIVE-20140320",
   "dtliThumb": "Up",
   "designation": "Critics_Pick",
   "llmScore": {
-    "score": 76,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
-      "music": 73,
-      "performances": 81,
-      "direction": 83
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "defied my dour expectations",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "has an infectious and only mildly syrupy spirit",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Mr. Nicholaw and Mr. Beguelin's inexhaustible determination to put a cockeyed slant on the trademark Disney musical formula",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Critic enters with low expectations but finds the production surprisingly entertaining, praising the direction, choreography, and performances (especially Iglehart) while acknowledging formulaic elements but appreciating the show's self-aware humor and spectacular production values. | GPT-4o-mini: The review expresses a generally positive view of the production, highlighting its entertainment value and performances while acknowledging some weaknesses in the music and story.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite opening with negative expectations about children's musicals, the critic clearly recommends the show, praising its 'infectious spirit,' spectacular production values, and ability to transcend Disney formula through humor and self-awareness. | GPT-4o: The review starts with skepticism but ultimately praises the production for its infectious spirit and entertaining qualities, particularly highlighting the performances and humor, leading to a positive recommendation. | Gemini: The review is mostly positive, highlighting the show's energy and humor, although it acknowledges some clichés and less impressive musical numbers. The critic's initial skepticism was overcome, leading to a recommendation with reservations.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:25:34.040Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:12:08.354Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 76,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 76,
-    "scoreDelta": 0,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "textStatus": "complete",
   "textWordCount": 1244,

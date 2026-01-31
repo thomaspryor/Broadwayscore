@@ -10,65 +10,57 @@
   "showScoreExcerpt": "\"An actorly, Broadway face-off between Jeremy Strong and Michael Imperioli\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/an-enemy-of-the-people-broadway",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 79,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 74,
+      "high": 84
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 73,
+      "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 77
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "This production has much to recommend it, and Strong in particular should return to the stage as often as he can",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "it's hard not to feel as though this 'Enemy of the People'...ended up presenting an opportunity for the audience to put themselves on trial, and then, with a sigh of relief, exonerate themselves",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Their battle comes to a head in a stunning trial sequence",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic finds much to admire in the production, particularly Strong's performance and the innovative staging, but concludes with substantive reservations about the adaptation's moral complexity and ultimate impact. | GPT-4o-mini: The review expresses a clear appreciation for the performances and direction while noting some weaknesses in the adaptation, leading to a positive but cautious recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite critiques about the adaptation being too sympathetic and missing opportunities for deeper moral complexity, the critic clearly states the production 'has much to recommend it' and praises Strong's performance, the staging concept, and the effectiveness of the in-the-round format. | GPT-4o: The review highlights the strong performances, particularly by Jeremy Strong, and the effective use of the theater's unique structure. While it notes some elements that could have been more challenging, the overall tone is positive and recommends the production. | Gemini: The review is largely positive, highlighting strong performances and the effective staging. While it notes some missed opportunities for deeper audience engagement, the overall recommendation is clear, making it a positive review with reservations.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:36:06.815Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:14:51.176Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 63,

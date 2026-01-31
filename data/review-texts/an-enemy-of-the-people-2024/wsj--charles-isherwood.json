@@ -8,7 +8,7 @@
   "isFullReview": false,
   "dtliExcerpt": "As Dr. Thomas Stockmann, the much-antagonized protagonist of Henrik Ibsen’s “An Enemy of the People,” and perhaps the first theatrical whistleblower, Jeremy Strong gives a performance of sustained, contained intensity that keeps this intimate, refreshing revival continually absorbing.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": "Up",
   "dtliUrl": null,
@@ -22,60 +22,52 @@
   ],
   "bwwThumb": null,
   "llmScore": {
-    "score": 75,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 67,
-      "high": 83
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 79,
-      "direction": 75
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "gives a performance of sustained, contained intensity that keeps this intimate, refreshing revival continually absorbing",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "his sometimes mannered approach occasionally threatens to tip into caricature",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "serves both the character and the production well",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The review praises Strong's intense performance and calls the revival 'refreshing' and 'continually absorbing,' but tempers this with concerns about mannered acting that threatens caricature, suggesting a qualified positive recommendation. | GPT-4o-mini: The review highlights a strong performance by Jeremy Strong while acknowledging some minor concerns about his approach, leading to a positive overall recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises Strong's intensity as serving the production well, but notes concerns about mannered approach. The aggregator context supports an 'Up' verdict, suggesting overall positive recommendation despite reservations. | GPT-4o: The review highlights a strong performance by Mr. Strong, suggesting a positive impact on the production. However, the mention of a 'mannered approach' that 'threatens to tip into caricature' indicates some reservations, leading to a positive but not overwhelmingly enthusiastic recommendation. | Gemini: The review highlights a strong performance, suggesting a positive experience despite some reservations about the actor's approach.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T22:47:33.907Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:15:13.793Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 78,
-    "scoreDelta": 6,
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "garbageFullText": "https://www.wsj.com/articles/an-enemy-of-the-people-review-jeremy-strong-broadway-michael-imperioli-sam-gold-ibsen-amy-herzog-6b1bb53e\n\nJeremy Strong Photo: Emilio Madrid\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nBuy Side from WSJExpert recommendations on products and services, independent from The Wall Street Journal newsroom.\n\nThese Tinted Sunscreens Solve the Makeup vs. Sunscreen Dilemma\n\nThe Best Cash Back Credit Cards Right Now\n\nOur Favorite Travel Rewards Cards for 2024\n\nWhy Property Taxes Are Going Up—and How to Cope\n\nTop stories chosen by WSJ editors\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved",
   "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",

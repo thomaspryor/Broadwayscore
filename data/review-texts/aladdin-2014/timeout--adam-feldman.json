@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"Aside from the tonic of Iglehart’s djinn, however, Aladdin is short on magic.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "originalScore": 60,
-  "assignedScore": 57,
+  "assignedScore": 60,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -43,60 +43,52 @@
   "scoreConfidence": "medium",
   "extractedRating": "3/5",
   "llmScore": {
-    "score": 57,
+    "score": 60,
     "confidence": "high",
     "range": {
-      "low": 50.5,
-      "high": 63.5
+      "low": 55,
+      "high": 65
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 48,
-      "music": 60,
-      "performances": 73,
-      "direction": 55
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Aladdin is short on magic",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "the plotting drifts into weightless silliness, with a surfeit of generic padding and glitz",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "A carpet with colorful patterns but little texture",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The 3/5 star rating and predominantly critical language about the show being 'short on magic' with 'weightless silliness' indicates a mixed review that leans slightly negative despite some praise for Iglehart's performance. | GPT-4o-mini: The review expresses mixed feelings, highlighting some enjoyable performances but ultimately criticizing the show's lack of depth and coherence.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic's own rating of 60 places this squarely in mixed territory, and the phrase 'exactly what you'd expect' suggests competent but unremarkable execution without surprise or elevation. | GPT-4o: The original rating of 60 suggests a mixed review, and the excerpt describes the show as delivering what is expected, which indicates neither a strong recommendation nor a discouragement. | Gemini: The critic's own rating is 60, which falls squarely in the Mixed bucket. The quote suggests it meets expectations but doesn't exceed them, indicating a middle-ground assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:26:35.637Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:13:02.190Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 57,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 55,
-    "scoreDelta": 3,
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwExcerpt": ": Aside from the tonic of Iglehart's djinn, however, Aladdin is short on magic. Director Casey Nicholaw fills the stage with activity, and Jonathan Freeman and Don Darryl Rivera offer ripe turns as a villainous vizier and his squawking sidekick. But the plotting drifts into weightless silliness, with a surfeit of generic padding and glitz. There's the rub: The musical is called Aladdin, but seems content to be Prince Ali.-Theater review by Adam Feldman",
   "dtliExcerpt": "Disney's Aladdin is a lavish, colorful spectacle that delivers exactly what you'd expect from a Broadway adaptation of the beloved animated film.",

@@ -24,8 +24,8 @@
     "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 83.5,
-      "high": 100
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -33,48 +33,40 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 90
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "brings the animated Disney film roaring to life with such imagination, creativity and eye-popping splendor",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "left me grinning from ear to ear",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "a whole new world of wonderful",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Enthusiastic praise with strong superlatives and clear emotional impact, indicating a strong positive recommendation despite the brief excerpt. | GPT-4o-mini: The review expresses unqualified enthusiasm and joy, indicating a strong recommendation to see the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review uses superlative language like 'wonderful', 'imagination', 'creativity' and 'eye-popping splendor', concluding with the critic's physical joy reaction, indicating a strong positive recommendation. | GPT-4o: The review uses highly positive language such as 'wonderful', 'imagination', 'creativity', and 'eye-popping splendor', indicating a strong recommendation and enthusiasm for the production. | Gemini: The review is overwhelmingly positive, using phrases like 'whole new world of wonderful' and 'eye-popping splendor,' indicating a strong recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:08:22.895Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:12:16.697Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 89,
     "openaiScore": 95,
-    "scoreDelta": 7,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "textQuality": "truncated",
   "truncationSignals": [

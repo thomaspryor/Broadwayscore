@@ -10,7 +10,7 @@
   "bwwExcerpt": "As in many a Disney stage production, the big showstopper isn't even human: During ''A Whole New World,'' a flying carpet carries our lovers aloft in a night-time ride, swooping and spinning with how'd-they-do-that wonder. (Jim Steinmeyer and Jeremy Chernick are credited with designing the onstage illusions and special effects.) It deserves its own curtain call.",
   "showScoreExcerpt": "\"This is one of the better Disney stage musicals, complete with several eye-popping production numbers.\"",
   "originalScore": "B",
-  "assignedScore": 75,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALADDIN-Opens-on-Broadway-Updating-LIVE-20140320",
   "textStatus": "complete",
@@ -22,60 +22,52 @@
   "sourceMethod": "bww-roundup",
   "scoreSource": "extracted-grade",
   "llmScore": {
-    "score": 75,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 67,
-      "high": 83
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 60,
-      "music": 83,
-      "performances": 68,
-      "direction": 75
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Overall, this is one of the better Disney stage musicals",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "complete with several eye-popping production numbers that benefit from Nicholaw's spirited choreography, Bob Crowley's elaborate and chameleonic sets, and Gregg Barnes' glittery costumes",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "B",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: A B grade review that praises the production values and spectacle while noting mixed performances and broad humor, landing in qualified recommendation territory. | GPT-4o-mini: The review expresses clear enjoyment of the production's music and choreography, with some reservations about performances and character depth, leading to a strong positive recommendation overall.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B rating and description as 'one of the better Disney stage musicals' with 'eye-popping production numbers' indicates a positive recommendation, though the limited excerpt prevents full confidence in the verdict. | GPT-4o: The critic's rating of 'B' and the positive language about the production numbers suggest a strong recommendation, though not without some reservations. | Gemini: The critic explicitly states it's \"one of the better Disney stage musicals\" and highlights \"eye-popping production numbers,\" indicating a positive, though not rave, recommendation. The original rating of B also supports this.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:24:19.142Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:11:09.811Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 78,
-    "scoreDelta": 6,
+    "claudeScore": 75,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "sources": [
     "bww-roundup",

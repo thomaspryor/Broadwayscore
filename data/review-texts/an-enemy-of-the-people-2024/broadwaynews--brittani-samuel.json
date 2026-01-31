@@ -7,64 +7,56 @@
   "publishDate": "March 19, 2024",
   "fullText": "Playwright Amy Herzog modernizes Ibsen’s original play while director Sam Gold pacifies it. Good morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Enemy of the People.” The latest Broadway revival of Henrik Ibsen’s “An Enemy of the People,” translated and adapted by Amy Herzog, bids audience members to physically engage with this classic story of political dissent. The play follows the lionhearted Dr. Thomas Stockmann, who discovers poison in his town’s water supply but is dissuaded from reporting this truth by power players in his small Norwegian village. You see, the economy relies on the opening of healing baths. Jeremy Strong — a longtime theater actor who rocketed to fame with his Emmy Award-winning lead role in HBO’s smash “Succession” — is completely believable as Stockmann. He is clear-spoken and morally upright, even when the townspeople, enraged by the financial threat this contamination poses, beat him down. Strong is a standout amid an evening of largely blasé and unbalanced performances. There’s an overall atmosphere of tepidness in what Ibsen demanded be a ferocious work of theater. It’s not that director Sam Gold doesn’t try to excite. He takes ambitious directorial swings with this production, but he’s wobbly on the follow-through. Along with Herzog — who expertly refines from and beefs up chunks of Ibsen’s original text — Gold is desperate to bring audiences closer to the outrage that fueled Ibsen’s writing (the same outrage that should haunt all of us watching). That closeness is physical: ‘Enemy’ sets audiences in the round as the action plays out on a central railroad-style platform (sunken below much of the audience); lines blur between the ensemble of townspeople and audience. The closeness is also conceptual: actors eschew European accents and outdated affectations. As Mayor Stockmann (the one with the most to lose if the town’s water source shuts down), actor Michael Imperioli leans into his character’s smarminess, channeling a level of uppish douchiness seen in politicians today. But the attempts to further modernize this story teeter into bizarreness during the pause between the play’s third and fourth scenes with a cheeky (and cheapening) gimmick during the break. Audience engagement reached entirely new levels when climate activists affiliated with Extinction Rebellion NYC interjected at the performance I attended, demanding attention for the climate crises facing civilization and insisting that “there is no theater on a dead planet.” The outbursts — which I initially thought to be more of Gold’s antics — actually locked into place my biggest disappointment about ‘Enemy.’ Here were people acting in Stockmann’s spirit; disrupting the status quo and exposing themselves to harm for the sake of spreading an important message. Their outbursts ushered in the very elements I craved more of from Gold’s production: ferocity and risk.",
   "originalScore": null,
-  "assignedScore": 57,
+  "assignedScore": 63,
   "dtliThumb": "Meh",
   "source": "dtli",
   "llmScore": {
-    "score": 57,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 50.5,
-      "high": 63.5
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 71,
+      "book": null,
       "music": null,
-      "performances": 65,
-      "direction": 49
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "There's an overall atmosphere of tepidness in what Ibsen demanded be a ferocious work of theater",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Jeremy Strong is a standout amid an evening of largely blasé and unbalanced performances",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "He takes ambitious directorial swings with this production, but he's wobbly on the follow-through",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic acknowledges some strong elements (Strong's performance, Herzog's adaptation) but is fundamentally disappointed by the production's lack of ferocity and Gold's inconsistent direction, resulting in a mixed recommendation that leans slightly negative. | GPT-4o-mini: The review presents a mixed perspective, praising Strong's performance while criticizing the overall direction and atmosphere, leading to a conditional recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: While the critic praises Jeremy Strong's performance and Herzog's adaptation, they criticize the overall production for lacking the ferocity Ibsen demanded, calling performances 'largely blasé and unbalanced' with 'tepidness' throughout. | GPT-4o: The review highlights a strong performance by Jeremy Strong but criticizes the overall production for lacking the ferocity and risk expected from Ibsen's work. The critic expresses disappointment with the production's execution despite some ambitious attempts. | Gemini: The review highlights both positive and negative aspects of the production. While Jeremy Strong's performance is praised, the overall atmosphere is described as tepid and unbalanced. The reviewer also mentions bizarre attempts to modernize the story, leading to a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:27:26.250Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:13:38.893Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 57,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 55,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "dtliExcerpt": "Strong is a standout amid an evening of largely blasé and unbalanced performances. There’s an overall atmosphere of tepidness in what Ibsen demanded be a ferocious work of theater.",
   "sources": [

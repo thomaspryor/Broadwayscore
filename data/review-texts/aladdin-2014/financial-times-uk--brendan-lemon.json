@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"Disney wanted something it could market not only to the parents-with-children crowd but also to date-night couples looking for a few laughs. Wish granted.\"",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 75,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "complete",
@@ -22,60 +22,52 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 74,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
-      "music": 79,
-      "performances": 84,
-      "direction": 69
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "entertaining, though not especially memorable",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "Disney wanted something it could market not only to the parents-with-children crowd but also to date-night couples looking for a few laughs. Wish granted.",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "he will stop the show. The crowd-pleasing \"Friend Like Me\"",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic finds the show entertaining and successful in achieving Disney's commercial goals, with particular praise for Iglehart's show-stopping performance, though notes it's not especially memorable. | GPT-4o-mini: The review expresses clear enjoyment of the music and performances, particularly highlighting the standout performance of James Monroe Iglehart, while noting some limitations in the overall memorability and direction of the production.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review describes the show as 'entertaining' and ends with 'Wish granted,' indicating a positive recommendation despite noting it's 'not especially memorable' and calling elements 'Broadway-generic.' | GPT-4o: The review describes the show as entertaining and highlights standout performances, particularly by James Monroe Iglehart. Despite noting some generic elements, the overall tone is positive, recommending it as a fun experience. | Gemini: The review is generally positive, highlighting the entertaining aspects and the success of the show in meeting Disney's goals. While not a rave, it suggests the show is worth seeing, especially for those seeking light entertainment.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:24:26.372Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:11:13.592Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 73,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 74,

@@ -8,7 +8,7 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"Disney's latest offering at the New Amsterdam Theatre, is simply . . . maaaahvelous! The costumes, the sets, the kitsch and comedic fun made me feel like a kid again.\"",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 79,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "garbage_cleared",
@@ -17,60 +17,52 @@
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 89,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
-      "music": 85,
-      "performances": 93,
-      "direction": 89
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "is simply . . . maaaahvelous!",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "This storybook musical will leave you feeling happy",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "I reluctantly attended this mega-musical thinking 'if I only had a kid with me . . . ' to immediately fall head over heals in love",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: Overwhelmingly positive review with enthusiastic praise for performances, design, and overall experience, plus clear recommendation despite minor chemistry concerns. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting standout performances and a joyful experience, indicating a strong recommendation to see the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The exclamatory 'maaaahvelous' and mention of feeling 'like a kid again' suggests strong enjoyment, but limited excerpt prevents assessment of full critical evaluation. | GPT-4o: The review uses highly enthusiastic language, describing the show as 'maaaahvelous' and highlighting its ability to evoke a childlike sense of wonder, indicating a strong recommendation. | Gemini: The reviewer uses the word \"maaaahvelous!\" and states that the show made them feel like a kid again, indicating a positive experience and recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:26:07.850Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:12:29.756Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 78,
     "openaiScore": 90,
-    "scoreDelta": 2,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "textWordCount": 640,
   "archivePath": "data/archives/reviews/aladdin-2014/theater-pizzazz--sandi-durell_2026-01-26.html",

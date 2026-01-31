@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"Everything else in Aladdin is, like the endlessly expansive desert in which it's set, dusty and unwelcoming.\"",
   "originalScore": null,
-  "assignedScore": 49,
+  "assignedScore": 58,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "complete",
@@ -17,60 +17,52 @@
   "sourceMethod": "brightdata",
   "scoreSource": null,
   "llmScore": {
-    "score": 49,
-    "confidence": "medium",
+    "score": 58,
+    "confidence": "high",
     "range": {
-      "low": 37.5,
-      "high": 60.5
+      "low": 53,
+      "high": 63
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 33,
-      "music": 70,
-      "performances": 53,
-      "direction": 43
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Everything else in Aladdin is, like the endlessly expansive desert in which it's set, dusty and unwelcoming",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "it's hardly more inspired than Newsies, Mary Poppins, The Little Mermaid, or Tarzan",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Friend Like Me is, however, more than enough. During its eight minutes, Iglehart represents the ultimate Broadway ideal",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Despite praising Iglehart's standout performance and some musical elements, the critic finds the show fundamentally flawed with weak writing, direction, and most performances, concluding it gives audiences 'little, if anything, worth looking at or thinking about.' | GPT-4o-mini: The review presents a mixed perspective, praising the lead performance while criticizing the overall production quality and script, leading to a conditional recommendation. | Note: Models differed by 13 points.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be only the header/credits section of the review with no actual critical commentary or verdict provided about the production quality or recommendation. | GPT-4o: The text provided is a list of production credits and does not contain any evaluative content or verdict. Without further context or a clear recommendation, the review is considered mixed with low confidence. | Gemini: The provided text is truncated and only contains production information. Without the actual review content, it's impossible to determine the critic's recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:26:02.146Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:12:26.993Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 49,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 55,
-    "scoreDelta": 13,
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 55,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "textWordCount": 1213,
   "archivePath": "data/archives/reviews/aladdin-2014/talkin-broadway--matthew-murray_2026-01-26.html",

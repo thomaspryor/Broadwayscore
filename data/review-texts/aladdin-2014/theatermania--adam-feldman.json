@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a straightforward crowd-pleaser that delivers exactly what it promises: a colorful, energetic, family-friendly musical that hews closely to the beloved Disney animated film.",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,60 +18,52 @@
   "showScoreExcerpt": "The show is a straightforward crowd-pleaser that delivers exactly what it promises: a colorful, energetic, family-friendly musical that hews closely to the beloved Disney animated film.",
   "needsScoring": true,
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 76,
+    "confidence": "medium",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 72
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "straightforward crowd-pleaser that delivers exactly what it promises",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "colorful, energetic, family-friendly musical",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "hews closely to the beloved Disney animated film",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The review offers measured praise for a show that meets expectations without exceeding them, suggesting a solid but unremarkable production worth seeing. | GPT-4o-mini: The review indicates a clear recommendation for a fun and family-friendly experience, suggesting it is worth seeing.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review presents a clear positive assessment, describing the show as delivering on its promises with positive descriptors like 'colorful' and 'energetic', though the tone suggests solid entertainment rather than exceptional artistry. | GPT-4o: The review describes the show as a 'crowd-pleaser' and highlights its alignment with the beloved Disney film, indicating a positive recommendation. | Gemini: The review explicitly states the show is a 'crowd-pleaser' and 'delivers,' indicating a positive, though not ecstatic, recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T03:08:13.220Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:12:33.007Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "textQuality": "truncated",
   "truncationSignals": [

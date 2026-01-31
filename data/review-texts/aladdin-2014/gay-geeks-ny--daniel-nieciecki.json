@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"I had the privilege to experience an excellent example of Adaptation Decay on Sunday in a performance of the latest Disney animated film to be translated into the medium of Broadway musical theater.\"",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 44,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "complete",
@@ -22,60 +22,52 @@
   "scoreSource": "sentiment-mixed-positive",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 25,
-    "confidence": "high",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 20,
-      "music": 40,
-      "performances": 68,
-      "direction": 25
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "I cannot in good conscience recommend that anyone pay full price for this show",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "They debase an entertaining cinema experience into a grueling endurance test",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "James Monroe Inglehart was phenomenal in the role of the Genie",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Despite praising specific performances, the critic explicitly states they cannot recommend paying full price and describes the show as a 'grueling endurance test' with poor adaptation choices. | GPT-4o-mini: The review is overwhelmingly critical of the adaptation and its execution, leading to a clear recommendation against seeing the show despite some praise for individual performances.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: Despite praising two performances, the critic explicitly states they cannot recommend the show and calls it a 'grueling endurance test' that exemplifies 'Adaptation Decay.' | GPT-4o: The review is overwhelmingly negative, criticizing the adaptation choices, execution, and humor of the production. The critic explicitly states they cannot recommend the show, indicating a strong negative verdict. | Gemini: The review is overwhelmingly negative, citing issues with adaptation, humor, and overall quality. The critic explicitly states they cannot recommend paying full price.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:24:33.201Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:11:17.005Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 25,
-    "scoreDelta": 0,
+    "claudeScore": 42,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "scoreDelta": 25,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 25,

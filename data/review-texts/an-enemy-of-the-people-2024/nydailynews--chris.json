@@ -9,65 +9,57 @@
   "isFullReview": false,
   "dtliExcerpt": "And Strong grabs that sudden intimate connection like a man holding on to bucking steer, falling ever deeper into his character’s abyss. It is a sight to see. Strong is one of the great American actors of his generation. And Imperioli is no slouch either. He’s as live and present as anyone could ask.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 77,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/an-enemy-of-the-people/",
   "needsScoring": true,
   "llmScore": {
-    "score": 79,
+    "score": 77,
     "confidence": "medium",
     "range": {
-      "low": 67.5,
-      "high": 90.5
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 88,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Strong is one of the great American actors of his generation",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "It is a sight to see",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "He's as live and present as anyone could ask",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Extremely high praise for the lead performances with vivid theatrical language, but this excerpt focuses solely on acting without addressing the overall show quality or providing clear recommendation guidance. | GPT-4o-mini: The review strongly praises the performances of the actors, particularly Strong, indicating a solid recommendation overall. | Note: Models differed by 13 points.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the lead performances with strong language like 'great American actors of his generation' and 'sight to see', indicating a positive recommendation based on the acting, though the excerpted nature limits full context. | GPT-4o: The review uses highly positive language to describe the performances, particularly praising Strong as one of the great actors of his generation, which suggests a strong recommendation. | Gemini: The review excerpt praises the performances of the actors, particularly Jeremy Strong, suggesting a positive experience overall. The phrase \"It is a sight to see\" implies a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:11:06.201Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:14:05.696Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 85,
+    "claudeScore": 78,
+    "openaiScore": 88,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
     "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   }
 }

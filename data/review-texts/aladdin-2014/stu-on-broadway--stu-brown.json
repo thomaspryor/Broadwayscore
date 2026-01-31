@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"Aladdin, while charming and fun, lacks the enchantment and savviness of Disney's most notable theatrical productions.\"",
   "originalScore": null,
-  "assignedScore": 71,
+  "assignedScore": 76,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "complete",
@@ -18,60 +18,52 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 71,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 77
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 63,
-      "music": 75,
-      "performances": 81,
-      "direction": 70
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Aladdin is solidly good, sometimes great but, overall, enjoyable and energetically fine are apt descriptors",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "it will be a perfect choice",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Aladdin, while charming and fun, lacks the enchantment and savviness of Disney's most notable theatrical productions",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic gives a qualified positive recommendation, especially for families, praising performances and spectacle while noting it falls short of Disney's best theatrical work. | GPT-4o-mini: The review presents a generally positive view of the show, particularly for families, but notes significant shortcomings compared to other Disney productions, leading to a mixed-positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic gives two positive reviews - one enthusiastic for families and one more measured for general audiences. Despite some criticisms about lack of depth compared to other Disney shows, the overall assessment is positive with clear recommendation. | GPT-4o: The review highlights the show's charm, energy, and strong performances, particularly praising James Monroe Iglehart's role as the Genie. While it notes some shortcomings compared to other Disney adaptations, it still recommends the show as enjoyable and entertaining, especially for families. | Gemini: The review is split into two sections, one for families and one for a general audience. Both sections recommend the show, though with some reservations for the general audience. The overall tone is positive, placing it in the 'Positive' bucket.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:25:55.672Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:12:23.923Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 71,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 70,
-    "scoreDelta": 2,
+    "claudeScore": 73,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "textWordCount": 871,
   "archivePath": "data/archives/reviews/aladdin-2014/stu-on-broadway--stu-brown_2026-01-26.html",

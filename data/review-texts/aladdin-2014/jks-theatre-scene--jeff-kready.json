@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"There is joy and wonder aplenty in this un-apologetically funny, entertaining and occasionally showstopping family musical.\"",
   "originalScore": "A",
-  "assignedScore": 87,
+  "assignedScore": 81,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "complete",
@@ -18,60 +18,52 @@
   "scoreSource": "letter-grade",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 87,
+    "score": 81,
     "confidence": "medium",
     "range": {
-      "low": 78.5,
-      "high": 95.5
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 82,
-      "music": 88,
-      "performances": 89,
-      "direction": 89
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Grade: A-",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "There is joy and wonder aplenty in this un-apologetically funny, entertaining and occasionally showstopping family musical",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "this bright spot of the season is for you",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The A- grade combined with extensive praise for direction, choreography, performances, and production values indicates a strong positive recommendation despite minor reservations. | GPT-4o-mini: The review expresses strong enthusiasm for the production, praising its entertainment value, direction, performances, and overall execution, indicating a must-see experience.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite the truncated text, the critic gives an A- grade and uses consistently positive language throughout, praising the direction, performances, and production values while acknowledging it's unapologetically entertaining rather than groundbreaking art. | GPT-4o: The review is overwhelmingly positive, highlighting the joy, wonder, and entertainment value of the production. The critic's original rating of 'A' and the enthusiastic language used throughout indicate a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the show's entertainment value, strong performances, and impressive production numbers. The critic awards the show an A- and states that it is a bright spot of the season. Despite the truncated text, the overall tone and the provided excerpt strongly suggest a recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:24:49.631Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:11:32.002Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 87,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 83,
+    "claudeScore": 82,
     "openaiScore": 90,
-    "scoreDelta": 7,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "textWordCount": 1585,
   "archivePath": "data/archives/reviews/aladdin-2014/jks-theatre-scene--jeff-kready_2026-01-26.html",

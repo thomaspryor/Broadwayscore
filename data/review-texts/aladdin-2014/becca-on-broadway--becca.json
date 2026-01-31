@@ -37,7 +37,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges the show is fun and entertaining but expresses significant disappointment with missed opportunities, lack of heart, and poor creative choices. The lukewarm recommendation suggests neither strong endorsement nor discouragement. | GPT-4o: The review highlights significant criticisms, such as the lack of heart and missed opportunities, but acknowledges that the show is fun and entertaining for its target audience, with standout performances like the Genie. | Gemini: Despite many criticisms, the reviewer states that audiences will enjoy the show, making it a positive but not rave review. The reviewer highlights the Genie's performance as a primary reason to see the show, but also points out missed opportunities and a lack of heart.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The reviewer has significant criticisms about heart, character development, and missed opportunities, but acknowledges the show is fun, entertaining for its target audience, and has standout moments like the Genie's performance. | GPT-4o: The review acknowledges that the show is fun and the target audience will be entertained, but criticizes it for lacking heart and having missed opportunities. The critic highlights specific elements that work, like the Genie and certain songs, but overall conveys a sense of disappointment. | Gemini: Despite many criticisms, the reviewer ultimately states that audiences will enjoy the show. The positive aspects, like the Genie and some new songs, outweigh the negatives enough for a mild recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -47,12 +47,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T05:51:23.892Z",
+    "scoredAt": "2026-01-31T18:10:43.803Z",
     "promptVersion": "5.0.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 64,
-    "previousVersion": "3.0.0"
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,

@@ -9,66 +9,58 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 79,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
   "llmScore": {
-    "score": 85,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 90,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Strong is one of the great American actors of his generation",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "It is a sight to see",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "He's as live and present as anyone could ask",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Extremely high praise for both lead performances with superlative language, but excerpt focuses solely on acting without addressing the overall production or show quality. | GPT-4o-mini: The review strongly praises the performances, particularly highlighting the actors' abilities, indicating a clear recommendation to see the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: High praise for the lead performances with vivid, enthusiastic language, though limited excerpt makes it difficult to assess overall production recommendation. | GPT-4o: The review praises the performances of the actors, describing them as a 'sight to see' and highlighting their skill and presence. This indicates a strong positive recommendation. | Gemini: The review excerpt praises the performances of the actors, particularly Jeremy Strong, indicating a positive experience and recommendation. The aggregator context also suggests a positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T05:23:13.718Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:14:01.818Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
-    "scoreDelta": 0,
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   }
 }

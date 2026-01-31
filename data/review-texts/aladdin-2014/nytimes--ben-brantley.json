@@ -9,43 +9,27 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a world in which more is more, and then some, and the impulse is to shield your eyes from the exuberant vulgarity of it all. But wait — let the gaudy spectacle wash over you, and you may find, to your surprise, that you're actually enjoying yourself.",
   "originalScore": null,
-  "assignedScore": 71,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 71,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 77
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 75
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the impulse is to shield your eyes from the exuberant vulgarity of it all",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "let the gaudy spectacle wash over you, and you may find, to your surprise, that you're actually enjoying yourself",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "let the gaudy spectacle wash over you",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic acknowledges initial off-putting elements but ultimately suggests audiences will enjoy themselves if they embrace the spectacle, indicating a qualified positive recommendation. | GPT-4o-mini: The review suggests a surprising enjoyment despite initial reservations about the show's excess, indicating a qualified recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review starts with criticism of the show's excess but ultimately concludes with a positive recommendation to let the spectacle wash over you and enjoy it, indicating a recommendation despite initial reservations. | GPT-4o: The review acknowledges the show's excessive style but ultimately suggests that it is enjoyable, indicating a positive recommendation with some reservations. | Gemini: Despite the initial reservations about the 'exuberant vulgarity,' the review ultimately suggests that the audience will enjoy the show, placing it in the 'Positive' bucket. The score reflects the qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,20 +38,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T02:47:05.807Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:12:04.251Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 71,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 70,
+    "claudeScore": 73,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "sources": [
     "web-search"

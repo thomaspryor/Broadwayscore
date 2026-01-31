@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"From where I sat, Aladdin was diverting, to be sure, but ultimately uninspired...it feels like a passable summer-stock production with a Broadway budget. The look is lush and colorful, but the production lacks magic.\"",
   "originalScore": null,
-  "assignedScore": 54,
+  "assignedScore": 59,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "complete",
@@ -22,60 +22,52 @@
   "scoreSource": "sentiment-mixed-positive",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 54,
+    "score": 59,
     "confidence": "high",
     "range": {
-      "low": 47.5,
-      "high": 60.5
+      "low": 54,
+      "high": 64
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 38,
-      "music": 53,
-      "performances": 68,
-      "direction": 40
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "diverting, to be sure, but ultimately uninspired",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "feels like a passable summer-stock production with a Broadway budget",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "pleasant but forgettable",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic finds the show professionally adequate but creatively disappointing, with particular criticism of the direction and book, making it hard to recommend despite some redeeming elements. | GPT-4o-mini: The review expresses mixed feelings, praising some aspects like visuals and performances while criticizing the overall direction and script, leading to a conditional recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be only an opening sentence or fragment of a review, providing no evaluative content or recommendation about the actual production being reviewed. | GPT-4o: The review text is truncated and lacks a clear verdict. The statement is neutral and doesn't provide enough context to determine a strong recommendation or discouragement. | Gemini: This is just an introductory statement, and there is no recommendation or discouragement present in the provided text.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:27:08.199Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:13:28.373Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 54,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 52,
-    "openaiScore": 55,
-    "scoreDelta": 3,
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 57,

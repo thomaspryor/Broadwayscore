@@ -9,7 +9,7 @@
   "isFullReview": true,
   "showScoreExcerpt": "\"It may not be completely out of this world, but it will absolutely lift your spirits.\"",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 80,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "complete",
@@ -22,11 +22,11 @@
   "scoreSource": "sentiment-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 81,
+    "score": 80,
     "confidence": "medium",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -37,7 +37,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The reviewer praises multiple elements including standout performances, spectacular production numbers, and calls it 'highly entertaining' while acknowledging it's not perfect but will 'lift your spirits.' | GPT-4o: The review is overwhelmingly positive, highlighting the show-stopping moments, inventive production numbers, and the overall magic of the production. The critic emphasizes that the show is worth the ticket price and praises multiple aspects of the performance, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting several aspects of the show and explicitly stating that certain moments are worth the ticket price. The closing statement also indicates that the show is a welcome addition to a disappointing season.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is clearly positive with strong praise for specific numbers and performances, calling it 'highly entertaining' and worth seeing, though it stops short of calling it a masterpiece. | GPT-4o: The review is overwhelmingly positive, highlighting the show's magical elements, standout performances, and the director's exceptional work. It emphasizes that the show is highly entertaining and worth seeing, making it a must-see recommendation. | Gemini: The review is overwhelmingly positive, highlighting several aspects of the show and explicitly stating that certain moments are worth the ticket price. The reviewer also states that it is a bonus to see a show with as much magic as Aladdin in a disappointing season.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -47,21 +47,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T05:51:40.824Z",
+    "scoredAt": "2026-01-31T18:11:00.323Z",
     "promptVersion": "5.0.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 86,
-    "previousVersion": "3.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": 90,
+    "claudeScore": 78,
+    "openaiScore": 92,
     "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

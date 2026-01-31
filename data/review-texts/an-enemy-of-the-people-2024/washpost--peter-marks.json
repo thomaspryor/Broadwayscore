@@ -9,65 +9,57 @@
   "isFullReview": false,
   "dtliExcerpt": "Jeremy Strong brings his intense, method-actor approach to Ibsen's idealistic doctor, creating a performance that feels both contemporary and faithful to the Norwegian playwright's vision.",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 76,
+    "confidence": "medium",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 79,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "intense, method-actor approach",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "feels both contemporary and faithful to the Norwegian playwright's vision",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Jeremy Strong brings his intense, method-actor approach",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review praises Strong's performance as thoughtful and well-executed, but this brief excerpt lacks any explicit recommendation or broader assessment of the production's overall quality. | GPT-4o-mini: The review highlights a strong performance by Jeremy Strong, indicating a positive recommendation despite lacking details on other aspects of the production.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises Strong's performance as both contemporary and faithful, indicating approval, but the brief excerpt lacks explicit recommendation language or broader assessment of the production. | GPT-4o: The review highlights a strong performance by Jeremy Strong, suggesting a positive view of the production. However, without more context, the recommendation is inferred rather than explicit. | Gemini: The review focuses on a positive aspect of the performance, suggesting it's worth seeing for Strong's portrayal, but lacks an explicit overall recommendation. The tone is generally appreciative, placing it in the positive bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:35:31.877Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:15:10.383Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "textQuality": "truncated",
   "truncationSignals": [

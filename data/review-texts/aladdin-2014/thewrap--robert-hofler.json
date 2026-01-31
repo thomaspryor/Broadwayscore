@@ -11,65 +11,57 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 37,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 37,
+    "score": 44,
     "confidence": "high",
     "range": {
-      "low": 30.5,
-      "high": 43.5
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 28,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 35
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "finds no magic whatsoever in a story rife with magic lanterns, carpets, genies and sultry Arabian nights",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "loaded with some clever \"Sesame Street\" word play",
-        "sentiment": "positive",
-        "strength": 2
-      },
-      {
-        "quote": "Isn't mocking stage traditions a rather cynical way to introduce children to the theater?",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic finds fundamental flaws in the book's inability to capture magic and questions the cynical approach to children's theater, with only minor praise for wordplay. | GPT-4o-mini: The review expresses significant disappointment in the script and overall experience, leading to a clear negative recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic finds the show fundamentally lacking in magic and questions the cynical approach to introducing children to theater, indicating disappointment with the production despite acknowledging some clever wordplay. | GPT-4o: The review criticizes the lack of magic in a story that should be magical, and questions the suitability of the humor for children, suggesting a negative view of the production. | Gemini: The review excerpt is largely negative, criticizing the book and humor. There's no indication of a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:08:29.954Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:12:52.056Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 37,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 35,
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "sources": [
     "bww-roundup"

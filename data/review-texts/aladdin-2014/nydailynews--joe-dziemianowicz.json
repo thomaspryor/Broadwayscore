@@ -10,7 +10,7 @@
   "bwwExcerpt": "While burning through wishes, you should ask for the musical to have a lot more heart. The absence is glaring, given that Disney excels at tugging at tickers and then making them melt. But this show seldom moves you. The title character's yearning ballad, \"Proud of Your Boy,\" sung to his long-gone mom, isn't enough to make this anything better than a Bedouin \"Beauty and the Beast\" - a cartoon on stage.",
   "showScoreExcerpt": "\"The show is as colorful as the Crayola 64 box, and as tirelessly energetic as a toddler, but it also feels canned. While burning through wishes, you should ask for the musical to have a lot more heart. The absence is glaring, given that Disney excels at tugging at tickers and then making them melt.\"",
   "originalScore": 80,
-  "assignedScore": 69,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALADDIN-Opens-on-Broadway-Updating-LIVE-20140320",
   "textStatus": "complete",
@@ -21,60 +21,52 @@
   "scoreSource": "sentiment-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 69,
-    "confidence": "medium",
+    "score": 80,
+    "confidence": "high",
     "range": {
-      "low": 60.5,
-      "high": 77.5
+      "low": 75,
+      "high": 85
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 58,
-      "music": 70,
-      "performances": 80,
-      "direction": 73
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "entertaining but emotionally sparse",
-        "sentiment": "neutral",
-        "strength": 4
-      },
-      {
-        "quote": "While burning through wishes, you should ask for the musical to have a lot more heart",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "James Monroe Iglehart shines with enough charisma to light a thousand and one nights",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The critic finds the show entertaining with impressive technical elements and standout performances (especially Iglehart), but criticizes its emotional emptiness and formulaic nature, resulting in a qualified recommendation. | GPT-4o-mini: The review highlights strong performances and vibrant production but notes a lack of emotional depth, leading to a mixed-positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic's 80/100 rating and overall tone indicate a positive recommendation despite noting emotional shortcomings. The review highlights spectacular effects and strong performances, particularly praising Iglehart's genie, while acknowledging the show lacks heart but remains entertaining. | GPT-4o: The review highlights impressive elements like the magic carpet and James Monroe Iglehart's performance, despite noting a lack of emotional depth. The original rating of 80 aligns with a strong positive recommendation. | Gemini: The critic explicitly states the show is \"entertaining\" and gives it a rating of 80. While noting it's emotionally sparse, the overall tone is positive and recommends seeing it.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:25:13.537Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:11:50.371Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 69,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 65,
-    "scoreDelta": 7,
+    "claudeScore": 79,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "textWordCount": 463,
   "archivePath": "data/archives/reviews/aladdin-2014/ny-daily-news--joe-dziemianowicz_2026-01-26.html",

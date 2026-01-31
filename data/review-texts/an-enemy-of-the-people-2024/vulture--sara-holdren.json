@@ -10,65 +10,57 @@
   "showScoreExcerpt": "\"Strong and Imperioli both bring a vigorous contemporary affect to the material.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/an-enemy-of-the-people-broadway",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 59,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 89,
+    "score": 59,
     "confidence": "high",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 54,
+      "high": 64
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 88,
+      "book": null,
       "music": null,
-      "performances": 89,
-      "direction": 91
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the gesture is as profound as it is pleasurable",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Herzog and Gold have cleared away any fustiness and have drawn out Enemy's inherent muscularity",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "it's thrilling to see an American production push further both into visual metaphor and into physical courage and trust than many are ever willing to go",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The reviewer offers sustained, detailed praise for the innovative direction, strong performances, and intelligent adaptation, with particular enthusiasm for the creative staging choices and contemporary relevance. | GPT-4o-mini: The review expresses strong enthusiasm for the production's innovative direction, performances, and thematic depth, indicating it as a must-see.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be only the opening sentence of the review, providing setup information about a staging element but no evaluative content or verdict about the production's quality. | GPT-4o: The review text is truncated and lacks a clear verdict, making it difficult to determine the overall recommendation. The mention of a full bar being lowered suggests an unusual or noteworthy production element, but without further context, the tone remains ambiguous. | Gemini: The provided text is extremely truncated and offers no clear recommendation. Without further context, it's impossible to determine if the review is positive or negative, so I've classified it as mixed with a low confidence score.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:28:53.562Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:15:03.781Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "sources": [
     "show-score",

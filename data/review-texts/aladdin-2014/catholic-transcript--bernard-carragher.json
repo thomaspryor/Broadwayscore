@@ -9,7 +9,7 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"Mainly, this Aladdin is F-U-N because it was so craftily assembled. Aladdin is a treat for the eye and ear.\"",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 78,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textStatus": "excerpt_only",
@@ -17,11 +17,11 @@
   "sourceMethod": "playwright",
   "scoreSource": null,
   "llmScore": {
-    "score": 79,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review emphasizes fun and describes the show as a 'treat,' indicating clear enjoyment and recommendation despite limited text available. | GPT-4o: The review emphasizes the fun and craftsmanship of the production, describing it as a treat, which indicates a positive recommendation. | Gemini: The review excerpt states that Aladdin is \"F-U-N\" and a \"treat,\" indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review emphasizes fun and craft with positive descriptors like 'treat for the eye and ear,' though the excerpt is brief and may not capture the full verdict. | GPT-4o: The review highlights the production as 'F-U-N' and a 'treat for the eye and ear,' indicating a positive experience and recommendation. | Gemini: The review excerpt uses positive language like \"F-U-N\" and \"treat,\" indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,21 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T05:51:32.163Z",
+    "scoredAt": "2026-01-31T18:10:52.650Z",
     "promptVersion": "5.0.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 84,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 76,
     "openaiScore": 80,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

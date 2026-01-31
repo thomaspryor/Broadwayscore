@@ -10,67 +10,59 @@
   "dtliExcerpt": "It’s not that & Juliet is unenjoyable – it isn’t. Somewhere beneath the bombast and repetition and overwrought-from-minute-one approach is a sweet(ish) and smart(ish) tale that gives voice to the marginalized and, not incidentally, provides fans of the music of Britney Spears, Backstreet Boys, Katy Perry, Kesha, Demi Lovato, Ariana Grande, Bon Jovi, Celine Dion, Pink and Justin Timberlake a chance to hear their favorite songs in a musical that makes no secret of its identity: A jukebox takes early pride of place on the set.",
   "showScoreExcerpt": "\"Itâs not that '&amp; Juliet' is unenjoyable â it isnât. Somewhere beneath the bombast and repetition and overwrought-from-minute-one approach is a sweet(ish) and smart(ish) tale that gives voice to the marginalized.\"",
   "originalScore": null,
-  "assignedScore": 59,
+  "assignedScore": 63,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:57:18.264Z",
   "dtliThumb": "Meh",
   "bwwExcerpt": "It's not that & Juliet is unenjoyable - it isn't. Somewhere beneath the bombast and repetition and overwrought-from-minute-one approach is a sweet(ish) and smart(ish) tale that gives voice to the marginalized and, not incidentally, provides fans of the music of Britney Spears, Backstreet Boys, Katy ...",
   "llmScore": {
-    "score": 59,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 47.5,
-      "high": 70.5
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
-      "music": 70,
-      "performances": 60,
-      "direction": 58
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "It's not that & Juliet is unenjoyable – it isn't",
-        "sentiment": "positive",
-        "strength": 2
-      },
-      {
-        "quote": "the songs can move from inspirational to browbeating in record time. And they do",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Read has fashioned a sort of instructional guide to feminism... rendered with the subtlety of a middle school pep rally",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic acknowledges the show isn't unenjoyable and praises some technical elements, but heavily criticizes the book's lack of subtlety, the repetitive nature of the songs, and over-the-top performances, resulting in a neutral recommendation. | GPT-4o-mini: The review presents a mix of enjoyment and criticism, highlighting both the fun aspects of the music and performances while also noting significant flaws in the book and execution. | Note: Models differed by 13 points.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges the show isn't unenjoyable and has sweet/smart elements, but criticizes it as bombastic, repetitive, and lacking subtlety. The overall tone suggests neither strong recommendation nor discouragement. | GPT-4o: The review acknowledges the musical's enjoyable aspects and its appeal to fans of the music but criticizes its lack of subtlety and repetitive nature. The overall tone suggests neither a strong recommendation nor a complete dismissal. | Gemini: The review acknowledges some enjoyment but criticizes the bombast, repetition, and unsubtle approach. It lands in the 'Mixed' category as it neither strongly recommends nor discourages seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:29:26.273Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:16:10.857Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 59,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 52,
+    "claudeScore": 62,
     "openaiScore": 65,
-    "scoreDelta": 13,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "textStatus": "complete",
   "textIssue": "too_short",

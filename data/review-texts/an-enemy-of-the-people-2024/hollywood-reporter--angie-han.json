@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Strong brings a compelling intensity to his performance as Dr. Thomas Stockmann, the idealistic physician who discovers his town's water supply is contaminated.",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,55 +18,52 @@
   "showScoreExcerpt": "Strong brings a compelling intensity to his performance as Dr. Thomas Stockmann, the idealistic physician who discovers his town's water supply is contaminated.",
   "needsScoring": true,
   "llmScore": {
-    "score": 68,
-    "confidence": "high",
+    "score": 75,
+    "confidence": "medium",
     "range": {
-      "low": 60.5,
-      "high": 75.5
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 75,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Strong brings a compelling intensity to his performance",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the idealistic physician who discovers his town's water supply is contaminated",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: This excerpt only praises one performance aspect without any overall recommendation or assessment of the production as a whole. | GPT-4o-mini: The review highlights a strong performance but lacks broader context or enthusiasm for the overall production.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The text praises the lead performance as 'compelling' but appears to be a fragment or excerpt rather than a complete review, making overall assessment difficult. | GPT-4o: The review snippet highlights a strong performance but does not provide enough context to determine an overall recommendation. The lack of a clear verdict and the possibility of truncated text lead to a mixed classification with low confidence. | Gemini: The review highlights a strong performance, indicating a positive experience overall. While it doesn't explicitly recommend seeing the show, the praise suggests it's worth watching.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T05:23:08.250Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:13:55.477Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 68,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 70,
-    "scoreDelta": 5,
+    "claudeScore": 75,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "textQuality": "truncated",
   "truncationSignals": [

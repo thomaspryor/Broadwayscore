@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This is a roundup of multiple critics with predominantly lukewarm reviews - most find it entertaining but lacking compared to the film, with praise mainly for individual performances rather than the overall production. | GPT-4o: The review highlights both positive and negative aspects, such as the entertaining performance by James Monroe Iglehart, but also notes the show lacks the magic of the original film. The mixed opinions from various critics suggest a balanced view. | Gemini: While the review notes some critics found it lacking compared to the film, it also highlights positive aspects like the Genie's performance and the potential for it to be a family-friendly hit. The overall tone suggests a recommendation with reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This is a roundup of multiple critics with decidedly mixed opinions - some found it lacking magic and heart compared to the film, while others praised specific performances and called it 'sweet, silly fun' that could be a family hit. | GPT-4o: The review highlights both positive and negative aspects, with praise for certain performances and elements but criticism for not capturing the magic of the original film. The overall tone suggests a mixed reception, with some enjoyment but notable shortcomings. | Gemini: While the review mentions some criticisms about the show lacking the magic of the original film, it also highlights positive aspects such as James Monroe Iglehart's performance as the Genie and the potential for the show to become a family-friendly hit. The overall tone suggests a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,12 +46,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T05:51:44.966Z",
+    "scoredAt": "2026-01-31T18:11:04.180Z",
     "promptVersion": "5.0.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 64,
-    "previousVersion": "3.0.0"
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,

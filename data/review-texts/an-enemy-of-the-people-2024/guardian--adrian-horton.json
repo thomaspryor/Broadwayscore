@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Strong's performance is committed and intense, but the production feels heavy-handed in its contemporary parallels, lacking the nuance that would make Ibsen's themes truly resonate for modern audiences.",
   "originalScore": 60,
-  "assignedScore": 50,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,60 +18,52 @@
   "showScoreExcerpt": "Strong's performance is committed and intense, but the production feels heavy-handed in its contemporary parallels, lacking the nuance that would make Ibsen's themes truly resonate for modern audiences.",
   "needsScoring": true,
   "llmScore": {
-    "score": 50,
-    "confidence": "medium",
+    "score": 61,
+    "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 60
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 50,
+      "book": null,
       "music": null,
-      "performances": 73,
-      "direction": 43
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Strong's performance is committed and intense",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "production feels heavy-handed in its contemporary parallels",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "lacking the nuance that would make Ibsen's themes truly resonate",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: While praising Strong's performance, the critic delivers significant criticism of the production's heavy-handed approach and failure to achieve meaningful contemporary relevance, making it hard to recommend. | GPT-4o-mini: The review highlights a strong performance but criticizes the production for being heavy-handed and lacking nuance, leading to a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges a strong central performance but criticizes the production's execution and lack of nuance, resulting in a balanced mixed assessment that aligns with the critic's 60 rating. | GPT-4o: The original rating of 60 aligns with a mixed review, and the text highlights both a strong performance and criticisms of the production's execution, indicating a balanced view. | Gemini: The review praises the performance but criticizes the production's execution, resulting in a mixed assessment. The critic's own rating of 60 aligns with the Mixed bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:09:23.188Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:13:52.692Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 50,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 55,
-    "scoreDelta": 10,
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "textQuality": "truncated",
   "truncationSignals": [

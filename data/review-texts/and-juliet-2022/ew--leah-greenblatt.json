@@ -6,7 +6,7 @@
   "url": "https://ew.com/theater/theater-reviews/and-juliet-broadway-musical-review/",
   "publishDate": "2022-11-17",
   "originalScore": null,
-  "assignedScore": 58,
+  "assignedScore": 79,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "As much as the show feels directed toward a strenuously young demographic - some of them possibly not even born yet when Backstreet were singing about their fire, or their one desire - the script makes several knowing nods, much like a Pixar movie, to the ancient grown-ups in the room. There's something a little relentless about & Juliet's dogged eagerness to entertain, but nakedly joyful too: a violent delight, flipped for the TikTok era. Grade: B+",
@@ -24,38 +24,22 @@
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 58,
-    "confidence": "medium",
+    "score": 79,
+    "confidence": "high",
     "range": {
-      "low": 45.5,
-      "high": 70.5
+      "low": 74,
+      "high": 84
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 58,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "feels directed toward a strenuously young demographic",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "makes several knowing nods, much like a Pixar movie, to the ancient grown-ups in the room",
-        "sentiment": "positive",
-        "strength": 2
-      },
-      {
-        "quote": "the script makes several knowing nods",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Incomplete excerpt shows mixed signals about demographic targeting and script quality, but lacks sufficient content for confident assessment. | GPT-4o-mini: The review indicates some positive elements in the script but lacks strong enthusiasm or a clear recommendation. | Note: Models differed by 15 points.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B+ grade clearly indicates a positive recommendation, and while noting some reservations about the show's 'relentless' eagerness, the critic finds it 'nakedly joyful' - a net positive assessment. | GPT-4o: The review describes the show as 'nakedly joyful' and 'a violent delight,' indicating a strong positive impression. The grade of B+ further supports a high positive score. | Gemini: The review acknowledges the show's flaws but ultimately describes it as \"nakedly joyful\", suggesting a positive, albeit qualified, recommendation. The B+ grade further supports this classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -64,20 +48,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:01:28.692Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:16:14.630Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 58,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 50,
-    "openaiScore": 65,
-    "scoreDelta": 15,
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliThumb": "Up",
   "dtliExcerpt": "There's something a little relentless about & Juliet's dogged eagerness to entertain, but nakedly joyful too: a violent delight, flipped for the TikTok era.",

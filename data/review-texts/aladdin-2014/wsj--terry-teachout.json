@@ -10,65 +10,57 @@
   "showScoreExcerpt": "\"It's not nearly as good as the movie, but it does have a terrific star, super-duper sets and sensational special effects.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 74,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 62,
+    "score": 74,
     "confidence": "medium",
     "range": {
-      "low": 50.5,
-      "high": 73.5
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 74,
-      "direction": 71
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "It's not nearly as good as the movie",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "does have a terrific star, super-duper sets and sensational special effects",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "not nearly as good as the movie",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Mixed review that strongly criticizes the adaptation while praising technical elements and lead performance, suggesting qualified recommendation for spectacle despite story shortcomings. | GPT-4o-mini: The review indicates some positive aspects like the star and production values but ultimately suggests a lack of overall quality compared to the movie, leading to a mixed recommendation. | Note: Models differed by 13 points.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite unfavorable comparison to the source material, the review highlights multiple strong positives (terrific star, super-duper sets, sensational special effects), suggesting overall recommendation despite flaws. | GPT-4o: The review acknowledges significant positive elements like the star and production values, but the comparison to the movie suggests it falls short overall, leading to a mixed verdict. | Gemini: The review acknowledges it's not as good as the source material, but highlights positive aspects like the star, sets, and special effects, suggesting it's still worth seeing despite its shortcomings.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:08:50.696Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:13:25.214Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 68,
-    "openaiScore": 55,
-    "scoreDelta": 13,
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwExcerpt": "Billing notwithstanding, the real star of \"Aladdin\" is James"
 }

@@ -6,64 +6,56 @@
   "url": "https://deadline.com/2024/03/enemy-of-the-people-broadway-review-1235860766/",
   "publishDate": "March 18, 2024",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 89,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 89,
+    "confidence": "medium",
     "range": {
-      "low": 80.5,
-      "high": 95.5
+      "low": 84,
+      "high": 94
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 89,
+      "book": null,
       "music": null,
-      "performances": 90,
-      "direction": 88
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Sam Gold's An Enemy Of The People is one of the best play revivals of the current season to date",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Audiences on every night of this limited 16-week run at Circle in the Square will witness a taut and exactingly-directed production",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Herzog, as she did recently with Ibsen's A Doll's House starring Jessica Chastain, almost magically combines modernisms – both in themes and speech – with period authenticity",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic declares this 'one of the best play revivals of the current season' and consistently praises the adaptation, performances, and direction with superlatives like 'taut and exactingly-directed' and 'almost magically combines modernisms.' | GPT-4o-mini: The review expresses strong enthusiasm for the production's relevance, direction, and performances, indicating it as a must-see revival.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic explicitly calls this 'one of the best play revivals of the current season' and uses strong positive language like 'taut and exactingly directed,' indicating a clear rave recommendation. | GPT-4o: The review strongly praises the production as one of the best of the season, indicating a must-see recommendation. The positive comparison to other notable productions further supports a high score within the Rave bucket. | Gemini: The review excerpt explicitly states that the production is one of the best revivals of the season, indicating a strong positive recommendation. The comparison to other well-regarded productions further reinforces this assessment.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:27:31.985Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:13:41.699Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
+    "claudeScore": 88,
     "openaiScore": 90,
-    "scoreDelta": 5,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "dtliExcerpt": "But have no doubt: Audiences on any every night of this limited 16-week run at Circle in the Square will witness a taut and exactingly directed production. Sam Gold’s An Enemy Of The People is one of the best play revivals of the current season to date, right up there with Purlie Victorious, besting Doubt and even Gold’s own, shakier Macbeth starring Daniel Craig in 2022.",
   "sources": [

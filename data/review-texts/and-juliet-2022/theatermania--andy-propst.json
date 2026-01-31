@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "& Juliet is a jukebox musical that takes the pop songs of Max Martin and uses them to tell a story that asks: What if Juliet didn't die at the end of Romeo and Juliet?",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "& Juliet is a jukebox musical that takes the pop songs of Max Martin and uses them to tell a story that asks: What if Juliet didn't die at the end of Romeo and Juliet?",
   "needsScoring": true,
   "llmScore": {
-    "score": 50,
+    "score": 60,
     "confidence": "high",
     "range": {
-      "low": 45,
-      "high": 55
+      "low": 55,
+      "high": 65
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -32,24 +32,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "& Juliet is a jukebox musical that takes the pop songs of Max Martin and uses them to tell a story that asks: What if Juliet didn't die at the end of Romeo and Juliet?",
-        "sentiment": "neutral",
-        "strength": 1
-      },
-      {
-        "quote": "& Juliet is a jukebox musical that takes the pop songs of Max Martin",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "asks: What if Juliet didn't die at the end of Romeo and Juliet?",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: This appears to be a plot description rather than an actual review, providing no critical assessment or recommendation signals. | GPT-4o-mini: The review provides a basic description of the musical without expressing clear enthusiasm or criticism, indicating a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be only a descriptive opening paragraph with no critical assessment or recommendation provided in the text. | GPT-4o: The review text is truncated and does not provide a clear recommendation or critique. The description of the musical's premise suggests a neutral stance, but without further context, it's difficult to determine the critic's overall opinion. | Gemini: The provided text only describes the premise of the musical. Without further information on the critic's opinion, it's impossible to determine if they recommend it or not, placing it in the mixed category with low confidence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -58,20 +42,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:45:04.890Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:17:11.223Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 50,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 50,
-    "openaiScore": 50,
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "textQuality": "truncated",
   "truncationSignals": [

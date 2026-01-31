@@ -11,72 +11,63 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": "1/5",
-  "assignedScore": 48,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 48,
-    "confidence": "low",
+    "score": 76,
+    "confidence": "medium",
     "range": {
-      "low": 30.5,
-      "high": 65.5
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 53
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "seems restrained and merely atmospheric",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "without the extra-special touch he has brought to various projects in the past",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The always-expert Natasha Katz creates magical images with her lighting",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The incomplete review fragment suggests disappointment with direction and design elements falling short of past work, with only lighting receiving unqualified praise. | GPT-4o-mini: The review contains both praise for the director's reputation and criticism of the first act's execution, leading to a mixed recommendation. | Note: Models differed by 25 points.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite the 1/5 rating discrepancy, the review clearly concludes with a positive recommendation, calling it 'a considerable win for Disney' and praising standout performances and moments, though acknowledging it's not perfect. | GPT-4o: The critic gave a 1/5 rating, indicating a negative view. Despite some praise for individual performances and moments, the overall tone suggests disappointment, especially when compared to other Disney productions. | Gemini: Despite some reservations about certain aspects, the review ultimately recommends the show as a 'considerable win' for Disney, highlighting standout moments and performances, especially that of James Monroe Iglehart as the Genie.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:08:06.783Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:11:26.539Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 48,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 35,
-    "openaiScore": 60,
-    "scoreDelta": 25,
+    "claudeScore": 73,
+    "openaiScore": 35,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Positive",
+    "scoreDelta": 43,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": true,
     "needsReviewReasons": [
-      "Models disagree by 25 points (Claude: 35, OpenAI: 60)"
-    ]
+      "Outlier openai chose Negative, 2+ buckets from majority"
+    ],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "sources": [
     "bww-roundup"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 48,
   "textWordCount": 951,
@@ -98,5 +89,6 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20170922131338",
-  "archiveOrgUrl": "http://web.archive.org/web/20170922131338/http://www.huffingtonpost.com:80/steven-suskin/aisle-view-brass-lamp-tur_b_5004043.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20170922131338/http://www.huffingtonpost.com:80/steven-suskin/aisle-view-brass-lamp-tur_b_5004043.html",
+  "rescoreCompletedAt": "2026-01-31T18:11:26.539Z"
 }

@@ -10,7 +10,7 @@
   "dtliExcerpt": "The magic-carpet ride is magical. The Cave of Wonders is wonderful. And yes, you’ll hear the tunes you loved in the 1992 movie. But the notion that “Disney Aladdin” somehow resurrects the spirit of the late Howard Ashman, who had the original inspiration for the movie and contributed most of its clever lyrics, is a joke. Restoring a person’s work without respecting his artistic sensibility is no tribute at all. If this super-costly Disney extravaganza doesn’t really represent Ashman’s artistic vision, whose vision does it reflect? Chad Beguelin (Elf, The Wedding Singer), who wrote the book and contributed new lyrics, obviously plays a significant role, as does Alan Menken, who scored the film and wrote new songs for the show. Even more so does helmer-choreographer Casey Nicholaw (The Book of Mormon), who stylistically turns the film’s romantic fairy-tale adventure into shtick comedy.",
   "showScoreExcerpt": "\"This super-costly extravaganza doesn't do justice to the movie, or to the spirit of the late Howard Ashman.\"",
   "originalScore": null,
-  "assignedScore": 47,
+  "assignedScore": 60,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:53:57.762Z",
@@ -18,60 +18,52 @@
   "dtliThumb": "Meh",
   "bwwExcerpt": "The magic-carpet ride is magical. The Cave of Wonders is wonderful. And yes, you'll hear the tunes you loved in the 1992 movie. But the notion that \"Disney Aladdin\" somehow resurrects the spirit of the late Howard Ashman, who had the original inspiration for the movie and contributed most of its cle...",
   "llmScore": {
-    "score": 47,
-    "confidence": "high",
+    "score": 60,
+    "confidence": "medium",
     "range": {
-      "low": 40.5,
-      "high": 53.5
+      "low": 55,
+      "high": 65
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 28,
-      "music": 65,
-      "performances": 68,
-      "direction": 43
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "This super-costly extravaganza doesn't do justice to the movie, or to the spirit of the late Howard Ashman",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The magic-carpet ride is magical. The Cave of Wonders is wonderful. And yes, you'll hear the tunes you loved in the 1992 movie",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "variations that are downright disastrous",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: Despite praising specific performances and design elements, the critic fundamentally condemns the production's artistic vision, calling changes 'disastrous' and saying it doesn't do justice to the source material. | GPT-4o-mini: The review expresses significant disappointment in the adaptation and script while acknowledging some strong performances, leading to a predominantly negative recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: While acknowledging some impressive technical elements and performances, the critic fundamentally argues the production fails its source material and replaces 'fairy-tale innocence with show-queen vulgarity,' calling key changes 'downright disastrous.' | GPT-4o: The review highlights some positive aspects such as the magical set pieces and performances but criticizes the production for not respecting the original artistic vision and making poor changes to the material. The truncated text suggests caution, but the overall tone leans towards mixed with some redeeming qualities. | Gemini: The review highlights both positive and negative aspects. While praising the sets, costumes, and some performances, it criticizes the lack of originality, cheap jokes, and changes to the original material. Given the truncated nature, it's hard to gauge the final verdict, but the overall tone suggests a mixed reaction.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:26:55.112Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:13:14.105Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 47,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 48,
-    "openaiScore": 45,
-    "scoreDelta": 3,
+    "claudeScore": 42,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "textStatus": "complete",
   "textWordCount": 718,

@@ -10,16 +10,16 @@
   "showScoreExcerpt": "\"Climate activists disrupting Jeremy Strong was the best part of the play\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/an-enemy-of-the-people-broadway",
   "originalScore": null,
-  "assignedScore": 18,
+  "assignedScore": 20,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 18,
+    "score": 20,
     "confidence": "medium",
     "range": {
-      "low": 5.5,
-      "high": 30.5
+      "low": 15,
+      "high": 25
     },
     "bucket": "Pan",
     "thumb": "Down",
@@ -29,14 +29,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Climate activists disrupting Jeremy Strong was the best part of the play",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The critic explicitly states that an audience disruption was better than the actual play, which is a devastating indictment of the production's quality. | GPT-4o-mini: The review indicates that the only notable aspect of the play was an external disruption, suggesting a complete failure of the production itself. | Note: Models differed by 15 points.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Pan | Claude: This statement directly implies that an external disruption was better than the actual performance, indicating the critic found the play itself severely lacking. | GPT-4o: The quote suggests that the most memorable or enjoyable aspect of the play was an external disruption, implying the play itself did not offer much value or entertainment. | Gemini: The critic stating that the disruption was the best part of the play indicates a very negative view of the actual production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,19 +39,27 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:10:13.745Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:15:06.813Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 18,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 25,
-    "openaiScore": 10,
-    "scoreDelta": 15,
+    "openaiScore": 15,
+    "geminiScore": 20,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Pan"
   }
 }

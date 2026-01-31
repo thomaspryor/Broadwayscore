@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The wit operates on many levels in the musical “& Juliet,” starring Lorna Courtney, at the Stephen Sondheim Theater in Manhattan.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 45,
   "source": "dtli",
   "dtliThumb": "Up",
   "dtliUrl": null,
@@ -18,60 +18,52 @@
   "showScoreExcerpt": "\"Jukebox musicals may still be bottom feeders, but, as '&amp; Juliet' proves, there are sometimes small treasures to be found in the murk.\"",
   "needsScoring": true,
   "llmScore": {
-    "score": 79,
-    "confidence": "high",
+    "score": 45,
+    "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 40,
+      "high": 50
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
-      "book": 75,
-      "music": 75,
-      "performances": 85,
-      "direction": 80
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "So shoot me: I liked it. It felt so wrong; it felt so right.",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "What saves '& Juliet' from being a lowest-common-denominator corporate byproduct is something else, something I never expected: wit.",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Jukebox musicals may still be bottom feeders, but, as '& Juliet' proves, there are sometimes small treasures to be found in the murk.",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Despite the critic's admitted bias against jukebox musicals, he gives a clear positive recommendation, praising the wit, performances (especially Wolfe and Courtney), and clever feminist reimagining of the source material. | GPT-4o-mini: The review expresses a strong appreciation for the show's wit, performances, and overall enjoyment despite some reservations about the genre.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: This appears to be the opening setup of a longer review where the critic establishes their bias against jukebox musicals before potentially delivering their actual assessment of this production. | GPT-4o: The critic clearly expresses disdain for the jukebox musical format, describing it negatively with terms like 'cockroach' and 'dead fish', and suggests that this production is not an exception to his criticisms. | Gemini: The critic clearly expresses strong disapproval of jukebox musicals, and this production falls squarely into that category. The review is overwhelmingly negative.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:30:05.736Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:17:02.007Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 62,
+    "openaiScore": 50,
+    "geminiScore": 40,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "sources": [
     "web-search",

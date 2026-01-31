@@ -8,66 +8,58 @@
   "isFullReview": false,
   "showScoreExcerpt": "\"While it doesn't rival the imagination or innovation of \"The Lion King,\"  the show's ebullient comic spirit should make it a popular hit. It's not the most sophisticated entertainment, but the target demographic won't mind at all.\"",
   "originalScore": null,
-  "assignedScore": 71,
+  "assignedScore": 74,
   "source": "dtli",
   "needsFullText": false,
   "urlUpdated": "2026-01-23T05:30:05.962Z",
   "fetchedAt": "2026-01-23T05:23:06.420Z",
   "llmScore": {
-    "score": 71,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 77
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 63,
-      "music": 70,
-      "performances": 80,
-      "direction": 73
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "this splashy Arabian Nights wish-fulfillment fantasy into a family-friendly hit",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "It's not the most sophisticated entertainment, but the target demographic won't mind at all",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "this is sweet, silly fun",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic acknowledges the show's entertainment value and commercial appeal while noting its lack of sophistication, predicting success despite creative limitations. | GPT-4o-mini: The review expresses a generally positive view of the show's entertainment value and performances, but notes significant shortcomings in the book and emotional depth, leading to a mixed-positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite acknowledging limitations in sophistication and innovation, the critic clearly predicts success and highlights the show's entertaining spirit, indicating a positive recommendation for its intended audience. | GPT-4o: The review acknowledges that the show may not be as imaginative or sophisticated as others, but highlights its comic spirit and potential popularity, suggesting a positive recommendation despite some reservations. | Gemini: The review suggests the show will be a 'popular hit' due to its 'ebullient comic spirit,' indicating a positive experience, although it acknowledges it's not the 'most sophisticated entertainment,' suggesting reservations.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:24:41.303Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:11:22.719Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 71,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 70,
+    "claudeScore": 73,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwExcerpt": "Its exotic Middle Eastern setting and multiethnic cast aside, Aladdin offers less \"A Whole New World\" - to quote its signature song - than a traditional Disney fairy-tale realm; it's perhaps the most old-school of the company's screen-to-stage adaptations since Beauty and the Beast. But that shouldn't deter audiences from making this splashy Arabian Nights wish-fulfillment fantasy into a family-friendly hit.",
   "textStatus": "garbage_cleared",
