@@ -13,6 +13,31 @@ import { FewShotExample } from './types';
 // SCORING SCALE DEFINITIONS
 // ========================================
 
+// V5 Bucket Ranges (simplified, bucket-first approach)
+export const BUCKET_RANGES = {
+  Rave: { min: 85, max: 100, thumb: 'Up' as const },
+  Positive: { min: 70, max: 84, thumb: 'Up' as const },
+  Mixed: { min: 55, max: 69, thumb: 'Flat' as const },
+  Negative: { min: 35, max: 54, thumb: 'Down' as const },
+  Pan: { min: 0, max: 34, thumb: 'Down' as const }
+};
+
+/**
+ * Get the score range for a bucket
+ */
+export function bucketToRange(bucket: string): { min: number; max: number } {
+  return BUCKET_RANGES[bucket as keyof typeof BUCKET_RANGES] || { min: 55, max: 69 };
+}
+
+/**
+ * Ensure score is within bucket range
+ */
+export function clampScoreToBucket(score: number, bucket: string): number {
+  const range = bucketToRange(bucket);
+  return Math.max(range.min, Math.min(range.max, score));
+}
+
+// Legacy V3 score anchors (kept for backward compatibility)
 export const SCORE_ANCHORS = {
   RAVE: {
     range: [90, 100],
@@ -172,7 +197,10 @@ export const FEW_SHOT_EXAMPLES: FewShotExample[] = [
 // PROMPT TEMPLATES
 // ========================================
 
-export const PROMPT_VERSION = '3.0.0';
+export const PROMPT_VERSION = '5.0.0';
+
+// Gemini calibration offset (adjust if Gemini has systematic bias)
+export const GEMINI_CALIBRATION_OFFSET = 0;
 
 /**
  * System prompt establishing the scoring framework
@@ -227,9 +255,101 @@ Reasoning: ${ex.reasoning}
 `).join('')}
 `;
 
+// ========================================
+// V5 SIMPLIFIED PROMPT (Bucket-First Approach)
+// ========================================
+
+export const SYSTEM_PROMPT_V5 = `You are a Broadway theater critic review scorer. Your task is to determine how strongly a critic recommends seeing a show based on their review text.
+
+## Step 1: Choose the Bucket
+
+Classify the review into ONE of these buckets:
+
+| Bucket | Description | Examples |
+|--------|-------------|----------|
+| **Rave** | Enthusiastic, must-see recommendation | "masterpiece", "unmissable", "triumph", "essential viewing" |
+| **Positive** | Recommends seeing it, with or without reservations | "worth seeing", "entertaining", "enjoyable", "recommended" |
+| **Mixed** | Neither recommends nor discourages | "has its moments", "uneven", "hit or miss", "for fans only" |
+| **Negative** | Does not recommend | "disappointing", "falls short", "skip the ticket price" |
+| **Pan** | Strongly negative | "avoid", "waste of time", "terrible", "a disaster" |
+
+## Step 2: Assign a Score Within the Bucket
+
+After choosing the bucket, assign a specific score within its range:
+
+| Bucket | Score Range |
+|--------|-------------|
+| Rave | 85-100 |
+| Positive | 70-84 |
+| Mixed | 55-69 |
+| Negative | 35-54 |
+| Pan | 0-34 |
+
+Use the full range. A barely-positive review should be 70-72. A very strong positive should be 82-84.
+
+## Critical Instructions
+
+1. **VERDICT OVER SETUP**: Many reviews open with negative context (previous productions, source material issues, hype concerns) before delivering a positive verdict. ALWAYS score based on the FINAL RECOMMENDATION, not the opening setup.
+
+2. **CURRENT PRODUCTION ONLY**: If the review compares to previous productions or revivals, score only the assessment of THIS production.
+
+3. **TRUNCATED TEXT**: If warned that text is truncated, be cautious about low scores - the positive verdict may have been cut off. Weight any provided aggregator excerpts as additional evidence.
+
+4. **EXPLICIT RECOMMENDATIONS**: Phrases like "must-see", "skip it", "don't miss", "not worth it" should heavily influence the bucket choice.
+
+## Output Format
+
+Respond with ONLY this JSON (no markdown code fences, no explanation outside the JSON):
+
+{
+  "bucket": "Positive",
+  "score": 79,
+  "confidence": "high",
+  "verdict": "recommended with reservations",
+  "keyQuote": "The most indicative phrase from the review",
+  "reasoning": "1-2 sentences explaining your classification"
+}
+
+## Verdict Examples
+Good verdict formats:
+- "enthusiastically recommended"
+- "worth seeing despite flaws"
+- "mixed but has moments"
+- "disappointing, skip it"
+- "a must-see masterpiece"
+
+## Confidence Levels
+- **high**: Clear verdict language, unambiguous tone
+- **medium**: Some ambiguity but overall direction is clear
+- **low**: Genuinely mixed signals, or truncated text with unclear verdict
+`;
+
+export const SCORING_PROMPT_V5 = `Score this Broadway review.
+
+{context}
+
+## Review Text
+"{reviewText}"
+
+Respond with ONLY the JSON object.`;
+
+/**
+ * Build the V5 prompt for a review
+ */
+export function buildPromptV5(reviewText: string, context: string = ''): string {
+  return SCORING_PROMPT_V5
+    .replace('{reviewText}', reviewText)
+    .replace('{context}', context);
+}
+
+// ========================================
+// V3 LEGACY PROMPT (kept for compatibility)
+// ========================================
+
 /**
  * Main scoring prompt template
  * {reviewText} will be replaced with the actual review
+ * @deprecated Use buildPromptV5 for v5+ scoring
  */
 export const SCORING_PROMPT_TEMPLATE = `Analyze this Broadway review and provide a comprehensive scoring.
 
