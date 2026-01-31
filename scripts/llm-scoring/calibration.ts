@@ -381,3 +381,190 @@ export function getCalibrationData(): CalibrationDataPoint[] {
   const llmReviews = loadLLMScoredReviews();
   return matchReviews(humanReviews, llmReviews);
 }
+
+// ========================================
+// ENSEMBLE CALIBRATION (3-model)
+// ========================================
+
+interface EnsembleModelStats {
+  model: string;
+  count: number;
+  mae: number;
+  meanBias: number;
+  bucketAccuracy: number;
+}
+
+interface EnsembleCalibrationResult {
+  totalReviews: number;
+  reviewsWithEnsembleData: number;
+  modelStats: EnsembleModelStats[];
+  ensembleStats: {
+    mae: number;
+    meanBias: number;
+    bucketAccuracy: number;
+  };
+  agreementStats: {
+    unanimous: number;
+    majority: number;
+    noConsensus: number;
+    twoModel: number;
+    singleModel: number;
+  };
+  recommendedGeminiOffset: number;
+}
+
+/**
+ * Run ensemble-specific calibration to analyze individual model performance
+ */
+export function runEnsembleCalibration(verbose: boolean = false): EnsembleCalibrationResult | null {
+  if (verbose) {
+    console.log('\n=== Ensemble Calibration Analysis ===\n');
+  }
+
+  const humanReviews = loadHumanReviews();
+  const llmReviews = loadLLMScoredReviews();
+
+  // Filter to reviews with ensemble data
+  const ensembleReviews = llmReviews.filter(r => r.ensembleData && r.ensembleData.claudeScore !== null);
+
+  if (ensembleReviews.length === 0) {
+    if (verbose) {
+      console.log('No ensemble-scored reviews found.');
+    }
+    return null;
+  }
+
+  // Match with human reviews
+  const matched: Array<{
+    humanScore: number;
+    humanBucket: string;
+    claudeScore: number | null;
+    openaiScore: number | null;
+    geminiScore: number | null;
+    ensembleScore: number;
+    ensembleBucket: string;
+    ensembleSource: string;
+  }> = [];
+
+  for (const llmReview of ensembleReviews) {
+    const humanReview = humanReviews.find(hr => {
+      const showMatch = normalize(hr.showId) === normalize(llmReview.showId);
+      const outletMatch =
+        normalize(hr.outlet) === normalize(llmReview.outlet) ||
+        normalize(hr.outletId || '') === normalize(llmReview.outletId || '');
+      return showMatch && outletMatch;
+    });
+
+    if (humanReview && llmReview.ensembleData) {
+      matched.push({
+        humanScore: humanReview.assignedScore,
+        humanBucket: humanReview.bucket || scoreToBucket(humanReview.assignedScore),
+        claudeScore: llmReview.ensembleData.claudeScore,
+        openaiScore: llmReview.ensembleData.openaiScore,
+        geminiScore: llmReview.ensembleData.geminiScore ?? null,
+        ensembleScore: llmReview.llmScore.score,
+        ensembleBucket: llmReview.llmScore.bucket,
+        ensembleSource: llmReview.ensembleData.ensembleSource || 'unknown'
+      });
+    }
+  }
+
+  if (verbose) {
+    console.log(`Total ensemble reviews: ${ensembleReviews.length}`);
+    console.log(`Matched with human scores: ${matched.length}`);
+  }
+
+  if (matched.length === 0) {
+    return null;
+  }
+
+  // Calculate per-model stats
+  const modelStats: EnsembleModelStats[] = [];
+
+  for (const model of ['claude', 'openai', 'gemini'] as const) {
+    const scoreField = `${model}Score` as 'claudeScore' | 'openaiScore' | 'geminiScore';
+    const reviewsWithModel = matched.filter(m => m[scoreField] !== null);
+
+    if (reviewsWithModel.length === 0) continue;
+
+    const errors = reviewsWithModel.map(m => m[scoreField]! - m.humanScore);
+    const absErrors = errors.map(e => Math.abs(e));
+
+    const mae = absErrors.reduce((a, b) => a + b, 0) / reviewsWithModel.length;
+    const meanBias = errors.reduce((a, b) => a + b, 0) / reviewsWithModel.length;
+
+    // Calculate bucket accuracy for this model
+    const bucketMatches = reviewsWithModel.filter(m => {
+      const modelBucket = scoreToBucket(m[scoreField]!);
+      return normalize(modelBucket) === normalize(m.humanBucket);
+    }).length;
+
+    modelStats.push({
+      model,
+      count: reviewsWithModel.length,
+      mae: Math.round(mae * 100) / 100,
+      meanBias: Math.round(meanBias * 100) / 100,
+      bucketAccuracy: Math.round((bucketMatches / reviewsWithModel.length) * 1000) / 10
+    });
+  }
+
+  // Calculate ensemble stats
+  const ensembleErrors = matched.map(m => m.ensembleScore - m.humanScore);
+  const ensembleAbsErrors = ensembleErrors.map(e => Math.abs(e));
+  const ensembleBucketMatches = matched.filter(m =>
+    normalize(m.ensembleBucket) === normalize(m.humanBucket)
+  ).length;
+
+  const ensembleStats = {
+    mae: Math.round((ensembleAbsErrors.reduce((a, b) => a + b, 0) / matched.length) * 100) / 100,
+    meanBias: Math.round((ensembleErrors.reduce((a, b) => a + b, 0) / matched.length) * 100) / 100,
+    bucketAccuracy: Math.round((ensembleBucketMatches / matched.length) * 1000) / 10
+  };
+
+  // Count agreement types
+  const agreementStats = {
+    unanimous: matched.filter(m => m.ensembleSource === 'ensemble-unanimous').length,
+    majority: matched.filter(m => m.ensembleSource === 'ensemble-majority').length,
+    noConsensus: matched.filter(m => m.ensembleSource === 'ensemble-no-consensus').length,
+    twoModel: matched.filter(m => m.ensembleSource === 'two-model-fallback').length,
+    singleModel: matched.filter(m => m.ensembleSource === 'single-model-fallback').length
+  };
+
+  // Calculate recommended Gemini offset
+  const geminiStats = modelStats.find(s => s.model === 'gemini');
+  const claudeStats = modelStats.find(s => s.model === 'claude');
+  const recommendedGeminiOffset = geminiStats && claudeStats
+    ? Math.round((claudeStats.meanBias - geminiStats.meanBias) * 100) / 100
+    : 0;
+
+  if (verbose) {
+    console.log('\n--- Per-Model Performance ---\n');
+    for (const stats of modelStats) {
+      console.log(`${stats.model}: n=${stats.count}, MAE=${stats.mae}, Bias=${stats.meanBias > 0 ? '+' : ''}${stats.meanBias}, Bucket=${stats.bucketAccuracy}%`);
+    }
+
+    console.log('\n--- Ensemble Performance ---\n');
+    console.log(`MAE: ${ensembleStats.mae}, Bias: ${ensembleStats.meanBias > 0 ? '+' : ''}${ensembleStats.meanBias}, Bucket: ${ensembleStats.bucketAccuracy}%`);
+
+    console.log('\n--- Agreement Distribution ---\n');
+    console.log(`Unanimous: ${agreementStats.unanimous} (${Math.round(agreementStats.unanimous / matched.length * 100)}%)`);
+    console.log(`Majority: ${agreementStats.majority} (${Math.round(agreementStats.majority / matched.length * 100)}%)`);
+    console.log(`No consensus: ${agreementStats.noConsensus} (${Math.round(agreementStats.noConsensus / matched.length * 100)}%)`);
+    console.log(`Two-model fallback: ${agreementStats.twoModel} (${Math.round(agreementStats.twoModel / matched.length * 100)}%)`);
+    console.log(`Single-model fallback: ${agreementStats.singleModel} (${Math.round(agreementStats.singleModel / matched.length * 100)}%)`);
+
+    if (recommendedGeminiOffset !== 0) {
+      console.log(`\n--- Recommended Adjustments ---\n`);
+      console.log(`Gemini offset: ${recommendedGeminiOffset > 0 ? '+' : ''}${recommendedGeminiOffset} (to align with Claude)`);
+    }
+  }
+
+  return {
+    totalReviews: ensembleReviews.length,
+    reviewsWithEnsembleData: matched.length,
+    modelStats,
+    ensembleStats,
+    agreementStats,
+    recommendedGeminiOffset
+  };
+}

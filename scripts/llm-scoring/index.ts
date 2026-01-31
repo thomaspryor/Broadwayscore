@@ -49,7 +49,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { ReviewScorer } from './scorer';
 import { EnsembleReviewScorer } from './ensemble-scorer';
-import { runCalibration } from './calibration';
+import { runCalibration, runEnsembleCalibration } from './calibration';
 import { runValidation } from './validation';
 import { findGroundTruthReviews, calculateGroundTruthCalibration, printGroundTruthReport } from './ground-truth';
 import { ReviewTextFile, ScoringPipelineOptions, PipelineRunSummary } from './types';
@@ -96,6 +96,7 @@ function parseArgs(): ScoringPipelineOptions & {
   ensemble: boolean;
   groundTruth: boolean;
   needsRescore: boolean;
+  ensembleCalibrateOnly: boolean;
 } {
   const args = process.argv.slice(2);
 
@@ -129,7 +130,8 @@ function parseArgs(): ScoringPipelineOptions & {
     validateOnly: args.includes('--validate-only'),
     ensemble: args.includes('--ensemble'),
     groundTruth: args.includes('--ground-truth'),
-    needsRescore: args.includes('--needs-rescore')
+    needsRescore: args.includes('--needs-rescore'),
+    ensembleCalibrateOnly: args.includes('--ensemble-calibrate')
   };
 }
 
@@ -219,6 +221,19 @@ async function main(): Promise<void> {
 
   if (options.validateOnly) {
     runValidation(true);
+    return;
+  }
+
+  // Handle ensemble-calibrate mode
+  if (options.ensembleCalibrateOnly) {
+    console.log('=== Ensemble Calibration Analysis ===\n');
+    const result = runEnsembleCalibration(true);
+    if (result) {
+      // Save results
+      const outputPath = path.join(__dirname, '../../data/ensemble-calibration.json');
+      fs.writeFileSync(outputPath, JSON.stringify(result, null, 2) + '\n');
+      console.log(`\nResults saved to: ${outputPath}`);
+    }
     return;
   }
 
@@ -644,6 +659,7 @@ Options:
   --validate            Run aggregator validation after scoring
   --calibrate-only      Only run calibration (no scoring)
   --validate-only       Only run validation (no scoring)
+  --ensemble-calibrate  Only run ensemble calibration (analyzes per-model performance)
   --model=<model>       Claude model: sonnet (default) or haiku
   --ensemble            Use ensemble mode (Claude + GPT-4o-mini for triangulation)
   --ground-truth        Run ground truth calibration against numeric ratings
