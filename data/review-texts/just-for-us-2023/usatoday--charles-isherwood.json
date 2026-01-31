@@ -74,9 +74,9 @@
     "needsReviewReasons": []
   },
   "textWordCount": 94,
-  "archivePath": "data/archives/reviews/just-for-us-2023/usatoday--charles-isherwood_2026-01-30.html",
-  "textFetchedAt": "2026-01-30T22:37:57.310Z",
-  "fetchMethod": "scrapingbee",
+  "archivePath": "data/archives/reviews/just-for-us-2023/usatoday--charles-isherwood_2026-01-31.html",
+  "textFetchedAt": "2026-01-31T16:28:03.360Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 0,
@@ -93,14 +93,20 @@
     {
       "tier": 2,
       "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 2,
+  "fetchTier": 3,
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "incomplete",
-  "sourceMethod": "scrapingbee",
+  "sourceMethod": "brightdata",
   "textIssues": [
     "Word count too low: 94 (min: 300)"
   ]
