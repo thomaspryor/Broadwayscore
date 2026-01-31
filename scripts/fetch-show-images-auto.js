@@ -173,9 +173,11 @@ async function fetchAllTodayTixShows() {
 
   console.log(`   Found ${allShows.length} active shows from API\n`);
 
-  // Fix protocol-relative URLs (API returns //images.ctfassets.net/...)
-  // Some fields may be objects or numbers instead of strings
-  const fixUrl = (url) => {
+  // Extract URL from API image field (each field is an object: { file: { url: "//..." }, title })
+  // and fix protocol-relative URLs (API returns //images.ctfassets.net/...)
+  const extractUrl = (field) => {
+    if (!field) return null;
+    const url = field?.file?.url;
     if (!url || typeof url !== 'string') return null;
     if (url.startsWith('//')) return 'https:' + url;
     return url;
@@ -192,11 +194,11 @@ async function fetchAllTodayTixShows() {
     lookup[key] = {
       id: show.id,
       displayName: name,
-      square: fixUrl(images.posterImageSquare),
-      poster: fixUrl(images.posterImage),
-      hero: fixUrl(images.appHeroImage),
-      imageForAds: fixUrl(images.imageForAds),
-      headerImage: fixUrl(images.headerImage),
+      square: extractUrl(images.posterImageSquare),
+      poster: extractUrl(images.posterImage),
+      hero: extractUrl(images.appHeroImage),
+      imageForAds: extractUrl(images.imageForAds),
+      headerImage: extractUrl(images.headerImage),
     };
   }
 
