@@ -584,6 +584,59 @@ function validateCommercialJson() {
       }
     }
 
+    // Validate profitMargin (if present, must be a number)
+    if (show.profitMargin !== undefined && show.profitMargin !== null && typeof show.profitMargin !== 'number') {
+      error(`commercial.json: "${showId}" profitMargin must be a number, got ${typeof show.profitMargin}`);
+      issues++;
+    }
+
+    // Validate investorMultiple (if present, must be a number >= 0)
+    if (show.investorMultiple !== undefined && show.investorMultiple !== null) {
+      if (typeof show.investorMultiple !== 'number') {
+        error(`commercial.json: "${showId}" investorMultiple must be a number, got ${typeof show.investorMultiple}`);
+        issues++;
+      } else if (show.investorMultiple < 0) {
+        error(`commercial.json: "${showId}" investorMultiple must be >= 0, got ${show.investorMultiple}`);
+        issues++;
+      }
+    }
+
+    // Validate insiderProfitSharePct (if present, must be a number 0-100)
+    if (show.insiderProfitSharePct !== undefined && show.insiderProfitSharePct !== null) {
+      if (typeof show.insiderProfitSharePct !== 'number') {
+        error(`commercial.json: "${showId}" insiderProfitSharePct must be a number, got ${typeof show.insiderProfitSharePct}`);
+        issues++;
+      } else if (show.insiderProfitSharePct < 0 || show.insiderProfitSharePct > 100) {
+        error(`commercial.json: "${showId}" insiderProfitSharePct must be 0-100, got ${show.insiderProfitSharePct}`);
+        issues++;
+      }
+    }
+
+    // Validate sources array (if present)
+    if (show.sources !== undefined && show.sources !== null) {
+      if (!Array.isArray(show.sources)) {
+        error(`commercial.json: "${showId}" sources must be an array`);
+        issues++;
+      } else {
+        const validSourceTypes = ['trade', 'reddit', 'sec', 'manual'];
+        const sourceDateRegex = /^\d{4}-\d{2}-\d{2}$/;
+        show.sources.forEach((src, idx) => {
+          if (!src.type || !validSourceTypes.includes(src.type)) {
+            error(`commercial.json: "${showId}" sources[${idx}].type must be one of: ${validSourceTypes.join(', ')}`);
+            issues++;
+          }
+          if (!src.url || typeof src.url !== 'string') {
+            error(`commercial.json: "${showId}" sources[${idx}].url must be a string`);
+            issues++;
+          }
+          if (!src.date || typeof src.date !== 'string' || !sourceDateRegex.test(src.date)) {
+            error(`commercial.json: "${showId}" sources[${idx}].date must be in YYYY-MM-DD format`);
+            issues++;
+          }
+        });
+      }
+    }
+
     // Validate costMethodology
     if (show.costMethodology && !VALID_COST_METHODOLOGIES.includes(show.costMethodology)) {
       error(`commercial.json: "${showId}" has invalid costMethodology "${show.costMethodology}". Valid values: ${VALID_COST_METHODOLOGIES.join(', ')}`);
