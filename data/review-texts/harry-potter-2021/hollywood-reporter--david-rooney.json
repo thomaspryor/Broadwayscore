@@ -12,7 +12,7 @@
   "assignedScore": 79,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
-  "textStatus": "truncated",
+  "textStatus": "complete",
   "textQuality": "full",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
@@ -79,8 +79,8 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
   "textWordCount": 2295,
-  "archivePath": "data/archives/reviews/harry-potter-2021/hollywood-reporter--david-rooney_2026-01-28.html",
-  "textFetchedAt": "2026-01-28T23:29:11.544Z",
+  "archivePath": "data/archives/reviews/harry-potter-2021/hollywood-reporter--david-rooney_2026-01-31.html",
+  "textFetchedAt": "2026-01-31T23:15:10.969Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -90,7 +90,10 @@
     }
   ],
   "fetchTier": 4,
-  "truncationSignals": [],
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "possible_mid_word_cutoff"
+  ],
   "archiveOrgTimestamp": "20201109032417",
   "archiveOrgUrl": "http://web.archive.org/web/20201109032417/https://www.hollywoodreporter.com/review/harry-potter-cursed-child-theater-review-1104812",
   "rescoreCompletedAt": "2026-01-29T14:31:51.763Z",
