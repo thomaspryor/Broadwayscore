@@ -129,19 +129,25 @@
       "notes": "Fourth new musical to recoup post-pandemic. Max Martin jukebox catalogue drives consistent grosses."
     },
     "harry-potter": {
-      "designation": "Miracle",
+      "designation": "Trickle",
       "capitalization": 35500000,
       "capitalizationSource": "Broadway News / Broadway Journal",
       "weeklyRunningCost": 1000000,
-      "costMethodology": "industry-estimate",
-      "isEstimate": {
-        "weeklyRunningCost": true
-      },
+      "costMethodology": "trade-reported",
       "recouped": true,
       "recoupedDate": "2022-12",
       "recoupedWeeks": null,
       "recoupedSource": "Broadway News / Hollywood Reporter",
-      "notes": "Most expensive play ever to recoup. Condensed from two-part to single show post-pandemic. 5+ years profitable, grossing $2.1M/wk at 96% capacity."
+      "profitMargin": 6,
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/harry-potters-cursed-returns",
+          "date": "2025-12-16",
+          "excerpt": "Investors earned 6% total return (11% with NY tax credit). Total profit distributions of $2.3M on $35.5M capitalization. Show posted $3.5M operating loss year ending Feb 2025."
+        }
+      ],
+      "notes": "Most expensive play ever to recoup, but investor returns are minimal. Per Broadway Journal (Boroff, Dec 2025), only $2.3M in profit distributions to investors (6% return over 7 years). High insider profit share (31% of net profits), $34M+ in theater rent to ATG, and $10M+ in producer royalties/fees absorbed most of the $456M gross. Posted $3.5M operating loss year ending Feb 2025."
     },
     "stereophonic": {
       "designation": "Windfall",
