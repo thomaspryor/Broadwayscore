@@ -1,45 +1,49 @@
 {
-  "runDate": "2026-01-31T22:35:09.970Z",
+  "runDate": "2026-01-31T23:29:34.545Z",
   "config": {
-    "batchSize": 5,
-    "maxReviews": 10,
+    "batchSize": 10,
+    "maxReviews": 50,
     "priority": "all",
-    "showFilter": "",
+    "showFilter": "hadestown-2019",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 31,
+    "processed": 3,
+    "failed": 54,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "5.3%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 9,
-    "tier1Success": 0,
+    "tier1Attempts": 22,
+    "tier1Success": 2,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 9,
+    "tier2Attempts": 20,
     "tier2Success": 0,
-    "tier3Attempts": 9,
-    "tier3Success": 0,
-    "tier4Attempts": 21,
-    "tier4Success": 1,
-    "totalFailed": 10,
-    "scrapingBeeCreditsUsed": 10,
+    "tier3Attempts": 20,
+    "tier3Success": 2,
+    "tier4Attempts": 49,
+    "tier4Success": 4,
+    "totalFailed": 23,
+    "scrapingBeeCreditsUsed": 60,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
-  "processed": [],
+  "processed": [
+    "hadestown-2019/nytimes--jesse-green.json",
+    "hadestown-2019/broadwaynews--charles-isherwood.json",
+    "hadestown-2019/dcmetro--deb-miller.json"
+  ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
     "aladdin-2014/nytimes--ben-brantley.json",
@@ -71,49 +75,147 @@
     "an-enemy-of-the-people-2024/vulture--helen-shaw.json",
     "and-juliet-2022/hollywood-reporter--angie-han.json",
     "and-juliet-2022/variety--aramide-tinubu.json",
-    "and-juliet-2022/vulture--sara-holdren.json"
+    "and-juliet-2022/vulture--sara-holdren.json",
+    "hadestown-2019/deadline--pete-hammond.json",
+    "hadestown-2019/ew--jessica-derschowitz.json",
+    "hadestown-2019/ew--kristen-baldwin.json",
+    "hadestown-2019/guardian--jesse-green.json",
+    "hadestown-2019/guardian--jesse-oxfeld.json",
+    "hadestown-2019/nypost--johnny-oleksinski.json",
+    "hadestown-2019/observer--david-cote.json",
+    "hadestown-2019/observer--rex-reed.json",
+    "hadestown-2019/reviews-off-broadway--scott-mitchell.json",
+    "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
+    "hadestown-2019/theatermania--adam-feldman.json",
+    "hadestown-2019/theatermania--jesse-green.json",
+    "hadestown-2019/thewrap--thom-geier.json",
+    "hadestown-2019/timeout--adam-feldman.json",
+    "hadestown-2019/chicagotribune--chris-jones.json",
+    "hadestown-2019/dailybeast--tim-teeman.json",
+    "hadestown-2019/medium--christian-lewis.json",
+    "hadestown-2019/rollingstone--rob-sheffield.json",
+    "hadestown-2019/talkinbroadway--nancy-grossman.json",
+    "hadestown-2019/usatoday--elysa-gardner.json",
+    "hadestown-2019/vox--constance-grady.json",
+    "hadestown-2019/washpost--peter-marks.json",
+    "hadestown-2019/wnyc--jennifer-vanasco.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "hadestown-2019/broadwaynews--charles-isherwood.json",
+      "hadestown-2019/dcmetro--deb-miller.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archive": []
+    "archive": [
+      "hadestown-2019/nytimes--jesse-green.json"
+    ]
   },
   "failuresByOutlet": {
-    "The New York Times": {
+    "Deadline": {
       "count": 1,
-      "domain": "nytimes.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "The Hollywood Reporter": {
-      "count": 2,
-      "domain": "hollywoodreporter.com",
+      "domain": "deadline.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
     },
-    "New York Theatre Guide": {
-      "count": 1,
-      "domain": "newyorktheatreguide.com",
+    "Entertainment Weekly": {
+      "count": 2,
+      "domain": "ew.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "Variety": {
-      "count": 3,
-      "domain": "variety.com",
+    "The Guardian": {
+      "count": 2,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "New York Post": {
+      "count": 1,
+      "domain": "nypost.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
     },
-    "Vulture": {
+    "Reviews Off Broadway": {
+      "count": 1,
+      "domain": "reviewsoffbroadway.blogspot.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Theater Reviews from My Seat": {
+      "count": 1,
+      "domain": "theaterreviewsfrommyseat.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "TheaterMania": {
       "count": 2,
-      "domain": "vulture.com",
+      "domain": "theatermania.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "TheWrap": {
+      "count": 1,
+      "domain": "thewrap.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Chicago Tribune": {
+      "count": 1,
+      "domain": "chicagotribune.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The Daily Beast": {
+      "count": 1,
+      "domain": "thedailybeast.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Rolling Stone": {
+      "count": 1,
+      "domain": "rollingstone.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "USA Today": {
+      "count": 1,
+      "domain": "usatoday.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Washington Post": {
+      "count": 1,
+      "domain": "washingtonpost.com",
       "hasCredentials": true,
       "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "WNYC": {
+      "count": 1,
+      "domain": "wnyc.org",
+      "hasCredentials": false,
+      "isPaywalled": false,
       "isKnownBlocked": false
     }
   }
