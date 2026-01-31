@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-31T16:31:05.620Z",
+  "runDate": "2026-01-31T16:31:44.689Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "book-of-mormon-2011",
+    "showFilter": "illinoise-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 1,
-    "failed": 16,
+    "failed": 21,
     "skipped": 0,
-    "successRate": "5.9%"
+    "successRate": "4.5%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -24,41 +24,46 @@
     "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 14,
+    "tier1Attempts": 19,
     "tier1Success": 0,
-    "tier1_5Attempts": 10,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 14,
+    "tier2Attempts": 19,
     "tier2Success": 0,
-    "tier3Attempts": 14,
-    "tier3Success": 1,
-    "tier4Attempts": 33,
-    "tier4Success": 4,
-    "totalFailed": 16,
-    "scrapingBeeCreditsUsed": 40,
-    "browserbaseSessionsUsed": 10,
-    "browserbaseMinutesUsed": 2.4
+    "tier3Attempts": 19,
+    "tier3Success": 2,
+    "tier4Attempts": 44,
+    "tier4Success": 3,
+    "totalFailed": 21,
+    "scrapingBeeCreditsUsed": 50,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0
   },
   "processed": [
-    "book-of-mormon-2011/backstage--david-sheward.json"
+    "illinoise-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
-    "book-of-mormon-2011/variety--marilyn-stasio.json",
-    "book-of-mormon-2011/vulture--jesse-green.json",
-    "book-of-mormon-2011/ew--thom-geier.json",
-    "book-of-mormon-2011/guardian--brian-logan.json",
-    "book-of-mormon-2011/newsday--linda-winer.json",
-    "book-of-mormon-2011/theatermania--charles-isherwood.json",
-    "book-of-mormon-2011/theatermania--david-finkle.json",
-    "book-of-mormon-2011/timeout--david-cote.json",
-    "book-of-mormon-2011/wsj--terry-teachout.json",
-    "book-of-mormon-2011/ap--mark-kennedy.json",
-    "book-of-mormon-2011/dailybeast--john-anderson.json",
-    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
-    "book-of-mormon-2011/ny-1--roma-torre.json",
-    "book-of-mormon-2011/the-philadelphia-inquirer--howard-shapiro.json",
-    "book-of-mormon-2011/the-village-voice--michael-musto.json",
-    "book-of-mormon-2011/usatoday--elysa-gardner.json"
+    "illinoise-2024/hollywood-reporter--angie-han.json",
+    "illinoise-2024/nyt-theater--jonathan-mandell.json",
+    "illinoise-2024/variety--aramide-tinubu.json",
+    "illinoise-2024/variety--charles-isherwood.json",
+    "illinoise-2024/vulture--jackson-mchenry.json",
+    "illinoise-2024/deadline--greg-evans.json",
+    "illinoise-2024/deadline--pete-hammond.json",
+    "illinoise-2024/ew--kristen-baldwin.json",
+    "illinoise-2024/guardian--adrian-horton.json",
+    "illinoise-2024/observer--jesse-green.json",
+    "illinoise-2024/theatermania--jesse-green.json",
+    "illinoise-2024/thewrap--steve-pond.json",
+    "illinoise-2024/timeout--adam-feldman.json",
+    "illinoise-2024/wsj--charles-isherwood.json",
+    "illinoise-2024/theatrely--zachary-stewart.json",
+    "illinoise-2024/ap--mark-kennedy.json",
+    "illinoise-2024/billboard--demetrios-matheou.json",
+    "illinoise-2024/talkinbroadway--matthew-murray.json",
+    "illinoise-2024/usatoday--david-oliver.json",
+    "illinoise-2024/washpost--gloria-oladipo.json",
+    "illinoise-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -66,7 +71,7 @@
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "book-of-mormon-2011/backstage--david-sheward.json"
+      "illinoise-2024/broadwaynews--brittani-samuel.json"
     ]
   }
 }
