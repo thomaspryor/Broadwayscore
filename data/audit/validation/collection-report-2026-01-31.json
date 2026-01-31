@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-01-31T16:34:40.879Z",
+  "runDate": "2026-01-31T22:35:09.970Z",
   "config": {
-    "batchSize": 10,
-    "maxReviews": 50,
+    "batchSize": 5,
+    "maxReviews": 10,
     "priority": "all",
-    "showFilter": "aladdin-2014",
+    "showFilter": "",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 21,
+    "failed": 31,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -24,18 +24,18 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 18,
-    "tier1Success": 1,
+    "tier1Attempts": 9,
+    "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 17,
+    "tier2Attempts": 9,
     "tier2Success": 0,
-    "tier3Attempts": 17,
-    "tier3Success": 1,
-    "tier4Attempts": 40,
-    "tier4Success": 4,
-    "totalFailed": 21,
-    "scrapingBeeCreditsUsed": 50,
+    "tier3Attempts": 9,
+    "tier3Success": 0,
+    "tier4Attempts": 21,
+    "tier4Success": 1,
+    "totalFailed": 10,
+    "scrapingBeeCreditsUsed": 10,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
@@ -61,7 +61,17 @@
     "aladdin-2014/catholic-transcript--bernard-carragher.json",
     "aladdin-2014/theater-pizzazz--sandi-durell.json",
     "aladdin-2014/thestage--mark-shenton.json",
-    "aladdin-2014/thisbroadsway--sandra-mcfarland.json"
+    "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
+    "aladdin-2014/hollywood-reporter--david-rooney.json",
+    "aladdin-2014/nytimes--ben-brantley.json",
+    "an-enemy-of-the-people-2024/hollywood-reporter--angie-han.json",
+    "an-enemy-of-the-people-2024/nytg--david-gordon.json",
+    "an-enemy-of-the-people-2024/variety--aramide-tinubu.json",
+    "an-enemy-of-the-people-2024/variety--peter-marks.json",
+    "an-enemy-of-the-people-2024/vulture--helen-shaw.json",
+    "and-juliet-2022/hollywood-reporter--angie-han.json",
+    "and-juliet-2022/variety--aramide-tinubu.json",
+    "and-juliet-2022/vulture--sara-holdren.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -69,5 +79,42 @@
     "scrapingbee": [],
     "brightdata": [],
     "archive": []
+  },
+  "failuresByOutlet": {
+    "The New York Times": {
+      "count": 1,
+      "domain": "nytimes.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "The Hollywood Reporter": {
+      "count": 2,
+      "domain": "hollywoodreporter.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "New York Theatre Guide": {
+      "count": 1,
+      "domain": "newyorktheatreguide.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Variety": {
+      "count": 3,
+      "domain": "variety.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Vulture": {
+      "count": 2,
+      "domain": "vulture.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    }
   }
 }
