@@ -1,0 +1,77 @@
+name: Scoring Experiment
+
+on:
+  workflow_dispatch:
+    inputs:
+      experiment:
+        description: 'Which experiment to run'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - comprehensive
+          - prompt-variations
+
+env:
+  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+jobs:
+  run-experiment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Comprehensive Experiment
+        if: ${{ github.event.inputs.experiment == 'all' || github.event.inputs.experiment == 'comprehensive' }}
+        run: |
+          echo "=== Running Comprehensive Scoring Experiment ==="
+          npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/comprehensive-experiment.ts
+
+      - name: Run Prompt Variations Experiment
+        if: ${{ github.event.inputs.experiment == 'all' || github.event.inputs.experiment == 'prompt-variations' }}
+        run: |
+          echo "=== Running Prompt Variations Experiment ==="
+          npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/test-prompt-variations.ts
+
+      - name: Upload Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: experiment-results
+          path: data/audit/*.json
+
+      - name: Commit Results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add data/audit/*.json || true
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "data: Add scoring experiment results
+
+            Experiment: ${{ github.event.inputs.experiment }}
+            Triggered by: @${{ github.actor }}
+
+            Co-Authored-By: Claude <noreply@anthropic.com>"
+
+            git push origin main
+          fi
