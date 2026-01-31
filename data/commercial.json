@@ -93,7 +93,7 @@
       "recoupedDate": "2023-05",
       "recoupedWeeks": 68,
       "recoupedSource": "Deadline / Playbill",
-      "notes": "Recouped in ~16 months. Received $10M SVOG grant. Has grossed over $200M. National tour also profitable."
+      "notes": "Recouped in ~16 months. Received $10M SVOG grant. Has grossed over $200M. National tour also profitable. Note: Jackson Estate receives 100% of producer profit share — actual investor returns depend on estate's profit participation terms, which are not publicly disclosed."
     },
     "six": {
       "designation": "Windfall",
@@ -101,10 +101,10 @@
       "capitalizationSource": "Broadway Journal / SEC filing",
       "weeklyRunningCost": null,
       "recouped": true,
-      "recoupedDate": "2021-12",
+      "recoupedDate": "2022-12",
       "recoupedWeeks": null,
       "recoupedSource": "Broadway News",
-      "notes": "Low capitalization + strong grosses = quick recoupment. Received $10M SVOG grant. Multiple touring productions."
+      "notes": "Low capitalization + strong grosses = quick recoupment. Received $10M SVOG grant (200% of $5M capitalization — largest SVOG-to-cap ratio among tracked shows). Reopened Oct 2021, recouped ~Dec 2022. Multiple touring productions."
     },
     "moulin-rouge": {
       "designation": "Windfall",
@@ -115,7 +115,7 @@
       "recoupedDate": "2022-11",
       "recoupedWeeks": 173,
       "recoupedSource": "Broadway News",
-      "notes": "Recouped ~3 years after opening. Lavish production design. Has grossed $194M+ on Broadway."
+      "notes": "Recouped ~3 years after opening. Lavish production design. Has grossed $194M+ on Broadway. Received $9.9M SVOG grant + $15M insurance settlement during COVID shutdown. Estimated investor return 1.5-2.5x (Windfall confirmed). Closing April 2025."
     },
     "and-juliet": {
       "designation": "Windfall",
@@ -195,19 +195,35 @@
       }
     },
     "cabaret-2024": {
-      "designation": "Fizzle",
-      "capitalization": 26000000,
-      "capitalizationSource": "Broadway Journal / Playbill",
+      "designation": "Flop",
+      "capitalization": 24250000,
+      "capitalizationSource": "Broadway Journal ($24.25M actual raise from SEC filings)",
       "weeklyRunningCost": 1500000,
-      "costMethodology": "industry-estimate",
-      "isEstimate": {
-        "weeklyRunningCost": true
-      },
+      "costMethodology": "trade-reported",
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Closed Oct 2025 without recouping. Theatre conversion cost ~$8M. Investor lawsuit filed alleging financial mismanagement. High weekly nut of $1.5M proved unsustainable."
+      "estimatedRecoupmentPct": [0, 10],
+      "estimatedRecoupmentSource": "Deep Research: 0% investor recovery per lawsuit filings",
+      "estimatedRecoupmentDate": "2026-01-31",
+      "profitMargin": 0,
+      "insiderProfitSharePct": null,
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com",
+          "date": "2025-10-01",
+          "excerpt": "Raised $24.25M. $7.5M of investor capital used to renovate ATG's Kit Kat Club venue. Investors allege 0% recovery."
+        }
+      ],
+      "deepResearch": {
+        "verifiedFields": ["designation", "capitalization", "profitMargin"],
+        "verifiedDate": "2026-01-31",
+        "verifiedBy": "manual",
+        "notes": "Deep Research confirmed Flop: $24.25M raised, $7.5M spent renovating ATG's own theater, 0% investor recovery. Active investor lawsuit alleging financial mismanagement. Closed Oct 2025."
+      },
+      "notes": "Closed Oct 2025 without recouping. Actual capitalization $24.25M (not $26M). $7.5M of investor money used to convert Kit Kat Club venue owned by ATG (the lead producer's parent company). Active investor lawsuit alleging producers used investor funds to improve their own real estate. Weekly nut $1.5M proved unsustainable. Investors received 0% recovery."
     },
     "water-for-elephants": {
       "designation": "Fizzle",
@@ -276,18 +292,18 @@
       "weeklyRunningCost": null,
       "recouped": true,
       "recoupedDate": "2024-12",
-      "recoupedSource": "Inferred from Easy Winner designation",
-      "notes": "Star vehicle for Patti LuPone and Mia Farrow. Limited run closed as scheduled Jan 2025. Low capitalization compared to other Broadway shows."
+      "recoupedSource": "Unverified — no trade press confirmation. Plausible given $4.8M cap and strong grosses but needs verification.",
+      "notes": "Star vehicle for Patti LuPone and Mia Farrow. Limited run closed as scheduled Jan 2025. Low capitalization ($4.8M) compared to other Broadway shows. Recoupment plausible but unverified by trade press — previous source was circular ('Inferred from Easy Winner designation')."
     },
     "our-town": {
-      "designation": "Easy Winner",
+      "designation": "TBD",
       "capitalization": 20000000,
       "capitalizationSource": "NY Times / Broadway Stars",
       "weeklyRunningCost": null,
-      "recouped": true,
-      "recoupedDate": "2025-01",
-      "recoupedSource": "Inferred from Easy Winner designation",
-      "notes": "Limited run with Jim Parsons. First Thornton Wilder play to gross $1M+ in a week. Strong final weeks. Capitalized at $20M. Closed Jan 2025."
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "notes": "Limited run with Jim Parsons. First Thornton Wilder play to gross $1M+ in a week. Grossed ~$14.3M total (per BroadwayWorld grosses data). At $20M capitalization, almost certainly did NOT recoup — would need near-zero operating costs to break even. Previous 'Easy Winner' designation was based on circular inference, not verified recoupment. Closed Jan 2025."
     },
     "death-becomes-her": {
       "designation": "TBD",
