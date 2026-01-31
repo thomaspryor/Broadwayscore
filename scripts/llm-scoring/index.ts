@@ -281,12 +281,12 @@ async function main(): Promise<void> {
     scorer = new EnsembleReviewScorer(claudeApiKey, openaiApiKey!, geminiApiKey, {
       claudeModel: options.model,
       openaiModel: 'gpt-4o',
-      geminiModel: 'gemini-1.5-pro',
+      geminiModel: 'gemini-2.0-flash',
       verbose: options.verbose
     });
     const modelCount = (scorer as EnsembleReviewScorer).getModelCount();
     if (modelCount === 3) {
-      console.log('Using 3-MODEL ensemble mode (Claude Sonnet + GPT-4o + Gemini 1.5 Pro)\n');
+      console.log('Using 3-MODEL ensemble mode (Claude Sonnet + GPT-4o + Gemini 2.0 Flash)\n');
     } else {
       console.log('Using 2-MODEL ensemble mode (Claude Sonnet + GPT-4o)\n');
       if (!geminiApiKey) {
