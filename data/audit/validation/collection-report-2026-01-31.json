@@ -1,0 +1,66 @@
+{
+  "runDate": "2026-01-31T16:24:17.006Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 50,
+    "priority": "all",
+    "showFilter": "the-lion-king-1997",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 0,
+    "failed": 14,
+    "skipped": 0,
+    "successRate": "0%"
+  },
+  "tierBreakdown": {
+    "playwright": 0,
+    "browserbase": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 11,
+    "tier1Success": 0,
+    "tier1_5Attempts": 4,
+    "tier1_5Success": 0,
+    "tier2Attempts": 11,
+    "tier2Success": 0,
+    "tier3Attempts": 11,
+    "tier3Success": 0,
+    "tier4Attempts": 30,
+    "tier4Success": 3,
+    "totalFailed": 14,
+    "scrapingBeeCreditsUsed": 20,
+    "browserbaseSessionsUsed": 4,
+    "browserbaseMinutesUsed": 0
+  },
+  "processed": [],
+  "failed": [
+    "the-lion-king-1997/hollywood-reporter--frank-scheck.json",
+    "the-lion-king-1997/variety--charles-isherwood.json",
+    "the-lion-king-1997/variety--matt-wolf.json",
+    "the-lion-king-1997/ew--bruce-handy.json",
+    "the-lion-king-1997/ew--jess-cagle.json",
+    "the-lion-king-1997/timeout--adam-feldman.json",
+    "the-lion-king-1997/timeout--jenna-scherer.json",
+    "the-lion-king-1997/USATODAY--david-patrick-stearns.json",
+    "the-lion-king-1997/ap--michael-kuchwara.json",
+    "the-lion-king-1997/chicagotribune--richard-christiansen.json",
+    "the-lion-king-1997/njcom--michael-sommers.json",
+    "the-lion-king-1997/talkinbroadway--matthew-murray.json",
+    "the-lion-king-1997/usatoday--elysa-gardner.json",
+    "the-lion-king-1997/washpost--lloyd-rose.json"
+  ],
+  "tierDetails": {
+    "playwright": [],
+    "browserbase": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archive": []
+  }
+}
