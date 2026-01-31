@@ -1,5 +1,9 @@
 {
-  "processed": [],
+  "processed": [
+    "harry-potter-2021/hollywood-reporter--david-rooney.json",
+    "harry-potter-2021/vulture--sara-holdren.json",
+    "harry-potter-2021/cititour--brian-scott-lipton.json"
+  ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
     "aladdin-2014/nytimes--ben-brantley.json",
@@ -31,16 +35,28 @@
     "an-enemy-of-the-people-2024/vulture--helen-shaw.json",
     "and-juliet-2022/hollywood-reporter--angie-han.json",
     "and-juliet-2022/variety--aramide-tinubu.json",
-    "and-juliet-2022/vulture--sara-holdren.json"
+    "and-juliet-2022/vulture--sara-holdren.json",
+    "harry-potter-2021/variety--peter-marks.json",
+    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+    "harry-potter-2021/deadline--greg-evans.json",
+    "harry-potter-2021/guardian--alexis-soloski.json",
+    "harry-potter-2021/national-review--kyle-smith.json",
+    "harry-potter-2021/timeout--adam-feldman.json",
+    "harry-potter-2021/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
-    "archive": []
+    "brightdata": [
+      "harry-potter-2021/cititour--brian-scott-lipton.json"
+    ],
+    "archive": [
+      "harry-potter-2021/hollywood-reporter--david-rooney.json",
+      "harry-potter-2021/vulture--sara-holdren.json"
+    ]
   },
   "startTime": "2026-01-31T16:17:14.641Z",
-  "lastProcessed": "and-juliet-2022/vulture--sara-holdren.json"
+  "lastProcessed": "harry-potter-2021/cititour--brian-scott-lipton.json"
 }
