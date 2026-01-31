@@ -1,78 +1,82 @@
 {
-  "runDate": "2026-01-31T16:32:36.385Z",
+  "runDate": "2026-01-31T16:34:37.228Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "stereophonic-2024",
+    "showFilter": "hadestown-2019",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 22,
+    "processed": 2,
+    "failed": 23,
     "skipped": 0,
-    "successRate": "4.3%"
+    "successRate": "8.0%"
   },
   "tierBreakdown": {
     "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 20,
+    "tier1Attempts": 22,
     "tier1Success": 1,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 10,
     "tier1_5Success": 0,
-    "tier2Attempts": 19,
+    "tier2Attempts": 21,
     "tier2Success": 0,
-    "tier3Attempts": 19,
-    "tier3Success": 2,
-    "tier4Attempts": 42,
+    "tier3Attempts": 21,
+    "tier3Success": 3,
+    "tier4Attempts": 49,
     "tier4Success": 3,
-    "totalFailed": 22,
-    "scrapingBeeCreditsUsed": 90,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0
+    "totalFailed": 23,
+    "scrapingBeeCreditsUsed": 50,
+    "browserbaseSessionsUsed": 10,
+    "browserbaseMinutesUsed": 1.5
   },
   "processed": [
-    "stereophonic-2024/ew--allison-considine.json"
+    "hadestown-2019/broadwaynews--charles-isherwood.json",
+    "hadestown-2019/talkinbroadway--nancy-grossman.json"
   ],
   "failed": [
-    "stereophonic-2024/hollywood-reporter--angie-han.json",
-    "stereophonic-2024/variety--aramide-tinubu.json",
-    "stereophonic-2024/variety--jesse-green.json",
-    "stereophonic-2024/variety--peter-marks.json",
-    "stereophonic-2024/vulture--helen-shaw.json",
-    "stereophonic-2024/deadline--greg-evans.json",
-    "stereophonic-2024/deadline--pete-hammond.json",
-    "stereophonic-2024/guardian--adrian-horton.json",
-    "stereophonic-2024/guardian--gloria-oladipo.json",
-    "stereophonic-2024/observer--david-cote.json",
-    "stereophonic-2024/observer--rex-reed.json",
-    "stereophonic-2024/theatermania--adam-feldman.json",
-    "stereophonic-2024/theatermania--jesse-green.json",
-    "stereophonic-2024/theatermania--zachary-stewart.json",
-    "stereophonic-2024/timeout--adam-feldman.json",
-    "stereophonic-2024/wsj--charles-isherwood.json",
-    "stereophonic-2024/wsj--terry-teachout.json",
-    "stereophonic-2024/theatrely--juan-a-ramirez.json",
-    "stereophonic-2024/ap--mark-kennedy.json",
-    "stereophonic-2024/rollingstone--kalia-richardson.json",
-    "stereophonic-2024/usatoday--charles-isherwood.json",
-    "stereophonic-2024/washpost--peter-marks.json"
+    "hadestown-2019/deadline--pete-hammond.json",
+    "hadestown-2019/ew--jessica-derschowitz.json",
+    "hadestown-2019/ew--kristen-baldwin.json",
+    "hadestown-2019/guardian--jesse-green.json",
+    "hadestown-2019/guardian--jesse-oxfeld.json",
+    "hadestown-2019/nypost--johnny-oleksinski.json",
+    "hadestown-2019/observer--david-cote.json",
+    "hadestown-2019/observer--rex-reed.json",
+    "hadestown-2019/reviews-off-broadway--scott-mitchell.json",
+    "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
+    "hadestown-2019/theatermania--adam-feldman.json",
+    "hadestown-2019/theatermania--jesse-green.json",
+    "hadestown-2019/thewrap--thom-geier.json",
+    "hadestown-2019/timeout--adam-feldman.json",
+    "hadestown-2019/wsj--terry-teachout.json",
+    "hadestown-2019/chicagotribune--chris-jones.json",
+    "hadestown-2019/dailybeast--tim-teeman.json",
+    "hadestown-2019/medium--christian-lewis.json",
+    "hadestown-2019/rollingstone--rob-sheffield.json",
+    "hadestown-2019/usatoday--elysa-gardner.json",
+    "hadestown-2019/vox--constance-grady.json",
+    "hadestown-2019/washpost--peter-marks.json",
+    "hadestown-2019/wnyc--jennifer-vanasco.json"
   ],
   "tierDetails": {
     "playwright": [
-      "stereophonic-2024/ew--allison-considine.json"
+      "hadestown-2019/broadwaynews--charles-isherwood.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "hadestown-2019/talkinbroadway--nancy-grossman.json"
+    ],
     "archive": []
   }
 }
