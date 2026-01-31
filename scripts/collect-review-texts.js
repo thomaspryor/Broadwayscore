@@ -1943,9 +1943,11 @@ function findReviewsToProcess() {
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
-        // Skip if already has full text (unless retrying failed)
+        // Skip if already has good text (unless retrying failed)
         const textLen = data.fullText ? data.fullText.length : 0;
-        if ((data.isFullReview === true || data.textQuality === 'full' || textLen > 1500) && !failedFetches.has(reviewId)) {
+        const isTruncated = data.textQuality === 'truncated' || data.textStatus === 'truncated';
+        // Always re-try truncated reviews - they have text but it's incomplete
+        if (!isTruncated && (data.isFullReview === true || data.textQuality === 'full' || textLen > 1500) && !failedFetches.has(reviewId)) {
           continue;
         }
 
