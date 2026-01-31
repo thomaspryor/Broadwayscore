@@ -32,6 +32,11 @@ on:
         required: false
         default: false
         type: boolean
+      rescore:
+        description: 'Re-score all reviews (even already scored ones)'
+        required: false
+        default: false
+        type: boolean
 
 env:
   ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -93,6 +98,11 @@ jobs:
           # Needs rescore (only reviews flagged for rescoring)
           if [ "${{ github.event.inputs.needs_rescore }}" == "true" ]; then
             ARGS="$ARGS --needs-rescore"
+          fi
+
+          # Rescore all (even already scored)
+          if [ "${{ github.event.inputs.rescore }}" == "true" ]; then
+            ARGS="$ARGS --rescore"
           fi
 
           # Always verbose in CI
