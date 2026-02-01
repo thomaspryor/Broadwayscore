@@ -5,7 +5,7 @@
   "criticName": "Elisabeth Vincentelli",
   "url": "https://www.washingtonpost.com/entertainment/theater/2024/03/28/tommy-broadway-show-review-pete-townshend/?utm_source=rss&amp;utm_medium=referral&amp;utm_campaign=wp_homepage",
   "publishDate": "March 28, 2024",
-  "fullText": "Democracy Dies in DarknessReview by  Elisabeth Vincentelli NEW YORK — “The Who’s Tommy” is one weird show. In terms of head-spinning “whaaaaa?” moments, I would venture that, among mainstream musicals, it’s bested only by “Cats.”\n\nAfter all, it’s about a little boy who shuts out the world around him after a traumatic experience, somehow grows up into a pinball god and acquires legions of adoring followers in the process. Tragedy and catharsis expressed through often surreal tableaux and great rock songs — it’s a wild ride.",
+  "fullText": "Democracy Dies in DarknessReview by  Elisabeth Vincentelli NEW YORK — “The Who’s Tommy” is one weird show. In terms of head-spinning “whaaaaa?” moments, I would venture that, among mainstream musicals, it’s bested only by “Cats.”\n\nAfter all, it’s about a little boy who shuts out the world around him after a traumatic experience, somehow grows up into a pinball god and acquires legions of adoring followers in the process. Tragedy and catharsis expressed through often surreal tableaux and great rock songs — it’s a wild ride.\n\n125 CommentsMost ReadOpinionMichael ShermerI’ve reported on UFO sightings for decades — and come to this conclusionJanuary 29, 2026Salvador RizzoDOJ misconduct complaint against D.C. federal judge dismissedEarlier todayOpinionEditorial BoardTrump’s tariffs can’t cover a bill this staggeringJanuary 26, 2026NewsletterFridaysBook ClubOur weekly selection of book reviews and recommendations from Book World editor Ron Charles.Sign up",
   "bwwExcerpt": "Still, the songs, which are often bite-size, remain as distinctive as they’ve ever been (which is why “The Who’s Tommy” can also be effective in a semi-staged format, as evidenced by Josh Rhodes’s production at the Kennedy Center five years ago). The score was very theatrical for a chart-topping rock band in the late ’60s, but it’s also very rock by Broadway standards, even now. The company walks that line, at least vocally, better than the one from 1993, which was more Broadwayfied, and the orc",
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
@@ -71,8 +71,8 @@
     "needsReviewReasons": []
   },
   "archivePath": "data/archives/reviews/the-whos-tommy-2024/washpost--elisabeth-vincentelli_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T03:34:38.616Z",
-  "fetchMethod": "brightdata",
+  "textFetchedAt": "2026-02-01T14:12:55.012Z",
+  "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
       "tier": 0,
@@ -84,25 +84,27 @@
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "CAPTCHA or access blocked"
+      "error": "Paywall detected - login may have failed"
     },
     {
       "tier": 2,
       "method": "scrapingbee",
-      "success": false,
-      "error": "Parse Error: Header overflow"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 3,
-  "sourceMethod": "brightdata",
+  "fetchTier": 2,
+  "sourceMethod": "scrapingbee",
   "textIssues": [
-    "Word count too low: 86 (min: 300)"
+    "Word count too low: 138 (min: 300)"
   ],
   "contentTier": "truncated",
-  "wordCount": 86
+  "wordCount": 86,
+  "isFullReview": false,
+  "textWordCount": 138,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated"
 }
