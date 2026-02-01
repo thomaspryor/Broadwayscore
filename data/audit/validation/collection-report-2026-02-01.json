@@ -17,7 +17,7 @@
     "successRate": "20.7%"
   },
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 11,
     "browserbase": 0,
     "scrapingbee": 5,
     "brightdata": 2,
@@ -318,7 +318,8 @@
       "the-great-gatsby/variety-christian-lewis--christian-lewis.json",
       "the-lion-king-1997/vulture--john-simon.json",
       "the-outsiders/new-york-magazinevulture-sara-holdren--sara-holdren.json",
-      "the-outsiders/variety-naveen-kumar--naveen-kumar.json"
+      "the-outsiders/variety-naveen-kumar--naveen-kumar.json",
+      "harry-potter-2021/broadwaynews--elizabeth-bradley.json"
     ]
   },
   "failuresByOutlet": {
@@ -337,5 +338,21 @@
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+      "oldUrl": "https://broadwaynews.com/2018/04/22/review-harry-potter-and-the-cursed-child/",
+      "newUrl": "https://www.broadwaynews.com/review-harry-potter-and-the-cursed-child-retains-its-magic-and-its-heart/"
+    },
+    {
+      "reviewId": "harry-potter-2021/curtainup--elyse-sommer.json",
+      "oldUrl": "http://www.curtainup.com/harrypottercursedchild.html",
+      "newUrl": "http://www.curtainup.com/harrypotterbway18.html"
+    },
+    {
+      "reviewId": "harry-potter-2021/exeunt-magazine--kev-berry.json",
+      "oldUrl": "http://exeuntmagazine.com/reviews/harry-potter-cursed-child/",
+      "newUrl": "https://exeuntmagazine.com/features/harry-potter-and-the-cursed-child-some-speculative-reviews/"
+    }
+  ]
 }
