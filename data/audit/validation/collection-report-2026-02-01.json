@@ -19,23 +19,23 @@
   "tierBreakdown": {
     "playwright": 6,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 2,
-    "archive": 10
+    "archive": 9
   },
   "statistics": {
     "tier1Attempts": 1,
     "tier1Success": 1,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 5,
-    "tier4Success": 4,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 0,
+    "tier4Attempts": 3,
+    "tier4Success": 2,
+    "totalFailed": 3,
+    "scrapingBeeCreditsUsed": 10,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
@@ -196,10 +196,13 @@
       "mother-play-2024/guardian--benjamin-lee.json"
     ],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "grey-house-2023/newyorker--dan-stahl.json"
+    ],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "mj-2022/usatoday--david-rooney.json"
+      "mj-2022/usatoday--david-rooney.json",
+      "purlie-victorious-2023/washpost--peter-marks.json"
     ],
     "archive": [
       "harry-potter-2021/hollywood-reporter--david-rooney.json",
