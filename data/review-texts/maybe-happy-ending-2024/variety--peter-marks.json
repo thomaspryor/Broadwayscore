@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical, which premiered at Atlanta's Alliance Theatre in 2016, is a sweet, occasionally affecting meditation on loneliness and connection in a world increasingly dominated by technology.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical, which premiered at Atlanta's Alliance Theatre in 2016, is a sweet, occasionally affecting meditation on loneliness and connection in a world increasingly dominated by technology.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The description uses positive language ('sweet', 'affecting') but the qualifier 'occasionally' suggests measured enthusiasm rather than strong recommendation. | GPT-4o: The review describes the musical as 'sweet' and 'occasionally affecting,' suggesting it has positive elements but lacks a strong recommendation. The tone is balanced, indicating a mixed impression. | Gemini: The review uses positive language like 'sweet' and 'affecting,' suggesting a generally positive experience, even if not overwhelmingly enthusiastic.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T05:22:18.271Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }
