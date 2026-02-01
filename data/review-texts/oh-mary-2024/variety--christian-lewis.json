@@ -77,41 +77,29 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "archivePath": "data/archives/reviews/oh-mary-2024/variety--christian-lewis_2026-01-26.html",
-  "textFetchedAt": "2026-01-26T16:06:33.841Z",
+  "archivePath": "data/archives/reviews/oh-mary-2024/variety--christian-lewis_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T22:40:47.010Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Insufficient text extracted: 0 chars"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "Access blocked in Bright Data response"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
   "fetchTier": 4,
-  "archiveOrgTimestamp": "20250609181239",
-  "archiveOrgUrl": "http://web.archive.org/web/20250609181239/https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
+  "archiveOrgTimestamp": "20250720154241",
+  "archiveOrgUrl": "http://web.archive.org/web/20250720154241/https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 89,
   "rescoreCompletedAt": "2026-02-01T15:45:17.038Z",
   "contentTier": "complete",
   "wordCount": 1311,
-  "duplicateTextOf": "variety--aramide-tinubu.json"
+  "duplicateTextOf": "variety--aramide-tinubu.json",
+  "isFullReview": false,
+  "textWordCount": 124,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "showNotMentioned": true
 }
