@@ -1,45 +1,45 @@
 {
-  "runDate": "2026-02-01T14:10:25.466Z",
+  "runDate": "2026-02-01T14:13:49.510Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "six-2021",
+    "showFilter": "purlie-victorious-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 18,
-    "failed": 123,
+    "processed": 20,
+    "failed": 120,
     "skipped": 0,
-    "successRate": "12.8%"
+    "successRate": "14.3%"
   },
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 8,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 2,
+    "brightdata": 3,
     "archive": 9
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 1,
-    "tier1_5Attempts": 1,
+    "tier1Attempts": 3,
+    "tier1Success": 2,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 0,
     "tier3Attempts": 1,
-    "tier3Success": 0,
-    "tier4Attempts": 10,
-    "tier4Success": 3,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 12,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.4,
-    "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 1,
+    "tier3Success": 1,
+    "tier4Attempts": 3,
+    "tier4Success": 2,
+    "totalFailed": 2,
+    "scrapingBeeCreditsUsed": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -60,7 +60,9 @@
     "mother-play-2024/broadwaynews--brittani-samuel.json",
     "mother-play-2024/ew--allison-considine.json",
     "mother-play-2024/guardian--benjamin-lee.json",
-    "six-2021/ew--ruth-kinane.json"
+    "purlie-victorious-2023/guardian--jesse-hassenger.json",
+    "purlie-victorious-2023/observer--david-cote.json",
+    "purlie-victorious-2023/washpost--peter-marks.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -181,11 +183,8 @@
     "mother-play-2024/timeout--adam-feldman.json",
     "mother-play-2024/wsj--charles-isherwood.json",
     "mother-play-2024/wsj--charles.json",
-    "six-2021/deadline--greg-evans.json",
-    "six-2021/observer--david-cote.json",
-    "six-2021/timeout--adam-feldman.json",
-    "six-2021/amny--matt-windman.json",
-    "six-2021/front-row-center--tulis-mccall.json"
+    "purlie-victorious-2023/deadline--greg-evans.json",
+    "purlie-victorious-2023/timeout--adam-feldman.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -195,13 +194,15 @@
       "stereophonic-2024/ap--mark-kennedy.json",
       "mother-play-2024/ew--allison-considine.json",
       "mother-play-2024/guardian--benjamin-lee.json",
-      "six-2021/ew--ruth-kinane.json"
+      "purlie-victorious-2023/guardian--jesse-hassenger.json",
+      "purlie-victorious-2023/observer--david-cote.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "mj-2022/usatoday--david-rooney.json"
+      "mj-2022/usatoday--david-rooney.json",
+      "purlie-victorious-2023/washpost--peter-marks.json"
     ],
     "archive": [
       "harry-potter-2021/hollywood-reporter--david-rooney.json",
@@ -215,27 +216,6 @@
       "mother-play-2024/broadwaynews--brittani-samuel.json"
     ]
   },
-  "failuresByOutlet": {
-    "Observer": {
-      "count": 1,
-      "domain": "observer.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "amNewYork": {
-      "count": 1,
-      "domain": "amny.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    }
-  },
-  "urlDiscoveries": [
-    {
-      "reviewId": "six-2021/ew--ruth-kinane.json",
-      "oldUrl": "https://ew.com/theater/six-broadway-review/",
-      "newUrl": "https://ew.com/theater/theater-reviews/six-review/?srsltid=AfmBOopi0EwEBrE0elGbxEnV8hhY-8lxlz7yXFazC52W_v-S38CdruWi"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }
