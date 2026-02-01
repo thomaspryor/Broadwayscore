@@ -5,12 +5,12 @@
   "criticName": "Roma Torre",
   "url": "http://www.ny1.com/nyc/all-boroughs/news/2018/04/22/roma-torre-broadway-theater-review-harry-potter-and-the-cursed-child.html",
   "publishDate": "April 22, 2018",
-  "fullText": null,
+  "fullText": "It's been called the \"Hamilton\" of the United Kingdom, and it's now on Broadway. \"Harry Potter and the Cursed Child\" continues to work its special magic on the live stage, shattering box office records as it casts its undeniable spell on hordes of delighted Muggles. So sure of its success on Broadway, the producers spent millions renovating the Lyric Theatre where Spider-Man once flew. And how convenient, as the \"Harry Potter\" designers were able to rig some incredible flying effects of their own. But while the show is packed with many more dazzling tricks and illusions, it's the story, conceived by author J.K. Rowling with director John Tiffany and playwright Jack Thorne, that's drawing fans to this eighth installment in the popular series. Clocking in at more than five hours, the plot-heavy two-part drama features dozens of familiar characters from the novels — the living and dead — as time travel figures prominently. I will say no more about the story except that it takes place 19 years later. Harry, Hermione, and Ron are now 37 years old, with children of their own attending Hogwarts, and we find Harry's celebrity status is both a boon and burden to his family. The large bravura cast is led by the seven principal actors from the London production. Jamie Parker's Harry, with his trademark glasses, is the moral center, and Paul Thornley as ginger Ron provides the comic relief. Hermione is played by Norma Dumezweni. The dynamic is still perfectly matched, with the irresistible chemistry featured in the books and films. As in the books, the play takes a dark turn with strong psychological overtones. Tiffany is a wizard himself, navigating the emotional terrain with his own theatrical magic. Alongside his longtime collaborator Steven Hoggett as movement director, and the genius design team, they have crafted a stunningly immersive and moving experience. As much as I truly enjoyed the production, I should point out the British accents might be a little hard to make out at times. And if contemplating whether to take a child, consider that a working knowledge of the books or films is highly recommended. That's pretty true for us adult Muggles as well.",
   "showScoreExcerpt": "\"While the show is packed with many more dazzling tricks and illusions, it's the story that's drawing fans to this eighth installment in the popular series...As in the books, the play takes a dark turn with strong psychological overtones. Tiffany is a wizard himself, navigating the emotional terrain with his own theatrical magic. Alongside his longtime collaborator Steven Hoggett, and the genius design team, they have crafted a stunningly immersive and moving experience.\"",
   "originalScore": null,
   "assignedScore": 84,
   "source": "show-score",
-  "sourceMethod": "showscore",
+  "sourceMethod": "playwright",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -70,5 +70,31 @@
     "needsReviewReasons": []
   },
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 84,
+  "isFullReview": true,
+  "textWordCount": 364,
+  "archivePath": "data/archives/reviews/harry-potter-2021/ny1--roma-torre_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T15:12:13.661Z",
+  "designation": "Recommended",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete"
 }
