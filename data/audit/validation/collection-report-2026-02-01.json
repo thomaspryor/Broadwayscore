@@ -1,18 +1,18 @@
 {
-  "runDate": "2026-02-01T04:25:52.680Z",
+  "runDate": "2026-02-01T04:27:23.320Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "hamilton-2015",
+    "showFilter": "an-enemy-of-the-people-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 13,
-    "failed": 140,
+    "processed": 11,
+    "failed": 119,
     "skipped": 0,
     "successRate": "8.5%"
   },
@@ -21,23 +21,25 @@
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 2,
-    "archive": 10
+    "archive": 8
   },
   "statistics": {
-    "tier1Attempts": 19,
+    "tier1Attempts": 9,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 16,
-    "tier2Success": 0,
-    "tier3Attempts": 9,
+    "tier2Attempts": 7,
+    "tier2Success": 1,
+    "tier3Attempts": 6,
     "tier3Success": 0,
-    "tier4Attempts": 35,
-    "tier4Success": 4,
-    "totalFailed": 21,
-    "scrapingBeeCreditsUsed": 70,
+    "tier4Attempts": 18,
+    "tier4Success": 1,
+    "totalFailed": 9,
+    "scrapingBeeCreditsUsed": 60,
     "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 1
   },
   "processed": [
     "harry-potter-2021/hollywood-reporter--david-rooney.json",
@@ -50,9 +52,7 @@
     "harry-potter-2021/village-voice--michael-feingold.json",
     "mj-2022/nytg--ayanna-prescod.json",
     "mj-2022/usatoday--david-rooney.json",
-    "moulin-rouge-2019/nysr--jesse-oxfeld.json",
-    "hamilton-2015/nytimes--ben-brantley.json",
-    "hamilton-2015/huffpost--steven-suskin.json"
+    "stereophonic-2024/nytimes--jesse-green.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -164,37 +164,16 @@
     "moulin-rouge-2019/nydailynews--joe-dziemianowicz.json",
     "moulin-rouge-2019/nypost--johnny-oleksinski.json",
     "moulin-rouge-2019/observer--david-cote.json",
-    "moulin-rouge-2019/observer--rex-reed.json",
-    "moulin-rouge-2019/theatermania--jesse-green.json",
-    "moulin-rouge-2019/thewrap--robert-hofler.json",
-    "moulin-rouge-2019/timeout--adam-feldman.json",
-    "moulin-rouge-2019/wsj--terry-teachout.json",
-    "moulin-rouge-2019/amny--matt-windman.json",
-    "moulin-rouge-2019/dailybeast--tim-teeman.json",
-    "moulin-rouge-2019/rollingstone--alan-light.json",
-    "moulin-rouge-2019/usatoday--kelly-lawler.json",
-    "moulin-rouge-2019/washpost--peter-marks.json",
-    "hamilton-2015/hollywood-reporter--david-rooney.json",
-    "hamilton-2015/vulture--jesse-green.json",
-    "hamilton-2015/ew--tim-stack.json",
-    "hamilton-2015/guardian--jesse-green.json",
-    "hamilton-2015/nbcnews--elysa-gardner.json",
-    "hamilton-2015/nbcnews--kristy-puchko.json",
-    "hamilton-2015/nbcnews--melissa-locker.json",
-    "hamilton-2015/newsday--linda-winer.json",
-    "hamilton-2015/nypost--jesse-green.json",
-    "hamilton-2015/nypost--johnny-oleksinski.json",
-    "hamilton-2015/observer--david-cote.json",
-    "hamilton-2015/observer--rex-reed.json",
-    "hamilton-2015/theatermania--adam-feldman.json",
-    "hamilton-2015/theatermania--charles-isherwood.json",
-    "hamilton-2015/timeout--david-cote.json",
-    "hamilton-2015/wsj--terry-teachout.json",
-    "hamilton-2015/ap--mark-kennedy.json",
-    "hamilton-2015/dailybeast--tim-teeman.json",
-    "hamilton-2015/rollingstone--rob-sheffield.json",
-    "hamilton-2015/the-clyde-fitch-report--david-finkle.json",
-    "hamilton-2015/thisbroadsway--sandra-mcfarland.json"
+    "stereophonic-2024/hollywood-reporter--angie-han.json",
+    "an-enemy-of-the-people-2024/deadline--greg-evans.json",
+    "an-enemy-of-the-people-2024/guardian--adrian-horton.json",
+    "an-enemy-of-the-people-2024/nydailynews--chris-jones.json",
+    "an-enemy-of-the-people-2024/nydailynews--chris.json",
+    "an-enemy-of-the-people-2024/theatermania--jesse-green.json",
+    "an-enemy-of-the-people-2024/timeout--adam-feldman.json",
+    "an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
+    "an-enemy-of-the-people-2024/washpost--naveen-kumar.json",
+    "an-enemy-of-the-people-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -214,33 +193,10 @@
       "harry-potter-2021/vanityfair--richard-lawson.json",
       "harry-potter-2021/village-voice--michael-feingold.json",
       "mj-2022/nytg--ayanna-prescod.json",
-      "moulin-rouge-2019/nysr--jesse-oxfeld.json",
-      "hamilton-2015/nytimes--ben-brantley.json",
-      "hamilton-2015/huffpost--steven-suskin.json"
+      "stereophonic-2024/nytimes--jesse-green.json"
     ]
   },
   "failuresByOutlet": {
-    "The Hollywood Reporter": {
-      "count": 1,
-      "domain": "hollywoodreporter.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Vulture": {
-      "count": 1,
-      "domain": "vulture.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "Entertainment Weekly": {
-      "count": 1,
-      "domain": "ew.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
     "The Guardian": {
       "count": 1,
       "domain": "theguardian.com",
@@ -248,36 +204,15 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "NBC News": {
-      "count": 3,
-      "domain": "nbcnews.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Newsday": {
-      "count": 1,
-      "domain": "newsday.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "New York Post": {
+    "New York Daily News": {
       "count": 2,
-      "domain": "nypost.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Observer": {
-      "count": 2,
-      "domain": "observer.com",
+      "domain": "nydailynews.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
     },
     "TheaterMania": {
-      "count": 2,
+      "count": 1,
       "domain": "theatermania.com",
       "hasCredentials": false,
       "isPaywalled": false,
@@ -290,33 +225,19 @@
       "isPaywalled": true,
       "isKnownBlocked": false
     },
-    "Associated Press": {
-      "count": 1,
-      "domain": "apnews.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Daily Beast": {
-      "count": 1,
-      "domain": "thedailybeast.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Rolling Stone": {
-      "count": 1,
-      "domain": "rollingstone.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Clyde Fitch Report": {
-      "count": 1,
-      "domain": "clydefitchreport.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
+    "The Washington Post": {
+      "count": 2,
+      "domain": "washingtonpost.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
       "isKnownBlocked": false
     }
-  }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "an-enemy-of-the-people-2024/guardian--adrian-horton.json",
+      "oldUrl": "https://www.theguardian.com/stage/2024/mar/19/an-enemy-of-the-people-review-jeremy-strong-broadway",
+      "newUrl": "https://www.theguardian.com/stage/2024/mar/18/an-enemy-of-the-people-review-jeremy-strong-henrik-ibsen-drama"
+    }
+  ]
 }
