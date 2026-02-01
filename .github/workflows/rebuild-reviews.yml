@@ -115,7 +115,9 @@ jobs:
               break
             fi
             echo "Push failed (attempt $i), pulling and rebasing..."
-            git pull --rebase origin main
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
             sleep $((RANDOM % 5 + 2))
           done
 
