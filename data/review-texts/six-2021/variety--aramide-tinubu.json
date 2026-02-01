@@ -5,7 +5,7 @@
   "criticName": "Aramide Tinubu",
   "url": "https://variety.com/2021/legit/reviews/six-review-broadway-1235086915/",
   "publishDate": "October 4, 2021",
-  "fullText": "The Broadway iteration of 'Six' is a triumphant celebration of sisterhood that cleverly reimagines the wives of Henry VIII as modern-day pop stars.",
+  "fullText": "Strutting strong, arms akimbo and ready for a royal rumble, the sextet of cheeky spouses of King Henry VIII take to the stage in triumph — not just over the much-married monarch who did them wrong, but also in celebration of the deferred Broadway bow of the musical “Six,” shut down by the pandemic last year just hours before its scheduled opening night.\n\nBut these ladies have been waiting for centuries even, ready to give some perspective and personality to their reductive footnote in history, as echoed in the schoolyard chant: \"Divorced, beheaded, died; divorced, beheaded, survived.\" You can now add \"gloriously revived\" thanks to this Brit import that has gathered passionate followers as the show made its journey from university lark to viral juggernaut to, finally, celebratory West End and now Broadway musical.",
   "isFullReview": false,
   "dtliExcerpt": "The Broadway iteration of 'Six' is a triumphant celebration of sisterhood that cleverly reimagines the wives of Henry VIII as modern-day pop stars.",
   "originalScore": null,
@@ -63,5 +63,47 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Rave"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 91,
+  "textWordCount": 134,
+  "archivePath": "data/archives/reviews/six-2021/variety--aramide-tinubu_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T23:06:32.805Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "duplicateTextOf": "variety--frank-rizzo.json"
 }

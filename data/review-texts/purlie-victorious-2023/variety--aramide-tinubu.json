@@ -78,18 +78,36 @@
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 74,
-  "archivePath": "data/archives/reviews/purlie-victorious-2023/variety--aramide-timubu_2026-01-29.html",
-  "textFetchedAt": "2026-01-29T02:29:44.619Z",
-  "fetchMethod": "archive",
+  "archivePath": "data/archives/reviews/purlie-victorious-2023/variety--aramide-timubu_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T23:03:12.188Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "page.goto: Target page, context or browser has been closed\nCall log:\n  - navigating to \"https://variety.com/2023/legit/reviews/purlie-victorious-review-broadway-1235734487/\", waiting until \"domcontentloaded\"\n"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 4,
-  "sourceMethod": "archive",
+  "fetchTier": 3,
+  "sourceMethod": "brightdata",
   "archiveOrgTimestamp": "20250609105220",
   "archiveOrgUrl": "http://web.archive.org/web/20250609105220/https://variety.com/2023/legit/reviews/purlie-victorious-review-broadway-1235734487/",
   "rescoreCompletedAt": "2026-02-01T15:56:10.125Z",
@@ -97,5 +115,10 @@
   "wordCount": 836,
   "humanReviewScore": 85,
   "humanReviewPreviousScore": 50,
-  "humanReviewAt": "2026-02-01T19:59:47.222Z"
+  "humanReviewAt": "2026-02-01T19:59:47.222Z",
+  "isFullReview": false,
+  "textWordCount": 156,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial"
 }
