@@ -1,41 +1,41 @@
 {
-  "runDate": "2026-02-01T14:11:44.893Z",
+  "runDate": "2026-02-01T14:14:37.301Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "illinoise-2024",
+    "showFilter": "spamalot-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 19,
-    "failed": 120,
+    "processed": 17,
+    "failed": 122,
     "skipped": 0,
-    "successRate": "13.7%"
+    "successRate": "12.2%"
   },
   "tierBreakdown": {
     "playwright": 6,
     "browserbase": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 2,
-    "archive": 10
+    "archive": 9
   },
   "statistics": {
-    "tier1Attempts": 1,
+    "tier1Attempts": 2,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 1,
-    "tier3Attempts": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 0,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier4Attempts": 4,
-    "tier4Success": 3,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 10,
+    "tier4Attempts": 6,
+    "tier4Success": 2,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
@@ -59,9 +59,7 @@
     "stereophonic-2024/ap--mark-kennedy.json",
     "mother-play-2024/broadwaynews--brittani-samuel.json",
     "mother-play-2024/ew--allison-considine.json",
-    "mother-play-2024/guardian--benjamin-lee.json",
-    "illinoise-2024/broadwaynews--brittani-samuel.json",
-    "illinoise-2024/washpost--gloria-oladipo.json"
+    "mother-play-2024/guardian--benjamin-lee.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -182,8 +180,10 @@
     "mother-play-2024/timeout--adam-feldman.json",
     "mother-play-2024/wsj--charles-isherwood.json",
     "mother-play-2024/wsj--charles.json",
-    "illinoise-2024/nyt-theater--jonathan-mandell.json",
-    "illinoise-2024/deadline--greg-evans.json"
+    "spamalot-2023/deadline--greg-evans.json",
+    "spamalot-2023/timeout--adam-feldman.json",
+    "spamalot-2023/wsj--charles-isherwood.json",
+    "spamalot-2023/wsj--charles.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -195,9 +195,7 @@
       "mother-play-2024/guardian--benjamin-lee.json"
     ],
     "browserbase": [],
-    "scrapingbee": [
-      "illinoise-2024/washpost--gloria-oladipo.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
       "mj-2022/usatoday--david-rooney.json"
@@ -211,10 +209,17 @@
       "harry-potter-2021/village-voice--michael-feingold.json",
       "mj-2022/nytg--ayanna-prescod.json",
       "stereophonic-2024/nytimes--jesse-green.json",
-      "mother-play-2024/broadwaynews--brittani-samuel.json",
-      "illinoise-2024/broadwaynews--brittani-samuel.json"
+      "mother-play-2024/broadwaynews--brittani-samuel.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Wall Street Journal": {
+      "count": 2,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
