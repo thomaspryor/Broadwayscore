@@ -72,8 +72,8 @@
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 89,
-  "archivePath": "data/archives/reviews/book-of-mormon-2011/backstage--david-sheward_2026-01-31.html",
-  "textFetchedAt": "2026-01-31T16:26:33.665Z",
+  "archivePath": "data/archives/reviews/book-of-mormon-2011/backstage--david-sheward_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T15:06:54.922Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -85,7 +85,8 @@
   "fetchTier": 4,
   "truncationSignals": [
     "no_ending_punctuation",
-    "has_footer_junk"
+    "has_footer_text",
+    "possible_mid_word_cutoff"
   ],
   "archiveOrgTimestamp": "20120121005747",
   "archiveOrgUrl": "http://web.archive.org/web/20120121005747/http://www.backstage.com/bso/content_display/reviews/ny-theatre-reviews/e3i5369f68f9c4d1e2f03b5f235adbbccc8",
@@ -95,5 +96,9 @@
   ],
   "rescoreCompletedAt": "2026-01-29T14:31:51.661Z",
   "contentTier": "truncated",
-  "wordCount": 138
+  "wordCount": 138,
+  "isFullReview": false,
+  "textWordCount": 138,
+  "textQuality": "truncated",
+  "textStatus": "truncated"
 }

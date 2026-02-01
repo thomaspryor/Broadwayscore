@@ -9,56 +9,63 @@
   "dtliExcerpt": "The new version, which opened on Tuesday, does feel smaller — its themes starker, its concession to fandom more blatant. But as directed by Tiffany and choreographed by Steven Hoggett, with an essential score from Imogen Heap, it remains diamond-sharp in its staging and dazzling in its visual imagination, as magical as any spell or potion.",
   "showScoreExcerpt": "CRITIC'S PICK\n\"It remains diamond-sharp in its staging and dazzling in its visual imagination, as magical as any spell or potion...Yet there are excisions, most of them so surgical you would never notice, though I did slightly miss the beloved Hogwarts groundskeeper Hagrid...This new version remains ravishingly entertaining, but is also, like the movie adaptations, a more obvious attempt to cash in on Pottermania.\"",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "Up",
   "designation": "Critics_Pick",
   "llmScore": {
-    "score": 82,
+    "score": 78,
     "confidence": "medium",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 75,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 88,
+      "music": null,
       "performances": null,
-      "direction": 84
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "remains diamond-sharp in its staging and dazzling in its visual imagination, as magical as any spell or potion",
+        "quote": "diamond-sharp in its staging and dazzling in its visual imagination, as magical as any spell or potion",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "does feel smaller — its themes starker, its concession to fandom more blatant",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "with an essential score from Imogen Heap",
+        "quote": "ravishingly entertaining",
         "sentiment": "positive",
         "strength": 4
+      },
+      {
+        "quote": "more obvious attempt to cash in on Pottermania",
+        "sentiment": "negative",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: Mixed signals with significant reservations about the show feeling 'smaller' and 'more blatant,' but strong praise for staging, visual imagination, and score creates an overall positive recommendation. | GPT-4o-mini: The review highlights strong visual and staging elements while acknowledging some thematic concerns, leading to a solid recommendation.",
+    "reasoning": "Despite cynicism about commercialization, the critic emphasizes exceptional staging and entertainment value with 'CRITIC'S PICK' designation, indicating clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:03:56.238Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:08:20.351Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2402,
+    "outputTokens": 328,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -107,7 +114,7 @@
   "bwwThumb": null,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 82,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.766Z",
+  "rescoreCompletedAt": "2026-02-01T15:08:20.351Z",
   "contentTier": "complete",
   "wordCount": 881,
   "truncationSignals": [

@@ -9,7 +9,7 @@
   "bwwExcerpt": "For this slyly manipulative production knows exactly how, and how hard, to push the tenderest spots of most people's emotional makeups. By that I mean the ever-fraught relationships between parents and children, connections that persist, often unresolved, beyond death. Time-bending, it turns out, has its own special tools of catharsis in this regard. In the multiple worlds summoned here, it is possible for kids to instantly become their grown-up mentors, and for a son to encounter his forbidding father when dad was still a vulnerable sapling. \"I am paint and memory,\" a talking portrait of the long-dead wizard Dumbledore (Edward James Hyland) says to his former star pupil, Harry. Well, that's art, isn't it? Substitute theatrical showmanship for paint, and you have this remarkable production's elemental recipe for all-consuming enchantment.",
   "showScoreExcerpt": "\"Five hours of performance pass in a wizardly wink of an eye...Everything that happens onstage seems as improbably fluid as, well, time itself. It helps that what happens includes some of the most eye-boggling illusions you’ll ever witness...The new gold standard for fantasy franchise entertainment on Broadway...This slyly manipulative production knows exactly how, and how hard, to push the tenderest spots of most people’s emotional makeups.\"",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 92,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "designation": "Critics_Pick",
@@ -19,23 +19,28 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 94,
+    "score": 92,
     "confidence": "high",
     "range": {
-      "low": 87.5,
-      "high": 100
+      "low": 88,
+      "high": 95
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 85,
       "music": null,
-      "performances": null,
-      "direction": 93
+      "performances": 90,
+      "direction": 95
     },
     "keyPhrases": [
       {
-        "quote": "The new gold standard for fantasy franchise entertainment on Broadway",
+        "quote": "becomes the new gold standard for fantasy franchise entertainment on Broadway",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "making five hours of performance pass in a wizardly wink of an eye",
         "sentiment": "positive",
         "strength": 5
       },
@@ -43,14 +48,9 @@
         "quote": "this remarkable production's elemental recipe for all-consuming enchantment",
         "sentiment": "positive",
         "strength": 5
-      },
-      {
-        "quote": "Five hours of performance pass in a wizardly wink of an eye",
-        "sentiment": "positive",
-        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic uses superlative language like 'new gold standard' and 'remarkable production' with 'all-consuming enchantment,' indicating unqualified enthusiasm for what they describe as a transformative theatrical experience. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production's emotional impact and theatricality, indicating a strong recommendation.",
+    "reasoning": "The critic uses superlative language throughout ('new gold standard', 'all-consuming enchantment', 'remarkable production') with virtually no reservations, praising every aspect from direction to performances to design.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
@@ -59,11 +59,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:27:05.501Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:08:26.444Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4232,
+    "outputTokens": 345,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 92,
@@ -107,7 +114,7 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251028192853/https://www.nytimes.com/2018/04/22/theater/review-harry-potter-and-the-cursed-child-raises-the-bar-for-broadway-magic.html",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 94,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.766Z",
+  "rescoreCompletedAt": "2026-02-01T15:08:26.444Z",
   "contentTier": "complete",
   "wordCount": 1311,
   "truncationSignals": [

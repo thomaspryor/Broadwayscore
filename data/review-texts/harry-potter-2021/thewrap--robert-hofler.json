@@ -10,56 +10,63 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 72,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 74,
+    "score": 72,
     "confidence": "high",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 68,
+      "high": 76
     },
     "bucket": "Mixed",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 65,
       "music": null,
-      "performances": null,
-      "direction": 77
+      "performances": 75,
+      "direction": 78
     },
     "keyPhrases": [
       {
-        "quote": "great children's theater",
+        "quote": "the two-part play is great children's theater",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Tiffany has wisely chosen to give the 'Cursed Child' a low-tech look",
-        "sentiment": "positive",
+        "quote": "It doesn't take many speeches like that to bog down an already long show",
+        "sentiment": "negative",
         "strength": 3
       },
       {
-        "quote": "As long as parents don't have to take out a mortgage to purchase the tickets",
-        "sentiment": "negative",
-        "strength": 2
+        "quote": "These three actors and others in the production give fine performances, but in a Broadway season replete with great acting it's difficult to see any of them being singled out come Tony time",
+        "sentiment": "neutral",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The fragment shows clear praise for the production's visual approach and calls it 'great children's theater,' but the excerpt is too incomplete to determine full recommendation strength. | GPT-4o-mini: The review expresses a clear positive sentiment towards the production's approach and its suitability for children, indicating a recommendation to see it.",
+    "reasoning": "Despite structural criticisms and pacing issues, the critic calls it 'great children's theater' with praise for direction, design choices, and performances, indicating a qualified positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:23:55.616Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:09:31.997Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3850,
+    "outputTokens": 359,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -73,7 +80,7 @@
   "sources": [
     "bww-roundup"
   ],
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 74,
   "archivePath": "data/archives/reviews/harry-potter-2021/thewrap--robert-hofler_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:32:46.287Z",
@@ -89,7 +96,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251119071557",
   "archiveOrgUrl": "http://web.archive.org/web/20251119071557/https://www.thewrap.com/harry-potter-cursed-child-broadway-review-rowling-john-thorne/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.770Z",
+  "rescoreCompletedAt": "2026-02-01T15:09:31.997Z",
   "contentTier": "complete",
   "wordCount": 846
 }
