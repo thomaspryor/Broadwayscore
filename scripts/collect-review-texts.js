@@ -105,6 +105,7 @@ const CONFIG = {
   maxReviews: parseInt(process.env.MAX_REVIEWS || '50'),
   priority: process.env.PRIORITY || 'all',
   showFilter: process.env.SHOW_FILTER || '',
+  showFilterSet: new Set((process.env.SHOW_FILTER || '').split(',').map(s => s.trim()).filter(Boolean)),
   retryFailed: process.env.RETRY_FAILED === 'true',
   commitEvery: parseInt(process.env.COMMIT_EVERY || '10'), // Git commit after every N reviews
   outletTier: process.env.OUTLET_TIER || '', // Filter by outlet tier: tier1, tier2, tier3
@@ -2564,7 +2565,7 @@ function findReviewsToProcess() {
   }
 
   for (const showId of shows) {
-    if (CONFIG.showFilter && showId !== CONFIG.showFilter) continue;
+    if (CONFIG.showFilter && !CONFIG.showFilterSet.has(showId)) continue;
 
     const showDir = path.join(CONFIG.reviewTextsDir, showId);
     const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
