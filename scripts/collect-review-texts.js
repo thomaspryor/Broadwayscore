@@ -259,6 +259,21 @@ const CONFIG = {
   },
 };
 
+// Outlet-specific Playwright wait configurations
+// Some outlets render content via JS and need specific selectors/waits
+const OUTLET_WAIT_CONFIGS = {
+  'broadwaynews.com': {
+    waitForSelector: '.entry-content',
+    waitTimeout: 20000,
+    extraWait: 5000,   // BroadwayNews renders article via JS; extra wait for content
+  },
+  'broadwayworld.com': {
+    waitForSelector: '.article-body, .bsp-article-content',
+    waitTimeout: 15000,
+    extraWait: 3000,
+  },
+};
+
 // Statistics tracking
 const stats = {
   tier1Attempts: 0,
@@ -458,14 +473,28 @@ async function fetchWithPlaywright(url, review) {
         timeout: CONFIG.pageTimeout,
       });
 
-      // Wait for content to load
-      await Promise.race([
-        page.waitForSelector('article', { timeout: 15000 }),
-        page.waitForSelector('[class*="article"]', { timeout: 15000 }),
-        page.waitForSelector('[class*="story"]', { timeout: 15000 }),
-        page.waitForSelector('main p', { timeout: 15000 }),
-        page.waitForTimeout(10000),
-      ]).catch(() => {});
+      // Check for outlet-specific wait configuration
+      const urlDomain = new URL(url).hostname.replace(/^www\./, '');
+      const outletWait = OUTLET_WAIT_CONFIGS[urlDomain];
+
+      if (outletWait) {
+        // Use outlet-specific wait strategy (e.g., BroadwayNews JS rendering)
+        await page.waitForSelector(outletWait.waitForSelector, {
+          timeout: outletWait.waitTimeout,
+        }).catch(() => {});
+        if (outletWait.extraWait) {
+          await page.waitForTimeout(outletWait.extraWait);
+        }
+      } else {
+        // Generic wait for content to load
+        await Promise.race([
+          page.waitForSelector('article', { timeout: 15000 }),
+          page.waitForSelector('[class*="article"]', { timeout: 15000 }),
+          page.waitForSelector('[class*="story"]', { timeout: 15000 }),
+          page.waitForSelector('main p', { timeout: 15000 }),
+          page.waitForTimeout(10000),
+        ]).catch(() => {});
+      }
 
       // Scroll to bottom to trigger lazy-loaded content
       await autoScroll(page);
