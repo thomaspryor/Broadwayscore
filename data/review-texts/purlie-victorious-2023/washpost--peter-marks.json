@@ -73,8 +73,8 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "archivePath": "data/archives/reviews/purlie-victorious-2023/washpost--peter-marks_2026-01-30.html",
-  "textFetchedAt": "2026-01-30T18:38:45.616Z",
+  "archivePath": "data/archives/reviews/purlie-victorious-2023/washpost--peter-marks_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T14:13:45.962Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -87,13 +87,13 @@
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "CAPTCHA or access blocked"
+      "error": "Paywall detected - login may have failed"
     },
     {
       "tier": 2,
       "method": "scrapingbee",
       "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
+      "error": "timeout of 60000ms exceeded"
     },
     {
       "tier": 3,
@@ -108,5 +108,12 @@
   ],
   "dateSource": "extracted-from-url",
   "contentTier": "truncated",
-  "wordCount": 84
+  "wordCount": 84,
+  "isFullReview": false,
+  "textWordCount": 84,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "shorter_than_excerpt"
+  ],
+  "textStatus": "truncated"
 }
