@@ -74,15 +74,15 @@
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 38,
-  "archivePath": "data/archives/reviews/boop-2025/variety--frank-rizzo_2026-01-29.html",
-  "textFetchedAt": "2026-01-29T07:10:10.808Z",
-  "fetchMethod": "archive",
+  "archivePath": "data/archives/reviews/boop-2025/variety--frank-rizzo_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T21:30:40.070Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
       "success": false,
-      "error": "Request failed with status code 503"
+      "error": "No archive snapshot available"
     },
     {
       "tier": 1,
@@ -91,28 +91,35 @@
       "error": "Insufficient text extracted: 0 chars"
     },
     {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Paywall detected"
+    },
+    {
       "tier": 2,
       "method": "scrapingbee",
       "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
     },
     {
       "tier": 3,
       "method": "brightdata",
-      "success": false,
-      "error": "Access blocked in Bright Data response"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
       "success": true
     }
   ],
-  "fetchTier": 4,
-  "sourceMethod": "archive",
+  "fetchTier": 3,
+  "sourceMethod": "brightdata",
   "archiveOrgTimestamp": "20251105102026",
   "archiveOrgUrl": "http://web.archive.org/web/20251105102026/https://variety.com/2025/legit/reviews/boop-review-broadway-musical-1236361705/",
   "rescoreCompletedAt": "2026-01-29T14:31:51.672Z",
   "contentTier": "complete",
-  "wordCount": 892
+  "wordCount": 892,
+  "needsRescore": true,
+  "isFullReview": false,
+  "textWordCount": 67,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "duplicateTextOf": "variety--youtube-frank-rizzo.json"
 }

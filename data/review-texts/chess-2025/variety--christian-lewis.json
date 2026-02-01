@@ -71,31 +71,13 @@
     "needsReviewReasons": []
   },
   "sourceMethod": "archive",
-  "archivePath": "data/archives/reviews/chess-2025/variety--christian-lewis_2026-01-26.html",
-  "textFetchedAt": "2026-01-26T02:51:24.543Z",
+  "archivePath": "data/archives/reviews/chess-2025/variety--christian-lewis_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T21:36:51.300Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Insufficient text extracted: 0 chars"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (stealth_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "Bright Data not configured (requires Web Unlocker zone setup)"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
@@ -108,5 +90,10 @@
   "previousLlmScore": 41,
   "rescoreCompletedAt": "2026-01-29T01:44:39.955Z",
   "contentTier": "complete",
-  "wordCount": 1355
+  "wordCount": 1355,
+  "isFullReview": false,
+  "textWordCount": 157,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial"
 }

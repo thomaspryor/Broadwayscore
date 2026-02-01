@@ -15,31 +15,13 @@
   "sourceMethod": "archive",
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
-  "archivePath": "data/archives/reviews/cabaret-2024/variety--naveen-kumar_2026-01-26.html",
-  "textFetchedAt": "2026-01-26T02:26:23.065Z",
+  "archivePath": "data/archives/reviews/cabaret-2024/variety--naveen-kumar_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T21:36:31.712Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Insufficient text extracted: 0 chars"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected in ScrapingBee response"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "Request failed with status code 407"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
@@ -109,5 +91,10 @@
   "previousLlmScore": 81,
   "rescoreCompletedAt": "2026-01-29T01:42:55.088Z",
   "contentTier": "complete",
-  "wordCount": 627
+  "wordCount": 627,
+  "isFullReview": false,
+  "textWordCount": 157,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial"
 }

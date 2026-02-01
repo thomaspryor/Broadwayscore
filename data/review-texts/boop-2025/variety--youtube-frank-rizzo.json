@@ -75,10 +75,52 @@
     "bww-roundup",
     "dtli"
   ],
-  "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 45,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 64,
   "rescoreCompletedAt": "2026-01-29T01:37:30.959Z",
   "contentTier": "complete",
   "wordCount": 892,
-  "duplicateTextOf": "variety--frank-rizzo.json"
+  "duplicateTextOf": "variety--frank-rizzo.json",
+  "needsRescore": true,
+  "isFullReview": false,
+  "textWordCount": 67,
+  "archivePath": "data/archives/reviews/boop-2025/variety--youtube------frank-rizzo_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T21:33:28.204Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Paywall detected"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "sourceMethod": "brightdata"
 }

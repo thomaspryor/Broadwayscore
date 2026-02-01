@@ -5,7 +5,7 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2011/legit/reviews/the-book-of-mormon-1117944828/",
   "publishDate": "March 24, 2011",
-  "fullText": "This profane, scatological and bitingly satirical musical from the creators of 'South Park' is also sweet, generous and touching in all the right places.",
+  "fullText": "Spectacular orchestration of visual elements seems wasted on a threadbare, inanely repetitive plotline.\n\nHigh-concept indie “0s & 1s” treats the image like a giant computer screen, which helmer Eugene Kotlyarenko and his special effects/animation team fill with competing graphics, as windows, text messages, alerts, chats and apps fractionalize, interrupt and deconstruct the ongoing action. But this spectacular orchestration of visual elements seems wasted on a threadbare, inanely repetitive plotline: The hero loses his computer and spends the rest of the film traipsing around asking people if they’ve stolen it. Opening March 18 at New York’s Gastropub Rerun Theater, pic could achieve cult status among only those for whom the medium is the message.\n\nTwenty-three-year-old James (Morgan Krantz) relates to his peers in two modes: outright hostility and forced pretense of interest in anyone but himself. Both attitudes ostensibly stem from his cyber-mediated lack of contact with other humans, but the actors seem alienated, never bothering to modulate their perfs. Kotlyarenko plays with format in an attempt to mitigate the boring sameness of James’ encounters, trusting, like too many indie auteurs, that the audience’s recognition of its own peculiar demographic reality precludes the need for a script.",
   "isFullReview": false,
   "dtliExcerpt": "This profane, scatological and bitingly satirical musical from the creators of 'South Park' is also sweet, generous and touching in all the right places.",
   "originalScore": null,
@@ -63,5 +63,53 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 77,
+  "textWordCount": 196,
+  "archivePath": "data/archives/reviews/book-of-mormon-2011/variety--marilyn-stasio_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T21:27:36.023Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Paywall detected"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 196 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true
 }

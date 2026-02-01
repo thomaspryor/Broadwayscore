@@ -5620,18 +5620,6 @@
     "timestamp": "2026-02-01T19:55:10.658Z"
   },
   {
-    "reviewId": "chess-2025/nytg--unknown.json",
-    "showId": "chess-2025",
-    "outlet": "New York Theatre Guide",
-    "critic": "Unknown",
-    "url": "https://www.newyorktheatreguide.com/reviews/chess-broadway-review-aaron-tveit-lea-michele-nicholas-christopher",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple article boundaries detected (3)",
-    "textLength": 5987,
-    "timestamp": "2026-02-01T19:55:17.421Z"
-  },
-  {
     "reviewId": "illinoise/nyt-theater--jonathan-mandell.json",
     "showId": "illinoise",
     "outlet": "New York Theater",
@@ -5666,5 +5654,17 @@
     "garbageReason": "Legal/privacy page: \"Terms of Use\"",
     "textLength": 10047,
     "timestamp": "2026-02-01T21:18:55.418Z"
+  },
+  {
+    "reviewId": "chess-2025/nytg--unknown.json",
+    "showId": "chess-2025",
+    "outlet": "New York Theatre Guide",
+    "critic": "Unknown",
+    "url": "https://www.newyorktheatreguide.com/reviews/chess-broadway-review-aaron-tveit-lea-michele-nicholas-christopher",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple article boundaries detected (3)",
+    "textLength": 5987,
+    "timestamp": "2026-02-01T21:36:39.078Z"
   }
 ]

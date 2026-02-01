@@ -13,7 +13,10 @@
     "an-enemy-of-the-people-2024/hollywood-reporter--david-rooney.json",
     "an-enemy-of-the-people-2024/variety--daniel-dand8217addario.json",
     "appropriate-2023/hollywood-reporter--lovia-gyarkye.json",
-    "appropriate-2023/variety--aramide-tinubu.json"
+    "appropriate-2023/variety--aramide-tinubu.json",
+    "cabaret-2024/nyt-theater--jonathan-mandell.json",
+    "cabaret-2024/variety--naveen-kumar.json",
+    "chess-2025/variety--christian-lewis.json"
   ],
   "failed": [
     "aladdin/hollywood-reporter--david-rooney.json",
@@ -71,11 +74,21 @@
     "an-enemy-of-the-people-2024/vulture--jesse-green.json",
     "and-juliet-2022/variety--peter-marks.json",
     "appropriate-2023/vulture--jesse-green.json",
-    "back-to-the-future-2023/nyt-theater--david-nounou.json"
+    "back-to-the-future-2023/nyt-theater--david-nounou.json",
+    "back-to-the-future-2023/variety--aramide-tinubu.json",
+    "book-of-mormon-2011/variety--marilyn-stasio.json",
+    "boop-2025/variety--frank-rizzo.json",
+    "boop-2025/variety--youtube-frank-rizzo.json",
+    "buena-vista-social-club-2025/variety--frank-rizzo.json",
+    "chess-2025/nytg--unknown.json",
+    "days-of-wine-and-roses-2024/hollywood-reporter--anita-gates.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "buena-vista-social-club-2025/variety--frank-rizzo.json",
+      "cabaret-2024/nyt-theater--jonathan-mandell.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
@@ -91,7 +104,10 @@
       "illinoise-2024/variety--maya-phillips.json",
       "jajas-african-hair-braiding/nytimes--unknown.json",
       "jajas-african-hair-braiding-2023/nytimes--unknown.json",
-      "lempicka/variety--peter-marks.json"
+      "lempicka/variety--peter-marks.json",
+      "book-of-mormon-2011/variety--marilyn-stasio.json",
+      "boop-2025/variety--frank-rizzo.json",
+      "boop-2025/variety--youtube-frank-rizzo.json"
     ],
     "archive": [
       "back-to-the-future/hollywood-reporter--frank-scheck.json",
@@ -101,9 +117,11 @@
       "an-enemy-of-the-people-2024/hollywood-reporter--david-rooney.json",
       "an-enemy-of-the-people-2024/variety--daniel-dand8217addario.json",
       "appropriate-2023/hollywood-reporter--lovia-gyarkye.json",
-      "appropriate-2023/variety--aramide-tinubu.json"
+      "appropriate-2023/variety--aramide-tinubu.json",
+      "cabaret-2024/variety--naveen-kumar.json",
+      "chess-2025/variety--christian-lewis.json"
     ]
   },
   "startTime": "2026-02-01T19:54:53.774Z",
-  "lastProcessed": "back-to-the-future-2023/nyt-theater--david-nounou.json"
+  "lastProcessed": "days-of-wine-and-roses-2024/hollywood-reporter--anita-gates.json"
 }
