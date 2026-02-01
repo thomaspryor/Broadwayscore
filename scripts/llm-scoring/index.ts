@@ -324,26 +324,49 @@ async function main(): Promise<void> {
     filesToProcess = allFiles;
   }
 
+  // Track garbage skips for logging
+  const garbageSkips: GarbageSkipEntry[] = [];
+
   // Helper to get scorable text (fullText or excerpts)
-  const getScorableText = (data: ReviewTextFile): string | null => {
-    // Check fullText first (but not if it's an error page or garbage)
+  // Uses the full content-quality module for comprehensive garbage detection
+  const getScorableText = (data: ReviewTextFile, filePath: string): string | null => {
+    // Check fullText first (but not if it's garbage)
     if (data.fullText && data.fullText.length >= 100) {
-      const lower = data.fullText.toLowerCase();
+      // Use the comprehensive content-quality module for garbage detection
+      const qualityCheck: ContentQualityResult = assessTextQuality(data.fullText, data.showId);
 
-      // Basic garbage checks - error pages
-      const isErrorPage = lower.includes('page not found') ||
-                          lower.includes('404') ||
-                          lower.includes('access denied');
-
-      // Additional garbage checks - common paywall/ad blocker patterns
-      const isGarbage = lower.includes('ad blocker') ||
-                        lower.includes('adblocker') ||
-                        lower.includes('subscribe to continue') ||
-                        lower.includes('sign in to continue') ||
-                        lower.includes('please turn off') ||
-                        (lower.includes('whitelist') && lower.includes('browser'));
-
-      if (!isErrorPage && !isGarbage) {
+      if (qualityCheck.quality === 'garbage') {
+        // Log and track the skip
+        if (options.verbose) {
+          console.log(`  Skipping garbage fullText: ${qualityCheck.issues.join(', ')}`);
+        }
+        garbageSkips.push({
+          showId: data.showId || 'unknown',
+          outletId: data.outletId || 'unknown',
+          filePath,
+          quality: qualityCheck.quality,
+          confidence: qualityCheck.confidence,
+          issues: qualityCheck.issues,
+          skippedAt: new Date().toISOString()
+        });
+        // Fall through to excerpts
+      } else if (qualityCheck.quality === 'suspicious' && qualityCheck.confidence === 'high') {
+        // Also skip high-confidence suspicious content
+        if (options.verbose) {
+          console.log(`  Skipping suspicious fullText: ${qualityCheck.issues.join(', ')}`);
+        }
+        garbageSkips.push({
+          showId: data.showId || 'unknown',
+          outletId: data.outletId || 'unknown',
+          filePath,
+          quality: qualityCheck.quality,
+          confidence: qualityCheck.confidence,
+          issues: qualityCheck.issues,
+          skippedAt: new Date().toISOString()
+        });
+        // Fall through to excerpts
+      } else {
+        // Text is valid or low-suspicion - use it
         return data.fullText;
       }
     }
@@ -371,7 +394,7 @@ async function main(): Promise<void> {
   };
 
   // Apply text length filter - now includes reviews with excerpts
-  const validFiles = filesToProcess.filter(f => getScorableText(f.data) !== null);
+  const validFiles = filesToProcess.filter(f => getScorableText(f.data, f.path) !== null);
 
   // Apply limit
   const finalFiles = options.limit
@@ -409,7 +432,7 @@ async function main(): Promise<void> {
   let garbageSkipped = 0;
   let suspiciousWarnings = 0;
   const errorDetails: Array<{ showId: string; outletId: string; error: string }> = [];
-  const garbageSkips: GarbageSkipEntry[] = [];
+  // Note: garbageSkips is declared earlier and shared with getScorableText()
 
   for (let i = 0; i < finalFiles.length; i++) {
     const { path: filePath, data: reviewFile } = finalFiles[i];
@@ -420,7 +443,7 @@ async function main(): Promise<void> {
     process.stdout.write(`[${i + 1}/${finalFiles.length}] ${showName} / ${outletName}... `);
 
     // Pre-scoring content quality check
-    const scorableText = getScorableText(reviewFile);
+    const scorableText = getScorableText(reviewFile, filePath);
     if (scorableText && reviewFile.fullText && reviewFile.fullText.length >= 100) {
       // Get show title for context
       const showTitle = reviewFile.showId
