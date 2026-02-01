@@ -20,7 +20,7 @@ permissions:
 jobs:
   update-shows:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     outputs:
       new_shows_count: ${{ steps.discover.outputs.new_shows_count }}
       new_shows: ${{ steps.discover.outputs.new_shows }}

@@ -19,6 +19,7 @@ const { slugify, checkForDuplicate } = require('./lib/deduplication');
 const { isOfficialBroadwayTheater, getCanonicalVenueName, validateVenue } = require('./lib/broadway-theaters');
 const { isTourProduction, validateBroadwayProduction } = require('./lib/tour-detection');
 const { getSeasonForDate, validateSeason } = require('./lib/broadway-seasons');
+const { batchLookupIBDBDates } = require('./lib/ibdb-dates');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'historical-shows-pending.json');
@@ -261,6 +262,49 @@ async function discoverHistoricalShows() {
     });
   }
 
+  // IBDB date enrichment: get accurate preview/opening/closing dates
+  if (newShows.length > 0) {
+    console.log('');
+    console.log('🔎 Enriching dates from IBDB...');
+    try {
+      const lookupList = newShows.map(s => ({
+        title: s.title,
+        openingYear: s.openingDate ? parseInt(s.openingDate.split('-')[0]) : parseInt(s.season.split('-')[0]),
+        venue: s.venue
+      }));
+
+      const ibdbResults = await batchLookupIBDBDates(lookupList);
+
+      for (const show of newShows) {
+        const ibdb = ibdbResults.get(show.title);
+        if (!ibdb || !ibdb.found) continue;
+
+        // IBDB opening date is authoritative
+        if (ibdb.openingDate) {
+          show.openingDate = ibdb.openingDate;
+        }
+
+        // Fill in preview start date (Broadway.org archives never have this)
+        if (ibdb.previewsStartDate) {
+          show.previewsStartDate = ibdb.previewsStartDate;
+        }
+
+        // Fill in or correct closing date
+        if (ibdb.closingDate) {
+          show.closingDate = ibdb.closingDate;
+        }
+
+        // Store IBDB URL for reference
+        if (ibdb.ibdbUrl) {
+          show.ibdbUrl = ibdb.ibdbUrl;
+        }
+      }
+    } catch (e) {
+      console.log(`⚠️  IBDB enrichment failed (continuing without): ${e.message}`);
+    }
+    console.log('');
+  }
+
   // Log skipped tours
   if (skippedTours.length > 0) {
     console.log(`🚫 Rejected ${skippedTours.length} tour/non-Broadway production(s):`);
@@ -369,7 +413,7 @@ async function discoverHistoricalShows() {
         images: {},
         synopsis: '',
         ageRecommendation: null,
-        previewsStartDate: null,
+        previewsStartDate: show.previewsStartDate || null,
         tags: tags,
         ticketLinks: [],
         cast: [],

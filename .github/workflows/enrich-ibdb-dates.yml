@@ -1,0 +1,111 @@
+name: Enrich IBDB Dates
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Mode: enrich (fill missing), verify (compare only), force (overwrite all)'
+        required: true
+        default: 'enrich'
+        type: choice
+        options:
+          - enrich
+          - verify
+          - force
+      show:
+        description: 'Optional: specific show slug to process'
+        required: false
+        type: string
+      status:
+        description: 'Optional: filter by show status'
+        required: false
+        type: choice
+        options:
+          - ''
+          - open
+          - previews
+          - closed
+
+permissions:
+  contents: write
+
+jobs:
+  enrich-dates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium
+
+      - name: Run IBDB date enrichment
+        id: enrich
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+        run: |
+          FLAGS=""
+
+          # Mode flags
+          if [ "${{ inputs.mode }}" = "verify" ]; then
+            FLAGS="$FLAGS --verify --dry-run"
+          elif [ "${{ inputs.mode }}" = "force" ]; then
+            FLAGS="$FLAGS --force"
+          else
+            FLAGS="$FLAGS --missing-only"
+          fi
+
+          # Show filter
+          if [ -n "${{ inputs.show }}" ]; then
+            FLAGS="$FLAGS --show=${{ inputs.show }}"
+          fi
+
+          # Status filter
+          if [ -n "${{ inputs.status }}" ]; then
+            FLAGS="$FLAGS --status=${{ inputs.status }}"
+          fi
+
+          echo "Running: node scripts/enrich-ibdb-dates.js $FLAGS"
+          node scripts/enrich-ibdb-dates.js $FLAGS
+
+      - name: Check for changes
+        if: inputs.mode != 'verify'
+        id: git-check
+        run: |
+          git diff --exit-code data/shows.json || echo "changes=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and push changes
+        if: steps.git-check.outputs.changes == 'true' && inputs.mode != 'verify'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/shows.json
+
+          SHOW_MSG=""
+          if [ -n "${{ inputs.show }}" ]; then
+            SHOW_MSG=" for ${{ inputs.show }}"
+          fi
+
+          git commit -m "data: Enrich IBDB dates${SHOW_MSG}"
+
+          for i in 1 2 3 4 5; do
+            if git push origin main; then
+              echo "Push succeeded on attempt $i"
+              break
+            fi
+            echo "Push failed (attempt $i), pulling and rebasing..."
+            git pull --rebase origin main
+            sleep $((RANDOM % 5 + 2))
+          done
