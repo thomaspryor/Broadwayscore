@@ -161,7 +161,8 @@ const OUTLET_ALIASES = {
   ],
   'nysr': [
     'nysr', 'new york stage review', 'ny stage review',
-    'newyorkstagereview', 'new-york-stage-review', 'ny-stage-review'
+    'newyorkstagereview', 'new-york-stage-review', 'ny-stage-review',
+    'nystagereview'
   ],
   'nytg': [
     'nytg', 'new york theatre guide', 'ny theatre guide', 'nytheatreguide',
