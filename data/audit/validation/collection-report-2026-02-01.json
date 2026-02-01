@@ -1,45 +1,45 @@
 {
-  "runDate": "2026-02-01T14:08:02.700Z",
+  "runDate": "2026-02-01T14:10:19.642Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "wicked-2003",
+    "showFilter": "mamma-mia-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 19,
-    "failed": 122,
+    "processed": 20,
+    "failed": 120,
     "skipped": 0,
-    "successRate": "13.5%"
+    "successRate": "14.3%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 7,
     "browserbase": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 2,
     "archive": 11
   },
   "statistics": {
-    "tier1Attempts": 7,
+    "tier1Attempts": 5,
     "tier1Success": 2,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 2,
     "tier1_5Success": 0,
-    "tier2Attempts": 3,
-    "tier2Success": 1,
-    "tier3Attempts": 1,
+    "tier2Attempts": 2,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 15,
-    "tier4Success": 6,
-    "totalFailed": 7,
-    "scrapingBeeCreditsUsed": 23,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
+    "tier4Attempts": 8,
+    "tier4Success": 3,
+    "totalFailed": 2,
+    "scrapingBeeCreditsUsed": 3,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.3,
     "urlDiscoveryAttempts": 3,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoverySuccess": 3,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -57,11 +57,12 @@
     "stereophonic-2024/ew--allison-considine.json",
     "stereophonic-2024/guardian--gloria-oladipo.json",
     "stereophonic-2024/ap--mark-kennedy.json",
-    "wicked-2003/nytimes--ben-brantley.json",
-    "wicked-2003/ew--alice-king.json",
-    "wicked-2003/front-row-center--stanford-friedman.json",
-    "wicked-2003/village-voice--michael-feingold.json",
-    "wicked-2003/washpost--peter-marks.json"
+    "mother-play-2024/broadwaynews--brittani-samuel.json",
+    "mother-play-2024/ew--allison-considine.json",
+    "mother-play-2024/guardian--benjamin-lee.json",
+    "mamma-mia-2025/ew--emlyn-travis.json",
+    "mamma-mia-2025/nydailynews--chris-jones.json",
+    "mamma-mia-2025/chicagotribune--chris-jones.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -179,13 +180,11 @@
     "stereophonic-2024/deadline--greg-evans.json",
     "stereophonic-2024/observer--david-cote.json",
     "stereophonic-2024/timeout--adam-feldman.json",
-    "wicked-2003/ew--lisa-schwarzbaum.json",
-    "wicked-2003/observer--rex-reed.json",
-    "wicked-2003/timeout--david-cote.json",
-    "wicked-2003/wsj--terry-teachout.json",
-    "wicked-2003/curtainup--elyse-sommer.json",
-    "wicked-2003/njcom-star-ledger--michael-sommers.json",
-    "wicked-2003/unknown--unknown.json"
+    "mother-play-2024/timeout--adam-feldman.json",
+    "mother-play-2024/wsj--charles-isherwood.json",
+    "mother-play-2024/wsj--charles.json",
+    "mamma-mia-2025/deadline--greg-evans.json",
+    "mamma-mia-2025/timeout--adam-feldman.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -193,12 +192,12 @@
       "stereophonic-2024/ew--allison-considine.json",
       "stereophonic-2024/guardian--gloria-oladipo.json",
       "stereophonic-2024/ap--mark-kennedy.json",
-      "wicked-2003/front-row-center--stanford-friedman.json"
+      "mother-play-2024/ew--allison-considine.json",
+      "mother-play-2024/guardian--benjamin-lee.json",
+      "mamma-mia-2025/ew--emlyn-travis.json"
     ],
     "browserbase": [],
-    "scrapingbee": [
-      "wicked-2003/washpost--peter-marks.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
       "mj-2022/usatoday--david-rooney.json"
@@ -212,39 +211,27 @@
       "harry-potter-2021/village-voice--michael-feingold.json",
       "mj-2022/nytg--ayanna-prescod.json",
       "stereophonic-2024/nytimes--jesse-green.json",
-      "wicked-2003/nytimes--ben-brantley.json",
-      "wicked-2003/ew--alice-king.json",
-      "wicked-2003/village-voice--michael-feingold.json"
+      "mother-play-2024/broadwaynews--brittani-samuel.json",
+      "mamma-mia-2025/nydailynews--chris-jones.json",
+      "mamma-mia-2025/chicagotribune--chris-jones.json"
     ]
   },
-  "failuresByOutlet": {
-    "Entertainment Weekly": {
-      "count": 1,
-      "domain": "ew.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "CurtainUp": {
-      "count": 1,
-      "domain": "curtainup.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "NJ.com": {
-      "count": 1,
-      "domain": "wickedthemusical.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": [
     {
-      "reviewId": "wicked-2003/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2003/10/31/theater/theater-review-there-s-a-girl-in-green-and-ooh-what-a-ceiling.html",
-      "newUrl": "https://www.nytimes.com/2003/09/26/movies/theater-review-a-feisty-feast-of-wicked-wit.html"
+      "reviewId": "mamma-mia-2025/ew--emlyn-travis.json",
+      "oldUrl": "https://ew.com/mamma-mia-broadway-revival-review/",
+      "newUrl": "https://ew.com/mamma-mia-review-broadway-homecoming-11790686?srsltid=AfmBOorLYK1fy6NcIvYZDKSoJsfJ9fiD4W3WrRa5q7Hv2M_eXOUTb0UY"
+    },
+    {
+      "reviewId": "mamma-mia-2025/nydailynews--chris-jones.json",
+      "oldUrl": "http://www.nydailynews.com/archives/nydn-features/hey-abba-musical-diehards-night-woe-mia-capable-cast-article-1.937314",
+      "newUrl": "https://www.nydailynews.com/2025/08/14/broadway-review-mamma-mia-winter-garden-christine-sherrill/"
+    },
+    {
+      "reviewId": "mamma-mia-2025/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/2025/08/14/mamma-mia-broadway-review/",
+      "newUrl": "https://www.chicagotribune.com/2025/08/14/review-mamma-mia-broadway/"
     }
   ]
 }
