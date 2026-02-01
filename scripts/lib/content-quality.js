@@ -474,8 +474,11 @@ function detectMultiShowContent(text, expectedShowId) {
     return lower.includes(show);
   });
 
-  // If 3+ different shows are mentioned, this is likely a 404/index page
-  if (foundShows.length >= 3) {
+  // Scale threshold by text length — critics routinely reference other shows for comparison
+  // Short text (< 1000 chars) with 3+ shows = likely junk page
+  // Long reviews (2000+ chars) can naturally mention 5+ shows
+  const threshold = text.length < 1000 ? 3 : text.length < 3000 ? 5 : 7;
+  if (foundShows.length >= threshold) {
     return {
       detected: true,
       showsFound: foundShows,
@@ -510,8 +513,9 @@ function detectConcatenatedArticles(text, expectedShowId) {
     }
   }
 
-  // If we have 2+ article boundary patterns, likely concatenated
-  if (boundaryMatches.length >= 2) {
+  // If we have 3+ article boundary patterns, likely concatenated
+  // (2 can occur in single reviews that reference theaters)
+  if (boundaryMatches.length >= 3) {
     // Sort by position
     boundaryMatches.sort((a, b) => a.index - b.index);
     // The first boundary after position 500 is likely where concatenation starts

@@ -11,5 +11,55 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "4/5 stars"
+  "originalScore": "4/5 stars",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 80,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A darling and delightful new Broadway musical",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it becomes apparent that Claire is a more developed entity than the ever-boyish Oliver",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The opening praise 'darling and delightful' establishes clear positive sentiment, with thoughtful analysis of the concept and characters suggesting appreciation for the material, though this appears to be an excerpt from a longer review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T18:10:02.097Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2513,
+    "outputTokens": 301,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "3/5 stars"
+  "originalScore": "3/5 stars",
+  "assignedScore": 72,
+  "llmScore": {
+    "score": 72,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 76
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 45,
+      "music": 85,
+      "performances": 80,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "MJ is big and loud; it is joyful and joyous. The music grooves, the dancing glides, the crowd bops. The spectacle is everything you expect.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Michael Jackson is today a credibly accused child molester, and MJ succeeds only if you can ignore that fact.",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "MJ is both wonderfully fun and predictably blinkered. The latter fact is probably unavoidable. But it's also deeply awkward.",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic acknowledges the show's spectacular entertainment value and brilliant creative team while being deeply troubled by its inability to address Jackson's serious allegations, creating a qualified recommendation with significant moral reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T18:10:07.986Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2836,
+    "outputTokens": 393,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

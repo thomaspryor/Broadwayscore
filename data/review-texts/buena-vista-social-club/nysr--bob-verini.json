@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "5/5 stars"
+  "originalScore": "5/5 stars",
+  "assignedScore": 88,
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 92
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 92,
+      "performances": 90,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "What a joyful thing is Buena Vista Social Club",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "recaptures the magic of that reunion live and in person — and irresistibly, too",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "We're meant to swoon, and we do",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic expresses unqualified enthusiasm from the opening line through the conclusion, praising the performances as 'spectacular' and 'superb,' the music as 'brilliantly performed,' and the overall experience as 'joyful' and 'irresistible' with only minor questions about historical accuracy.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T18:08:46.117Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3536,
+    "outputTokens": 370,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "4/5 stars"
+  "originalScore": "4/5 stars",
+  "assignedScore": 83,
+  "llmScore": {
+    "score": 83,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 88,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "Vogel's play and players merit a visit to the Helen Hayes",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "An accomplished playwright with something to say and an unconventional but effective way of saying it",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "And three malleable actors who make it all feel effortless",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic consistently praises the playwright, performances, and production elements while explicitly recommending a visit to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T18:10:13.575Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3519,
+    "outputTokens": 327,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

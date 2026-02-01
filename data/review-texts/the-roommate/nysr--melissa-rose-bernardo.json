@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "3/5 stars"
+  "originalScore": "3/5 stars",
+  "assignedScore": 72,
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 76
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": 85,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "Farrow looks much livelier. She's bright and bubbly as the overly chatty Sharon",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "There are a couple twists—one involves a rather questionable Walmart purchase—that push The Roommate from realistic into far-fetched territory. One, unfortunately, is the ending.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Silverman—whose plays also include the historical satire Spain, the Brontë riff The Moors, and the Shakespeare-inspired feminist rant Collective Rage: A Play in 5 Betties—is smarter than that",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The review praises the performances (especially Farrow and LuPone) and appreciates Silverman's intelligent approach to mature women's stories, but criticizes the script's implausible twists and problematic ending, resulting in a qualified positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T18:11:32.796Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3262,
+    "outputTokens": 430,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

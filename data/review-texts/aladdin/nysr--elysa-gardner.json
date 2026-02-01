@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "4/5 stars"
+  "originalScore": "4/5 stars",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 72,
+      "performances": 80,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "the musical is still a balm and a tonic—with perhaps a bit more punch nowadays",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "What makes Aladdin a more successful stage adaptation than either Beast or Mermaid is the clever but laid-back humor",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Aladdin remains, with the possible exception of the visually breathtaking The Lion King, the most adult-friendly of Disney's screen-to-stage confections",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic consistently praises the production's humor, direction, performances, and relevance, positioning it as the most successful Disney adaptation after Lion King with only minor reservations about the score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T18:08:28.118Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3556,
+    "outputTokens": 379,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

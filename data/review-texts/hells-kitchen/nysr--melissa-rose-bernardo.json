@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "3/5 stars"
+  "originalScore": "3/5 stars",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 85,
+      "performances": 88,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hell's Kitchen is powered by a catalog of her hits... It's an exhilarating number... that's where Hell's Kitchen truly shines",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The biggest head-scratcher: 'Pawn It All'... If only all of Keys' songs fit so easily into Kristoffer Diaz's libretto",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Notice how Brown's choreography—a dazzling mix of social dance, step, and modern—captures the constant, chaotic movement of the city",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Review praises the performances (especially Moon and Lewis as 'incandescent' and 'vocal powerhouse'), music integration, and production elements like choreography and design, while noting some book issues with song placement, landing in clear positive territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T18:09:12.112Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3355,
+    "outputTokens": 409,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

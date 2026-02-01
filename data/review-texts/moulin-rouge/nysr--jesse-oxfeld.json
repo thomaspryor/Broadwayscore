@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "4/5 stars"
+  "originalScore": "4/5 stars",
+  "assignedScore": 88,
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 92,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "they might as well give the Tony Award for best scenic design of a musical to Derek McLane right now",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "There are very strong cases to be made, too, for Tonys for Catherine Zuber's costume design, Justin Townsend's lighting design, Peter Hylenski's sound design, Alex Timbers' direction, Sonya Tayeh's choreography",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Karen Olivo's spectacular performance — and to be spectacular within a spectacle is really saying something",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "The critic lavishes unqualified praise on multiple design elements and lead performance, suggesting Tony Award-level excellence across the board, indicating strong positive recommendation despite being only an excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T18:10:19.531Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2463,
+    "outputTokens": 399,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

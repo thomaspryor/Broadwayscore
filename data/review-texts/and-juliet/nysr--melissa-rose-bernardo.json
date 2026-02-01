@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "4/5 stars"
+  "originalScore": "4/5 stars",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": 80,
+      "performances": 85,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "very much its own thing in so many wild and wonderful ways",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the dynamite Lorna Courtney, who absolutely slays power-pop songs",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "candy-colored glitter bomb of a show",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The review is enthusiastic about the performances and concept with vivid positive language ('wild and wonderful', 'absolutely slays', 'dynamite'), though it reads more like a descriptive preview than a full critical assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T18:08:32.935Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2815,
+    "outputTokens": 344,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

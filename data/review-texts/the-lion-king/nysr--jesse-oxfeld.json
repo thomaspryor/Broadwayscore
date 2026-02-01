@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "3/5 stars"
+  "originalScore": "3/5 stars",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 75,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's Julie Taymor's puppetry that continues to astound",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "continues to sell out nearly every seat",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "what makes the show stand out are those puppets",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic consistently praises Taymor's direction and puppetry as 'astounding' and notes the show's enduring commercial success, indicating a clear positive recommendation despite some routine Disney elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T18:11:08.086Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2526,
+    "outputTokens": 333,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

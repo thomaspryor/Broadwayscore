@@ -13,5 +13,60 @@
     "nyc-theatre"
   ],
   "originalScore": "2/5 stars",
-  "nycTheatreExcerpt": "The musical adaptation, newly arrived on Broadway after a Chicago tryout, is a laugh riot from start to finish, featuring superb comic performances from its two female leads, a lavish physical production that actually reflects the astronomical (reportedly $31.5 million) production cost, and a book featuring more zingy one-liners than a Friars Club Roast."
+  "nycTheatreExcerpt": "The musical adaptation, newly arrived on Broadway after a Chicago tryout, is a laugh riot from start to finish, featuring superb comic performances from its two female leads, a lavish physical production that actually reflects the astronomical (reportedly $31.5 million) production cost, and a book featuring more zingy one-liners than a Friars Club Roast.",
+  "assignedScore": 38,
+  "llmScore": {
+    "score": 38,
+    "confidence": "high",
+    "range": {
+      "low": 32,
+      "high": 44
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": 30,
+      "performances": 65,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "the depiction of these two harpies is so repugnant that it reduces the brassy tuner—as it did the film—to something consistently offensive",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Unfortunately, the Mattison-Carey score it boasts (?) resembles too many of the scores audiences presumably favor these days",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Working like demons having taken a potion of some sort, Hilty and Simard deserve praise for everything they've agreed to do—and unflaggingly",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic finds the material fundamentally offensive and the score mediocre, with only praise for the performers' commitment and design elements, indicating clear problems outweigh strengths.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T18:09:05.344Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3709,
+    "outputTokens": 393,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

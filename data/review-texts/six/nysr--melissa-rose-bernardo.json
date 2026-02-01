@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "5/5 stars"
+  "originalScore": "5/5 stars",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": 80,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you see Six—and if you're a Tudor history buff, a royal watcher, or someone who's simply looking for a show with strong central female characters, you bloody well should",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Each queen gets an absurdly catchy pop-inspired anthem",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this rockin' rewrite of 16th-century her-story",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic provides an explicit strong recommendation ('you bloody well should' see it) and consistently praises the music as 'absurdly catchy,' the performances, and the overall concept with enthusiastic language throughout.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T18:10:43.144Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3385,
+    "outputTokens": 368,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

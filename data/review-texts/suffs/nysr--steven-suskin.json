@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "5/5 stars"
+  "originalScore": "5/5 stars",
+  "assignedScore": 88,
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 92
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 82,
+      "music": 85,
+      "performances": 90,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "Taub's masterwork—and her first musical to reach Broadway",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "provocative, mirthful, entertaining, and irrepressibly rousing",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Taub's talent, though, is extraordinary: as a performer, yes, but even moreso as a songwriter with a canny theatricality and an uncanny future",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "The critic calls it a 'masterwork' with 'extraordinary' talent, praises major improvements from the downtown production, and celebrates strong performances and production values with only minor reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T18:10:49.706Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3819,
+    "outputTokens": 365,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

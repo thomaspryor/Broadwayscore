@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "3/5 stars"
+  "originalScore": "3/5 stars",
+  "assignedScore": 58,
+  "llmScore": {
+    "score": 58,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 62
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 35,
+      "music": 40,
+      "performances": 75,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "How to Dance in Ohio offers only moderate entertainment, and moderate entertainment is unlikely to prove strong enough to attract sufficient audiences",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "good intentions alone, alas, do not a compelling musical make",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Audience members are likely to leave the Belasco with an exhilarating lift in their step, and that's all to the good",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic acknowledges good performances and worthy intentions but finds the material fundamentally flawed, offering only 'moderate entertainment' that won't sustain commercial success.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T18:09:37.115Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3741,
+    "outputTokens": 358,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

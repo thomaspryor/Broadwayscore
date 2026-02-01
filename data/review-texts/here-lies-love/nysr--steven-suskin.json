@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "4/5 stars"
+  "originalScore": "4/5 stars",
+  "assignedScore": 72,
+  "llmScore": {
+    "score": 72,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 76
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 78,
+      "performances": 70,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "The vast array of inventive vibrancy is still there to be seen and felt. But while the 2013 Here Lies Love sent you bursting onto Astor Place eager to spread the word and plot a return visit, the level of excitement of those now experiencing the show for the first time, at the Broadway Theatre, is less predictable.",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "Here Lies Love remains an impressive and effective experience; but uptown on Broadway, at the over-sized Broadway, the bloom is off the rose",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Regretfully, we conclude that the uptown edition—as of the official opening—is not yet quite so powerful as what enthralled us, three times, down on Astor Place.",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic acknowledges the show's inventive vibrancy and technical excellence but repeatedly emphasizes that the Broadway transfer has diminished the original's power and excitement, particularly for audience members not on the stage floor.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T18:09:30.863Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4259,
+    "outputTokens": 449,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }
