@@ -182,6 +182,7 @@ const CONFIG = {
   loginTimeout: 90000,    // 90s for slow logins
   pageTimeout: 60000,     // 60s for page load
   apiTimeout: 60000,      // 60s for API calls
+  reviewTimeout: 180000,  // 3 min hard timeout per review (kills hung Playwright)
 
   // Retry settings
   maxRetries: 3,
@@ -1585,18 +1586,38 @@ function getPaywallCredentials(url) {
 
 function isBlocked(html) {
   if (!html || typeof html !== 'string') return true;
-  const lower = html.toLowerCase();
-  return (
-    lower.includes('captcha') ||
-    lower.includes('datadome') ||
-    lower.includes('access denied') ||
-    lower.includes('please verify') ||
-    lower.includes('robot check') ||
-    lower.includes('unusual traffic') ||
-    lower.includes('rate limit') ||
-    (lower.includes('403') && lower.includes('forbidden')) ||
-    (lower.includes('blocked') && lower.includes('request'))
+  // Very short HTML = definitely blocked (error page or empty response)
+  if (html.length < 1000) {
+    const lower = html.toLowerCase();
+    return (
+      lower.includes('access denied') ||
+      lower.includes('403 forbidden') ||
+      lower.includes('blocked') ||
+      lower.includes('robot check') ||
+      lower.includes('rate limit')
+    );
+  }
+  // For longer pages: check the visible text content, not script tags
+  // Extract just the body text (strip script/style tags)
+  const bodyMatch = html.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+  const bodyHtml = bodyMatch ? bodyMatch[1] : html;
+  // Remove script and style tags to avoid false positives from JS code
+  const visibleHtml = bodyHtml
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
+    .replace(/<style[\s\S]*?<\/style>/gi, '')
+    .replace(/<noscript[\s\S]*?<\/noscript>/gi, '');
+  const lower = visibleHtml.toLowerCase();
+  // Check for blocking patterns in visible content only
+  const hasBlockingTitle = /<title[^>]*>[^<]*(access denied|forbidden|blocked|captcha)[^<]*<\/title>/i.test(html);
+  const hasBlockingContent = (
+    (lower.includes('please verify you are human') || lower.includes('confirm that you are human')) ||
+    (lower.includes('access denied') && visibleHtml.length < 3000) ||
+    (lower.includes('robot check') && visibleHtml.length < 3000) ||
+    (lower.includes('unusual traffic') && visibleHtml.length < 3000) ||
+    // Only flag captcha if it's the main page content, not just a script reference
+    (lower.includes('solve the captcha') || lower.includes('complete the captcha') || lower.includes('slide right to complete'))
   );
+  return hasBlockingTitle || hasBlockingContent;
 }
 
 function isPaywalled(html) {
@@ -2986,7 +3007,24 @@ async function main() {
     for (let i = 0; i < reviews.length; i++) {
       const review = reviews[i];
 
-      const result = await processReview(review);
+      // Hard timeout per review - prevents hung Playwright from killing entire run
+      let result;
+      try {
+        result = await Promise.race([
+          processReview(review),
+          new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('REVIEW_TIMEOUT')), CONFIG.reviewTimeout)
+          )
+        ]);
+      } catch (e) {
+        if (e.message === 'REVIEW_TIMEOUT') {
+          console.log(`  ✗ TIMEOUT: Review took >${CONFIG.reviewTimeout/1000}s - skipping (${review.outlet} - ${review.critic})`);
+          // Kill and restart browser to clear hung state
+          try { await closeBrowser(); } catch(_) {}
+          try { await setupBrowser(); } catch(_) {}
+        }
+        result = { success: false, error: e.message };
+      }
 
       if (result.success) {
         state.processed.push(review.reviewId);
