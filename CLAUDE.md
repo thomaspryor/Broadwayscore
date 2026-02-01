@@ -434,6 +434,13 @@ Each review file in `data/review-texts/{showId}/{outletId}--{criticName}.json`:
 
 **Data quality flags:** `wrongProduction: true` (e.g., off-Broadway run), `wrongShow: true` (different show entirely), `isRoundupArticle: true` (multi-show article). Wrong production/show reviews are excluded from reviews.json.
 
+**Off-Broadway transfer reviews (reusable):** 18 reviews are flagged `wrongProduction: true` with `wrongProductionNote` indicating the off-Broadway venue. When adding off-Broadway show entries, these reviews can be moved/copied to the new show:
+- **Hamilton** (4 reviews) → Public Theater, Feb 2015
+- **Stereophonic** (6 reviews) → Playwrights Horizons, Oct 2023
+- **The Great Gatsby** (3 reviews) → Park Central Hotel immersive, Jun 2023
+- **Illinoise** (3 reviews) → Park Avenue Armory, Mar 2024
+- **Oh, Mary!** (2 reviews) → Lucille Lortel Theatre, Feb-May 2024
+
 **Known date corrections:** Harry Potter opens 2018-04-22 (not 2021 post-COVID reopen).
 
 ## Subscription Access for Paywalled Sites
