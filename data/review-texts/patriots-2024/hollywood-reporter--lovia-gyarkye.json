@@ -76,36 +76,20 @@
   "isFullReview": false,
   "textWordCount": 173,
   "archivePath": "data/archives/reviews/patriots-2024/hollywood-reporter--lovia-gyarkye_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T22:49:24.332Z",
-  "fetchMethod": "brightdata",
+  "textFetchedAt": "2026-02-01T23:37:29.911Z",
+  "fetchMethod": "archive",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
-      "success": false,
-      "error": "No archive snapshot available"
-    },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Paywall detected - login may have failed"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 3,
+  "fetchTier": 4,
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "partial",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20241202155930",
+  "archiveOrgUrl": "http://web.archive.org/web/20241202155930/https://www.hollywoodreporter.com/lifestyle/arts/patriots-review-michael-stuhlbarg-peter-morgan-putin-1235879043/"
 }

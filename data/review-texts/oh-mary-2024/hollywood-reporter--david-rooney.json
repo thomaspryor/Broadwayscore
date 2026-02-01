@@ -75,37 +75,19 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "sourceMethod": "brightdata",
+  "sourceMethod": "archive",
   "bwwExcerpt": "In its original extended run at the Lortel Theatre earlier this year, Oh, Mary! drew packed houses that one night included Steven Spielberg, Sally Field and Tony Kushner, respectively the director, co-star and screenwriter of Lincoln. The widely circulated backstage photo of the group with Escola in...",
   "archivePath": "data/archives/reviews/oh-mary-2024/hollywood-reporter--david-rooney_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T22:41:55.911Z",
-  "fetchMethod": "brightdata",
+  "textFetchedAt": "2026-02-01T23:33:01.752Z",
+  "fetchMethod": "archive",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
-      "success": false,
-      "error": "No archive snapshot available"
-    },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "page.goto: Timeout 60000ms exceeded.\nCall log:\n  - navigating to \"https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/\", waiting until \"domcontentloaded\"\n"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 3,
+  "fetchTier": 4,
   "archiveOrgTimestamp": "20251010183659",
   "archiveOrgUrl": "http://web.archive.org/web/20251010183659/https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/",
   "bwwThumb": "Up",
