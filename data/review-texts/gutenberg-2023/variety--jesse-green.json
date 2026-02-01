@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "Josh Gad and Andrew Rannells are so committed to their roles as bumbling aspiring musical theater writers that they make even the worst songs seem intentionally terrible.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Josh Gad and Andrew Rannells are so committed to their roles as bumbling aspiring musical theater writers that they make even the worst songs seem intentionally terrible.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review praises the actors' commitment and suggests they successfully transform material weaknesses into intentional comedy, indicating the performances make the show work despite flawed songs. | GPT-4o: The review highlights the actors' commitment but suggests that the songs themselves are not strong, indicating a mixed experience. | Gemini: The review highlights the actors' commitment but implies the songs are genuinely bad, suggesting a mixed experience. It doesn't explicitly recommend or discourage seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T18:31:30.605Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

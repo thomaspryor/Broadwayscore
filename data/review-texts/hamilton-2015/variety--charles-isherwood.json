@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a musical that makes the Founding Fathers seem like real people rather than figures imprisoned in history books, and does so with wit, intelligence and an infectious energy that makes the show's nearly three-hour length fly by.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is a musical that makes the Founding Fathers seem like real people rather than figures imprisoned in history books, and does so with wit, intelligence and an infectious energy that makes the show's nearly three-hour length fly by.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review uses highly positive language like 'wit, intelligence and infectious energy' and notes that even a three-hour show 'flies by', indicating strong enthusiasm and recommendation. | GPT-4o: The review highlights the show's ability to bring historical figures to life with wit, intelligence, and energy, suggesting a highly positive experience. | Gemini: The review praises the musical's wit, intelligence, and energy, indicating a positive experience and recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T18:32:13.464Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

@@ -29,5 +29,52 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250724233526",
-  "archiveOrgUrl": "http://web.archive.org/web/20250724233526/https://www.nytimes.com/2024/01/28/theater/days-of-wine-and-roses-review-broadway.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250724233526/https://www.nytimes.com/2024/01/28/theater/days-of-wine-and-roses-review-broadway.html",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Review praises central performances as 'superb' and the score as one that 'grabs hold of us and doesn't let go,' while noting improvements from the previous production. Text is truncated which limits full assessment. | GPT-4o: The review is overwhelmingly positive, praising the performances, score, and production. The language used, such as 'astonishing' and 'superb', indicates a strong recommendation. | Gemini: The review highlights superb performances and score, and while it mentions some initial staging issues, the overall tone is positive and recommends seeing the show despite those reservations. The phrase 'astonishing about this show' indicates a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T18:29:59.496Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

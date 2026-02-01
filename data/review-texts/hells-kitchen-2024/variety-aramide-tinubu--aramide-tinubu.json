@@ -28,5 +28,52 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250108143335",
-  "archiveOrgUrl": "http://web.archive.org/web/20250108143335/https://variety.com/2024/legit/reviews/hells-kitchen-review-alicia-keys-musical-broadway-1235977362/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250108143335/https://variety.com/2024/legit/reviews/hells-kitchen-review-alicia-keys-musical-broadway-1235977362/",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review shows appreciation for the lead performance and sets up the premise positively, though this appears to be an incomplete excerpt that may not contain the full critical assessment. | GPT-4o: The review highlights a strong performance by Maleah Joi Moon but lacks an overall positive or negative recommendation, suggesting a mixed impression. | Gemini: The review focuses on the positive aspects of the show, particularly the performance of Maleah Joi Moon. While the review is incomplete, the description of her performance as \"magnetic\" suggests a positive overall impression.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T18:32:40.636Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 60,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

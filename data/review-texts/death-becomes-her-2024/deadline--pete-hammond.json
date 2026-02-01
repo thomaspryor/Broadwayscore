@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a show that knows exactly what it is and delivers on every level, a rare Broadway musical that manages to be both supremely entertaining and genuinely moving.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is a show that knows exactly what it is and delivers on every level, a rare Broadway musical that manages to be both supremely entertaining and genuinely moving.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses strong positive language like 'delivers on every level' and calls it 'rare' while praising both entertainment value and emotional impact, indicating enthusiastic recommendation. | GPT-4o: The review uses strong positive language indicating a highly enthusiastic recommendation, describing the show as both 'supremely entertaining' and 'genuinely moving'. | Gemini: The review uses strong positive language like \"delivers on every level\" and \"supremely entertaining and genuinely moving,\" indicating a very positive and enthusiastic recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T18:30:11.053Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

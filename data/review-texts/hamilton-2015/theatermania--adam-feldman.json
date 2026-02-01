@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "Hamilton is a musical that makes the impossible seem inevitable. Lin-Manuel Miranda has created a work that is both historically grounded and utterly contemporary, transforming the story of America's founding into something that feels urgently relevant to our current moment.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Hamilton is a musical that makes the impossible seem inevitable. Lin-Manuel Miranda has created a work that is both historically grounded and utterly contemporary, transforming the story of America's founding into something that feels urgently relevant to our current moment.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The language 'impossible seem inevitable' and describing it as a transformative work that feels 'urgently relevant' indicates strong enthusiastic praise for a masterpiece-level production. | GPT-4o: The review uses highly enthusiastic language, indicating a strong recommendation. The phrases 'makes the impossible seem inevitable' and 'urgently relevant' suggest a transformative and essential viewing experience. | Gemini: The review uses extremely positive language, praising Lin-Manuel Miranda's work as both historically grounded and utterly contemporary, making it a must-see.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T18:32:06.541Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

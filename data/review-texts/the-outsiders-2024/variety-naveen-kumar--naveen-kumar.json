@@ -28,5 +28,52 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250812144804",
-  "archiveOrgUrl": "http://web.archive.org/web/20250812144804/https://variety.com/2024/legit/reviews/the-outsiders-review-broadway-musical-1235966796/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250812144804/https://variety.com/2024/legit/reviews/the-outsiders-review-broadway-musical-1235966796/",
+  "assignedScore": 59,
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 54,
+      "high": 64
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The provided text is clearly truncated and only contains background context about the source material, with no actual review of the Broadway production or any verdict statement. | GPT-4o: The review text provided is truncated and focuses on the historical context of 'The Outsiders' rather than offering a clear verdict on the current production. Without a specific recommendation or critique of the show itself, the classification remains mixed with low confidence. | Gemini: The review text provided is truncated and only provides background information about the source material. Without a clear verdict on the current production, it's difficult to assign a definitive recommendation, but the nostalgic tone suggests some merit.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T18:33:08.832Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

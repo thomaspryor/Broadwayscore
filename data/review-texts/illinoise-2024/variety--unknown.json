@@ -30,5 +30,52 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260105015527",
-  "archiveOrgUrl": "http://web.archive.org/web/20260105015527/https://variety.com/2024/legit/reviews/illinoise-review-broadway-sufjan-stevens-1235983600/"
+  "archiveOrgUrl": "http://web.archive.org/web/20260105015527/https://variety.com/2024/legit/reviews/illinoise-review-broadway-sufjan-stevens-1235983600/",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Despite opening with skepticism about the source material's suitability for theater, the review concludes with exceptionally strong praise, calling it 'indelibly memorable' and 'one of the most singular productions in recent Broadway history' - language that indicates a must-see recommendation. | GPT-4o: The review concludes with a strong endorsement, highlighting the production as 'one of the most singular productions in recent Broadway history,' which indicates a highly enthusiastic recommendation. | Gemini: The review uses extremely strong positive language, calling the production 'one of the most singular productions in recent Broadway history,' clearly indicating a rave review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T18:32:47.087Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "Hamilton is a masterpiece that rewrites American history as a hip-hop musical and makes it feel both contemporary and timeless.",
   "originalScore": 100,
-  "assignedScore": null,
+  "assignedScore": 100,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Hamilton is a masterpiece that rewrites American history as a hip-hop musical and makes it feel both contemporary and timeless.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 100,
+    "confidence": "high",
+    "range": {
+      "low": 95,
+      "high": 105
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic explicitly calls it a 'masterpiece' and gave it a perfect 100 rating, indicating the highest level of recommendation. | GPT-4o: The review describes 'Hamilton' as a 'masterpiece' and the original rating of 100 confirms a strong recommendation. | Gemini: The review explicitly calls the show a 'masterpiece' and the critic gave it a perfect score, indicating a rave review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T18:32:00.737Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 100,
+    "openaiScore": 100,
+    "geminiScore": 100,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }
