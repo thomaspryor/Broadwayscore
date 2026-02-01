@@ -360,8 +360,8 @@ function getBestTextForScoring(review) {
 
   const best = sources[0];
 
-  // 2A: Augment short fullText (300-1000 chars) with non-duplicate excerpts
-  if (best.type === 'fullText' && best.text && best.text.length >= 300 && best.text.length <= 1000) {
+  // 2A: Augment short fullText (300-1500 chars) with non-duplicate excerpts
+  if (best.type === 'fullText' && best.text && best.text.length >= 300 && best.text.length <= 1500) {
     const excerptSources = sources.filter(s => s.type === 'excerpt');
     if (excerptSources.length > 0) {
       const additionalExcerpts = [];
@@ -495,8 +495,8 @@ function cleanText(text) {
   // Use stripTrailingJunk for thorough trailing cleanup
   cleaned = stripTrailingJunk(cleaned);
 
-  // Remove trailing metadata
-  cleaned = cleaned.replace(/\n\s*(?:Running time|Tickets|At the|Through\s+\w+\s+\d+)[^]*$/i, '');
+  // Remove trailing metadata (theater info already handled by stripTrailingJunk)
+  cleaned = cleaned.replace(/\n\s*(?:Running time|Tickets|Through\s+\w+\s+\d+)[^]*$/i, '');
 
   // Normalize whitespace
   cleaned = cleaned.replace(/\s+/g, ' ').trim();
