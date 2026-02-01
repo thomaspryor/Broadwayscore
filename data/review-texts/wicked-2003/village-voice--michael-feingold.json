@@ -10,7 +10,7 @@
   "assignedScore": 13,
   "source": "show-score",
   "needsFullText": true,
-  "sourceMethod": "scrapingbee",
+  "sourceMethod": "archive",
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -69,32 +69,35 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "archivePath": "data/archives/reviews/wicked-2003/village-voice--michael-feingold_2026-01-26.html",
-  "textFetchedAt": "2026-01-26T23:36:14.696Z",
-  "fetchMethod": "scrapingbee",
+  "archivePath": "data/archives/reviews/wicked-2003/village-voice--michael-feingold_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T14:07:01.599Z",
+  "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
-  "fetchTier": 2,
-  "textIssues": [
-    "Show title not found in text"
-  ],
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "fetchTier": 4,
+  "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 13,
   "rescoreCompletedAt": "2026-01-29T14:31:52.158Z",
   "garbageFullText": "Celebrating Martin Luther King Day Will Cost You at a National Park this Year, But BAM is Honoring the Great Orator For Free\n\nNew Yorkers Resist Trump’s Flooding the Zone With Lies\n\nIn the Reagan ’80s, Tobacco Peddlers and Anti-Smoking Lawyers Were Both Going Great Guns\n\nNew Yorkers Resist Trump’s Flooding the Zone With Lies\n\nThe Evocative Clay Figures in ‘Ministry: Reverend Joyce McDonald’ Radiate Power and Hope\n\n‘First Saturdays’ Return to the Brooklyn Museum in Time to Celebrate Black History Month\n\nCelebrating Martin Luther King Day Will Cost You at a National Park this Year, But BAM is Honoring the Great Orator For Free\n\nIn 1963, the Voice Reported on a Speech that Made History\n\nCelebrating Martin Luther King Day Will Cost You at a National Park this Year, But BAM is Honoring the Great Orator For Free\n\nNew Yorkers Resist Trump’s Flooding the Zone With Lies\n\nIn the Reagan ’80s, Tobacco Peddlers and Anti-Smoking Lawyers Were Both Going Great Guns\n\nNew Yorkers Resist Trump’s Flooding the Zone With Lies\n\nThe Evocative Clay Figures in ‘Ministry: Reverend Joyce McDonald’ Radiate Power and Hope\n\n‘First Saturdays’ Return to the Brooklyn Museum in Time to Celebrate Black History Month\n\nCelebrating Martin Luther King Day Will Cost You at a National Park this Year, But BAM is Honoring the Great Orator For Free\n\nIn 1963, the Voice Reported on a Speech that Made History\n\nVVLOGO_NEWBLUE               Search Search   Close this search box.     Facebook      Twitter      Instagram   \",\"library\":\"fa-solid\"}}\" data-widget_type=\"nav-menu.default\">   \",\"library\":\"fa-solid\"},\"toggle\":\"burger\"}\" data-widget_type=\"nav-menu.default\">  Menu VVLOGO_NEWBLUE               Search Search   Close this search box.     \",\"library\":\"fa-solid\"},\"toggle\":\"burger\"}\" data-widget_type=\"nav-menu.default\">  Menu   The Latest     VOICE OF THE AGES\n\nOriginally published:  November 3, 1987\n\nOriginally published:  June 1, 1961\n\nOriginally published:  July 12, 1976\n\nOriginally published:  October 31, 1989\n\nOriginally published:  May 18, 1972\n\nLoad More      \",\"library\":\"fa-solid\"}}\" data-widget_type=\"nav-menu.default\">   Facebook      Twitter      Instagram   ©2023 VILLAGE VOICE, LLC. ALL RIGHTS RESERVED.    |    SITE MAP",
   "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
   "garbageFixedAt": "2026-01-29T22:45:23.517Z",
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true,
+  "fullText": "Lorraine O&#039;Grady&#039;s Hair Stare Fare\n\n\"christopher marlowe&#039;s chloroform dreams\"\n\n\"In Masks Outrageous and Austere\"\n\n\"Evita\": Sigh for Them, Argentina\n\nKansas, I think we're not in toto anymore. The Land of Oz is currently under deconstruction, and its charming characters have suddenly acquired an insanely convoluted new backstory, chunks of which are now being tossed around the Gershwin's vast stage, in no apparent order and to no coherent purpose. L. Frank Baum's delightfully American fairy tale, which did yeoman service all century long as an excuse for spectacular musical diversions on stage and screen, has suddenly embarked on a giant guilt trip, neurotic, murky, loud, and confused. Granted, American society as a whole seems to have been heading in the same direction, from the wonder and optimism exemplified in Baum's beloved book to the disaster and disillusion brought on by the White House's current infestation of unwinged monkeys.\n\nYet even in Baum's time, America had moral crises, social and economic upheavals, political scandals, and imperialist wars. It simply didn't make those things the substance of popular entertainment. The function of popular entertainment, like the eternal function of fairy tales, was to provide escape from life's miseries; if the miseries insisted on turning up there anyway, transformed into fairy-tale terms, well, that was part of entertainment's therapeutic function, proving that escapism was good for you after all. But no American of Baum's generation would have dreamed of forcing the fairy tale back into reality, like a melodrama hero, forcing the ingenue back down onto the railroad tracks. That misunderstanding was left to our own contrarian time.\n\nHence Wicked, a hideous mess of a musical that wants to be many different things, and rarely succeeds in being any of them. It wants to convey the childish pleasure of Baum's Wizard of Oz myth, but it also wants to explain that myth, debunk it, draw morals from it, and occasionally ridicule it. All this from a creative team that, aesthetically speaking, seems barely able to walk and chew gum at the same time. For every fleeting moment they get right, they get two dozen wrong, not a good average at today's ticket prices. The gloom starts with Eugene Lee's bulky, repellent sets, in the style of British Christmas panto with the gaudy playfulness omitted. Kenneth Posner's lights, apparently embarrassed by Lee's monstrosities, try alternately to bury them in shadow or blot them out with onstage glare; this only serves to muffle the impact of Susan Hilferty's attractive costumes. The merits of Stephen Schwartz's score are meager, but not so bad as to deserve the crudest musical execution and screechiest sound design I've ever heard on Broadway.\n\nWicked is the story of Elphaba, better known as the Wicked Witch of the West, and how she Got That Way. Gregory Maguire's complex, stylistically twisty novel at least used this superfluous explanation to create an un-Baum-like fantasy world that reflected the dark roots of our own social dilemmas. The musical's makers, too uncertain of their focus to do anything so lucid, reduce his elaborate, pain-accruing narrative to a few abrupt incidents and a few cheap ironies, heightened by clumsily \"spotted\" songs that often make no emotional sense: The climax is a duet in which Elphaba and Glinda (n&eacute;e Galinda) express their enduring emotional bond, after an evening in which we've watched Galinda frustrate, humiliate, and betray Elphaba at every turn. Sounds like a junk bond to me.\n\nThe idea that contorted \"rational\" explanations can enhance or deepen fairy-tale characters is an earnest liberal's misunderstanding (earnest conservatives, bigger fools, take the myth figures literally). Wickednot only grants Elphaba an explanation, but sets out to rehabilitate her. Its principal evildoers are the characters we'd normally consider good: Glinda, the Wizard, and the kindly schoolmistress who first encourages Elphaba. This gives the musical a problem, since these roles are played by its stars, Kristen Chenoweth, Joel Grey, and Carole Shelley, with whom audiences naturally want to sympathize. The creators' solution is to make Shelley's role a meaningless catchall, reduce Grey to ineffectual pathos, and exploit, with their constantly shifting attitude toward the story, the peculiar disconnected quality that keeps Chenoweth from becoming a genuine star: Like the show, her personality and her voice have no organic center; everything she does comes off as mimicry. Idina Menzel, the Elphaba, has less vocal flexibility or emotional range than Chenoweth, but when she plants her feet onstage and yowls out a song, you know who's singing. They've loaded her down with disadvantages: overmiking that smothers her lyrics, an outfit that suggests the Chinese kidnappers from Thoroughly Modern Millie, and weak songs (Chenoweth gets the one passable tune); she wins the audience anyway. Norbert Leo Butz, William Youmans, and Shelley, given even worse material, are the only others who come close to making an impression. The rest is all flying effects (the winged monkeys are swell), exercises in political correctness, and attenuated camp. What audience could enjoy this congealed mixture&#151;is there a Ph.D. program in critical theory that admits five-year-olds?\n\nWilder, though mercifully shorter, is a musical muddle almost as perplexing, the story of a Depression-era boy coming of age in a whorehouse. It tries in turn to be a social-realist folk musical about poverty, an erotic Expressionist daydream, a psychological study in adolescent ambisexuality, and a moral parable about accepting your parents' failings. Its 80 minutes hardly give time to bring off one such concept; trying them all renders it hopelessly incoherent.\n\nWhat's happening in town? From underground club nights to the biggest outdoor festivals, our top picks for the week's best events will always keep you in on the action.\n\nDiscover restaurants, nightlife, travel, shopping...\n\nGet 50 to 90% off every day on restaurants, movies, massages...\n\nMore than 10,000 of the BEST things to eat, drink, and experience\n\nJoin the Village Voice community and get exclusive deals and info\n\nYour local Happy Hour guide at your fingertips\n\nUse your favorite account to access My Voice Nation.\n\nUse your My Voice Nation account to log in:",
+  "isFullReview": true,
+  "textWordCount": 1003,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "archiveOrgTimestamp": "20120501112156",
+  "archiveOrgUrl": "http://web.archive.org/web/20120501112156/http://www.villagevoice.com:80/2003-11-04/theater/green-witch-mean-time/"
 }
