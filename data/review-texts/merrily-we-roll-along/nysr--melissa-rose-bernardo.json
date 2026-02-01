@@ -11,5 +11,52 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "5/5 stars"
+  "originalScore": "5/5 stars",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The 5/5 star rating combined with language like 'brilliant Broadway revival,' 'perfection,' and 'absolute marvel' indicates an enthusiastic rave review despite the truncated text. | GPT-4o: The review is overwhelmingly positive, highlighting the emotional pull, brilliant revival, and exceptional performances. The critic's 5/5 star rating and the enthusiastic recommendation to see the show with a friend further solidify the rave classification. | Gemini: The review is overwhelmingly positive, using words like \"brilliant\" and describing the audience's enthusiastic reaction. The critic's 5/5 star rating further supports a \"Rave\" classification, despite the truncated text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:56:23.000Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

@@ -11,5 +11,52 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "3/5 stars"
+  "originalScore": "3/5 stars",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic gives 3/5 stars and acknowledges the play's originality and strong performances, but criticizes its frustrating vagueness and narrative issues. The final recommendation to see it 'with friends' suggests conditional recommendation rather than enthusiasm. | GPT-4o: The review highlights both strengths, such as the originality and strong performances, and weaknesses, like the frustrating vagueness and lack of narrative momentum. The original 3/5 star rating suggests a middle-ground assessment, aligning with a mixed verdict. | Gemini: Despite the critic's reservations about the play's vagueness and lack of narrative momentum, they acknowledge its originality and praise the performances and production design. The truncated text makes it difficult to ascertain a strong recommendation, but the overall tone leans positive, especially with the 3/5 star rating.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:54:03.688Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

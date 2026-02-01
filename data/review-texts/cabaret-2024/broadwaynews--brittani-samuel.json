@@ -7,15 +7,59 @@
   "publishDate": "April 22, 2024",
   "dtliExcerpt": "The lush bacchanal of the theater’s dressing seeps into every aspect of this production, from Julia Cheng’s sensual, prurient choreography to Eddie Redmayne’s eerie performance as the Emcee.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "dtli",
   "dtliThumb": "Up",
   "archivePath": "data/archives/reviews/cabaret-2024/broadwaynews--brittani-samuel_2026-01-30.html",
   "textFetchedAt": "2026-01-30T19:52:29.963Z",
   "sourceMethod": "archive",
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review emphasizes the impressive transformation of the theater and production design with phrases like 'visually arresting' and 'lush bacchanal,' but lacks explicit recommendation language and appears to be truncated before giving a full verdict. | GPT-4o: The review uses highly positive language to describe the production, emphasizing its visual impact and the transformation of the theater space, suggesting a strong recommendation. | Gemini: The review describes the production as \"visually arresting\" and the immersive experience as a \"lush bacchanal,\" indicating a positive overall impression and recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:53:32.073Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  },
   "scoreSource": "manual-override",
   "scoreOverrideReason": "LLM confused by truncated text; headline clearly indicates sentiment",
   "scoreOverrideAt": "2026-01-26T17:35:57.825Z",
@@ -27,11 +71,10 @@
   "bwwThumb": null,
   "rescoreReason": "low-conf: prompt=3.0.0, delta=60, upgrading to V5 + 3 models",
   "previousLlmScore": 55,
-  "rescoreCompletedAt": "2026-01-29T01:41:26.393Z",
+  "rescoreCompletedAt": "2026-02-01T14:53:32.073Z",
   "garbageFullText": "Review — Cabaret The Broadway Review: ‘Cabaret’ a carnal, queer hotbed of thrills Director Rebecca Frecknall’s creepy interpretation of the legendary classic pulls you in with fantasy, then crushes you with reality. , and Brittani Samuel April 22, 2024 . 1:00 AM 11 min read Share on Twitter Share on Facebook Share on LinkedIn Share via Email “Cabaret” on Broadway, 2024 (Credit: Marc Brenner) Good morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Cabaret.”RUNDOWN Eddie Redmayne in “Cabaret” on Broadway, 2024 (Credit: Marc Brenner)The “Kit Kat Club” is an adorable name for a night venue in Berlin brimming with so much debauchery and sin. And that’s exactly what the August Wilson Theatre has become in director Rebecca Frecknall’s visually arresting production of “Cabaret.” She, along with scenic and theater designer Tom Scutt, have rendered the August Wilson unrecognizable, beginning with a dark descent into the intestinal tract of the theater, now a velvety, swank club. Downstairs, champagne flows, cocktails glitter and a group of dancers, voguers and instrumentalists perform a live pre-show act, called the “Prologue.” When the billed show begins, audiences ascend back into the theater — which has also been reset, in the round. There are small tables and candle lamps, we have indeed been welcomed “im Cabaret, au Cabaret, to Cabaret.” The lush bacchanal of the theater’s dressing seeps into every aspect of this production, from Julia Cheng’s sensual, prurient choreography to Eddie Redmayne’s eerie performance as the Emcee. This post is for paying subscribers only Subscribe now Already have an account? Sign in Review — Cabaret — News — Cabaret at the Kit Kat Club — Rebecca Frecknall — Tom Scutt — Julia Cheng — John Kander — Fred Ebb — Joe Masteroff — Jordan Fein — Eddie Redmayne — Gayle Rankin — Bebe Neuwirth — Steven Skybell — Ato Blankson-Wood — Isabella Byrd — Christopher Isherwood — John Van Druten — I Am a Camera — Joel Grey — Sam Mendes — Harold Prince — Guy Common Introductory Offer $1/month for 3 months Subscribe Already have an account? Log in Latest Closer Look What does it take to actually revise a musical? Closer Look How the original company of ‘Ragtime’ was cast Insights Loyalty Report: January 22, 2026 Closer Look How ‘Riverdance’ revolutionized the world of dance Podcast 30 years ago, Tracy Letts wrote a play tailor-made for today with ‘Bug’ Personnel Neil Mazzella steps down as CEO of Hudson entities Books The original music director of ‘Rent’ reveals scenes from the very first auditions Closer Look Christian Cowan uses detail and taste to make ‘The Queen of Versailles’ shine",
   "garbageReason": "Paywall/subscription prompt: \"subscribers only\"",
   "garbageFixedAt": "2026-01-29T22:45:22.735Z",
-  "needsRescore": true,
   "fullText": "Director Rebecca Frecknall’s creepy interpretation of the legendary classic pulls you in with fantasy, then crushes you with reality.\n\nGood morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Cabaret.”\n\nThe “Kit Kat Club” is an adorable name for a night venue in Berlin brimming with so much debauchery and sin. And that’s exactly what the August Wilson Theatre has become in director Rebecca Frecknall’s visually arresting production of “Cabaret.” She, along with scenic and theater designer Tom Scutt, have rendered the August Wilson unrecognizable, beginning with a dark descent into the intestinal tract of the theater, now a velvety, swank club. Downstairs, champagne flows, cocktails glitter and a group of dancers, voguers and instrumentalists perform a live pre-show act, called the “Prologue.” When the billed show begins, audiences ascend back into the theater — which has also been reset, in the round. There are small tables and candle lamps, we have indeed been welcomed “im Cabaret, au Cabaret, to Cabaret.” The lush bacchanal of the theater’s dressing seeps into every aspect of this production, from Julia Cheng’s sensual, prurient choreography to Eddie Redmayne’s eerie performance as the Emcee.",
   "fetchMethod": "archive",
   "fetchAttempts": [

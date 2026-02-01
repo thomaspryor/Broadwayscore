@@ -11,5 +11,52 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "4/5 stars"
+  "originalScore": "4/5 stars",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges significant flaws but ultimately recommends it as 'among the better attractions' and gives 4/5 stars, indicating a positive recommendation despite reservations. | GPT-4o: The review acknowledges significant strengths in the production's staging, music, and performances, despite noting some flaws in emotional resonance and character motivation. The original 4/5 star rating suggests a positive recommendation, albeit with reservations. | Gemini: The review is mostly positive, highlighting the staging, design, and score. However, it also points out flaws in the storyline and character motivation. The final statement suggests it's worth seeing, but not a must-see, placing it in the positive bucket with a mid-range score. The truncated text warning makes me slightly less confident.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:54:26.020Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -9,13 +9,57 @@
   "showScoreExcerpt": "“What makes the musical hard for first-time audiences is the fact that it’s like a jigsaw puzzle doled out one piece at a time, so you don’t see a complete picture until the last piece is placed and the show is over...That’s why ‘Merrily We Roll Along’ is art and not comfortably commercial theater.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/merrily-we-roll-along-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review discusses the show's anti-commercial theater themes and notes its original failure, but doesn't provide a clear recommendation about whether audiences should see this current production. | GPT-4o: The review highlights the show's lack of easy entertainment value, suggesting a mixed reception. The absence of clear positive or negative language results in a mixed classification. | Gemini: The review focuses on the show's initial failure and its challenging nature, suggesting a mixed experience. It doesn't explicitly recommend or discourage seeing it, but highlights its unconventional approach.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:56:34.522Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  },
   "rescoreReason": "low-conf: prompt=3.0.0, delta=18, upgrading to V5 + 3 models",
   "previousLlmScore": 69,
   "archivePath": "data/archives/reviews/merrily-we-roll-along-2023/variety--trish-deitch_2026-01-28.html",
@@ -32,8 +76,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251207021119",
   "archiveOrgUrl": "http://web.archive.org/web/20251207021119/https://variety.com/2023/legit/reviews/merrily-we-roll-along-review-broadway-daniel-radcliffe-jonathan-groff-lindsay-mendez-1235750477/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.889Z",
+  "rescoreCompletedAt": "2026-02-01T14:56:34.522Z",
   "contentTier": "complete",
-  "wordCount": 1058,
-  "needsRescore": true
+  "wordCount": 1058
 }

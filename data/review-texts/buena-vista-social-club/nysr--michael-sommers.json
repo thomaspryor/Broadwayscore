@@ -11,5 +11,52 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "4/5 stars"
+  "originalScore": "4/5 stars",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating combined with consistent praise throughout ('glowing celebration', 'wonderfully easy to drown in the dreamy music', 'highly entertaining') and the concluding 'very good time on Broadway' clearly indicates a positive recommendation despite some structural observations. | GPT-4o: The review is overwhelmingly positive, highlighting the show's music, performances, and production quality. Despite the text being truncated, the critic's 4/5 star rating and the positive language used throughout indicate a strong recommendation. | Gemini: Despite the truncated text, the review is overwhelmingly positive, highlighting the music, performances, and overall experience. The critic's 4/5 star rating further supports a 'Positive' classification.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:53:22.386Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -11,5 +11,52 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "4/5 stars"
+  "originalScore": "4/5 stars",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite opening concerns about jukebox musicals, the critic delivers a clear positive verdict, praising the show as 'very enjoyable' with 'propulsive energy that's impossible to resist' and calling performances 'terrific' and 'hilarious.' | GPT-4o: Despite the truncated text warning, the review is largely positive, highlighting the show's infectious energy, clever integration of pop songs, and strong performances. The original 4/5 star rating further supports a strong positive classification. | Gemini: The review is generally positive, highlighting the enjoyable and infectious nature of the show, but the truncated text and the phrase \"leave your brains at the door\" suggest some reservations, warranting a score in the positive range but not at the very top.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:52:53.264Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

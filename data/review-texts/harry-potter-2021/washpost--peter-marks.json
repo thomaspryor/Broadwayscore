@@ -9,13 +9,57 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt suggests approval of the production's editing choices, but with severely limited text and no clear recommendation, confidence is low. | GPT-4o: The excerpt highlights a positive change in the production, suggesting a thoughtful and improved adaptation. However, without a full verdict, the recommendation is cautious. | Gemini: The review excerpt suggests a positive change (trimming and intelligent editing), implying an improvement to the show. Without the full review, it's hard to gauge the enthusiasm, but the tone is generally positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:54:44.990Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
   "sources": [
     "bww-roundup",
     "web-search"
@@ -27,6 +71,6 @@
   "garbageFixedAt": "2026-01-29T22:45:22.884Z",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
-  "rescoreReason": "low-conf: prompt=3.0.0, delta=35, upgrading to V5 + 3 models"
+  "rescoreReason": "low-conf: prompt=3.0.0, delta=35, upgrading to V5 + 3 models",
+  "rescoreCompletedAt": "2026-02-01T14:54:44.990Z"
 }

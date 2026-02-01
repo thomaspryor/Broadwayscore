@@ -11,5 +11,52 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "2/5 stars"
+  "originalScore": "2/5 stars",
+  "assignedScore": 60,
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic gives 2/5 stars and calls most of the show padding and boring, only praising Chenoweth's final performance. The review acknowledges strong moments but overall finds it bloated and disappointing. | GPT-4o: The review suggests that the show is only appealing to die-hard fans of Kristin Chenoweth, with the rest of the production failing to impress. The original 2/5 star rating supports a negative classification, but the text is truncated, so the final verdict might be missing. | Gemini: The review highlights both positive and negative aspects. While praising Chenoweth's performance and a few moments, it also criticizes the bloated size and padding, suggesting a mixed experience overall. The truncated text makes it difficult to ascertain a definitive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:58:17.605Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

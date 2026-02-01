@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
@@ -20,9 +20,53 @@
     "bww-roundup",
     "dtli"
   ],
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be only the opening setup of a review about a show involving a beauty salon/braiding shop, but contains no actual critique or recommendation about the theatrical production itself. | GPT-4o: The review text provided is primarily descriptive and lacks a clear recommendation or critique of the production itself. Without further context or a definitive verdict, it is difficult to ascertain the critic's overall impression. | Gemini: The review excerpt focuses on the cultural significance of braiding shops, but it doesn't offer a clear recommendation about the show itself. It's difficult to determine the overall verdict without the full review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:55:33.735Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  },
   "rescoreReason": "low-conf: prompt=3.0.0, delta=35, upgrading to V5 + 3 models",
   "previousLlmScore": 63,
   "archivePath": "data/archives/reviews/jajas-african-hair-braiding-2023/variety--aramide-timubu_2026-01-29.html",
@@ -39,8 +83,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251022120243",
   "archiveOrgUrl": "http://web.archive.org/web/20251022120243/https://variety.com/2023/legit/reviews/jajas-african-hair-braiding-review-broadway-1235740710/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.829Z",
+  "rescoreCompletedAt": "2026-02-01T14:55:33.735Z",
   "contentTier": "complete",
-  "wordCount": 928,
-  "needsRescore": true
+  "wordCount": 928
 }

@@ -11,5 +11,52 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "5/5 stars"
+  "originalScore": "5/5 stars",
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic explicitly calls it a 'masterpiece' and states it 'ranks among Broadway's best of all time,' with 5/5 stars and overwhelmingly enthusiastic language throughout. | GPT-4o: The review is overwhelmingly positive, praising the production as 'nearly flawless' and ranking it among Broadway’s best of all time. The critic's original 5/5 star rating further supports a 'Rave' classification. | Gemini: The critic uses extremely positive language, calling the production \"nearly flawless\" and ranking it among Broadway's best. The original rating of 5/5 stars further supports a 'Rave' classification, despite the truncated text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:58:29.630Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

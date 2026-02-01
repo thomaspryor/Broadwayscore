@@ -11,5 +11,52 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "5/5 stars"
+  "originalScore": "5/5 stars",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Despite truncation, the 5/5 star rating and explicit 'genius' language clearly indicate a rave review. The critic praises every element extensively with no reservations expressed in the available text. | GPT-4o: The review is overwhelmingly positive, highlighting the 'genius' of the play, the 'fantastic' original songs, and the standout performances. The original 5/5 star rating strongly supports a Rave classification. | Gemini: The review uses strong positive language like \"genius on display\" and the original rating is 5/5 stars, indicating a rave review. Even though the text is truncated, the initial part is overwhelmingly positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:58:57.750Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

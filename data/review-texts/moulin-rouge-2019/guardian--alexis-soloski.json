@@ -8,14 +8,58 @@
   "fullText": null,
   "bwwExcerpt": "You could be forgiven for thinking that this tale has reached its sell-by date. But Moulin Rouge is one of those shows that is not only critic-proof, but maybe also story-proof. In Alex Timbers's production, with a book by",
   "originalScore": "3/5",
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "reviews-json-stub",
   "sourceMethod": "stub",
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 3/5 rating suggests mixed reception, and the excerpt acknowledges the show's entertainment appeal despite story concerns. However, the text is heavily truncated making a definitive assessment difficult. | GPT-4o: The 3/5 rating suggests a mixed review, and the excerpt indicates that while the show may have its flaws, it still possesses qualities that make it resilient to criticism. The text implies some level of enjoyment or spectacle that prevents it from being negatively received. | Gemini: The critic's 3/5 rating and the phrase 'critic-proof' suggest a positive but not rave review. The show is acknowledged to have some staying power, indicating it's worth seeing despite potential flaws.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:57:09.555Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  },
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
-  "rescoreReason": "low-conf: prompt=3.0.0, delta=32, upgrading to V5 + 3 models"
+  "rescoreReason": "low-conf: prompt=3.0.0, delta=32, upgrading to V5 + 3 models",
+  "rescoreCompletedAt": "2026-02-01T14:57:09.555Z"
 }

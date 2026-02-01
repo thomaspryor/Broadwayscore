@@ -11,5 +11,52 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "2/5 stars"
+  "originalScore": "2/5 stars",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic gives 2/5 stars and consistently criticizes the production's lack of connection, disorientation, and actors struggling to connect, despite acknowledging some individual performances. | GPT-4o: The review highlights significant issues with the production, such as the lack of connection among actors and disorientation in the setting. The original 2/5 star rating aligns with a negative assessment, suggesting the production falls short of expectations. | Gemini: The review is mixed, praising some performances (Carell, Pill, Harper, Katigbak) while criticizing others (Rose, Molina) and the overall direction. The truncated text makes it difficult to determine a final recommendation, but the 2/5 star rating suggests a lukewarm reception, leaning towards mixed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:59:57.657Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
+  }
 }

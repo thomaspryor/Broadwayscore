@@ -9,13 +9,57 @@
   "bwwExcerpt": "In addition to her years of teaching playwriting at Brown and Yale, Vogel is best-known for her Pulitzer-winning 1997 play How I Learned to Drive, which finally made it to Broadway in 2022 and remains unquestionably one of the very best works of recent American theater. That’s a hard standard to match, especially since the various twists and turns are almost impossible to predict when watching How I Learned to Drive for the first time. By contrast, Mother Play probably isn’t the first story you’",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "needsScoring": true,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review gives a clear B- grade and concludes positively that the play 'hits the emotional beats it needs to.' While noting flaws like predictability and pacing issues, the critic ultimately recommends it as worthwhile theater. | GPT-4o: The review acknowledges some shortcomings in the play's execution and creativity but highlights strong performances and emotional impact. The overall tone suggests it's worth seeing, albeit with some reservations. | Gemini: The review highlights both strengths (performances, emotional beats) and weaknesses (predictable story, some creative choices that don't work). The final statement suggests a mild recommendation, but the truncated text makes it difficult to be certain.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:56:46.740Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
   "bwwThumb": "Up",
   "showScoreExcerpt": "\"...Vogel’s latest hits the emotional beats...reminder to call your mom now and then.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/mother-play-broadway",
@@ -53,8 +97,7 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "scrapingbee",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.901Z",
+  "rescoreCompletedAt": "2026-02-01T14:56:46.740Z",
   "contentTier": "complete",
-  "wordCount": 799,
-  "needsRescore": true
+  "wordCount": 799
 }

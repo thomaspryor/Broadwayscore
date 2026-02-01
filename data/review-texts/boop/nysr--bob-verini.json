@@ -11,5 +11,52 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "3/5 stars"
+  "originalScore": "3/5 stars",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 3/5 star rating aligns with a mixed verdict. Despite praising stellar performances by Rogers and Melham and Mitchell's direction, the critic heavily criticizes the 'maladroit storyline' and 'cardboard characters,' ultimately suggesting it works only as escapism rather than quality theater. | GPT-4o: The review highlights significant flaws in the storyline and character development, but also praises the performances, music, and production elements. The original 3/5 star rating suggests a mixed reception, with some positive aspects but notable issues. | Gemini: Despite acknowledging the weak storyline and other flaws, the critic highlights the strong performances, catchy music, and overall entertainment value, suggesting it's a worthwhile experience, especially as a break from reality. The 3/5 star rating also supports a positive classification.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:53:14.215Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 78,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

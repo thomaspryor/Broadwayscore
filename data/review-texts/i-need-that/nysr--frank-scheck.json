@@ -11,5 +11,52 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "3/5 stars"
+  "originalScore": "3/5 stars",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite criticizing the play's sitcom-style writing and lack of psychological depth, the critic emphasizes that DeVito's exceptional performance makes it 'watchable from beginning to end' and calls his board game scene 'a comedic tour de force,' indicating a recommendation based on the star's talent. | GPT-4o: The review highlights Danny DeVito's performance as a major positive, making the play watchable despite its flaws. However, the play itself is critiqued for lacking depth and relying on sitcom-style humor, suggesting a mixed reception overall. The original 3/5 star rating aligns with a mixed classification. | Gemini: The review highlights DeVito's performance and the set design as strong positives, while acknowledging the play's reliance on sitcom-style humor and slow spots. The 3/5 star rating also suggests a positive but not rave recommendation. The truncated text makes it hard to be more confident.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:55:07.146Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

@@ -10,17 +10,61 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review is severely truncated at a critical pivot point where the critic appears to be contrasting the playwright's luck with audience experience. The BroadwayWorld 'Down' aggregator context suggests a negative verdict, but the available text only shows setup without the actual assessment. | GPT-4o: The review text focuses on the luck of the playwright and the high-profile production rather than the quality of the play itself. The lack of positive commentary on the performance suggests a negative verdict, supported by the aggregator's 'Down' rating. | Gemini: The review excerpt focuses on the playwright's good fortune and the production's high-profile cast and director, but it doesn't offer a clear recommendation for or against seeing the show. The BroadwayWorld aggregator verdict suggests a slightly negative leaning, but the provided text alone is too neutral for a negative score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:54:10.484Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 40,
+    "geminiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  },
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
-  "rescoreReason": "low-conf: prompt=3.0.0, delta=25, upgrading to V5 + 3 models"
+  "rescoreReason": "low-conf: prompt=3.0.0, delta=25, upgrading to V5 + 3 models",
+  "rescoreCompletedAt": "2026-02-01T14:54:10.484Z"
 }

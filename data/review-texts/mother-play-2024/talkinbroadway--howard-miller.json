@@ -10,16 +10,60 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "sources": [
     "bww-roundup"
   ],
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 58,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be just the header/credits information with no actual review text or critical assessment of the production. | GPT-4o: The review text provided is truncated and lacks any evaluative content or clear verdict. Without further context or explicit recommendation, it is classified as mixed with low confidence. | Gemini: The review text is incomplete, making it impossible to determine the critic's recommendation. I am defaulting to a mixed score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:56:53.453Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 55,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  },
   "rescoreReason": "low-conf: prompt=3.0.0, delta=20, upgrading to V5 + 3 models",
   "previousLlmScore": 55,
   "archivePath": "data/archives/reviews/mother-play-2024/talkinbroadway--howard-miller_2026-01-29.html",
@@ -46,10 +90,9 @@
   ],
   "fetchTier": 3,
   "sourceMethod": "brightdata",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.908Z",
+  "rescoreCompletedAt": "2026-02-01T14:56:53.453Z",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
-  "wordCount": 708,
-  "needsRescore": true
+  "wordCount": 708
 }

@@ -11,14 +11,57 @@
   "_removedScore": "Negative",
   "_removedScoreReason": "Sentiment placeholder, not an actual explicit score. Deadline doesn't use letter/star grades.",
   "_removedAt": "2026-01-31T23:45:00.000Z",
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "reviews-json-stub",
-  "needsRescore": true,
   "sourceMethod": "archive",
   "showScoreExcerpt": "\"âMoulin Rouge! The Musicalâ Review: All You Need Is Love Songs By The Dozens\"",
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review contains positive elements ('truly lovely-looking') but spends most of the excerpt setting up concerns about derivative nature and comparing to a game show. The tone suggests ambivalence rather than clear recommendation. | GPT-4o: The review acknowledges the visual appeal and connection to the original film but also hints at a lack of originality by comparing it to a game show. The tone suggests a mix of admiration and critique, leading to a mixed classification. | Gemini: The review focuses heavily on comparisons and déjà vu, suggesting a lack of originality. While acknowledging the show's visual appeal, the overall tone leans towards a mixed assessment rather than a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:57:06.622Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  },
   "archivePath": "data/archives/reviews/moulin-rouge-2019/deadline--greg-evans_2026-01-26.html",
   "textFetchedAt": "2026-01-26T23:30:27.719Z",
   "fetchMethod": "archive",
@@ -53,7 +96,7 @@
   "designation": "Recommended",
   "rescoreReason": "low-conf: prompt=3.0.0, delta=25, upgrading to V5 + 3 models",
   "previousLlmScore": 38,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.911Z",
+  "rescoreCompletedAt": "2026-02-01T14:57:06.622Z",
   "_garbageRestored": true,
   "_garbageRestoredAt": "2026-01-31T23:50:00.000Z",
   "_garbageRestoredReason": "Text was incorrectly flagged as garbage due to 'All Rights Reserved' footer. Restored complete 1294-word review.",

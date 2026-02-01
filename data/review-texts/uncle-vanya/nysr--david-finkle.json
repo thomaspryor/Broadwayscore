@@ -11,5 +11,52 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "2/5 stars"
+  "originalScore": "2/5 stars",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic gives 2/5 stars and explicitly calls the production 'flat' and 'boring,' criticizing most performances and the director's execution despite acknowledging it's 'not outrightly deficient.' | GPT-4o: The review highlights several shortcomings in the production, such as flat performances and lack of chemistry between characters, leading to a disappointing experience. The original rating of 2/5 stars supports a negative classification. | Gemini: The review states that the production is \"somehow flat more often\" than intended, and while not \"outrightly deficient\", it doesn't fully succeed. Some performances are praised, others are not, indicating a mixed experience. The truncated nature of the text makes it difficult to ascertain a definitive recommendation, but the overall tone leans towards mixed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:59:54.228Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
+  }
 }

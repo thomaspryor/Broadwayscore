@@ -10,16 +10,60 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "sources": [
     "bww-roundup"
   ],
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges entertaining performances and production elements but concludes the play 'never fully leaps out from the archives' and struggles to cohere its different ambitions, landing in mixed territory with reservations outweighing recommendations. | GPT-4o: The review acknowledges the play's historical significance and highlights strong performances, but it also points out issues with coherence and balance in the production. The positive elements are tempered by significant reservations, leading to a mixed overall impression. | Gemini: The review highlights strong performances and moments of triumph, but also points out flaws in the play's coherence and the uneven mix of silliness and sobriety. The final verdict leans towards a recommendation, albeit with reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:58:08.941Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  },
   "rescoreReason": "low-conf: prompt=3.0.0, delta=30, upgrading to V5 + 3 models",
   "previousLlmScore": 60,
   "archivePath": "data/archives/reviews/purlie-victorious-2023/slantmagazine--dan-rubins_2026-01-29.html",
@@ -54,10 +98,9 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240606213714",
   "archiveOrgUrl": "http://web.archive.org/web/20240606213714/https://www.slantmagazine.com/theater/purlie-victorious-a-non-confederate-romp-through-the-cotton-patch-review/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.976Z",
+  "rescoreCompletedAt": "2026-02-01T14:58:08.941Z",
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",
-  "wordCount": 1166,
-  "needsRescore": true
+  "wordCount": 1166
 }

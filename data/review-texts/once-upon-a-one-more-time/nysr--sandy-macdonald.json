@@ -11,5 +11,52 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "3/5 stars"
+  "originalScore": "3/5 stars",
+  "assignedScore": 59,
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 54,
+      "high": 64
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The 3/5 star rating indicates mixed reception, and while the critic finds some individual performances noteworthy, the overall tone is dismissive of the show's concept, execution, and target audience, with the closing suggestion to 'sit this one out' leaning negative. | GPT-4o: The review highlights several criticisms about the show's concept and execution, but also notes some entertaining elements and performances. The original rating of 3/5 stars suggests a mixed reception, and the truncated text warning advises caution against a more negative score. | Gemini: The review expresses several reservations, including the show's heavy-handed message, single-entendre lyrics, and a weak second act. However, it also acknowledges some witticisms in the first act and praises certain performances, leading to a mixed classification. The truncated nature of the text makes it difficult to ascertain a definitive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:57:29.478Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

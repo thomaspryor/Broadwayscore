@@ -9,15 +9,59 @@
   "showScoreExcerpt": "\"If the result is an unwieldy but rousing hot mess with outsize ambitions, maybe now we know how its chess prodigies feel.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/chess-broadway",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The phrase 'unwieldy hot mess' suggests significant flaws, but 'rousing' and 'outsize ambitions' indicate some positive qualities, placing this in mixed territory. | GPT-4o: The review describes the production as 'unwieldy' but also 'rousing', suggesting a mix of strengths and weaknesses. The phrase 'hot mess' implies disorganization, yet 'rousing' indicates some positive elements. This aligns with a mixed verdict. | Gemini: The phrase \"rousing hot mess\" suggests a positive but flawed experience, indicating a recommendation with reservations. The \"outsize ambitions\" also hints at something worth seeing despite its imperfections.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:53:38.380Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  },
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
-  "rescoreReason": "low-conf: prompt=3.0.0, delta=17, upgrading to V5 + 3 models"
+  "rescoreReason": "low-conf: prompt=3.0.0, delta=17, upgrading to V5 + 3 models",
+  "rescoreCompletedAt": "2026-02-01T14:53:38.380Z"
 }

@@ -9,13 +9,57 @@
   "bwwExcerpt": "As they become younger, Frank, Charley, and Mary de-age into starry-eyed dreamers who swear to keep their flames lit forever. But roads bend and dreams will shapeshift over the years due to realities and unheeded follies. A good production of 'Merrily We Roll Along' ensures that the stargazing 'Our Time' finale packs that wallop. Embracing its newly acquired Broadway scope, the musical concludes with stars blazing upon the ceiling of the Hudson Theatre. Only by reflecting upon the old times can ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening with extensive context about the original's failure, the review consistently praises this production's execution, performances, and emotional impact, calling it a 'good production' that 'packs that wallop.' | GPT-4o: The review praises the production's successful adaptation, strong performances, and emotional impact, suggesting a highly positive experience that is enthusiastically recommended. | Gemini: The review acknowledges potential issues for die-hard fans but ultimately praises the production's grounded approach and the chemistry of the leads, suggesting it's a worthwhile experience despite some reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T14:56:31.082Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  },
   "bwwThumb": "Up",
   "rescoreReason": "low-conf: prompt=3.0.0, delta=25, upgrading to V5 + 3 models",
   "previousLlmScore": 68,
@@ -32,10 +76,9 @@
   ],
   "fetchTier": 1,
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.886Z",
+  "rescoreCompletedAt": "2026-02-01T14:56:31.082Z",
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",
-  "wordCount": 1291,
-  "needsRescore": true
+  "wordCount": 1291
 }
