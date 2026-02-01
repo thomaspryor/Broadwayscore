@@ -57,6 +57,10 @@ jobs:
         # - No more than 40% truncated
         # - No more than 5% unknown quality
 
+      - name: Audit critic-outlet affinities
+        run: node scripts/audit-critic-outlets.js --report-only
+        continue-on-error: true  # Informational only
+
       - name: Validate review-text files
         run: |
           echo "Validating individual review-text files..."
