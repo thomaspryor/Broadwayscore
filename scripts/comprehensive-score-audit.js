@@ -126,14 +126,8 @@ function normalizeScore(rawScore) {
 
   const raw = rawScore.toLowerCase().trim();
 
-  // Direct lookup
-  for (const [key, value] of Object.entries(NORMALIZATION_TABLE)) {
-    if (raw.includes(key.toLowerCase())) {
-      return value;
-    }
-  }
-
-  // Parse star ratings
+  // 1. Parse star ratings with denominator FIRST (most specific)
+  // e.g., "3/4", "4 out of 5", "4.5/5"
   const starMatch = raw.match(/(\d(?:\.\d)?)\s*(?:\/|out of)\s*(\d)/);
   if (starMatch) {
     const score = parseFloat(starMatch[1]);
@@ -141,10 +135,32 @@ function normalizeScore(rawScore) {
     return Math.round((score / max) * 100);
   }
 
-  // Parse letter grades
-  const gradeMatch = raw.match(/([a-f][+-]?)/i);
+  // 2. Parse star ratings without denominator (e.g., "2 stars", "3.5 stars")
+  // MUST check before letter grades to avoid "2 stars" matching 'a' in 'stars'
+  const starsOnlyMatch = raw.match(/^(\d(?:\.\d)?)\s*stars?$/);
+  if (starsOnlyMatch) {
+    const score = parseFloat(starsOnlyMatch[1]);
+    // Determine max: if score is 5, assume out of 5. If has .5, assume out of 5.
+    // Otherwise (1-4 whole numbers), assume out of 4.
+    const max = (score === 5 || score % 1 !== 0) ? 5 : 4;
+    return Math.round((score / max) * 100);
+  }
+
+  // 3. Direct lookup for EXACT star rating matches in our table (e.g., "4/5", "3.5/4")
+  // Only check keys that look like ratings, not single letters
+  for (const [key, value] of Object.entries(NORMALIZATION_TABLE)) {
+    const keyLower = key.toLowerCase();
+    // Only match if key is a star rating (contains /) not a single letter
+    if (keyLower.includes('/') && raw.includes(keyLower)) {
+      return value;
+    }
+  }
+
+  // 4. Parse letter grades - STRICT: must be standalone grade
+  // e.g., "B+", "Grade: A-" but NOT "stars" (which has 'a' in it)
+  const gradeMatch = raw.match(/^([a-f][+-]?)$|grade[:\s]+([a-f][+-]?)/i);
   if (gradeMatch) {
-    const grade = gradeMatch[1].toUpperCase();
+    const grade = (gradeMatch[1] || gradeMatch[2]).toUpperCase();
     return NORMALIZATION_TABLE[grade] || null;
   }
 
