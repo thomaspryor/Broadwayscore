@@ -176,15 +176,29 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "Add review from submission #${{ github.event.issue.number }}"
-            # Retry push with rebase in case remote has new commits
-            for i in 1 2 3 4 5; do
-              if git push origin main; then
-                echo "Push succeeded on attempt $i"
-                break
+            # Push with robust retry logic
+            MAX_RETRIES=5
+            RETRY_COUNT=0
+            while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+              echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+              git checkout -- . 2>/dev/null || true
+              git clean -fd 2>/dev/null || true
+              if git pull --rebase -X theirs origin main; then
+                if git push origin main; then
+                  echo "Successfully pushed changes"
+                  break
+                fi
+              else
+                echo "Rebase failed, aborting and retrying..."
+                git rebase --abort 2>/dev/null || true
               fi
-              echo "Push failed (attempt $i), pulling and rebasing..."
-              git pull --rebase origin main
-              sleep $((RANDOM % 5 + 2))
+              RETRY_COUNT=$((RETRY_COUNT + 1))
+              if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+                WAIT_TIME=$((10 + RANDOM % 20))
+                echo "Waiting $WAIT_TIME seconds before retry..."
+                sleep $WAIT_TIME
+                git fetch origin main
+              fi
             done
           fi
 
