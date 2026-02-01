@@ -71,31 +71,13 @@
     "needsReviewReasons": []
   },
   "sourceMethod": "archive",
-  "archivePath": "data/archives/reviews/the-lion-king-1997/variety--greg-evans_2026-01-26.html",
-  "textFetchedAt": "2026-01-26T19:26:10.328Z",
+  "archivePath": "data/archives/reviews/the-lion-king-1997/variety--greg-evans_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T23:48:25.197Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "Access blocked in Bright Data response"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
@@ -105,9 +87,17 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 94,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 95,
   "rescoreCompletedAt": "2026-02-01T16:19:28.514Z",
   "contentTier": "complete",
-  "wordCount": 1313
+  "wordCount": 1313,
+  "needsRescore": true,
+  "isFullReview": false,
+  "textWordCount": 64,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "shorter_than_excerpt"
+  ],
+  "textStatus": "truncated"
 }
