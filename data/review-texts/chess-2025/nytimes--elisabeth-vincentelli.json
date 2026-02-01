@@ -5,58 +5,65 @@
   "criticName": "Elisabeth Vincentelli",
   "url": "https://www.nytimes.com/2025/11/16/theater/chess-review-lea-michele-broadway.html",
   "publishDate": "November 16, 2025",
-  "fullText": "Parts of the show are absolutely thrilling and parts are flat at best, aggressively dumb at worst. At least Mayer’s production, starring Nicholas Christopher, Lea Michele and Aaron Tveit, is not a bland bore. Thinking back to Michele’s big, then bigger, then biggest “Nobody’s Side” or Christopher’s red-hot, neck-vein-bursting “Anthem,” I can feel the needle move toward the positive side of the dial.",
+  "fullText": "You have a preview view of this article while we are checking your access. When we have confirmed access, the full article content will load.\n\nThis new revival, starring Lea Michele, Nicholas Christopher and Aaron Tveit, is a reminder why the erratic yet rewarding show has endured all these years.\n\nListen to this article · 6:34 min Learn moreShare full article158By Elisabeth Vincentelli\n\nThe musical “Chess” is known for its brilliant score by the Abba songwriters Benny Andersson and Bjorn Ulvaeus and the “Evita” and “Jesus Christ Superstar” lyricist Tim Rice. And it is notorious for a terminally clunky story line that has undergone several alterations over the past 40 years.\n\nDespite many a writer’s efforts, “Chess” has defeated some of the best minds in the business. But really, who can figure out a tuner born out of a 1980s concept album about competitive chess and the rivalry between the United States and the Soviet Union?\n\nWe now have an answer to one of the fall theater season’s biggest questions: Has the yearslong collaboration between the director Michael Mayer and the screenwriter Danny Strong (“Empire”) that opened Sunday at the Imperial Theater finally found the winning move? Let’s call it a draw.\n\nParts of the show are absolutely thrilling and parts are flat at best, aggressively dumb at worst. At least Mayer’s production, starring Nicholas Christopher, Lea Michele and Aaron Tveit, is not a bland bore. Thinking back to Michele’s big, then bigger, then biggest “Nobody’s Side” or Christopher’s red-hot, neck-vein-bursting “Anthem,” I can feel the needle move toward the positive side of the dial.\n\nNicholas Christopher, whose Anatoly reveals turmoil and humor behind his severe demeanor, in the musical with, background from left: Aaron Tveit, Hannah Cruz and Lea Michele.Credit...Sara Krulwich/The New York TimesLike many previous attempts at injecting coherence into “Chess” — whose original Broadway run, in 1988, lasted only about two months after a protracted reworking following its West End premiere — the production is using a revised book. Without going into a close reading, let’s just say that Strong’s most notable change is to boost the character of the Arbiter (Bryce Pinkham) from a chess judge into an omnipresent narrator.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
   "dtliExcerpt": "Parts of the show are absolutely thrilling and parts are flat at best, aggressively dumb at worst. At least Mayer’s production, starring Nicholas Christopher, Lea Michele and Aaron Tveit, is not a bland bore. Thinking back to Michele’s big, then bigger, then biggest “Nobody’s Side” or Christopher’s red-hot, neck-vein-bursting “Anthem,” I can feel the needle move toward the positive side of the dial.",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 64,
-    "confidence": "high",
+    "score": 62,
+    "confidence": "medium",
     "range": {
-      "low": 57.5,
-      "high": 70.5
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": 77,
-      "direction": 63
+      "book": 40,
+      "music": 85,
+      "performances": 78,
+      "direction": 65
     },
     "keyPhrases": [
       {
-        "quote": "Parts of the show are absolutely thrilling and parts are flat at best, aggressively dumb at worst",
-        "sentiment": "negative",
+        "quote": "Let's call it a draw. Parts of the show are absolutely thrilling and parts are flat at best, aggressively dumb at worst.",
+        "sentiment": "neutral",
+        "strength": 5
+      },
+      {
+        "quote": "Thinking back to Michele's big, then bigger, then biggest 'Nobody's Side' or Christopher's red-hot, neck-vein-bursting 'Anthem,' I can feel the needle move toward the positive side of the dial.",
+        "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "I can feel the needle move toward the positive side of the dial",
-        "sentiment": "positive",
+        "quote": "Chess has defeated some of the best minds in the business",
+        "sentiment": "negative",
         "strength": 3
-      },
-      {
-        "quote": "is not a bland bore",
-        "sentiment": "positive",
-        "strength": 2
       }
     ],
-    "reasoning": "Claude: Mixed review with strong negative criticisms balanced by praise for specific performances and moments, ending on a cautiously positive note. | GPT-4o-mini: The review highlights both thrilling moments and significant flaws, leading to a mixed-positive recommendation overall.",
+    "reasoning": "The critic explicitly calls it 'a draw' with thrilling parts balanced by flat/dumb elements, noting strong performances that tip slightly positive but acknowledging fundamental story problems.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:59:54.649Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T19:58:00.564Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2799,
+    "outputTokens": 386,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 62,
@@ -67,11 +74,48 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "textIssue": "too_short",
-  "sourceMethod": "dtli",
+  "sourceMethod": "brightdata",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
   "contentTier": "truncated",
-  "wordCount": 63
+  "wordCount": 63,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 64,
+  "isFullReview": true,
+  "textWordCount": 388,
+  "archivePath": "data/archives/reviews/chess-2025/nytimes--elisabeth-vincentelli_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T19:33:57.529Z",
+  "designation": "Critics_Pick",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "rescoreCompletedAt": "2026-02-01T19:58:00.564Z"
 }

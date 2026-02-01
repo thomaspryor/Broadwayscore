@@ -9,12 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "The jukebox musical built around Huey Lewis and the News hits is a crowd-pleasing throwback that doesn't quite find its groove until the second act.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The jukebox musical built around Huey Lewis and the News hits is a crowd-pleasing throwback that doesn't quite find its groove until the second act.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 65,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 72
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 60
+    },
+    "keyPhrases": [
+      {
+        "quote": "crowd-pleasing throwback",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "doesn't quite find its groove until the second act",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Mixed signals with positive audience appeal but significant pacing issues in first act suggest qualified, lukewarm recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T19:57:53.037Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2336,
+    "outputTokens": 273,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

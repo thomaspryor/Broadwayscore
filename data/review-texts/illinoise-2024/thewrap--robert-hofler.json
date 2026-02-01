@@ -78,5 +78,34 @@
   "previousLlmScore": 68,
   "rescoreCompletedAt": "2026-01-29T14:31:51.822Z",
   "contentTier": "complete",
-  "wordCount": 952
+  "wordCount": 952,
+  "isFullReview": true,
+  "textWordCount": 952,
+  "archivePath": "data/archives/reviews/illinoise/thewrap--robert-hofler_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T19:28:47.614Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata"
 }

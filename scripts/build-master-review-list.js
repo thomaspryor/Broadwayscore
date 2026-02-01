@@ -536,7 +536,7 @@ function buildMasterListForShow(showId, existingReviews = []) {
         source: review.source || 'unknown',
         _sources: [review.source || 'unknown'],
         needsText: !review.fullText,
-        needsScoring: review.needsScoring !== false && !review.assignedScore
+        needsScoring: !review.assignedScore && !review.llmScore
       });
     }
   }

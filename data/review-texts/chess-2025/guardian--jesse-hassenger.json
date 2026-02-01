@@ -27,5 +27,60 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "assignedScore": 48,
+  "llmScore": {
+    "score": 48,
+    "confidence": "high",
+    "range": {
+      "low": 45,
+      "high": 52
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": 75,
+      "performances": 60,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "Chess remains an oddity and a novelty",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it still feels like an album in search of a bigger, better show",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "held up by the Abba-level catchiness of numbers",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic acknowledges strong musical elements but finds fundamental flaws in the book, characterization, and overall coherence, concluding it remains an unsatisfying theatrical experience despite individual merits.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T19:57:16.282Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4049,
+    "outputTokens": 337,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

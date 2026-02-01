@@ -411,7 +411,6 @@ function saveReview(review) {
     source: 'dtli',
     dtliThumb: review.dtliThumb,
     dtliUrl: review.dtliUrl,
-    needsScoring: true,
   };
 
   fs.writeFileSync(filepath, JSON.stringify(reviewData, null, 2));

@@ -468,7 +468,7 @@ const stats = {
   },
   explicitOverrideLlm: 0,  // Count how many times explicit rating overrode LLM
   thumbOverrideLlm: 0,     // Count how many times thumb overrode low-conf LLM
-  needsLlmScoring: [],     // Reviews with text but no LLM score (should be scored!)
+  unscoredWithText: [],     // Reviews with text but no LLM score (should be scored!)
   byShow: {}
 };
 
@@ -750,7 +750,7 @@ showDirs.forEach(showId => {
       const hasLlmScore = data.llmScore && data.llmScore.score;
 
       if (hasScorableText && !hasLlmScore) {
-        stats.needsLlmScoring.push({
+        stats.unscoredWithText.push({
           path: showId + '/' + file,
           textLength: scorableText.length,
           hasThumb: !!(data.dtliThumb || data.bwwThumb)
@@ -899,14 +899,14 @@ if (skippedReviews.length > 0) {
 }
 
 // WARNING: Reviews that should have LLM scores but don't
-if (stats.needsLlmScoring.length > 0) {
-  console.log(`\n⚠️  WARNING: ${stats.needsLlmScoring.length} REVIEWS NEED LLM SCORING`);
+if (stats.unscoredWithText.length > 0) {
+  console.log(`\n⚠️  WARNING: ${stats.unscoredWithText.length} REVIEWS NEED LLM SCORING`);
   console.log('These have scorable text (100+ chars) but no LLM score.');
   console.log('Run: gh workflow run "LLM Ensemble Score Reviews" to score them.\n');
 
   // Group by show
   const byShow = {};
-  stats.needsLlmScoring.forEach(r => {
+  stats.unscoredWithText.forEach(r => {
     const show = r.path.split('/')[0];
     byShow[show] = (byShow[show] || 0) + 1;
   });

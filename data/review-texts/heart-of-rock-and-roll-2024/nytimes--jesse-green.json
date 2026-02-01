@@ -9,12 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "The jukebox musical 'The Heart of Rock & Roll,' built around the hits of Huey Lewis and the News, is energetic and well-performed but feels more like a concert than a cohesive story.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The jukebox musical 'The Heart of Rock & Roll,' built around the hits of Huey Lewis and the News, is energetic and well-performed but feels more like a concert than a cohesive story.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": 75,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "energetic and well-performed",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "feels more like a concert than a cohesive story",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The review praises energy and performances but criticizes the fundamental theatrical structure, suggesting a show that works on some levels but fails as cohesive musical theater.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T19:57:57.978Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2348,
+    "outputTokens": 278,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

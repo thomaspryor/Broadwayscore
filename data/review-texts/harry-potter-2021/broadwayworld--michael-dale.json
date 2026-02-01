@@ -8,14 +8,66 @@
   "fullText": null,
   "bwwExcerpt": "From row P of the orchestra section of the cavernous Lyric Theatre, one might feel a bit disconnected from the characters and plot, especially with designer Christopher Jones' skeletal set adding to the hollowness, but admittedly, that might just be the result of my unfamiliarity with the play's backstory. Surely, judging from the enthusiastic responses throughout the two-parter, fans of the books and films were having a blast.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
-  "llmScore": null,
-  "llmMetadata": null,
+  "llmScore": {
+    "score": 58,
+    "confidence": "low",
+    "range": {
+      "low": 50,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "one might feel a bit disconnected from the characters and plot",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "fans of the books and films were having a blast",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "that might just be the result of my unfamiliarity with the play's backstory",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "The critic acknowledges personal disconnection and production issues but notes fan enthusiasm, suggesting the show works for its target audience despite accessibility problems.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T19:57:39.012Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2399,
+    "outputTokens": 323,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "bwwExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated BWW excerpt"
+    }
+  },
   "ensembleData": null,
   "sources": [
     "bww-roundup"

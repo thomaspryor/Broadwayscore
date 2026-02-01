@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The musical manages to capture both the joy and the melancholy of the original album, creating a theatrical experience that feels both intimate and expansive.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,36 +17,58 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical manages to capture both the joy and the melancholy of the original album, creating a theatrical experience that feels both intimate and expansive.",
   "llmScore": {
-    "score": 79,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 45,
+      "music": 90,
+      "performances": 82,
+      "direction": 80
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the musical's ability to capture the essence of the source material and describes it as a meaningful theatrical experience, indicating a positive recommendation though without strong superlatives. | GPT-4o: The review highlights the musical's ability to convey complex emotions and create a compelling theatrical experience, indicating a strong positive recommendation. | Gemini: The review highlights the musical's success in capturing the essence of the original album and creating a compelling theatrical experience, indicating a positive recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "For a place where music so often plays a crucial role, Broadway hardly ever highlights the thrill of music making itself... the interconnections between musicians, songs and a society have rarely been evoked as vividly, and as lovingly",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it's weighed down by clunky dialogue (especially between the sisters) and heavy-handed exposition",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "this latest iteration of the 'Buena Vista Social Club' franchise makes its point by making music instead of spelling things out",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic clearly celebrates the musical's achievements in showcasing music-making and cultural authenticity while acknowledging significant book problems, resulting in a positive recommendation weighted toward the show's musical strengths.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:29:01.825Z",
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T19:57:32.010Z",
     "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
+    "inputTokens": 3842,
+    "outputTokens": 393,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 76,
@@ -66,7 +88,6 @@
   "previousUrl": "https://www.nytimes.com/2024/11/21/theater/buena-vista-social-club-review.html",
   "urlDiscoveredAt": "2026-02-01T18:42:14.816Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
   "textWordCount": 1198,
@@ -87,5 +108,6 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250609194012",
-  "archiveOrgUrl": "http://web.archive.org/web/20250609194012/https://www.nytimes.com/2025/03/19/theater/buena-vista-social-club-review-broadway.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250609194012/https://www.nytimes.com/2025/03/19/theater/buena-vista-social-club-review-broadway.html",
+  "rescoreCompletedAt": "2026-02-01T19:57:32.010Z"
 }

@@ -1184,8 +1184,7 @@ function createReviewFile(showId, reviewData) {
     dtliUrl: reviewData.dtliUrl || null,
     bwwExcerpt: reviewData.bwwExcerpt || null,
     bwwRoundupUrl: reviewData.bwwRoundupUrl || null,
-    showScoreExcerpt: reviewData.showScoreExcerpt || reviewData.excerpt || null,
-    needsScoring: true
+    showScoreExcerpt: reviewData.showScoreExcerpt || reviewData.excerpt || null
   };
 
   fs.writeFileSync(filepath, JSON.stringify(review, null, 2));

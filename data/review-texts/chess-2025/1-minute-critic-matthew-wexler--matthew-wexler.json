@@ -26,5 +26,60 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 85,
+      "performances": 85,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's some magic happening on Broadway",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this revival proves every piece matters in a Cold War musical that finally finds its winning strategy",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Strong rethinks the game strategy by centering The Arbiter",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The review consistently praises the revival's successful reimagining with Strong's new book, stellar performances across the cast, and effective direction that finally makes the musical work after its original Broadway failure.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T19:57:10.125Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2823,
+    "outputTokens": 343,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }
