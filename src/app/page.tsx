@@ -263,16 +263,16 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
       label = audienceBuzz.designation;
       // Map audience designation to colors and emojis
       if (audienceBuzz.designation === 'Loving') {
-        tier = { label: 'Loving', color: '#22c55e', tooltip: 'Audiences love it', range: '', glow: false };
+        tier = { label: 'Loving It', color: '#22c55e', tooltip: 'Audiences love it', range: '', glow: false };
         audienceIcon = '🔥';
       } else if (audienceBuzz.designation === 'Liking') {
-        tier = { label: 'Liking', color: '#14b8a6', tooltip: 'Audiences like it', range: '', glow: false };
+        tier = { label: 'Liking It', color: '#14b8a6', tooltip: 'Audiences like it', range: '', glow: false };
         audienceIcon = '👍';
       } else if (audienceBuzz.designation === 'Shrugging') {
         tier = { label: 'Shrugging', color: '#f59e0b', tooltip: 'Mixed audience reaction', range: '', glow: false };
         audienceIcon = '🤷';
       } else if (audienceBuzz.designation === 'Loathing') {
-        tier = { label: 'Loathing', color: '#ef4444', tooltip: 'Audiences dislike it', range: '', glow: false };
+        tier = { label: 'Loathing It', color: '#ef4444', tooltip: 'Audiences dislike it', range: '', glow: false };
         audienceIcon = '💩';
       }
     }

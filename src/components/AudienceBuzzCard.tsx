@@ -166,7 +166,7 @@ export default function AudienceBuzzCard({ buzz, showScoreUrl }: AudienceBuzzCar
         <div className="flex items-center gap-3">
           <span className="text-2xl">{getDesignationEmoji(buzz.designation)}</span>
           <div>
-            <div className={`text-lg font-bold ${colors.textClass}`}>{buzz.designation}</div>
+            <div className={`text-lg font-bold ${colors.textClass}`}>{buzz.designation === 'Loving' ? 'Loving It' : buzz.designation === 'Liking' ? 'Liking It' : buzz.designation === 'Loathing' ? 'Loathing It' : buzz.designation}</div>
             <div className="text-sm text-gray-400">
               Based on {formatReviewCount(
                 (showScore?.reviewCount || 0) + (mezzanine?.reviewCount || 0) + (reddit?.reviewCount || 0)

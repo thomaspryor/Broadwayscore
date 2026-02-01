@@ -46,17 +46,17 @@ const faqSchema = {
       name: 'What do the Audience Scorecard designations mean?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Shows are categorized as: Loving (88-100) - audiences adore it, Liking (78-87) - solid positive reception, Shrugging (68-77) - mixed or lukewarm response, Loathing (0-67) - audiences dislike it.',
+        text: 'Shows are categorized as: Loving It (88-100) - audiences adore it, Liking It (78-87) - solid positive reception, Shrugging (68-77) - mixed or lukewarm response, Loathing It (0-67) - audiences dislike it.',
       },
     },
   ],
 };
 
-const designationConfig: Record<string, { emoji: string; color: string; bgColor: string }> = {
-  'Loving': { emoji: '❤️', color: 'text-red-400', bgColor: 'bg-red-500/15' },
-  'Liking': { emoji: '👍', color: 'text-emerald-400', bgColor: 'bg-emerald-500/15' },
-  'Shrugging': { emoji: '🤷', color: 'text-yellow-400', bgColor: 'bg-yellow-500/15' },
-  'Loathing': { emoji: '💩', color: 'text-gray-400', bgColor: 'bg-gray-500/15' },
+const designationConfig: Record<string, { emoji: string; color: string; bgColor: string; displayLabel: string }> = {
+  'Loving': { emoji: '❤️', color: 'text-red-400', bgColor: 'bg-red-500/15', displayLabel: 'Loving It' },
+  'Liking': { emoji: '👍', color: 'text-emerald-400', bgColor: 'bg-emerald-500/15', displayLabel: 'Liking It' },
+  'Shrugging': { emoji: '🤷', color: 'text-yellow-400', bgColor: 'bg-yellow-500/15', displayLabel: 'Shrugging' },
+  'Loathing': { emoji: '💩', color: 'text-gray-400', bgColor: 'bg-gray-500/15', displayLabel: 'Loathing It' },
 };
 
 export default function AudienceBuzzPage() {
@@ -135,7 +135,7 @@ export default function AudienceBuzzPage() {
               <div key={designation} className={`card p-3 ${designationConfig[designation].bgColor} border-transparent`}>
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-2xl">{designationConfig[designation].emoji}</span>
-                  <span className={`font-semibold ${designationConfig[designation].color}`}>{designation}</span>
+                  <span className={`font-semibold ${designationConfig[designation].color}`}>{designationConfig[designation].displayLabel}</span>
                 </div>
                 <p className="text-xs text-gray-400">
                   {designation === 'Loving' && '88-100 score'}
