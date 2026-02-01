@@ -495,3 +495,34 @@ Each review file in `data/review-texts/{showId}/{outletId}--{criticName}.json`:
 | Washington Post | WAPO_EMAIL, WASHPOST_PASSWORD |
 
 `collect-review-texts.js` automatically logs in using these credentials.
+
+## Known Extraction & Data Quality Issues (Feb 2026)
+
+Documented from the Jan-Feb 2026 review corpus audit (1,825→2,022 reviews). These inform planned improvements below.
+
+### Text Quality Issues
+
+**HTML entity pollution:** Variety, EW, and other outlets deliver text with unresolved HTML entities (`&#8220;`, `&#8217;`, `&hellip;`). This confuses LLM scoring — a clearly positive review (Maybe Happy Ending, Variety) scored 50/Mixed because the LLM parsed entity-polluted text. **Fix needed:** Decode HTML entities at write time in both `gather-reviews.js` and `collect-review-texts.js`.
+
+**Outlet-specific junk in fullText:** Generic junk strippers miss outlet-specific patterns:
+- **EW:** Video player code, `<img>` srcsets, "Related Articles" blocks survive into fullText
+- **The Times (UK):** Paywall message prefix ("We haven't been able to take payment...") precedes actual review
+- **BWW:** "Get Access To Every Broadway Story" paywall text instead of review
+- **BroadwayNews:** Full site navigation menu (JavaScript-rendered content not waited for)
+- **Variety:** `\t\n` whitespace blocks, "Related Stories" / "Popular on Variety" interstitials
+
+**No quality classification in `gather-reviews.js`:** The web search step fetches fullText but doesn't run quality classification (contentTier, truncation signals). This means `collect-review-texts.js` quality checks don't apply to web-search-sourced reviews. As of Feb 2026, 172 web-search reviews have `contentTier: none`.
+
+### Scoring Issues
+
+**Explicit ratings not auto-converted:** Reviews with `originalScore` values like "4/5 stars", "B+", "★★★★☆" should convert directly to numeric scores without LLM scoring. Currently, the LLM may override with a wrong score (Suffs: 4/5 stars → LLM scored 50 from paywall text).
+
+**LLM low-confidence as garbage detector:** When LLM reasoning says "website navigation content", "plot summary rather than review", or "headline and byline only", this is a reliable signal that the fullText is garbage. This signal should auto-flag reviews for re-scrape, closing the feedback loop without manual intervention.
+
+### Deduplication Issues
+
+**URL uniqueness gap:** The dedup system checks outlet+critic but not URL uniqueness within a show. A Variety review appeared under both "Christian Lewis" and "Peter Marks" because both entries shared the same URL. **Fix needed:** Add URL-based dedup check in `scripts/lib/deduplication.js`.
+
+### Workflow Issues
+
+**Parallel push conflicts:** When 3+ workflows push to `main` simultaneously, `git pull --rebase` fails with unstaged changes or merge conflicts. Fixed in `gather-reviews.yml` and `rebuild-reviews.yml` (Feb 2026) with `git checkout -- . && git clean -fd` before rebase and `-X theirs` for auto-conflict resolution. **All parallel-safe workflows should use this pattern.**
