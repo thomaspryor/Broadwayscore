@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-02-01T14:11:44.893Z",
+  "runDate": "2026-02-01T14:14:23.741Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "illinoise-2024",
+    "showFilter": "and-juliet-2022",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,34 +12,34 @@
   },
   "summary": {
     "processed": 19,
-    "failed": 120,
+    "failed": 119,
     "skipped": 0,
-    "successRate": "13.7%"
+    "successRate": "13.8%"
   },
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 7,
     "browserbase": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 2,
     "archive": 10
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 0,
-    "tier1_5Attempts": 0,
+    "tier1Attempts": 3,
+    "tier1Success": 1,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
-    "tier2Success": 1,
+    "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 4,
-    "tier4Success": 3,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 10,
-    "browserbaseSessionsUsed": 0,
+    "tier4Attempts": 6,
+    "tier4Success": 2,
+    "totalFailed": 1,
+    "scrapingBeeCreditsUsed": 2,
+    "browserbaseSessionsUsed": 1,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -60,8 +60,8 @@
     "mother-play-2024/broadwaynews--brittani-samuel.json",
     "mother-play-2024/ew--allison-considine.json",
     "mother-play-2024/guardian--benjamin-lee.json",
-    "illinoise-2024/broadwaynews--brittani-samuel.json",
-    "illinoise-2024/washpost--gloria-oladipo.json"
+    "and-juliet-2022/ew--leah-greenblatt.json",
+    "and-juliet-2022/thewrap--robert-hofler.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -182,8 +182,7 @@
     "mother-play-2024/timeout--adam-feldman.json",
     "mother-play-2024/wsj--charles-isherwood.json",
     "mother-play-2024/wsj--charles.json",
-    "illinoise-2024/nyt-theater--jonathan-mandell.json",
-    "illinoise-2024/deadline--greg-evans.json"
+    "and-juliet-2022/timeout--adam-feldman.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -192,12 +191,11 @@
       "stereophonic-2024/guardian--gloria-oladipo.json",
       "stereophonic-2024/ap--mark-kennedy.json",
       "mother-play-2024/ew--allison-considine.json",
-      "mother-play-2024/guardian--benjamin-lee.json"
+      "mother-play-2024/guardian--benjamin-lee.json",
+      "and-juliet-2022/ew--leah-greenblatt.json"
     ],
     "browserbase": [],
-    "scrapingbee": [
-      "illinoise-2024/washpost--gloria-oladipo.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
       "mj-2022/usatoday--david-rooney.json"
@@ -212,9 +210,20 @@
       "mj-2022/nytg--ayanna-prescod.json",
       "stereophonic-2024/nytimes--jesse-green.json",
       "mother-play-2024/broadwaynews--brittani-samuel.json",
-      "illinoise-2024/broadwaynews--brittani-samuel.json"
+      "and-juliet-2022/thewrap--robert-hofler.json"
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "and-juliet-2022/ew--leah-greenblatt.json",
+      "oldUrl": "https://ew.com/theater/theater-reviews/and-juliet-broadway-musical-review/",
+      "newUrl": "https://ew.com/theater/theater-reviews/and-juliet-broadway-review-max-martin-musical/?srsltid=AfmBOopVqJeB93p7GBPbr1-3vPXhgQmAnWfXspdkhWRlNRlUBxdBlGhq"
+    },
+    {
+      "reviewId": "and-juliet-2022/thewrap--robert-hofler.json",
+      "oldUrl": "https://www.thewrap.com/and-juliet-broadway-review/",
+      "newUrl": "https://www.thewrap.com/juliet-broadway-review-max-martin-jukebox-musical/"
+    }
+  ]
 }
