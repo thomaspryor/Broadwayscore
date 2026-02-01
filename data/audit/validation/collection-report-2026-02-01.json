@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-02-01T14:17:08.489Z",
+  "runDate": "2026-02-01T14:19:18.908Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "jajas-african-hair-braiding-2023",
+    "showFilter": "once-upon-a-one-more-time-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -24,20 +24,20 @@
     "archive": 9
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 2,
     "tier1Success": 1,
-    "tier1_5Attempts": 2,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 0,
     "tier2Attempts": 0,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 4,
-    "tier4Success": 0,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 20,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.7,
+    "tier4Attempts": 3,
+    "tier4Success": 1,
+    "totalFailed": 1,
+    "scrapingBeeCreditsUsed": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -60,7 +60,7 @@
     "mother-play-2024/broadwaynews--brittani-samuel.json",
     "mother-play-2024/ew--allison-considine.json",
     "mother-play-2024/guardian--benjamin-lee.json",
-    "jajas-african-hair-braiding-2023/guardian--gloria-oladipo.json"
+    "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -181,8 +181,8 @@
     "mother-play-2024/timeout--adam-feldman.json",
     "mother-play-2024/wsj--charles-isherwood.json",
     "mother-play-2024/wsj--charles.json",
-    "jajas-african-hair-braiding-2023/nydailynews--chris-jones.json",
-    "jajas-african-hair-braiding-2023/nydailynews--chris.json"
+    "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
+    "once-upon-a-one-more-time-2023/timeout--adam-feldman.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -192,7 +192,7 @@
       "stereophonic-2024/ap--mark-kennedy.json",
       "mother-play-2024/ew--allison-considine.json",
       "mother-play-2024/guardian--benjamin-lee.json",
-      "jajas-african-hair-braiding-2023/guardian--gloria-oladipo.json"
+      "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
@@ -212,14 +212,6 @@
       "mother-play-2024/broadwaynews--brittani-samuel.json"
     ]
   },
-  "failuresByOutlet": {
-    "New York Daily News": {
-      "count": 2,
-      "domain": "nydailynews.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
