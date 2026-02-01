@@ -69,39 +69,22 @@
     "needsReviewReasons": []
   },
   "textIssue": "too_short",
-  "sourceMethod": "archive",
-  "archivePath": "data/archives/reviews/bug-2026/deadline--greg-evans_2026-01-26.html",
-  "textFetchedAt": "2026-01-26T22:52:28.261Z",
-  "fetchMethod": "archive",
+  "sourceMethod": "playwright",
+  "archivePath": "data/archives/reviews/bug-2026/deadline--greg-evans_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T23:46:47.690Z",
+  "fetchMethod": "playwright",
   "fetchAttempts": [
     {
       "tier": 1,
       "method": "playwright",
-      "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "Access blocked in Bright Data response"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 1,
   "archiveOrgTimestamp": "20260113215722",
   "archiveOrgUrl": "http://web.archive.org/web/20260113215722/https://deadline.com/2026/01/bug-broadway-review-carrie-coon-tracy-letts-1236680796/",
   "textIssues": [
+    "Word count too low: 92 (min: 300)",
     "Show title not found in text"
   ],
   "showScoreExcerpt": null,
@@ -114,5 +97,15 @@
   "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
   "garbageFixedAt": "2026-01-29T22:45:22.726Z",
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "fullText": "Get our Breaking News Alerts and Keep your inbox happy. Comments On Deadline Hollywood are monitored. So don't go off topic, don't impersonate anyone, and don't get your facts wrong. Δdocument.getElementById( \"ak_js_1\" ).setAttribute( \"value\", ( new Date() ).getTime() ); Signup for Breaking News Alerts & Newsletters By providing your information, you agree to our Terms of Use and our Privacy Policy. We use vendors that may also process your information to help provide our services. This site is protected by reCAPTCHA Enterprise and the Google Privacy Policy and Terms of Service apply.",
+  "isFullReview": false,
+  "textWordCount": 92,
+  "designation": "Recommended",
+  "textQuality": "partial",
+  "truncationSignals": [
+    "has_footer_text"
+  ],
+  "textStatus": "incomplete",
+  "showNotMentioned": true
 }
