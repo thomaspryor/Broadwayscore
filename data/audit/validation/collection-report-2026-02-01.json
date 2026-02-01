@@ -1,44 +1,44 @@
 {
-  "runDate": "2026-02-01T14:05:35.839Z",
+  "runDate": "2026-02-01T14:09:38.625Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "here-lies-love-2023",
+    "showFilter": "the-shark-is-broken-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 16,
-    "failed": 120,
+    "processed": 19,
+    "failed": 122,
     "skipped": 0,
-    "successRate": "11.8%"
+    "successRate": "13.5%"
   },
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 7,
     "browserbase": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 2,
-    "archive": 9
+    "archive": 10
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 1,
+    "tier1Attempts": 2,
+    "tier1Success": 2,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 1,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 7,
+    "tier4Attempts": 5,
     "tier4Success": 4,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 11,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -57,8 +57,11 @@
     "stereophonic-2024/ew--allison-considine.json",
     "stereophonic-2024/guardian--gloria-oladipo.json",
     "stereophonic-2024/ap--mark-kennedy.json",
-    "here-lies-love-2023/nytimes--ben-brantley.json",
-    "here-lies-love-2023/nypost--johnny-oleksinski.json"
+    "mother-play-2024/broadwaynews--brittani-samuel.json",
+    "mother-play-2024/ew--allison-considine.json",
+    "mother-play-2024/guardian--benjamin-lee.json",
+    "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json",
+    "the-shark-is-broken-2023/observer--david-cote.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -176,11 +179,13 @@
     "stereophonic-2024/deadline--greg-evans.json",
     "stereophonic-2024/observer--david-cote.json",
     "stereophonic-2024/timeout--adam-feldman.json",
-    "here-lies-love-2023/deadline--greg-evans.json",
-    "here-lies-love-2023/timeout--adam-feldman.json",
-    "here-lies-love-2023/wsj--charles-isherwood.json",
-    "here-lies-love-2023/wsj--charles.json",
-    "here-lies-love-2023/bergen-record--robert-feldberg.json"
+    "mother-play-2024/timeout--adam-feldman.json",
+    "mother-play-2024/wsj--charles-isherwood.json",
+    "mother-play-2024/wsj--charles.json",
+    "the-shark-is-broken-2023/deadline--greg-evans.json",
+    "the-shark-is-broken-2023/timeout--adam-feldman.json",
+    "the-shark-is-broken-2023/wsj--charles-isherwood.json",
+    "the-shark-is-broken-2023/wsj--charles.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -188,12 +193,12 @@
       "stereophonic-2024/ew--allison-considine.json",
       "stereophonic-2024/guardian--gloria-oladipo.json",
       "stereophonic-2024/ap--mark-kennedy.json",
-      "here-lies-love-2023/nypost--johnny-oleksinski.json"
+      "mother-play-2024/ew--allison-considine.json",
+      "mother-play-2024/guardian--benjamin-lee.json",
+      "the-shark-is-broken-2023/observer--david-cote.json"
     ],
     "browserbase": [],
-    "scrapingbee": [
-      "here-lies-love-2023/nytimes--ben-brantley.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
       "mj-2022/usatoday--david-rooney.json"
@@ -207,17 +212,10 @@
       "harry-potter-2021/village-voice--michael-feingold.json",
       "mj-2022/nytg--ayanna-prescod.json",
       "stereophonic-2024/nytimes--jesse-green.json",
-      "lempicka-2024/broadwaynews--brittani-samuel.json"
+      "mother-play-2024/broadwaynews--brittani-samuel.json",
+      "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json"
     ]
   },
-  "failuresByOutlet": {
-    "The Record (Bergen)": {
-      "count": 1,
-      "domain": "northjersey.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
