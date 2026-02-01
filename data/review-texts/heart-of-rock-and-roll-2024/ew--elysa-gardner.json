@@ -5,10 +5,10 @@
   "criticName": "Elysa Gardner",
   "url": "https://www.broadwaynews.com/the-broadway-review-the-heart-of-rock-and-roll-is-a-greatest-hits-album-of-broadway-cliches/",
   "publishDate": null,
-  "fullText": null,
+  "fullText": "Jonathan A. Abrams’s offering is a rote but still rollicking musical scored to Huey Lewis and the News’ nostalgia-inducing discography. Good evening, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to tonight’s Broadway opening of “The Heart of Rock and Roll.” Come one, come all, and get thee to the James Earl Jones Theatre because history is happening before our very eyes. Behold what surely must be the first Broadway musical crafted completely by artificial intelligence. That’s the only explanation for a show as rote and paint-by-numbers predictable as “The Heart of Rock and Roll.” The show sets a bubbling love story between guitar-shredding box factory laborer Bobby and by-the-book box factory heiress Cassandra to a score of singles from Huey Lewis and the News’ heyday. (Only one song, “Be Somebody,” was written for the production). Lewis’ jukebox experiment is only “original,” in the technical sense, with a contrived book by Jonathan A. Abrams. His script is so desperately referential, it borders on satire.",
   "bwwExcerpt": "Strangely, these shortcomings become assets of a sort in “The Heart of Rock and Roll,” the new show now bringing the group’s repertoire to Broadway. Jukebox musicals, for all their contemptible elements, can be most irritating when they try too hard either to deify an artist or to find fresh wit and relevance in a popular repertoire. One of the reasons “Mamma Mia” became an enduring hit is that it steered clear of both these strategies, choosing instead to have giddy fun with what happens to be ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
-  "originalScore": null,
+  "originalScore": "B",
   "assignedScore": 65,
   "source": "bww-roundup",
   "dtliThumb": "Down",
@@ -74,5 +74,30 @@
   "dtliExcerpt": "Behold what surely must be the first Broadway musical crafted completely by artificial intelligence. That’s the only explanation for a show as rote and paint-by-numbers predictable as “The Heart of Rock and Roll.”",
   "showScoreExcerpt": "\"...funny, unpretentious ’80s fun\"",
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 65,
+  "isFullReview": false,
+  "textWordCount": 175,
+  "archivePath": "data/archives/reviews/heart-of-rock-and-roll-2024/ew--elysa-gardner_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T14:04:50.894Z",
+  "originalScoreNormalized": 85,
+  "scoreSource": "letter-grade",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 187 (min: 300)"
+  ]
 }
