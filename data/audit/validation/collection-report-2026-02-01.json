@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-02-01T04:08:57.292Z",
+  "runDate": "2026-02-01T04:04:47.749Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 50,
+    "maxReviews": 2,
     "priority": "all",
-    "showFilter": "moulin-rouge-2019",
+    "showFilter": "stereophonic-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 11,
-    "failed": 119,
+    "failed": 110,
     "skipped": 0,
-    "successRate": "8.5%"
+    "successRate": "9.1%"
   },
   "tierBreakdown": {
     "playwright": 1,
@@ -24,20 +24,22 @@
     "archive": 8
   },
   "statistics": {
-    "tier1Attempts": 19,
+    "tier1Attempts": 1,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 14,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 7,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 33,
-    "tier4Success": 2,
-    "totalFailed": 20,
-    "scrapingBeeCreditsUsed": 40,
+    "tier4Attempts": 2,
+    "tier4Success": 1,
+    "totalFailed": 1,
+    "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 0
   },
   "processed": [
     "harry-potter-2021/hollywood-reporter--david-rooney.json",
@@ -50,7 +52,7 @@
     "harry-potter-2021/village-voice--michael-feingold.json",
     "mj-2022/nytg--ayanna-prescod.json",
     "mj-2022/usatoday--david-rooney.json",
-    "moulin-rouge-2019/nysr--jesse-oxfeld.json"
+    "stereophonic-2024/nytimes--jesse-green.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -162,16 +164,7 @@
     "moulin-rouge-2019/nydailynews--joe-dziemianowicz.json",
     "moulin-rouge-2019/nypost--johnny-oleksinski.json",
     "moulin-rouge-2019/observer--david-cote.json",
-    "moulin-rouge-2019/observer--rex-reed.json",
-    "moulin-rouge-2019/theatermania--jesse-green.json",
-    "moulin-rouge-2019/thewrap--robert-hofler.json",
-    "moulin-rouge-2019/timeout--adam-feldman.json",
-    "moulin-rouge-2019/wsj--terry-teachout.json",
-    "moulin-rouge-2019/amny--matt-windman.json",
-    "moulin-rouge-2019/dailybeast--tim-teeman.json",
-    "moulin-rouge-2019/rollingstone--alan-light.json",
-    "moulin-rouge-2019/usatoday--kelly-lawler.json",
-    "moulin-rouge-2019/washpost--peter-marks.json"
+    "stereophonic-2024/hollywood-reporter--angie-han.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -191,121 +184,17 @@
       "harry-potter-2021/vanityfair--richard-lawson.json",
       "harry-potter-2021/village-voice--michael-feingold.json",
       "mj-2022/nytg--ayanna-prescod.json",
-      "moulin-rouge-2019/nysr--jesse-oxfeld.json"
+      "stereophonic-2024/nytimes--jesse-green.json"
     ]
   },
   "failuresByOutlet": {
-    "The New York Times": {
+    "The Hollywood Reporter": {
       "count": 1,
-      "domain": "nytimes.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "Vulture": {
-      "count": 1,
-      "domain": "vulture.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "Deadline": {
-      "count": 1,
-      "domain": "deadline.com",
+      "domain": "hollywoodreporter.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
-    },
-    "Entertainment Weekly": {
-      "count": 2,
-      "domain": "ew.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Guardian": {
-      "count": 2,
-      "domain": "theguardian.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "New York Daily News": {
-      "count": 1,
-      "domain": "nydailynews.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "New York Post": {
-      "count": 1,
-      "domain": "nypost.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Observer": {
-      "count": 2,
-      "domain": "observer.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "TheaterMania": {
-      "count": 1,
-      "domain": "theatermania.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "TheWrap": {
-      "count": 1,
-      "domain": "thewrap.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "The Wall Street Journal": {
-      "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "amNewYork": {
-      "count": 1,
-      "domain": "amny.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "The Daily Beast": {
-      "count": 1,
-      "domain": "thedailybeast.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Rolling Stone": {
-      "count": 1,
-      "domain": "rollingstone.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "USA Today": {
-      "count": 1,
-      "domain": "usatoday.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Washington Post": {
-      "count": 1,
-      "domain": "washingtonpost.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
     }
-  }
+  },
+  "urlDiscoveries": []
 }
