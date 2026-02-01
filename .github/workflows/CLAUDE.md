@@ -39,6 +39,8 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 ## `update-show-status.yml`
 - **Runs:** Daily at 8 AM UTC (3 AM EST)
 - **Does:** Updates show statuses (open → closed, previews → open), discovers new shows on Broadway.org, auto-adds new shows with status "previews"
+- **IBDB enrichment:** New shows are enriched with preview/opening/closing dates from IBDB. If IBDB fails, Broadway.org's "Begins:" date is treated as `previewsStartDate` (not `openingDate`)
+- **Timeout:** 10 minutes (to accommodate IBDB lookups with rate limiting)
 - **Triggers for newly opened shows (previews → open):** `gather-reviews.yml`, `update-reddit-sentiment.yml`, `update-show-score.yml`
 
 ## `gather-reviews.yml`
@@ -102,7 +104,20 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 ## `discover-historical-shows.yml`
 - **Runs:** Manual trigger only
 - **Does:** Discovers closed Broadway shows from past seasons, adds with status "closed" and tag "historical", auto-triggers review gathering
+- **IBDB enrichment:** Enriches preview/opening/closing dates from IBDB after discovery
 - **Usage:** Specify seasons like `2024-2025,2023-2024` (one or two at a time)
+
+## `enrich-ibdb-dates.yml`
+- **Runs:** Manual trigger only
+- **Does:** Enriches or verifies show dates (preview, opening, closing) from IBDB
+- **Options:** `mode` (enrich/verify/force), `show` (optional slug), `status` (optional filter)
+- **Script:** `scripts/enrich-ibdb-dates.js`
+- **Requires:** `SCRAPINGBEE_API_KEY` (primary), `BRIGHTDATA_TOKEN` (fallback)
+- **Modes:**
+  - `enrich` (default): Fill missing/null dates only, never overwrite existing
+  - `verify`: Compare IBDB vs shows.json, report discrepancies (read-only)
+  - `force`: Overwrite all dates with IBDB values
+- **Rate limiting:** 1.5s between IBDB requests, 30-minute timeout
 
 ## `process-review-submission.yml`
 - **Runs:** When GitHub issue created/edited with `review-submission` label

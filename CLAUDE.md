@@ -119,7 +119,7 @@ data/
   historical-shows-pending.json   # Historical shows awaiting metadata
   image-sources.json              # Backup of original CDN URLs
   critic-registry.json              # Auto-generated critic-outlet affinity data
-  review-texts/{show-id}/         # Individual review JSON files
+  review-texts/{show-id}/         # Individual review JSON files (versioned IDs, e.g., bug-2026/)
     {outlet}--{critic}.json       # e.g., nytimes--ben-brantley.json
   audit/                           # Audit reports (auto-generated)
     critic-outlet-affinity.json    # Flagged reviews + freelancer list
@@ -231,9 +231,11 @@ data/
 - `src/components/ShowImage.tsx` - Image component with cascading source fallback
 
 **Scripts:**
-- `scripts/discover-new-shows.js` - Broadway.org show discovery (daily)
+- `scripts/discover-new-shows.js` - Broadway.org show discovery (daily), enriches dates from IBDB
 - `scripts/lib/deduplication.js` - Centralized show deduplication (9 checks)
 - `scripts/lib/review-normalization.js` - Outlet/critic name normalization
+- `scripts/lib/ibdb-dates.js` - IBDB date lookup module (preview, opening, closing dates)
+- `scripts/enrich-ibdb-dates.js` - Standalone IBDB date enrichment (`--dry-run`, `--verify`, `--force`, `--show=SLUG`)
 - `scripts/scrape-grosses.ts` - BroadwayWorld weekly grosses + history enrichment
 - `scripts/validate-data.js` - **Run before pushing** - validates shows.json + reviews.json
 - `scripts/audit-critic-outlets.js` - Generates critic-outlet affinity registry from corpus (`npm run audit:critics`)
@@ -252,6 +254,22 @@ data/
 **Tests:**
 - `tests/unit/` - Unit tests (parse-grosses, commercial filtering, source-validator, etc.)
 - `tests/e2e/` - Playwright E2E tests (homepage, show pages, biz-buzz)
+
+### IBDB Date Enrichment
+
+`scripts/lib/ibdb-dates.js` looks up preview, opening, and closing dates from IBDB (Internet Broadway Database). IBDB has separate "1st Preview" and "Opening Date" fields, unlike Broadway.org which only has an ambiguous "Begins:" date.
+
+**How it works:** Google SERP search (`site:ibdb.com/broadway-production`) → ScrapingBee premium proxy to fetch production page HTML → JSDOM text extraction → regex date parsing.
+
+**Fallback chain for search:** ScrapingBee Google SERP → Bright Data SERP → direct URL construction from title slug.
+
+**Integration with discovery:** Both `discover-new-shows.js` and `discover-historical-shows.js` enrich dates from IBDB after discovering shows. If IBDB lookup succeeds, its opening date overwrites Broadway.org's "Begins:" date. If IBDB fails, Broadway.org's "Begins:" is treated as `previewsStartDate` (not `openingDate`).
+
+**Standalone enrichment:** `node scripts/enrich-ibdb-dates.js` with flags: `--dry-run`, `--show=SLUG`, `--missing-only` (default), `--verify` (compare only), `--force` (overwrite), `--status=open|previews|closed`.
+
+### Review-Text Directory Convention
+
+Review-text directories use **versioned show IDs** matching `shows.json` (e.g., `data/review-texts/bug-2026/`, not `data/review-texts/bug/`). All scripts that write review files (`gather-reviews.js`, `collect-review-texts.js`) use the show's `id` field from `shows.json` as the directory name.
 
 ### Show Deduplication System
 
