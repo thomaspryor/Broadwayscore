@@ -10,46 +10,63 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Up",
   "originalScore": "B",
-  "assignedScore": 80,
+  "assignedScore": 68,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 80,
-    "confidence": "medium",
+    "score": 68,
+    "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 65,
+      "high": 72
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 45,
+      "music": 78,
+      "performances": 82,
+      "direction": 55
     },
     "keyPhrases": [
       {
-        "quote": "Manilow and Sussman succeed in shining a light on a moving",
+        "quote": "the show doesn't truly begin to sing until its second act",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Harmony is a powerful musical that, by its conclusion, makes one's heart break",
         "sentiment": "positive",
         "strength": 4
+      },
+      {
+        "quote": "Grade: B–",
+        "sentiment": "neutral",
+        "strength": 3
       }
     ],
-    "reasoning": "GPT-4o-mini: The review indicates a strong positive sentiment towards the musical's aim and the work of its creators, suggesting a recommendation to see it.",
+    "reasoning": "The B- grade and mixed critique of structural problems balanced against praise for the emotional impact and second act places this in the qualified recommendation range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:22:02.295Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:04:10.027Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4041,
+    "outputTokens": 320,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": null,
@@ -71,7 +88,7 @@
   "scoreExtractedFrom": "fullText",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 80,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.750Z",
+  "rescoreCompletedAt": "2026-02-01T15:04:10.027Z",
   "truncationSignals": [
     "no_ending_punctuation"
   ],
