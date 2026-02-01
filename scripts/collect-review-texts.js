@@ -1130,9 +1130,9 @@ async function fetchReviewText(review) {
       attempts.push({ tier: 1, method: 'playwright', success: false, error: error.message });
       console.log(`    ✗ Failed: ${error.message}`);
 
-      // If 404, skip to Archive.org
+      // If 404, only try Archive.org then bail - don't waste API credits on dead URLs
       if (error.message.includes('404')) {
-        console.log('  [Tier 4] Archive.org (404 detected)...');
+        console.log('  [Tier 4] Archive.org (404 detected - skipping other tiers)...');
         try {
           const result = await fetchFromArchive(url);
           html = result.html;
@@ -1145,6 +1145,8 @@ async function fetchReviewText(review) {
           attempts.push({ tier: 4, method: 'archive', success: false, error: e.message });
           console.log(`    ✗ Archive.org failed: ${e.message}`);
         }
+        // URL is definitely dead - don't waste ScrapingBee/BrightData credits
+        throw new Error(`URL returned 404 (archive also failed): ${JSON.stringify(attempts)}`);
       }
     }
   } else {
@@ -1187,6 +1189,10 @@ async function fetchReviewText(review) {
     } catch (error) {
       attempts.push({ tier: 2, method: 'scrapingbee', success: false, error: error.message });
       console.log(`    ✗ Failed: ${error.message}`);
+      // If ScrapingBee also got 404, URL is confirmed dead - bail out
+      if (error.message.includes('404')) {
+        throw new Error(`URL confirmed dead (404 from multiple tiers): ${JSON.stringify(attempts)}`);
+      }
     }
   }
 
