@@ -51,7 +51,7 @@ const { extractScore, extractDesignation } = require('./lib/score-extractors');
 const { verifyContent, quickValidityCheck } = require('./lib/content-verifier');
 
 // Content quality detection (garbage/invalid content filter)
-const { assessTextQuality, isGarbageContent } = require('./lib/content-quality');
+const { assessTextQuality, isGarbageContent, validateShowMentioned, extractByline, matchesCritic, computeContentFingerprint } = require('./lib/content-quality');
 
 // Parse CLI arguments
 const args = process.argv.slice(2);
@@ -2106,6 +2106,70 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
   } else {
     delete data.textIssues;
     delete data.textIssue;
+  }
+
+  // ========================================
+  // POST-SCRAPE VALIDATION FLAGS (Phase 1)
+  // ========================================
+
+  // 1A. Show title mention check
+  if (cleanedText.length > 500) {
+    const showTitle = (data.showId || review.showId || '').replace(/-\d{4}$/, '').replace(/-/g, ' ');
+    const showId = data.showId || review.showId || '';
+    const showCheck = validateShowMentioned(cleanedText, showTitle, showId);
+    if (!showCheck.valid && showCheck.confidence === 'high') {
+      data.showNotMentioned = true;
+      console.log(`    ⚠ Show not mentioned in text: ${showCheck.reason}`);
+    } else {
+      delete data.showNotMentioned;
+    }
+  }
+
+  // 1B. Byline cross-check
+  const bylineResult = extractByline(cleanedText);
+  if (bylineResult.found) {
+    const expectedCritic = data.criticName || review.critic || '';
+    if (expectedCritic && !matchesCritic(bylineResult.name, expectedCritic)) {
+      data.misattributedFullText = true;
+      data.extractedByline = bylineResult.name;
+      data.expectedCritic = expectedCritic;
+      console.log(`    ⚠ Byline mismatch: found "${bylineResult.name}", expected "${expectedCritic}"`);
+    } else {
+      delete data.misattributedFullText;
+      delete data.extractedByline;
+      delete data.expectedCritic;
+    }
+  }
+
+  // 1C. Content hash dedup (per-show)
+  const fingerprint = computeContentFingerprint(cleanedText);
+  if (fingerprint) {
+    const showDir = path.dirname(review.filePath);
+    const currentFile = path.basename(review.filePath);
+    try {
+      const siblingFiles = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== currentFile);
+      for (const sibling of siblingFiles) {
+        const siblingPath = path.join(showDir, sibling);
+        try {
+          const siblingData = JSON.parse(fs.readFileSync(siblingPath, 'utf8'));
+          if (siblingData.fullText) {
+            const siblingFingerprint = computeContentFingerprint(siblingData.fullText);
+            if (siblingFingerprint && siblingFingerprint === fingerprint) {
+              data.duplicateTextOf = sibling;
+              console.log(`    ⚠ Duplicate text of ${sibling}`);
+              break;
+            }
+          }
+        } catch (e) {
+          // Skip unreadable sibling files
+        }
+      }
+      if (!data.duplicateTextOf) {
+        delete data.duplicateTextOf;
+      }
+    } catch (e) {
+      // Skip if can't read directory
+    }
   }
 
   // Store LLM content verification results

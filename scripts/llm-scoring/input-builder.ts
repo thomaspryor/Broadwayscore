@@ -161,6 +161,15 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
     } else if (textQualityStatus === 'excerpt-only') {
       contextParts.push('IMPORTANT: Only curated excerpts are available (no full review text).');
       contextParts.push('These are selected quotes from the review and may not represent the full verdict.');
+
+      // 2D: Count available unique excerpts for single-excerpt warning
+      const availableExcerpts = [review.bwwExcerpt, review.dtliExcerpt, review.showScoreExcerpt, review.nycTheatreExcerpt]
+        .filter(e => e && e.length >= 30);
+      const uniqueExcerpts = new Set(availableExcerpts);
+      if (uniqueExcerpts.size === 1) {
+        contextParts.push('\n## Single Excerpt Warning');
+        contextParts.push('CAUTION: Only ONE excerpt is available from this review. A single curated quote may be cherry-picked and not representative of the overall review sentiment. Score conservatively toward the middle of the chosen bucket range.');
+      }
     }
   }
 
@@ -212,6 +221,16 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
     confidence = 'medium';
   } else {
     confidence = 'low';
+  }
+
+  // 2D: Force low confidence for single-excerpt scoring
+  if (textQualityStatus === 'excerpt-only') {
+    const availableExcerpts = [review.bwwExcerpt, review.dtliExcerpt, review.showScoreExcerpt, review.nycTheatreExcerpt]
+      .filter(e => e && e.length >= 30);
+    const uniqueExcerpts = new Set(availableExcerpts);
+    if (uniqueExcerpts.size <= 1) {
+      confidence = 'low';
+    }
   }
 
   return {

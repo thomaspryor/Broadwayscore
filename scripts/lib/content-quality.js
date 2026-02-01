@@ -1051,6 +1051,157 @@ function getScrapingPriority(review) {
   }
 }
 
+// ========================================
+// BYLINE EXTRACTION (1B-i)
+// ========================================
+
+/**
+ * Common byline patterns found at the start or end of review text.
+ * @type {RegExp[]}
+ */
+const BYLINE_PATTERNS = [
+  // "By Name" at start of text (within first 500 chars)
+  /^(?:By|BY)\s+([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+(?:-[A-Z][a-z]+)?)/m,
+  // "— Name" or "– Name" (em dash attribution)
+  /(?:—|–|--)\s*([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+(?:-[A-Z][a-z]+)?)\s*$/m,
+  // "Written by Name" or "Reviewed by Name"
+  /(?:Written|Reviewed|Report(?:ed)?)\s+by\s+([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+(?:-[A-Z][a-z]+)?)/i,
+];
+
+/**
+ * Extract byline (author name) from review text.
+ * Searches first 500 chars and last 200 chars for common byline patterns.
+ *
+ * @param {string} text - Review text
+ * @returns {{ found: boolean, name: string | null, position: 'start' | 'end' | null }}
+ */
+function extractByline(text) {
+  if (!text || text.length < 50) {
+    return { found: false, name: null, position: null };
+  }
+
+  const startChunk = text.substring(0, 500);
+  const endChunk = text.length > 200 ? text.substring(text.length - 200) : text;
+
+  // Check start of text
+  for (const pattern of BYLINE_PATTERNS) {
+    const match = startChunk.match(pattern);
+    if (match && match[1]) {
+      return { found: true, name: match[1].trim(), position: 'start' };
+    }
+  }
+
+  // Check end of text
+  for (const pattern of BYLINE_PATTERNS) {
+    const match = endChunk.match(pattern);
+    if (match && match[1]) {
+      return { found: true, name: match[1].trim(), position: 'end' };
+    }
+  }
+
+  return { found: false, name: null, position: null };
+}
+
+// ========================================
+// FUZZY CRITIC MATCHING (1B-ii)
+// ========================================
+
+/**
+ * Normalize a name for comparison: lowercase, trim, collapse whitespace
+ * @param {string} name
+ * @returns {string}
+ */
+function normalizeName(name) {
+  if (!name) return '';
+  return name.toLowerCase().trim().replace(/\s+/g, ' ').replace(/[.,]/g, '');
+}
+
+/**
+ * Check if an extracted byline name matches the expected critic name.
+ * Handles: exact match, reversed order, last-name-only, abbreviated first name.
+ *
+ * @param {string} extractedName - Name found in the text
+ * @param {string} expectedCritic - Expected critic name from metadata
+ * @returns {boolean}
+ */
+function matchesCritic(extractedName, expectedCritic) {
+  if (!extractedName || !expectedCritic) return false;
+
+  const extracted = normalizeName(extractedName);
+  const expected = normalizeName(expectedCritic);
+
+  if (!extracted || !expected) return false;
+
+  // 1. Exact match
+  if (extracted === expected) return true;
+
+  // Split into parts
+  const extractedParts = extracted.split(' ').filter(p => p.length > 0);
+  const expectedParts = expected.split(' ').filter(p => p.length > 0);
+
+  if (extractedParts.length === 0 || expectedParts.length === 0) return false;
+
+  // 2. Reversed order (e.g., "Green, Jesse" vs "Jesse Green")
+  if (extractedParts.length >= 2 && expectedParts.length >= 2) {
+    const extractedReversed = [...extractedParts].reverse().join(' ');
+    if (extractedReversed === expected) return true;
+  }
+
+  // 3. Last name only match (e.g., "Green" matches "Jesse Green")
+  const extractedLast = extractedParts[extractedParts.length - 1];
+  const expectedLast = expectedParts[expectedParts.length - 1];
+  if (extractedParts.length === 1 && extractedLast === expectedLast) return true;
+  if (expectedParts.length === 1 && expectedLast === extractedLast) return true;
+
+  // 4. Abbreviated first name (e.g., "J. Green" matches "Jesse Green")
+  if (extractedParts.length >= 2 && expectedParts.length >= 2) {
+    // Last names must match
+    if (extractedLast !== expectedLast) return false;
+
+    const extractedFirst = extractedParts[0];
+    const expectedFirst = expectedParts[0];
+
+    // Check if one is an abbreviation of the other
+    if (extractedFirst.length <= 2 && expectedFirst.startsWith(extractedFirst.replace('.', ''))) return true;
+    if (expectedFirst.length <= 2 && extractedFirst.startsWith(expectedFirst.replace('.', ''))) return true;
+  }
+
+  return false;
+}
+
+// ========================================
+// CONTENT FINGERPRINT / HASH DEDUP (1C)
+// ========================================
+
+/**
+ * Compute a content fingerprint for deduplication.
+ * Normalizes text (lowercase, strip whitespace/punctuation), takes first N chars, and hashes.
+ *
+ * @param {string} text - Review text
+ * @param {number} [length=500] - Number of chars to use for fingerprint
+ * @returns {string} - Hex digest fingerprint
+ */
+function computeContentFingerprint(text, length = 500) {
+  if (!text || text.trim().length === 0) return '';
+
+  // Normalize: lowercase, strip whitespace and punctuation, take first N chars
+  const normalized = text.toLowerCase()
+    .replace(/[\s\r\n]+/g, '')
+    .replace(/[^a-z0-9]/g, '')
+    .substring(0, length);
+
+  if (normalized.length < 50) return ''; // Too short to fingerprint
+
+  // Simple hash (djb2) - no need for crypto dependency
+  let hash = 5381;
+  for (let i = 0; i < normalized.length; i++) {
+    hash = ((hash << 5) + hash) + normalized.charCodeAt(i);
+    hash = hash & hash; // Convert to 32-bit integer
+  }
+
+  return Math.abs(hash).toString(16).padStart(8, '0');
+}
+
 module.exports = {
   isGarbageContent,
   hasReviewContent,
@@ -1064,6 +1215,10 @@ module.exports = {
   detectTruncationSignals,
   getScrapingPriority,
   countWords,
+  // Phase 1: Post-scrape validation functions
+  extractByline,
+  matchesCritic,
+  computeContentFingerprint,
   // Export individual detectors for testing/debugging
   detectAdBlocker,
   detectPaywall,

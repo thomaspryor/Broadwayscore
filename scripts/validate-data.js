@@ -444,6 +444,61 @@ function validateReviewsJson() {
     }
   }
 
+  // Phase 1 quality flag validation: check that new flags exist on review-text files
+  // and that rebuild-all-reviews.js passes them through correctly
+  info('Checking Phase 1 quality flags in review-texts...');
+  const reviewTextsDir2 = path.join(DATA_DIR, 'review-texts');
+  let flagCounts = { showNotMentioned: 0, misattributedFullText: 0, duplicateTextOf: 0 };
+  if (fs.existsSync(reviewTextsDir2)) {
+    try {
+      const showDirsForFlags = fs.readdirSync(reviewTextsDir2, { withFileTypes: true })
+        .filter(d => d.isDirectory() && !d.name.startsWith('.'))
+        .map(d => d.name);
+
+      for (const showDir of showDirsForFlags) {
+        const dirPath = path.join(reviewTextsDir2, showDir);
+        const files = fs.readdirSync(dirPath).filter(f => f.endsWith('.json'));
+        for (const file of files) {
+          try {
+            const fileData = JSON.parse(fs.readFileSync(path.join(dirPath, file), 'utf8'));
+            if (fileData.showNotMentioned === true) flagCounts.showNotMentioned++;
+            if (fileData.misattributedFullText === true) flagCounts.misattributedFullText++;
+            if (fileData.duplicateTextOf) flagCounts.duplicateTextOf++;
+
+            // Validate flag data types
+            if (fileData.showNotMentioned !== undefined && typeof fileData.showNotMentioned !== 'boolean') {
+              warn(`${showDir}/${file}: showNotMentioned should be boolean, got ${typeof fileData.showNotMentioned}`);
+            }
+            if (fileData.misattributedFullText !== undefined && typeof fileData.misattributedFullText !== 'boolean') {
+              warn(`${showDir}/${file}: misattributedFullText should be boolean, got ${typeof fileData.misattributedFullText}`);
+            }
+            if (fileData.misattributedFullText === true && !fileData.extractedByline) {
+              warn(`${showDir}/${file}: misattributedFullText=true but missing extractedByline`);
+            }
+            if (fileData.duplicateTextOf !== undefined && typeof fileData.duplicateTextOf !== 'string') {
+              warn(`${showDir}/${file}: duplicateTextOf should be string, got ${typeof fileData.duplicateTextOf}`);
+            }
+            // Validate human review score fields
+            if (fileData.humanReviewScore !== undefined && (typeof fileData.humanReviewScore !== 'number' || fileData.humanReviewScore < 0 || fileData.humanReviewScore > 100)) {
+              warn(`${showDir}/${file}: humanReviewScore should be number 0-100`);
+            }
+          } catch (e) {
+            // Skip unreadable files
+          }
+        }
+      }
+    } catch (e) {
+      // Skip if can't read directory
+    }
+
+    const totalFlags = flagCounts.showNotMentioned + flagCounts.misattributedFullText + flagCounts.duplicateTextOf;
+    if (totalFlags > 0) {
+      info(`Quality flags: ${flagCounts.showNotMentioned} showNotMentioned, ${flagCounts.misattributedFullText} misattributed, ${flagCounts.duplicateTextOf} duplicateText`);
+    } else {
+      ok('No quality flags found (run backfill-review-flags.js to populate)');
+    }
+  }
+
   // Registry-based critic-outlet misattribution detection
   if (validateCriticOutlet) {
     const misattributed = [];

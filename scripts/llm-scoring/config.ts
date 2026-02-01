@@ -205,7 +205,7 @@ export const FEW_SHOT_EXAMPLES: FewShotExample[] = [
 // PROMPT TEMPLATES
 // ========================================
 
-export const PROMPT_VERSION = '5.0.0';
+export const PROMPT_VERSION = '5.1.0';
 
 // Gemini calibration offset (adjust if Gemini has systematic bias)
 export const GEMINI_CALIBRATION_OFFSET = 0;
@@ -304,6 +304,10 @@ Use the full range. A barely-positive review should be 70-72. A very strong posi
 3. **TRUNCATED TEXT**: If warned that text is truncated, be cautious about low scores - the positive verdict may have been cut off. Weight any provided aggregator excerpts as additional evidence.
 
 4. **EXPLICIT RECOMMENDATIONS**: Phrases like "must-see", "skip it", "don't miss", "not worth it" should heavily influence the bucket choice.
+
+5. **BIOGRAPHICAL CONTEXT IS NOT CRITICISM**: Reviews often open with context about the show's subject (a person's life, historical events, source material controversies). This background describes the SUBJECT, not the SHOW. A reviewer describing abuse allegations or historical inaccuracies is providing context, not criticizing the production. Score based on what the critic says about the SHOW (performances, direction, staging, writing), not the subject matter.
+
+6. **EVALUATIVE TEXT IS NOT PLOT SUMMARY**: When a critic describes performances ("delivers a powerful turn"), staging choices ("the set crackles with energy"), or production quality ("the direction keeps things moving"), this IS evaluative content even if it reads descriptively. Do not dismiss such passages as "plot summary" or "cast listing."
 
 ## Output Format
 
