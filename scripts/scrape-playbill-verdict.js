@@ -192,6 +192,54 @@ function isNotBroadway(title) {
   );
 }
 
+// Map domains to recognizable outlet names so normalizeOutlet() can match them
+const DOMAIN_TO_OUTLET = {
+  'nytimes.com': 'New York Times',
+  'chicagotribune.com': 'Chicago Tribune',
+  'hollywoodreporter.com': 'Hollywood Reporter',
+  'theguardian.com': 'The Guardian',
+  'vulture.com': 'Vulture',
+  'ew.com': 'Entertainment Weekly',
+  'nypost.com': 'New York Post',
+  'nydailynews.com': 'New York Daily News',
+  'wsj.com': 'Wall Street Journal',
+  'usatoday.com': 'USA Today',
+  'washingtonpost.com': 'Washington Post',
+  'thedailybeast.com': 'The Daily Beast',
+  'observer.com': 'Observer',
+  'newyorktheater.me': 'New York Theater',
+  'newyorktheatreguide.com': 'New York Theatre Guide',
+  'nystagereview.com': 'New York Stage Review',
+  'nysun.com': 'New York Sun',
+  'theatermania.com': 'TheaterMania',
+  'theatrely.com': 'Theatrely',
+  'theaterpizzazz.com': 'Theater Pizzazz',
+  'timeout.com': 'Time Out',
+  'deadline.com': 'Deadline',
+  'variety.com': 'Variety',
+  'thewrap.com': 'The Wrap',
+  'broadwaynews.com': 'Broadway News',
+  'cititour.com': 'Cititour',
+  'culturesauce.com': 'Culture Sauce',
+  'slantmagazine.com': 'Slant Magazine',
+  'digitaljournal.com': 'Digital Journal',
+  'queerty.com': 'Queerty',
+  'exeuntnyc.com': 'Exeunt NYC',
+  'slashfilm.com': 'SlashFilm',
+  'thestage.co.uk': 'The Stage',
+  'independent.co.uk': 'The Independent',
+  'dailymail.co.uk': 'The Daily Mail',
+  'telegraph.co.uk': 'The Telegraph',
+  'thetimes.com': 'The Times',
+  'standard.co.uk': 'Evening Standard',
+  'whatsonstage.com': 'WhatsOnStage',
+  'inews.co.uk': 'iNews',
+  'londontheatre.co.uk': 'London Theatre',
+  'talkinbroadway.com': 'Talkin Broadway',
+  'dctheaterarts.org': 'DC Theater Arts',
+  'thefrontrowcenter.com': 'Front Row Center',
+};
+
 // Known NYSR critics — when Playbill lists just the critic name as the "outlet",
 // we should detect this and use "nysr" as the outlet instead
 const NYSR_CRITICS = [
@@ -234,6 +282,15 @@ function extractReviewLinksFromArticle(html, showId) {
         href.includes('apple.com') || href.includes('amazon.com')) return;
     if (href.includes('americanrepertorytheater.org') || href.includes('americantheatrewing.org')) return;
     if (href.includes('wikipedia.org') || href.includes('google.com')) return;
+    // Internal Playbill links and theater venue websites
+    if (href.includes('playbillvault.com')) return;
+    if (href.includes('eugeneoneillbroadway.com') || href.includes('2st.com') ||
+        href.includes('roundabouttheatre.org') || href.includes('broadwayinhollywood.com') ||
+        href.includes('minskoffbroadway.com') || href.includes('shubert.nyc')) return;
+    // Ticketing and aggregator sites (not review sources)
+    if (href.includes('criterionticketing.com') || href.includes('didtheylikeit.com') ||
+        href.includes('broadwaybox.com') || href.includes('nbc.com') ||
+        href.includes('yahoo.com') || href.includes('people.com')) return;
     if (href.length < 20) return;
 
     // Must look like a review URL (contains a path, not just a domain)
@@ -284,8 +341,8 @@ function extractReviewLinksFromArticle(html, showId) {
 function saveReviewFromPlaybill(showId, reviewInfo) {
   const showDir = path.join(reviewTextsDir, showId);
 
-  // Detect NYSR critic-as-outlet: when Playbill lists "Frank Scheck" as the outlet
-  let outletName = reviewInfo.outlet || reviewInfo.outletDomain;
+  // Resolve domain to human-readable outlet name first
+  let outletName = DOMAIN_TO_OUTLET[reviewInfo.outletDomain] || reviewInfo.outlet || reviewInfo.outletDomain;
   let criticName = reviewInfo.critic || '';
   if (NYSR_CRITICS.some(c => outletName.toLowerCase().includes(c))) {
     criticName = outletName; // The "outlet" is actually the critic name
@@ -519,6 +576,25 @@ async function scrapePlaybillVerdict() {
           const pageTitle = $('title').text() + ' ' + $('h1').text();
           if (isNotBroadway(pageTitle)) {
             console.log(`    [SKIP] Article is not about Broadway: "${pageTitle.slice(0, 80)}"`);
+            await sleep(2000);
+            continue;
+          }
+
+          // Verify article is about the RIGHT show (Google sometimes returns wrong articles)
+          const GENERIC_WORDS = new Set(['the', 'a', 'an', 'new', 'musical', 'play', 'broadway', 'show', 'revival', 'comedy', 'drama', 'about', 'and', 'of', 'in', 'on', 'at', 'for']);
+          const showTitleLower = show.title.toLowerCase()
+            .replace(/^the\s+/, '').replace(/\s*[:(].*$/, '').trim();
+          const pageTitleLower = pageTitle.toLowerCase();
+          const articleSlug = (articleUrl.split('/article/')[1] || '').toLowerCase();
+          // Use the primary distinctive words from the show title (not generic words)
+          const showSlugWords = showTitleLower.split(/[\s,]+/)
+            .filter(w => w.length > 2 && !GENERIC_WORDS.has(w));
+          // Require the first distinctive word OR multiple generic-filtered words to match
+          const firstWord = showSlugWords[0] || showTitleLower.split(/[\s,]+/)[0];
+          const titleHasFirstWord = firstWord && pageTitleLower.includes(firstWord);
+          const urlHasFirstWord = firstWord && articleSlug.includes(firstWord);
+          if (!titleHasFirstWord && !urlHasFirstWord) {
+            console.log(`    [SKIP] Article doesn't match show "${show.title}": "${pageTitle.slice(0, 80)}"`);
             await sleep(2000);
             continue;
           }
