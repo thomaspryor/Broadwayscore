@@ -800,15 +800,15 @@ function HomePageInner() {
       </div>
 
       {/* Status & Sort Filters */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 text-sm">
-        <div className="flex items-center gap-1 sm:gap-2 flex-wrap" role="group" aria-label="Filter by status">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-3 mb-4 sm:mb-6 text-sm">
+        <div className="flex items-center gap-0.5 sm:gap-2 flex-wrap" role="group" aria-label="Filter by status">
           <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">STATUS:</span>
           {(['now_playing', 'closing_soon', 'all', 'closed'] as const).map((s) => (
             <button
               key={s}
               onClick={() => updateParams({ status: s })}
               aria-pressed={status === s}
-              className={`px-2.5 py-2 sm:px-2 sm:py-1 rounded transition-colors text-[11px] font-medium uppercase tracking-wider min-h-[44px] sm:min-h-0 ${
+              className={`px-2 py-1.5 sm:px-2 sm:py-1 rounded transition-colors text-[11px] font-medium uppercase tracking-wider min-h-[36px] sm:min-h-0 ${
                 status === s ? 'text-brand bg-brand/10 sm:bg-transparent' : 'text-gray-300 hover:text-white'
               }`}
             >
@@ -817,14 +817,14 @@ function HomePageInner() {
           ))}
         </div>
 
-        <div className="flex items-center gap-1 sm:gap-2 flex-wrap" role="group" aria-label="Sort shows">
+        <div className="flex items-center gap-0.5 sm:gap-2 flex-wrap" role="group" aria-label="Sort shows">
           <span className="text-[11px] font-medium uppercase tracking-wider text-gray-400 mr-1">SORT:</span>
           {(['recent', 'score_desc', 'audience_buzz', 'alpha'] as const).map((s) => (
             <button
               key={s}
               onClick={() => updateParams({ sort: s })}
               aria-pressed={sort === s}
-              className={`px-2.5 py-2 sm:px-2 sm:py-1 rounded text-[11px] font-medium uppercase tracking-wider transition-colors min-h-[44px] sm:min-h-0 ${
+              className={`px-2 py-1.5 sm:px-2 sm:py-1 rounded text-[11px] font-medium uppercase tracking-wider transition-colors min-h-[36px] sm:min-h-0 ${
                 sort === s ? 'text-brand bg-brand/10 sm:bg-transparent' : 'text-gray-300 hover:text-white'
               }`}
             >
@@ -837,7 +837,7 @@ function HomePageInner() {
       {/* Column Header */}
       <div className="flex justify-end px-4 mb-1">
         <span className="w-20 sm:w-24 text-center text-[10px] font-semibold uppercase tracking-wider text-gray-500">
-          {scoreMode === 'audience' ? 'Audience' : 'Critic Score'}
+          {scoreMode === 'audience' ? 'Audience' : 'Critics'}
         </span>
       </div>
 
