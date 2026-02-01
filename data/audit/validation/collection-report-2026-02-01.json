@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 19,
-    "failed": 120,
+    "processed": 20,
+    "failed": 121,
     "skipped": 0,
-    "successRate": "13.7%"
+    "successRate": "14.2%"
   },
   "tierBreakdown": {
     "playwright": 8,
@@ -38,8 +38,8 @@
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -200,7 +200,8 @@
     "scrapingbee": [],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "mj-2022/usatoday--david-rooney.json"
+      "mj-2022/usatoday--david-rooney.json",
+      "purlie-victorious-2023/washpost--peter-marks.json"
     ],
     "archive": [
       "harry-potter-2021/hollywood-reporter--david-rooney.json",
@@ -215,5 +216,11 @@
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "marjorie-prime-2025/observer--david-cote.json",
+      "oldUrl": "https://observer.com/2025/12/marjorie-prime-broadway-review/",
+      "newUrl": "https://observer.com/2025/12/review-marjorie-prime-hayes-theater-june-squibb/"
+    }
+  ]
 }
