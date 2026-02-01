@@ -5,7 +5,7 @@
   "criticName": "Gloria Oladipo",
   "url": "https://www.washingtonpost.com/entertainment/theater/2024/03/07/illinoise-park-avenue-armory/",
   "publishDate": "March 7, 2024",
-  "fullText": null,
+  "fullText": "Democracy Dies in DarknessReview by  Gloria OladipoNEW YORK — The richness of Sufjan Stevens’s work feels at home on a stage. His 2007 project, “The BQE,” an ode to the Brooklyn-Queens Expressway, was a mixed-media exploration that debuted at the Brooklyn Academy of Music, complete with projections and synchronized hula-hoopers. Now, Stevens’s “Illinois” album is in three dimensions, thanks to a kaleidoscopic collaboration of movement, theater and music.\n\n15 CommentsMost ReadOpinionMichael ShermerI’ve reported on UFO sightings for decades — and come to this conclusionJanuary 29, 2026Salvador RizzoDOJ misconduct complaint against D.C. federal judge dismissedEarlier todayOpinionEditorial BoardTrump’s tariffs can’t cover a bill this staggeringJanuary 26, 2026NewsletterFridaysBook ClubOur weekly selection of book reviews and recommendations from Book World editor Ron Charles.Sign up",
   "showScoreExcerpt": "\"Drury and Peck have crafted something cinematic\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/illinoise",
   "originalScore": null,
@@ -15,5 +15,41 @@
   "needsScoring": true,
   "scoreSource": "manual-excerpt-positive",
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "isFullReview": false,
+  "textWordCount": 120,
+  "archivePath": "data/archives/reviews/illinoise-2024/washpost--gloria-oladipo_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T14:11:41.844Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Paywall detected - login may have failed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 120 (min: 300)",
+    "Show title not found in text"
+  ]
 }
