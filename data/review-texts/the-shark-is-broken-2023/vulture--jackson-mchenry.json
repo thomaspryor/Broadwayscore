@@ -9,56 +9,63 @@
   "showScoreExcerpt": "“Fathers end up being ‘The Shark Is Broken’s’ primary way into its whole central trio...The scene in the latter half of the one act where the three of them start to open up about their fathers hits at something emotionally where the rest of the play tends to be too stuffed with trivia...It’s where the actors’ performances cool off from nervous, meticulous imitation into a truer dynamic.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-shark-is-broken-broadway",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 48,
   "source": "dtli",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "llmScore": {
-    "score": 62,
-    "confidence": "medium",
+    "score": 48,
+    "confidence": "high",
     "range": {
-      "low": 53.5,
-      "high": 70.5
+      "low": 45,
+      "high": 52
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
-      "book": 53,
+      "book": 40,
       "music": null,
-      "performances": 68,
-      "direction": null
+      "performances": 65,
+      "direction": 45
     },
     "keyPhrases": [
       {
-        "quote": "the rest of the play tends to be too stuffed with trivia",
+        "quote": "has less integrity as a play than as a thoroughly researched dress-up presentation for a history-of-film class",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "hits at something emotionally",
-        "sentiment": "positive",
+        "quote": "the writing, intent on remaining lightly comic and knowing, keeps delivering what is familiar and unchallenging",
+        "sentiment": "negative",
         "strength": 3
       },
       {
-        "quote": "actors' performances cool off from nervous, meticulous imitation into a truer dynamic",
-        "sentiment": "positive",
-        "strength": 3
+        "quote": "The Shark Is Broken chases the Oedipal cycle back to the stage, but it doesn't succeed in usurping the tendencies of the movies",
+        "sentiment": "negative",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: This excerpt criticizes the play for being overstuffed with trivia while praising one emotional scene and the actors' evolution from imitation to authenticity, suggesting mixed feelings about the overall production. | GPT-4o-mini: The review indicates a mix of positive and negative aspects, with stronger praise for performances but criticism of the script's content.",
+    "reasoning": "The critic consistently criticizes the play's lack of depth and theatrical integrity, viewing it more as fan service than meaningful drama, despite acknowledging some strong performances and moments.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:14:46.499Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:27:59.104Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3537,
+    "outputTokens": 374,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 58,
@@ -77,7 +84,7 @@
   ],
   "dtliExcerpt": "Like Back to the Future: The Musical, which just opened a few blocks away, The Shark Is Broken depends on your own affection for the property to make sense.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 62,
   "archivePath": "data/archives/reviews/the-shark-is-broken-2023/vulture--jackson-mchenry_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:37:47.469Z",
@@ -96,7 +103,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241214132347",
   "archiveOrgUrl": "http://web.archive.org/web/20241214132347/https://www.vulture.com/2023/08/theater-review-the-shark-is-broken-jaws-shaw.html",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.119Z",
+  "rescoreCompletedAt": "2026-02-01T16:27:59.104Z",
   "contentTier": "complete",
   "wordCount": 1158
 }

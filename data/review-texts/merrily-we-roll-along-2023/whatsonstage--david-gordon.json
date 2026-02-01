@@ -16,50 +16,57 @@
   "bwwThumb": "Up",
   "llmScore": {
     "score": 92,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
-      "low": 83.5,
-      "high": 100
+      "low": 88,
+      "high": 95
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": 93
+      "book": 85,
+      "music": 90,
+      "performances": 95,
+      "direction": 92
     },
     "keyPhrases": [
       {
-        "quote": "theatrical miracle",
+        "quote": "this Merrily is one of those transcendent productions I'll look back on fondly forever",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "finding the heart at the center of this story",
+        "quote": "Friedman's production is a theatrical miracle",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "their vision fully realised, at long last",
+        "quote": "They're giving career-best performances",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The review uses extremely positive language like 'theatrical miracle' and suggests the production fully realizes the creators' vision, indicating strong recommendation despite being brief. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting it as a 'theatrical miracle' with a strong emotional core.",
+    "reasoning": "The critic uses superlative language throughout ('transcendent productions', 'theatrical miracle', 'career-best performances') with deep appreciation for the revival's success in fixing the original's problems, indicating an unqualified rave recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:19:29.610Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:37:15.203Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3531,
+    "outputTokens": 352,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 88,
@@ -70,7 +77,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 92,
   "archivePath": "data/archives/reviews/merrily-we-roll-along-2023/whatsonstage--david-gordon_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:46:19.489Z",
@@ -104,7 +111,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251217141630",
   "archiveOrgUrl": "http://web.archive.org/web/20251217141630/https://www.whatsonstage.com/news/merrily-we-roll-along-with-daniel-radcliffe-jonathan-groff-and-lindsay-mendez-review_1535303/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.890Z",
+  "rescoreCompletedAt": "2026-02-01T15:37:15.203Z",
   "dateUnknown": true,
   "dateSource": "historical-review",
   "textQualityOverride": "batch-fix-2026-01-30",

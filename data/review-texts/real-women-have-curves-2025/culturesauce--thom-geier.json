@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-REAL-WOMEN-HAVE-CURVES-Opens-on-Broadway-20250426",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 92,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -19,51 +19,58 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 79,
+    "score": 92,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 88,
+      "high": 95
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 85,
-      "performances": null,
-      "direction": 80
+      "book": 85,
+      "music": 88,
+      "performances": 90,
+      "direction": 87
     },
     "keyPhrases": [
       {
-        "quote": "high-wattage highlight",
+        "quote": "a sensational surprise",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Real Women Have Curves tells a simple story with musicality, with humor, with authenticity, and with an embrace of its female characters as fully rounded, three-dimensional individuals",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "genuinely catchy tune, artfully staged",
+        "quote": "★★★★★",
         "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the evening’s high-wattage highlight is the title tune",
-        "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The excerpt focuses exclusively on praising a specific musical number with strong positive language ('high-wattage highlight', 'genuinely catchy', 'artfully staged'), but the incomplete nature and narrow focus limits scoring confidence. | GPT-4o-mini: The review highlights a standout song and its positive message, indicating a strong recommendation despite not addressing other aspects of the show.",
+    "reasoning": "The critic awards 5/5 stars and calls it a 'sensational surprise,' praising virtually every aspect including performances, music, direction, and authenticity with enthusiastic language throughout.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:02.676Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:02:23.192Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3977,
+    "outputTokens": 345,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -76,7 +83,7 @@
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 79,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.004Z",
+  "rescoreCompletedAt": "2026-02-01T16:02:23.192Z",
   "dateSource": "extracted-from-url",
   "truncationSignals": [
     "no_ending_punctuation"

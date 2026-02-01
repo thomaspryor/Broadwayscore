@@ -309,28 +309,65 @@ function detectWrongArticle(text, showTitle) {
 
 /**
  * Current and recent Broadway shows for multi-show detection
- * Used to detect 404/index pages and concatenated articles
+ * Dynamically loaded from data/shows.json with hardcoded fallback
  * @type {string[]}
  */
-const CURRENT_BROADWAY_SHOWS = [
-  // Currently running
-  'purlie', 'ghosts', 'maybe happy ending', 'death becomes her',
-  'stereophonic', 'cabaret', 'sunset boulevard', 'the outsiders',
-  'hamilton', 'wicked', 'the lion king', 'chicago', 'phantom',
-  'hadestown', 'moulin rouge', 'back to the future', 'merrily we roll along',
-  'sweeney todd', 'the notebook', 'the great gatsby', 'water for elephants',
-  'hell\'s kitchen', 'the who\'s tommy', 'suffs', 'the wiz', 'gypsy',
-  'oh mary', 'appropriate', 'prayer for the french republic', 'mother play',
-  'enemy of the people', 'mary jane', 'our town', 'mcneal', 'romeo juliet',
-  'yellowjackets', 'queen versailles', 'once upon a mattress', 'left on tenth',
-  // Recent/closed (for detecting concatenated articles)
-  'into the woods', 'funny girl', 'six', 'beetlejuice', 'aladdin',
-  'dear evan hansen', 'come from away', 'the music man', 'company',
-  'a beautiful noise', 'some like it hot', 'kimberly akimbo', 'parade',
-  'shucked', 'new york new york', 'camelot', 'lempicka', 'the notebook',
-  'days of wine and roses', 'pictures from home', 'the outsiders',
-  'norma desmond', 'nicole scherzinger',  // Key cast names that indicate different shows
-];
+let _cachedBroadwayShows = null;
+
+function loadBroadwayShows() {
+  if (_cachedBroadwayShows) return _cachedBroadwayShows;
+
+  // Try loading from shows.json
+  try {
+    const fs = require('fs');
+    const showsPath = require('path').join(__dirname, '../../data/shows.json');
+    const raw = JSON.parse(fs.readFileSync(showsPath, 'utf-8'));
+    const shows = raw.shows || raw;
+    const titles = shows
+      .map(s => s.title ? s.title.toLowerCase() : null)
+      .filter(t => t && t.length > 3);
+
+    if (titles.length > 0) {
+      _cachedBroadwayShows = titles;
+      return _cachedBroadwayShows;
+    }
+  } catch {
+    // Fall through to hardcoded
+  }
+
+  // Hardcoded fallback
+  _cachedBroadwayShows = [
+    'purlie', 'ghosts', 'maybe happy ending', 'death becomes her',
+    'stereophonic', 'cabaret', 'sunset boulevard', 'the outsiders',
+    'hamilton', 'wicked', 'the lion king', 'chicago', 'phantom',
+    'hadestown', 'moulin rouge', 'back to the future', 'merrily we roll along',
+    'sweeney todd', 'the notebook', 'the great gatsby', 'water for elephants',
+    'hell\'s kitchen', 'the who\'s tommy', 'suffs', 'the wiz', 'gypsy',
+    'oh mary', 'appropriate', 'prayer for the french republic', 'mother play',
+    'enemy of the people', 'mary jane', 'our town', 'mcneal', 'romeo juliet',
+    'yellowjackets', 'queen versailles', 'once upon a mattress', 'left on tenth',
+    'into the woods', 'funny girl', 'six', 'beetlejuice', 'aladdin',
+    'dear evan hansen', 'come from away', 'the music man', 'company',
+    'a beautiful noise', 'some like it hot', 'kimberly akimbo', 'parade',
+    'shucked', 'new york new york', 'camelot', 'lempicka', 'the notebook',
+    'days of wine and roses', 'pictures from home', 'the outsiders',
+  ];
+  return _cachedBroadwayShows;
+}
+
+// Backward-compatible getter
+const CURRENT_BROADWAY_SHOWS = new Proxy([], {
+  get(target, prop) {
+    const shows = loadBroadwayShows();
+    if (prop === 'filter') return shows.filter.bind(shows);
+    if (prop === 'some') return shows.some.bind(shows);
+    if (prop === 'length') return shows.length;
+    if (prop === 'includes') return shows.includes.bind(shows);
+    if (prop === Symbol.iterator) return shows[Symbol.iterator].bind(shows);
+    if (typeof prop === 'string' && !isNaN(Number(prop))) return shows[Number(prop)];
+    return Reflect.get(shows, prop);
+  }
+});
 
 /**
  * Patterns that indicate article boundaries (multiple articles concatenated)

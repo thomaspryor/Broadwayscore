@@ -9,35 +9,35 @@
   "bwwExcerpt": "Peck’s choreography is as marvelous as it is moving. Several dance motifs repeat, a nod to the theme of memory and haunting. Often these are tied to characters, like Carl and Henry’s balance-beam swaggering and swaying, or the side-by-side swing-inspired dance and handshake of Henry, Carl, and Shelby. Peck’s choreography is decidedly modern, but his ballet background informs the work, with long-line leg extensions at classic angles and a flurry of precisely-spotted spins and turns.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ILLINOISE-2024",
   "originalScore": null,
-  "assignedScore": 87,
+  "assignedScore": 85,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 87,
-    "confidence": "high",
+    "score": 85,
+    "confidence": "medium",
     "range": {
-      "low": 80.5,
-      "high": 93.5
+      "low": 80,
+      "high": 90
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 78,
+      "music": 80,
       "performances": null,
       "direction": 85
     },
     "keyPhrases": [
       {
+        "quote": "will indelibly be remembered as one of the most singular productions in recent Broadway history",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
         "quote": "often stirring and fascinating to listen to",
         "sentiment": "positive",
         "strength": 4
-      },
-      {
-        "quote": "indelibly be remembered as one of the most singular productions in recent Broadway history",
-        "sentiment": "positive",
-        "strength": 5
       },
       {
         "quote": "not an inherently logical choice for a narrative work of art",
@@ -45,20 +45,27 @@
         "strength": 3
       }
     ],
-    "reasoning": "Claude: Despite acknowledging conceptual challenges, the critic praises the execution and declares it historically significant with superlative language. | GPT-4o-mini: The review expresses strong praise for the uniqueness and stirring quality of the production, indicating a clear recommendation despite some reservations about its narrative logic.",
+    "reasoning": "Despite acknowledging the source material's narrative challenges, the critic declares this production will be 'indelibly remembered as one of the most singular productions in recent Broadway history,' which signals strong admiration and recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:37:37.879Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:20:15.539Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2464,
+    "outputTokens": 338,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 88,
@@ -77,7 +84,7 @@
   "showScoreExcerpt": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 87,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.824Z",
+  "rescoreCompletedAt": "2026-02-01T15:20:15.539Z",
   "contentTier": "complete",
   "wordCount": 1639
 }

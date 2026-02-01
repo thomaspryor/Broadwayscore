@@ -9,43 +9,33 @@
   "dtliExcerpt": "Naturally, though, it’s Groff’s energy and charisma that anchor Just in Time. The brilliance of the show’s opening is that, by creating a staged-concert atmosphere from the start, it frees us from the need to compare him to Darin and instead foregrounds Groff’s own passion for telling his story. Groff even concludes the evening with an unexpectedly eloquent tribute to the evanescent yet transcendent power of theater. How rare it is for a jukebox bio-musical to feel like it comes genuinely from the heart.",
   "showScoreExcerpt": "âNaturally, though, itâs Groffâs energy and charisma that anchor Just in Time.â",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 60,
   "source": "dtli",
   "dtliThumb": "Up",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 84,
-    "confidence": "high",
+    "score": 60,
+    "confidence": "low",
     "range": {
-      "low": 77.5,
-      "high": 90.5
+      "low": 50,
+      "high": 70
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": 89,
-      "direction": 85
+      "performances": 75,
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "it's Groff's energy and charisma that anchor Just in Time",
+        "quote": "itâs Groffâs energy and charisma that anchor Just in Time",
         "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The brilliance of the show's opening",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "How rare it is for a jukebox bio-musical to feel like it comes genuinely from the heart",
-        "sentiment": "positive",
-        "strength": 5
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: Strong praise for Groff's performance and the show's concept, with the critic highlighting the production's emotional authenticity and clever staging approach, indicating clear recommendation despite being an excerpt. | GPT-4o-mini: The review highlights Groff's strong performance and the heartfelt nature of the show, indicating a clear recommendation to see it.",
+    "reasoning": "This excerpt only praises one performer without providing broader context about the show's quality or any explicit recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -54,11 +44,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:32:38.615Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:24:13.846Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2329,
+    "outputTokens": 239,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 82,
@@ -107,7 +104,7 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 84,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.840Z",
+  "rescoreCompletedAt": "2026-02-01T15:24:13.846Z",
   "textQualityOverride": "batch-fix-2026-01-30",
   "contentTier": "complete",
   "wordCount": 933

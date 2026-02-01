@@ -9,20 +9,20 @@
   "dtliExcerpt": "It’s a darling gem of a show with a big heart and a captivating sideways sensibility. And in a Broadway assembly line churning with revivals and remakes, it’s a refreshing model of innovation.",
   "showScoreExcerpt": "\"The odd and simple premise of “Maybe Happy Ending” accomplishes something profound, in examining the nature of connection.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 85,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 88,
+    "score": 85,
     "confidence": "high",
     "range": {
-      "low": 83,
-      "high": 93
+      "low": 82,
+      "high": 88
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 82,
       "music": null,
       "performances": null,
       "direction": null
@@ -39,25 +39,32 @@
         "strength": 4
       },
       {
-        "quote": "in a Broadway assembly line churning with revivals and remakes",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "there is an immediate element of surprise and delight",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Strong praise with gems like 'darling gem' and 'refreshing innovation' indicates clear enthusiasm and recommendation, though excerpt limits deeper analysis. | GPT-4o-mini: The review expresses strong enthusiasm and highlights the show's uniqueness and heart, indicating a clear recommendation to see it.",
+    "reasoning": "Strong positive language throughout with phrases like 'darling gem,' 'big heart,' 'surprise and delight,' and 'refreshing model of innovation' indicates clear enthusiasm and recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:11:43.687Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:34:50.043Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2506,
+    "outputTokens": 337,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 88,
@@ -90,7 +97,7 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 88,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.881Z",
+  "rescoreCompletedAt": "2026-02-01T15:34:50.043Z",
   "contentTier": "truncated",
   "wordCount": 131,
   "isFullReview": false,

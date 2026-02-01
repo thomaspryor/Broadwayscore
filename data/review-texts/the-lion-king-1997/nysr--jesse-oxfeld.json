@@ -9,56 +9,63 @@
   "showScoreExcerpt": "\"It’s Julie Taymor’s puppetry that continues to astound...The problem is that the rest of the musical is not as good as Taymor’s vision for the animals and their gorgeous ensemble numbers...Now, the beauty is there, but the show feels a bit worn...The few big numbers aside, much of the John-Rice score is middling ’90s pop rock...That said, the performances, even now, are rather lovely...But you’re not here for the performances. You’re here for the puppets. And they’re worth it.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-lion-king",
   "originalScore": "3 stars",
-  "assignedScore": 65,
+  "assignedScore": 62,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 65,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 58,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": null,
-      "music": 50,
-      "performances": 73,
-      "direction": 78
+      "music": 70,
+      "performances": null,
+      "direction": 75
     },
     "keyPhrases": [
       {
-        "quote": "And they're worth it",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "much of the John-Rice score is middling '90s pop rock",
+        "quote": "it's not entirely engaging",
         "sentiment": "negative",
         "strength": 3
       },
       {
-        "quote": "the show feels a bit worn",
-        "sentiment": "negative",
-        "strength": 2
+        "quote": "it's Julie Taymor's puppetry that continues to astound",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "still warms children's hearts",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic clearly states the puppetry is worth seeing despite significant flaws in the music and overall production feeling dated, landing in qualified recommendation territory. | GPT-4o-mini: The review expresses appreciation for the puppetry and performances but critiques the overall quality of the music and the show feeling worn, leading to a mixed recommendation.",
+    "reasoning": "3/5 stars with clear praise for the puppetry and spectacle but criticism that it's 'not entirely engaging,' indicating a qualified recommendation with mixed feelings.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:18:20.631Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:19:03.272Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2575,
+    "outputTokens": 319,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 65,
@@ -75,7 +82,7 @@
   ],
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 65,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.079Z",
+  "rescoreCompletedAt": "2026-02-01T16:19:03.272Z",
   "contentTier": "complete",
   "wordCount": 739
 }

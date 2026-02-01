@@ -10,56 +10,63 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 43,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 43,
+    "score": 42,
     "confidence": "high",
     "range": {
-      "low": 35.5,
-      "high": 50.5
+      "low": 38,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 33,
+      "book": 35,
       "music": null,
-      "performances": 65,
-      "direction": 40
+      "performances": 72,
+      "direction": 58
     },
     "keyPhrases": [
       {
-        "quote": "sinks from memory not long after you exit the Golden Theatre",
+        "quote": "The Shark Is Broken sinks from memory not long after you exit the Golden Theatre",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "this behind-the-scenes buddy drama...is a handful of chum in a very big sea",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "three skilled and likable actors do celebrity impressions",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "is a handful of chum in a very",
+        "quote": "an hour of Hollywood bitching and gossip is plenty, and the last thirty minutes drag",
         "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Despite praising the actors as 'skilled and likable' with 'decent punch lines,' the critic clearly finds the show forgettable and uses dismissive metaphors like 'chum,' indicating a negative overall assessment. | GPT-4o-mini: The review expresses significant disappointment in the production's lasting impact and overall quality, despite acknowledging some decent moments.",
+    "reasoning": "Despite praising the performances as 'skilled and likable' with strong impersonations, the critic finds the play fundamentally flawed with a weak script that 'drags' and 'sinks from memory,' making it difficult to recommend.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": false
+      "comparesToPrevious": false,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:42.715Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:27:11.868Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3447,
+    "outputTokens": 368,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 45,
@@ -74,7 +81,6 @@
   "dateSource": "historical-review",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 43,
   "isFullReview": true,
@@ -94,5 +100,6 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "rescoreCompletedAt": "2026-02-01T16:27:11.868Z"
 }

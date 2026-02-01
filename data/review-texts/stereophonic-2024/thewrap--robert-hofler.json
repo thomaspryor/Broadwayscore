@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 88,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
@@ -21,23 +21,23 @@
     "reviews-json-stub"
   ],
   "llmScore": {
-    "score": 82,
+    "score": 88,
     "confidence": "medium",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 85,
+      "high": 92
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 78,
-      "music": 78,
-      "performances": 86,
-      "direction": 85
+      "book": 90,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "making his 'Stereophonic' one of the very best plays to open last year Off Broadway and now this season on Broadway",
+        "quote": "one of the very best plays to open last year Off Broadway and now this season on Broadway",
         "sentiment": "positive",
         "strength": 5
       },
@@ -45,27 +45,29 @@
         "quote": "Adjmi captures that claustrophobia and inability to communicate",
         "sentiment": "positive",
         "strength": 4
-      },
-      {
-        "quote": "there are occasional lapses. Adjmi is a playwright, after all, and occasionally he pushes his dialogue to make declarations that telegraph what his characters are thinking and feeling",
-        "sentiment": "negative",
-        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic calls it 'one of the very best plays' of the season with strong praise for performances and direction, despite noting some structural flaws in the writing. | GPT-4o-mini: The review expresses strong praise for the play's execution, performances, and direction while noting some minor issues, leading to a solid recommendation.",
+    "reasoning": "Calling it 'one of the very best plays' to open both Off-Broadway and on Broadway represents exceptional praise that signals strong recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:24:12.282Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:12:27.887Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2342,
+    "outputTokens": 288,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -78,7 +80,7 @@
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 82,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.046Z",
+  "rescoreCompletedAt": "2026-02-01T16:12:27.887Z",
   "truncationSignals": [
     "ends_with_ellipsis"
   ],

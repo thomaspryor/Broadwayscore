@@ -7,43 +7,38 @@
   "publishDate": "April 20, 2024",
   "dtliExcerpt": "Sometimes, a song is so good you want to live in it. You want to nestle into its melodies, unravel the chords holding it up and more than anything, wander in the mind fields of the people who created it. David Adjmi’s “Stereophonic” is the play that sparks this very desire.",
   "originalScore": null,
-  "assignedScore": 91,
+  "assignedScore": 85,
   "source": "dtli",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T22:02:25.654Z",
   "llmScore": {
-    "score": 91,
-    "confidence": "high",
+    "score": 85,
+    "confidence": "low",
     "range": {
-      "low": 85,
-      "high": 97
+      "low": 75,
+      "high": 95
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 90,
-      "music": 95,
+      "book": null,
+      "music": null,
       "performances": null,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "a song is so good you want to live in it",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the play that sparks this very desire",
+        "quote": "it's a hit",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "You want to nestle into its melodies, unravel the chords holding it up",
-        "sentiment": "positive",
-        "strength": 5
+        "quote": "Drama from the studio enters the stage",
+        "sentiment": "neutral",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The critic uses exceptionally poetic and passionate language to describe an almost transcendent desire to inhabit the show's music, indicating genuine rapture despite the brief excerpt. | GPT-4o-mini: The review expresses unqualified enthusiasm for the play, indicating a strong recommendation to see it.",
+    "reasoning": "The phrase 'it's a hit' strongly suggests positive recommendation, but the extremely brief review provides no substantive analysis to confirm or refine this assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -52,11 +47,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:24:19.345Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:10:18.520Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2315,
+    "outputTokens": 270,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 92,
@@ -78,11 +80,10 @@
   "bwwThumb": null,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 91,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.038Z",
+  "rescoreCompletedAt": "2026-02-01T16:10:18.520Z",
   "garbageFullText": "Review — Stereophonic The Broadway Review: ‘Stereophonic’ is a strum of genius Naturalism has never looked or sounded as good as it does in David Adjmi’s ’70s-set, soft rock drama. , and Brittani Samuel April 20, 2024 . 10:41 AM 9 min read Share on Twitter Share on Facebook Share on LinkedIn Share via Email The company of “Stereophonic” on Broadway, 2024 (Credit: Julieta Cervantes) Good morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Stereophonic.”RUNDOWN (L-R) Tom Pecinka, Will Brill and Sarah Pidgeon in “Stereophonic” on Broadway, 2024 (Credit: Julieta Cervantes)Sometimes, a song is so good you want to live in it. You want to nestle into its melodies, unravel the chords holding it up and more than anything, wander in the mind fields of the people who created it. David Adjmi’s “Stereophonic” is the play that sparks this very desire. It presents an unshakeable, hyperreal slice-of-life drama, employing artists to make art about making art — a salivary meta-trifecta. Adjmi’s script captures a year-long span of time with a Fleetwood Mac-esque music group in the 1970s. Fresh from the success of their debut album, the band gathers in a Sausalito studio to embark on constructing the next one. We’re trapped in the room with them, their two sage engineers and, crucially, their egos. The conversations between bandmates toggle with such finely-tuned naturalism, we almost feel like we’re encroaching on the privacy of real human beings. Adjmi builds complex portraits with painstakingly tiny brush strokes. An entire scene hinges on drummer Simon’s (Chris Stack) frustration about his snare’s hum. Another, unleashes a sea of dramaturgical implications over lead singer Diana’s (Sarah Pidgeon) inability to hit one note. This post is for paying subscribers only Subscribe now Already have an account? Sign in Review — Stereophonic — David Adjmi — Daniel Aukin — Will Brill — Juliana Canfield — Sarah Pidgeon — Tom Pecinka — Chris Stack — Eli Gelb — Andrew R. Butler — Will Butler — David Zinn — Ryan Rumery — John Golden Theatre — Enver Chakartash — Jiyoun Chang — Justin Craig Introductory Offer $1/month for 3 months Subscribe Already have an account? Log in Latest Closer Look What does it take to actually revise a musical? Closer Look How the original company of ‘Ragtime’ was cast Insights Loyalty Report: January 22, 2026 Closer Look How ‘Riverdance’ revolutionized the world of dance Podcast 30 years ago, Tracy Letts wrote a play tailor-made for today with ‘Bug’ Personnel Neil Mazzella steps down as CEO of Hudson entities Books The original music director of ‘Rent’ reveals scenes from the very first auditions Closer Look Christian Cowan uses detail and taste to make ‘The Queen of Versailles’ shine",
   "garbageReason": "Paywall/subscription prompt: \"subscribers only\"",
   "garbageFixedAt": "2026-01-29T22:45:23.200Z",
-  "needsRescore": true,
   "fullText": "Naturalism has never looked or sounded as good as it does in David Adjmi’s ’70s-set, soft rock drama.\n\nGood morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Stereophonic.”\n\nSometimes, a song is so good you want to live in it. You want to nestle into its melodies, unravel the chords holding it up and more than anything, wander in the mind fields of the people who created it. David Adjmi’s “Stereophonic” is the play that sparks this very desire. It presents an unshakeable, hyperreal slice-of-life drama, employing artists to make art about making art — a salivary meta-trifecta. Adjmi’s script captures a year-long span of time with a Fleetwood Mac-esque music group in the 1970s. Fresh from the success of their debut album, the band gathers in a Sausalito studio to embark on constructing the next one. We’re trapped in the room with them, their two sage engineers and, crucially, their egos. The conversations between bandmates toggle with such finely-tuned naturalism, we almost feel like we’re encroaching on the privacy of real human beings. Adjmi builds complex portraits with painstakingly tiny brush strokes. An entire scene hinges on drummer Simon’s (Chris Stack) frustration about his snare’s hum. Another, unleashes a sea of dramaturgical implications over lead singer Diana’s (Sarah Pidgeon) inability to hit one note.\n\nAlready have an account?\n              Log in",
   "fetchMethod": "archive",
   "fetchAttempts": [

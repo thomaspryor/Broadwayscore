@@ -9,56 +9,63 @@
   "showScoreExcerpt": "“The elusiveness of love and of the American Dream are the novel's most prescient, somber themes, and all the characters ultimately feel them. Those themes are still baked into this ‘Gatsby,’ but the true draw is the party, to get swept up in a bygone era at its most lavish, liquored, and loose-limbed.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-great-gatsby-musical",
   "originalScore": "D",
-  "assignedScore": 74,
+  "assignedScore": 78,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 74,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 75,
+      "high": 82
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 65,
       "music": null,
-      "performances": null,
-      "direction": 75
+      "performances": 80,
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "the true draw is the party, to get swept up in a bygone era at its most lavish, liquored, and loose-limbed",
+        "quote": "Read our four-star review of The Great Gatsby — The Immersive Show",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Those themes are still baked into this 'Gatsby,' but the true draw is the party",
-        "sentiment": "neutral",
-        "strength": 3
+        "quote": "the alluring, pulsing glamour of the '20s is alive in full glory",
+        "sentiment": "positive",
+        "strength": 4
       },
       {
-        "quote": "the elusiveness of love and of the American Dream are the novel's most prescient, somber themes",
+        "quote": "this truly vivacious show",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The excerpt suggests qualified appreciation for the production's spectacle and atmosphere while acknowledging thematic depth, but lacks explicit recommendation language or comprehensive assessment. | GPT-4o-mini: The review highlights strong thematic elements and the appeal of the production, indicating a clear recommendation despite a lack of specific praise for performances or direction.",
+    "reasoning": "Four-star review with consistent praise for the immersive experience, production design, and vivacious entertainment value, despite some minor reservations about faithfulness to source material.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:17:08.759Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:18:04.248Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3585,
+    "outputTokens": 344,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -70,7 +77,7 @@
     "needsReviewReasons": []
   },
   "designation": "Recommended",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 74,
   "archivePath": "data/archives/reviews/the-great-gatsby-2024/nytg--gillian-russo_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:50:25.027Z",
@@ -89,9 +96,7 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.073Z",
+  "rescoreCompletedAt": "2026-02-01T16:18:04.248Z",
   "contentTier": "complete",
-  "wordCount": 956,
-  "wrongProduction": true,
-  "wrongProductionNote": "Off-Broadway/pre-Broadway run at Park Central Hotel (immersive). Reusable if off-Broadway show entry is created."
+  "wordCount": 956
 }

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 15,
+  "assignedScore": 25,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "needsScoring": true,
@@ -20,51 +20,58 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 15,
+    "score": 25,
     "confidence": "high",
     "range": {
-      "low": 10,
-      "high": 20
+      "low": 20,
+      "high": 30
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": null,
+      "book": 15,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 35,
+      "direction": 45
     },
     "keyPhrases": [
       {
-        "quote": "the saddest spectacle of wasted talent on Broadway",
+        "quote": "It is too early in the Broadway season to call something the worst. That caveat aside, \"The Roommate\" is the saddest spectacle of wasted talent on Broadway since Andre De Shields played a gorilla in \"Prymate\" in 2004.",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "It is too early in the Broadway season to call something the worst",
+        "quote": "Silverman has unfortunately confused Iowa with Afghanistan. She has also confused the \"now\" time frame of the play with 1970.",
         "sentiment": "negative",
-        "strength": 5
+        "strength": 4
       },
       {
-        "quote": "too early in the Broadway season to call something the worst",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "Farrow delivers a busy, fussy, twitchy performance that runs whimsy into the ground.",
+        "sentiment": "negative",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic calls it a 'saddest spectacle of wasted talent' and strongly implies it would be considered 'the worst' of the season if not for timing, making this an unqualified rejection. | GPT-4o-mini: The review expresses strong disapproval and disappointment, indicating a clear rejection of the production.",
+    "reasoning": "The critic delivers a scathing review calling it 'the saddest spectacle of wasted talent' and systematically dismantles the script, performances, and concept with harsh criticism throughout.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:35:43.074Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:25:19.523Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3254,
+    "outputTokens": 407,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 15,
@@ -77,7 +84,7 @@
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 15,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.107Z",
+  "rescoreCompletedAt": "2026-02-01T16:25:19.523Z",
   "contentTier": "complete",
   "wordCount": 625
 }

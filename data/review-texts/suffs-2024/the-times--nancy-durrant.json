@@ -10,16 +10,16 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 65,
+  "assignedScore": 50,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 65,
-    "confidence": "high",
+    "score": 50,
+    "confidence": "low",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 45,
+      "high": 55
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -33,33 +33,35 @@
       {
         "quote": "thundering new musical",
         "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "This is the route that Hillary Clinton has taken as the co-producer",
-        "sentiment": "neutral",
-        "strength": 1
-      },
-      {
-        "quote": "about the American women’s suffrage movement",
-        "sentiment": "neutral",
         "strength": 3
+      },
+      {
+        "quote": "Forget the world stage, what about Broadway?",
+        "sentiment": "neutral",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The excerpt contains minimal evaluative content, with only 'thundering new musical' suggesting positive sentiment, but lacks any clear recommendation or substantive critique. | GPT-4o-mini: The review highlights the musical's significance and production but lacks detailed praise or criticism, suggesting a mixed recommendation.",
+    "reasoning": "This appears to be an introductory excerpt rather than an actual review, providing only basic facts about the show's producers and subject matter with minimal evaluative language.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:29.651Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:15:14.296Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2367,
+    "outputTokens": 274,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "bwwExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated BWW excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 65,
@@ -105,5 +107,8 @@
     "no_ending_punctuation",
     "possible_mid_word_cutoff"
   ],
-  "textStatus": "truncated"
+  "textStatus": "truncated",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "previousLlmScore": 65,
+  "rescoreCompletedAt": "2026-02-01T16:15:14.296Z"
 }

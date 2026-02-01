@@ -10,58 +10,65 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-COTTAGE-Opens-on-Broadway-20230723",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 32,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "showScoreExcerpt": "“...this comedy of manners by the playwright Sandy Ruskin is so thoroughly old-fashioned that it may come as a surprise it’s not based — like so many Broadway outings lately are — on existing material. Which is not to say that any part of it feels original.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-cottage-broadway",
   "llmScore": {
-    "score": 25,
+    "score": 32,
     "confidence": "high",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 28,
+      "high": 38
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": 20,
+      "book": 25,
       "music": null,
       "performances": null,
-      "direction": 30
+      "direction": 40
     },
     "keyPhrases": [
       {
-        "quote": "paint-by-numbers sex farce",
+        "quote": "This is a paint-by-numbers sex farce",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "any part of it feels original",
         "sentiment": "negative",
         "strength": 4
       },
       {
         "quote": "familiar, superficial and fleeting",
         "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "no part of it feels original",
-        "sentiment": "negative",
         "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic systematically dismantles the show as unoriginal, predictable, and superficial, with no redeeming qualities mentioned despite acknowledging the lavish production. | GPT-4o-mini: The review is overwhelmingly critical, describing the show as unoriginal and superficial, leading to a clear recommendation against seeing it.",
+    "reasoning": "The critic systematically dismantles the play as unoriginal, formulaic, and superficial, with only a brief acknowledgment of the lavish production failing to redeem the fundamental flaws.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:20:20.332Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:17:23.756Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2487,
+    "outputTokens": 323,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 25,
@@ -72,7 +79,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 25,
   "archivePath": "data/archives/reviews/the-cottage-2023/variety--naveen-kumar_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:32:09.244Z",
@@ -88,7 +95,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240613035649",
   "archiveOrgUrl": "http://web.archive.org/web/20240613035649/https://variety.com/2023/legit/reviews/the-cottage-review-broadway-1235678930/",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.069Z",
+  "rescoreCompletedAt": "2026-02-01T16:17:23.756Z",
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",

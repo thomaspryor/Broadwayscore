@@ -15,51 +15,59 @@
   "needsScoring": true,
   "llmScore": {
     "score": 78,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 75,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 72,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 88,
+      "direction": 82
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the superb acting, vibrant direction, and calls it a 'beautiful tribute,' while acknowledging structural issues with the five evictions setup that prevent it from reaching higher praise. | GPT-4o: The review praises the superb acting and the play's tribute to friendships, despite noting some structural issues. The overall tone is positive, recommending the play for its emotional depth and performances. | Gemini: The review highlights strong acting and direction, but also notes that the \"five evictions\" setup doesn't fully work. Overall, it leans towards a positive experience despite some flaws.",
+    "keyPhrases": [
+      {
+        "quote": "It's a measure of the superb acting in Tina Landau's production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The play ultimately comes off as a beautiful tribute",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I don't think the 'five evictions' setup fully works, especially toward the end",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The review praises the performances extensively ('superb acting'), direction, and emotional impact ('beautiful tribute'), while acknowledging structural weaknesses in the play's construction, resulting in a clear positive recommendation despite reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T14:56:50.370Z",
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:39:35.026Z",
     "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
+    "inputTokens": 3181,
+    "outputTokens": 347,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
-  "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 82,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "scoreDelta": 7,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
-  },
+  "ensembleData": null,
   "bwwExcerpt": "“Mother Play” has the aura of a valedictorian effort, the completion of a canon by coming home, even a push for a confirmed spot among the greats of this era of American playwriting. Vogel certainly does not shy from her own admiration of Martha. It’s especially apparent in the final scene when she visits and cares for a mother with dementia whom the play has just shown us she has good reason to ignore. Some writers would worry about how that looked, but I suspect Vogel decided that was the trut",
   "bwwThumb": "Up",
   "sources": [
@@ -82,7 +90,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240512124107",
   "archiveOrgUrl": "http://web.archive.org/web/20240512124107/https://www.nydailynews.com/2024/04/25/broadway-review-mother-play-paula-vogel/",
-  "rescoreCompletedAt": "2026-02-01T14:56:50.370Z",
+  "rescoreCompletedAt": "2026-02-01T15:39:35.026Z",
   "showScoreExcerpt": "\"...Vogel’s latest hits the emotional beats...reminder to call your mom now and then.\"",
   "contentTier": "complete",
   "wordCount": 612

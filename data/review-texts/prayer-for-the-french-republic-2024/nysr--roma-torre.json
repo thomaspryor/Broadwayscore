@@ -10,56 +10,63 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 87,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 87,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 80.5,
-      "high": 93.5
+      "low": 78,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 78,
       "music": null,
-      "performances": 89,
+      "performances": 88,
       "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "makes for powerful theater that's as entertaining as it is enlightening",
+        "quote": "Prayer For The French Republic is a must see for anyone who's interested in deepening their understanding of the Jewish experience through the ages",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "sublime ensemble performing with absolute authenticity",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "directed with great heart and welcome humor",
+        "quote": "It makes for powerful theater that's as entertaining as it is enlightening. And it's all terrifically enhanced by a sublime ensemble performing with absolute authenticity",
         "sentiment": "positive",
         "strength": 4
+      },
+      {
+        "quote": "While there is much to applaud, the play is not without flaws",
+        "sentiment": "negative",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: Strong praise for direction, performances, and overall impact with no reservations or caveats mentioned. | GPT-4o-mini: The review expresses strong praise for direction and performances, indicating a clear recommendation to see the show.",
+    "reasoning": "The 4/5 star rating combined with explicit 'must see' recommendation and extensive praise for performances, direction, and emotional impact clearly places this in the positive range despite minor structural criticisms.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:21:04.463Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:53:12.344Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3986,
+    "outputTokens": 371,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 85,
@@ -70,7 +77,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 87,
   "archivePath": "data/archives/reviews/prayer-for-the-french-republic-2024/nysr--roma-torre_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:47:27.029Z",
@@ -88,7 +95,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250720152904",
   "archiveOrgUrl": "http://web.archive.org/web/20250720152904/https://nystagereview.com/2024/01/09/prayer-for-the-french-republic-judaism-takes-centerstage-in-joshua-harmons-engrossing-drama/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.967Z",
+  "rescoreCompletedAt": "2026-02-01T15:53:12.344Z",
   "dateSource": "extracted-from-url",
   "_scoreFixedFrom": "5/5 stars",
   "_scoreFixedAt": "2026-01-31T23:10:41.722Z",

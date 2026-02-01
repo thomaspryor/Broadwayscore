@@ -9,56 +9,63 @@
   "dtliExcerpt": "Icke’s work is really something: I can’t recall ever previously being as riveted at a Greek tragedy. And my admiration for his show is increased by how Icke manages to stay remarkably true to so much of the original play while turning its dialogue into contemporary speech. This doesn’t read as something based on the Greek original — it feels like the play itself, reenergized with the kind of crackling relevance all too rare on Broadway.",
   "showScoreExcerpt": "\"Manville, in a blistering and deeply complicated performance, certainly keeps one guessing, until the truth overwhelms her and the audience.\"",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "Up",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 89,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 78,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": 85,
       "music": null,
-      "performances": 92,
-      "direction": 91
+      "performances": 88,
+      "direction": 80
     },
     "keyPhrases": [
+      {
+        "quote": "Robert Icke's thrilling (and self-directed) new adaptation",
+        "sentiment": "positive",
+        "strength": 4
+      },
       {
         "quote": "I can't recall ever previously being as riveted at a Greek tragedy",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "reenergized with the kind of crackling relevance all too rare on Broadway",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Manville, in a blistering and deeply complicated performance",
+        "quote": "nobody at my performance moved much of a muscle for the two intermission-free hours",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic expresses exceptional enthusiasm with superlative language ('riveted', 'crackling relevance', 'blistering performance') and notes the rarity of such quality on Broadway, indicating strong recommendation. | GPT-4o-mini: The review expresses strong admiration for the direction and performances, highlighting a riveting experience and a contemporary adaptation that resonates well, indicating a must-see production.",
+    "reasoning": "The critic uses strong superlatives like 'thrilling' and 'riveted,' praises the performances extensively, and notes the audience was completely engaged, with only minor caveats about specific elements.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:41:08.355Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:42:41.269Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3409,
+    "outputTokens": 320,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 88,
@@ -108,7 +115,7 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 89,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.920Z",
+  "rescoreCompletedAt": "2026-02-01T15:42:41.269Z",
   "contentTier": "complete",
   "wordCount": 671
 }

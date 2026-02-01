@@ -9,56 +9,63 @@
   "bwwExcerpt": "The most fatal issue, though, is the show’s central focus on Tamara’s dueling loves: stiff husband Tadeusz and free-wheeling Rafaela. This dilemma takes up most of the narrative real estate, but proves deathly dull. Despite the heavenly-voiced Samonsky’s best efforts, Tadeusz is a wet blanket whose constant moaning sucks the energy out of every scene. And while Iman could never be anything but riveting on stage, Rafaela is thinly-sketched and never takes on compelling internal life.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": 40,
+  "assignedScore": 48,
   "source": "dtli",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "llmScore": {
-    "score": 40,
+    "score": 48,
     "confidence": "high",
     "range": {
-      "low": 35,
-      "high": 45
+      "low": 45,
+      "high": 52
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": 35
+      "book": 35,
+      "music": 65,
+      "performances": 70,
+      "direction": 55
     },
     "keyPhrases": [
       {
-        "quote": "Messy and maddening",
+        "quote": "Messy and maddening, new musical Lempicka has all the pedigree for something groundbreaking but never finds its own distinctive form",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "has all the pedigree for something groundbreaking",
-        "sentiment": "positive",
-        "strength": 2
-      },
-      {
-        "quote": "never finds its own distinctive form",
+        "quote": "more often falling into genericism and cliché",
         "sentiment": "negative",
         "strength": 4
+      },
+      {
+        "quote": "The most fatal issue, though, is the show's central focus on Tamara's dueling loves: stiff husband Tadeusz and free-wheeling Rafaela. This dilemma takes up most of the narrative real estate, but proves deathly dull",
+        "sentiment": "negative",
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: Despite acknowledging the show's potential and pedigree, the critic's language is predominantly negative, calling it 'messy and maddening' and criticizing its failure to achieve its promise. | GPT-4o-mini: The review expresses strong criticism about the production's lack of coherence and failure to realize its potential, indicating a clear negative recommendation.",
+    "reasoning": "Despite praising individual elements like performances and some musical numbers, the critic identifies fundamental structural problems with the book and finds the central emotional conflict 'deathly dull,' making this more negative than positive overall.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:10:25.533Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:26:27.483Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3761,
+    "outputTokens": 413,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 40,
@@ -77,7 +84,7 @@
   "showScoreExcerpt": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 40,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.851Z",
+  "rescoreCompletedAt": "2026-02-01T15:26:27.483Z",
   "contentTier": "complete",
   "wordCount": 932
 }

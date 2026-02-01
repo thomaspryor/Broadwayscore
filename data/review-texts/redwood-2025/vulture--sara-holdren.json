@@ -9,56 +9,63 @@
   "showScoreExcerpt": "\"for all its soaring vocals and vertical movement, Redwood leaves us stubbornly grounded.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/redwood-broadway",
   "originalScore": null,
-  "assignedScore": 46,
+  "assignedScore": 32,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 46,
-    "confidence": "medium",
+    "score": 32,
+    "confidence": "high",
     "range": {
-      "low": 37,
-      "high": 55
+      "low": 28,
+      "high": 38
     },
-    "bucket": "Negative",
+    "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": null,
-      "music": 65,
-      "performances": 70,
-      "direction": null
+      "book": 25,
+      "music": 30,
+      "performances": 65,
+      "direction": 35
     },
     "keyPhrases": [
       {
-        "quote": "soaring vocals and vertical movement",
-        "sentiment": "positive",
-        "strength": 3
+        "quote": "Build a tower on a foundation of schmaltz, and the thing starts to sink as soon as you breathe on it wrong",
+        "sentiment": "negative",
+        "strength": 5
       },
       {
-        "quote": "leaves us stubbornly grounded",
+        "quote": "Redwood is too soggy a show for any spark to catch",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "soaring vocals",
-        "sentiment": "positive",
-        "strength": 3
+        "quote": "for all its soaring vocals and vertical movement, Redwood leaves us stubbornly grounded",
+        "sentiment": "negative",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Despite acknowledging positive elements like vocals and staging, the critic's central metaphor of being 'stubbornly grounded' despite the show's aspirations suggests fundamental disappointment with the overall impact. | GPT-4o-mini: The review suggests a mixed experience, highlighting some positive aspects but ultimately indicating a lack of overall impact.",
+    "reasoning": "The critic systematically dismantles the show's book, music, and concept while acknowledging Menzel's vocal abilities, concluding it fails to achieve catharsis despite ambitious staging.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:04.633Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:05:59.756Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4387,
+    "outputTokens": 360,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 42,
@@ -69,7 +76,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 46,
   "archivePath": "data/archives/reviews/redwood-2025/vulture--sara-holdren_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:29:36.832Z",
@@ -88,7 +95,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251118104502",
   "archiveOrgUrl": "http://web.archive.org/web/20251118104502/https://www.vulture.com/article/theater-review-idina-menzel-in-redwood.html",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.016Z",
+  "rescoreCompletedAt": "2026-02-01T16:05:59.756Z",
   "contentTier": "complete",
   "wordCount": 1494
 }

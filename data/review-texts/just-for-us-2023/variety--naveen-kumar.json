@@ -9,51 +9,63 @@
   "showScoreExcerpt": "“Treating tough truths with quick humor would seem like another defining feature of Edelman’s inheritance.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/alex-edelman-just-for-us-broadway",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 82,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 50,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 45,
-      "high": 55
+      "low": 78,
+      "high": 86
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 85,
       "music": null,
-      "performances": null,
+      "performances": 82,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "Treating tough truths with quick humor",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "nimbly clever solo show",
+        "sentiment": "positive",
+        "strength": 4
       },
       {
-        "quote": "defining feature of Edelman's inheritance",
-        "sentiment": "neutral",
-        "strength": 1
+        "quote": "turn his experience into hilarious social commentary",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "college-buddy congeniality is the key to this 75-minute narrative set",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: This appears to be a fragment describing a characteristic approach rather than offering any evaluative judgment about the show's quality or recommendation. | GPT-4o-mini: The review provides a neutral observation without strong endorsement or criticism, leading to a mixed recommendation.",
+    "reasoning": "The review consistently praises Edelman's cleverness and ability to transform difficult subject matter into compelling comedy, with no significant negative elements mentioned.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:16:21.650Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:22:21.096Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2536,
+    "outputTokens": 324,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 50,
@@ -64,7 +76,6 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 50,
   "archivePath": "data/archives/reviews/just-for-us-2023/variety--naveen-kumar_2026-01-29.html",
@@ -82,5 +93,6 @@
   "archiveOrgTimestamp": "20250223182431",
   "archiveOrgUrl": "http://web.archive.org/web/20250223182431/https://variety.com/2023/legit/reviews/just-for-us-review-alex-edelman-1235655007/",
   "contentTier": "complete",
-  "wordCount": 667
+  "wordCount": 667,
+  "rescoreCompletedAt": "2026-02-01T15:22:21.096Z"
 }

@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"Indeed, as the queens take their respective turns in the spotlight, spectacle does overwhelm decorum, as the actors stunningly evoke the vocal stylings and stage presences of Beyoncé, Adele, Rihanna, and a few others I probably didn’t catch.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/six",
   "originalScore": null,
-  "assignedScore": 49,
+  "assignedScore": 42,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -32,23 +32,23 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 49,
-    "confidence": "medium",
+    "score": 42,
+    "confidence": "high",
     "range": {
-      "low": 37.5,
-      "high": 60.5
+      "low": 38,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 33,
-      "music": 68,
+      "book": 25,
+      "music": 55,
       "performances": 75,
-      "direction": 58
+      "direction": 70
     },
     "keyPhrases": [
       {
-        "quote": "a glib extravaganza that transforms the pitiable wives of the male-heir-chasing monarch into a queens-of-pop sextet tunefully vying against each other for wronged-woman supremacy",
+        "quote": "a glib extravaganza that transforms the pitiable wives of the male-heir-chasing monarch into a queens-of-pop sextet",
         "sentiment": "negative",
         "strength": 4
       },
@@ -60,23 +60,30 @@
       {
         "quote": "the actors stunningly evoke the vocal stylings and stage presences of Beyoncé, Adele, Rihanna",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic finds the show's concept fundamentally flawed and structurally misguided, despite praising the performances and production values, ultimately viewing it as insincere and problematic. | GPT-4o-mini: The review expresses mixed feelings, praising performances and music while criticizing the script and overall coherence, leading to a conditional recommendation. | Note: Models differed by 13 points.",
+    "reasoning": "The critic finds serious structural and conceptual flaws in the show despite praising the performances and production values, describing it as ultimately insincere and poorly constructed.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": false
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:43:48.847Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:07:42.630Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3720,
+    "outputTokens": 401,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 42,
@@ -89,7 +96,7 @@
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 49,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.023Z",
+  "rescoreCompletedAt": "2026-02-01T16:07:42.630Z",
   "textQualityOverride": "batch-fix-2026-01-30",
   "contentTier": "complete",
   "wordCount": 1016

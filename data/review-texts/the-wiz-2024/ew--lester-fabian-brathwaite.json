@@ -9,51 +9,63 @@
   "showScoreExcerpt": "\"The Wiz is all about feeling...in complex times, its simple message rings loud and clear\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-wiz-broadway",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 42,
   "source": "show-score",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 79,
+    "score": 42,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 38,
+      "high": 46
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
-      "book": null,
-      "music": null,
+      "book": 35,
+      "music": 65,
       "performances": null,
-      "direction": null
+      "direction": 40
     },
     "keyPhrases": [
       {
-        "quote": "The Wiz is all about feeling",
-        "sentiment": "positive",
-        "strength": 3
+        "quote": "goes too far",
+        "sentiment": "negative",
+        "strength": 4
       },
       {
-        "quote": "its simple message rings loud and clear",
-        "sentiment": "positive",
+        "quote": "there is something more essential that's missing from this reworked Wiz",
+        "sentiment": "negative",
         "strength": 4
+      },
+      {
+        "quote": "there's little sense of ease",
+        "sentiment": "negative",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The phrase suggests emotional impact and effective messaging, but the excerpt is too brief to determine the full critical assessment. | GPT-4o-mini: The review expresses a positive sentiment about the show's emotional resonance and message, indicating a clear recommendation despite limited detail.",
+    "reasoning": "The critic systematically catalogs major problems with this revival - removing iconic elements and losing the essential spirit of the show - with only historical praise for the original music offering any positive element.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:21:59.427Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:30:50.564Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2605,
+    "outputTokens": 322,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -83,7 +95,7 @@
   "bwwThumb": "Up",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 79,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.128Z",
+  "rescoreCompletedAt": "2026-02-01T16:30:50.564Z",
   "truncationSignals": [
     "no_ending_punctuation"
   ],

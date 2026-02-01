@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 45,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
@@ -21,38 +21,38 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 60,
-    "confidence": "high",
+    "score": 45,
+    "confidence": "low",
     "range": {
-      "low": 53,
-      "high": 67
+      "low": 35,
+      "high": 55
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
-      "book": 48,
+      "book": 40,
       "music": null,
-      "performances": null,
-      "direction": 70
+      "performances": 65,
+      "direction": 50
     },
     "keyPhrases": [
       {
-        "quote": "most of the production works flawlessly",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "there are two major missteps",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "overlong and dull, belaboring a p",
-        "sentiment": "negative",
+        "quote": "a bitter, disillusioned woman, Phyllis (Jessica Lange), who feels duped by the circumstances of her life",
+        "sentiment": "neutral",
         "strength": 3
+      },
+      {
+        "quote": "showcases how Phyllis' resentments trickle into her relationships with her two children",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "roach-infested basement apartment",
+        "sentiment": "negative",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The review acknowledges that most production elements work well but identifies significant structural problems with predictability and pacing that diminish the show's emotional impact. | GPT-4o-mini: The review highlights significant flaws in the script and a specific scene, but acknowledges that most of the production is well-executed, leading to a mixed recommendation.",
+    "reasoning": "This appears to be a plot summary rather than a critical review, providing character descriptions and story setup without evaluative language or recommendation signals.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -61,11 +61,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:14:32.395Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:40:31.038Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2684,
+    "outputTokens": 342,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 62,
@@ -78,7 +85,7 @@
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 60,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.909Z",
+  "rescoreCompletedAt": "2026-02-01T15:40:31.038Z",
   "contentTier": "complete",
   "wordCount": 656
 }

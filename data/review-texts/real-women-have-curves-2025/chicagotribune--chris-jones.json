@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-REAL-WOMEN-HAVE-CURVES-Opens-on-Broadway-20250426",
   "bwwThumb": "Meh",
   "originalScore": "A",
-  "assignedScore": 79,
+  "assignedScore": 72,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -18,51 +18,58 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 79,
+    "score": 72,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 68,
+      "high": 76
     },
-    "bucket": "Positive",
+    "bucket": "Mixed",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 55,
       "music": 75,
-      "performances": 80,
-      "direction": 79
+      "performances": 82,
+      "direction": 78
     },
     "keyPhrases": [
       {
-        "quote": "went over like gangbusters at the show I saw",
+        "quote": "it's a modestly scaled melodrama...with striking timeliness",
         "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The book for 'Real Women' really does tie itself into a pretzel trying to achieve its goal",
+        "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "The curves promised on the marquee are vivaciously delivered",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "lively choreography is both created for the bonafide dancers in the cast and designed to make everyone else look and feel good. So they do.",
+        "quote": "the audience is primed to enjoy their triumph, fictionally and formatively",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Consistently positive language about choreography, performances, and audience response with specific praise for how the production makes everyone 'look and feel good' and delivers on its promises. | GPT-4o-mini: The review highlights strong choreography and positive audience reactions, indicating a clear recommendation despite not explicitly stating it.",
+    "reasoning": "The critic appreciates the performances, direction, and cultural significance while clearly identifying significant book problems, ultimately finding it an enjoyable if flawed experience worth seeing.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:14:43.438Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:02:04.158Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3464,
+    "outputTokens": 343,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -75,7 +82,7 @@
       "Score (79 → Up) conflicts with aggregator thumbs (Flat)"
     ]
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 79,
   "archivePath": "data/archives/reviews/real-women-have-curves-2025/chicagotribune--chris-jones_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:43:49.076Z",
@@ -96,7 +103,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250726005319",
   "archiveOrgUrl": "http://web.archive.org/web/20250726005319/https://www.chicagotribune.com/2025/04/27/review-real-women-have-curves-the-musical-on-broadway/",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.004Z",
+  "rescoreCompletedAt": "2026-02-01T16:02:04.158Z",
   "dateSource": "extracted-from-url",
   "textQualityOverride": "batch-fix-2026-01-30",
   "contentTier": "complete",

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -18,51 +18,58 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 50,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 45,
-      "high": 55
+      "low": 58,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": null,
-      "music": 75,
-      "performances": null,
-      "direction": null
+      "book": 45,
+      "music": 70,
+      "performances": 65,
+      "direction": 55
     },
     "keyPhrases": [
       {
-        "quote": "was a giddy delight from top to bottom",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "not every joke told 18 years ago is going to land the same way now",
+        "quote": "this Spamalot seems content to play it safe",
         "sentiment": "negative",
         "strength": 3
       },
       {
-        "quote": "Spamalot has become a sor",
-        "sentiment": "negative",
+        "quote": "Leslie Rodriguez Kritzer as the Lady of the Lake... wrings laughs out of every corner of her several songs",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "if, sometimes, the best reason to revive a musical is simply to introduce old jokes to a new generation, this may be a Spamalot most enjoyed by those discovering the material",
+        "sentiment": "neutral",
         "strength": 2
       }
     ],
-    "reasoning": "Claude: The excerpt cuts off mid-sentence but shows a critic who loved the original while expressing concern that the material hasn't aged well in this revival. | GPT-4o-mini: The review expresses nostalgia for the original production while indicating that the current restaging lacks the same impact, leading to a mixed recommendation.",
+    "reasoning": "The critic finds the revival faithful but safe, with standout performances from Kritzer and mixed results from the ensemble, ultimately suggesting it works best for newcomers to the material rather than as essential theater.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:18:30.397Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:09:32.634Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3907,
+    "outputTokens": 375,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 50,
@@ -75,7 +82,7 @@
       "Score (50 → Flat) conflicts with aggregator thumbs (Up)"
     ]
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 50,
   "archivePath": "data/archives/reviews/spamalot-2023/slantmagazine--dan-rubins_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:54:31.156Z",
@@ -109,7 +116,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250112164532",
   "archiveOrgUrl": "http://web.archive.org/web/20250112164532/https://www.slantmagazine.com/theater/spamalot-review/",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.034Z",
+  "rescoreCompletedAt": "2026-02-01T16:09:32.634Z",
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",

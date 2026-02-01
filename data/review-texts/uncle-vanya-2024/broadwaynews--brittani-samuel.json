@@ -7,55 +7,62 @@
   "publishDate": "April 25, 2024",
   "fullText": "Heidi Schreck pens a comedy-bolstered but disorienting translation of Chekhov’s seminal play.\n\nGood morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Uncle Vanya.”\n\nLincoln Center Theater’s current Broadway revival was my first time meeting “Uncle Vanya.” I suspect there will be many Vanya virgins like me drawn to this production’s familiar and diverse ensemble of theater, film and TV stalwarts — Alfred Molina, Anika Noni Rose, Steve Carell to name a few. The diverse accreditation only matters for its impact on placing Heidi Schreck’s adaptation of the work in a sense of time and place. We are still on a sweeping estate with a disparate gang of hapless characters — farm worker Vanya (Carell), his niece Sonia (Alison Pill), his love interest Yelena (Rose) and the rest.",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 45,
   "dtliThumb": "Meh",
   "source": "dtli",
   "llmScore": {
-    "score": 52,
-    "confidence": "medium",
+    "score": 45,
+    "confidence": "low",
     "range": {
-      "low": 43.5,
-      "high": 60.5
+      "low": 35,
+      "high": 55
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
-      "book": null,
+      "book": 40,
       "music": null,
-      "performances": 75,
-      "direction": 45
+      "performances": null,
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "I'm still not convinced audiences need to",
+        "quote": "comedy-bolstered but disorienting translation",
         "sentiment": "negative",
-        "strength": 4
+        "strength": 3
       },
       {
-        "quote": "top-caliber actors would flock to revel in this",
+        "quote": "diverse ensemble of theater, film and TV stalwarts",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 2
       },
       {
-        "quote": "still seems to be finding its footing",
-        "sentiment": "negative",
-        "strength": 3
+        "quote": "disparate gang of hapless characters",
+        "sentiment": "neutral",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The critic explicitly questions whether audiences need to see this production and notes it's still finding its footing, despite acknowledging strong performances. | GPT-4o-mini: The review expresses uncertainty about the production's value and suggests it may not yet be ready for audiences, indicating a mixed recommendation.",
+    "reasoning": "This appears to be an incomplete excerpt that describes the adaptation as 'disorienting' while noting the strong cast, but lacks sufficient evaluative content to determine the critic's actual recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:03:37.746Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:33:48.355Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2529,
+    "outputTokens": 326,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 48,
@@ -75,7 +82,7 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 52,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.138Z",
+  "rescoreCompletedAt": "2026-02-01T16:33:48.355Z",
   "archivePath": "data/archives/reviews/uncle-vanya-2024/broadwaynews--brittani-samuel_2026-02-01.html",
   "textFetchedAt": "2026-02-01T14:12:47.249Z",
   "fetchMethod": "archive",

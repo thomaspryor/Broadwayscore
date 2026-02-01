@@ -9,51 +9,63 @@
   "showScoreExcerpt": "\"...one of the most sensational musical theatre performances I've ever seen.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/just-in-time-broadway",
   "originalScore": null,
-  "assignedScore": 95,
+  "assignedScore": 65,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 95,
-    "confidence": "high",
+    "score": 65,
+    "confidence": "low",
     "range": {
-      "low": 90,
-      "high": 100
+      "low": 55,
+      "high": 75
     },
-    "bucket": "Rave",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": 98,
+      "performances": null,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "one of the most sensational musical theatre performances I've ever seen",
+        "quote": "Just when the bio musical genre appears all but exhausted, we get the disarming story of Bobby Darin",
         "sentiment": "positive",
-        "strength": 5
+        "strength": 3
       },
       {
-        "quote": "one of the most sensational musical theatre performances I've ever seen.",
-        "sentiment": "positive",
-        "strength": 5
+        "quote": "There's a kind of gambler's recklessness behind this project",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "Most successful bio musicals cash in on stars with hit-packed catalogs",
+        "sentiment": "neutral",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The superlative language 'most sensational...I've ever seen' indicates extraordinary enthusiasm and unqualified praise, warranting a rave score despite the fragment being performance-focused. | GPT-4o-mini: The review expresses unqualified enthusiasm for the performance, indicating a strong recommendation to see the show.",
+    "reasoning": "This appears to be an incomplete excerpt focusing on the unusual choice of Bobby Darin as subject matter, with mild intrigue but no clear evaluative content about the actual production quality.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:01.012Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:23:27.464Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2389,
+    "outputTokens": 353,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 95,
@@ -77,7 +89,7 @@
   ],
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 95,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.838Z",
+  "rescoreCompletedAt": "2026-02-01T15:23:27.464Z",
   "truncationSignals": [
     "no_ending_punctuation"
   ],

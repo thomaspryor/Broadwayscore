@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-COTTAGE-Opens-on-Broadway-20230723",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 15,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "needsScoring": true,
@@ -20,33 +20,38 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 25,
-    "confidence": "medium",
+    "score": 15,
+    "confidence": "high",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 10,
+      "high": 25
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": 20,
+      "book": 10,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 45,
+      "direction": 20
     },
     "keyPhrases": [
       {
-        "quote": "Yes, there is a world of lousy theater beyond New York City, and 'The Cottage,' which opened Monday on Broadway at the Hayes Theatre, is destined for it.",
+        "quote": "Sitting through this forced, unfunny take on British sex comedies of yore",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "Sometimes a bio in the Playbill is an apt warning for what you're about to see.",
+        "quote": "destined for it [the world of lousy theater beyond New York City]",
         "sentiment": "negative",
-        "strength": 4
+        "strength": 5
+      },
+      {
+        "quote": "Cooper manages to give the production's one understated performance",
+        "sentiment": "positive",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The critic delivers a scathing dismissal, calling the show 'lousy theater' and suggesting it belongs in regional productions rather than Broadway.",
+    "reasoning": "The critic savagely pans the show as 'forced, unfunny' and 'destined for lousy theater,' with only minimal praise for one performance amid overwhelming negativity about the script and direction.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,11 +60,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:20:10.441Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:17:19.170Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3008,
+    "outputTokens": 348,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 25,
@@ -70,7 +82,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 25,
   "archivePath": "data/archives/reviews/the-cottage-2023/thewrap--robert-hofler_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:36:00.410Z",
@@ -86,7 +98,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251208165217",
   "archiveOrgUrl": "http://web.archive.org/web/20251208165217/https://www.thewrap.com/the-cottage-broadway-review-jason-alexander-eric-mccormack/",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.069Z",
+  "rescoreCompletedAt": "2026-02-01T16:17:19.170Z",
   "contentTier": "complete",
   "wordCount": 481
 }

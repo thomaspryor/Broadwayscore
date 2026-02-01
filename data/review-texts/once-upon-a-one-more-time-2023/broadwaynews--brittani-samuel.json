@@ -7,55 +7,62 @@
   "publishDate": "June 22, 2023",
   "fullText": "The musical of Britney Spears songs hits all the right notes of zaniness, creativity and unbridled joy. Liberation sits at the foundation of our favorite pop songs, and few superstars have more to say about freedom than Britney Spears. The Mississippi-born singer held on to juggernaut status in the pop arena for over a decade with an ample discography of hits she now lends to the new Broadway musical “Once Upon a One More Time.” But the music is where all direct connections to my namesake end. The plot instead centers on a group of old-school princesses, including Cinderella (Briga Heelan), Snow White (Aisha Jackson), Little Mermaid (Lauren Zakrin) — the gals — whose lives change when the Original Fairy Godmother (Brooke Dillman) introduces “The Feminine Mystique” to their book, err sorry, scroll club. Friedan’s words tug at Cinderella’s already hankering suspicion that there is more to “happy ever after.” But the princess posse has to deal with obstacles in the form of their omnipotent male Narrator (Adam Godley) and Cinderella's Stepmother (Jennifer Simard, already gunning for her third Tony nomination with this deliciously vampy performance), who swiped the manifesto.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 78,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 85,
-    "confidence": "high",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
+      "book": 70,
+      "music": 85,
+      "performances": 82,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "thoroughly enjoyable, relentlessly watchable and genuinely funny good time",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "conjured up so much charm",
+        "quote": "hits all the right notes of zaniness, creativity and unbridled joy",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "perhaps, a fairy godmother really was involved",
+        "quote": "deliciously vampy performance",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
+      },
+      {
+        "quote": "already gunning for her third Tony nomination",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Unqualified praise with strong positive descriptors and whimsical tone suggests clear enthusiasm and recommendation despite brief excerpt. | GPT-4o-mini: The review expresses strong enthusiasm and enjoyment, indicating a clear recommendation to see the show.",
+    "reasoning": "Opening with strong praise for the musical's energy and creativity, plus specific acclaim for performances, indicates a clear positive recommendation despite some plot complexity.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": false,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:08:12.103Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:45:27.676Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2605,
+    "outputTokens": 316,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 85,
@@ -96,7 +103,7 @@
   "textIssues": [
     "Word count too low: 202 (min: 300)"
   ],
-  "rescoreCompletedAt": "2026-01-29T14:31:51.932Z",
+  "rescoreCompletedAt": "2026-02-01T15:45:27.676Z",
   "archiveOrgTimestamp": "20251016161546",
   "archiveOrgUrl": "http://web.archive.org/web/20251016161546/https://www.broadwaynews.com/review-once-upon-a-one-more-time-thrillingly-weds-fairy-tale-princesses-and-pop/",
   "contentTier": "truncated",

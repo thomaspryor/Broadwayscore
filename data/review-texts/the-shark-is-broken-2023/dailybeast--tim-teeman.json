@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
@@ -20,51 +20,58 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 84,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 77.5,
-      "high": 90.5
+      "low": 78,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": 80,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 85,
+      "direction": 80
     },
     "keyPhrases": [
       {
-        "quote": "The Shark Is Broken wittily excels not just as a clever time capsule, but as an examination of male bonding and competitiveness, ego, frailty, fame, and film-making",
+        "quote": "Ian Shaw and Joseph Nixon's excellent Broadway play",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "you don't miss the shark for one second",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "humorous and profound gap of past and present, known and unknown, and ignorance and wisdom",
+        "quote": "directed with a guileful brevity by Guy Masterson",
         "sentiment": "positive",
         "strength": 3
+      },
+      {
+        "quote": "it's an impressive performance—playful, respectful, yet also not afraid of dwelling in, and implicitly criticizing Shaw's darker side",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic praises the play's wit, intelligence, and thematic depth, concluding with a strong endorsement that audience engagement never wavers despite the absence of the titular shark. | GPT-4o-mini: The review expresses strong appreciation for the show's cleverness and thematic depth, indicating a solid recommendation.",
+    "reasoning": "The reviewer calls the play 'excellent' early on and consistently praises the performances, direction, and production design with specific examples and thoughtful analysis.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:09:29.381Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:25:56.753Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3110,
+    "outputTokens": 346,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 82,
@@ -77,7 +84,7 @@
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 84,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.111Z",
+  "rescoreCompletedAt": "2026-02-01T16:25:56.753Z",
   "contentTier": "complete",
   "wordCount": 2255
 }

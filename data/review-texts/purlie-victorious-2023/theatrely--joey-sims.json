@@ -9,56 +9,63 @@
   "bwwExcerpt": "It is also one of few moments when this revival of Ossie Davis’ razor-sharp satire Purlie Victorious (A Non-Confederate Romp Through the Cotton Patch) fully comes to life. Back on Broadway for the first time since its historic 1961 premiere, Davis’ play has lost little of its bite. But under an ill-suited Kenny Leon’s direction, it has received an unevenly paced and tonally confused production that never finds the same delightful boldness as Young’s performance.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "originalScore": null,
-  "assignedScore": 47,
+  "assignedScore": 58,
   "source": "dtli",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "llmScore": {
-    "score": 47,
+    "score": 58,
     "confidence": "high",
     "range": {
-      "low": 40.5,
-      "high": 53.5
+      "low": 55,
+      "high": 62
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 75,
+      "book": 72,
       "music": null,
-      "performances": 75,
-      "direction": 28
+      "performances": 65,
+      "direction": 42
     },
     "keyPhrases": [
       {
-        "quote": "ill-suited Kenny Leon's direction",
+        "quote": "an unevenly paced and tonally confused production that never finds the same delightful boldness as Young's performance",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "unevenly paced and tonally confused production",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "delightful boldness as Young's performance",
+        "quote": "It is a riotously hilarious scene and a showcase for two-time Tony-nominee Young's genius delivery and masterful physical humor",
         "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "while the play still essentially works, it loses a lot of laughs as a result",
+        "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: While the critic praises the source material and lead performance, the harsh criticism of direction as 'ill-suited' and the production as 'unevenly paced and tonally confused' indicates more problems than strengths, making this hard to recommend. | GPT-4o-mini: The review highlights significant issues with direction and pacing, leading to a clear negative recommendation despite some praise for the performance.",
+    "reasoning": "The critic praises Kara Young's performance and the source material but criticizes the direction as 'ill-suited' and 'tonally confused,' resulting in a production that 'still essentially works' but fails to reach its potential.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:09:45.438Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:55:58.477Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3786,
+    "outputTokens": 380,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 48,
@@ -77,7 +84,7 @@
   "showScoreExcerpt": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 47,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.977Z",
+  "rescoreCompletedAt": "2026-02-01T15:55:58.477Z",
   "contentTier": "complete",
   "wordCount": 972
 }

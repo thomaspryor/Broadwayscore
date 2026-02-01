@@ -9,56 +9,63 @@
   "showScoreExcerpt": "\"Itâs another magnificent performance â kind-eyed, honey-voiced and all but irresistible.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/just-in-time-broadway",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 88,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 89,
+    "score": 88,
     "confidence": "high",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 85,
+      "high": 92
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": 90,
-      "direction": null
+      "book": 78,
+      "music": 85,
+      "performances": 95,
+      "direction": 88
     },
     "keyPhrases": [
       {
-        "quote": "magnificent performance",
+        "quote": "It's another magnificent performance — kind-eyed, honey-voiced and all but irresistible",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "all but irresistible",
+        "quote": "the production fizzes with class and delight like a coupe of champagne",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "kind-eyed, honey-voiced and all but irresistible",
+        "quote": "Anyone who appreciates Groff's sterling emotional clarity should consider 'Just in Time' required viewing",
         "sentiment": "positive",
         "strength": 5
       }
     ],
-    "reasoning": "Claude: Extremely positive language about performance quality with superlatives like 'magnificent' and 'irresistible', but excerpt is too brief to assess overall show recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the performance, indicating a must-see experience.",
+    "reasoning": "The critic delivers enthusiastic praise for Groff's performance and the production design, calls it 'required viewing,' and uses superlatives like 'magnificent' and 'irresistible' throughout.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:47.912Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:24:43.256Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3728,
+    "outputTokens": 368,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 88,
@@ -78,7 +85,7 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 89,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.842Z",
+  "rescoreCompletedAt": "2026-02-01T15:24:43.256Z",
   "archivePath": "data/archives/reviews/just-in-time-2025/washpost--naveen-kumar_2026-01-29.html",
   "textFetchedAt": "2026-01-29T15:17:46.890Z",
   "fetchMethod": "archive",

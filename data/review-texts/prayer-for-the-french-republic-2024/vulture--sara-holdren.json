@@ -9,56 +9,63 @@
   "showScoreExcerpt": "“Though it’s surrounded by heavy clouds, Harmon’s play is plenty sharp and by no means gloomy...How much you respond to ‘Prayer’ may ultimately rest on your taste for such harangues. I admit to finding them hard to follow — not intellectually but emotionally. They leave me cold and a little suspicious.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/prayer-for-the-french-republic-broadway",
   "originalScore": null,
-  "assignedScore": 51,
+  "assignedScore": 65,
   "source": "dtli",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "llmScore": {
-    "score": 51,
+    "score": 65,
     "confidence": "high",
     "range": {
-      "low": 45,
-      "high": 57
+      "low": 60,
+      "high": 70
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 49,
+      "book": 55,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 70,
+      "direction": 65
     },
     "keyPhrases": [
+      {
+        "quote": "it has the shape of something profound and easily laudable, but inside that outline, though it doesn't shy away from gnarly questions, it often feels showy in its engagement with them",
+        "sentiment": "negative",
+        "strength": 4
+      },
       {
         "quote": "Harmon's play is plenty sharp and by no means gloomy",
         "sentiment": "positive",
         "strength": 3
       },
       {
-        "quote": "They leave me cold and a little suspicious",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "How much you respond to 'Prayer' may ultimately rest on your taste",
-        "sentiment": "neutral",
+        "quote": "these questions are still implicit in Prayer for the French Republic, and when we're able to hear them, the play is at its strongest",
+        "sentiment": "positive",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic acknowledges the play's quality but admits to being emotionally disconnected from it, suggesting a lukewarm personal response that makes it hard to recommend broadly. | GPT-4o-mini: The review presents a mixed perspective, acknowledging some sharpness in the play while expressing emotional disengagement, leading to a conditional recommendation.",
+    "reasoning": "The critic acknowledges the play's intelligence and sharp writing but finds it fundamentally showy and calculated, with structural problems that prevent full emotional engagement.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:20:54.460Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:54:11.833Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4475,
+    "outputTokens": 368,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 52,
@@ -79,7 +86,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 51,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.971Z",
+  "rescoreCompletedAt": "2026-02-01T15:54:11.833Z",
   "truncationSignals": [
     "has_footer_junk"
   ],

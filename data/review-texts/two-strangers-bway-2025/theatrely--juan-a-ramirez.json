@@ -8,25 +8,25 @@
   "fullText": "I felt a disorienting generational whiplash throughout the treacly rom-com Two Strangers (Carry a Cake Across New York). The latest British musical to make it through that country's off-off ranks and onto our shores, it follows two 20-somethings during a whirlwind wedding weekend in present-day New York. And yet it fundamentally misunderstands Gen Z, is shot through with elder Millennial sensibility, and had a mostly older crowd wiping tears of laughter from their eyes. They seemed to thoroughly enjoy it, so congrats to all involved, but let me submit my dissenting opinion anyway.\n\nThe plot is simple – to the point of not meriting its two-act, nearly two-and-a-half hour runtime, but I digress: Dougal (Sam Tutty), a twenty-something going on twelve Brit arrives in town for his estranged father's wedding, and there's Robin (Christiani Pitts), his 26-year-old soon-to-be-aunt waiting for him at the airport. The overly zesty Dougal is overjoyed to be in the big city and doesn't pick up on the fact Robin is not looking to be his tour guide. Of course, they wind up getting into all kinds of hijinks throughout the weekend, which takes them from picking up the titular dessert from Robin's native Crown Heights onto every tourist trap in Manhattan and into some tricky familial situations.\n\nThere's nothing inherently bad about the piece, which the two performers must carry entirely on their backs. Tutty, while saddled with maybe the most grating character in musical theater history, manages to project his mega-watt charm across the footlights. Pitts also more than acquits herself, keeping her deadpan takedowns impressively fresh, with charisma and vocal chops to spare.\n\nAbout the music. I appreciate a new musical striving for songs that could achieve crossover success – can you believe there was ever an era when Broadway was the dominant pop form? – but the lyrics here border on the completely unrelated; a string of platitudes about romance or big nights out or crying to mum back home. Musically, the score is overly sentimental and, steering aggressively away from showtunes' perceived uncoolness, confuses lack of melodic throughline for a post-modern idea that every line must follow whatever impulse the character is feeling, even if mid-phrase.\n\nTim Jackson, on double duty as director and choreographer, guides the pair well through Soutra Gilmour's efficient set: two scalable mountains of suitcases, some of which cleverly open up to reveal beds, mini bars and, most charmingly, a Chinese restaurant.\n\nMy heart is a generally open one, and I did not walk away from Two Strangers fuming about the state of modern musical theater. It has an agreeableness that will offend no one, and will surely charm many. But I should've known from its twee little title that this would not be for me, and I was unfortunately correct.",
   "dtliExcerpt": "I felt a disorienting generational whiplash throughout the treacly rom-com Two Strangers (Carry a Cake Across New York). The latest British musical to make it through that country’s off-off ranks and onto our shores, it follows two 20-somethings during a whirlwind wedding weekend in present-day New York. And yet it fundamentally misunderstands Gen Z, is shot through with elder Millennial sensibility, and had a mostly older crowd wiping tears of laughter from their eyes. They seemed to thoroughly enjoy it, so congrats to all involved, but let me submit my dissenting opinion anyway.",
   "originalScore": null,
-  "assignedScore": 49,
+  "assignedScore": 45,
   "source": "dtli",
   "dtliThumb": "Meh",
   "scrapedAt": "2026-01-23T23:35:00.000Z",
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 49,
-    "confidence": "medium",
+    "score": 45,
+    "confidence": "high",
     "range": {
-      "low": 37.5,
-      "high": 60.5
+      "low": 40,
+      "high": 50
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 43,
-      "music": 35,
-      "performances": 73,
-      "direction": 63
+      "book": 35,
+      "music": 30,
+      "performances": 70,
+      "direction": 60
     },
     "keyPhrases": [
       {
@@ -35,30 +35,37 @@
         "strength": 4
       },
       {
-        "quote": "There's nothing inherently bad about the piece",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "It has an agreeableness that will offend no one, and will surely charm many. But I should've known from its twee little title that this would not be for me",
+        "quote": "It has an agreeableness that will offend no one, and will surely charm many. But I should've known from its twee little title that this would not be for me, and I was unfortunately correct",
         "sentiment": "negative",
         "strength": 4
+      },
+      {
+        "quote": "There's nothing inherently bad about the piece",
+        "sentiment": "neutral",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The critic acknowledges the show will charm others but offers a clear dissenting opinion with specific criticisms of the book, music, and runtime, while praising only the performances. | GPT-4o-mini: The review presents a mixed view, praising performances while criticizing the music and script, leading to a conditional recommendation. | Note: Models differed by 13 points.",
+    "reasoning": "The critic explicitly positions themselves as dissenting from audience enjoyment, criticizes fundamental elements like runtime and character development, and concludes the show 'would not be for me' despite acknowledging it may charm others.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T15:55:27.517Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:33:31.319Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2976,
+    "outputTokens": 365,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 42,
@@ -74,7 +81,7 @@
   "bwwThumb": null,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 49,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.136Z",
+  "rescoreCompletedAt": "2026-02-01T16:33:31.319Z",
   "contentTier": "complete",
   "wordCount": 464
 }

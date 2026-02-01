@@ -10,56 +10,63 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 52,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 60,
+    "score": 52,
     "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 45,
+      "high": 58
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": null,
+      "book": 35,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 68,
+      "direction": 60
     },
     "keyPhrases": [
       {
-        "quote": "The Shark is Broken’s scenic design is packed with memorabilia from the original film",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "the real memories pay homage to Robert Shaw’s complicated life as an artist struggling with addiction",
-        "sentiment": "positive",
+        "quote": "Nixon and Shaw's script fails to dig much beyond intel widely available through previously produced documentaries",
+        "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "In preparation for the role, son Ian reviewed a drinking diary",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "the action often feels as flat as the boat's keel",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Shaw naturally embodies his father's swagger and struggle with the bottle",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "GPT-4o-mini: The review highlights some positive aspects of the scenic design and thematic depth but lacks a clear recommendation or strong enthusiasm.",
+    "reasoning": "The review praises the performances and production design but criticizes the script for being shallow and the action for being flat, resulting in a mixed recommendation that leans slightly negative.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:55.840Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:27:18.188Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4245,
+    "outputTokens": 337,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": null,
@@ -70,7 +77,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 60,
   "archivePath": "data/archives/reviews/the-shark-is-broken-2023/queerty--matthew-wexler_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:43:07.285Z",
@@ -107,7 +114,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251209075429",
   "archiveOrgUrl": "http://web.archive.org/web/20251209075429/https://www.queerty.com/broadways-the-shark-is-broken-nips-but-fails-to-bite-20230810/",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.116Z",
+  "rescoreCompletedAt": "2026-02-01T16:27:18.188Z",
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",

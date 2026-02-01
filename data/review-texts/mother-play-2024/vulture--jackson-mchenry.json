@@ -9,56 +9,63 @@
   "showScoreExcerpt": "\"Her script assembles the contradictions...but it doesn’t provide a route through them.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/mother-play-broadway",
   "originalScore": null,
-  "assignedScore": 46,
+  "assignedScore": 52,
   "source": "dtli",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "llmScore": {
-    "score": 46,
+    "score": 52,
     "confidence": "medium",
     "range": {
-      "low": 37,
-      "high": 55
+      "low": 48,
+      "high": 58
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 43,
+      "book": 45,
       "music": null,
       "performances": null,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "Her script assembles the contradictions...but it doesn't provide a route through them",
+        "quote": "That cleverness, however, has a domineering quality",
         "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Her script assembles the contradictions...",
-        "sentiment": "neutral",
         "strength": 3
       },
       {
-        "quote": "but it doesn’t provide a route through them.",
+        "quote": "Her title, like many theatrical matriarchs, is awfully hard to live up to, which is also what Mother Play struggles to do",
         "sentiment": "negative",
         "strength": 4
+      },
+      {
+        "quote": "There's already wit and bite to the phrase 'mother play'",
+        "sentiment": "positive",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The excerpt criticizes the script's fundamental structure and execution, suggesting the playwright fails to resolve the material's contradictions, which indicates significant creative problems. | GPT-4o-mini: The review indicates a lack of clarity in the script, suggesting a mixed recommendation without strong enthusiasm.",
+    "reasoning": "The review acknowledges the play's clever concept and Vogel's theatrical pedigree but concludes that the production 'struggles' to live up to its ambitious title, suggesting fundamental execution problems.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:22:04.558Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:40:36.168Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2586,
+    "outputTokens": 352,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 42,
@@ -79,7 +86,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 46,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.910Z",
+  "rescoreCompletedAt": "2026-02-01T15:40:36.168Z",
   "truncationSignals": [
     "has_footer_junk"
   ],

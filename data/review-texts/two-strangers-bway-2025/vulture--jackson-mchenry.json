@@ -9,57 +9,64 @@
   "dtliExcerpt": "When the show’s creators zero in on those feelings, something a lot more specific and wistful than a love story between two strangers, the piece comes alive. If only it stayed there.",
   "showScoreExcerpt": "\"This cake isn’t fully baked...For its staging at the Longacre, with an unnecessary intermission that slams the brakes on the action, the director Tim Jackson has slathered the thing in the icing of sentiment and popped his cork\"",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 65,
   "source": "dtli",
   "dtliThumb": "Meh",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-Opens-On-Broadway-20250109",
   "needsFullText": false,
   "llmScore": {
-    "score": 50,
-    "confidence": "medium",
+    "score": 65,
+    "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 60
+      "low": 60,
+      "high": 70
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 40,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 55,
+      "music": 45,
+      "performances": 75,
+      "direction": 50
     },
     "keyPhrases": [
       {
-        "quote": "the piece comes alive",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "If only it stayed there",
+        "quote": "In execution, however, this cake isn't fully baked",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "If only it stayed there.",
+        "quote": "When Two Strangers does do that, it does achieve something magical, and those moments make you see what a smaller-scale musical can do successfully",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Barne and Buchan's contemporary-pop score lacks distinctiveness, and it treads closely in the footsteps of other musical theater",
         "sentiment": "negative",
-        "strength": 5
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic identifies moments where the show works but expresses clear disappointment that these moments are fleeting, suggesting the overall experience is unsatisfying despite occasional bright spots. | GPT-4o-mini: The review indicates moments of life and specificity in the show but ultimately expresses disappointment that it does not maintain that quality, leading to a mixed recommendation.",
+    "reasoning": "The critic finds genuine moments of magic and praises the performances, particularly Pitts and Tutty, but consistently critiques the score's lack of distinctiveness, lyrical imprecision, and execution issues that prevent the show from fully succeeding despite its promising premise.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:31:47.978Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:33:43.525Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4476,
+    "outputTokens": 387,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 45,
@@ -109,7 +116,7 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 50,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.137Z",
+  "rescoreCompletedAt": "2026-02-01T16:33:43.525Z",
   "contentTier": "complete",
   "wordCount": 1601
 }

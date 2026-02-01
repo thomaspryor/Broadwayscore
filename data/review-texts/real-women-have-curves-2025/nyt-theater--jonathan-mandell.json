@@ -10,56 +10,63 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-REAL-WOMEN-HAVE-CURVES-Opens-on-Broadway-20250426",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 66,
+  "assignedScore": 72,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 66,
-    "confidence": "medium",
+    "score": 72,
+    "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 75
+      "low": 68,
+      "high": 76
     },
     "bucket": "Mixed",
-    "thumb": "Flat",
+    "thumb": "Up",
     "components": {
-      "book": 58,
-      "music": 73,
-      "performances": 75,
+      "book": 65,
+      "music": 75,
+      "performances": 80,
       "direction": 70
     },
     "keyPhrases": [
       {
         "quote": "If it has a predictable plot, it's all these women together, and the proud characters they portray in the show, that make it work",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       },
       {
-        "quote": "twenty tuneful and rhythmic musical numbers",
+        "quote": "twenty tuneful and rhythmic musical numbers in the show",
         "sentiment": "positive",
         "strength": 3
       },
       {
-        "quote": "predictable plot",
-        "sentiment": "negative",
-        "strength": 2
+        "quote": "Tatianna Córdoba is a worthy successor in the role, making an impressive Broadway debut",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Review excerpt shows mixed sentiment with criticism of predictable plot but praise for performances and music, though incomplete text limits assessment confidence. | GPT-4o-mini: The review indicates a generally positive experience with the characters and music, but acknowledges predictability in the plot, leading to a mixed-positive score.",
+    "reasoning": "The reviewer acknowledges the show's predictable plot but emphasizes that the strong ensemble of women and their performances make it work, with praise for the music and newcomer performances, indicating a qualified but clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:16:34.630Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:03:05.107Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 5831,
+    "outputTokens": 365,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 62,
@@ -72,7 +79,7 @@
       "Score (66 → Flat) conflicts with aggregator thumbs (Up)"
     ]
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 66,
   "archivePath": "data/archives/reviews/real-women-have-curves-2025/nyt-theater--jonathan-mandell_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:37:35.277Z",
@@ -101,7 +108,7 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "brightdata",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.007Z",
+  "rescoreCompletedAt": "2026-02-01T16:03:05.107Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
   "wordCount": 2014

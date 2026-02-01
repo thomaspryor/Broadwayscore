@@ -12,10 +12,10 @@
   "source": "dtli",
   "llmScore": {
     "score": 78,
-    "confidence": "medium",
+    "confidence": "low",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 70,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -42,20 +42,27 @@
         "strength": 2
       }
     ],
-    "reasoning": "Claude: The review praises the production for successfully revitalizing classic material and making it relevant for modern audiences, despite acknowledging some dated elements.",
+    "reasoning": "The critic makes a strong case for the production's contemporary relevance and artistic merit, acknowledging some dated elements but clearly recommending it as worthwhile for modern audiences.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:09:18.498Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:55:50.679Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2357,
+    "outputTokens": 324,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -75,7 +82,7 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 78,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.976Z",
+  "rescoreCompletedAt": "2026-02-01T15:55:50.679Z",
   "truncationSignals": [
     "no_ending_punctuation"
   ],

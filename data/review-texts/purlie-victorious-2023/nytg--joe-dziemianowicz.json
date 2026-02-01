@@ -9,56 +9,63 @@
   "bwwExcerpt": "Flat-out hilarious and stacked with topflight performances led by Leslie Odom, Jr. and Kara Young, Purlie Victorious is also a triumph when it comes to timing. Suffice it to say the play speaks directly to today’s racial tumult.        Average Rating: 88.4% {   \"@context\":\"https://schema.org\",   \"@type\":\"LiveBlogPosting\",   \"@id\":\"/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927\",   \"about\":{     \"@type\":\"Event\",     \"startDate\":\"2023-09-27T10:05:12-05:00\", ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 92,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 88,
-    "confidence": "medium",
+    "score": 92,
+    "confidence": "high",
     "range": {
-      "low": 83,
-      "high": 93
+      "low": 88,
+      "high": 95
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 85,
       "music": null,
-      "performances": 90,
-      "direction": null
+      "performances": 95,
+      "direction": 90
     },
     "keyPhrases": [
       {
-        "quote": "Flat-out hilarious and stacked with topflight performances",
+        "quote": "Read our five-star review of Purlie Victorious",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "also a triumph when it comes to timing",
+        "quote": "Flat-out hilarious and stacked with topflight performances led by Leslie Odom, Jr. and Kara Young, Purlie Victorious is also a triumph when it comes to timing",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "speaks directly to today's racial tumult",
+        "quote": "the staging by Kenny Leon boasts terrific work across the board",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Strong positive language including 'flat-out hilarious,' 'triumph,' and 'topflight performances' with an 88.4% average rating clearly indicates enthusiastic recommendation.",
+    "reasoning": "Explicitly labeled as a five-star review with unqualified praise throughout, using superlatives like 'triumph,' 'flat-out hilarious,' and 'terrific work across the board' with no meaningful criticisms.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:07:29.592Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:55:12.622Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3258,
+    "outputTokens": 378,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 88,
@@ -76,7 +83,7 @@
     "dtli"
   ],
   "showScoreExcerpt": null,
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 88,
   "archivePath": "data/archives/reviews/purlie-victorious-2023/nytg--joe-dziemianowicz_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:28:14.663Z",
@@ -100,7 +107,7 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.975Z",
+  "rescoreCompletedAt": "2026-02-01T15:55:12.622Z",
   "contentTier": "complete",
   "wordCount": 827
 }

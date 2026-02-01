@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 88,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -19,19 +19,19 @@
     "reviews-json-stub"
   ],
   "llmScore": {
-    "score": 92,
-    "confidence": "medium",
+    "score": 88,
+    "confidence": "high",
     "range": {
-      "low": 83.5,
-      "high": 100
+      "low": 85,
+      "high": 92
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 93,
-      "performances": 92,
-      "direction": 90
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
     "keyPhrases": [
       {
@@ -45,25 +45,32 @@
         "strength": 5
       },
       {
-        "quote": "The weaving together of songs, real history, and the experiences of the women is playful, hilarious, and ingenious",
+        "quote": "sets up home in New York after rave reviews wherever it has played",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic provides an unequivocal recommendation with explicit 'buy a ticket' language and consistently enthusiastic praise for all elements of the production. | GPT-4o-mini: The review expresses unqualified enthusiasm for the musical, highlighting its cleverness, humor, and strong performances, indicating it is a must-see.",
+    "reasoning": "The critic provides an unequivocal recommendation with explicit language to 'buy a ticket' and calls it 'one of the cleverest, wittiest, flashiest musicals in town' with strong superlatives throughout.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:21:43.790Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:06:20.336Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2582,
+    "outputTokens": 359,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 88,
@@ -76,7 +83,7 @@
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 92,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.018Z",
+  "rescoreCompletedAt": "2026-02-01T16:06:20.336Z",
   "truncationSignals": [
     "ends_with_ellipsis"
   ],

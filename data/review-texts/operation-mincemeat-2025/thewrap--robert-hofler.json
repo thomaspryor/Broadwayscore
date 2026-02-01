@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250121",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 33,
+  "assignedScore": 32,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "needsScoring": true,
@@ -21,51 +21,58 @@
     "reviews-json-stub"
   ],
   "llmScore": {
-    "score": 33,
-    "confidence": "high",
+    "score": 32,
+    "confidence": "medium",
     "range": {
-      "low": 25.5,
-      "high": 40.5
+      "low": 25,
+      "high": 40
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": 25,
-      "music": 25,
-      "performances": 43,
-      "direction": 28
+      "book": null,
+      "music": null,
+      "performances": 25,
+      "direction": 20
     },
     "keyPhrases": [
       {
-        "quote": "Nothing kills a laugh faster than seeing actors sweat",
+        "quote": "This is exhausting",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "The rinky-dink tunes elevate the latest Ozempic commercial to something worthy of Sondheim",
+        "quote": "Nothing kills a laugh faster than seeing actors sweat",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "Only Cumming... possesses the unique features and delivery to make this kind of spoofery come alive",
-        "sentiment": "positive",
+        "quote": "frenzied direction",
+        "sentiment": "negative",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The review is predominantly negative, criticizing the music as 'rinky-dink,' the direction as exhausting, and noting that most performers lack the skills for effective comedy, with only isolated praise for one performer and some lyrics. | GPT-4o-mini: The review is overwhelmingly critical, highlighting significant flaws in the script, music, and direction, leading to a strong recommendation against seeing the show.",
+    "reasoning": "The review criticizes the frenzied direction as exhausting and notes that the actors' visible strain kills the comedy, indicating a production that fails in its basic entertainment value.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:19:36.969Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:48:47.989Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2350,
+    "outputTokens": 310,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 35,
@@ -78,7 +85,7 @@
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 33,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.945Z",
+  "rescoreCompletedAt": "2026-02-01T15:48:47.989Z",
   "truncationSignals": [
     "ends_with_ellipsis"
   ],

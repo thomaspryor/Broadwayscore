@@ -13,7 +13,7 @@
   "_removedScore": "A",
   "_removedScoreReason": "NY Post doesn't give letter grades. Review is clearly negative ('wishy-washy play', 'gets swallowed up'). Grade likely extracted from wrong critic in BWW roundup.",
   "_removedAt": "2026-01-31T23:45:00.000Z",
-  "assignedScore": 46,
+  "assignedScore": 52,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "needsScoring": true,
@@ -25,51 +25,58 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 46,
-    "confidence": "medium",
+    "score": 52,
+    "confidence": "high",
     "range": {
-      "low": 37,
-      "high": 55
+      "low": 48,
+      "high": 56
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": 40,
       "music": null,
-      "performances": 71,
-      "direction": 48
+      "performances": 72,
+      "direction": 58
     },
     "keyPhrases": [
       {
-        "quote": "Shaw and Nixon's wishy-washy play, which opened Thursday at the Golden Theatre, struggles to be either as it depicts actors Robert Shaw (Ian Shaw), Roy Scheider (Colin Donnell) and Richard Dreyfuss (Alex Brightman) going at each other's throats off-camera.",
+        "quote": "struggles to be either as it depicts actors going at each other's throats off-camera",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "The effect of their macho antics, however, is much the same as listening to your drunken friends argue about capitalism at 2 a.m. They keep on yapping and are not getting anywhere, so you zone out.",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Still, on Broadway, the little play gets swallowed up like a doomed teen in Amity.",
+        "quote": "The effect of their macho antics, however, is much the same as listening to your drunken friends argue about capitalism at 2 a.m.",
         "sentiment": "negative",
         "strength": 4
+      },
+      {
+        "quote": "on Broadway, the little play gets swallowed up like a doomed teen in Amity",
+        "sentiment": "negative",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic finds the play repetitive and underdeveloped despite praising the performances, particularly Ian Shaw's, with vivid negative metaphors dominating the review. | GPT-4o-mini: The review presents a mixed view, highlighting strong performances but criticizing the script and overall execution, leading to a conditional recommendation.",
+    "reasoning": "The critic finds the concept fun but execution repetitive and shallow, with strong performances undermined by weak writing and structure that doesn't suit Broadway.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T02:55:47.581Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:26:32.582Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3484,
+    "outputTokens": 358,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 42,
@@ -81,5 +88,8 @@
     "needsReviewReasons": []
   },
   "contentTier": "complete",
-  "wordCount": 707
+  "wordCount": 707,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 46,
+  "rescoreCompletedAt": "2026-02-01T16:26:32.582Z"
 }

@@ -152,6 +152,14 @@ export const FEW_SHOT_EXAMPLES: FewShotExample[] = [
     reasoning: 'Clear praise for performances and themes, minor caveat about pacing, overall positive recommendation.'
   },
 
+  // NEGATIVE-SETUP-POSITIVE-VERDICT example (score: 78)
+  {
+    reviewExcerpt: `When "Suffs" premiered at the Public Theatre two years ago, it was a didactic, dull, overstuffed mess. That it would come back, and on Broadway, wasn't a thrilling prospect. And while it did not magically morph into a great show, Version 2.0 is tighter, more confident, often rousing and downright entertaining. We can only rejoice that the creative team did not back down.`,
+    score: 78,
+    bucket: 'Positive',
+    reasoning: 'The negative opening describes the PREVIOUS production ("two years ago"). The verdict for THIS production is "rousing and downright entertaining", "We can only rejoice". Score the current production, not the old one.'
+  },
+
   // MIXED-POSITIVE example (score: 68)
   {
     reviewExcerpt: `Intelligent, disciplined, and often absorbing—but rarely electrifying. Coon anchors the production with a performance of formidable control and emotional clarity. Yet something feels muted about this revival. The intimate horror that made the play unforgettable Off-Broadway doesn't quite translate to the larger Broadway house.`,

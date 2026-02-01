@@ -53,16 +53,16 @@
     "score": 72,
     "confidence": "high",
     "range": {
-      "low": 67,
-      "high": 77
+      "low": 68,
+      "high": 76
     },
     "bucket": "Mixed",
     "thumb": "Up",
     "components": {
-      "book": 43,
-      "music": 83,
+      "book": 45,
+      "music": 85,
       "performances": 90,
-      "direction": 50
+      "direction": 40
     },
     "keyPhrases": [
       {
@@ -71,17 +71,17 @@
         "strength": 4
       },
       {
-        "quote": "A smarter, warmer, bolder revival of The Wiz remains tantalizingly out of reach, but Lewis delivers brains, heart, and courage all on her own",
-        "sentiment": "neutral",
+        "quote": "the stunning vocal performances from her cast",
+        "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "the production's shortcomings could be forgiven and must be forgotten",
-        "sentiment": "positive",
+        "quote": "A smarter, warmer, bolder revival of The Wiz remains tantalizingly out of reach",
+        "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Despite significant criticisms of direction, staging, and book, the critic ultimately recommends the show for its extraordinary vocal performances, particularly Nichelle Lewis, suggesting the strengths outweigh the weaknesses. | GPT-4o-mini: The review highlights outstanding performances and music but criticizes the book and direction, leading to a mixed-positive recommendation overall.",
+    "reasoning": "Despite significant criticism of direction and staging, the critic clearly recommends the show for its exceptional vocal performances and score, suggesting audiences can overlook production flaws for the musical rewards.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -90,11 +90,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:04:06.987Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:31:44.017Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3563,
+    "outputTokens": 350,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -110,5 +117,8 @@
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
-  "wordCount": 837
+  "wordCount": 837,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 72,
+  "rescoreCompletedAt": "2026-02-01T16:31:44.017Z"
 }

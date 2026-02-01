@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -20,51 +20,58 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 77,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 70.5,
-      "high": 83.5
+      "low": 78,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 73,
+      "book": 75,
       "music": null,
-      "performances": null,
-      "direction": 80
+      "performances": 88,
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "wickedly entertaining evening",
+        "quote": "a sparkling ensemble comedy as tautly woven as one of the intricate hairdos in Jaja's Harlem salon",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "she and White so skillfully orchestrate her workplace comedy",
+        "quote": "marking Bioh's Broadway debut as an occasion worth toasting",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "does at the end give in to the urge to highlight her characters' plights a bit too baldly",
-        "sentiment": "negative",
-        "strength": 2
+        "quote": "this wickedly entertaining evening",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Despite one minor criticism about heavy-handed messaging at the end, the critic consistently praises the skillful orchestration and entertainment value, comparing it favorably to acclaimed works like 'Steel Magnolias' and August Wilson's 'Jitney.' | GPT-4o-mini: The review expresses clear praise for the play's entertainment value and direction, despite noting some shortcomings in the script.",
+    "reasoning": "The critic consistently praises the play with enthusiastic language ('sparkling', 'worth toasting', 'wickedly entertaining') and compares it favorably to works by August Wilson, with only minor reservations about the ending.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:21:58.838Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:22:01.848Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3739,
+    "outputTokens": 360,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -75,7 +82,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 77,
   "archivePath": "data/archives/reviews/jajas-african-hair-braiding-2023/washpost--peter-marks_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:49:00.394Z",
@@ -91,7 +98,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20231008185124",
   "archiveOrgUrl": "http://web.archive.org/web/20231008185124/https://www.washingtonpost.com/entertainment/theater/2023/10/03/jaja-braiding-jocelyn-bioh-broadway/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.830Z",
+  "rescoreCompletedAt": "2026-02-01T15:22:01.848Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
   "wordCount": 878

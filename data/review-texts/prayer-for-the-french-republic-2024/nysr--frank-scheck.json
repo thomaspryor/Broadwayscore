@@ -9,56 +9,63 @@
   "bwwExcerpt": "The performances by the ensemble, both veterans and newcomers, are exemplary, with Aidem perhaps the standout as the mother desperately trying to hold everything together in the face of eternal forces. Only Edwards seems a bit out of place, and not only because of his celebrity relative to the rest of the cast. But his performance may sharpen as the run goes on.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": "5/5 stars",
-  "assignedScore": 74,
+  "assignedScore": 88,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 74,
+    "score": 88,
     "confidence": "high",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 85,
+      "high": 92
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 85,
       "music": null,
-      "performances": 79,
-      "direction": null
+      "performances": 88,
+      "direction": 90
     },
     "keyPhrases": [
       {
-        "quote": "The performances by the ensemble, both veterans and newcomers, are exemplary",
+        "quote": "★★★★★ What you'll get instead is a superb drama that only seems to have gained in power and intensity with this Broadway transfer",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Prayer for the French Republic earns its didacticism thanks to its well-drawn characterizations, beautifully written dialogue, and powerful situations",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Only Edwards seems a bit out of place",
-        "sentiment": "negative",
-        "strength": 2
-      },
-      {
-        "quote": "his performance may sharpen as the run goes on",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "Prayer for the French Republic proves that straight plays can still pack a wallop on Broadway",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Strong praise for ensemble performances with one notable exception, but this excerpt lacks context about the overall production quality and gives no clear recommendation signal. | GPT-4o-mini: The review highlights strong performances overall, with a minor caveat about one actor, leading to a solid recommendation.",
+    "reasoning": "Five-star review with consistent praise for the drama's power, performances, direction, and writing, despite acknowledging it's heavy subject matter and some speechifying.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:13:15.776Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:53:05.748Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3624,
+    "outputTokens": 367,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -70,7 +77,7 @@
     "needsReviewReasons": []
   },
   "bwwThumb": "Up",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 74,
   "archivePath": "data/archives/reviews/prayer-for-the-french-republic-2024/nysr--frank-scheck_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:47:23.366Z",
@@ -88,7 +95,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240614042051",
   "archiveOrgUrl": "http://web.archive.org/web/20240614042051/https://nystagereview.com/2024/01/09/prayer-for-the-french-republic-give-thanks-for-this-powerful-drama/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.967Z",
+  "rescoreCompletedAt": "2026-02-01T15:53:05.748Z",
   "dateSource": "extracted-from-url",
   "_scoreFixedFrom": "4/5 stars",
   "_scoreFixedAt": "2026-01-31T23:10:41.721Z",

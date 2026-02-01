@@ -9,7 +9,7 @@
   "showScoreExcerpt": "The frivolous first act and the stirring second act deliciously dance together.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-queen-of-versailles-broadway",
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 82,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -26,19 +26,19 @@
   "fetchTier": 1,
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 83,
-    "confidence": "medium",
+    "score": 82,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 93
+      "low": 78,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": 85,
       "music": null,
       "performances": 88,
-      "direction": 83
+      "direction": 85
     },
     "keyPhrases": [
       {
@@ -49,28 +49,35 @@
       {
         "quote": "The frivolous first act and the stirring second act deliciously dance together as they hold space for multiple truths",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
         "quote": "By showing a world that is utterly fake The Queen of Versailles leaves us wanting to examine what is real",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: This is a sophisticated, positive review that praises the performances, design, and thematic depth while acknowledging the show's structural complexity and social critique without any major reservations. | GPT-4o-mini: The review expresses strong praise for the performances and direction, highlighting the show's thematic depth and emotional impact, leading to a clear recommendation.",
+    "reasoning": "The critic delivers sophisticated praise for the show's structure, performances, design, and thematic depth, celebrating how it 'deliciously' balances spectacle with meaningful critique, despite no explicit recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:44:37.833Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:58:18.747Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3374,
+    "outputTokens": 374,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -83,7 +90,7 @@
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 83,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.991Z",
+  "rescoreCompletedAt": "2026-02-01T15:58:18.747Z",
   "contentTier": "complete",
   "wordCount": 779
 }

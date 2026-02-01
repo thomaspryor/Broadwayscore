@@ -9,44 +9,44 @@
   "bwwExcerpt": "Reid, Strong and Manville are transfixing as awful revelation after revelation comes to light. Strong’s nice guy gives way to brutishness and boiling blood, and Manville’s heretofore stalwart Jocasta crushingly crumples when the grotesque truth is finally revealed.     Brian",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 79,
-    "confidence": "medium",
+    "score": 82,
+    "confidence": "high",
     "range": {
-      "low": 67.5,
-      "high": 90.5
+      "low": 78,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 85,
       "music": null,
-      "performances": 88,
-      "direction": null
+      "performances": 90,
+      "direction": 80
     },
     "keyPhrases": [
       {
-        "quote": "Reid, Strong and Manville are transfixing",
+        "quote": "breathtakingly so, with his starkly intense revival from London starring Lesley Manville and Mark Strong",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "awful revelation after revelation comes to light",
-        "sentiment": "neutral",
-        "strength": 3
+        "quote": "Reid, Strong and Manville are transfixing as awful revelation after revelation comes to light",
+        "sentiment": "positive",
+        "strength": 4
       },
       {
-        "quote": "Strong's nice guy gives way to brutishness and boiling blood",
+        "quote": "The crowd was unquestionably rapt, though, and eerily silent in a way that Broadway audiences rarely are",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Strong praise for performances ('transfixing') with compelling character analysis, but limited excerpt provides no broader context about the production or recommendation. | GPT-4o-mini: The review highlights the captivating performances of the actors, indicating a strong recommendation for the show. | Note: Models differed by 13 points.",
+    "reasoning": "The critic praises the modernization as 'breathtaking,' calls the performances 'transfixing,' and notes the rapt audience response, with only minor complaints about venue acoustics and a brief final sequence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -55,11 +55,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:24.071Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:42:47.997Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3477,
+    "outputTokens": 374,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -80,7 +87,7 @@
   "designation": "Recommended",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 79,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.920Z",
+  "rescoreCompletedAt": "2026-02-01T15:42:47.997Z",
   "contentTier": "complete",
   "wordCount": 766
 }

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 23,
+  "assignedScore": 35,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -21,19 +21,19 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 23,
+    "score": 35,
     "confidence": "high",
     "range": {
-      "low": 15.5,
-      "high": 30.5
+      "low": 30,
+      "high": 40
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
-      "performances": null,
-      "direction": 15
+      "performances": 40,
+      "direction": 25
     },
     "keyPhrases": [
       {
@@ -42,30 +42,37 @@
         "strength": 5
       },
       {
-        "quote": "uninvolving",
+        "quote": "This is less a town than a group of shut-in neighbors who've never met",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "anemic",
-        "sentiment": "negative",
-        "strength": 4
+        "quote": "The finest actor in the revival, far and away, is Billy Eugene Jones",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic uses extremely harsh language calling the production 'among the most uninvolving and anemic' they have ever seen, which is a devastating critique that clearly warns audiences away. | GPT-4o-mini: The review expresses strong dissatisfaction with the production, indicating it is uninvolving and lacks vitality, leading to a clear negative recommendation.",
+    "reasoning": "The critic delivers harsh criticism of the direction and ensemble work while praising individual performers like Billy Eugene Jones, but the overwhelmingly negative language about the production being 'uninvolving and anemic' makes this clearly not recommended.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:06.992Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:49:16.960Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3365,
+    "outputTokens": 352,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 25,
@@ -78,7 +85,6 @@
   },
   "contentTier": "truncated",
   "wordCount": 24,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 23,
   "isFullReview": true,
@@ -104,5 +110,6 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "rescoreCompletedAt": "2026-02-01T15:49:16.960Z"
 }

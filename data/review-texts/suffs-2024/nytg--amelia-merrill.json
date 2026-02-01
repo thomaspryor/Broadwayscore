@@ -10,56 +10,63 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "A",
-  "assignedScore": 79,
+  "assignedScore": 72,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 79,
-    "confidence": "high",
+    "score": 72,
+    "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 68,
+      "high": 76
     },
-    "bucket": "Positive",
+    "bucket": "Mixed",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 80,
-      "performances": 85,
-      "direction": null
+      "book": 55,
+      "music": 75,
+      "performances": 78,
+      "direction": 70
     },
     "keyPhrases": [
       {
-        "quote": "memorable music, star-making performances, and an inspiring message",
+        "quote": "has memorable music, star-making performances, and an inspiring message with moments that tug at the heartstrings",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "moments that tug at the heartstrings",
-        "sentiment": "positive",
+        "quote": "forgoes accuracy in favor of a fun time. This isn't necessarily a bad thing. But as a tool for civic education – which the show seems to market itself as – it's simplistic",
+        "sentiment": "negative",
         "strength": 3
       },
       {
-        "quote": "memorable music",
+        "quote": "Suffs has a rating of 93 on Show-Score, marking it an 'audience acclaimed' show as many users call it a must-see production",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Clear positive language about key elements (memorable music, star-making performances, inspiring message) with emotional impact noted, indicating a solid recommendation despite no explicit star rating. | GPT-4o-mini: The review highlights strong performances and an inspiring message, indicating a clear recommendation despite not addressing potential weaknesses.",
+    "reasoning": "The review balances clear praise for music, performances, and production values against significant concerns about historical accuracy and characterization, ultimately presenting a qualified positive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:14.206Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:15:01.439Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3079,
+    "outputTokens": 388,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -74,7 +81,7 @@
   "wrongProductionReason": "2022, Public Theater",
   "wrongProductionConfidence": "medium",
   "designation": "Recommended",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 79,
   "archivePath": "data/archives/reviews/suffs-2024/nytg--amelia-merrill_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:31:10.226Z",
@@ -110,7 +117,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251016012208",
   "archiveOrgUrl": "http://web.archive.org/web/20251016012208/https://www.newyorktheatreguide.com/reviews/suffs-broadway-review",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.058Z",
+  "rescoreCompletedAt": "2026-02-01T16:15:01.439Z",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "showScoreExcerpt": "\"Leigh Silverman’s production is beautiful, but beauty is skin-deep.\"",

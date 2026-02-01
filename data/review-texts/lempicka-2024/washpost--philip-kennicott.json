@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -19,51 +19,58 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 52,
-    "confidence": "medium",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 43.5,
-      "high": 60.5
+      "low": 58,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 40,
-      "music": null,
-      "performances": 73,
-      "direction": 45
+      "book": 45,
+      "music": 55,
+      "performances": 75,
+      "direction": 65
     },
     "keyPhrases": [
       {
-        "quote": "doesn't yield an actual character, but more of a ready-made hero for contemporary political tastes",
+        "quote": "The result is a breathless, up-tempo force march through some of the darkest decades in European history, and a big, messy, fascinating life is processed into a theater piece that is just big and messy.",
         "sentiment": "negative",
         "strength": 4
       },
       {
         "quote": "Espinosa does heroic work tying the threads together",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 3
       },
       {
-        "quote": "An artist with a big, messy life gets a big, messy musical",
-        "sentiment": "negative",
-        "strength": 3
+        "quote": "Audiences may be inspired by the show to seek out the art itself, which offers a more measured and reasonable riposte.",
+        "sentiment": "neutral",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The review criticizes fundamental character development and structural issues while praising the lead performance, suggesting a flawed show elevated somewhat by strong acting. | GPT-4o-mini: The review highlights some strong performances but critiques the character development and overall cohesion of the musical, leading to a mixed recommendation.",
+    "reasoning": "The review praises individual performances (especially Espinosa and Iman) and production values, but consistently criticizes the book's structural problems and the music's lack of melodic distinction, resulting in a qualified recommendation for those interested in the subject matter.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:20:58.698Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:26:50.353Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3911,
+    "outputTokens": 395,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 48,
@@ -74,7 +81,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 52,
   "archivePath": "data/archives/reviews/lempicka-2024/washpost--philip-kennicott_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:41:32.466Z",
@@ -90,7 +97,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250724115955",
   "archiveOrgUrl": "http://web.archive.org/web/20250724115955/https://www.washingtonpost.com/entertainment/theater/2024/04/14/lempicka-broadway-review/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.853Z",
+  "rescoreCompletedAt": "2026-02-01T15:26:50.353Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
   "wordCount": 1082

@@ -10,24 +10,24 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 72,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 69,
-    "confidence": "high",
+    "score": 72,
+    "confidence": "medium",
     "range": {
-      "low": 63,
-      "high": 75
+      "low": 68,
+      "high": 76
     },
     "bucket": "Mixed",
-    "thumb": "Flat",
+    "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 75,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 82,
+      "direction": 65
     },
     "keyPhrases": [
       {
@@ -36,30 +36,37 @@
         "strength": 3
       },
       {
-        "quote": "Does the fresh take with new material by Amber Ruffin and movement by Beyonce's 'Single Ladies' choreographer JaQuel Knight ease on down the road?",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "Lewis delivers the goods in the show's final number",
+        "sentiment": "positive",
+        "strength": 4
       },
       {
-        "quote": "fresh take with new material by Amber Ruffin",
+        "quote": "The Wiz, despite some headwinds, stands tall in the crowd, proving that fantasy never goes out of style",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The review suggests the production 'for the most part' works but has 'stumbles,' indicating a qualified positive assessment that leans mixed due to acknowledged problems. | GPT-4o-mini: The review indicates a generally positive reception but acknowledges some issues, leading to a mixed-positive recommendation.",
+    "reasoning": "The reviewer acknowledges significant flaws in pacing and design elements but praises the performances, Amber Ruffin's script refresh, and concludes the show 'stands tall' despite problems.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
       "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:03:59.797Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:31:37.622Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4673,
+    "outputTokens": 351,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 68,
@@ -72,7 +79,6 @@
       "Score (69 → Flat) conflicts with aggregator thumbs (Up)"
     ]
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 69,
   "archivePath": "data/archives/reviews/the-wiz-2024/queerty--matthew-wexler_2026-01-29.html",
@@ -116,5 +122,6 @@
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
-  "wordCount": 1437
+  "wordCount": 1437,
+  "rescoreCompletedAt": "2026-02-01T16:31:37.622Z"
 }

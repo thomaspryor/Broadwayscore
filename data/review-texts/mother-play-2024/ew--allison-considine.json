@@ -15,50 +15,57 @@
   "needsScoring": true,
   "llmScore": {
     "score": 78,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 72,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 82,
       "music": null,
-      "performances": 85,
-      "direction": 80
+      "performances": 80,
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "The play works because of the cast's incredible ability to play both young and old characters",
+        "quote": "Vogel's nuanced exploration of her own family sets the stage for a profound and humorous new American play",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Parsons's humor shines as Carl, a quick-witted genius who holds the family together",
+        "quote": "the dramatist turns her typically insightful lens on her own family",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 3
       },
       {
-        "quote": "Director Tina Landau beautifully incorporates moments of closeness and distance through careful staging",
+        "quote": "this new, often funny mashup between a memory play and an apartment tragedy",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: Consistent praise for both performances and direction with no negative elements mentioned, plus the 75.4% average rating supports a solid positive recommendation. | GPT-4o-mini: The review highlights strong performances and effective direction, indicating a clear recommendation despite no explicit call to see it.",
+    "reasoning": "Review establishes clear appreciation for Vogel's writing craft and the play's humor and insight, with positive framing throughout and no significant criticisms mentioned.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:08:17.791Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:39:12.203Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2521,
+    "outputTokens": 342,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -75,13 +82,12 @@
   "showScoreExcerpt": "\"...Vogel’s latest hits the emotional beats...reminder to call your mom now and then.\"",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "isFullReview": false,
   "textWordCount": 150,
   "archivePath": "data/archives/reviews/mother-play-2024/ew--allison-considine_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T15:04:41.590Z",
+  "textFetchedAt": "2026-02-01T14:03:45.613Z",
   "originalScoreNormalized": 85,
   "scoreSource": "letter-grade",
   "fetchMethod": "playwright",
@@ -99,5 +105,6 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Word count too low: 162 (min: 300)"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-01T15:39:12.203Z"
 }

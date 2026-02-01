@@ -9,7 +9,7 @@
   "bwwExcerpt": "That’s faint praise, to be sure, but credit where it’s due: Despite source material whose hold on at least some segment of the popular imagination remains inscrutable to the rest of us, the new musical is never less than diverting, with its gorgeous aerial acrobatics, solid work from director Jessica Stone (Kimberly Akimbo) and a plucky pastiche of a score that hints, to my ears, at ’30s-era novelty songs, old timey banjo music, Tin Pan Alley, Black gospel, Jesus Christ Superstar-era Andrew Lloy",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 92,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "needsScoring": true,
@@ -48,51 +48,58 @@
   "archiveOrgTimestamp": "20250724215955",
   "archiveOrgUrl": "http://web.archive.org/web/20250724215955/https://deadline.com/2024/03/water-for-elephants-broadway-review-1235863179/",
   "llmScore": {
-    "score": 65,
+    "score": 92,
     "confidence": "high",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 88,
+      "high": 95
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Rave",
+    "thumb": "Up",
     "components": {
-      "book": 50,
-      "music": 70,
-      "performances": 75,
-      "direction": 68
+      "book": 85,
+      "music": 88,
+      "performances": 87,
+      "direction": 92
     },
     "keyPhrases": [
       {
-        "quote": "the new musical is never less than diverting, with its gorgeous aerial acrobatics, solid work from director Jessica Stone",
+        "quote": "Water for Elephants isn't just the frontrunner for the 2024 Tony Award for Best Musical, it's a bold assertion that this still young artform has plenty of tricks left to reveal",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 5
       },
       {
-        "quote": "It's modest pleasures are never anything but safe, even without a net",
-        "sentiment": "negative",
+        "quote": "it is most certainly the best new musical on Broadway",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the first fully integrated circus musical on Broadway",
+        "sentiment": "positive",
         "strength": 4
-      },
-      {
-        "quote": "Water For Elephants holds our attention with some terrific acrobatics, tumbling and high-flying aerial feats",
-        "sentiment": "positive",
-        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic acknowledges the show's visual appeal and solid craftsmanship but criticizes it for being predictable, safe, and having a thin book, resulting in a qualified recommendation with significant reservations. | GPT-4o-mini: The review indicates a mix of positive elements (visuals, performances) but overall suggests a lack of depth and excitement, leading to a mixed recommendation.",
+    "reasoning": "The critic declares this 'the best new musical on Broadway' and 'frontrunner for the Tony Award,' with extensive praise for all production elements and no significant caveats.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:42:17.809Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:35:16.987Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4016,
+    "outputTokens": 359,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 65,
@@ -119,7 +126,7 @@
   ],
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 65,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.144Z",
+  "rescoreCompletedAt": "2026-02-01T16:35:16.987Z",
   "contentTier": "complete",
   "wordCount": 1157
 }

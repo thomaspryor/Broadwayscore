@@ -15,50 +15,57 @@
   "needsScoring": true,
   "llmScore": {
     "score": 32,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
-      "low": 27,
-      "high": 37
+      "low": 28,
+      "high": 38
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
-      "performances": 25,
-      "direction": 20
+      "performances": 45,
+      "direction": 25
     },
     "keyPhrases": [
       {
-        "quote": "so disconnected and alienating",
+        "quote": "so disconnected and alienating that, frankly, I spent most of the production wondering how on earth such a collection of famous, talented actors had so failed to cohere",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "how on earth such a collection of famous, talented actors had so failed to cohere",
+        "quote": "This new one does not make a case for itself",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "Did something go wrong?",
+        "quote": "when the most interesting moment is when it rains on stage and your eyes go to the drainage mechanism rather than anyone's ecstasy or soggy despair, that's not an especially good sign",
         "sentiment": "negative",
-        "strength": 4
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic expresses bewilderment at how a talented cast and reliable director produced something 'disconnected and alienating,' indicating fundamental production failure despite individual talent.",
+    "reasoning": "The critic finds the production fundamentally disconnected and alienating, with clear directorial and design failures, despite acknowledging the talented cast.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:05:07.914Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:34:07.273Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3247,
+    "outputTokens": 370,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 32,
@@ -69,7 +76,6 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 32,
   "archivePath": "data/archives/reviews/uncle-vanya-2024/nydailynews--chris_2026-01-29.html",
@@ -88,5 +94,6 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240510214932/https://www.nydailynews.com/2024/04/24/broadway-review-uncle-vanya-is-disconnected-and-alienating-despite-steve-carrell-and-strong-cast/",
   "showScoreExcerpt": "\"This update on Vanya doesn’t alter the story in any revolutionary terms\"",
   "contentTier": "complete",
-  "wordCount": 680
+  "wordCount": 680,
+  "rescoreCompletedAt": "2026-02-01T16:34:07.273Z"
 }

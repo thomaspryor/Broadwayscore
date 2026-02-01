@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
@@ -20,55 +20,63 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 79,
-    "confidence": "medium",
+    "score": 82,
+    "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 78,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 85,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 88,
+      "direction": 82
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review consistently praises the performances, direction, and design while thoughtfully engaging with the play's complex tonal balance. The critic appreciates the production's ability to handle both comedy and serious social commentary effectively. | GPT-4o: The review is highly positive, praising the play's ability to balance humor and serious themes, the excellent performances, and the impactful direction. The critic highlights the play's relevance and effectiveness in addressing racism, making it a must-see production. | Gemini: The review highlights the play's strengths, including the performances, direction, and design, while acknowledging its complexities and historical context. The reviewer emphasizes the play's message of joy and laughter as acts of resistance, suggesting a positive overall experience.",
+    "keyPhrases": [
+      {
+        "quote": "This wonderful cast does precisely that, playing the laughs for every ounce of hilarity to be gleaned from them, and then in a sudden turn confronting racism and white supremacy head-on",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Director Kenny Leon smoothly operates the levers to maximize the impact of both—no easy thing tonally",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Purlie remains a determined idealist, and this play is a radical text of another time—proposing that joy and laughter are as vital acts of resistance as placards and protest",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The reviewer consistently praises the performances, direction, and production values while engaging deeply with the play's complex themes, presenting it as both theatrically successful and culturally important without significant reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T14:58:05.274Z",
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:54:29.847Z",
     "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
+    "inputTokens": 4866,
+    "outputTokens": 400,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
-  "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 92,
-    "geminiScore": 80,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 14,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
-  },
+  "ensembleData": null,
   "rescoreReason": "low-conf: prompt=3.0.0, delta=23, upgrading to V5 + 3 models",
   "previousLlmScore": 77,
-  "rescoreCompletedAt": "2026-02-01T14:58:05.274Z",
+  "rescoreCompletedAt": "2026-02-01T15:54:29.847Z",
   "contentTier": "complete",
   "wordCount": 1719
 }

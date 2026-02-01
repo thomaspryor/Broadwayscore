@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 55,
+  "assignedScore": 72,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -18,38 +18,38 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 55,
+    "score": 72,
     "confidence": "high",
     "range": {
-      "low": 50,
-      "high": 60
+      "low": 68,
+      "high": 76
     },
     "bucket": "Mixed",
-    "thumb": "Flat",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": null,
-      "direction": 65
+      "performances": 78,
+      "direction": 75
     },
     "keyPhrases": [
       {
-        "quote": "Leon's staging is lovely",
+        "quote": "Leon does beautiful and evocative work updating the everyday Americans",
         "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "I found myself craving a daring challenge to the idea of convention rather than simply an inclusive version of it",
-        "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "Why stuff it with more types of people rather than pull it apart?",
+        "quote": "Leon's staging is lovely, but I found myself craving a daring challenge to the idea of convention rather than simply an inclusive version of it",
         "sentiment": "negative",
         "strength": 3
+      },
+      {
+        "quote": "The production's haunting and seductive design aims to envelop the senses",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic praises the staging but expresses significant disappointment with the show's conceptual approach, wanting more radical reimagining rather than conventional inclusivity. | GPT-4o-mini: The review expresses a desire for more innovation and challenges to convention, indicating a mixed recommendation despite acknowledging the direction's quality.",
+    "reasoning": "The critic praises the performances, direction, and design elements while expressing philosophical reservations about the production's approach to updating the classic text, resulting in qualified appreciation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -58,11 +58,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:16:27.790Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:50:21.189Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3327,
+    "outputTokens": 350,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 55,
@@ -91,5 +98,8 @@
   "archiveOrgTimestamp": "20250712142454",
   "archiveOrgUrl": "http://web.archive.org/web/20250712142454/https://www.washingtonpost.com/entertainment/theater/2024/10/10/our-town-broadway-katie-holmes-jim-parsons/",
   "contentTier": "complete",
-  "wordCount": 695
+  "wordCount": 695,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 55,
+  "rescoreCompletedAt": "2026-02-01T15:50:21.189Z"
 }

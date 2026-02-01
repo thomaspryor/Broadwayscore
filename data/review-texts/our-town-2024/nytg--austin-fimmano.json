@@ -10,7 +10,7 @@
   "bwwExcerpt": null,
   "showScoreExcerpt": "\"In a way, this production of Our Town is a triumph over that feeling of hopelessness — live theatre returned and continues to thrive — but it also has an important message, asking us to experience every day of our lives to the fullest.\"",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 72,
   "source": "show-score",
   "archivePath": "data/archives/reviews/our-town-2024/new-york-theatre-guide--austin-fimmano_2026-01-25.html",
   "textFetchedAt": "2026-01-25T04:16:19.683Z",
@@ -18,19 +18,19 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 72,
+    "confidence": "medium",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 68,
+      "high": 76
     },
     "bucket": "Mixed",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 73,
-      "direction": 75
+      "performances": 65,
+      "direction": 78
     },
     "keyPhrases": [
       {
@@ -39,30 +39,37 @@
         "strength": 4
       },
       {
-        "quote": "Unfortunately, a lack of chemistry between the two other main characters, young lovers George Gibbs and Emily Webb, keeps the production from achieving a certain pathos overall",
+        "quote": "Unfortunately, a lack of chemistry between the two other main characters...keeps the production from achieving a certain pathos overall",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "In a way, this production of Our Town is a triumph over that feeling of hopelessness",
+        "quote": "A revival both for fans and for newcomers, this production of Our Town has something for all audiences to enjoy",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review praises Parsons' performance and Leon's direction while noting significant chemistry issues between lead characters, resulting in a qualified positive recommendation that acknowledges both strengths and meaningful limitations. | GPT-4o-mini: The review expresses a clear recommendation with praise for the cast and direction, despite noting some weaknesses in character chemistry.",
+    "reasoning": "The review praises Jim Parsons and the director's vision while acknowledging significant flaws in the central romantic chemistry, ultimately recommending it as having 'something for all audiences to enjoy.'",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:43:28.524Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:49:34.459Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3431,
+    "outputTokens": 370,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -78,7 +85,7 @@
   ],
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 74,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.950Z",
+  "rescoreCompletedAt": "2026-02-01T15:49:34.459Z",
   "contentTier": "complete",
   "wordCount": 822,
   "truncationSignals": [

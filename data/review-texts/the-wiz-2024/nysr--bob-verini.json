@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": "2/5 stars",
-  "assignedScore": 34,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -38,51 +38,58 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 34,
-    "confidence": "medium",
+    "score": 42,
+    "confidence": "high",
     "range": {
-      "low": 25,
-      "high": 43
+      "low": 38,
+      "high": 46
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 23,
-      "music": 30,
-      "performances": 45,
-      "direction": 25
+      "book": 30,
+      "music": 45,
+      "performances": 55,
+      "direction": 35
     },
     "keyPhrases": [
       {
         "quote": "Those with fond memories of M-G-M's 1939 Wizard of Oz, or William F. Brown and Charlie Smalls' brash, funky 1975 Tony winner The Wiz, might elect to give the current revival of the latter a pass. It could break your heart.",
         "sentiment": "negative",
-        "strength": 5
+        "strength": 4
       },
       {
-        "quote": "Under Schele Williams' direction, the story is perfunctory, just a series of disconnected scenes. Moment by moment there is little character reality to play",
+        "quote": "Under Schele Williams' direction, the story is perfunctory, just a series of disconnected scenes. Moment by moment there is little character reality to play: Dorothy's need to get home is never felt, and there's no urgency in her journey.",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "Never mind, there are good things in this young lady's future, you can bet.",
+        "quote": "Of the cast, Richardson comes off best because he's allowed most of the time to speak like a normal person. Betts is a warm, nurturing Aunt Em anyone would click their heels to come home to",
         "sentiment": "positive",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The 2/5 star review systematically criticizes direction, book, and production choices while warning fans of previous versions to 'give it a pass' and suggesting 'it could break your heart.' | GPT-4o-mini: The review is predominantly negative, criticizing the script, direction, and overall execution while only offering limited praise for some performances.",
+    "reasoning": "The 2/5 star rating combined with harsh criticism of direction, story structure, and characterization, plus the explicit suggestion that fans 'might elect to give the current revival a pass' signals a clear negative recommendation despite some praise for individual performances.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:03:41.239Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:31:08.041Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3586,
+    "outputTokens": 483,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 38,
@@ -95,5 +102,8 @@
   },
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
-  "wordCount": 851
+  "wordCount": 851,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 34,
+  "rescoreCompletedAt": "2026-02-01T16:31:08.041Z"
 }

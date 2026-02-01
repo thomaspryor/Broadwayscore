@@ -17,16 +17,16 @@
     "score": 72,
     "confidence": "medium",
     "range": {
-      "low": 67,
-      "high": 77
+      "low": 68,
+      "high": 76
     },
     "bucket": "Mixed",
     "thumb": "Up",
     "components": {
-      "book": 65,
+      "book": 58,
       "music": null,
-      "performances": 80,
-      "direction": 75
+      "performances": 82,
+      "direction": 78
     },
     "keyPhrases": [
       {
@@ -45,20 +45,27 @@
         "strength": 3
       }
     ],
-    "reasoning": "Claude: Mixed review that acknowledges script weaknesses but praises the production as 'mesmerizing' with strong performances and direction, landing in qualified recommendation territory.",
+    "reasoning": "Despite criticizing the script compared to Vogel's previous work, the critic calls it a 'mesmerizing production' with strong praise for acting and direction, indicating qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:11:04.668Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:39:53.191Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2396,
+    "outputTokens": 323,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "bwwExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated BWW excerpt with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -70,7 +77,7 @@
     "needsReviewReasons": []
   },
   "bwwThumb": "Up",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 72,
   "archivePath": "data/archives/reviews/mother-play-2024/nyt-theater--jonathan-mandell_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:32:03.413Z",
@@ -84,7 +91,7 @@
   ],
   "fetchTier": 1,
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.903Z",
+  "rescoreCompletedAt": "2026-02-01T15:39:53.191Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
   "wordCount": 846

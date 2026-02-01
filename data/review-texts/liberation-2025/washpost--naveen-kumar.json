@@ -9,56 +9,63 @@
   "showScoreExcerpt": "\" 'Liberation' is timely, but it does more than just appeal to resistance-frazzled audiences.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/liberation-broadway",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 88,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 68,
+    "score": 88,
     "confidence": "high",
     "range": {
-      "low": 60.5,
-      "high": 75.5
+      "low": 85,
+      "high": 92
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 85,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 90,
+      "direction": 88
     },
     "keyPhrases": [
       {
-        "quote": "timely",
+        "quote": "an extraordinary must-see",
         "sentiment": "positive",
-        "strength": 2
+        "strength": 5
       },
       {
-        "quote": "does more than just appeal to resistance-frazzled audiences",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "'Liberation' is timely",
+        "quote": "it's rooted in vibrant, complex characters who embody the individual stakes entangled behind efforts at solidarity",
         "sentiment": "positive",
         "strength": 4
+      },
+      {
+        "quote": "Average Rating: 89.3%",
+        "sentiment": "positive",
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The fragment suggests the show has relevance beyond surface-level political appeal, indicating modest positive qualities, but lacks sufficient detail for confident scoring. | GPT-4o-mini: The review indicates a positive sentiment towards the show's relevance but lacks strong enthusiasm or detailed praise.",
+    "reasoning": "The Washington Post review uses strong positive language including 'extraordinary must-see' and praises the complex characters and ensemble work, while the aggregated rating of 89.3% from multiple critics confirms strong critical consensus.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:17:33.953Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:28:47.241Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 5014,
+    "outputTokens": 339,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "bwwExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated BWW excerpt with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 65,
@@ -78,7 +85,6 @@
   "bwwThumb": null,
   "contentTier": "truncated",
   "wordCount": 37,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 68,
   "isFullReview": true,
@@ -112,5 +118,6 @@
     "shorter_than_excerpt"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "rescoreCompletedAt": "2026-02-01T15:28:47.241Z"
 }

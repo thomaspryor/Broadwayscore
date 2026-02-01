@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 33,
+  "assignedScore": 52,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -18,51 +18,58 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 33,
+    "score": 52,
     "confidence": "high",
     "range": {
-      "low": 25.5,
-      "high": 40.5
+      "low": 48,
+      "high": 56
     },
-    "bucket": "Pan",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 25,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 35,
+      "music": 40,
+      "performances": 70,
+      "direction": 55
     },
     "keyPhrases": [
       {
-        "quote": "spreads thin as it flits back and forth through a half-century",
+        "quote": "target feeling at the expense of character, specificity or surprise",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "The result is anodyne — and lacks the erotic charge",
+        "quote": "The result is anodyne — and lacks the erotic charge of an attraction with distinct flavor",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "an effort to maximize their relatability winds up sacrificing their flesh and blood",
-        "sentiment": "negative",
+        "quote": "those searching for an excuse to shed tears — who couldn't use one, nowadays? — will find the musical delivers",
+        "sentiment": "positive",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The excerpt severely criticizes the book's character development and structure, calling it 'anodyne' and lacking fundamental dramatic elements, indicating a clear negative assessment. | GPT-4o-mini: The review is predominantly negative, criticizing the book for its lack of character development and emotional engagement, leading to a clear recommendation against seeing the show.",
+    "reasoning": "The review acknowledges the show delivers emotional impact for its target audience but criticizes fundamental creative choices, resulting in a qualified mixed verdict that neither recommends nor discourages attendance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:19:48.156Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:21:33.914Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3443,
+    "outputTokens": 349,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 35,
@@ -77,7 +84,7 @@
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 33,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.093Z",
+  "rescoreCompletedAt": "2026-02-01T16:21:33.914Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
   "wordCount": 758

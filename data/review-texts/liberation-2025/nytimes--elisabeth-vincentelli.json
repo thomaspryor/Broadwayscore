@@ -9,56 +9,63 @@
   "dtliExcerpt": "If there is a show that can make the case for a Tony Award for best ensemble, it’s this one. White directs the actors like a conductor leading an orchestra: Each one gets to shine in at least one aria (or speech, in this case), but they also function as a multifaceted single organism onstage. When these women talk, we want to hear every word.",
   "showScoreExcerpt": "\"The miracle of this play is that the circle feels as if it is extending to embrace us all.\"",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 84,
   "source": "dtli",
   "dtliThumb": "Up",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 85,
+    "score": 84,
     "confidence": "high",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 82,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 83,
       "music": null,
-      "performances": 90,
-      "direction": 87
+      "performances": 87,
+      "direction": 85
     },
     "keyPhrases": [
+      {
+        "quote": "spending time in their company is also an unadulterated pleasure",
+        "sentiment": "positive",
+        "strength": 4
+      },
       {
         "quote": "If there is a show that can make the case for a Tony Award for best ensemble, it's this one",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "White directs the actors like a conductor leading an orchestra",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "When these women talk, we want to hear every word",
+        "quote": "But this is a rare dissonance in a production that just percolates",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The review uses superlative language about the ensemble work and direction with clear Tony Award-level praise, indicating strong recommendation despite being a brief excerpt. | GPT-4o-mini: The review highlights exceptional ensemble performances and direction, indicating a strong recommendation for the show.",
+    "reasoning": "The critic consistently praises the ensemble work, direction, and writing with enthusiasm, highlighting the production's humor, pacing, and emotional impact, with only minor criticism about one scene.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:34:15.098Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:28:13.186Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3983,
+    "outputTokens": 346,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 85,
@@ -113,7 +120,7 @@
   "designation": "Critics_Pick",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 85,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.857Z",
+  "rescoreCompletedAt": "2026-02-01T15:28:13.186Z",
   "contentTier": "complete",
   "wordCount": 1149,
   "truncationSignals": [

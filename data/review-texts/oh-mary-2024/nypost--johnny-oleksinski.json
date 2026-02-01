@@ -9,24 +9,24 @@
   "bwwExcerpt": "On its face, the tumult of the Civil War and a traumatizing assassination do not a recipe for laughter make. And yet the Great White Way has not witnessed a comedy this funny, or a comedic star turn this dazzling, in at least a decade.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240619",
   "originalScore": "A",
-  "assignedScore": 91,
+  "assignedScore": 92,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 91,
+    "score": 92,
     "confidence": "high",
     "range": {
-      "low": 85,
-      "high": 97
+      "low": 88,
+      "high": 95
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 90,
       "music": null,
-      "performances": 93,
-      "direction": null
+      "performances": 95,
+      "direction": 88
     },
     "keyPhrases": [
       {
@@ -35,30 +35,37 @@
         "strength": 5
       },
       {
-        "quote": "this dazzling",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the Great White Way has not witnessed a comedy this funny",
+        "quote": "I recommend wearing a loose-fitting shirt, should your howls pop a button",
         "sentiment": "positive",
         "strength": 5
+      },
+      {
+        "quote": "preposterously enjoyable",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic uses superlative language declaring this the funniest Broadway comedy in a decade with a 'dazzling' star performance, indicating unqualified enthusiasm despite the brief excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for the comedic quality and performances, indicating a must-see experience.",
+    "reasoning": "The critic uses superlatives throughout ('comic genius', 'dazzling', 'funniest comedy in a decade') with vivid enthusiasm and an explicit recommendation to see it, indicating an unqualified rave.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:43:04.296Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:44:11.124Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2633,
+    "outputTokens": 356,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 92,
@@ -83,7 +90,7 @@
   "designation": "Recommended",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 91,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.927Z",
+  "rescoreCompletedAt": "2026-02-01T15:44:11.124Z",
   "contentTier": "complete",
   "wordCount": 724
 }

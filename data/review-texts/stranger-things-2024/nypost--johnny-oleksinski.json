@@ -10,56 +10,63 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-STRANGER-THINGS-THE-FIRST-SHADOW-Opens-On-Broadway",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 28,
   "source": "dtli",
   "dtliThumb": "Down",
   "needsScoring": true,
   "llmScore": {
-    "score": 25,
+    "score": 28,
     "confidence": "high",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 25,
+      "high": 32
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": null,
+      "book": 15,
       "music": null,
-      "performances": 30,
-      "direction": 20
+      "performances": null,
+      "direction": 45
     },
     "keyPhrases": [
       {
-        "quote": "First Shadow is inelegant and confusing, and the special effects are hardly special",
+        "quote": "the real villain ain't Vecna — it's the writing",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "One or two moments are striking — in over three freakin' hours — but you've seen them all before",
+        "quote": "you're waterboarded by the stagecraft",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "He spins the actors on a revolve over and over like a tumble dryer at the laundromat",
+        "quote": "a throwaway play",
         "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic delivers harsh criticism of direction, effects, and pacing with only minimal acknowledgment of isolated striking moments, clearly panning the production. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the direction and overall execution, leading to a clear pan recommendation.",
+    "reasoning": "The critic systematically demolishes the play despite acknowledging some impressive technical elements, calling it 'monstrous,' 'nauseating,' and a 'throwaway' with terrible writing that pads a 20-minute concept into three torturous hours.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": false
+      "comparesToPrevious": false,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:19:09.104Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:13:15.151Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2775,
+    "outputTokens": 339,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 25,
@@ -82,7 +89,7 @@
   "designation": "Recommended",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 25,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.051Z",
+  "rescoreCompletedAt": "2026-02-01T16:13:15.151Z",
   "contentTier": "invalid",
   "wordCount": 743
 }

@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"It’s an easily digestible version of history\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/patriots-broadway",
   "originalScore": null,
-  "assignedScore": 66,
+  "assignedScore": 62,
   "source": "show-score",
   "dtliThumb": "Meh",
   "needsScoring": true,
@@ -21,51 +21,58 @@
   "bwwExcerpt": null,
   "bwwThumb": null,
   "llmScore": {
-    "score": 66,
-    "confidence": "medium",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 75
+      "low": 58,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 53,
+      "book": 45,
       "music": null,
-      "performances": 75,
-      "direction": 79
+      "performances": 70,
+      "direction": 78
     },
     "keyPhrases": [
       {
         "quote": "Morgan's Wikipedia-esque play does its best to track the perilous tango between oligarchy and politics, but it's built around the assumption that it's amusing and ironic",
         "sentiment": "negative",
-        "strength": 3
+        "strength": 4
       },
       {
-        "quote": "Rupert Goold enlivens a mediocre play into a fairly entertaining spectacle of lights and projection",
-        "sentiment": "neutral",
-        "strength": 4
+        "quote": "Rupert Goold enlivens a mediocre play into a fairly entertaining spectacle",
+        "sentiment": "positive",
+        "strength": 3
       },
       {
         "quote": "Rupert Goold's electric direction elevates the material to make history feel like a blur of lights and sound",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review criticizes the script as 'mediocre' and 'Wikipedia-esque' with problematic assumptions, but praises Goold's 'electric direction' and the performances, making it a qualified mixed recommendation. | GPT-4o-mini: The review indicates a mixed-positive sentiment, praising the direction and performances while criticizing the script's oversimplification and character depth.",
+    "reasoning": "The review calls the play 'mediocre' and 'oversimplified' but praises Goold's 'electric direction' that 'elevates the material' into 'fairly entertaining spectacle,' suggesting qualified recommendation despite script weaknesses.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T05:34:08.623Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:51:25.799Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3043,
+    "outputTokens": 395,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 62,
@@ -93,5 +100,8 @@
   ],
   "sourceMethod": "playwright",
   "contentTier": "complete",
-  "wordCount": 774
+  "wordCount": 774,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 66,
+  "rescoreCompletedAt": "2026-02-01T15:51:25.800Z"
 }

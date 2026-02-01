@@ -15,45 +15,57 @@
   "needsScoring": true,
   "llmScore": {
     "score": 82,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 78,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 85,
       "music": null,
-      "performances": 85,
-      "direction": null
+      "performances": 88,
+      "direction": 82
     },
     "keyPhrases": [
       {
-        "quote": "Rachel McAdams soars",
+        "quote": "carefully constructed and deeply affecting drama",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "poignant slice-of-life play",
+        "quote": "It transcends both traps. Mary Jane is clear-eyed, compassionate, and leavened with humor",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
+      },
+      {
+        "quote": "McAdams's star power is a magnet for many theatregoers. In her Broadway debut, she's a natural on stage",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The headline suggests strong praise for McAdams' performance and describes the play favorably, but lacks detail for higher confidence scoring. | GPT-4o-mini: The review highlights Rachel McAdams' strong performance and describes the play positively, suggesting a solid recommendation.",
+    "reasoning": "The review consistently praises the play's construction, performances, and emotional impact with phrases like 'deeply affecting,' 'transcends both traps,' and 'compelling portrait,' indicating a clear positive recommendation despite no explicit directive.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:22:15.333Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:32:36.308Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3038,
+    "outputTokens": 364,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -71,7 +83,6 @@
   ],
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
   "archivePath": "data/archives/reviews/mary-jane-2024/nytg--joe-dziemianowicz_2026-01-29.html",
@@ -91,5 +102,6 @@
   ],
   "sourceMethod": "playwright",
   "contentTier": "complete",
-  "wordCount": 934
+  "wordCount": 934,
+  "rescoreCompletedAt": "2026-02-01T15:32:36.308Z"
 }

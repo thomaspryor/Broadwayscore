@@ -9,24 +9,24 @@
   "bwwExcerpt": "It shouldn’t be a terrible surprise that Farrow and LuPone, the ultimate pros with a combined total of 117 years experience as professional performers, keep our attention at all times. It may well be that our appreciation comes as much from memories of their great roles from the past, as from these characters, who are neither greatly nuanced, nor roll-on-the-floor hilarious, although they have their moments. It seems fitting that Bob Crowley’s set of an airy Iowa house feels unfinished, like an ",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 59,
+  "assignedScore": 55,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 59,
-    "confidence": "high",
+    "score": 55,
+    "confidence": "low",
     "range": {
-      "low": 53,
+      "low": 45,
       "high": 65
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 48,
+      "book": null,
       "music": null,
-      "performances": 74,
-      "direction": 54
+      "performances": 70,
+      "direction": 45
     },
     "keyPhrases": [
       {
@@ -42,23 +42,30 @@
       {
         "quote": "feels unfinished",
         "sentiment": "negative",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review praises the veteran performers but criticizes the characters and production design as underdeveloped, with appreciation seemingly based more on nostalgia than current quality. | GPT-4o-mini: The review indicates a mix of strong performances but critiques the script and overall execution, leading to a conditional recommendation.",
+    "reasoning": "Mixed sentiment with praise for veteran performers but criticism of character development and production design, plus the review appears incomplete.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:35:11.287Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:24:50.091Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2415,
+    "outputTokens": 304,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "bwwExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated BWW excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 58,
@@ -70,7 +77,7 @@
     "needsReviewReasons": []
   },
   "bwwThumb": "Up",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 59,
   "archivePath": "data/archives/reviews/the-roommate-2024/nyt-theater--jonathan-mandell_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:30:44.342Z",
@@ -90,7 +97,7 @@
   ],
   "fetchTier": 2,
   "sourceMethod": "scrapingbee",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.105Z",
+  "rescoreCompletedAt": "2026-02-01T16:24:50.091Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
   "wordCount": 2109

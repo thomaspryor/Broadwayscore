@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 50,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
@@ -20,51 +20,53 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 50,
+    "confidence": "low",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 45,
+      "high": 65
     },
     "bucket": "Mixed",
-    "thumb": "Up",
+    "thumb": "Flat",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
-      "performances": 79,
-      "direction": 74
+      "performances": null,
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "the beauty of the Black vernacular is embedded in the 'Purlie Victorious' script",
+        "quote": "uproarious",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Odom and the cast deftly switch from comedy to drama on a dime",
+        "quote": "The wave of shrieking laughs from the audience showcases just how topical Ossie Davis' 1961 play still is today",
         "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "portions of the audience erupt in laughter at the sharp jokes. In contrast, others sit silently, the countless one-liners soaring above their heads",
-        "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: Review praises script quality, performances, and direction but notes audience disconnect with some humor, suggesting a qualified positive recommendation that may depend on audience background. | GPT-4o-mini: The review highlights strong performances and direction while indicating some audience disconnect, leading to a positive but cautious recommendation.",
+    "reasoning": "This appears to be a descriptive opening excerpt rather than an actual review, containing plot summary and scene description with minimal critical evaluation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:10:59.549Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:56:10.125Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2560,
+    "outputTokens": 293,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -75,7 +77,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 74,
   "archivePath": "data/archives/reviews/purlie-victorious-2023/variety--aramide-timubu_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:29:44.619Z",
@@ -91,7 +93,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250609105220",
   "archiveOrgUrl": "http://web.archive.org/web/20250609105220/https://variety.com/2023/legit/reviews/purlie-victorious-review-broadway-1235734487/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.978Z",
+  "rescoreCompletedAt": "2026-02-01T15:56:10.125Z",
   "contentTier": "complete",
   "wordCount": 836
 }

@@ -10,35 +10,35 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-COTTAGE-Opens-on-Broadway-20230723",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 49,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 49,
+    "score": 62,
     "confidence": "medium",
     "range": {
-      "low": 40.5,
-      "high": 57.5
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
       "performances": 75,
-      "direction": 64
+      "direction": 78
     },
     "keyPhrases": [
       {
         "quote": "little more than a summertime distraction",
         "sentiment": "negative",
-        "strength": 4
+        "strength": 3
       },
       {
         "quote": "luxurious casting and ultra-polished design",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       },
       {
         "quote": "would seem like little more than a summer stock import",
@@ -46,7 +46,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The review damns with faint praise, calling the show merely a 'summertime distraction' that's only saved by strong performances and production values, suggesting it's mediocre material elevated by execution. | GPT-4o-mini: The review indicates that the show lacks substance and is primarily a distraction, leading to a clear negative recommendation.",
+    "reasoning": "The critic acknowledges strong production values and casting but dismisses the overall experience as lightweight entertainment, suggesting conditional appreciation rather than genuine recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,11 +55,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:18:50.741Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:15:53.087Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2363,
+    "outputTokens": 313,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "bwwExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated BWW excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 52,
@@ -72,7 +79,7 @@
       "Score (49 → Down) conflicts with aggregator thumbs (Flat)"
     ]
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 49,
   "archivePath": "data/archives/reviews/the-cottage-2023/cititour--brian-scott-lipton_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:37:09.188Z",
@@ -95,7 +102,7 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "scrapingbee",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.065Z",
+  "rescoreCompletedAt": "2026-02-01T16:15:53.087Z",
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",

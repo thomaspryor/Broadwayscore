@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 38,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -18,51 +18,58 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 42,
-    "confidence": "medium",
+    "score": 38,
+    "confidence": "high",
     "range": {
-      "low": 33.5,
-      "high": 50.5
+      "low": 32,
+      "high": 44
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": 25,
-      "music": null,
-      "performances": 45,
-      "direction": 38
+      "music": 45,
+      "performances": 50,
+      "direction": 30
     },
     "keyPhrases": [
       {
-        "quote": "what torpedoed \"Lempicka\"",
+        "quote": "This potentially appealing show would have sat more easily as a feminist, non-musical drama in a less pressured space",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "These are among the most overwrought and uncentered performances of the Broadway musical season so far",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "This potentially appealing show would have sat more easily as a feminist, non-musical drama",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "clunky bio-musical",
+        "quote": "the scattered book simply repels most of them",
         "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic uses harsh language like 'torpedoed' and 'clunky bio-musical' while suggesting the show fundamentally doesn't work as a Broadway musical, indicating a clear negative assessment despite acknowledging some potential. | GPT-4o-mini: The review expresses significant criticism of the show's execution and direction, indicating a clear negative sentiment overall.",
+    "reasoning": "The critic finds fundamental flaws in the book, direction, and concept while acknowledging some talented performers trapped in poor material, making it difficult to recommend despite recognizing potential.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:03:58.746Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:24:53.694Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3481,
+    "outputTokens": 349,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 38,
@@ -73,7 +80,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 42,
   "archivePath": "data/archives/reviews/lempicka-2024/chicagotribune--chris-jones_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:37:44.863Z",
@@ -89,7 +96,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250618100121",
   "archiveOrgUrl": "http://web.archive.org/web/20250618100121/https://www.chicagotribune.com/2024/04/14/review-lempicka-struggles-to-make-a-painters-life-work-as-a-broadway-musical/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.842Z",
+  "rescoreCompletedAt": "2026-02-01T15:24:53.694Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
   "wordCount": 793

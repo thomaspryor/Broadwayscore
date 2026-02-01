@@ -9,56 +9,63 @@
   "showScoreExcerpt": "\"There’s something exhilarating and also a little bizarre about Tommy\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-who-s-tommy-broadway",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 72,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 65,
+    "score": 72,
     "confidence": "high",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 68,
+      "high": 76
     },
     "bucket": "Mixed",
-    "thumb": "Flat",
+    "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 55,
+      "music": 82,
+      "performances": 85,
+      "direction": 75
     },
     "keyPhrases": [
       {
-        "quote": "exhilarating",
+        "quote": "I spent long stretches of the show intrigued and amused rather than earnestly rocking out, I was never not entertained. I had plenty of questions, but I also had a damn good time.",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "a little bizarre",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "The second act struggles to refind that sense of momentum and sheer musical euphoria, perhaps because now it has to start making sense.",
+        "sentiment": "negative",
+        "strength": 3
       },
       {
-        "quote": "There’s something exhilarating",
+        "quote": "Bourzgui has something about him that feels un-modern-Broadway in a completely exciting way.",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The single sentence contains mixed signals with 'exhilarating' suggesting strong positive response but 'bizarre' adding uncertainty, making this insufficient for confident scoring. | GPT-4o-mini: The review expresses a mix of excitement and oddity, suggesting a qualified recommendation without strong enthusiasm.",
+    "reasoning": "The critic enjoys the show despite acknowledging significant structural problems, praising performances and spectacle while noting second act issues and dated elements, ultimately having 'a damn good time.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:20:30.086Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:30:06.878Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4908,
+    "outputTokens": 396,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 65,
@@ -78,7 +85,7 @@
   "bwwThumb": "Up",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 65,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.126Z",
+  "rescoreCompletedAt": "2026-02-01T16:30:06.878Z",
   "archivePath": "data/archives/reviews/the-whos-tommy-2024/vulture--sara-holdren_2026-02-01.html",
   "textFetchedAt": "2026-02-01T03:30:05.529Z",
   "fetchMethod": "archive",

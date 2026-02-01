@@ -47,10 +47,10 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250509192252/https://www.nytimes.com/2024/04/22/theater/patriots-review-putin-peter-morgan.html",
   "llmScore": {
     "score": 72,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
-      "low": 67,
-      "high": 77
+      "low": 68,
+      "high": 76
     },
     "bucket": "Mixed",
     "thumb": "Up",
@@ -64,7 +64,7 @@
       {
         "quote": "Both lead actors are superb, bringing physical, gestural and thus emotional life to characters who might seem, from the outside, to have no insides worth exploring",
         "sentiment": "positive",
-        "strength": 5
+        "strength": 4
       },
       {
         "quote": "it's a bit cheesy, making its sometimes baggy drama (it could reasonably have been half or twice as long) from a highly tendentious selection of facts",
@@ -74,23 +74,30 @@
       {
         "quote": "it provides, also like 'The Crown,' the opportunity for some very enjoyable performances",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: Green praises the performances as 'superb' and finds the production 'entertaining,' but criticizes the script as 'cheesy' and 'baggy' with questionable historical accuracy - overall a qualified positive recommendation.",
+    "reasoning": "The critic praises the superb lead performances and finds the production entertaining, but criticizes the script as cheesy, baggy, and unreliable, resulting in a qualified recommendation focused on the acting.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": false
+      "comparesToPrevious": false,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:10:33.810Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:51:39.428Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3730,
+    "outputTokens": 389,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -109,7 +116,7 @@
   "showScoreExcerpt": "\"“Patriots” is a wild story of makers switching places\"",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 72,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.961Z",
+  "rescoreCompletedAt": "2026-02-01T15:51:39.428Z",
   "contentTier": "complete",
   "wordCount": 1014
 }

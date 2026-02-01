@@ -9,56 +9,63 @@
   "showScoreExcerpt": "\"'The Lion King' was astonishing, in the jaw-dropping manner of speaking. And today, 21 years later, it still is...Taymor, the avant-garde director to whom Disney entrusted the piece, outdid herself...Everything still looks wonderful, and looks practically brand new, too. One of the stunning elements for me, this time through, was the realization of how brilliantly this show moves...The hard-working ensemble is well-drilled and exceptional.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-lion-king",
   "originalScore": "5 stars",
-  "assignedScore": 89,
+  "assignedScore": 95,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 89,
+    "score": 95,
     "confidence": "high",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 90,
+      "high": 98
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 91
+      "performances": null,
+      "direction": 95
     },
     "keyPhrases": [
       {
-        "quote": "was astonishing, in the jaw-dropping manner of speaking. And today, 21 years later, it still is",
+        "quote": "★★★★★ Long-Run Lookback: Disney's Tale of Simba Remains Awe-Inspiring",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "outdid herself...Everything still looks wonderful, and looks practically brand new, too",
+        "quote": "The Lion King was altogether awe-inspiring when it first stormed the Broadway savanna in 1997... And today, 21 years later, it still is.",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "The hard-working ensemble is well-drilled and exceptional",
+        "quote": "was astonishing, in the jaw-dropping manner of speaking",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: Unqualified praise with superlatives like 'astonishing' and 'jaw-dropping' plus emphasis on the production's enduring excellence after 21 years indicates strong positive recommendation. | GPT-4o-mini: The review expresses strong enthusiasm and admiration for the production, highlighting its visual and performance strengths without any noted reservations.",
+    "reasoning": "Five-star review with superlative language ('awe-inspiring', 'astonishing', 'jaw-dropping') that explicitly states the show remains as powerful after 21 years, indicating unqualified enthusiasm.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:18:25.505Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:19:08.900Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2669,
+    "outputTokens": 387,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 88,
@@ -75,7 +82,7 @@
   ],
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 89,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.079Z",
+  "rescoreCompletedAt": "2026-02-01T16:19:08.900Z",
   "contentTier": "complete",
   "wordCount": 562
 }

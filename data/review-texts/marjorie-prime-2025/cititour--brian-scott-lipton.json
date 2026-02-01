@@ -8,26 +8,26 @@
   "fullText": "As people begin to live longer than ever before, yet not always with their memory or physical ability intact, questions about the \"quality of life\" seem to permeate everyday conversation. Adult children often wonder how to make their parents' lives more comfortable – or even bearable -- while also struggling not to sacrifice their own happiness in the process.\n\nSo, what if just placing dear old mum in front of the boob tube, you could allow her to interact daily with a computer simulation of her dead spouse? That's the opening salvo of Jordan Harrison's thought-provoking drama, \"Marjorie Prime,\" now getting an exquisitely acted Broadway run at Second Stage's Hayes Theater under Anne Kauffman's relatively unfussy direction.\n\nUnsurprisingly, Harrison has more questions and conundrums to pose in this taut 80-minute play about the trials of aging and the nature of memory. But the work (a finalist for the Pulitzer Prize) is more than a mere intellectual exercise or adventure in science-fiction. (If you are a movie nut and very good at math, you'll realize the work is actually set in 2062.) It's a decidedly human drama.\n\nSmartly, the play focuses – at least at first -- on the familial interaction among the 85-year-old Marjorie (Oscar nominee June Squibb in a perfectly-calibrated performance of humor, sadness, and feistiness) who is now living with her tart-tongued, frustrated 55-year-old daughter Tess (a truly outstanding Cynthia Nixon) and Tess' affable if seemingly ill-matched husband Jon (a superb Danny Burstein), whom Marjorie has grown to love after disapproving of him decades earlier. (The somewhat sterile set is by Lee Jelinek.)\n\nAs we soon learn, Jon has accepted the computer-generated \"Prime\" version of Marjorie's late husband Walter (played by a suitably bland if handsome Christopher Lowell), which Tess refuses to do. Marjorie has chosen to remember Walter in his early 30s, during the beginning of their marriage, for reasons that ultimately become clear. Indeed, as an AI creation, \"Walter\" only remembers what he's been told about his life by other people, and Marjorie – who is suffering from Alzheimer's – proves to have a truly selective memory.\n\nWhile presented without an intermission, the play has two distinct halves, with the second part primarily exploring the aftermath of Marjorie's death and Tess' surprising choice to interact with her own \"Marjorie Prime.\" It's not always clear during these exchanges if Tess is trying to forge a better relationship with her now-departed mother, to settle some scores, or simply have someone to talk to, since she refuses to go to therapy or properly communicate with her husband. Perhaps it's all of the above. Regardless, these scenes between Squibb (in kinder and gentler mode) and Nixon (suitably lost) are among the show's best.\n\nAnd yes, there is more to come – more revelations, more heartbreak – but it's best not to reveal specifics. Let's just say one may find some of these latter scenes predictable (which Tess claims she is, like most people), surprising, devastating, or possibly even unconvincing. Much like life can be, whether you're 25 or 85.",
   "bwwExcerpt": "Unsurprisingly, Harrison has more questions and conundrums to pose in this taut 80-minute play about the trials of aging and the nature of memory. But the work (a finalist for the Pulitzer Prize) is more than a mere intellectual exercise or adventure in science-fiction. (If you are a movie nut and very good at math, you'll realize the work is actually set in 2062.) It's a decidedly human drama.",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 78,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T03:00:00.000Z",
   "bwwThumb": "Up",
   "bwwUrl": "https://cititour.com/NYC_Broadway/Marjorie-Prime/1347",
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 81,
+    "score": 78,
     "confidence": "high",
     "range": {
       "low": 75,
-      "high": 87
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 77,
+      "book": 75,
       "music": null,
-      "performances": 89,
-      "direction": 78
+      "performances": 85,
+      "direction": 72
     },
     "keyPhrases": [
       {
@@ -36,30 +36,37 @@
         "strength": 4
       },
       {
-        "quote": "June Squibb in a perfectly-calibrated performance of humor, sadness, and feistiness",
+        "quote": "a perfectly-calibrated performance of humor, sadness, and feistiness",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "It's a decidedly human drama",
-        "sentiment": "positive",
+        "quote": "It's not always clear during these exchanges... one may find some of these latter scenes predictable... surprising, devastating, or possibly even unconvincing",
+        "sentiment": "negative",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The review consistently praises the performances as 'exquisitely acted' and 'outstanding' while finding the play 'thought-provoking' and 'decidedly human,' with only minor reservations about predictability in later scenes. | GPT-4o-mini: The review praises the performances highly, particularly noting the acting quality, while also highlighting the thought-provoking nature of the script, leading to a strong recommendation overall.",
+    "reasoning": "Strong praise for performances and the play's intellectual depth, with minor reservations about some scenes being predictable or unclear, but overall appreciation for the human drama and acting.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T15:50:08.135Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:30:26.985Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3047,
+    "outputTokens": 344,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 82,
@@ -76,7 +83,7 @@
   ],
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 81,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.866Z",
+  "rescoreCompletedAt": "2026-02-01T15:30:26.985Z",
   "contentTier": "complete",
   "wordCount": 509
 }

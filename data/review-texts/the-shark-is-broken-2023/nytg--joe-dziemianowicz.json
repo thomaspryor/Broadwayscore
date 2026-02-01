@@ -10,58 +10,65 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 56,
+  "assignedScore": 72,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "showScoreExcerpt": "“ ‘The Shark Is Broken’ is all talk, and a pattern emerges. Shaw and Dreyfuss clash. Scheider referees. It gets repetitive over the 95-minute run time. On the plus side, there are moments when the warring trio clicks and a sort of camaraderie shines through. Plus, the co-authors seasoned the script with laughs.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-shark-is-broken-broadway",
   "llmScore": {
-    "score": 56,
-    "confidence": "medium",
+    "score": 72,
+    "confidence": "high",
     "range": {
-      "low": 47,
-      "high": 65
+      "low": 68,
+      "high": 76
     },
     "bucket": "Mixed",
-    "thumb": "Flat",
+    "thumb": "Up",
     "components": {
-      "book": 55,
+      "book": 65,
       "music": null,
-      "performances": 66,
-      "direction": 60
+      "performances": 78,
+      "direction": 75
     },
     "keyPhrases": [
       {
-        "quote": "It gets repetitive over the 95-minute run time",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "there are moments when the warring trio clicks and a sort of camaraderie shines through",
+        "quote": "As it bites into movie history, The Shark Is Broken makes for a diversion worth sea-ing",
         "sentiment": "positive",
         "strength": 3
       },
       {
-        "quote": "The Shark Is Broken is all talk, and a pattern emerges",
+        "quote": "It gets repetitive over the 95-minute run time",
         "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Director Guy Masterson guides the evocative production and fine-tuned cast",
+        "sentiment": "positive",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The review presents clear structural criticisms (repetitive, all talk) balanced with modest praise for performances and humor, resulting in a lukewarm mixed assessment without any clear recommendation either way. | GPT-4o-mini: The review highlights both repetitive elements and moments of camaraderie, leading to a mixed recommendation overall.",
+    "reasoning": "The review offers qualified praise with clear recommendation despite acknowledging significant structural flaws like repetitiveness, landing in mixed-positive territory.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:36.421Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:26:54.237Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3346,
+    "outputTokens": 339,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 52,
@@ -79,7 +86,7 @@
     "bww-roundup",
     "dtli"
   ],
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 56,
   "archivePath": "data/archives/reviews/the-shark-is-broken-2023/nytg--joe-dziemianowicz_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:37:07.698Z",
@@ -99,7 +106,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250810134250",
   "archiveOrgUrl": "http://web.archive.org/web/20250810134250/https://www.newyorktheatreguide.com/reviews/the-shark-is-broken-broadway-review",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.115Z",
+  "rescoreCompletedAt": "2026-02-01T16:26:54.237Z",
   "contentTier": "complete",
   "wordCount": 699
 }

@@ -8,7 +8,7 @@
   "fullText": "“Can’t you feel a brand new day?” Actually, no, I’m not really feeling it. Not this time.\nIs this the long-awaited revival of “The Wiz,” the “super soul,” historically groundbreaking, all-Black retelling of “The Wizard of Oz” with a distinctive R&B-funk-pop-gospel score by Charlie Smalls, which became a surprise Broadway smash in 1974? How did this happen?\n\nReimagining “The Wiz” for a contemporary audience while maintaining the magic of the spectacular original production is no easy feat, as seen in multiple failed revivals, including a flop 1984 Broadway revival and an underwhelming 2009 City Center production, not to mention the overblown and misconstrued 1978 film adaptation. But it can be done, as demonstrated by the starry and stunning 2015 live television version, which was helmed by Broadway’s Kenny Leon and really ought to have served as the basis for the Broadway revival.\n\nThis rendition of “The Wiz,” which arrives on Broadway following short engagements in multiple cities and is directed by Schele Williams (“The Notebook”), has the look and feel of a second-rate, low-budget touring production, with tacky, Halloween-quality costumes, limited scenic design (relying heavily on projections), and surprisingly uninspired and generic dance choreography. More thought seems to have gone into the alcoholic drinks available at intermission, including a green-colored frozen margarita.\n\nMost problematic are the endless revisions of William F. Brown’s original book by comic Amber Ruffin (“Some Like It Hot”), whose attempts to add backstories for the characters and various silly gags do little more than add to the running time and drain momentum.\n\nNichelle Lewis, who is making her Broadway debut as Dorothy and is best known as a TikTok celeb, sings beautifully but offers little in the way of characterization, coming off as self-involved, mopey, and too focused on vocal riffing. As her companions down the Yellow Brick Road, Avery Wilson (Scarecrow), Phillip Johnson Richardson (Tinman), and Kyle Ramar Freeman (Lion) deliver nice turns, with Richardson standing out with a streak of boldness.\n\nAs Glinda, Deborah Cox does little more than enter and exit in a flash for each of her two songs and look like a moving disco ball. Wayne Brady is appropriately sleazy and smug as the title character but too laid back and restrained to make an impact. (By comparison, listen to the unparalleled excitement conjured by André De Shields as the Wiz on the original cast album.)\n\nThe unexpected highlight of this production comes early on, when Melody Betts (who doubles as both Aunt Em and the wicked witch Evillene) sings “The Feeling We Once Had” with a raw, sincere emotionality.\n\nAt its best, “The Wiz” is spectacular and joyful. No less than Stephen Sondheim described it as “the one show which makes you feel better when you come out of it than you did when you walked in.” This production, which is the equivalent of a disco-themed karaoke party, just makes me feel disappointed.\n\nMarquis Theatre, 1535 Broadway, wizmusical.com.",
   "dtliExcerpt": "This production, which is the equivalent of a disco-themed karaoke party, just makes me feel disappointed.",
   "originalScore": null,
-  "assignedScore": 28,
+  "assignedScore": 25,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/the-wiz-bway/",
@@ -49,23 +49,23 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 28,
+    "score": 25,
     "confidence": "high",
     "range": {
-      "low": 20.5,
-      "high": 35.5
+      "low": 20,
+      "high": 30
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
       "book": 20,
       "music": null,
-      "performances": 38,
-      "direction": 20
+      "performances": 45,
+      "direction": 15
     },
     "keyPhrases": [
       {
-        "quote": "has the look and feel of a second-rate, low-budget touring production",
+        "quote": "has the look and feel of a second-rate, low-budget touring production, with tacky, Halloween-quality costumes",
         "sentiment": "negative",
         "strength": 5
       },
@@ -80,20 +80,27 @@
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic delivers a scathing review comparing this to a 'second-rate, low-budget touring production' and explicitly states it makes them feel 'disappointed,' with systematic criticism of direction, design, book revisions, and most performances. | GPT-4o-mini: The review expresses strong disappointment with the production's quality, direction, and script, leading to a clear rejection of the show.",
+    "reasoning": "The critic delivers a scathing review calling it 'second-rate' and 'low-budget' with only isolated praise for individual performances, concluding with disappointment rather than recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:07:59.778Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:30:25.923Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3037,
+    "outputTokens": 383,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 25,
@@ -109,7 +116,7 @@
   ],
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 28,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.127Z",
+  "rescoreCompletedAt": "2026-02-01T16:30:25.923Z",
   "contentTier": "complete",
   "wordCount": 488
 }

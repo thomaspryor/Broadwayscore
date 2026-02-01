@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250121",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 47,
+  "assignedScore": 48,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "needsScoring": true,
@@ -20,19 +20,19 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 47,
+    "score": 48,
     "confidence": "high",
     "range": {
-      "low": 40.5,
-      "high": 53.5
+      "low": 45,
+      "high": 52
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 48,
-      "music": null,
-      "performances": null,
-      "direction": 48
+      "book": 55,
+      "music": 62,
+      "performances": 70,
+      "direction": 45
     },
     "keyPhrases": [
       {
@@ -41,30 +41,37 @@
         "strength": 4
       },
       {
-        "quote": "There's ample cleverness and some witty lines",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "the Red Bull tweeness gets grating",
+        "quote": "I found the story absorbing; the yuks, abusive",
         "sentiment": "negative",
         "strength": 4
+      },
+      {
+        "quote": "for some, it will be too much",
+        "sentiment": "negative",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review acknowledges cleverness and wit but is dominated by criticisms of the show being tiring, hyperactive, and grating, suggesting more problems than strengths. | GPT-4o-mini: The review highlights significant issues with the pacing and overall experience, indicating a clear negative sentiment despite some cleverness in the writing.",
+    "reasoning": "Despite acknowledging some clever elements and strong individual performances, the critic finds the overall production exhausting and grating, with more criticism than praise and a warning that it may be 'too much' for audiences.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:18:40.710Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:47:52.531Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3362,
+    "outputTokens": 338,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 48,
@@ -79,7 +86,7 @@
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 47,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.942Z",
+  "rescoreCompletedAt": "2026-02-01T15:47:52.531Z",
   "contentTier": "complete",
   "wordCount": 668
 }

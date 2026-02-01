@@ -13,50 +13,57 @@
   "scrapedAt": "2026-01-23T21:55:56.551Z",
   "llmScore": {
     "score": 88,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
-      "low": 80.5,
-      "high": 95.5
+      "low": 83,
+      "high": 92
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 91,
+      "book": 90,
       "music": null,
       "performances": 90,
-      "direction": 87
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "So much of Liberation—Wohl's best play, and she's had some excellent ones, including Small Mouth Sounds and Make Believe—feels like a radical act. This sensational cast, all in top form.",
+        "quote": "Wohl's best play",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "feels eerily prescient, as if Wohl possessed some sort of crystal ball",
+        "quote": "feels like a radical act",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "We really have been asking the wrong questions all along, haven't we?",
+        "quote": "This sensational cast, all in top form",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic calls this Wohl's best play with a 'sensational cast' and praises its prescient relevance and powerful themes, with only minor reservations about fourth-wall breaking tolerance. | GPT-4o-mini: The review expresses strong enthusiasm for the play's themes, performances, and direction, indicating it is a must-see experience.",
+    "reasoning": "Strong praise calling it the playwright's 'best play' with 'sensational cast' and describing the work as feeling 'like a radical act' indicates clear positive recommendation despite being a brief excerpt.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:06:56.654Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:27:46.171Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2348,
+    "outputTokens": 292,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 85,
@@ -79,7 +86,7 @@
   "showScoreExcerpt": null,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 88,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.856Z",
+  "rescoreCompletedAt": "2026-02-01T15:27:46.171Z",
   "originalScore": "5/5 stars",
   "originalScoreNormalized": 100,
   "scoreSource": "live-fetch",

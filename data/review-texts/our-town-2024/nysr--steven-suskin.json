@@ -9,44 +9,44 @@
   "bwwExcerpt": "So here we have a sturdily functional production of the Wilder classic. But when you walk out of a revival thinking how thrilling the play was the last time you saw it—well that’s a problem, isn’t it? David Cromer’s 2009 production at the Barrow Street Theatre (and elsewhere) was vibrant, stunning and altogether unforgettable. The new Broadway production is—well, not.",
   "bwwRoundupUrl": null,
   "originalScore": "3/5 stars",
-  "assignedScore": 39,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "bwwThumb": "Meh",
   "llmScore": {
-    "score": 39,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 33,
-      "high": 45
+      "low": 58,
+      "high": 66
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": null,
-      "direction": 38
+      "performances": 72,
+      "direction": 55
     },
     "keyPhrases": [
       {
-        "quote": "sturdily functional production",
-        "sentiment": "negative",
+        "quote": "A professional production, overall, and one which is worthy of commendation",
+        "sentiment": "positive",
         "strength": 3
       },
       {
-        "quote": "when you walk out of a revival thinking how thrilling the play was the last time you saw it—well that's a problem, isn't it?",
+        "quote": "But when you walk out of a revival thinking how thrilling the play was the last time you saw it—well that's a problem, isn't it?",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "The new Broadway production is—well, not",
-        "sentiment": "negative",
-        "strength": 4
+        "quote": "So here we have a sturdily functional production of the Wilder classic",
+        "sentiment": "neutral",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The critic explicitly states this production has a fundamental problem, directly comparing it unfavorably to a previous acclaimed production and calling it merely 'functional' rather than exciting. | GPT-4o-mini: The review expresses significant disappointment with the current production compared to a previous one, indicating a clear negative sentiment.",
+    "reasoning": "The 3-star review describes a 'professional' and 'worthy of commendation' production but ultimately finds it disappointingly functional compared to superior past productions, indicating qualified mixed reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,11 +55,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:22.100Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:49:28.033Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3583,
+    "outputTokens": 360,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 38,
@@ -72,7 +79,7 @@
       "Score (39 → Down) conflicts with aggregator thumbs (Flat)"
     ]
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 39,
   "archivePath": "data/archives/reviews/our-town-2024/nysr--steven-suskin_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:40:56.079Z",
@@ -90,7 +97,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250805213745",
   "archiveOrgUrl": "http://web.archive.org/web/20250805213745/https://nystagereview.com/2024/10/10/our-town-thornton-wilders-classic-in-functional-but-less-than-gripping-revival/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.950Z",
+  "rescoreCompletedAt": "2026-02-01T15:49:28.033Z",
   "dateSource": "extracted-from-url",
   "_scoreFixedFrom": "4/5 stars",
   "_scoreFixedAt": "2026-01-31T23:10:41.720Z",

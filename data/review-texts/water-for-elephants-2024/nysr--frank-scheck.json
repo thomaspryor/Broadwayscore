@@ -9,56 +9,63 @@
   "bwwExcerpt": "There’s a lot to take in at the new musical based on Sara Gruen’s best-selling novel (which has already inspired a 2011 film). The show features a melodramatic storyline set amidst a Depression-era traveling circus, puppetry, and numerous circus acts including aerial work, juggling, acrobatics, knife throwing, and even a clown routine. It would be nice to report that all of these elements have blended together to create a magical musical theater experience, but Water for Elephants feels more clu",
   "bwwRoundupUrl": null,
   "originalScore": "3/5 stars",
-  "assignedScore": 43,
+  "assignedScore": 58,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 43,
+    "score": 58,
     "confidence": "high",
     "range": {
-      "low": 35.5,
-      "high": 50.5
+      "low": 55,
+      "high": 62
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 35,
-      "music": null,
-      "performances": null,
-      "direction": 35
+      "book": 40,
+      "music": 35,
+      "performances": 65,
+      "direction": 70
     },
     "keyPhrases": [
       {
-        "quote": "It would be nice to report that all of these elements have blended together to create a magical musical theater experience, but Water for Elephants feels more clu",
+        "quote": "Water for Elephants feels more clunky than transporting. There are many things about it to enjoy, but it falls far short of being the greatest show on earth.",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "There's a lot to take in",
-        "sentiment": "neutral",
+        "quote": "It's not much of a storyline, with barely defined characters and a central love relationship that never develops any real chemistry.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "As it is, it's reasonably entertaining",
+        "sentiment": "positive",
         "strength": 2
-      },
-      {
-        "quote": "it would be nice to report that all of these elements have blended together to create a magical musical theater experience",
-        "sentiment": "negative",
-        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review sets up anticipation for magical theater but explicitly states disappointment, with the truncated criticism suggesting significant problems with execution despite promising elements. | GPT-4o-mini: The review expresses disappointment in the overall experience, indicating that the various elements do not come together effectively.",
+    "reasoning": "The 3/5 star rating and language like 'reasonably entertaining' indicate a mixed experience with more problems than strengths, making it hard to fully recommend despite some enjoyable elements.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:43:33.018Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:35:44.798Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3720,
+    "outputTokens": 368,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 40,
@@ -70,7 +77,7 @@
     "needsReviewReasons": []
   },
   "bwwThumb": "Meh",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 43,
   "archivePath": "data/archives/reviews/water-for-elephants-2024/nysr--frank-scheck_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:35:38.768Z",
@@ -88,7 +95,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250723060301",
   "archiveOrgUrl": "http://web.archive.org/web/20250723060301/https://nystagereview.com/2024/03/21/water-for-elephants-heavy-lifting-for-a-musical/",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.147Z",
+  "rescoreCompletedAt": "2026-02-01T16:35:44.798Z",
   "dateSource": "extracted-from-url",
   "_scoreFixedFrom": "4/5 stars",
   "_scoreFixedAt": "2026-01-31T23:10:41.735Z",

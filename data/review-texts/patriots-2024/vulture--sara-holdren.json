@@ -9,56 +9,63 @@
   "showScoreExcerpt": "\"Morgan’s work is thinky, at times witty and always distanced from judgment.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/patriots-broadway",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 65,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 64,
+    "score": 65,
     "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 73
+      "low": 60,
+      "high": 70
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 70,
+      "book": 60,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 78,
+      "direction": 55
     },
     "keyPhrases": [
       {
-        "quote": "thinky, at times witty",
+        "quote": "Patriots' chief pleasures are intellectual. Morgan's work is thinky, at times witty and always distanced from judgment.",
         "sentiment": "positive",
         "strength": 3
       },
       {
-        "quote": "always distanced from judgment",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "there's something cool at the center of Patriots that begins to chafe as the play nears its end",
+        "sentiment": "negative",
+        "strength": 4
       },
       {
-        "quote": "thinky",
-        "sentiment": "positive",
-        "strength": 3
+        "quote": "it's got zazz without having psychological or ethical impact",
+        "sentiment": "negative",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Brief excerpt with mild intellectual praise but neutral tone and lack of emotional engagement suggests qualified appreciation without strong recommendation. | GPT-4o-mini: The review suggests a thoughtful and witty approach but lacks strong enthusiasm or clear recommendations, indicating a mixed sentiment overall.",
+    "reasoning": "The critic appreciates the intellectual content and performances (especially Keen's Putin) but finds the production emotionally distant and questions whether it achieves meaningful impact beyond being an interesting exercise.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:19:56.286Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:52:22.102Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4708,
+    "outputTokens": 353,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 68,
@@ -78,7 +85,7 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 64,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.964Z",
+  "rescoreCompletedAt": "2026-02-01T15:52:22.102Z",
   "truncationSignals": [
     "has_footer_junk"
   ],

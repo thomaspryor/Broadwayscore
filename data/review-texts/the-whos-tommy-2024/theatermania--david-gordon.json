@@ -14,35 +14,35 @@
     "score": 88,
     "confidence": "high",
     "range": {
-      "low": 80.5,
-      "high": 95.5
+      "low": 85,
+      "high": 92
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": null,
+      "music": 92,
+      "performances": 90,
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "It had me from start to finish",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "it's an amazing journey I'd love to take again",
+        "quote": "I had such a great time, it made me levitate, and I suspect anyone familiar with the show and the Who's seminal 1969 rock opera will feel similarly",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "This new version adds another layer",
+        "quote": "The actors sing the ever-loving shit out of it",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
+      },
+      {
+        "quote": "It had me from start to finish, and it's an amazing journey I'd love to take again",
+        "sentiment": "positive",
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: Strong enthusiasm with phrases like 'amazing journey' and desire to see again, plus praise for thematic depth, indicates clear positive recommendation. | GPT-4o-mini: The review expresses strong enthusiasm and a desire to experience the show again, indicating a high recommendation.",
+    "reasoning": "Enthusiastic praise throughout with superlative language ('levitate', 'thrilling', 'amazing journey'), strong recommendation for performances and music, minor concerns about accessibility for newcomers don't diminish overall positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
@@ -51,11 +51,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:07:56.415Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:29:36.973Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3941,
+    "outputTokens": 372,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 85,
@@ -73,7 +80,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 88,
   "archivePath": "data/archives/reviews/the-whos-tommy-2024/theatermania--david-gordon_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:30:04.870Z",
@@ -92,7 +99,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250829115704",
   "archiveOrgUrl": "http://web.archive.org/web/20250829115704/https://www.theatermania.com/news/review-the-whos-tommy-is-back-to-introduce-a-new-generation-to-the-best-rock-opera-ever_1735790/",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.124Z",
+  "rescoreCompletedAt": "2026-02-01T16:29:36.973Z",
   "textQualityOverride": "batch-fix-2026-01-30",
   "contentTier": "complete",
   "wordCount": 1057

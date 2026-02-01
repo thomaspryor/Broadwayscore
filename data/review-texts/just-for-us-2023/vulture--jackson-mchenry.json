@@ -9,56 +9,63 @@
   "showScoreExcerpt": "“Like the stools, Edelman’s sometimes shaggy material is laid out intentionally. He’s a people-pleaser as a comedian, and he admits in the show that he’s holding back potentially alienating aspects of himself in order to win us over. To a much more extreme degree, he was also performing to ingratiate himself among the white nationalists.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/alex-edelman-just-for-us-broadway",
   "originalScore": null,
-  "assignedScore": 53,
+  "assignedScore": 82,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 53,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 45.5,
-      "high": 60.5
+      "low": 78,
+      "high": 85
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 85,
       "music": null,
-      "performances": 60,
-      "direction": null
+      "performances": 88,
+      "direction": 80
     },
     "keyPhrases": [
       {
-        "quote": "Edelman's sometimes shaggy material is laid out intentionally",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "This is a crowd-pleasing, often hilarious show, with a time bomb labeled 'Is it good that I am here making you laugh?' at its center.",
+        "sentiment": "positive",
+        "strength": 4
       },
       {
-        "quote": "He's a people-pleaser as a comedian",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "It's a nifty, thorny trick: Spend a show teaching an audience to be suspicious of easy comforts, and then leave them with one.",
+        "sentiment": "positive",
+        "strength": 4
       },
       {
-        "quote": "he's holding back potentially alienating aspects of himself in order to win us over",
+        "quote": "In this portion of the show, the question of aspiring to assimilate into whiteness gets supercharged, and I wanted him to get there sooner and stay there longer.",
         "sentiment": "negative",
-        "strength": 3
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: This excerpt provides analytical commentary about the performer's approach but lacks clear evaluative language or recommendation signals, making it difficult to determine the critic's overall verdict. | GPT-4o-mini: The review presents a mixed perspective, highlighting the comedian's self-awareness but also suggesting discomfort with his material and intent, leading to a neutral recommendation.",
+    "reasoning": "The critic clearly admires Edelman's performance and the show's construction, calling it 'crowd-pleasing' and 'often hilarious' while appreciating its deeper thematic complexity and 'nifty, thorny trick' structure.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:04.964Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:22:30.089Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4535,
+    "outputTokens": 422,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 55,
@@ -69,7 +76,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 53,
   "archivePath": "data/archives/reviews/just-for-us-2023/vulture--jackson-mchenry_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:45:04.332Z",
@@ -88,7 +95,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251121085557",
   "archiveOrgUrl": "http://web.archive.org/web/20251121085557/https://www.vulture.com/2023/06/theater-reviews-just-for-us-and-one-woman-show.html",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.834Z",
+  "rescoreCompletedAt": "2026-02-01T15:22:30.089Z",
   "contentTier": "complete",
   "wordCount": 1644
 }

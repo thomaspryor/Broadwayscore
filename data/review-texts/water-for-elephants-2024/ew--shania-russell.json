@@ -9,7 +9,7 @@
   "bwwExcerpt": "If nothing else, we never wonder how Jacob is swept away by the circus. The romance may fall short, and the songs lack a certain luster, but the magic of the circus is winning. Grade: B–",
   "bwwRoundupUrl": null,
   "originalScore": "B",
-  "assignedScore": 66,
+  "assignedScore": 68,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "needsScoring": true,
@@ -17,51 +17,58 @@
   "scoreConfidence": "medium",
   "extractedGrade": "B",
   "llmScore": {
-    "score": 66,
-    "confidence": "medium",
+    "score": 68,
+    "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 75
+      "low": 65,
+      "high": 72
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": null,
-      "music": 53,
-      "performances": null,
-      "direction": 72
+      "book": 55,
+      "music": null,
+      "performances": 72,
+      "direction": 78
     },
     "keyPhrases": [
       {
-        "quote": "the magic of the circus is winning",
+        "quote": "The circus performers, or kinkers as they so frequently remind him, bring Water For Elephants to life. The Jessica Stone-directed musical is never more compelling than when the stage is theirs for the taking.",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "The romance may fall short, and the songs lack a certain luster",
+        "quote": "he's plausible, but not invigorating",
         "sentiment": "negative",
         "strength": 3
       },
       {
-        "quote": "Grade: B–",
+        "quote": "There are heartstrings to be pulled, tears to elicit, astonishment to inspire, and this is the musical to do it…. Or is it?",
         "sentiment": "neutral",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: B- grade with mixed elements - strong praise for circus spectacle balances criticism of romance and songs, landing in mixed-positive territory. | GPT-4o-mini: The review expresses mixed feelings, noting shortcomings in romance and music but highlights the charm of the circus, leading to a moderate recommendation.",
+    "reasoning": "The review praises the circus performers and direction but finds the lead performance merely adequate and questions whether the show delivers on its emotional promises, resulting in a mixed but slightly positive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:42:37.174Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:35:22.358Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2885,
+    "outputTokens": 383,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 62,
@@ -83,7 +90,7 @@
   "scoreExtractedFrom": "fullText",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 66,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.144Z",
+  "rescoreCompletedAt": "2026-02-01T16:35:22.358Z",
   "truncationSignals": [
     "no_ending_punctuation"
   ],

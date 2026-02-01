@@ -9,58 +9,65 @@
   "bwwExcerpt": "On paper, it’s straightforward rom-dram stuff. On stage at the Imperial Theatre, everything ascends thanks to its energizing and poetic elements. Jacob’s story unfurls amid legit acts – acrobats, daredevils, trapeze swingers, and more – that add a different dimension. The score is a folksy mix of bluegrass and blues that fits the 1930s like a glove. One wishes Jacob and Marlena’s big duet, “Wild,” didn’t meander so much lyrically. But, on the plus side, side characters also express themselves in",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
   "showScoreExcerpt": "\"new musical beautifully juggles circus and theatre\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/water-for-elephants-broadway",
   "llmScore": {
-    "score": 77,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 70.5,
-      "high": 83.5
+      "low": 78,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 68,
+      "book": 75,
       "music": 78,
-      "performances": null,
-      "direction": 80
+      "performances": 85,
+      "direction": 88
     },
     "keyPhrases": [
+      {
+        "quote": "a surprising and satisfying new Broadway musical",
+        "sentiment": "positive",
+        "strength": 4
+      },
       {
         "quote": "everything ascends thanks to its energizing and poetic elements",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "new musical beautifully juggles circus and theatre",
+        "quote": "Director Jessica Stone deserves a big shout-out for combining all of the elements so beautifully",
         "sentiment": "positive",
         "strength": 4
-      },
-      {
-        "quote": "One wishes Jacob and Marlena's big duet, 'Wild,' didn't meander so much lyrically",
-        "sentiment": "negative",
-        "strength": 2
       }
     ],
-    "reasoning": "Claude: Despite being an incomplete excerpt, the review shows clear enthusiasm for the production's theatrical elements and integration of circus acts, with only minor criticism of one song's lyrics. | GPT-4o-mini: The review expresses clear appreciation for the overall production and music while noting a specific lyrical weakness, leading to a positive recommendation.",
+    "reasoning": "Strong positive review with consistent praise for direction, performances, and production values, with only minor criticisms about one song's lyrics.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:43:52.791Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:36:05.874Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3239,
+    "outputTokens": 327,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -77,7 +84,6 @@
     "bww-roundup",
     "dtli"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "archivePath": "data/archives/reviews/water-for-elephants-2024/nytg--joe-dziemianowicz_2026-01-29.html",
@@ -99,5 +105,6 @@
   "archiveOrgTimestamp": "20251009212423",
   "archiveOrgUrl": "http://web.archive.org/web/20251009212423/https://www.newyorktheatreguide.com/reviews/water-for-elephants-broadway-review",
   "contentTier": "complete",
-  "wordCount": 693
+  "wordCount": 693,
+  "rescoreCompletedAt": "2026-02-01T16:36:05.874Z"
 }

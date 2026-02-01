@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -18,33 +18,38 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 65,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "high",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 75,
+      "high": 82
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 75,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 80,
+      "direction": 82
     },
     "keyPhrases": [
       {
-        "quote": "You don't need to be a Black woman with braids to enjoy this play: heck, it might teach you something",
+        "quote": "a most fun 90 minutes",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       },
       {
-        "quote": "this play is also trying to reach a Black audience, long ignored by Broadway",
+        "quote": "The show is meticulous in its recreation of this business",
         "sentiment": "positive",
-        "strength": 2
+        "strength": 4
+      },
+      {
+        "quote": "You don't need to be a Black woman with braids to enjoy this play",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The excerpt suggests educational value and inclusive appeal but cuts off mid-sentence, providing insufficient content to determine the critic's overall recommendation.",
+    "reasoning": "The critic clearly enjoys and recommends the show, praising its authenticity, ensemble performances, and entertainment value with phrases like 'most fun 90 minutes' and detailed appreciation for the production's meticulous craft.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,11 +58,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:13:09.946Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:20:33.245Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3263,
+    "outputTokens": 340,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 65,
@@ -68,7 +80,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 65,
   "archivePath": "data/archives/reviews/jajas-african-hair-braiding-2023/chicagotribune--chris-jones_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:48:39.909Z",
@@ -95,7 +107,7 @@
   ],
   "fetchTier": 2,
   "sourceMethod": "scrapingbee",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.825Z",
+  "rescoreCompletedAt": "2026-02-01T15:20:33.245Z",
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",

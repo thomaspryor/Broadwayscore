@@ -9,7 +9,7 @@
   "bwwExcerpt": "The bare-bones staging keeps the focus squarely where it counts: on the cast of nearly 40, who are uniformly topflight and in sync when it comes to sparking emotional electricity. The simplicity of the production provides breathing room in a megamusical that often exhilarates, but also drains because of its tendency to always think bigger.     Matthew Wexler, One-Minute Critic: Ragtime, one of the great musical theater scores of the late 20th century, steps up to bat on Broadway in its third major production. And if some of its design elements feel sparse in Lincoln Center Theater’s 1,050-seat Vivian Beaumont, its glorious cast of 34 and “the music of something beginning” land with a visceral impact that marks a uniquely American art form.      Rob Weinert- Kendt, America Magazine: Still, the mantle of “relevance” is a heavy thing to lay on a Broadway musical. An earlier version of this same staging, also by director Lear deBessonet, ran at the Encores! series last November in the weeks before and after the U.S. presidential election, and depending on when audiences saw it, they felt either the show’s bursts of hope or its cries of despair with a fresh immediacy. Seen now, it plays less like a reflection of the breaking news outside the theater’s doors than like a dead-serious fable, speaking not so much to our precise present moment as to the perennial national questions this moment raises.     Brian",
   "showScoreExcerpt": "\"The simplicity of the production provides breathing room in a megamusical that often exhilarates, but also drains because of its tendency to always think bigger.\"",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
   "urlSource": "show-score",
@@ -21,51 +21,58 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 85,
-    "confidence": "medium",
+    "score": 82,
+    "confidence": "high",
     "range": {
-      "low": 77,
-      "high": 93
+      "low": 78,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 70,
+      "book": 65,
       "music": 75,
-      "performances": 89,
-      "direction": 84
+      "performances": 88,
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "Between its robust score, showcase moments for the cast, and evergreen resonance, Ragtime is easy to heartily recommend.",
+        "quote": "easy to heartily recommend",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "the performances are uniformly tight and persuasive",
+        "quote": "performances are uniformly tight and persuasive",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "by the 3-hour mark, the steady procession of emphatic and declamatory numbers becomes a sort of sonic wallpaper that loses impact",
+        "quote": "steady procession of emphatic and declamatory numbers becomes a sort of sonic wallpaper that loses impact",
         "sentiment": "negative",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: Despite acknowledging the musical's tendency toward 'power-anthem overload' and some pacing issues, the critic explicitly states it's 'easy to heartily recommend' and consistently praises the performances, direction, and contemporary relevance. | GPT-4o-mini: The review expresses strong praise for the performances and overall production while acknowledging some issues with the musical's pacing, leading to a solid recommendation.",
+    "reasoning": "Despite acknowledging the show's tendency toward 'power-anthem overload' and pacing issues, the critic explicitly states it's 'easy to heartily recommend' and consistently praises the performances, direction, and production values.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:47:16.979Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:00:55.532Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3425,
+    "outputTokens": 343,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 82,
@@ -86,7 +93,7 @@
   "bwwThumb": null,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 85,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.000Z",
+  "rescoreCompletedAt": "2026-02-01T16:00:55.532Z",
   "contentTier": "complete",
   "wordCount": 985,
   "truncationSignals": [

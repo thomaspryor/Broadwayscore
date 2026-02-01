@@ -9,57 +9,65 @@
   "bwwExcerpt": "As they become younger, Frank, Charley, and Mary de-age into starry-eyed dreamers who swear to keep their flames lit forever. But roads bend and dreams will shapeshift over the years due to realities and unheeded follies. A good production of 'Merrily We Roll Along' ensures that the stargazing 'Our Time' finale packs that wallop. Embracing its newly acquired Broadway scope, the musical concludes with stars blazing upon the ceiling of the Hudson Theatre. Only by reflecting upon the old times can ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 85,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 79,
-    "confidence": "medium",
+    "score": 85,
+    "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 82,
+      "high": 88
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 78,
+      "music": 85,
+      "performances": 90,
+      "direction": 82
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening with extensive context about the original's failure, the review consistently praises this production's execution, performances, and emotional impact, calling it a 'good production' that 'packs that wallop.' | GPT-4o: The review praises the production's successful adaptation, strong performances, and emotional impact, suggesting a highly positive experience that is enthusiastically recommended. | Gemini: The review acknowledges potential issues for die-hard fans but ultimately praises the production's grounded approach and the chemistry of the leads, suggesting it's a worthwhile experience despite some reservations.",
+    "keyPhrases": [
+      {
+        "quote": "The chemistry between Groff, Radcliffe, and Mendez is easy wind in the sails",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Friedman's grounded approach hits the right notes with Sondheim's chromatic lyricism, singing a tune that feels universal on many wavelengths",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "not one second in this musical registers as a cynical exercise",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The reviewer consistently praises the performances, direction, and emotional impact while acknowledging script limitations, ultimately celebrating this production as a successful realization of challenging material.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T14:56:31.082Z",
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:36:08.824Z",
     "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
+    "inputTokens": 4343,
+    "outputTokens": 360,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
-  "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 80,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 12,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
-  },
+  "ensembleData": null,
   "bwwThumb": "Up",
   "rescoreReason": "low-conf: prompt=3.0.0, delta=25, upgrading to V5 + 3 models",
   "previousLlmScore": 68,
@@ -76,7 +84,7 @@
   ],
   "fetchTier": 1,
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-02-01T14:56:31.082Z",
+  "rescoreCompletedAt": "2026-02-01T15:36:08.824Z",
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",

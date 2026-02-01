@@ -15,17 +15,17 @@
   "sourceMethod": "playwright",
   "llmScore": {
     "score": 82,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 78,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 70,
-      "music": 88,
-      "performances": 93,
+      "book": 65,
+      "music": 85,
+      "performances": 95,
       "direction": 80
     },
     "keyPhrases": [
@@ -35,7 +35,7 @@
         "strength": 4
       },
       {
-        "quote": "Me, I was content to revel in Schwartz's score, perhaps the most heartfelt, varied and robust of his career",
+        "quote": "above all in seeing a genuine Broadway star at the peak of her powers",
         "sentiment": "positive",
         "strength": 5
       },
@@ -45,20 +45,27 @@
         "strength": 3
       }
     ],
-    "reasoning": "Claude: Despite acknowledging significant structural and thematic ambivalence in the material, the critic expresses clear admiration for Chenoweth's performance, Schwartz's score, and the overall entertainment value, suggesting audiences will enjoy it regardless of its flaws. | GPT-4o-mini: The review expresses strong praise for the performances and music, particularly highlighting Kristin Chenoweth's role, while acknowledging some ambivalence in the book's execution, leading to a solid positive recommendation overall.",
+    "reasoning": "Four-star review with enthusiastic praise for Chenoweth's performance and Schwartz's score, despite acknowledged structural issues with the book's mixed messages.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": false
+      "comparesToPrevious": false,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T15:52:52.443Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:57:43.618Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3694,
+    "outputTokens": 344,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -80,7 +87,7 @@
   "showScoreExcerpt": null,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 82,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.989Z",
+  "rescoreCompletedAt": "2026-02-01T15:57:43.618Z",
   "contentTier": "complete",
   "wordCount": 886
 }

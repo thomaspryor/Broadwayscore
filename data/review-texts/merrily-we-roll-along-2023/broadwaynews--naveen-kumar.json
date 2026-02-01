@@ -7,55 +7,62 @@
   "publishDate": "October 12, 2023",
   "fullText": "The first Broadway revival of Stephen Sondheim and George Furth’s notorious bomb explodes with heart and sophistication. Good evening, and welcome to Broadway News’ Broadway Review by Naveen Kumar (standing in for Brittani Samuel), which includes our overview of reactions, recommendations and information tied to the Broadway opening of “Merrily We Roll Along.” Growing older is about letting go of possibility: Every open door you choose means another slams shut. “Merrily We Roll Along,” which could easily be called “Midlife Crisis: The Musical,” has long been labeled a problem child. It’s no small wonder that this sensational revival manages to synthesize the famous flop’s unwieldy ambitions into a palpable hit. The show’s combination of rueful existentialism with wide-eyed wonder is signature Sondheim, who wrote the music and lyrics, though George Furth’s high-concept book is often considered uncrackable. Director Maria Friedman and a dynamite cast — led by Jonathan Groff, Lindsay Mendez and Daniel Radcliffe — make ingenious use of tart humor and eager heart to fuel this backward coming-of-age about three once-inseparable friends. Friedman smartly frames the action as a reverie: Groff’s Frank Shephard is tracing his shattered ideals (and disastrous personal life) back through how it all went wrong. (Surely, others can relate.) Structural problems remain, including a second act that loses momentum as characters retreat into naïveté. But the production’s clever sophistication and knock-out performances send the onetime dud soaring to rapturous heights. Already have an account? Sign in Already have an account? Log in",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 88,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 89,
+    "score": 88,
     "confidence": "high",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 85,
+      "high": 92
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": 85
+      "book": 75,
+      "music": 85,
+      "performances": 90,
+      "direction": 88
     },
     "keyPhrases": [
       {
-        "quote": "sensational revival",
+        "quote": "this sensational revival manages to synthesize the famous flop's unwieldy ambitions into a palpable hit",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "palpable hit",
+        "quote": "Director Maria Friedman and a dynamite cast — led by Jonathan Groff, Lindsay Mendez and Daniel Radcliffe — make ingenious use of tart humor and eager heart",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "manages to synthesize the famous flop's unwieldy ambitions",
+        "quote": "explodes with heart and sophistication",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic uses strong positive language ('sensational') and frames this as a successful transformation of a previous failure into a 'palpable hit', indicating clear enthusiasm and recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the revival, indicating it transforms a previous failure into a successful production.",
+    "reasoning": "Strongly positive review that transforms the show's notorious reputation into high praise, calling it a 'sensational revival' and 'palpable hit' with superlative language for performances and direction.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:04:33.027Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:35:13.250Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2565,
+    "outputTokens": 345,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 88,
@@ -75,7 +82,7 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 89,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.882Z",
+  "rescoreCompletedAt": "2026-02-01T15:35:13.250Z",
   "truncationSignals": [
     "no_ending_punctuation"
   ],

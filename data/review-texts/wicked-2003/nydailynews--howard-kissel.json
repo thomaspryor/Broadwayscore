@@ -8,43 +8,43 @@
   "fullText": "ExpandIdina Menzel and Kristin Chenoweth in \"Wicked.\" (Handout)\n\n(Originally published by the Daily News on  October 31, 2003.)\n\n\"Wicked,\" the \"prequel\" to \"The Wizard of Oz,\" is an interminable show with no dramatic logic or emotional center.\n\nConstantly lurching in different directions, the show seems to believe that whenever you reach an artistic impasse, throw money at it - in this case, $14 million.\n\n\"Wicked,\" based on Gregory Maguire's best seller, shows how Elphaba, played by Idina Menzel, went from simply being  misunderstood and \"different\" to being the Wicked Witch of the West.\n\nIDINA MENZEL STARS IN 'WICKED' PREMIERE ON BROADWAY IN 2003\n\nBut it makes no sense without the story we already know, to which it frequently makes sly allusions.\n\nAt the end of the first act, for example, when Elphaba learns to fly, the moment doesn't have much meaning. So the production pulls out all the stops.\n\nFirst, we get menacing-looking monkeys flying over the stage and doing an aerial ballet over the orchestra seats.\n\nThen, as Elphaba begins to ascend, she is hit by huge spotlights from various angles. The overtime for setting the lights could pay off my mortgage.\n\nThe overall effect is sad because a lot of talented people are involved.\n\nExpandAutoplayImage 1 of 2\n\tNew York Daily News Wicked review\n\nThe strength of \"Wicked\" is its cast. Kristin Chenoweth, who plays Elphaba's childhood friend, Glinda, is Broadway's Reese Witherspoon - both in her innocent \"Legally Blonde\" and her diabolical \"Election\" modes. Her comic timing is as elegant as her singing, but her whole character suggests the story is a spoof.\n\nElphaba, however, is the heavy. But having one character a cartoon and the other psychologically twisted doesn't work.\n\nIdina Menzel, as Elphaba, is a solid actress. But she sings everything at top volume, so nothing has any force.\n\nCarole Shelley is splendid as the caustic headmistress of the boarding school where the girls meet. Joel Grey is wasted as the Wizard. So is the usually stellar Norbert Leo Butz as the boyfriend of both witches.\n\nStephen Schwartz, who wrote the music and lyrics, has many impressive notches in his belt. Here, numerous songs have melodic lilt, but nothing really jells. The original material does not have much emotional subtext, but a more insightful director might have forced Schwartz to create some.\n\nWinnie Holzman's book does not tell the story clearly, and its humor ranges from jokes about the original story to lame topicality like a reference to \"regime change.\" Susan Hilferty's costumes are often garish, Eugene Lee's sets wildly lavish.\n\n\"The Wizard of Oz\" holds a place in our hearts because its sense of magic is as strong as its sentimental theme. Nothing about \"Wicked\" is magical.\n\nIf the theater enforced more stringent economic controls, the creators would have had to solve the problems emotionally. \"Wicked\" then might have had more impact.\n\nE-mail: hkissel@edit.nydailynews.com",
   "dtliExcerpt": "\"Wicked,\" the \"prequel\" to \"The Wizard of Oz,\" is an interminable show with no dramatic logic or emotional center.",
   "originalScore": null,
-  "assignedScore": 18,
+  "assignedScore": 25,
   "source": "dtli",
   "dtliThumb": "Down",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 18,
-    "confidence": "medium",
+    "score": 25,
+    "confidence": "high",
     "range": {
-      "low": 5.5,
-      "high": 30.5
+      "low": 20,
+      "high": 30
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": 13,
+      "book": 20,
       "music": null,
       "performances": null,
       "direction": 25
     },
     "keyPhrases": [
       {
-        "quote": "interminable show",
+        "quote": "an interminable show with no dramatic logic or emotional center",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "no dramatic logic or emotional center",
+        "quote": "Constantly lurching in different directions",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "\"Wicked,\" the \"prequel\" to \"The Wizard of Oz,\" is an interminable show",
+        "quote": "whenever you reach an artistic impasse, throw money at it",
         "sentiment": "negative",
-        "strength": 5
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review delivers harsh fundamental criticisms of the show's structure and emotional core with no qualifying positive elements. | GPT-4o-mini: The review expresses strong disapproval of the show, describing it as interminable and lacking in dramatic coherence. | Note: Models differed by 15 points.",
+    "reasoning": "The critic delivers a scathing assessment calling the show 'interminable' with 'no dramatic logic or emotional center,' offering no redeeming qualities or reasons to see it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,11 +53,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T06:01:16.363Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:37:24.898Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2515,
+    "outputTokens": 328,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 25,
@@ -104,7 +111,7 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 18,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.154Z",
+  "rescoreCompletedAt": "2026-02-01T16:37:24.898Z",
   "contentTier": "complete",
   "wordCount": 480,
   "truncationSignals": [

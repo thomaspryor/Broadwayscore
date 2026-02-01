@@ -9,51 +9,63 @@
   "showScoreExcerpt": "\"This update on Vanya doesn’t alter the story in any revolutionary terms\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/uncle-vanya-broadway",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 72,
   "source": "show-score",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "llmScore": {
-    "score": 50,
-    "confidence": "high",
+    "score": 72,
+    "confidence": "medium",
     "range": {
-      "low": 45,
-      "high": 55
+      "low": 68,
+      "high": 76
     },
     "bucket": "Mixed",
-    "thumb": "Flat",
+    "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 65,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 78,
+      "direction": 70
     },
     "keyPhrases": [
       {
-        "quote": "doesn't alter the story in any revolutionary terms",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "Carell is impossible to look away from in that moment — and in many others. He boasts such a distinct charisma",
+        "sentiment": "positive",
+        "strength": 4
       },
       {
-        "quote": "This update on Vanya doesn’t alter the story in any revolutionary terms",
+        "quote": "many of the characters have been flattened into their simplest, most accessible forms",
         "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Harper, drowning in torment as Astrov, even when he appears to have discovered relief. His despair is frenetic, ever-palpable thanks to Harper's naturalistic performance",
+        "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: This single sentence fragment suggests a neutral, measured assessment of an adaptation that doesn't break new ground, but provides insufficient context for confident scoring. | GPT-4o-mini: The review suggests a lack of innovation in the production, leading to a neutral recommendation.",
+    "reasoning": "The review appreciates strong performances, particularly from Carell and Harper, but criticizes the translation for flattening characters and reducing nuance, resulting in a qualified positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": false
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:22:10.889Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:33:53.860Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3272,
+    "outputTokens": 382,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 50,
@@ -71,7 +83,6 @@
   ],
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 50,
   "archivePath": "data/archives/reviews/uncle-vanya-2024/ew--shania-russell_2026-01-29.html",
@@ -92,5 +103,6 @@
   "archiveOrgTimestamp": "20250725012056",
   "archiveOrgUrl": "http://web.archive.org/web/20250725012056/https://ew.com/uncle-vanya-review-steve-carell-william-jackson-harper-wallow-in-misery-8637350",
   "contentTier": "complete",
-  "wordCount": 856
+  "wordCount": 856,
+  "rescoreCompletedAt": "2026-02-01T16:33:53.860Z"
 }

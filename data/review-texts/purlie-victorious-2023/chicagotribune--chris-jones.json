@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 92,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -18,51 +18,58 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 89,
+    "score": 92,
     "confidence": "high",
     "range": {
-      "low": 83,
+      "low": 88,
       "high": 95
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 85,
       "music": null,
-      "performances": 93,
-      "direction": 89
+      "performances": 90,
+      "direction": 88
     },
     "keyPhrases": [
       {
-        "quote": "is a knockout show",
+        "quote": "is a knockout show, as hilarious as it is cutting and as emotionally warmhearted as it is politically potent",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "as hilarious as it is cutting and as emotionally warmhearted as it is politically potent",
+        "quote": "supremely well-toned revival",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "should make a star out of the fearlessly fabulous Kara Young",
+        "quote": "Magnificent, if there is any justice in the world",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: Unqualified praise calling it a 'knockout show' with multiple superlatives and no reservations, plus prediction of star-making performance. | GPT-4o-mini: The review expresses strong enthusiasm for the production and performances, indicating it is a must-see.",
+    "reasoning": "Critic uses superlative language ('knockout show', 'magnificent', 'supremely well-toned') with multiple dimensions of praise and clear enthusiasm for both the production and performances.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:04:13.819Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:54:22.170Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2685,
+    "outputTokens": 349,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 88,
@@ -73,7 +80,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 89,
   "archivePath": "data/archives/reviews/purlie-victorious-2023/chicagotribune--chris-jones_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:33:12.727Z",
@@ -89,7 +96,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240106141659",
   "archiveOrgUrl": "http://web.archive.org/web/20240106141659/https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-purlie-victorious-broadway-review-20230928-tzornp5xzjf5rkjkha4pi7rsty-story.html",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.973Z",
+  "rescoreCompletedAt": "2026-02-01T15:54:22.170Z",
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",

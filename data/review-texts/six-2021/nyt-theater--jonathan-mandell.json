@@ -13,18 +13,18 @@
   "fetchedAt": "2026-01-23T05:07:18.468Z",
   "llmScore": {
     "score": 62,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
-      "low": 53.5,
-      "high": 70.5
+      "low": 58,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 50,
-      "music": 68,
-      "performances": 75,
-      "direction": 63
+      "book": 45,
+      "music": 70,
+      "performances": 78,
+      "direction": 65
     },
     "keyPhrases": [
       {
@@ -33,30 +33,37 @@
         "strength": 4
       },
       {
-        "quote": "Six pops on the surface, without much happening underneath",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "seems unlikely to disturb theatergoers cooped up for so long and ready for a good time",
+        "quote": "Each portrayal manages to be memorable, despite the challenges",
         "sentiment": "positive",
         "strength": 3
+      },
+      {
+        "quote": "it feels more for show than out of conviction",
+        "sentiment": "negative",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review acknowledges the show's high energy and strong performances but criticizes its superficiality and lack of substance, ultimately suggesting it will satisfy audiences seeking entertainment without deeper engagement. | GPT-4o-mini: While the musical has high-energy performances and a fun concept, it lacks depth and conviction, leading to a mixed recommendation.",
+    "reasoning": "The review praises the performances and energy but criticizes the show's substance, finding it superficial compared to Hamilton and lacking conviction in its feminism.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": false
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:21:36.499Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:07:19.257Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3459,
+    "outputTokens": 318,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 58,
@@ -70,7 +77,7 @@
   "sourceMethod": "stub",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 62,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.021Z",
+  "rescoreCompletedAt": "2026-02-01T16:07:19.257Z",
   "contentTier": "complete",
   "wordCount": 827,
   "truncationSignals": [

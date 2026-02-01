@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 95,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -18,51 +18,58 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 94,
+    "score": 95,
     "confidence": "high",
     "range": {
-      "low": 87.5,
-      "high": 100
+      "low": 92,
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 92,
-      "music": 90,
-      "performances": 93,
-      "direction": 94
+      "book": 90,
+      "music": 95,
+      "performances": 95,
+      "direction": 95
     },
     "keyPhrases": [
       {
-        "quote": "most top-to-bottom perfect production of them all",
+        "quote": "as close to perfect as Broadway gets",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "overwhelmingly emotional",
+        "quote": "the most top-to-bottom perfect production of them all",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "sneakily devastating book",
+        "quote": "splendid and shattering revival",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic calls this the 'most top-to-bottom perfect production of them all' with praise for every element and describes it as 'overwhelmingly emotional' - clear rave territory. | GPT-4o-mini: The review expresses unqualified enthusiasm and praise for the production, indicating it is a must-see experience.",
+    "reasoning": "The headline declares it 'as close to perfect as Broadway gets' and the review consistently uses superlative language like 'most top-to-bottom perfect production' with no meaningful criticism, only praise for all elements.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:11:30.340Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:36:41.222Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3499,
+    "outputTokens": 334,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 92,
@@ -73,7 +80,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 94,
   "archivePath": "data/archives/reviews/merrily-we-roll-along-2023/usatoday--patrick-ryan_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:44:26.784Z",
@@ -99,7 +106,7 @@
   ],
   "fetchTier": 3,
   "sourceMethod": "brightdata",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.888Z",
+  "rescoreCompletedAt": "2026-02-01T15:36:41.222Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
   "wordCount": 753

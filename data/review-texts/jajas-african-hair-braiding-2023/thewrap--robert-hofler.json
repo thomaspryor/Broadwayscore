@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 65,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "needsScoring": true,
@@ -20,51 +20,58 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 44,
+    "score": 65,
     "confidence": "high",
     "range": {
-      "low": 37.5,
-      "high": 50.5
+      "low": 62,
+      "high": 68
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 38,
+      "book": 58,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 72,
+      "direction": 60
     },
     "keyPhrases": [
       {
-        "quote": "many of those scenes lack a good button",
+        "quote": "its finest feature is how the playwright weaves the current immigration crisis into her narrative with considerable humor before the story turns extremely dark",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Bioh has written them all as cartoons and Whitney White's direction delivers them in primary sitcom colors",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "They tend to dribble away dramatically rather than end with a comic bang",
+        "quote": "many of those scenes lack a good button. They tend to dribble away dramatically rather than end with a comic bang",
         "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "the play is a series of short skits",
-        "sentiment": "neutral",
-        "strength": 2
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic identifies significant structural problems with the play's episodic format and weak scene endings, suggesting fundamental issues with the writing that undermine the theatrical experience. | GPT-4o-mini: The review highlights significant issues with the script's structure and comedic timing, leading to a negative overall impression.",
+    "reasoning": "The review finds merit in the immigration themes and some performances but criticizes structural problems, cartoon-like characters, and weak scene endings, landing in qualified mixed territory.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:17:24.743Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:21:35.953Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3425,
+    "outputTokens": 362,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 42,
@@ -77,7 +84,7 @@
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 44,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.829Z",
+  "rescoreCompletedAt": "2026-02-01T15:21:35.953Z",
   "showScoreExcerpt": "“There are no easy answers to the complex problems that ‘Jaja's African Hair Braiding’ presents, and certainly none that can be solved within the span of a single day. Instead, the play encourages viewers to inspect the way the current world works and, hopefully, leave its salon with a greater sense of compassion and understanding for those around them tirelessly working to make ends meet.”",
   "contentTier": "complete",
   "wordCount": 720

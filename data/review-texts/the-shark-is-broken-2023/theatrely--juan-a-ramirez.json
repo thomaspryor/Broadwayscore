@@ -7,55 +7,62 @@
   "publishDate": "August 10, 2023",
   "fullText": "The Shark Is Broken | Photo: Matthew Murphy\n\nThe movie Jaws has held a toothy grip on the global imagination since its blockbuster release nearly 50 years ago – one which, with Shark Week wrapping up its 35th season last month, and the apex predator making recent appearances on New York’s coast, seems unlikely to give. Ian Shaw’s The Shark Is Broken, a play with an impossibly successful track record from Edinburgh Fringe to West End hit to, now, Broadway’s Golden Theatre, attempts to pry its mandibles open and serve it two ways: as a father-son memoir and exorcism, and as a look into its notoriously grueling production. It bares its teeth at the former; eats the fat of the latter.\n\nShaw, who co-wrote the 90-minute piece with Joseph Nixon, plays his father, gruff thespian, Robert Shaw, whose alcoholism and derision towards relative newcomers made him a bit of a hassle onset, where the three leads would wait for hours on end, seabound, as their underwater costar underwent countless repairs. Most of his rage was directed towards Richard Dreyfuss (Alex Brightman), a hotshot keen on the latest trends, and it was up to Roy Scheider (Colin Donnell), a beloved, head-down workman, to temper the mood.\n\nThe problem is that I’ve just essentially described the plot of the film itself, which makes watching this somewhat of an exercise in cinematic foreplay: I couldn’t wait to go home and watch Spielberg’s masterpiece. Here, art imitating life imitating art is a hindrance. The performances are great, Duncan Henderson’s recreation of the Orca fishing boat visually compelling, and Guy Masterson’s direction is lively enough. But, like the shark itself, the play’s essential functions scarcely work — save for the few scenes in which the three men, caught in an epochal shift in acting and celebrity, wax poetic about the fall of fathers, the impotence of sons, and the rolling tides of art. That’s when the play finds its bite. Otherwise, with its slavish recreations of the production’s details and Brightman’s (as required) over-hamming, it feels like an SNL skit waiting for its punchline.\n\nThe Shark Is Broken is in performance through November 19, 2023 at the Golden Theatre on West 45th Street in New York City. For tickets and more information, visit here.\n\nJuan A. Ramirez writes arts and culture reviews, features, and interviews for publications in New York and Boston, and will continue to do so until every last person is annoyed. Thanks to his MA in Film and Media Studies from Columbia University, he has suddenly found himself the expert on Queer Melodrama in Venezuelan Cinema, and is figuring out ways to apply that.\n\nA fresh look at features, news, reviews, and interviews of theatre across the globe, from Broadway to London and everywhere in between. Your one-stop shop for the latest information in arts and culture by the next generation, for the next generation.",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 45,
   "dtliThumb": "Meh",
   "source": "dtli",
   "llmScore": {
-    "score": 68,
+    "score": 45,
     "confidence": "high",
     "range": {
-      "low": 60.5,
-      "high": 75.5
+      "low": 40,
+      "high": 50
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
-      "book": 65,
+      "book": 35,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 75,
+      "direction": 65
     },
     "keyPhrases": [
       {
-        "quote": "It bares its teeth at the former; eats the fat of the latter",
-        "sentiment": "neutral",
+        "quote": "the play's essential functions scarcely work",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "it feels like an SNL skit waiting for its punchline",
+        "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "impossibly successful track record from Edinburgh Fringe to West End hit to, now, Broadway's Golden Theatre",
+        "quote": "The performances are great",
         "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "attempts to pry its mandibles open and serve it two ways",
-        "sentiment": "neutral",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review uses cryptic metaphorical language that suggests the play succeeds at one aspect (production story) but fails at another (father-son memoir), indicating a mixed assessment without clear recommendation signals. | GPT-4o-mini: The review presents a mixed perspective, indicating some intrigue but lacking strong enthusiasm or clear recommendation.",
+    "reasoning": "Despite praising performances and production elements, the critic fundamentally finds the play's concept flawed and compares it to an incomplete SNL skit, with only occasional moments of genuine effectiveness.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": false
+      "comparesToPrevious": false,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:14:52.145Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:27:33.260Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2976,
+    "outputTokens": 326,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 65,
@@ -76,7 +83,7 @@
   "showScoreExcerpt": null,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 68,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.117Z",
+  "rescoreCompletedAt": "2026-02-01T16:27:33.260Z",
   "contentTier": "complete",
   "wordCount": 483
 }

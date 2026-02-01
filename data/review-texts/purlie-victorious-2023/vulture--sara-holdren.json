@@ -9,24 +9,24 @@
   "bwwExcerpt": "Happily, I have no need to keep my mouth shut about Purlie Victorious. (Conveniently, too, since my job is to run it constantly.) Fast, fierce, and big-hearted, the show crackles with the verve of its central performances, and the play, at 62 years old, feels wittier, braver, less careful, and more caring than much contemporary writing. Both unflinching and generous, it’s just about as sharp as satire gets.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "originalScore": null,
-  "assignedScore": 91,
+  "assignedScore": 92,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 91,
+    "score": 92,
     "confidence": "high",
     "range": {
-      "low": 85,
-      "high": 97
+      "low": 88,
+      "high": 95
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": 90,
       "music": null,
-      "performances": 89,
+      "performances": 95,
       "direction": null
     },
     "keyPhrases": [
@@ -36,30 +36,37 @@
         "strength": 5
       },
       {
-        "quote": "feels wittier, braver, less careful, and more caring than much contemporary writing",
+        "quote": "it's just about as sharp as satire gets",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "it's just about as sharp as satire gets",
+        "quote": "Both unflinching and generous",
         "sentiment": "positive",
-        "strength": 5
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Unqualified praise with superlatives throughout ('crackles', 'sharp as satire gets') and no reservations expressed, indicating a rave review. | GPT-4o-mini: The review expresses unqualified enthusiasm for the performances and the play's sharpness, indicating a strong recommendation.",
+    "reasoning": "Unqualified praise with superlatives like 'just about as sharp as satire gets' and vivid positive descriptors throughout indicate strong enthusiasm without any reservations.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:20:16.810Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:56:15.061Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2373,
+    "outputTokens": 333,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 92,
@@ -75,7 +82,7 @@
     "dtli"
   ],
   "showScoreExcerpt": null,
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 91,
   "archivePath": "data/archives/reviews/purlie-victorious-2023/vulture--sara-holdren_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:29:48.631Z",
@@ -94,7 +101,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240606200117",
   "archiveOrgUrl": "http://web.archive.org/web/20240606200117/https://www.vulture.com/2023/09/theater-review-purlie-victorious-leslie-odom-jr-kara-young-ossie-davis.html",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.978Z",
+  "rescoreCompletedAt": "2026-02-01T15:56:15.061Z",
   "contentTier": "complete",
   "wordCount": 2090
 }

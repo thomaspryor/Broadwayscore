@@ -9,7 +9,7 @@
   "showScoreExcerpt": "Best of all, Six is an original musical, with a wildly novel concept, put together by a young creative team, many of them in their twenties. This is how musical theatre moves forward, not by recycling yesterday's hits but by applying fresh thinking and up-to-date wit to a seemingly unlikely subject.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/six",
   "originalScore": null,
-  "assignedScore": 86,
+  "assignedScore": 70,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -29,51 +29,58 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 86,
-    "confidence": "medium",
+    "score": 70,
+    "confidence": "high",
     "range": {
-      "low": 77,
-      "high": 95
+      "low": 68,
+      "high": 72
     },
-    "bucket": "Positive",
+    "bucket": "Mixed",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 87,
-      "performances": 89,
-      "direction": 83
+      "book": 50,
+      "music": 78,
+      "performances": 90,
+      "direction": 75
     },
     "keyPhrases": [
       {
-        "quote": "Six knows exactly what it wants to do and how to go about it",
+        "quote": "There are many features in Six that deserve grades of ten for talent and skill, most especially the sensational cast, each of whom gives a command performance. But somehow, when I do the math, Six's grade still comes out a seven.",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Is it the musical that Broadway needs right now? Verily.",
-        "sentiment": "positive",
-        "strength": 5
+        "quote": "it does sometimes feel that there's a hollow at its core",
+        "sentiment": "negative",
+        "strength": 3
       },
       {
-        "quote": "This is how musical theatre moves forward, not by recycling yesterday's hits but by applying fresh thinking and up-to-date wit",
-        "sentiment": "positive",
-        "strength": 4
+        "quote": "slickly entertaining, historically shallow rock musical",
+        "sentiment": "neutral",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The critic praises the concept, performances, and production values consistently, concluding it's exactly what Broadway needs right now despite acknowledging it may not be 'for the ages.' | GPT-4o-mini: The review expresses strong enthusiasm for the show's originality, performances, and overall entertainment value, indicating a must-see recommendation.",
+    "reasoning": "The critic explicitly gives the show a grade of 7/10 while praising the 'sensational cast' and entertaining aspects, but noting shallow content and structural weaknesses.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:43:11.223Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:06:41.090Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4190,
+    "outputTokens": 367,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 82,
@@ -95,7 +102,7 @@
   ],
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 86,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.020Z",
+  "rescoreCompletedAt": "2026-02-01T16:06:41.090Z",
   "contentTier": "complete",
   "wordCount": 1224
 }

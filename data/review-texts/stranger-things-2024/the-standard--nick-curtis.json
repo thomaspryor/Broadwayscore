@@ -9,25 +9,25 @@
   "bwwExcerpt": "Equally, you can enjoy this immersive, overwhelming experience, which has a love for live performance at its very core, without having seen a second of the TV show. Daldry, the consummate showman of British culture, has done it again.",
   "showScoreExcerpt": "“This astonishing show turns normal expectations of theatre upside down. Director Stephen Daldry has taken the Duffer Brothers’ Eighties-set Netflix sci-fi hit and magicked it into a spectacular, multimedia prequel, full of enough thrills, scares and knowing nods to please fans and the uninitiated in equal measure.”",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 92,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://www.standard.co.uk/culture/theatre/stranger-things-the-first-shadow-review-west-end-netflix-phoenix-theatre-b1127020.html",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 89,
+    "score": 92,
     "confidence": "high",
     "range": {
-      "low": 83,
+      "low": 88,
       "high": 95
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 93
+      "direction": 95
     },
     "keyPhrases": [
       {
@@ -36,30 +36,37 @@
         "strength": 5
       },
       {
-        "quote": "magicked it into a spectacular, multimedia prequel, full of enough thrills, scares and knowing nods to please fans and the uninitiated in equal measure",
+        "quote": "magicked it into a spectacular, multimedia prequel",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Daldry, the consummate showman of British culture, has done it again",
+        "quote": "full of enough thrills, scares and knowing nods to please fans and the uninitiated in equal measure",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Consistently enthusiastic language with superlatives like 'astonishing' and 'spectacular' plus strong praise for the director's achievement indicates a clear positive recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the production's innovative direction and immersive experience, indicating a must-see recommendation.",
+    "reasoning": "Strong superlatives like 'astonishing,' 'spectacular,' and 'magicked' combined with praise for broad appeal and successful adaptation indicate unqualified enthusiasm.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:51:38.196Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:13:52.493Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2376,
+    "outputTokens": 346,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 88,
@@ -107,7 +114,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-STRANGER-THINGS-THE-FIRST-SHADOW-Opens-On-Broadway",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 89,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.053Z",
+  "rescoreCompletedAt": "2026-02-01T16:13:52.493Z",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",

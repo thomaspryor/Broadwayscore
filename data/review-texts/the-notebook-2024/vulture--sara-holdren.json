@@ -32,37 +32,37 @@
   "archiveOrgUrl": "http://web.archive.org/web/20241216051536/https://www.vulture.com/article/theater-reviews-the-notebook-the-effect.html",
   "llmScore": {
     "score": 32,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
-      "low": 20.5,
-      "high": 43.5
+      "low": 28,
+      "high": 38
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": 23,
-      "music": 30,
-      "performances": 48,
+      "book": 25,
+      "music": 20,
+      "performances": 45,
       "direction": 30
     },
     "keyPhrases": [
       {
         "quote": "the show disappears from memory almost moment to moment",
         "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "aggressively generic... a heavy sanding block has still been taken to the material, smoothing the characters into cutouts",
-        "sentiment": "negative",
         "strength": 5
       },
       {
         "quote": "There's a uniquely damp kind of fizzle when a show like The Notebook neither forges into compelling new territory nor even manages to deliver nostalgic satisfaction",
         "sentiment": "negative",
-        "strength": 5
+        "strength": 4
+      },
+      {
+        "quote": "I wouldn't advise anyone to bring a bucket",
+        "sentiment": "negative",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic systematically dismantles The Notebook across all elements - calling it generic, forgettable, with problematic lyrics and questionable creative choices, while offering no clear recommendation to see it. | GPT-4o-mini: The review is overwhelmingly critical, highlighting significant flaws in the book, music, and direction, leading to a clear recommendation against seeing the show. | Note: Models differed by 13 points.",
+    "reasoning": "The critic delivers a comprehensive pan of The Notebook, criticizing nearly every element from the 'beige slate of songs' to the 'prosaic direction' and 'sterile aesthetic,' with dismissive language throughout and no clear recommendation to see it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -71,11 +71,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:34:31.315Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:21:26.967Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 5643,
+    "outputTokens": 375,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 38,
@@ -98,7 +105,7 @@
   ],
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 32,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.093Z",
+  "rescoreCompletedAt": "2026-02-01T16:21:26.967Z",
   "contentTier": "complete",
   "wordCount": 2755
 }

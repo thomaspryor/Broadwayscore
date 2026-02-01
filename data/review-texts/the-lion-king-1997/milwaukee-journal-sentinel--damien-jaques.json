@@ -8,52 +8,54 @@
   "fullText": null,
   "showScoreExcerpt": "\"Julie Taymor's staging is nothing short of miraculous...\"",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 45,
   "source": "show-score",
   "designation": null,
   "sourceMethod": "showscore",
   "scoreSource": "manual-override",
   "llmScore": {
-    "score": 68,
+    "score": 45,
     "confidence": "low",
     "range": {
-      "low": 40.5,
-      "high": 95.5
+      "low": 30,
+      "high": 70
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 88
+      "direction": 90
     },
     "keyPhrases": [
       {
-        "quote": "Julie Taymor's staging is nothing short of miraculous",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Julie Taymor's staging is nothing short of miraculous...",
+        "quote": "nothing short of miraculous",
         "sentiment": "positive",
         "strength": 5
       }
     ],
-    "reasoning": "Claude: This fragment shows extremely high praise for direction but provides no information about overall recommendation, other components, or the critic's final verdict. | GPT-4o-mini: The use of 'miraculous' indicates unqualified enthusiasm for the direction, suggesting a strong recommendation to see the show. | Note: Models differed by 45 points.",
+    "reasoning": "While the direction receives extraordinary praise ('miraculous'), this is only a fragment that doesn't address the overall production or provide a clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:54:28.995Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:18:58.329Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2316,
+    "outputTokens": 236,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 45,
@@ -70,6 +72,6 @@
   "scoreOverrideAt": "2026-01-26T17:35:57.827Z",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
-  "rescoreReason": "tiny-excerpt: only 58 chars, try re-fetching"
+  "rescoreReason": "tiny-excerpt: only 58 chars, try re-fetching",
+  "rescoreCompletedAt": "2026-02-01T16:18:58.329Z"
 }

@@ -10,43 +10,43 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 84,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 84,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 77.5,
-      "high": 90.5
+      "low": 78,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": 85,
+      "book": 70,
+      "music": 78,
+      "performances": 88,
       "direction": 80
     },
     "keyPhrases": [
       {
-        "quote": "Age – a hiatus of 14 years, some of them plague-ridden – has not withered Spamalot's inspired looniness",
+        "quote": "★★★★☆",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "of course you're going to go back. Who would pass up a chance to relive Eric Idle's hilariously dark spoof",
+        "quote": "You'll relish every second – and thank yourself for revisiting this silly romp",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "recast with a whole new set of comedic aces",
+        "quote": "All of the replacements, smartly marshaled by director/choreographer Josh Rhodes for last spring's Kennedy Center revival, seem to be having the time of their lives",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Strong positive language about the show's enduring quality and new cast, with implicit recommendation that audiences will 'of course' return to see it. | GPT-4o-mini: The review expresses strong enthusiasm for the revival and its performances, indicating a solid recommendation to see the show.",
+    "reasoning": "Four-star review with enthusiastic praise for performances and direction, explicit recommendation to 'thank yourself for revisiting,' and consistent positive language throughout despite acknowledging juvenile humor.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
@@ -55,11 +55,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:18:14.899Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:09:01.708Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3066,
+    "outputTokens": 352,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 82,
@@ -70,7 +77,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 84,
   "archivePath": "data/archives/reviews/spamalot-2023/nysr--sandy-macdonald_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:52:33.355Z",
@@ -88,7 +95,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240520125547",
   "archiveOrgUrl": "http://web.archive.org/web/20240520125547/https://nystagereview.com/2023/11/16/spamalot-spamalot-trumpeting-the-return-of-a-raunchy-musical-comedy-for-the-ages/",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.032Z",
+  "rescoreCompletedAt": "2026-02-01T16:09:01.708Z",
   "dateSource": "extracted-from-url",
   "_scoreFixedFrom": "4/5 stars",
   "_scoreFixedAt": "2026-01-31T23:10:41.728Z",

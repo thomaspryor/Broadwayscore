@@ -9,56 +9,63 @@
   "showScoreExcerpt": "\"The play is constantly running a nail over divisions that seem untraversable, across politics, class, and race, but also across generation and gender, wondering if solidarity could possibly still form there. \"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/liberation-broadway",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 88,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 68,
+    "score": 88,
     "confidence": "high",
     "range": {
-      "low": 60.5,
-      "high": 75.5
+      "low": 85,
+      "high": 92
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 65,
+      "book": 90,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 88,
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "constantly running a nail over divisions that seem untraversable",
-        "sentiment": "neutral",
-        "strength": 3
+        "quote": "Both times I've seen the play—Off Broadway this spring, now returning in a larger space on Broadway—I've felt unprepared for the emotional wallop it lands",
+        "sentiment": "positive",
+        "strength": 5
       },
       {
-        "quote": "wondering if solidarity could possibly still form there",
-        "sentiment": "neutral",
-        "strength": 3
+        "quote": "It releases this incredible kinetic energy. For a few minutes of theater, some great barrier has fallen, and everything is possible and free",
+        "sentiment": "positive",
+        "strength": 5
       },
       {
-        "quote": "the play is constantly running a nail over divisions that seem untraversable",
+        "quote": "makes the play thrilling to watch",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: This excerpt describes thematic content without clear evaluative language or recommendation, making it impossible to determine the critic's actual opinion of the production's quality. | GPT-4o-mini: The review suggests thoughtful exploration of complex themes, indicating a qualified recommendation without overt enthusiasm.",
+    "reasoning": "The critic expresses deep enthusiasm and emotional impact, calling the play 'thrilling to watch' with 'incredible kinetic energy' and praising its transformative theatrical power, despite some structural complexities.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:16:44.348Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:28:41.992Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4660,
+    "outputTokens": 371,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 65,
@@ -78,7 +85,7 @@
   ],
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 68,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.859Z",
+  "rescoreCompletedAt": "2026-02-01T15:28:41.992Z",
   "truncationSignals": [
     "has_footer_junk"
   ],

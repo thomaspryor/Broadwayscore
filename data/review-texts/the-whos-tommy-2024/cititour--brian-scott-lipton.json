@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -33,51 +33,53 @@
   "fetchTier": 2,
   "sourceMethod": "scrapingbee",
   "llmScore": {
-    "score": 85,
-    "confidence": "medium",
+    "score": 75,
+    "confidence": "low",
     "range": {
-      "low": 77,
-      "high": 93
+      "low": 65,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
-      "music": 89,
-      "performances": 88,
-      "direction": 84
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 80
     },
     "keyPhrases": [
       {
-        "quote": "all the boxes have been checked by the thrillingly visceral and gloriously (and loudly) sung new production",
+        "quote": "has wisely hired some of theater's smartest wizards",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Personally, I could eat it up over and over",
+        "quote": "technological visuals that delight the eye throughout",
         "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the one downside of Townshend's sung-through score... is that it doesn't always connect the dots, making the show's plot occasionally confusing",
-        "sentiment": "negative",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The reviewer enthusiastically praises the performances, music, and production values with vivid positive language, ending with a strong personal endorsement despite noting some plot confusion issues. | GPT-4o-mini: The review expresses strong enthusiasm for the production's music, performances, and direction, with only minor caveats about the plot's complexity.",
+    "reasoning": "The excerpt praises the director's choices and technical elements enthusiastically, but lacks overall assessment or recommendation, making it an incomplete positive fragment.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:03:16.166Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:28:15.797Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2413,
+    "outputTokens": 278,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "bwwExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated BWW excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 82,
@@ -91,5 +93,8 @@
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
-  "wordCount": 784
+  "wordCount": 784,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 85,
+  "rescoreCompletedAt": "2026-02-01T16:28:15.797Z"
 }

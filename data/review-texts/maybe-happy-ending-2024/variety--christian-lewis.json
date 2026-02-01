@@ -9,7 +9,7 @@
   "dtliExcerpt": "“Maybe Happy Ending” is an undeniably moving, well-made, adorable musical, and it is a pleasant surprise to see an audience weep at a show about two robots in love.",
   "showScoreExcerpt": "\"Both Criss and Shen give excellent, very different performances... One of the achievements of the production is the very complete world that director Michael Arden has created. The sleek, futuristic set (by Dane Laffrey) draws on Korean design, provides a clear sense of time and place... “Maybe Happy Ending” is an undeniably moving, well-made, adorable musical, and it is a pleasant surprise to see an audience weep at a show about two robots in love.\"",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 50,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:04:06.568Z",
@@ -17,38 +17,33 @@
   "dtliThumb": "Up",
   "bwwExcerpt": "“Maybe Happy Ending” is an undeniably moving, well-made, adorable musical, and it is a pleasant surprise to see an audience weep at a show about two robots in love. The musical makes the bold claim that maybe we are not that different from robots after all, or that they are not that different from u...",
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 50,
+    "confidence": "low",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 45,
+      "high": 55
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 75
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "undeniably moving, well-made, adorable musical",
-        "sentiment": "positive",
-        "strength": 4
+        "quote": "asks this exact question — or in some ways, asks the inverse",
+        "sentiment": "neutral",
+        "strength": 2
       },
       {
-        "quote": "pleasant surprise to see an audience weep",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "undeniably moving",
-        "sentiment": "positive",
-        "strength": 5
+        "quote": "they form an unexpected bond",
+        "sentiment": "neutral",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: Clear positive language with multiple affirming adjectives and evidence of emotional impact on audiences, suggesting a solid recommendation despite the brief excerpt. | GPT-4o-mini: The review expresses strong positive sentiments about the emotional impact and quality of the musical, indicating a clear recommendation.",
+    "reasoning": "This appears to be a plot summary rather than a review, with purely descriptive language and no evaluative statements or recommendation signals.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -57,11 +52,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:11:38.328Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:34:40.110Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2557,
+    "outputTokens": 271,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -107,7 +109,7 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 82,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.881Z",
+  "rescoreCompletedAt": "2026-02-01T15:34:40.110Z",
   "contentTier": "complete",
   "wordCount": 1179
 }

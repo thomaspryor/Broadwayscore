@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": "3/5 stars",
-  "assignedScore": 64,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -34,51 +34,58 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 64,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 57.5,
-      "high": 70.5
+      "low": 58,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 43,
-      "music": 83,
-      "performances": 87,
-      "direction": 73
+      "book": 35,
+      "music": 85,
+      "performances": 88,
+      "direction": 75
     },
     "keyPhrases": [
       {
-        "quote": "it could be said that The Wiz gives the enthusiastic audience its money's worth",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "What's on view right now isn't even 'fine' for 2024",
-        "sentiment": "negative",
+        "quote": "it could be said that The Wiz gives the enthusiastic audience its money's worth. True and not so true.",
+        "sentiment": "neutral",
         "strength": 4
       },
       {
-        "quote": "this new shuffle packs nowhere near the delightfully timeless horror that audiences have long known and still love",
+        "quote": "What's on view right now isn't even 'fine' for 2024. That includes just about the entire second act",
         "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "everyone asked to solo has a voice equal to Lewis' power. Not a one of them... is denied the chance to hit notes high enough to rattle the rafters",
+        "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: While the critic praises performances, music, and production values extensively, they severely criticize Amber Ruffin's book revisions as ineffective and disappointing, creating a mixed recommendation that acknowledges the show's strengths while questioning its overall success. | GPT-4o-mini: The review highlights strong performances and music but expresses significant disappointment with the script and direction, leading to a mixed recommendation.",
+    "reasoning": "The 3/5 star rating combined with strong praise for performances and music but harsh criticism of the book revisions creates a mixed recommendation that acknowledges entertainment value while questioning artistic merit.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:03:47.982Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:31:15.465Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3766,
+    "outputTokens": 381,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 65,
@@ -95,5 +102,8 @@
   "_scoreFixedFrom": "2/5 stars",
   "_scoreFixedAt": "2026-01-31T23:10:41.734Z",
   "contentTier": "complete",
-  "wordCount": 953
+  "wordCount": 953,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 64,
+  "rescoreCompletedAt": "2026-02-01T16:31:15.465Z"
 }

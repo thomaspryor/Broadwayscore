@@ -7,22 +7,22 @@
   "publishDate": "February 14, 2025",
   "fullText": "The Idina Menzel-fueled contemporary musical is a bluff take on grief, bolstered by technology.\n\nGood morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Redwood.”\n\nPhilosophers are not lost for adages about trees as teachers. Hermann Hesse called them “penetrating preachers”; in her wildly popular nonfiction “Braiding Sweetgrass,” Robin Wall Kimmerer recounts their many lessons. But trees are our subjects, too. Botanists like Finn (Michael Park) and Becca (Khaila Wilcoxon) in the new musical “Redwood” study them — archiving and conserving their presence. A lot of information about the towering redwoods is woven into the musical co-conceived by Tina Landau (also the book writer and co-lyricist) and Idina Menzel (the star and additional contributor). We learn about the redwoods’ heights and roots; and we learn the same about protagonist Jesse (Menzel), who is less rooted, snapped off from her tree, a branch ambling through the wind.\n\n“Redwood” plops us into the fractured chaos of Jesse’s mind as she’s driving to escape her own grief. Shocks of light (astute design by Scott Zielinski) and intentionally splintered sound (design by Jonathan Deans) render spectral flashes of Jesse’s deceased son, Spencer (Zachary Noah Piser), and memories with her wife, Mel (De’Adre Aziza). But once the dust settles and Jesse finishes that cross-country trek, Landau’s book solidifies into narrative ease.\n\nAlready have an account?\n              Log in",
   "originalScore": null,
-  "assignedScore": 70,
+  "assignedScore": 65,
   "dtliThumb": "Meh",
   "source": "dtli",
   "llmScore": {
-    "score": 70,
-    "confidence": "medium",
+    "score": 65,
+    "confidence": "low",
     "range": {
-      "low": 65,
+      "low": 55,
       "high": 75
     },
     "bucket": "Mixed",
-    "thumb": "Up",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": null,
+      "performances": 75,
       "direction": 70
     },
     "keyPhrases": [
@@ -35,27 +35,29 @@
         "quote": "expensive curtain of LED screens",
         "sentiment": "neutral",
         "strength": 2
-      },
-      {
-        "quote": "theatricalized Artechouse",
-        "sentiment": "positive",
-        "strength": 3
       }
     ],
-    "reasoning": "GPT-4o-mini: The review highlights an intimate performance and impressive design but lacks strong overall enthusiasm or clear recommendations.",
+    "reasoning": "This excerpt praises the performance quality and production design but provides insufficient context to determine overall recommendation strength.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:14:32.527Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:04:02.137Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2370,
+    "outputTokens": 259,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": null,
@@ -73,7 +75,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 70,
   "archivePath": "data/archives/reviews/redwood-2025/broadwaynews--brittani-samuel_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:29:40.169Z",
@@ -95,7 +97,7 @@
   "textIssues": [
     "Word count too low: 239 (min: 300)"
   ],
-  "rescoreCompletedAt": "2026-01-29T14:31:52.009Z",
+  "rescoreCompletedAt": "2026-02-01T16:04:02.137Z",
   "contentTier": "truncated",
   "wordCount": 239
 }

@@ -50,18 +50,18 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251102160205/https://www.nytimes.com/2024/04/23/theater/mary-jane-review-rachel-mcadams.html",
   "llmScore": {
     "score": 85,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 82,
+      "high": 88
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": 88,
       "music": null,
-      "performances": 85,
-      "direction": 87
+      "performances": 87,
+      "direction": 85
     },
     "keyPhrases": [
       {
@@ -77,10 +77,10 @@
       {
         "quote": "The cast, returning or not, is unimprovable",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic praises the play as 'great,' calls the cast 'unimprovable,' and confirms his earlier positive assessment, with detailed appreciation for all production elements and no significant reservations.",
+    "reasoning": "Jesse Green offers sustained praise for the play as 'great,' calls the cast 'unimprovable,' and confirms his positive assessment from the original production, with only minor analytical observations rather than criticisms.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -89,11 +89,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:09:29.581Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:32:49.128Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3575,
+    "outputTokens": 339,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 85,
@@ -111,7 +118,7 @@
   "showScoreExcerpt": "\"...McAdams’s natural sunniness and Mary Jane’s reality enhances the play’s tension.\"",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 85,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.873Z",
+  "rescoreCompletedAt": "2026-02-01T15:32:49.128Z",
   "contentTier": "complete",
   "wordCount": 877
 }

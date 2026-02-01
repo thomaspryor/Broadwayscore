@@ -6,7 +6,7 @@
   "url": "https://www.nytimes.com/2025/11/13/theater/oedipus-review-strong-manville.html",
   "publishDate": "November 13, 2025",
   "originalScore": null,
-  "assignedScore": 86,
+  "assignedScore": 82,
   "designation": "Critics_Pick",
   "dtliThumb": "Up",
   "bwwThumb": "Up",
@@ -15,51 +15,58 @@
   "bwwExcerpt": "Critic's Pick. Icke's change in timeline trades catastrophe for suspense, ontological disaster for down-to-the-cuticles nail biting. Is this a fair exchange? Maybe. Is it electrifying? God, yes. The results are slick, sleek, mordant. It's a spine tingler, if not quite the ethics tangler of the original.",
   "showScoreExcerpt": "Criticâs Pick: \"Is it electrifying? God, yes. The results are slick, sleek, mordant. Itâs a spine tingler, if not quite the ethics tangler of the original.\"",
   "llmScore": {
-    "score": 86,
-    "confidence": "medium",
+    "score": 82,
+    "confidence": "high",
     "range": {
-      "low": 77,
-      "high": 95
+      "low": 78,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 75,
       "music": null,
-      "performances": null,
-      "direction": 88
+      "performances": 88,
+      "direction": 80
     },
     "keyPhrases": [
       {
-        "quote": "Is it electrifying? God, yes.",
+        "quote": "Is it electrifying? God, yes. The results are slick, sleek, mordant. It's a spine tingler",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "The results are slick, sleek, mordant. It's a spine tingler",
+        "quote": "this adaptation's political focus and provocations are original and bracing",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "if not quite the ethics tangler of the original",
-        "sentiment": "negative",
-        "strength": 2
+        "quote": "Manville dismantles this woman's carefully constructed identity, thread by thread, cell by cell",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Strong enthusiastic language ('electrifying? God, yes') and positive descriptors ('slick, sleek, spine tingler') clearly recommend the show despite minor reservations about depth compared to the original. | GPT-4o-mini: The review expresses strong enthusiasm for the production's suspense and style, indicating a must-see experience.",
+    "reasoning": "The critic is clearly enthusiastic about the production despite some reservations about the adaptation choices, praising it as 'electrifying' and 'original and bracing' with particular acclaim for Manville's performance.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T22:48:38.176Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:43:10.066Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3998,
+    "outputTokens": 366,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 82,
@@ -76,7 +83,6 @@
   "needsScoring": true,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 86,
   "fullText": "What do we want from our candidates and what will we forgive them? Adultery, corruption, fraud convictions, sexual abuse accusations, bankruptcies financial and moral — Americans have overlooked these and worse, given enough political clout and charm. But a candidate who kills his father and beds his mother? Those may be delinquencies too far.\n\nThese are also, more or less, the salient points of “Oedipus,” Sophocles’s tragedy, now revamped for Broadway. In the original, Oedipus is already the ruler of Thebes. A new version from the English writer and director Robert Icke that opened at Studio 54 finds Oedipus (Mark Strong) on election night, running for high office in some unnamed country.\n\nIcke’s change in timeline trades catastrophe for suspense, ontological disaster for down-to-the-cuticles nail biting. Is this a fair exchange? Maybe. Is it electrifying? God, yes. The results are slick, sleek, mordant. It’s a spine tingler, if not quite the ethics tangler of the original.\n\nIcke isn’t all that interested in ethics and is mostly unconcerned with the questions that fascinate Sophocles. Fate versus free will? So what? This is a thriller, not a philosophy seminar, quick to switch out currency for timelessness. And yet this adaptation’s political focus and provocations are original and bracing. The play levers open the perilous gap between how politicians present themselves to the world and who they really are when all the signs and bunting fall away.\n\nIn the prologue, a video reimagining of Oedipus’s speech to the Thebans, Oedipus positions himself as a progressive candidate. His opponents have slandered him, he says, calling him an immigrant and outsider. He plans to release his birth certificate, even though he questions the importance placed on such a document. “Do we really believe that deep down inside each of us there’s one single self, a hard center formed at the moment of birth, and destined never to change?” (If we’re Sophocles, yes we do.)\n\nManville and Strong, with from left, Olivia Reis, Jordan Scowen, James Wilbraham and Anne Reid.Credit...Sara Krulwich/The New York TimesAn attractive, multicultural crowd cheers him on. As Oedipus, Strong is sturdy, assured, telegenic. “Perhaps the country needs a father,” he says, and a million “Daddy’s home” memes are loosed into the world.\n\nThen the play proper begins, set amid the bland and temporary walls of Oedipus’s campaign quarters. At the back, just off center, the set designer Hildegard Bechtler has added a digital clock racing down to zero, the deadline for both the election outcome and another more terrible revelation.\n\nWith the numbers flashing and diminishing, staffers, intimates and hangers-on traipse in and out. They include Creon, Oedipus’s campaign manager and brother-in-law (John Carroll Lynch); Oedipus’s mother, Merope (Anne Reid); his wife, Jocasta (Lesley Manville); and their three college-age children (Olivia Reis, Jordan Scowen and James Wilbraham). There are also guests, invited and otherwise, like Teiresias (Samuel Brewer), identified as a member of some future-seeing cult. Oedipus responds to his predictions violently, the first cleft in his politician’s cool.\n\nEven given the clock, the electoral suspense is minimal. Oedipus is poised to win in a landslide. And yet, dread suffuses the room. In a bit that feels too obvious, movers are also here, stripping the space bare of its furnishings, just as Oedipus is stripped of everything he thought he knew about himself.\n\nEarly in the play, he says: “I am me” and “I know who I am!” By the end, he says, “I don’t know who I am.” But he does, and that knowledge is unbearable. Strong conveys this torment in voice and posture, the veins on his neck bulging.\n\nOne of the production’s most radical changes is a subtle one: the shifting of the play’s center to Jocasta from Oedipus.Credit...Sara Krulwich/The New York TimesAs it turns out, the opposition researchers have really fallen down on the job. Oedipus is not the son of peasants, as he believed, but the offspring of Laius, the country’s former ruler, and of Jocasta, Laius’s bride. (I would like to think that 2,400-year-old plays don’t require spoiler warnings, but it was fun to hear a few gasps in the audience in response to this news.) In an act of youth and recklessness, Oedipus killed Laius and fled the scene, never knowing the dead man’s identity. About a decade later, he married Jocasta.\n\nIcke (“The Doctor,” “Oresteia”) is a confident renovator of the classics, careful in what he retains, brash in what he discards. He is sometimes overconfident, particularly when he plays with foreshadowing — the shadows are unnecessarily thick — for laughs, as when Jocasta tells Oedipus, “You’ll be the death of me.” (Later, during a hurried sexual encounter, she heavy-breathes, “Ohhh, baby boy.”)\n\nHere, there are some obvious, modernizing adjustments; one real improvement (the jettisoning of a shepherd character in favor of Oedipus’s adoptive mother, Merope); and a few minor puzzlers, like the erasure of one of Oedipus’s daughters. But perhaps the most radical change is a subtle one: the shifting of the play’s center to Jocasta from Oedipus.\n\nManville, whose performance won her an Olivier for the play’s run in London’s West End, is an actress of exceptional emotional expressiveness, expert at repression and just as skilled at letting that composure slip, often wildly. Her Jocasta is chic, charming and ambitious for her husband, an impeccable political wife.\n\nShe is also, as an Icke-enhanced back story shows, an anguished woman who has had to deny and disregard much of her past. While Sophocles is fundamentally incurious of what the taking of a child may do to a mother, Icke sticks his fingers right in that wound. As Jocasta moves from ignorance toward knowledge, fighting every new fact, Manville dismantles this woman’s carefully constructed identity, thread by thread, cell by cell. The questions of what does Jocasta know and when does she know it become the night’s true horror.\n\nIn the middle of the play, Creon and Oedipus’s daughter Antigone discuss a riddle from one of her college textbooks. It’s the sphinx’s riddle: What walks on four legs in the morning, two in the afternoon, three in the evening? The answer, of course, is a person. Which is another way of saying that all of us are only human, even those who run for office. Whether we’re ready to see our politicians that way, whether politicians can see themselves that way, that’s a riddle that’s harder to solve.\n\nOedipusThrough Feb. 8 at Studio 54, Manhattan; oedipustheplay.com. Running time: 2 hours.\n\nAlexis Soloski has written for The Times since 2006. As a culture reporter, she covers television, theater, movies, podcasts and new media.",
@@ -108,5 +114,6 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "rescoreCompletedAt": "2026-02-01T15:43:10.066Z"
 }

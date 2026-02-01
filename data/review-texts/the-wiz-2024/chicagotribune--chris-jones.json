@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 70,
+  "assignedScore": 72,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -32,51 +32,58 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 70,
+    "score": 72,
     "confidence": "high",
     "range": {
-      "low": 63,
-      "high": 77
+      "low": 68,
+      "high": 76
     },
     "bucket": "Mixed",
     "thumb": "Up",
     "components": {
       "book": 70,
-      "music": 75,
-      "performances": 68,
-      "direction": 72
+      "music": 85,
+      "performances": 75,
+      "direction": 68
     },
     "keyPhrases": [
       {
-        "quote": "For all its flaws, and whatever qualms might now exist about a white writer, William F. Brown, cheerfully writing in a Black vernacular, 'The Wiz' is just one of those rare and special titles that gets an audience ginned up",
+        "quote": "For all its flaws, and whatever qualms might now exist about a white writer, William F. Brown, cheerfully writing in a Black vernacular, 'The Wiz' is just one of those rare and special titles that gets an audience ginned up, glammed up and ready to drop the big bucks necessary for a night out at the theater",
         "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "the Broadway version reflects a lot of good new work",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "the overall performance remains too guarded to really launch itself fans' hearts",
-        "sentiment": "negative",
         "strength": 4
+      },
+      {
+        "quote": "the three friends of Dorothy who follow those yellow bricks toward self-actualization, Avery Wilson's Scarecrow, Phillip Johnson Richardson's Tinman (the most moving I've seen) and Kyle Ramar Freeman's Lion, cowardly variety, really are the heart of this particular revival and they're a delightful quartet",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Lewis hits the notes, and these are tough notes to hit, but the overall performance remains too guarded to really launch itself fans' hearts, even though at the show I saw, everyone was more than ready to receive and respond",
+        "sentiment": "negative",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: Mixed review that acknowledges improvements and strong supporting performances but criticizes the lead performance and notes structural problems, ultimately expressing qualified appreciation rather than strong recommendation. | GPT-4o-mini: The review indicates a generally positive experience with some notable strengths, but also highlights significant reservations about performances and overall impact.",
+    "reasoning": "The critic acknowledges flaws but celebrates the show's cultural significance and audience appeal, praises key performances and improvements from the touring version, while noting some disappointments in lead performance and ending.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:03:08.638Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:30:40.444Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3230,
+    "outputTokens": 494,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 68,
@@ -89,5 +96,8 @@
   },
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
-  "wordCount": 684
+  "wordCount": 684,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 70,
+  "rescoreCompletedAt": "2026-02-01T16:30:40.444Z"
 }

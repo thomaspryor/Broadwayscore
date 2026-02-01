@@ -9,19 +9,19 @@
   "bwwExcerpt": "Certainly Eden Espinosa, starring in the title role, brings both luminosity and strength to her powerful performance as the ambitious, visionary and resilient artist known for capturing the women of her day in an aspirational light: perfectly poised, coiffed and seemingly glowing from within. But the musical’s titular character is not so polished. Rather she’s a complicated woman — to a fault. This might not be as much of a concern in a thick biography, but it’s harder to convey successfully in ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": 57,
+  "assignedScore": 45,
   "source": "dtli",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "llmScore": {
-    "score": 57,
-    "confidence": "high",
+    "score": 45,
+    "confidence": "medium",
     "range": {
-      "low": 50.5,
-      "high": 63.5
+      "low": 40,
+      "high": 50
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -30,35 +30,37 @@
     },
     "keyPhrases": [
       {
-        "quote": "will further enhance the artist's prominence",
-        "sentiment": "positive",
-        "strength": 2
-      },
-      {
-        "quote": "this complex artist still remains just beyond the frame",
+        "quote": "long-in-development but still uneven musical",
         "sentiment": "negative",
-        "strength": 3
+        "strength": 4
       },
       {
-        "quote": "the musical no doubt will further enhance the artist’s prominence",
-        "sentiment": "positive",
-        "strength": 3
+        "quote": "finally made it to Broadway",
+        "sentiment": "neutral",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The review acknowledges the musical's potential cultural value but suggests it fails to fully capture or illuminate its subject, indicating mixed results without clear recommendation. | GPT-4o-mini: The review indicates a mixed sentiment, acknowledging potential benefits of the musical while also highlighting its shortcomings in fully capturing the artist's essence.",
+    "reasoning": "The critic describes the musical as 'still uneven' despite years of development, suggesting ongoing fundamental problems that haven't been resolved.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:12:01.782Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:26:37.387Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2483,
+    "outputTokens": 272,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 58,
@@ -76,7 +78,7 @@
   "sources": [
     "dtli"
   ],
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 57,
   "archivePath": "data/archives/reviews/lempicka-2024/variety--frank-rizzo_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:32:43.168Z",
@@ -92,7 +94,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251205055934",
   "archiveOrgUrl": "http://web.archive.org/web/20251205055934/https://variety.com/2024/legit/reviews/lempicka-review-broadway-musical-1235971035/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.852Z",
+  "rescoreCompletedAt": "2026-02-01T15:26:37.387Z",
   "contentTier": "complete",
   "wordCount": 877
 }

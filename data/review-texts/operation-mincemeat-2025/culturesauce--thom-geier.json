@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250121",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -19,28 +19,28 @@
     "reviews-json-stub"
   ],
   "llmScore": {
-    "score": 82,
+    "score": 78,
     "confidence": "medium",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 75,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 81,
-      "music": 79,
-      "performances": 88,
-      "direction": 78
+      "book": 80,
+      "music": 72,
+      "performances": 85,
+      "direction": 75
     },
     "keyPhrases": [
       {
         "quote": "a genre-busting celebration of musical storytelling that bursts with both hilarity and heart",
         "sentiment": "positive",
-        "strength": 5
+        "strength": 4
       },
       {
-        "quote": "The pitch-perfect cast of five operate like a well-oiled comedic machine",
+        "quote": "The pitch-perfect cast of five — who originated the roles in the acclaimed London production — operate like a well-oiled comedic machine",
         "sentiment": "positive",
         "strength": 4
       },
@@ -50,20 +50,27 @@
         "strength": 3
       }
     ],
-    "reasoning": "Claude: Strong praise for performances, book, and overall entertainment value with specific examples of what works, though some technical criticisms and the review appears cut off mid-sentence. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and humor, with minor reservations about sound quality, leading to a solid recommendation.",
+    "reasoning": "The review consistently praises the performances, humor, and storytelling while noting some technical issues, but the overall tone is enthusiastic and recommending.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:19:00.106Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:47:21.283Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3640,
+    "outputTokens": 369,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -76,7 +83,7 @@
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 82,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.939Z",
+  "rescoreCompletedAt": "2026-02-01T15:47:21.283Z",
   "truncationSignals": [
     "ends_with_ellipsis"
   ],

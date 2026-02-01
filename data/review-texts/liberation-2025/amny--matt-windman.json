@@ -9,57 +9,64 @@
   "dtliExcerpt": "“Liberation” is not an easy play. It’s demanding, ambitious, and intentionally messy. Some of its observations, such as the suggestion that marriage and motherhood can erase one’s sense of self, remain deeply relatable and unsettling. It offers no answers, only more debate. At a time when the idea of progress feels fragile, Wohl’s play insists that the search for freedom, whether personal or political, is never finished.",
   "bwwExcerpt": "In “Liberation,” Bess Wohl’s daring and deeply analytical new play, the act of exposure is both literal and intellectual. Wohl strips away nostalgia and ideology to examine how the 1970s women’s liberation movement reshaped lives, where it fell short, and what its legacy means today. She’s less interested in celebrating the past than in interrogating it—probing questions of identity, sacrifice, and progress with the precision of a social scientist and the empathy of a dramatist.",
   "originalScore": null,
-  "assignedScore": 71,
+  "assignedScore": 82,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-LIBERATION-Opens-On-Broadway-20251028",
   "dtliThumb": "Up",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 71,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 65,
-      "high": 77
+      "low": 78,
+      "high": 86
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": 85,
       "music": null,
       "performances": null,
-      "direction": null
+      "direction": 80
     },
     "keyPhrases": [
       {
-        "quote": "demanding, ambitious, and intentionally messy",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "remain deeply relatable and unsettling",
+        "quote": "Wohl's daring and deeply analytical new play",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Wohl's play insists that the search for freedom, whether personal or political, is never finished",
+        "quote": "After earning acclaim Off-Broadway, 'Liberation' arrives on Broadway with its ambition and complexity intact",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
+      },
+      {
+        "quote": "She's less interested in celebrating the past than in interrogating it—probing questions of identity, sacrifice, and progress with the precision of a social scientist and the empathy of a dramatist",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic appreciates the play's ambition and thematic relevance while acknowledging its challenging nature, suggesting qualified recommendation for thoughtful theatergoers. | GPT-4o-mini: The review acknowledges the play's ambition and relatable themes but indicates it may not resonate with all audiences, leading to a mixed-positive recommendation.",
+    "reasoning": "Strong praise for the playwright's analytical approach and the play's intellectual ambition, with clear appreciation for its transfer to Broadway maintaining quality, though this appears to be more of a preview/description than a full critical review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:33:21.929Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:26:55.931Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2614,
+    "outputTokens": 372,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -105,7 +112,7 @@
   "showScoreExcerpt": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 71,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.853Z",
+  "rescoreCompletedAt": "2026-02-01T15:26:55.931Z",
   "contentTier": "complete",
   "wordCount": 627
 }

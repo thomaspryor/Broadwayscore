@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": "5/5 stars",
-  "assignedScore": 85,
+  "assignedScore": 88,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -18,51 +18,58 @@
   "scoreSource": "og-description",
   "scoreExtractedFrom": "archive",
   "llmScore": {
-    "score": 85,
+    "score": 88,
     "confidence": "high",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 85,
+      "high": 92
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
+      "book": 75,
+      "music": 85,
+      "performances": 90,
       "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "mass appeal, immediacy, enthusiasm, and an incredibly high sense of style",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "rafter-raising entertainment that'll get you throwing your proverbial bonnet in the air",
+        "quote": "★★★★★",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "An audience show for a wide audience",
+        "quote": "a rafter-raising entertainment that'll get you throwing your proverbial bonnet in the air",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 5
+      },
+      {
+        "quote": "Six offers so much more, and does so with steady propulsion and an irresistible sense of high style",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Strong positive language like 'rafter-raising entertainment' and 'incredibly high sense of style' indicates clear enthusiasm and recommendation despite the incomplete excerpt. | GPT-4o-mini: The review expresses strong enthusiasm and positive sentiment towards the show's appeal and entertainment value, indicating a clear recommendation.",
+    "reasoning": "Five-star review with enthusiastic language like 'rafter-raising entertainment' and 'irresistible sense of high style', praising performances, production values, and overall appeal despite acknowledging it's not traditional.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T02:35:00.583Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:07:12.948Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3723,
+    "outputTokens": 355,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 85,
@@ -73,7 +80,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 85,
   "archivePath": "data/archives/reviews/six-2021/nysr--steven-suskin_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:51:27.876Z",
@@ -92,7 +99,7 @@
   "textIssues": [
     "Show title not found in text"
   ],
-  "rescoreCompletedAt": "2026-01-29T14:31:52.021Z",
+  "rescoreCompletedAt": "2026-02-01T16:07:12.948Z",
   "dateSource": "extracted-from-url",
   "showScoreExcerpt": "\"not what you might call a traditional musical, nor what formerly would have been considered a well-crafted one. But it has mass appeal, immediacy, enthusiasm, and an incredibly high sense of style; and it revels in what used to be called “girl power” but can now more properly be described as simply, or not-so-simply, power.\"",
   "_scoreFixedFrom": "5/5 stars",

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 66,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "needsScoring": true,
@@ -21,38 +21,33 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 66,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "low",
     "range": {
-      "low": 55,
-      "high": 77
+      "low": 70,
+      "high": 85
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 63,
+      "book": null,
       "music": null,
-      "performances": 75,
+      "performances": 85,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "the jokes that didn't land",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "so many hilarious scams later, she's become one",
+        "quote": "bring out each other's best",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "they put them into context",
+        "quote": "charming double act",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The excerpt acknowledges significant flaws ('jokes that didn't land') but suggests the ending provides meaningful payoff that recontextualizes earlier weaknesses, indicating a qualified positive overall assessment. | GPT-4o-mini: The review acknowledges flaws in the earlier parts of the play but suggests a redeeming quality in the ending, leading to a mixed-positive recommendation. | Note: Models differed by 12 points.",
+    "reasoning": "The review focuses entirely on praising the two lead performances with warm, positive language, suggesting a recommendable show despite the extremely brief excerpt.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -61,11 +56,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:58:51.356Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:25:30.056Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2328,
+    "outputTokens": 267,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -78,7 +80,7 @@
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 66,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.108Z",
+  "rescoreCompletedAt": "2026-02-01T16:25:30.056Z",
   "contentTier": "complete",
   "wordCount": 1068
 }

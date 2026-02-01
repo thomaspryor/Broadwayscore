@@ -9,56 +9,63 @@
   "showScoreExcerpt": "\"Two of the producers of the musical Wicked bear the name Platt, which (in German) means flat, and one the name Stone, which (in English) means heavy. Why not also one called Long, although it is too much to ask for one called Boring, all of which apply to the show.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/wicked",
   "originalScore": null,
-  "assignedScore": 13,
+  "assignedScore": 25,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 13,
+    "score": 25,
     "confidence": "high",
     "range": {
-      "low": 5.5,
-      "high": 20.5
+      "low": 20,
+      "high": 30
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 20,
+      "music": 15,
+      "performances": 45,
+      "direction": 25
     },
     "keyPhrases": [
       {
-        "quote": "flat...heavy...Long...Boring, all of which apply to the show",
+        "quote": "Why not also one called Long, although it is too much to ask for one called Boring, all of which apply to the show",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "it is too much to ask for one called Boring",
+        "quote": "Stephen Schwartz, who has clearly lost it? Only one song, 'Wonderful,' has a memorable tune, and even that rather trite",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "one called Boring, all of which apply to the show.",
+        "quote": "the show is clearly more withered than wicked",
         "sentiment": "negative",
         "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic uses a clever wordplay device to systematically call the show flat, heavy, long, and boring - four devastating criticisms that constitute an unqualified rejection. | GPT-4o-mini: The review is overwhelmingly negative, using humor to express disdain for the production, indicating a clear rejection of the show.",
+    "reasoning": "The critic delivers a scathing pan of Wicked, calling it flat, long, boring, and withered, with harsh criticism of the score, book, and direction despite acknowledging some decent performances and impressive production design.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:22:07.732Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:38:39.158Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4460,
+    "outputTokens": 375,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 15,
@@ -69,7 +76,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 13,
   "archivePath": "data/archives/reviews/wicked-2003/vulture--john-simon_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:45:47.983Z",
@@ -89,7 +96,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241113193159",
   "archiveOrgUrl": "http://web.archive.org/web/20241113193159/https://nymag.com/nymetro/arts/theater/reviews/n_9454/",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.158Z",
+  "rescoreCompletedAt": "2026-02-01T16:38:39.158Z",
   "contentTier": "complete",
   "wordCount": 1472
 }

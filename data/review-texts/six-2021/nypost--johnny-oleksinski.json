@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": "A",
-  "assignedScore": 86,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -18,51 +18,58 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 86,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "high",
     "range": {
-      "low": 77,
-      "high": 95
+      "low": 75,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 92,
-      "performances": null,
-      "direction": null
+      "book": 70,
+      "music": 85,
+      "performances": 80,
+      "direction": 65
     },
     "keyPhrases": [
       {
-        "quote": "if you re up for a euphoric celebration of the musical medium, Six is queen of the castle. Long may it reign.",
+        "quote": "The songs here, by Toby Marlow and Lucy Moss, are all whip-smart and catchy. With jukebox shows proliferating like rabbits, audiences are getting used to hearing modern music onstage, but 'Six' is one of the few original musicals in memory whose score is radio-ready.",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "The songs here, by Toby Marlow and Lucy Moss, are all whip-smart and catchy",
-        "sentiment": "positive",
-        "strength": 4
+        "quote": "The one element lacking in 'Six'...is scale. For a short show — one inspired by Swift and Beyoncé, no less — it needs more production value and dazzle: the royal treatment, if you like.",
+        "sentiment": "negative",
+        "strength": 3
       },
       {
-        "quote": "one of the few original musicals in memory whose score is radio-ready",
+        "quote": "Still, 'Six' doesn't come up short on fun.",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Multiple critics praise the show with enthusiastic language like 'euphoric celebration' and 'queen of the castle', with specific acclaim for the 'whip-smart and catchy' songs and 'radio-ready' score. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's catchy songs and high-energy presentation, indicating a must-see experience.",
+    "reasoning": "Despite criticisms about production scale and set design, the critic consistently praises the music as 'whip-smart and catchy' with a 'radio-ready' score, compliments the performances, and concludes it 'doesn't come up short on fun,' indicating a clear positive recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:48:25.569Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:07:01.262Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3475,
+    "outputTokens": 454,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 82,
@@ -73,7 +80,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 86,
   "archivePath": "data/archives/reviews/six-2021/nypost--johnny-oleksinski_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:46:56.103Z",
@@ -93,7 +100,7 @@
   "textIssues": [
     "Show title not found in text"
   ],
-  "rescoreCompletedAt": "2026-01-29T14:31:52.020Z",
+  "rescoreCompletedAt": "2026-02-01T16:07:01.262Z",
   "contentTier": "complete",
   "wordCount": 681
 }

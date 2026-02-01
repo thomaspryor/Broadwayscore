@@ -9,57 +9,64 @@
   "bwwExcerpt": "At its core, “Marjorie Prime” tells a simple kitchen-sink story of two adults trying to care for an aging relative. Harrison tries to up the ante by dipping into his gothic drawer of horrors to deliver not one but two suicides that push the human narrative into the contrived. In the end, the machines are more honest than the humans and, better yet, there’s none of the angst.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 47,
+  "assignedScore": 48,
   "source": "dtli",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 47,
+    "score": 48,
     "confidence": "high",
     "range": {
-      "low": 40.5,
-      "high": 53.5
+      "low": 45,
+      "high": 52
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 38,
+      "book": 40,
       "music": null,
-      "performances": null,
-      "direction": 40
+      "performances": 55,
+      "direction": 45
     },
     "keyPhrases": [
+      {
+        "quote": "I much preferred watching the actors impersonate machines in Harrison's sci-fi tale than watching them impersonate human beings",
+        "sentiment": "negative",
+        "strength": 4
+      },
       {
         "quote": "Harrison tries to up the ante by dipping into his gothic drawer of horrors to deliver not one but two suicides that push the human narrative into the contrived",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "the machines are more honest than the humans and, better yet, there's none of the angst",
+        "quote": "The play's best scene is when the living have left the stage completely, and the three primes sit down for a kitchen-table conversation",
         "sentiment": "positive",
-        "strength": 2
-      },
-      {
-        "quote": "tells a simple kitchen-sink story",
-        "sentiment": "neutral",
-        "strength": 2
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review criticizes the playwright's choices as 'contrived' and excessive, but offers some measured praise for thematic elements, resulting in a mixed-negative assessment without a clear recommendation. | GPT-4o-mini: The review expresses significant criticism of the narrative and its execution, leading to a clear negative recommendation.",
+    "reasoning": "The critic finds the play's premise dated, the human characters poorly written with contrived dramatic elements, and prefers the robot scenes to the human ones, indicating fundamental problems with the material despite some isolated praise.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
       "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:40.028Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:31:59.990Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3448,
+    "outputTokens": 388,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 48,
@@ -80,7 +87,7 @@
   "showScoreExcerpt": null,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 47,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.869Z",
+  "rescoreCompletedAt": "2026-02-01T15:31:59.990Z",
   "contentTier": "complete",
   "wordCount": 753
 }

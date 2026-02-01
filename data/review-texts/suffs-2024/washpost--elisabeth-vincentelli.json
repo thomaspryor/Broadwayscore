@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 29,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -18,38 +18,38 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 29,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "high",
     "range": {
-      "low": 20.5,
-      "high": 37.5
+      "low": 75,
+      "high": 82
     },
-    "bucket": "Pan",
-    "thumb": "Down",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 23,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 65,
+      "music": 75,
+      "performances": 80,
+      "direction": 72
     },
     "keyPhrases": [
       {
-        "quote": "didactic, dull, overstuffed mess",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "wasn't a thrilling prospect",
-        "sentiment": "negative",
+        "quote": "Version 2.0 is tighter, more confident, often rousing and downright entertaining",
+        "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "did not magically morph into a grea",
-        "sentiment": "negative",
+        "quote": "We can only rejoice that the creative team did not back down",
+        "sentiment": "positive",
         "strength": 4
+      },
+      {
+        "quote": "while it did not magically morph into a great show",
+        "sentiment": "negative",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The critic describes the original production as a 'didactic, dull, overstuffed mess' and indicates the Broadway transfer 'wasn't a thrilling prospect' and 'did not magically morph into a great' show, signaling clear disappointment. | GPT-4o-mini: The review is overwhelmingly negative, describing the show as a 'dull, overstuffed mess' and lacking any redeeming qualities.",
+    "reasoning": "Despite acknowledging the show didn't become 'great,' the critic clearly endorses this improved version as 'rousing and downright entertaining' and celebrates that the team persevered.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -58,11 +58,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:16:01.397Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:15:41.496Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3419,
+    "outputTokens": 344,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 32,
@@ -76,7 +83,6 @@
     ]
   },
   "dateSource": "extracted-from-url",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 29,
   "archivePath": "data/archives/reviews/suffs-2024/washpost--elisabeth-vincentelli_2026-01-30.html",
@@ -94,5 +100,6 @@
   "archiveOrgTimestamp": "20240419014749",
   "archiveOrgUrl": "http://web.archive.org/web/20240419014749/https://www.washingtonpost.com/entertainment/theater/2024/04/18/suffs-broadway-review/",
   "contentTier": "complete",
-  "wordCount": 767
+  "wordCount": 767,
+  "rescoreCompletedAt": "2026-02-01T16:15:41.496Z"
 }

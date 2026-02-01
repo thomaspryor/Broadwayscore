@@ -8,7 +8,7 @@
   "fullText": "Democracy Dies in DarknessDarren Criss and Helen J. Shen in “Maybe Happy Ending.” (Matthew Murphy and Evan Zimmerman) Review by  Naveen KumarNovember 12, 2024 at 2:00 p.m. ESTNEW YORK — Art about artificial intelligence tends to warn us about the dangers of playing God and creating monsters. So there is an immediate element of surprise and delight to “Maybe Happy Ending,” a swoony and only-slightly-dystopian rom-com between robots.\n\nThe musical by Will Aronson and Hue Park, like most science fiction, still reflects on human experience, but with an eye toward exploring our best impulses rather than our worst. It’s a darling gem of a show with a big heart and a captivating sideways sensibility. And in a Broadway assembly line churning with revivals and remakes, it’s a refreshing model of innovation.",
   "dtliExcerpt": "The musical, about two obsolete companion robots who find each other, is a tender meditation on love, loneliness and what it means to be alive.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 88,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,22 +19,38 @@
   "contentTier": "truncated",
   "wordCount": 25,
   "llmScore": {
-    "score": 77,
+    "score": 88,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 85,
+      "high": 92
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 85,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The descriptive language is appreciative and thoughtful, using 'tender meditation' which suggests artistic merit, though lacks explicit enthusiasm or recommendation language that would push it higher. | GPT-4o: The review describes the musical as a 'tender meditation,' which suggests a positive experience. However, without more explicit recommendation language, the confidence is medium. | Gemini: The review describes the musical as a \"tender meditation,\" which suggests a positive experience and a recommendation to see it. While not explicitly stating \"must-see,\" the language leans towards a positive assessment.",
+    "keyPhrases": [
+      {
+        "quote": "It's a darling gem of a show with a big heart and a captivating sideways sensibility",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "it's a refreshing model of innovation",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "there is an immediate element of surprise and delight",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Strong positive language throughout with phrases like 'darling gem,' 'big heart,' and 'refreshing model of innovation' indicates clear enthusiasm and recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,12 +59,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T13:58:51.097Z",
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:34:54.591Z",
     "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
+    "inputTokens": 2506,
+    "outputTokens": 330,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 76,
@@ -89,5 +111,8 @@
   "archiveOrgUrl": "http://web.archive.org/web/20241113063825/https://www.washingtonpost.com/entertainment/theater/2024/11/12/maybe-happy-ending-broadway-review/",
   "textIssues": [
     "Word count too low: 131 (min: 300)"
-  ]
+  ],
+  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "previousLlmScore": 77,
+  "rescoreCompletedAt": "2026-02-01T15:34:54.591Z"
 }

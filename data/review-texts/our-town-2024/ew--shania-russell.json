@@ -10,58 +10,60 @@
   "bwwExcerpt": "Not coincidentally, the most striking aspects of this particular production are baked into the DNA of Wilder’s timeless play. There’s something undefinable missing: perhaps a cut line that was the secret skeleton key or merely the fact of changing the pacing and losing the reality of the show’s slow simplicity. Ultimately, Wilder’s words remain the magic; the progression from a day to a wedding to a funeral a guaranteed gut punch.",
   "showScoreExcerpt": "\"Leon’s inclusive approach to casting means the play better reflects life as we know it.\"",
   "originalScore": "B",
-  "assignedScore": 74,
+  "assignedScore": 45,
   "source": "show-score",
   "archivePath": "data/archives/reviews/our-town-2024/ew--shania-russell_2026-01-25.html",
   "textFetchedAt": "2026-01-25T05:04:44.559Z",
   "sourceMethod": "showscore",
   "scoreSource": "extracted-grade",
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 45,
+    "confidence": "low",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 35,
+      "high": 55
     },
-    "bucket": "Mixed",
-    "thumb": "Up",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
-      "book": 70,
+      "book": null,
       "music": null,
-      "performances": 79,
-      "direction": 73
+      "performances": null,
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "There's something undefinable missing: perhaps a cut line that was the secret skeleton key or merely the fact of changing the pacing and losing the reality of the show's slow simplicity",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Leon preserves this, as do his actors. Zoey Deutch, making her Broadway debut, is as instantly likable as ever",
+        "quote": "a text just as resonant 86 years after it was penned",
         "sentiment": "positive",
         "strength": 3
       },
       {
-        "quote": "Grade: B",
-        "sentiment": "positive",
-        "strength": 3
+        "quote": "Jim Parsons tells the audience, delivering the opening lines as Stage Manager",
+        "sentiment": "neutral",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The B grade and mixed praise for performances balanced against clear concerns about pacing changes and something 'missing' from the production indicates a qualified positive recommendation. | GPT-4o-mini: The review expresses a clear recommendation with praise for the performances and direction, despite some reservations about pacing and emotional impact.",
+    "reasoning": "This appears to be an incomplete review excerpt that provides plot summary and basic production information but lacks any clear critical evaluation or recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:43:22.653Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:49:10.183Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3862,
+    "outputTokens": 285,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -75,7 +77,7 @@
   "bwwThumb": "Up",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 74,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.948Z",
+  "rescoreCompletedAt": "2026-02-01T15:49:10.183Z",
   "contentTier": "complete",
   "wordCount": 1855,
   "truncationSignals": [

@@ -17,7 +17,7 @@
     "score": 78,
     "confidence": "medium",
     "range": {
-      "low": 73,
+      "low": 72,
       "high": 83
     },
     "bucket": "Positive",
@@ -30,7 +30,7 @@
     },
     "keyPhrases": [
       {
-        "quote": "comic genius remains entirely evident",
+        "quote": "comic genius remains entirely evident here",
         "sentiment": "positive",
         "strength": 4
       },
@@ -40,12 +40,12 @@
         "strength": 4
       },
       {
-        "quote": "lampooned everything",
+        "quote": "lampooned everything from scantily clad choruses to divas",
         "sentiment": "positive",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The review praises Idle's comedic talent and celebrates the score's theatrical energy and satirical elements, indicating clear appreciation for the show's entertainment value.",
+    "reasoning": "Strong praise for Idle's comic talent and the musical score, with appreciation for the show's satirical elements, indicating clear recommendation despite being a brief excerpt.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,11 +54,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:12:25.379Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:08:46.246Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2364,
+    "outputTokens": 324,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -69,7 +76,6 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "archivePath": "data/archives/reviews/spamalot-2023/nydailynews--chris_2026-01-30.html",
@@ -90,5 +96,6 @@
   "archiveOrgTimestamp": "20231125181516",
   "archiveOrgUrl": "http://web.archive.org/web/20231125181516/https://www.nydailynews.com/2023/11/16/broadway-review-spamalot-revival-still-hits-the-high-notes-even-as-it-ages/",
   "contentTier": "complete",
-  "wordCount": 835
+  "wordCount": 835,
+  "rescoreCompletedAt": "2026-02-01T16:08:46.246Z"
 }

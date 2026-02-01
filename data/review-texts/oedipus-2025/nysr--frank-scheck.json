@@ -7,25 +7,25 @@
   "publishDate": "November 13, 2025",
   "fullText": "★★★★☆ An onstage clock ticks urgently, both literally and metaphorically, in Robert Icke's updating of Sophocles' thousands-years-old Greek tragedy. Mark Strong and Lesley Manville deliver epic performances in this version that is as much political and psychological thriller as it is an examination of fate. While this Oedipus doesn't fully succeed in translating the original's poetic, grandiose style into modern terms, it provides a gripping theatrical experience that will be as much of a snob hit on Broadway as it was in London.\n\nIckes isn't coy about comparisons to recent events in this adaptation, which begins with a campaign-style video in which Oedipus (Strong), running for office as the leader of an unnamed country, declares that he'll soon be releasing his birth certificate to fully establish his identity. He also vows to investigate the death of the previous ruler Laius, to whose widow Jocasta (Manville) he's now married.\n\nThe action is set in the politician's sleek campaign office (designed by Hildegard Bechtler) on election night, where he's eagerly awaiting the election results along with his brother-in-law/campaign manager Creon (the instantly recognizable, veteran character actor John Carroll Lynch, making his New York stage debut), his daughter Antigone (Olivia Reis), sons Eteocles (Jordan Scowen) and Polyneices (James Wilbraham), and, much to his surprise, his elderly mother Merope (Anne Reid, devastating), who has arrived without warning.\n\nJust as he's settling in for a long evening, Oedipus is confronted by a blind homeless man, Teiresias (a striking Samuel Brewer), who offers dire pronouncements about Oedipus' fate that the politician angrily denounces, ordering his security forces to remove the interloper.\n\nIckes cleverly weaves in subtle and not-so-subtle allusions to the source material throughout the evening, but even those unfamiliar with the original will be able to enjoy the evening on its own melodramatic, if not exactly believable, terms. The modernistic writing feels a bit clunky at times, jarring uneasily with the play's weighty themes.\n\nBut if the events as depicted don't prove convincing, the performances by the two leads more than make up for it. Strong delivers a typically forceful, commanding turn, using his virile physicality to make his character's emotional tailspin all the more powerful. And Manville is simply shattering, especially in her harrowing delivery of her monologue in which she describes her tragic past as the victim of abuse that led them all into this mess.\n\nIckes' staging mainly proves powerful throughout, from the digital clock in the background that counts down the time, not only to the election results but also the revelation of the truth that shatters the characters' lives, to such visual devices as having a team of workmen gradually stripping the office of its furniture, mirroring the losses they endure.",
   "bwwExcerpt": "Ickes’ staging mainly proves powerful throughout, from the digital clock in the background that counts down the time, not only to the election results but also the revelation of the truth that shatters the characters’ lives (unity of time, don’t you know), to such visual devices as having a team of workmen gradually stripping the office of its furniture, mirroring the losses they endure.     Melissa",
-  "assignedScore": 76,
+  "assignedScore": 78,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T04:55:00.000Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Mark-Strong-and-Lesley-Manville-Star-in-OEDIPUS-on-Broadway-20251113",
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 76,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "high",
     "range": {
-      "low": 67,
-      "high": 85
+      "low": 75,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 60,
+      "book": 65,
       "music": null,
-      "performances": 89,
-      "direction": 79
+      "performances": 88,
+      "direction": 75
     },
     "keyPhrases": [
       {
@@ -34,30 +34,37 @@
         "strength": 5
       },
       {
-        "quote": "it doesn't fully succeed in translating the original's poetic, grandiose style into modern terms",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
         "quote": "it provides a gripping theatrical experience that will be as much of a snob hit on Broadway as it was in London",
         "sentiment": "positive",
         "strength": 4
+      },
+      {
+        "quote": "The modernistic writing feels a bit clunky at times, jarring uneasily with the play's weighty themes",
+        "sentiment": "negative",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic praises the performances extensively and finds the theatrical experience gripping despite significant reservations about the adaptation's success in modernizing the source material. | GPT-4o-mini: The review highlights strong performances and a gripping experience but notes some issues with the script, leading to a solid positive recommendation overall.",
+    "reasoning": "4/5 stars with strong praise for the lead performances and overall theatrical experience, despite acknowledged flaws in the modernized writing.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": false
+      "comparesToPrevious": false,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T15:51:27.425Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:42:53.000Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2982,
+    "outputTokens": 353,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -78,7 +85,7 @@
   "showScoreExcerpt": null,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 76,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.921Z",
+  "rescoreCompletedAt": "2026-02-01T15:42:53.000Z",
   "originalScore": "4/5 stars",
   "originalScoreNormalized": 80,
   "scoreSource": "live-fetch",

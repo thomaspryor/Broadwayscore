@@ -10,56 +10,63 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "bwwThumb": "Up",
   "originalScore": "5/5 stars",
-  "assignedScore": 73,
+  "assignedScore": 88,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 73,
-    "confidence": "medium",
+    "score": 88,
+    "confidence": "high",
     "range": {
-      "low": 60.5,
-      "high": 85.5
+      "low": 85,
+      "high": 92
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 85,
       "music": null,
-      "performances": 85,
-      "direction": null
+      "performances": 90,
+      "direction": 88
     },
     "keyPhrases": [
       {
-        "quote": "One of the chief delights of the production comes from the performance of Young as Lutiebelle",
+        "quote": "★★★★★ Toll the bell, Old Broadway. Times are changin', gone are the days, and hallelujah!",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The production is all that Davis, who died in 2005 at the age of 87, might have desired.",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "she is a star to be",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "she weaves a thorough spell",
+        "quote": "make this production at the Music Box well worth a visit",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Excerpt heavily praises individual performances but provides no overall assessment of the show's quality or recommendation. | GPT-4o-mini: The review highlights strong performances, particularly by Young, indicating a clear recommendation despite not addressing other elements of the production. | Note: Models differed by 15 points.",
+    "reasoning": "Five-star review with enthusiastic opening, consistent praise for performances (especially highlighting Kara Young and Leslie Odom Jr.), direction, and production values, concluding with clear recommendation that it's 'well worth a visit.'",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:20:00.757Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:54:57.524Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4039,
+    "outputTokens": 372,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 65,
@@ -70,7 +77,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 73,
   "archivePath": "data/archives/reviews/purlie-victorious-2023/nysr--steven-suskin_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:33:16.060Z",
@@ -88,7 +95,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250720151501",
   "archiveOrgUrl": "http://web.archive.org/web/20250720151501/https://nystagereview.com/2023/09/27/purlie-victorious-wickedly-funny-politically-provocative-antebellum-satire/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.974Z",
+  "rescoreCompletedAt": "2026-02-01T15:54:57.524Z",
   "dateSource": "extracted-from-url",
   "_scoreFixedFrom": "4/5 stars",
   "_scoreFixedAt": "2026-01-31T23:10:41.723Z",

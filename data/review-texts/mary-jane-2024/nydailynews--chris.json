@@ -17,16 +17,16 @@
     "score": 85,
     "confidence": "high",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 82,
+      "high": 88
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": 88,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 87,
+      "direction": 85
     },
     "keyPhrases": [
       {
@@ -35,30 +35,37 @@
         "strength": 4
       },
       {
-        "quote": "You leave after 90 minutes with a near-crushing awareness of the unfairness of life",
+        "quote": "Hard to think of another Broadway show that understands so well",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "Amy Herzog’s beautiful play 'Mary Jane' is, at its core, a study of the extraordinary lengths to which a mother will go to care for her child.",
+        "quote": "calibrates this one with an authenticity unfamiliar from hospital procedurals",
         "sentiment": "positive",
-        "strength": 5
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic calls the play 'beautiful' and describes a profound emotional impact that suggests exceptional theatrical power, indicating strong recommendation despite the heavy subject matter. | GPT-4o-mini: The review expresses strong appreciation for the play's emotional depth and thematic richness, indicating a clear recommendation to see it.",
+    "reasoning": "Despite discussing heavy subject matter, the critic consistently praises the writing, performances, and direction with phrases like 'beautiful play' and closes with high praise that it understands its subject better than other Broadway shows.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:09:01.325Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:32:30.770Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3163,
+    "outputTokens": 335,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 85,
@@ -69,7 +76,6 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 85,
   "archivePath": "data/archives/reviews/mary-jane-2024/nydailynews--chris_2026-01-29.html",
@@ -87,5 +93,6 @@
   "archiveOrgTimestamp": "20240520164332",
   "archiveOrgUrl": "http://web.archive.org/web/20240520164332/https://www.nydailynews.com/2024/04/23/broadway-review-mary-jane-rachel-mcadams-excels/",
   "contentTier": "complete",
-  "wordCount": 677
+  "wordCount": 677,
+  "rescoreCompletedAt": "2026-02-01T15:32:30.770Z"
 }

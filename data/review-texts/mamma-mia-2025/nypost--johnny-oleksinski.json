@@ -10,56 +10,63 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MAMMA-MIA-Returns-To-Broadway-20250814",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 85,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 89,
+    "score": 85,
     "confidence": "high",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 82,
+      "high": 88
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 90,
-      "performances": null,
-      "direction": null
+      "book": 88,
+      "music": 85,
+      "performances": 75,
+      "direction": 90
     },
     "keyPhrases": [
       {
-        "quote": "thank you for the musical",
+        "quote": "flamboyantly worth the wait",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "its foundations could withstand a nuclear blast",
+        "quote": "offers one of those nights when you sit back and let a nutty kind of joy just sweep over you",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "still the very best in the game",
+        "quote": "you'll be so happy you'll think you've just become a grandparent",
         "sentiment": "positive",
         "strength": 5
       }
     ],
-    "reasoning": "Claude: Enthusiastic praise with strong metaphors ('nuclear blast foundations', 'very best in the game') and gratitude for the show's uplifting qualities indicates clear recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong praise for the show, indicating it is a must-see.",
+    "reasoning": "Strong enthusiastic language throughout with phrases like 'flamboyantly worth the wait', 'nutty kind of joy', and 'rock-solid hit', despite some minor criticisms of individual performances.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:17:01.868Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:29:30.021Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3091,
+    "outputTokens": 348,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 88,
@@ -76,7 +83,7 @@
   ],
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 89,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.862Z",
+  "rescoreCompletedAt": "2026-02-01T15:29:30.021Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
   "wordCount": 543

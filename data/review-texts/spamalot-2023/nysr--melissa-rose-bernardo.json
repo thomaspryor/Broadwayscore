@@ -10,56 +10,63 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 70,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 70,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "high",
     "range": {
-      "low": 60,
-      "high": 80
+      "low": 75,
+      "high": 82
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 78,
-      "performances": null,
-      "direction": 70
+      "music": null,
+      "performances": 80,
+      "direction": 75
     },
     "keyPhrases": [
       {
-        "quote": "There are a few—starting with the crowd-pleaser",
+        "quote": "★★★★☆",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       },
       {
-        "quote": "And perhaps most memorably, there's \"You Won't Succeed on Broadway\"",
+        "quote": "it's as wonderfully silly as ever",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       },
       {
-        "quote": "It's a massive production number",
-        "sentiment": "positive",
+        "quote": "this is the Spamalot you remember—right down to the logo; it's just a little…slimmed down",
+        "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: This excerpt focuses positively on specific Act 2 numbers and production elements, but lacks overall assessment or clear recommendation language. | GPT-4o-mini: The review highlights enjoyable musical numbers and crowd-pleasing elements, suggesting a clear recommendation despite lacking a comprehensive assessment of the overall production.",
+    "reasoning": "Four-star review with enthusiastic language about the show being 'wonderfully silly as ever' and positive cast descriptions, with only minor notes about production being 'slimmed down'.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:18:10.069Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:08:56.742Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2850,
+    "outputTokens": 338,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 65,
@@ -70,7 +77,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 70,
   "archivePath": "data/archives/reviews/spamalot-2023/nysr--melissa-rose-bernardo_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:52:29.499Z",
@@ -92,7 +99,7 @@
   ],
   "fetchTier": 1,
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.032Z",
+  "rescoreCompletedAt": "2026-02-01T16:08:56.742Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
   "wordCount": 676

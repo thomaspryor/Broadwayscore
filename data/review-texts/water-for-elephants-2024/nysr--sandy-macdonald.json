@@ -9,30 +9,30 @@
   "bwwExcerpt": "Circus sagas so easily lend themselves to bathos: “Ridi, pagliaccio” and all that. Director Jessica Stone’s stage rendition of Water for Elephants – adapted by book writer Rick Elice from the best-selling novel (2006) and film (2011) – captures all the drama, but it’s clean-cut and concise, propulsive with passion and action. Unlike some other literary adaptations in the works or already on the boards, this production stands on its own merits as theatre. You could walk in with no prior knowledge",
   "bwwRoundupUrl": null,
   "originalScore": "4/5 stars",
-  "assignedScore": 79,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 79,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 78,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 80,
-      "music": null,
-      "performances": null,
-      "direction": 81
+      "book": 85,
+      "music": 78,
+      "performances": 88,
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "captures all the drama, but it's clean-cut and concise, propulsive with passion and action",
+        "quote": "You could walk in with no prior knowledge, no expectations, and be transported",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
         "quote": "this production stands on its own merits as theatre",
@@ -40,25 +40,32 @@
         "strength": 4
       },
       {
-        "quote": "You could walk in with no prior knowledge",
+        "quote": "Presto-chango: A full-blown circus campground springs to life as magically as a children's pop-up book",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic praises the adaptation's theatrical effectiveness and accessibility, specifically highlighting strong direction and successful translation from source material, indicating clear recommendation despite measured professional tone. | GPT-4o-mini: The review expresses strong approval of the production's direction and overall execution, indicating a solid recommendation despite a lack of specific praise for performances or the script.",
+    "reasoning": "Four-star review with consistent praise for the production's theatrical merits, strong performances, and impressive staging, with the critic emphasizing the show's ability to transport audiences and stand on its own as theater.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:43:39.965Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:35:51.476Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3631,
+    "outputTokens": 361,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -70,7 +77,7 @@
     "needsReviewReasons": []
   },
   "bwwThumb": "Up",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 79,
   "archivePath": "data/archives/reviews/water-for-elephants-2024/nysr--sandy-macdonald_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:35:50.633Z",
@@ -92,7 +99,7 @@
   ],
   "fetchTier": 1,
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.147Z",
+  "rescoreCompletedAt": "2026-02-01T16:35:51.476Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
   "wordCount": 854

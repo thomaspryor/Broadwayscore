@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 18,
+  "assignedScore": 25,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "needsScoring": true,
@@ -20,51 +20,58 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 18,
-    "confidence": "medium",
+    "score": 25,
+    "confidence": "high",
     "range": {
-      "low": 5.5,
-      "high": 30.5
+      "low": 20,
+      "high": 30
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": null,
+      "book": 20,
       "music": null,
-      "performances": 13,
-      "direction": null
+      "performances": 15,
+      "direction": 25
     },
     "keyPhrases": [
       {
-        "quote": "one of the most grating performances ever put on stage",
+        "quote": "Fun summer movies are being turned into dreary summer theater this August",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Ian Shaw imitates his father's every grimace and vocal mannerism, delivering one of the most grating performances ever put on stage",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "Robert Shaw's portrayal of Quint in 'Jaws' remains one of the most grating performances ever put on celluloid",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Ian Shaw imitates his father's every grimace and vocal mannerism",
+        "quote": "Guy Masterson's blunt direction does nothing to mitigate these over-the-top acting exercises",
         "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic uses extremely harsh language calling the lead performance 'one of the most grating performances ever put on stage' and criticizes other actors for mere imitation rather than original interpretation. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the performances and suggesting a lack of authenticity, leading to a strong recommendation against seeing the show. | Note: Models differed by 15 points.",
+    "reasoning": "The critic systematically dismantles nearly every aspect of the production, calling it 'dreary,' criticizing the performances as 'grating' and 'over-the-top acting exercises,' and finding fundamental flaws in the concept and execution.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:16:05.696Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:27:39.168Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3118,
+    "outputTokens": 376,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 25,
@@ -75,7 +82,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 18,
   "archivePath": "data/archives/reviews/the-shark-is-broken-2023/thewrap--robert-hofler_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:39:26.663Z",
@@ -91,7 +98,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250908152242",
   "archiveOrgUrl": "http://web.archive.org/web/20250908152242/https://www.thewrap.com/the-shark-is-broken-jaws-broadway-golden-theatre-bruce-shaw/",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.117Z",
+  "rescoreCompletedAt": "2026-02-01T16:27:39.168Z",
   "contentTier": "complete",
   "wordCount": 560
 }

@@ -9,7 +9,7 @@
   "bwwExcerpt": "For followers of the book and film, the climactic moment on stage remains equally thrilling — and the most creative stampede since the wildebeest run in “The Lion King” (whose co-producer Peter Schneider is also top-lined here). This underdog circus troupe may promote its entertainment as “Benzini Brothers’ Most Spectacular Show on Earth,” but for this rube’s nickels, “Water for Elephants” could be the greatest show on Broadway.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
@@ -48,26 +48,21 @@
   "archiveOrgTimestamp": "20251112075210",
   "archiveOrgUrl": "http://web.archive.org/web/20251112075210/https://variety.com/2024/legit/reviews/water-for-elephants-review-broadway-musical-1235948534/",
   "llmScore": {
-    "score": 94,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 87.5,
-      "high": 100
+      "low": 78,
+      "high": 86
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 88,
-      "music": 86,
-      "performances": 93,
-      "direction": 95
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 85
     },
     "keyPhrases": [
-      {
-        "quote": "Water for Elephants could be the greatest show on Broadway",
-        "sentiment": "positive",
-        "strength": 5
-      },
       {
         "quote": "offers escapism, enchantment and heart — and thrills, too",
         "sentiment": "positive",
@@ -77,9 +72,14 @@
         "quote": "elevates the musical to new and literal heights with its seamless integration of theatrical and cirque artistry",
         "sentiment": "positive",
         "strength": 4
+      },
+      {
+        "quote": "Then 'Water for Elephants' would be the show of choice",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review concludes with the superlative 'could be the greatest show on Broadway' and consistently praises every aspect from performances to technical elements with enthusiasm and no significant reservations. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its escapism, strong performances, and creative staging, indicating a must-see experience.",
+    "reasoning": "Strong positive language throughout with clear recommendation signals ('show of choice', 'elevates to new heights') and enthusiastic praise for the production's artistic integration, though excerpt appears incomplete.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
@@ -88,11 +88,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:45:09.729Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:36:43.934Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2389,
+    "outputTokens": 351,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 92,
@@ -111,7 +118,7 @@
   "dtliExcerpt": "This underdog circus troupe may promote its entertainment as “Benzini Brothers’ Most Spectacular Show on Earth,” but for this rube’s nickels, “Water for Elephants” could be the greatest show on Broadway.",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 94,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.151Z",
+  "rescoreCompletedAt": "2026-02-01T16:36:43.934Z",
   "contentTier": "complete",
   "wordCount": 924
 }

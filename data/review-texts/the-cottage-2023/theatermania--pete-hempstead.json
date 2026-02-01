@@ -12,37 +12,37 @@
   "source": "dtli",
   "llmScore": {
     "score": 82,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 78,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 75,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 88,
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "There are few things more pleasant",
+        "quote": "positively delightful comedy",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "laugh for two hours straight",
+        "quote": "There are few things more pleasant on a steamy New York afternoon or evening than to sit down in a cool theater, turn off your brain, and laugh for two hours straight",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "more than fits that bill",
+        "quote": "The Cottage is well worth paying a visit to",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Clear positive recommendation emphasizing the show's entertainment value and ability to deliver consistent laughs, though lacks specific praise for individual elements. | GPT-4o-mini: The review expresses a strong positive sentiment about the show's ability to entertain and provide laughter, indicating a clear recommendation.",
+    "reasoning": "The critic offers clear enthusiasm and explicit recommendation with consistent praise for performances, direction, and production values, describing it as 'positively delightful' and 'well worth paying a visit to.'",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
@@ -51,11 +51,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:15:54.653Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:17:08.656Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3741,
+    "outputTokens": 351,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -75,7 +82,7 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 82,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.068Z",
+  "rescoreCompletedAt": "2026-02-01T16:17:08.656Z",
   "textQualityOverride": "batch-fix-2026-01-30",
   "contentTier": "complete",
   "wordCount": 891

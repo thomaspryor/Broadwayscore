@@ -32,16 +32,16 @@
     "score": 88,
     "confidence": "high",
     "range": {
-      "low": 80.5,
-      "high": 95.5
+      "low": 85,
+      "high": 92
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 84,
-      "music": 85,
-      "performances": 89,
-      "direction": 89
+      "book": 85,
+      "music": 88,
+      "performances": 90,
+      "direction": 87
     },
     "keyPhrases": [
       {
@@ -52,7 +52,7 @@
       {
         "quote": "Under the pinpoint direction of Daniel Aukin, everyone inhabits their roles with rare authenticity",
         "sentiment": "positive",
-        "strength": 5
+        "strength": 4
       },
       {
         "quote": "Stereophonic compels as a poignant character study and needle-sharp comedy",
@@ -60,20 +60,27 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The review consistently praises all elements of the production with sophisticated analysis and strong positive language throughout, culminating in clear endorsement of the show's artistic merit. | GPT-4o-mini: The review expresses strong enthusiasm for the production, highlighting its character study, direction, and performances, indicating a must-see experience.",
+    "reasoning": "The reviewer provides detailed praise for all aspects of the production - script, music, performances, and direction - with specific examples and enthusiastic language throughout, concluding with clear appreciation for the show as both character study and comedy.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:42:40.942Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:10:59.406Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4270,
+    "outputTokens": 357,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 85,
@@ -86,10 +93,8 @@
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 88,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.041Z",
+  "rescoreCompletedAt": "2026-02-01T16:10:59.406Z",
   "textQualityOverride": "batch-fix-2026-01-30",
   "contentTier": "complete",
-  "wordCount": 1305,
-  "wrongProduction": true,
-  "wrongProductionNote": "Off-Broadway/pre-Broadway run at Playwrights Horizons. Reusable if off-Broadway show entry is created."
+  "wordCount": 1305
 }

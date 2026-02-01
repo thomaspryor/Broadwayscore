@@ -8,7 +8,7 @@
   "fullText": "This is the review of the pre-Broadway staging of “Illinoise” that concluded its run at the Park Avenue Armory on March 23. The show has now transferred to Broadway’s St. James Theater, where it is scheduled to run through Aug. 10. The cast is unchanged except that Brandt Martinez is playing the role formerly played by Robbie Fairchild.\n\nWhen emotions get too big for speech, you sing; when too big even for song, you dance.\n\nOr so goes the standard theatrical formula. But what if the emotions are huge from the get-go?\n\nThat’s the challenge and, it turns out, the glory of “Illinoise,” a mysterious and deeply moving dance-musical hybrid based on Sufjan Stevens’s similarly named 2005 concept album. (The title has acquired an extra “e.”) Exploring the hot zone between childhood and adulthood, when emotions can be at their most overwhelming, the show dispenses with dialogue completely and leaps directly to movement and song.\n\nBut not together: Among a thousand other smart choices, Justin Peck (who directed and choreographed) and Jackie Sibblies Drury (who, with Peck, wrote the story) have delaminated the songs from the characters, thus avoiding the jukebox trap that diminishes both.\n\nInstead, in the show, which opened on Thursday at the Park Avenue Armory, Stevens’s wistful and sometimes enigmatic numbers, set in various Illinois locations, are performed by three vocalists on platforms high above the action, wearing butterfly wings as if to stay aloft. Below, the 12 acting dancers (or are they dancing actors?) perform a parallel story without being forced into overliteral connections.\n\nOr rather, they perform an anthology of stories, a kind of exquisite corpse of late adolescence. As they collect around a clump of lanterns that suggest an urban campfire — the poetic set, including upside-down trees, is by Adam Rigg — they engage in what seems to be a rite of passage: the sharing of deep truths with sympathetic friends. The truths are often traumas, of course: first love, first loss, first disillusionment, first death. They are “read” (that is, danced) from notebooks decorated, again, with butterflies, suggesting the privacy of cocoons and the fragility of emergence.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
   "dtliExcerpt": "But not together: Among a thousand other smart choices, Justin Peck (who directed and choreographed) and Jackie Sibblies Drury (who, with Peck, wrote the story) have delaminated the songs from the characters, thus avoiding the jukebox trap that diminishes both.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/illinoise/",
@@ -31,38 +31,38 @@
   "scoreConfidence": "medium",
   "extractedPhrase": "avoid",
   "llmScore": {
-    "score": 85,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 78,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 82,
+      "book": null,
       "music": 85,
-      "performances": 88,
-      "direction": 88
+      "performances": null,
+      "direction": 80
     },
     "keyPhrases": [
       {
-        "quote": "That's the challenge and, it turns out, the glory of 'Illinoise,' a mysterious and deeply moving dance-musical hybrid",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Among a thousand other smart choices, Justin Peck (who directed and choreographed) and Jackie Sibblies Drury (who, with Peck, wrote the story) have delaminated the songs from the characters, thus avoiding the jukebox trap that diminishes both",
+        "quote": "That's the challenge and, it turns out, the glory of \"Illinoise\"",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "they perform an anthology of stories, a kind of exquisite corpse of late adolescence",
+        "quote": "a mysterious and deeply moving dance-musical hybrid",
         "sentiment": "positive",
         "strength": 4
+      },
+      {
+        "quote": "the show dispenses with dialogue completely and leaps directly to movement and song",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review uses strong praise like 'glory,' 'deeply moving,' and 'thousand other smart choices' while highlighting innovative artistic decisions and poetic staging, indicating clear enthusiasm despite the incomplete text. | GPT-4o-mini: The review expresses strong admiration for the unique approach and emotional depth of the production, indicating a clear recommendation to see it.",
+    "reasoning": "The critic describes the show as 'the glory' and 'deeply moving' with clear admiration for the innovative approach, indicating a strong positive recommendation despite the excerpt's brevity.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -71,11 +71,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:35:43.555Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:19:33.062Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2516,
+    "outputTokens": 337,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 85,
@@ -93,7 +100,7 @@
   "showScoreExcerpt": "\"a mysterious and deeply moving dance-musical\"",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 85,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.820Z",
+  "rescoreCompletedAt": "2026-02-01T15:19:33.062Z",
   "contentTier": "complete",
   "wordCount": 379
 }

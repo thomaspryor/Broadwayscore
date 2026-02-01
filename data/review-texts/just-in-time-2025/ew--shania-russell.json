@@ -10,7 +10,7 @@
   "originalScore": "A-",
   "_scoreFixedFrom": "A",
   "_scoreFixedReason": "Review text ends with 'Grade: A–' (A-minus), not A",
-  "assignedScore": 64,
+  "assignedScore": 45,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://ew.com/just-in-time-review-jonathan-groff-irresistible-bobby-darin-11721853",
@@ -18,51 +18,58 @@
   "dtliExcerpt": "When Just In Time does conclude, it goes out with an exuberant bang, and though the vapor forms, it’s clear that this is a show guaranteed to linger… whether it be the toe-tapping tunes, the memory of Groff’s enthralling presence, or a certain thought, sure to cross your mind on the way out: “When can I see it again?”",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 64,
-    "confidence": "high",
+    "score": 45,
+    "confidence": "low",
     "range": {
-      "low": 57.5,
-      "high": 70.5
+      "low": 35,
+      "high": 55
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
-      "book": 33,
-      "music": 83,
-      "performances": 82,
-      "direction": 73
+      "book": null,
+      "music": 75,
+      "performances": 78,
+      "direction": 82
     },
     "keyPhrases": [
       {
-        "quote": "When Groff is singing and dancing, 'Just in Time' absolutely dazzles",
+        "quote": "dazzling charm of its stars",
         "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "when he or anybody else stops to recite dialogue from Leight and Oliver's book, 'Just in Time' simply deadens",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "he should have developed a completely different book",
-        "sentiment": "negative",
         "strength": 4
+      },
+      {
+        "quote": "stunning lighting design",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "serves as a love letter to live music",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review is sharply divided between high praise for performances/music/design when characters sing and dance versus harsh criticism of the book/dialogue that 'deadens' the show. | GPT-4o-mini: The review highlights strong performances and music but criticizes the book, leading to a mixed recommendation.",
+    "reasoning": "The excerpt shows clear praise for technical elements and performances but appears incomplete, cutting off mid-sentence with just 'Melissa', making it impossible to determine the critic's overall recommendation or any potential criticisms.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:32:01.103Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:23:16.699Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2401,
+    "outputTokens": 322,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "bwwExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated BWW excerpt with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 62,
@@ -98,7 +105,7 @@
   "scoreExtractedFrom": "archive",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 64,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.837Z",
+  "rescoreCompletedAt": "2026-02-01T15:23:16.699Z",
   "contentTier": "complete",
   "wordCount": 1147,
   "truncationSignals": [

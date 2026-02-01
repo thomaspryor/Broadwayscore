@@ -9,56 +9,63 @@
   "bwwExcerpt": "Even at a time of overwhelming competition on Broadway, there may well be enough check boxes ticked for some – Lange dancing to I Will Survive in a gay club definitely straddles a few – but Mother Play isn’t quite specific or emotionally searing enough to live beyond its admittedly alluring reference points. It works in moments, most of them the result of Lange’s ineffable presence, but as a whole, it’s not as commanding as her or its title demand, perhaps more estranged aunt than mother.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "originalScore": null,
-  "assignedScore": 57,
+  "assignedScore": 58,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 57,
+    "score": 58,
     "confidence": "high",
     "range": {
-      "low": 50.5,
-      "high": 63.5
+      "low": 55,
+      "high": 62
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 48,
+      "book": 45,
       "music": null,
-      "performances": 74,
-      "direction": 53
+      "performances": 75,
+      "direction": 50
     },
     "keyPhrases": [
       {
-        "quote": "isn't quite specific or emotionally searing enough to live beyond its admittedly alluring reference points",
+        "quote": "Mother Play isn't quite specific or emotionally searing enough to live beyond its admittedly alluring reference points",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "It works in moments, most of them the result of Lange's ineffable presence",
+        "quote": "Mother Play sees a major writer teaming up with a major actor to give us a minor work",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "spending so much uninterrupted time living with an actor of her calibre and dazzle is a rich reward",
         "sentiment": "positive",
         "strength": 3
-      },
-      {
-        "quote": "it's not as commanding as her or its title demand, perhaps more estranged aunt than mother",
-        "sentiment": "negative",
-        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic acknowledges Lange's compelling performance and some effective moments but finds the play fundamentally lacking in emotional impact and specificity, suggesting conditional interest rather than a clear recommendation. | GPT-4o-mini: The review indicates a mix of positive moments due to Lange's performance but overall suggests the production lacks emotional depth and specificity.",
+    "reasoning": "The review praises Jessica Lange's performance but finds the play itself underwhelming and emotionally underpowered, concluding it's a 'minor work' despite its pedigree.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:09:21.215Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:39:23.894Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3925,
+    "outputTokens": 365,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 58,
@@ -74,7 +81,6 @@
   "dateSource": "could-not-extract",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 57,
   "isFullReview": true,
@@ -94,5 +100,6 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "rescoreCompletedAt": "2026-02-01T15:39:23.894Z"
 }

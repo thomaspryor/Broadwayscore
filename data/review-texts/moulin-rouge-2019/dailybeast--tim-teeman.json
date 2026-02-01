@@ -8,7 +8,7 @@
   "fullText": null,
   "bwwExcerpt": "theatrical entertainment is, as we end this panicked second decade of the 21st century, no longer immersive enough. The bar has risen. Ergo, \"Moulin Rouge! The Musical.\" Yes, baby, you're a firework. Tim Teeman, The Daily Beast : Not that the thumping, pumping Moulin Rouge allows you to dwell on its misogyny. This is musical as spectacle, so if you don't exactly feel the peril and passion of Christian and Satine's doomed romance, then no matter, because another visual bonbon will be thrown at you soon enough. Alexis Soloski, The Guardian : You could be forgiven for thinking that this tale has reached its sell-by date. But Moulin Rouge is one of those shows that is not only critic-proof, but maybe also story-proof. In Alex Timbers's production, with a book by John Logan, the characters are so thinly drawn that they disappear behind their corsetry and the love triangle so lopsided that it defies most laws of geometry. Any subtext has been shoved into a push-up bra and short shorts. It do",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOULIN-ROUGE-Opens-On-Broadway-See-What-The-Critics-Think-20190725",
@@ -16,57 +16,65 @@
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 64,
+    "score": 62,
     "confidence": "medium",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": null,
+      "book": 35,
       "music": null,
       "performances": null,
-      "direction": null
+      "direction": 70
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges the show as entertainment and spectacle while criticizing thin characters and lack of emotional depth. The tone suggests visual appeal compensates for narrative weaknesses - neither strongly recommending nor discouraging attendance. | GPT-4o: The review highlights the spectacle of the show but criticizes the lack of emotional depth and character development. The tone suggests that while the show is visually entertaining, it lacks substance, leading to a mixed recommendation. | Gemini: The review acknowledges the show's flaws (thin characters, superficiality) but suggests it's still entertaining as a spectacle. The phrase \"critic-proof\" also implies a level of enjoyment despite shortcomings.",
+    "keyPhrases": [
+      {
+        "quote": "This is musical as spectacle, so if you don't exactly feel the peril and passion of Christian and Satine's doomed romance, then no matter, because another visual bonbon will be thrown at you soon enough",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Moulin Rouge is one of those shows that is not only critic-proof, but maybe also story-proof",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "the characters are so thinly drawn that they disappear behind their corsetry and the love triangle so lopsided that it defies most laws of geometry",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Critics acknowledge the spectacular visual production value while criticizing the thin story and characters, suggesting a show that succeeds as spectacle despite narrative weaknesses.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T14:57:02.892Z",
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:40:51.292Z",
     "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
+    "inputTokens": 2558,
+    "outputTokens": 389,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "bwwExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated BWW excerpt"
+    }
   },
-  "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 75,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
-  },
+  "ensembleData": null,
   "sources": [
     "bww-roundup"
   ],
   "contentTier": "excerpt",
   "wordCount": 0,
   "rescoreReason": "low-conf: prompt=3.0.0, delta=30, upgrading to V5 + 3 models",
-  "rescoreCompletedAt": "2026-02-01T14:57:02.892Z"
+  "rescoreCompletedAt": "2026-02-01T15:40:51.292Z"
 }

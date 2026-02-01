@@ -9,24 +9,24 @@
   "bwwExcerpt": "At the Armory, those same stories felt monumental — a revolt of mighty compassion against a cruel, suffocating world. And now, as Ilinoise settles in on Broadway, Peck has found a harmony between those two modes, hitting on a beautiful alchemy of personal warmth and epic scale.         Average Rating: 80.0% {   \"@context\":\"https://schema.org\",   \"@type\":\"LiveBlogPosting\",   \"@id\":\"/article/Review-Roundup-ILLINOISE-Arrives-on-Broadway-20240426\",   \"about\":{     \"@type\":\"Event\",     \"startDate\":\"2",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ILLINOISE-2024",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 88,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 89,
-    "confidence": "high",
+    "score": 88,
+    "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 82,
+      "high": 92
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
+      "book": 85,
+      "music": 90,
       "performances": null,
-      "direction": 85
+      "direction": 88
     },
     "keyPhrases": [
       {
@@ -40,25 +40,32 @@
         "strength": 5
       },
       {
-        "quote": "has traded the grandeur of Park Avenue Armory's monumental Drill Hall for a gentler intimacy",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "the wondrous new dance-musical Illinoise keeps on growing in subtle and fascinating ways",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic uses extraordinary superlatives like 'miracle' and 'magical work of fierce heart' with no negative caveats, indicating strong positive recommendation despite this being only an excerpt. | GPT-4o-mini: The review expresses unqualified enthusiasm and emotional depth, indicating a strong recommendation to see the show.",
+    "reasoning": "The critic uses superlative language ('miracle of a show', 'magical work') and describes deep emotional connection, indicating strong enthusiasm despite the excerpt ending mid-review.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:36:50.120Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:19:55.794Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2737,
+    "outputTokens": 334,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 88,
@@ -77,7 +84,7 @@
   "showScoreExcerpt": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 89,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.822Z",
+  "rescoreCompletedAt": "2026-02-01T15:19:55.794Z",
   "contentTier": "complete",
   "wordCount": 1027
 }

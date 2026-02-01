@@ -7,32 +7,32 @@
   "publishDate": "April 26, 2024",
   "fullText": "Vogel’s nuanced exploration of her own family sets the stage for a profound and humorous new American play.\n\nGood morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Mother Play.”\n\nPaula Vogel may be playwriting royalty, but if her latest work “Mother Play” is any indication, she has not lost sight of the instruction in the first half of her job title: play. In this new, often funny mashup between a memory play and an apartment tragedy (Vogel calls it “a play in five evictions”), the dramatist turns her typically insightful lens on her own family. The work is largely autobiographical about her complicated mother and her intermittently successful attempts to care for and accept her queer children, Carl (Jim Parsons) and Martha (Celia Keenan-Bolger). Phyllis (Jessica Lange) is the play’s booze-bolstered matriarch.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 78,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 76,
+    "score": 78,
     "confidence": "medium",
     "range": {
-      "low": 67,
-      "high": 85
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 78,
+      "book": 80,
       "music": null,
       "performances": null,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "Paula Vogel may be playwriting royalty",
+        "quote": "Vogel's nuanced exploration of her own family sets the stage for a profound and humorous new American play",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "often funny mashup between a memory play and an apartment tragedy",
+        "quote": "she has not lost sight of the instruction in the first half of her job title: play",
         "sentiment": "positive",
         "strength": 3
       },
@@ -42,7 +42,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "Claude: This excerpt shows appreciation for Vogel's playful approach and describes the work positively as 'often funny' with her 'typically insightful lens,' suggesting a qualified recommendation despite limited detail. | GPT-4o-mini: The review expresses positive sentiments about the play's humor and Vogel's insightful writing, indicating a strong recommendation despite the lack of specific praise for performances or direction.",
+    "reasoning": "The review consistently praises Vogel's writing as 'nuanced,' 'profound,' 'humorous,' and 'insightful' with appreciation for the autobiographical approach, indicating clear positive recommendation despite being an excerpt.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,11 +51,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:07:39.454Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:39:01.932Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2521,
+    "outputTokens": 364,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -76,7 +83,7 @@
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 76,
   "archivePath": "data/archives/reviews/mother-play-2024/broadwaynews--brittani-samuel_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T15:04:35.008Z",
+  "textFetchedAt": "2026-02-01T14:03:39.101Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -90,7 +97,7 @@
   "textIssues": [
     "Word count too low: 156 (min: 300)"
   ],
-  "rescoreCompletedAt": "2026-01-29T14:31:51.900Z",
+  "rescoreCompletedAt": "2026-02-01T15:39:01.932Z",
   "archiveOrgTimestamp": "20251018171155",
   "archiveOrgUrl": "http://web.archive.org/web/20251018171155/https://www.broadwaynews.com/the-broadway-review-mother-play-is-tk/",
   "contentTier": "truncated",

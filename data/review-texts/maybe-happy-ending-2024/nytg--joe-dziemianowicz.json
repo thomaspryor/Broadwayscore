@@ -8,24 +8,24 @@
   "fullText": "Who could have imagined that a musical depicting romantic sparks between two robots would emerge as an emotional highlight of this Broadway season?\n\nBut a Kleenex-worthy payoff is just one of the delights of the artfully crafted Maybe Happy Ending, an exceptionally well-oiled and visually sublime production.\n\nThe story is set outside Seoul, Korea, in the near future. An endearing Darren Criss stars as Oliver, an obsolete, anthropomorphic \"HelperBot\" relegated to a machine scrapyard. He naively expects to reunite with his ex-employer.\n\nBroadway newcomer Helen J. Shen shines as Claire, a decommissioned later-model bot with a dying battery. The two meet when she knocks on his door to borrow his charger. In rom-com fashion, they click. She joins him on a trip to reunite with his former owner, James (Marcus Choi), which leads to insights about the nature of life, memory, and love.\n\nThe story could short-circuit at any moment by turning too syrupy, but creators Will Aronson and Hue Park deftly sidestep that potential trap. The duo's book is streaked with dark realities that shade the story.\n\nTheir songs are consistently catchy, whether it's the seemingly simple \"World Within My Room,\" Oliver's ode to life as he knows it, or the stirring title track. The gently calibrated score fits the characters.\n\nDirector Michael Arden's gorgeous staging makes the most of Dane Laffrey's multilevel sets behind sliding panels and George Reeve's floor-to-ceiling videos. As Oliver and Claire fall, it's easy to do the same for the show. No maybe about it — Maybe Happy Ending has theatrical magic.\n\nWhile it's relatively early in the Broadway season, it's a safe bet that one of its most romantic moments will be from Oliver and Claire's journey. It's lit by fireflies and underscored by strings made for swooning. You will.\n\nMaybe Happy Ending is a small-scale musical with a big heart in which all the pieces come together beautifully.",
   "showScoreExcerpt": "\"Maybe Happy Ending [is] an exceptionally well-oiled and visually sublime production... Broadway newcomer Helen J. Shen shines as Claire... Director Michael Arden’s gorgeous staging makes the most of Dane Laffrey’s multilevel sets behind sliding panels and George Reeve’s floor-to-ceiling videos... Maybe Happy Ending has theatrical magic.\"",
   "originalScore": null,
-  "assignedScore": 90,
+  "assignedScore": 88,
   "source": "playwright-scraped",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T05:25:00.000Z",
   "llmScore": {
-    "score": 90,
+    "score": 88,
     "confidence": "high",
     "range": {
-      "low": 83,
-      "high": 97
+      "low": 85,
+      "high": 92
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 86,
+      "book": 85,
       "music": 88,
-      "performances": 92,
-      "direction": 93
+      "performances": 90,
+      "direction": 92
     },
     "keyPhrases": [
       {
@@ -44,20 +44,27 @@
         "strength": 5
       }
     ],
-    "reasoning": "Claude: Strong enthusiasm throughout with superlative language like 'theatrical magic' and 'visually sublime,' plus explicit declaration that 'all the pieces come together beautifully' indicates clear recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production's emotional depth, performances, and overall execution, indicating it as a must-see.",
+    "reasoning": "Enthusiastic praise throughout with superlatives like 'theatrical magic' and 'visually sublime,' highlighting strong performances, direction, and cohesive storytelling with no significant reservations.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:11:05.435Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:33:58.634Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2764,
+    "outputTokens": 342,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 88,
@@ -74,7 +81,7 @@
   "bwwThumb": null,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 90,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.878Z",
+  "rescoreCompletedAt": "2026-02-01T15:33:58.634Z",
   "contentTier": "complete",
   "wordCount": 316
 }

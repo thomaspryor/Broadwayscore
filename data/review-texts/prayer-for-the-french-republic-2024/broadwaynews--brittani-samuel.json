@@ -7,23 +7,23 @@
   "publishDate": "January 10, 2024",
   "fullText": "Joshua Harmon’s mature, time-sweeping drama traces a French Jewish family’s decades-long search for an impregnable place to call home. Good morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Prayer for the French Republic.” It is widely understood that there are five major stages of grief: denial, anger, bargaining, depression and acceptance. Members of the Benhamou family — matriarch Marcelle (a pitch-perfect Betsy Aidem), in particular — cycle through each one. As Jewish people who have lived in France for decades (the play toggles between the years 1944-1946 and 2016-2017), death is depressingly familiar. But here, playwright Joshua Harmon explores what happens when a family is daunted by another kind of loss: the loss of home. In the wake of an anti-Semitic surge in Paris, the 2016 Benhamou family members bicker over the decision to flee their homestead in France. Harmon meticulously architects characters so personable and living-room spats so heightened that you’ll question for a moment if you’re not fighting with relatives in your own home. His script is ripe with smart, snappy language about the history of conflict and Jewish expulsion, but never condescends to its audience — even in its inevitably didactic moments. In fact, Harmon tends to buoy the headiest moments of the play with humor (like when daughter Elodie — played by the crackling Francis Benhamou — devours a nine-page tirade about American ignorance and history’s immorality). Already have an account? Sign in Already have an account? Log in",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 78,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 84,
-    "confidence": "high",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 77.5,
-      "high": 90.5
+      "low": 75,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": 80,
       "music": null,
-      "performances": 88,
-      "direction": 80
+      "performances": 82,
+      "direction": 78
     },
     "keyPhrases": [
       {
@@ -34,15 +34,15 @@
       {
         "quote": "lives up to its gargantuan, time-leaping ambitions",
         "sentiment": "positive",
-        "strength": 5
+        "strength": 4
       },
       {
         "quote": "sturdy theatrical vehicle for a large cast of actors to delve deep into character work",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review uses strong positive language like 'formidable feat' and emphasizes that the production successfully achieves its ambitious scope while providing excellent opportunities for the cast. | GPT-4o-mini: The review expresses strong praise for the production's ambition and effectiveness, indicating a clear recommendation.",
+    "reasoning": "Consistently positive language praising the play's ambitions, execution, and opportunities for strong performances, with no negative caveats mentioned.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -51,11 +51,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:09:35.426Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:52:37.627Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2351,
+    "outputTokens": 322,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 82,
@@ -75,7 +82,7 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 84,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.965Z",
+  "rescoreCompletedAt": "2026-02-01T15:52:37.627Z",
   "truncationSignals": [
     "no_ending_punctuation"
   ],

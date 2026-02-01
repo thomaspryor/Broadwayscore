@@ -8,26 +8,26 @@
   "fullText": "It seems every other year at this point we get a new bio-jukebox musical of some singer with a troubled past living in the 40s, 50s, or 60s, and Donnie Kirshner appears in some way. There is just one issue that all those other musicals have… they don't have Jonathan Groff in them.\n\nFresh off his Tony Award-winning performance as Franklin Shepard in last season's fantastic Merrily We Roll Along revival, Groff is back on Broadway this time at the intimate Circle In The Square where Just In Time officially opens tonight. Based on the life of Bobby Darin, and featuring all his greatest hits, this new musical takes everything we know about conventional bio-musicals and throws it out the window.\n\nGroff became enamored with Darin after performing his music at the 92nd Street Y back in 2018, and ever since then has been waiting for tonight. He enlisted the help of Alex Timbers who directs (and developed) the piece with a book by Warren Leight and Isaac Oliver. The show starts out in a nightclub in 2025 with Groff on stage and he effortlessly transforms right before our very eyes — it's an astonishing feat that has the audience enraptured at every point.\n\nDuring intermission, a very polite British tourist asked me if I had ever seen Groff perform on stage — it was her first time ever seeing him and she was gobsmacked by his talent. As well she should be, since Groff is delivering a career-defining highlight that is sure to be talked about for years to come.\n\nWhen we add in the cast of stunning supporting characters including the heartwrenching Michele Pawk (who should be in every musical ever) as Darin's mother Polly and the incredible Emily Bergl as his sister Nina, the performance really comes together. Timbers directs Groff and company to use up every inch of space around the theatre and immerses us in Darin's life. Pop icon Gracie Lawrence returns to Broadway as the vibrant Connie Francis — her belting is worth the price of admission alone. She's paired with the equally charming Sandra Dee who graciously takes over narration from Darin at points to give us her POV. Of course the highlight of the evening was the music (Andrew Resnick oversaw music supervision and orchestrations with Michael Thurber). That big band sound carries us away as if we were at the Copa. And boy are they moving! Shannon Lewis makes her Broadway debut as a choreographer, and what a lovely debut it is.\n\nWith a terrific full band right on stage the entire time, we are transported to the streets of East Harlem, Vegas, and even Portofino thanks to versatile nightclub scenic design by Derek McLane. I task you with finding a leading man today with half the charisma that Jonathan Groff possesses. He brings not just the story, but the very soul of Bobby Darin to life. If there is one musical to see this season, you might as well grab your bathing suit and come Splish Splash in the basement of Wicked - you won't be disappointed.",
   "dtliExcerpt": "With a terrific full band right on stage the entire time, we are transported to the streets of East Harlem, Vegas, and even Portofino thanks to versatile nightclub scenic design by Derek McLane. I task you with finding a leading man today with half the charisma that Jonathan Groff possesses. He brings not just the story, but the very soul of Bobby Darin to life. If there is one musical to see this season, you might as well grab your bathing suit and come Splish Splash in the basement of Wicked – you won’t be disappointed.",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 93,
   "source": "dtli",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T23:30:00.000Z",
   "sourceMethod": "playwright",
   "bwwExcerpt": "With a terrific full band right on stage the entire time, we are transported to the streets of East Harlem, Vegas, and even Portofino thanks to versatile nightclub scenic design by Derek McLane. I task you with finding a leading man today with half the charisma that Jonathan Groff possesses. He brin...",
   "llmScore": {
-    "score": 94,
+    "score": 93,
     "confidence": "high",
     "range": {
-      "low": 87.5,
-      "high": 100
+      "low": 90,
+      "high": 96
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 90,
-      "performances": 98,
-      "direction": 92
+      "music": 88,
+      "performances": 95,
+      "direction": 87
     },
     "keyPhrases": [
       {
@@ -43,23 +43,30 @@
       {
         "quote": "it's an astonishing feat that has the audience enraptured at every point",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The reviewer gives an unqualified endorsement calling it 'the one musical to see this season' with superlative praise for Groff's 'career-defining' performance and promises audiences 'won't be disappointed.' | GPT-4o-mini: The review expresses unqualified enthusiasm for the performances, particularly Groff's, and strongly recommends seeing the show.",
+    "reasoning": "The review contains unqualified praise with superlatives like 'astonishing feat,' 'career-defining highlight,' and explicitly states 'If there is one musical to see this season' - clear rave territory with no meaningful criticisms.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T15:49:14.374Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:24:19.095Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3001,
+    "outputTokens": 390,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 92,
@@ -74,7 +81,7 @@
   "showScoreExcerpt": null,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 94,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.840Z",
+  "rescoreCompletedAt": "2026-02-01T15:24:19.095Z",
   "contentTier": "complete",
   "wordCount": 517
 }

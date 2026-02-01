@@ -9,56 +9,63 @@
   "showScoreExcerpt": "\"McAdams works in ways that tend toward the understated, yet precisely observed.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/mary-jane-broadway",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 69,
-    "confidence": "medium",
+    "score": 82,
+    "confidence": "high",
     "range": {
-      "low": 60.5,
-      "high": 77.5
+      "low": 78,
+      "high": 85
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 85,
       "music": null,
-      "performances": 73,
-      "direction": null
+      "performances": 88,
+      "direction": 80
     },
     "keyPhrases": [
       {
-        "quote": "works in ways that tend toward the understated",
+        "quote": "That gesture is typical of the understated yet gutting quality of this production of Mary Jane, which cuts the quotidian open to get to the bone of the existential",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       },
       {
-        "quote": "precisely observed",
+        "quote": "Rachel McAdams turns out to be more than up for the task",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       },
       {
-        "quote": "tend toward the understated",
+        "quote": "McAdams is supported, like Mary Jane herself, by an ensemble of more than competent women",
         "sentiment": "positive",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: This brief excerpt offers measured praise for McAdams' performance using professional critic language ('understated', 'precisely observed'), suggesting competent work worth seeing but without strong enthusiasm. | GPT-4o-mini: The review indicates a positive sentiment towards the performance style but lacks a strong overall recommendation.",
+    "reasoning": "The critic offers sustained praise for the production's emotional depth, McAdams' performance, and the ensemble work, with detailed appreciation for the script, direction, and design elements, indicating a clear positive recommendation despite the challenging subject matter.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:22:10.699Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:33:32.057Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4028,
+    "outputTokens": 375,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -76,7 +83,6 @@
   "dtliExcerpt": "That tonal balance is delicate, and it could tilt in any number of directions: too grim and it might be impossible to watch (I would understand someone not wanting to engage with the premise), too woo-woo and it might become sentimental. It asks a lot, specifically, of the actress playing Mary Jane. Rachel McAdams turns out to be more than up for the task.",
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 69,
   "archivePath": "data/archives/reviews/mary-jane-2024/vulture--jackson-mchenry_2026-01-29.html",
@@ -97,5 +103,6 @@
   "archiveOrgTimestamp": "20250609194944",
   "archiveOrgUrl": "http://web.archive.org/web/20250609194944/https://www.vulture.com/article/review-mary-jane-rachel-mcadams.html",
   "contentTier": "complete",
-  "wordCount": 1290
+  "wordCount": 1290,
+  "rescoreCompletedAt": "2026-02-01T15:33:32.057Z"
 }

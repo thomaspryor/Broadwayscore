@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 94,
+  "assignedScore": 85,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,19 +31,19 @@
   "archiveOrgTimestamp": "20250724130218",
   "archiveOrgUrl": "http://web.archive.org/web/20250724130218/https://nystagereview.com/2024/03/28/the-whos-tommy-the-ground-breaking-rock-opera-seen-heard-felt-in-sizzling-revival/",
   "llmScore": {
-    "score": 94,
+    "score": 85,
     "confidence": "high",
     "range": {
-      "low": 87.5,
-      "high": 100
+      "low": 82,
+      "high": 88
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 82,
-      "music": 90,
-      "performances": 89,
-      "direction": 95
+      "book": 80,
+      "music": 85,
+      "performances": null,
+      "direction": 90
     },
     "keyPhrases": [
       {
@@ -52,30 +52,37 @@
         "strength": 5
       },
       {
-        "quote": "McAnuff's flawless direction and Lorin Latarro's choreography",
+        "quote": "indisputably reaches new heights",
         "sentiment": "positive",
-        "strength": 5
+        "strength": 4
       },
       {
-        "quote": "they're hitting record-breaking numbers on the flashing and whistling revival machine they're playing",
+        "quote": "operating as if they were stage conjurers stirring a sizzling cauldron",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Critic calls the production 'just about perfect' with 'flawless direction' and uses superlatives throughout, comparing the creative team to 'pinball wizards' hitting 'record-breaking numbers'. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the production's excellence in direction, design, and performances, indicating a strong recommendation to see the show.",
+    "reasoning": "Four-star review with strong praise for the revival's technical achievements and direction, calling it 'just about perfect' and reaching 'new heights,' with confidence McAnuff will win another Tony.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:03:42.075Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:29:00.306Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2724,
+    "outputTokens": 355,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 92,
@@ -90,5 +97,8 @@
   "_scoreFixedFrom": "5/5 stars",
   "_scoreFixedAt": "2026-01-31T23:10:41.734Z",
   "contentTier": "complete",
-  "wordCount": 975
+  "wordCount": 975,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 94,
+  "rescoreCompletedAt": "2026-02-01T16:29:00.306Z"
 }

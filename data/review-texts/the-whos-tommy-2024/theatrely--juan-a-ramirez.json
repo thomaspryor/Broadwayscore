@@ -14,25 +14,25 @@
     "score": 88,
     "confidence": "high",
     "range": {
-      "low": 82.5,
-      "high": 93.5
+      "low": 85,
+      "high": 92
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": 88,
-      "direction": 86
+      "book": 82,
+      "music": 85,
+      "performances": 90,
+      "direction": 88
     },
     "keyPhrases": [
       {
-        "quote": "I was not expecting to be as bowled over by this story, or this revival, as I was",
+        "quote": "Tommy is an electric paean to rock immortality, and talent wherever one can find it",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "Tommy is an electric paean to rock immortality",
+        "quote": "I was not expecting to be as bowled over by this story, or this revival, as I was",
         "sentiment": "positive",
         "strength": 4
       },
@@ -42,7 +42,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic expresses genuine surprise at being 'bowled over' and uses strong positive language like 'electric paean' and 'prowess' to describe both performances and production, indicating a clear positive recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the revival and its talent, indicating a clear recommendation.",
+    "reasoning": "The reviewer expresses genuine surprise at being 'bowled over' by the revival, praises virtually every aspect of the production with superlatives, and concludes with strong positive language about talent and prowess throughout.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,11 +51,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:08:16.045Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:29:42.029Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3484,
+    "outputTokens": 362,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 87,
@@ -75,7 +82,7 @@
   "bwwThumb": "Up",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 88,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.124Z",
+  "rescoreCompletedAt": "2026-02-01T16:29:42.029Z",
   "contentTier": "complete",
   "wordCount": 804
 }

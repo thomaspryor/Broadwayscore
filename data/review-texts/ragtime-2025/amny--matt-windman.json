@@ -18,22 +18,22 @@
     "score": 88,
     "confidence": "high",
     "range": {
-      "low": 83,
-      "high": 93
+      "low": 85,
+      "high": 92
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": 85
+      "book": 85,
+      "music": 90,
+      "performances": 92,
+      "direction": 88
     },
     "keyPhrases": [
       {
-        "quote": "the musical roars back not with spectacle but with purpose",
+        "quote": "More than a revival, this 'Ragtime' feels like a reckoning—urgent, elegant, and profoundly alive.",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
         "quote": "arrives not as nostalgia but as a galvanizing statement, both thrilling and newly vital",
@@ -41,12 +41,12 @@
         "strength": 5
       },
       {
-        "quote": "it may finally have found the moment it was meant for",
+        "quote": "Joshua Henry is a revelation as Coalhouse Walker Jr., his towering presence matched by a voice of astonishing range and control",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: Strong positive language with powerful descriptors like 'galvanizing,' 'thrilling,' and 'vital' indicates clear enthusiasm and recommendation despite being an excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for the revival's purpose and impact, indicating a clear recommendation to see it.",
+    "reasoning": "The review uses extremely positive language throughout ('revelation,' 'reckoning,' 'galvanizing statement') with superlative praise for performances, direction, and music, and virtually no negative criticism.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,11 +55,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T02:27:47.676Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:59:38.176Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3155,
+    "outputTokens": 377,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 88,
@@ -70,7 +77,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 88,
   "archivePath": "data/archives/reviews/ragtime-2025/amny--matt-windman_2026-01-29.html",
   "textFetchedAt": "2026-01-29T07:36:52.156Z",
@@ -86,7 +93,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251119101852",
   "archiveOrgUrl": "http://web.archive.org/web/20251119101852/https://www.amny.com/entertainment/broadway/review-divided-america-ragtime-strikes-defiant-chord/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.995Z",
+  "rescoreCompletedAt": "2026-02-01T15:59:38.176Z",
   "contentTier": "complete",
   "wordCount": 568
 }

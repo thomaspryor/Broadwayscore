@@ -7,21 +7,21 @@
   "publishDate": "March 28, 2024",
   "dtliExcerpt": "A big blast of boomer pleasure has arrived on Broadway at the Nederlander Theatre, where the thunderous and thoroughly intoxicating revival of “The Who’s Tommy” has opened, giving a seismic jolt to the mostly lusterless musical season.",
   "originalScore": null,
-  "assignedScore": 53,
+  "assignedScore": 78,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": "\"...brings an intoxicating energy to the story of a boy who survives trauma\"",
   "bwwExcerpt": "The term “rock opera” is amorphous, but perhaps no other show comes as near to defining it precisely as this one. Mr. Townshend’s songs are authentic rock dating from the heyday of one of the genre’s revered bands, not the watery pap that often passes for rock in contemporary musicals. And even the most outlandish plots of Verdi are no more sensationally dramatic than the story of “Tommy,” with its beleaguered but triumphant hero, its rogue’s gallery of foes and its frankly bizarre story.",
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 53,
+    "score": 78,
     "confidence": "low",
     "range": {
-      "low": 10.5,
-      "high": 95.5
+      "low": 70,
+      "high": 85
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -30,35 +30,37 @@
     },
     "keyPhrases": [
       {
-        "quote": "A big blast of boomer pleasure has arrived on Broadway",
+        "quote": "intoxicating energy",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "thunderous and thoroughly intoxicating revival",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "giving a seismic jolt to the mostly lusterless musical season",
-        "sentiment": "positive",
-        "strength": 4
+        "quote": "survives trauma",
+        "sentiment": "neutral",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: This appears to be only the opening paragraph of a longer review with overwhelmingly positive language, making a confident score impossible from this excerpt alone. | GPT-4o-mini: The review expresses unqualified enthusiasm for the revival, highlighting its impact and enjoyment, indicating a strong recommendation to see it. | Note: Models differed by 75 points.",
+    "reasoning": "The phrase 'intoxicating energy' suggests strong positive engagement, but the excerpt is too brief to assess full recommendation strength.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:04:14.827Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:30:14.774Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2320,
+    "outputTokens": 262,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 15,
@@ -118,6 +120,6 @@
   "garbageFixedAt": "2026-01-29T22:45:23.365Z",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
-  "rescoreReason": "tiny-excerpt: only 76 chars, try re-fetching"
+  "rescoreReason": "tiny-excerpt: only 76 chars, try re-fetching",
+  "rescoreCompletedAt": "2026-02-01T16:30:14.774Z"
 }

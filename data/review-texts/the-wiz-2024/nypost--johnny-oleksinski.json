@@ -44,48 +44,45 @@
     "score": 42,
     "confidence": "medium",
     "range": {
-      "low": 33.5,
-      "high": 50.5
+      "low": 35,
+      "high": 50
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 38,
-      "music": 68,
-      "performances": 60,
-      "direction": 28
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "director Schele Williams' production is deflatingly flimsy and lackluster. Clumsily staged, it's a Wiz-sper of what it should be.",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Their songs are fabulous... The quartet doesn't follow the Yellow Brick Road, they 'Ease On Down' it.",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "There's no place like Broadway!' at the end. Alas, back on W. 46th St. at 10:30 p.m., I headed to the train thinking, 'There's no place like home.'",
+        "quote": "is not the dazzler that fans have waited so long for",
         "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic finds the production 'deflatingly flimsy and lackluster' with major flaws in direction and design, despite praising the music and some performances, ultimately expressing disappointment and inability to recommend. | GPT-4o-mini: The review expresses significant disappointment with the production, citing lackluster direction and design while acknowledging some redeeming performances and music.",
+    "reasoning": "The critic explicitly states this revival fails to meet the high expectations fans had, using 'not the dazzler' to convey disappointment with the production quality.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:03:34.715Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:30:55.098Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2321,
+    "outputTokens": 255,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 38,
@@ -98,5 +95,8 @@
   },
   "showScoreExcerpt": "\"...the new revival...is not the dazzler that fans have waited so long for.\"",
   "contentTier": "complete",
-  "wordCount": 806
+  "wordCount": 806,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 42,
+  "rescoreCompletedAt": "2026-02-01T16:30:55.098Z"
 }

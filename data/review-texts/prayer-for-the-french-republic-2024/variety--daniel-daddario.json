@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 41,
+  "assignedScore": 65,
   "source": "bww-roundup",
   "dtliThumb": "MEH",
   "needsScoring": true,
@@ -20,51 +20,58 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 41,
-    "confidence": "high",
+    "score": 65,
+    "confidence": "low",
     "range": {
-      "low": 35,
-      "high": 47
+      "low": 55,
+      "high": 75
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 33,
+      "book": 65,
       "music": null,
       "performances": null,
-      "direction": 40
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "But it doesn't tell it in a compelling or nuanced manner",
-        "sentiment": "negative",
-        "strength": 4
+        "quote": "seems to be aiming for the reach of Tony Kushner, using maximalist technique",
+        "sentiment": "neutral",
+        "strength": 2
       },
       {
-        "quote": "despite Harmon having set himself up to succeed with a flashback story that could, but does not, provide real context",
-        "sentiment": "negative",
-        "strength": 4
+        "quote": "the three-hour runtime of 'Prayer for the French Republic' seems appropriate",
+        "sentiment": "positive",
+        "strength": 2
       },
       {
-        "quote": "push the Benhamous beyond platitudes",
-        "sentiment": "negative",
-        "strength": 3
+        "quote": "it seeks to draw that history out",
+        "sentiment": "neutral",
+        "strength": 1
       }
     ],
-    "reasoning": "Claude: The critic consistently criticizes the play's execution, noting it fails to be compelling or nuanced despite having the structural elements that could have made it successful. | GPT-4o-mini: The review expresses significant disappointment in the storytelling and its lack of depth, leading to a clear negative recommendation.",
+    "reasoning": "This appears to be an excerpt from a longer review that describes the play's ambitions and context but lacks clear evaluative language or recommendation signals.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:21:42.601Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:53:58.985Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2437,
+    "outputTokens": 326,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 42,
@@ -79,7 +86,7 @@
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 41,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.970Z",
+  "rescoreCompletedAt": "2026-02-01T15:53:58.985Z",
   "contentTier": "complete",
   "wordCount": 1008
 }

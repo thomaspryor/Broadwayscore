@@ -9,56 +9,63 @@
   "showScoreExcerpt": "â 'Ragtime' is generous to all of its characters...But there is still something touching about its conviction that they will have a better life. I mean, Americans look to musicals for hope, donât we?\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/ragtime-broadway",
   "originalScore": null,
-  "assignedScore": 70,
+  "assignedScore": 72,
   "source": "show-score",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 70,
-    "confidence": "medium",
+    "score": 72,
+    "confidence": "high",
     "range": {
-      "low": 60,
-      "high": 80
+      "low": 68,
+      "high": 76
     },
     "bucket": "Mixed",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "music": 85,
+      "performances": 88,
+      "direction": 65
     },
     "keyPhrases": [
       {
-        "quote": "generous to all of its characters",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "something touching about its conviction",
+        "quote": "it was the anthemic score of 'Ragtime' that endeared it to so many theatergoers, and that is where the solid new Lincoln Center revival wisely places its focus",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Americans look to musicals for hope",
+        "quote": "an empathetic cast that sings the bejesus out of these famous songs",
         "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I missed the epic, foundation metaphor of a country in forward motion, especially since there is no clear overarching visual statement in its place",
+        "sentiment": "negative",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The excerpt shows appreciation for the show's emotional impact and thematic resonance, suggesting positive sentiment despite the very limited text available. | GPT-4o-mini: The review expresses a positive sentiment about the themes of hope and character generosity, but lacks strong enthusiasm or specific praise for the production elements.",
+    "reasoning": "The critic praises the exceptional performances and music while expressing reservations about the direction's lack of epic scope, resulting in a qualified positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:14.824Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:00:30.656Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3422,
+    "outputTokens": 375,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 75,
@@ -72,7 +79,7 @@
   "dtliExcerpt": "Joshua Henry’s Colehouse feels younger than has been typical, less initially polite, more impassioned and, of course, his voice is the stuff of standing ovations. Nichelle Lewis’ Sarah is more fragile, which makes her crushed optimism especially moving. As Tateh, Brandon Uranowitz focuses on energetic joy. He expands the role and makes it all the more essential to the piece. Both Lewis and Ben Levi Ross, who plays the brooding Mother’s Younger Brother, bring qualities to those two characters I’d never seen before. They are doing the best work of the night; Ross, especially, fleshes out what mostly has been a caricature.",
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 70,
   "archivePath": "data/archives/reviews/ragtime-2025/nydailynews--chris-jones_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:46:19.784Z",
@@ -88,7 +95,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251018075612",
   "archiveOrgUrl": "http://web.archive.org/web/20251018075612/https://www.nydailynews.com/2025/10/16/broadway-review-ragtime-joshua-henry-caissie-levy/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.998Z",
+  "rescoreCompletedAt": "2026-02-01T16:00:30.656Z",
   "contentTier": "complete",
   "wordCount": 790
 }

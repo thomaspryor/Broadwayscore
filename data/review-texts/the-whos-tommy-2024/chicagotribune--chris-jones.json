@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 83,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
@@ -20,51 +20,58 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 63,
-    "confidence": "medium",
+    "score": 83,
+    "confidence": "high",
     "range": {
-      "low": 50.5,
-      "high": 75.5
+      "low": 80,
+      "high": 86
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 60,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": null,
+      "music": 88,
+      "performances": 82,
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "the world has spun forward enough times to meet \"Tommy\" where it always lived",
+        "quote": "will sock you right in the gut. Many a replay can be expected at the Nederlander Theatre",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       },
       {
-        "quote": "psychologically oriented story of delayed self-actualization due to childhood trauma",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "this is the work of late-career people who now care about a lot more than selling tickets",
+        "sentiment": "positive",
+        "strength": 4
       },
       {
-        "quote": "withering parody of abusive authority figures and celebrity worship",
+        "quote": "an emancipatory rock banquet and a reminder that dads really have improved",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: This excerpt suggests the show has found relevance in current times and praises its satirical elements, but provides insufficient information about the critic's overall recommendation or production quality. | GPT-4o-mini: The review highlights interesting thematic elements but lacks a clear recommendation, suggesting a mixed-positive sentiment overall. | Note: Models differed by 15 points.",
+    "reasoning": "The critic delivers strong praise for McAnuff's direction, the choreography, projections, and overall production while expressing deep personal connection to the material, with only minor reservations about star power.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:04:09.925Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:28:10.861Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3403,
+    "outputTokens": 353,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 55,
@@ -77,7 +84,7 @@
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 63,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.120Z",
+  "rescoreCompletedAt": "2026-02-01T16:28:10.861Z",
   "contentTier": "complete",
   "wordCount": 799
 }

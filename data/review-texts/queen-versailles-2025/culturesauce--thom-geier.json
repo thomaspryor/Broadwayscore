@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": "1/5",
-  "assignedScore": 39,
+  "assignedScore": 35,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -19,19 +19,19 @@
     "playwright-scraped"
   ],
   "llmScore": {
-    "score": 39,
+    "score": 35,
     "confidence": "high",
     "range": {
-      "low": 33,
-      "high": 45
+      "low": 30,
+      "high": 40
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 30,
-      "music": 50,
+      "book": 25,
+      "music": 45,
       "performances": 65,
-      "direction": 45
+      "direction": 40
     },
     "keyPhrases": [
       {
@@ -50,20 +50,27 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic fundamentally objects to the show's premise and execution, calling it 'tone-deaf' and a 'trudge' with 'inescapable hollowness,' despite acknowledging Chenoweth's strong performance. | GPT-4o-mini: The review is predominantly negative, criticizing the book and overall execution while acknowledging some redeeming qualities in performances and music, leading to a clear recommendation against seeing the show.",
+    "reasoning": "The review is fundamentally critical of the show's tone-deafness and moral confusion, calling it a 'trudge' with 'inescapable hollowness' despite some praise for Chenoweth's performance.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": false
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T15:52:44.893Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:56:37.795Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3260,
+    "outputTokens": 374,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 38,
@@ -76,7 +83,7 @@
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 39,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.980Z",
+  "rescoreCompletedAt": "2026-02-01T15:56:37.795Z",
   "contentTier": "complete",
   "wordCount": 653
 }

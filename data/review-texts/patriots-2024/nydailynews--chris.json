@@ -17,48 +17,55 @@
     "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 78,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": 85,
       "music": null,
       "performances": 88,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "gripping, juicy drama",
+        "quote": "a gripping, juicy drama replete with a terrifying performance",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "terrifying performance from Will Keen",
+        "quote": "singularly adept at explaining how the most basic human emotions",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Its central dramatic question? How did Putin happen?",
+        "quote": "Richard III-like you-know-who",
         "sentiment": "positive",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: Strong praise for the drama's grip and lead performance, with 'terrifying' used positively to describe Keen's compelling portrayal, suggesting a solid theatrical experience worth seeing. | GPT-4o-mini: The review highlights a strong performance and engaging drama, indicating a clear recommendation to see the show.",
+    "reasoning": "The critic uses strongly positive language like 'gripping, juicy drama' and 'terrifying performance' with praise for both the playwright's skill and lead actor's work, indicating clear enthusiasm and recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:09:39.086Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:51:13.601Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2465,
+    "outputTokens": 343,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -74,7 +81,7 @@
     "dtli",
     "show-score"
   ],
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 82,
   "archivePath": "data/archives/reviews/patriots-2024/nydailynews--chris_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:33:51.270Z",
@@ -90,7 +97,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240606173412",
   "archiveOrgUrl": "http://web.archive.org/web/20240606173412/https://www.nydailynews.com/2024/04/22/broadway-review-patriots/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.960Z",
+  "rescoreCompletedAt": "2026-02-01T15:51:13.601Z",
   "contentTier": "complete",
   "wordCount": 603
 }

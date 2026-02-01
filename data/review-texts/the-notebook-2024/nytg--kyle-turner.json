@@ -9,7 +9,7 @@
   "bwwExcerpt": "This compelling conceit gets weakened by a flat book and lyrics. Brunstetter and Michaelson aim for simplicity, but lyrics like a repeated “sadness and joy” fail to illuminate Noah and Allie's depth of character. The Notebook: The Musical can only compensate so much with Michaelson's strumming music, with repetitions that are pleasant but melt together, and some songs become indistinguishable from each other. Occasionally, a flourish in John Clancy and Carmel Dean's orchestrations grabs the attention.",
   "showScoreExcerpt": "\"a trip down memory lane on stage and off\"",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 45,
   "source": "bww-roundup",
   "bwwThumb": "Meh",
   "bwwUrl": "https://www.newyorktheatreguide.com/reviews/the-notebook-broadway-review-ingrid-michaelson",
@@ -17,19 +17,19 @@
   "textFetchedAt": "2026-01-25T04:18:23.384Z",
   "sourceMethod": "bww-roundup",
   "llmScore": {
-    "score": 68,
-    "confidence": "high",
+    "score": 45,
+    "confidence": "medium",
     "range": {
-      "low": 60.5,
-      "high": 75.5
+      "low": 40,
+      "high": 50
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
-      "book": 48,
-      "music": 63,
-      "performances": 85,
-      "direction": 68
+      "book": 35,
+      "music": 40,
+      "performances": null,
+      "direction": 65
     },
     "keyPhrases": [
       {
@@ -38,30 +38,37 @@
         "strength": 4
       },
       {
-        "quote": "Joy Woods who rises to the occasion... Her emotion floods into the crowd and submerges the viewers in her light",
-        "sentiment": "positive",
-        "strength": 5
+        "quote": "lyrics like a repeated 'sadness and joy' fail to illuminate Noah and Allie's depth of character",
+        "sentiment": "negative",
+        "strength": 3
       },
       {
-        "quote": "The Notebook on Broadway is a serviceable adaptation of the material",
+        "quote": "Brunstetter and Michaelson aim for simplicity",
         "sentiment": "neutral",
-        "strength": 3
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The review praises Joy Woods's standout performance and some design elements while criticizing the flat book, repetitive music, and overall describes it as merely 'serviceable' - indicating a mixed reception with more problems than strengths. | GPT-4o-mini: The review highlights strong performances, particularly by Joy Woods, but critiques the book and lyrics, leading to a mixed-positive recommendation overall.",
+    "reasoning": "While the critic praises the directorial concept as 'compelling,' the review is dominated by criticism of the book and lyrics as 'flat' and failing to illuminate character depth, with no clear recommendation to see the show.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:56:04.584Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:20:39.845Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2656,
+    "outputTokens": 328,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 65,
@@ -82,7 +89,7 @@
   "dtliThumb": "Meh",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 68,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.088Z",
+  "rescoreCompletedAt": "2026-02-01T16:20:39.845Z",
   "contentTier": "complete",
   "wordCount": 1378,
   "truncationSignals": [

@@ -9,7 +9,7 @@
   "showScoreExcerpt": "“Silly, sure, but humanizing at the same time.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/alex-edelman-just-for-us-broadway",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 82,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -28,19 +28,19 @@
   "archiveOrgTimestamp": "20230627200613",
   "archiveOrgUrl": "http://web.archive.org/web/20230627200613/https://www.nydailynews.com/entertainment/broadway/ny-broadway-alex-edelman-just-for-us-broadway-review-20230627-i7u44ducibe7rhxkzcvo4fluxq-story.html",
   "llmScore": {
-    "score": 84,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 77.5,
-      "high": 90.5
+      "low": 78,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 83,
+      "book": 85,
       "music": null,
-      "performances": 89,
-      "direction": 80
+      "performances": 88,
+      "direction": null
     },
     "keyPhrases": [
       {
@@ -51,7 +51,7 @@
       {
         "quote": "I suspect if this Broadway show does well this summer, as it surely should, he will be back",
         "sentiment": "positive",
-        "strength": 5
+        "strength": 4
       },
       {
         "quote": "These gags are often hilarious",
@@ -59,20 +59,27 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic consistently praises Edelman's performance, writing, and comedic structure with phrases like 'very clever and very funny' and predicts success, indicating a clear positive recommendation despite no explicit star rating. | GPT-4o-mini: The review expresses strong enthusiasm for Edelman's performance and humor, indicating a clear recommendation to see the show.",
+    "reasoning": "The critic consistently praises the show's cleverness, humor, and Edelman's performance skills, with clear prediction of success and repeated use of positive descriptors like 'very funny' and 'hilarious'.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T15:40:18.612Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:22:06.676Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3118,
+    "outputTokens": 310,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 82,
@@ -84,5 +91,8 @@
     "needsReviewReasons": []
   },
   "contentTier": "complete",
-  "wordCount": 597
+  "wordCount": 597,
+  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "previousLlmScore": 84,
+  "rescoreCompletedAt": "2026-02-01T15:22:06.676Z"
 }

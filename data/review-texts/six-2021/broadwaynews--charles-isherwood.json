@@ -22,14 +22,14 @@
     "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 78,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": null,
+      "music": 85,
       "performances": null,
       "direction": null
     },
@@ -40,30 +40,37 @@
         "strength": 4
       },
       {
+        "quote": "A wave of pure joy rippled across the theater",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
         "quote": "festive, fresh and funny",
         "sentiment": "positive",
         "strength": 4
-      },
-      {
-        "quote": "thirsty for something festive, fresh and funny — which is to say, just about all lovers of theater",
-        "sentiment": "positive",
-        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic clearly recommends the show with enthusiastic language like 'much to delight in' and 'festive, fresh and funny,' but this appears to be only an excerpt from a longer review. | GPT-4o-mini: The review expresses enthusiasm for the musical's festive and fresh qualities, indicating a strong recommendation despite lacking specific details.",
+    "reasoning": "The review expresses clear enthusiasm with phrases like 'much to delight' and 'wave of pure joy,' indicating a strong positive recommendation despite being incomplete.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:22:00.212Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:06:08.517Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2522,
+    "outputTokens": 313,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -76,11 +83,10 @@
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.017Z",
+  "rescoreCompletedAt": "2026-02-01T16:06:08.517Z",
   "garbageFullText": "Review — Six Review: ‘Six’ pops back on Broadway Theatergoers thirsty for something festive, fresh and funny — which is to say, just about all lovers of theater who have endured the drought of the past 18 months — will find much to delight in at the Brooks Atkinson Theatre, where the musical “Six” has opened. , and Charles Isherwood October 3, 2021 . 9:59 PM 5 min read Share on Twitter Share on Facebook Share on LinkedIn Share via Email (Photo: Joan Marcus) Theatergoers thirsty for something festive, fresh and funny — which is to say, just about all lovers of theater who have endured the drought of the past 18 months — will find much to delight in at the Brooks Atkinson Theatre, where the musical “Six” has opened.At last!As Broadway mavens know, “Six” was scheduled to open the very night the industry was, to borrow a handy metaphor, beheaded by the pandemic shutdown. There is a delicious symmetry in this musical being the first new one to open since Broadway has returned. A wave of pure joy rippled across the theater as soon as the first notes of the show were struck at the performance I attended. This post is for paying subscribers only Subscribe now Already have an account? Sign in Review — Six — Brooks Atkinson Theatre — Britney Spears — Sia — Beyoncé — Adele — Toby Marlow — Lucy Moss — Anne Boleyn — Andrea Macasaet — Abby Mueller — Rihanna — Brittney Mack — Adrianna Hicks — Samantha Pauly and Anna Uzele — Swarovski — Bratz Introductory Offer $1/month for 3 months Subscribe Already have an account? Log in Latest Closer Look What does it take to actually revise a musical? Closer Look How the original company of ‘Ragtime’ was cast Insights Loyalty Report: January 22, 2026 Closer Look How ‘Riverdance’ revolutionized the world of dance Podcast 30 years ago, Tracy Letts wrote a play tailor-made for today with ‘Bug’ Personnel Neil Mazzella steps down as CEO of Hudson entities Books The original music director of ‘Rent’ reveals scenes from the very first auditions Closer Look Christian Cowan uses detail and taste to make ‘The Queen of Versailles’ shine",
   "garbageReason": "Paywall/subscription prompt: \"subscribers only\"",
   "garbageFixedAt": "2026-01-29T22:45:23.176Z",
-  "needsRescore": true,
   "fullText": "Theatergoers thirsty for something festive, fresh and funny — which is to say, just about all lovers of theater who have endured the drought of the past 18 months — will find much to delight in at the Brooks Atkinson Theatre, where the musical “Six” has opened.\n\nAs Broadway mavens know, “Six” was scheduled to open the very night the industry was, to borrow a handy metaphor, beheaded by the pandemic shutdown. There is a delicious symmetry in this musical being the first new one to open since Broadway has returned. A wave of pure joy rippled across the theater as soon as the first notes of the show were struck at the performance I attended.\n\nThe concept of the musical is probably familiar to theater fans, as its arrival on Broadway — back in the early spring of 2020 — made it one of the most buzzed-about shows of the season. It had been previously produced in London, at other theaters, and even on a (clutch pearls) cruise ship. Briefly: In the show, written by Toby Marlow and Lucy Moss, and directed by Moss and Jamie Armitage, the six wives of Henry VIII take turns, in chronological order of their marriage to that infamously awful historical figure, singing their tales of trials to slickly crafted, contemporary R&B music.\n\nThe format of the show is, to be honest, not all that fresh, as it’s borrowed from another medium. It is expressly modeled on the talent competition shows that have proliferated since the baleful advent of “American Idol.” But in a clever and funny twist, the competitors in this show are singing their strife in order to allow the audience to vote to determine who has suffered the most, who has endured the worst. Given that three of the contestants died prematurely — and two lost their heads, literally — the competition is fierce. The show also borrows, also cleverly, from the popular recipe that has made Bravo’s reality shows about pampered women and their tediously trivial woes so immensely successful. Led by the sharp tongue of Andrea Macasaet’s Anne Boleyn, the queens snipe, snark and throw shade with abandon until finding solidarity and sisterhood in their victimhood.\n\nThe simple set design, by Emma Bailey, appears to be modeled on the glitzy glamour of television competition. As each unfortunate wife takes her turn in the spotlight — the lighting by Tim Deiling also mimics the drama-heightening style of the aforementioned TV shows — the others rest on risers at the back, occasionally stepping forward to offer a bit of either sympathetic or snide commentary. (The small band — all women, in a nice touch — plays from the back of the stage.)\n\nYou might think that the performances are charged with a new vitality — the excitement that so many are feeling as Broadway blooms again — but in my recollection, they were just as vibrant and funny back when I saw the show the first time. Macasaet gets many of the more choice lines — perhaps fitting, since Boleyn was, along with Katherine Howard, possibly the most ill-used among a very ill-used crop. She infuses her performance with the kind of forceful personality that Boleyn was said to have; she nails the jokes, and her semi-comic song, “Don’t Lose Ur Head,” is one of the strongest.\n\nBut each performer shines in their own way: As Catherine of Aragon, the first of Henry’s wives, Adrianna Hicks evinces the sharp, wounded dignity of a woman not just scorned, but scorned on a historic level. Abby Mueller’s Jane Seymour has a gentle piteousness that’s entirely apt: She died shortly after giving birth – at last – to a male heir for Henry. Brittney Mack’s Anna of Cleves, derided by Henry because in his view she didn’t look like the bride he’d been promised in a flattering portrait (or, as she puts it in the contemporary vernacular used throughout, “I didn’t look like my profile picture”), sings a feisty song reveling in her comparatively fortunate fate — divorced but settled for life in luxury. As Katherine Howard, who was accused of dallying with other men, Samantha Pauly has a fine, steely, to-hell-with-the-judgers edge. And as Catherine Parr, the last wife, who had the good fortune to outlive the odious Henry (only by a year, alas for her), Anna Uzele wraps up the competition by declaring with frank good humor that she knows she’s not likely to come out on top in the suffering sweepstakes. Instead, she evinces her strong sense of her own accomplishments, which were indeed many.\n\nParr becomes the prime facilitator of the women’s determination to band together and, in doing so, reclaim their identities. They protest the way history has reduced them to a number and a nursery rhyme when, if not for them, Henry might well have been a minor historical figure.\n\nIt’s tempting to elide the qualifications I had (and have) about this admirably funny and ebullient musical, especially given its bumpy path to Broadway. Nevertheless, I ultimately found much of the music pleasant bubble gum pop that will either enter one ear and immediately exit the other (guilty), or stick in your head permanently, depending on your fondness for the styles being mimicked.\n\nModeled on various forms of dance music, the songs are skillfully honed but generally familiar-sounding — which is no surprise, since in a program note the writers name-check the pop music stars who inspired them. Jane Seymour’s big solo, a quasi-power ballad called “Heart of Stone,” could come straight from the Celine Dion songbook, although the authors cite Adele and Sia as the &#8220;Queenspiration&#8221; for the song. Howard’s powerfully rhythmic “All You Wanna Do” put me in mind of Britney Spears (who was indeed one of the inspirations), which I suppose turns out to be perfectly apt, since she’s another woman wronged by the system. There’s a rather bland house music number — “Haus of Holbein” — and shades of Rihanna and Beyoncé can be heard throughout.\n\nPerhaps more significantly, while the characters are in theory in the process of reclaiming their individuality and complex humanity, they are similarly sexualized in the costuming, and thereby more or less reduced to clones of one another in their medieval-meets-Swarovski garb and exposed flesh. They could exchange glittery costumes — which reminded me uncomfortably of Bratz dolls — and I doubt anyone would be the wiser.\n\nAnd even more significantly, despite the often bitingly funny lyrics and dialogue, the musical does not really explore the historical characters it depicts with any great depth of feeling or insight. Perhaps that would be impossible in an 80-minute show that must carry the burden of introducing audiences to characters whose fates most Broadway musical lovers may be only vaguely familiar with.\n\nAh well, so be it. For those looking for pure diversion, with bits of sung history tossed in, “Six” will be an unalloyed pleasure. It will, I confidently expect and indeed hope, be a long-running hit, playing to audiences on Broadway and elsewhere for longer than most of that wretched king’s marriages lasted.\n\n“Six” opened at the Brooks Atkinson Theatre on Oct. 3, 2021.\n\nCreative: Book by Toby Marlow and Lucy Moss; Music by Toby Marlow and Lucy Moss; Lyrics by Toby Marlow and Lucy Moss; Directed by Lucy Moss and Jamie Armitage; Choreographed by Carrie-Anne Ingrouille; Scenic Design by Emma Bailey; Costume Design by Gabriella Slade; Lighting Design by Tim Deiling; Sound Design by Paul Gatehouse.\n\nProducers: Kenny Wax, Wendy & Andy Barnes, George Stiles and Kevin McCollum.\n\nCast: Adrianna Hicks, Andrea Macasaet, Brittney Mack, Abby Mueller, Samantha Pauly and Anna Uzele.",
   "archivePath": "data/archives/reviews/six-2021/broadwaynews--charles-isherwood_2026-01-30.html",
   "textFetchedAt": "2026-01-30T18:23:58.984Z",

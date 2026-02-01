@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 72,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -18,51 +18,58 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 76,
-    "confidence": "medium",
+    "score": 72,
+    "confidence": "high",
     "range": {
-      "low": 67,
-      "high": 85
+      "low": 68,
+      "high": 76
     },
-    "bucket": "Positive",
+    "bucket": "Mixed",
     "thumb": "Up",
     "components": {
       "book": 75,
-      "music": 78,
-      "performances": null,
-      "direction": null
+      "music": 70,
+      "performances": 78,
+      "direction": 75
     },
     "keyPhrases": [
       {
-        "quote": "Six is a needed antidote to other pompous shows of female empowerment",
+        "quote": "Six is a needed antidote to 'Anastasia,' 'Frozen,' 'Jagged Little Pill,' 'Wicked' and other pompous shows of female empowerment",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "immediately hummable in the way that only derivative disco music can be",
-        "sentiment": "neutral",
+        "quote": "The often witty book, built around a competition among the six wives of Henry VIII, borrows a lot from 'RuPaul's Drag Race' while offering yet another #MeToo story",
+        "sentiment": "positive",
         "strength": 3
       },
       {
-        "quote": "Six truly is the",
-        "sentiment": "positive",
-        "strength": 2
+        "quote": "A disappointment is Carrie-Anne Ingrouillle's choreography",
+        "sentiment": "negative",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review offers qualified praise, calling Six a 'needed antidote' to other shows while noting its derivative elements and theatrical commonplaces, suggesting a mixed-positive recommendation that's cut off mid-sentence. | GPT-4o-mini: The review expresses strong positive sentiments about the show's wit and relevance, indicating a clear recommendation despite some reservations.",
+    "reasoning": "The critic acknowledges derivative elements but finds the show witty, irreverent, and a refreshing antidote to more serious musicals, with strong performances despite choreography disappointments.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": false
+      "comparesToPrevious": false,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:48:55.658Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:07:55.523Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3157,
+    "outputTokens": 405,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -73,7 +80,6 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
   "archivePath": "data/archives/reviews/six-2021/thewrap--robert-hofler_2026-01-29.html",
@@ -94,5 +100,6 @@
     "Show title not found in text"
   ],
   "contentTier": "complete",
-  "wordCount": 540
+  "wordCount": 540,
+  "rescoreCompletedAt": "2026-02-01T16:07:55.523Z"
 }

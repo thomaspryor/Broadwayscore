@@ -17,48 +17,55 @@
     "score": 38,
     "confidence": "high",
     "range": {
-      "low": 30.5,
-      "high": 45.5
+      "low": 35,
+      "high": 42
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": 25,
-      "music": 65,
-      "performances": null,
-      "direction": null
+      "music": 55,
+      "performances": 45,
+      "direction": 30
     },
     "keyPhrases": [
       {
-        "quote": "not worth sitting through two hours and 30 minutes of a dull musical",
+        "quote": "it's reductive and pandering, hitting all the expected marks without any unique spark",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "not worth sitting through two hours and 30 minutes of a dull musical to get there",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "It's a fun enough concert",
+        "quote": "The highlights come when Jennifer Simard's Stepmother storms onstage to 'Work Bitch'",
         "sentiment": "positive",
-        "strength": 2
-      },
-      {
-        "quote": "It’s a fun enough concert",
-        "sentiment": "positive",
-        "strength": 2
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic explicitly states the show is 'not worth' seeing despite some enjoyable musical moments, indicating a clear negative recommendation. | GPT-4o-mini: The review indicates that while there are some enjoyable aspects, the overall experience is deemed not worth the time investment, leading to a clear negative recommendation.",
+    "reasoning": "The critic finds the show fundamentally flawed with a weak book and heavy-handed execution, explicitly stating it's not worth the time investment despite acknowledging some entertaining Britney Spears musical moments.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:19:57.039Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:46:57.355Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4234,
+    "outputTokens": 364,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 40,
@@ -78,7 +85,7 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 38,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.938Z",
+  "rescoreCompletedAt": "2026-02-01T15:46:57.355Z",
   "truncationSignals": [
     "has_footer_junk"
   ],

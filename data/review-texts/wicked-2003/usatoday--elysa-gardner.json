@@ -8,43 +8,43 @@
   "fullText": "I would have to go back to the 1970s and '80s, when two composer/lyricists named Stephen proved able, in very different ways, to entertain, move and intrigue mass audiences. Stephen Schwartz, who would also write music for popular films, never became an icon of Stephen Sondheim's stature. But Schwartz did enjoy such notable successes as Pippin and Godspell.\n\nIt's too soon to tell whether Schwartz's score for Wicked (***&#189; out of four), which opened Thursday at the Gershwin Theatre, will prove as enduring. But it's safe to say that this is the most complete, and completely satisfying, new musical I've come across in a long time.\n\nThe triumph is not Schwartz's alone. Adapted from a Gregory Maguire novel, Wicked offers a post-feminist, socially conscious reinterpretation of the story of Oz's Wicked Witch of the West. Though that may sound like a recipe for pretentious pedantry, writer Winnie Holzman, whose TV credits include thirtysomething and My So-Called Life, provides a libretto that juggles winning irreverence with thoughtfulness and heart.\n\nCentral to her account is the relationship between Glinda the Good Witch and the ostensibly wicked one, Elphaba, presented as would-be rivals bound by an unlikely sense of empathy and mutual admiration. Kristin Chenoweth is ideally cast as Glinda, a dizzy blonde whose peppy facade belies a fragile heart, while Idina Menzel's Elphaba is a powerfully human sorceress, particularly when delivering haunting new songs such as No Good Deed and I'm Not That Girl.\n\nNorbert Leo Butz is compelling as a suitor who threatens to come between the witches, and Joel Grey and Carole Shelley shine as a somewhat ethically challenged Wizard and his press secretary. A fine ensemble helps ensure that even the most flagrantly cute and sentimental moments are hard to resist.\n\nAdd in tunes that you can actually leave the theater humming, and you have a thoroughly enchanting experience.",
   "dtliExcerpt": "Remember the last time an original Broadway musical made you laugh, cry and think — in the right places, and for the right reasons?",
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 88,
   "source": "dtli",
   "dtliThumb": "Up",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 83,
+    "score": 88,
     "confidence": "high",
     "range": {
-      "low": 75.5,
-      "high": 90.5
+      "low": 85,
+      "high": 92
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 85,
+      "music": 88,
+      "performances": 90,
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "made you laugh, cry and think — in the right places, and for the right reasons",
+        "quote": "this is the most complete, and completely satisfying, new musical I've come across in a long time",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "made you laugh, cry and think",
+        "quote": "Add in tunes that you can actually leave the theater humming, and you have a thoroughly enchanting experience",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "in the right places, and for the right reasons",
+        "quote": "3.5 out of four",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The rhetorical question strongly implies this show achieves the rare feat of hitting all the right emotional and intellectual notes, suggesting high recommendation despite the brevity. | GPT-4o-mini: The review hints at a strong emotional impact, suggesting a positive recommendation, though it lacks explicit praise or detailed analysis.",
+    "reasoning": "The critic gives 3.5/4 stars and calls this 'the most complete, and completely satisfying, new musical' they've encountered in a long time, with consistent praise across all elements and a conclusion describing it as 'thoroughly enchanting.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,11 +53,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T06:02:17.445Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:38:21.532Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2789,
+    "outputTokens": 364,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 85,
@@ -104,7 +111,7 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 83,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.158Z",
+  "rescoreCompletedAt": "2026-02-01T16:38:21.532Z",
   "contentTier": "complete",
   "wordCount": 310
 }

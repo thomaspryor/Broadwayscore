@@ -9,56 +9,58 @@
   "bwwExcerpt": "Just For One Day is yet another jukebox musical, with all the boons and pitfalls such a work might imply. Its tracklist, studded with songs by everyone from Queen to Bryan Adams, is nearly as rousing as Live Aid itself, and Matthew Brind’s new arrangements lift the anthems of the 1980s to new heights. Indeed, the music of Just For One Day is close to flawless, impeccably sung by its rock-solid cast and impressively steered by musical director Patrick Hurley (even though Gareth Owen’s sound desig",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JUST-FOR-US-2023",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 35,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 76,
-    "confidence": "medium",
+    "score": 35,
+    "confidence": "low",
     "range": {
-      "low": 67,
-      "high": 85
+      "low": 25,
+      "high": 45
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
-      "music": 89,
-      "performances": 81,
-      "direction": 78
+      "music": null,
+      "performances": null,
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "yet another jukebox musical, with all the boons and pitfalls such a work might imply",
+        "quote": "under-baked, over-simplified dance party",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Tiny bodies with swollen stomachs. Brittle limbs with rounded joints.",
         "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "the music of Just For One Day is close to flawless, impeccably sung by its rock-solid cast",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Its tracklist... is nearly as rousing as Live Aid itself",
-        "sentiment": "positive",
-        "strength": 4
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: Strong praise for music and performances but the excerpt is incomplete and opens with a neutral-to-wary tone about jukebox musicals, suggesting mixed elements not yet revealed. | GPT-4o-mini: The review highlights the exceptional quality of the music and performances, leading to a strong overall recommendation despite the typical jukebox musical caveats.",
+    "reasoning": "The headline describes the show as 'under-baked' and 'over-simplified,' indicating clear criticism, but the excerpt is too brief to provide comprehensive analysis.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:46.584Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:22:16.477Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2396,
+    "outputTokens": 292,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -69,7 +71,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 76,
   "archivePath": "data/archives/reviews/just-for-us-2023/the-globe-and-mail--aisling-murphy_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:55:04.124Z",
@@ -104,7 +106,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250301195522",
   "archiveOrgUrl": "http://web.archive.org/web/20250301195522/https://www.theglobeandmail.com/arts/theatre-and-performance/reviews/article-just-for-one-day-is-an-under-baked-over-simplified-dance-party/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.832Z",
+  "rescoreCompletedAt": "2026-02-01T15:22:16.477Z",
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",

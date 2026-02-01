@@ -9,56 +9,63 @@
   "bwwExcerpt": "Yet while Harmon does nod towards a more universal meaning to “never again,” when Patrick notes at the play’s conclusion that he is “rooting for all the wanderers of the world,” Prayer does not ultimately have room to carry the horrors in Gaza alongside more specifically Jewish concerns. You might argue that’s not what this play is about — but how can we leave it outside? It is hard not to feel discomfort in abstractly pondering “Could it happen here?” when we see, right now, what is happening t",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": 51,
+  "assignedScore": 72,
   "source": "dtli",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "llmScore": {
-    "score": 51,
-    "confidence": "high",
+    "score": 72,
+    "confidence": "medium",
     "range": {
-      "low": 45,
-      "high": 57
+      "low": 68,
+      "high": 76
     },
     "bucket": "Mixed",
-    "thumb": "Flat",
+    "thumb": "Up",
     "components": {
-      "book": 45,
+      "book": 75,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 70,
+      "direction": 80
     },
     "keyPhrases": [
       {
-        "quote": "tall order to expect Prayer...to fully meet the complexity and horror of our current moment",
+        "quote": "That pivotal casting error leaves Prayer without a center, but there is still heart in its individual threads",
         "sentiment": "negative",
         "strength": 3
       },
       {
-        "quote": "nor can it escape that context, arriving when it has",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "Cromer's typically precise direction invariably finds the individual behind the ideas – every character seems, under his imperceptible hand, fully rounded",
+        "sentiment": "positive",
+        "strength": 4
       },
       {
-        "quote": "It would be a tall order to expect Prayer... to fully meet the complexity and horror of our current moment.",
-        "sentiment": "neutral",
+        "quote": "It is hard not to feel discomfort in abstractly pondering 'Could it happen here?' when we see, right now, what is happening there",
+        "sentiment": "negative",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: This excerpt suggests the play falls short of addressing contemporary issues adequately, but the fragment is too brief to determine the critic's overall recommendation. | GPT-4o-mini: The review expresses a sense of ambivalence towards the play's ability to resonate with current events, indicating a mixed recommendation without strong enthusiasm.",
+    "reasoning": "The critic appreciates the play's intellectual depth, direction, and most performances, but identifies significant problems with central casting and questions the work's relevance given current events, resulting in qualified praise without clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:16:14.011Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:53:54.173Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4084,
+    "outputTokens": 385,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 52,
@@ -77,7 +84,7 @@
   "showScoreExcerpt": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 51,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.970Z",
+  "rescoreCompletedAt": "2026-02-01T15:53:54.173Z",
   "contentTier": "complete",
   "wordCount": 1205
 }

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 57,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "needsScoring": true,
@@ -20,51 +20,58 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 57,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 50.5,
-      "high": 63.5
+      "low": 75,
+      "high": 82
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 45,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 72,
+      "music": 76,
+      "performances": 85,
+      "direction": 80
     },
     "keyPhrases": [
       {
-        "quote": "the really good silly bits of this parody of Arthurian legend are just as good-silly as they always were",
+        "quote": "Spamalot's expertly written and performed silliness is endless, beguiling, and winning, and so well-done that—despite the gay and Jewish clunkers of songs—the musical remains a daffy, rollicking night out",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "the bits that felt dated have only become more dated",
-        "sentiment": "negative",
-        "strength": 4
+        "quote": "the really good silly bits of this parody of Arthurian legend are just as good-silly as they always were",
+        "sentiment": "positive",
+        "strength": 3
       },
       {
-        "quote": "sounds not just dated but also weird in this politically vexed moment",
+        "quote": "But the bits that felt dated have only become more dated",
         "sentiment": "negative",
-        "strength": 4
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review acknowledges the show's enduring comedic strengths but expresses significant concern about dated material that feels problematic in the current political climate, creating a mixed but slightly negative overall impression. | GPT-4o-mini: The review highlights some enduring humor but emphasizes that many elements feel increasingly outdated, leading to a mixed recommendation.",
+    "reasoning": "Despite acknowledging dated elements and problematic songs, the critic concludes it 'remains a daffy, rollicking night out' with 'expertly written and performed silliness' that is 'endless, beguiling, and winning.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:11:19.841Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:08:35.273Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4039,
+    "outputTokens": 402,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 58,
@@ -77,7 +84,7 @@
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 57,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.031Z",
+  "rescoreCompletedAt": "2026-02-01T16:08:35.273Z",
   "contentTier": "complete",
   "wordCount": 1129
 }

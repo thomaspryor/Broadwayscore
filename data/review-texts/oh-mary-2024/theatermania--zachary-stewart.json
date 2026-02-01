@@ -14,18 +14,18 @@
   "scrapedAt": "2026-01-23T22:00:01.456Z",
   "llmScore": {
     "score": 92,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
-      "low": 83.5,
-      "high": 100
+      "low": 88,
+      "high": 96
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": 90,
       "music": null,
-      "performances": 89,
-      "direction": null
+      "performances": 95,
+      "direction": 88
     },
     "keyPhrases": [
       {
@@ -39,25 +39,32 @@
         "strength": 4
       },
       {
-        "quote": "The show is even better in its uptown transfer",
+        "quote": "it's a breath of fresh air",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Superlative language declaring it 'the funniest comedy on Broadway right now' with consistent praise and improvement noted from previous production indicates strong positive recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm for the show's humor and performances, indicating a strong recommendation.",
+    "reasoning": "The critic delivers unqualified praise calling it 'the funniest comedy on Broadway right now' with superlatives throughout and describing it as 'a breath of fresh air' with no significant reservations.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:18:31.558Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:44:49.179Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3269,
+    "outputTokens": 338,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 88,
@@ -105,7 +112,7 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 92,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.929Z",
+  "rescoreCompletedAt": "2026-02-01T15:44:49.179Z",
   "contentTier": "complete",
   "wordCount": 762
 }

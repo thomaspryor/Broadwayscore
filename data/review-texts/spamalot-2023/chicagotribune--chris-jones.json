@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 72,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -18,51 +18,58 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 50,
+    "score": 72,
     "confidence": "medium",
     "range": {
-      "low": 40,
-      "high": 60
+      "low": 68,
+      "high": 76
     },
     "bucket": "Mixed",
-    "thumb": "Flat",
+    "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 40,
-      "performances": 50,
-      "direction": 45
+      "book": 75,
+      "music": 78,
+      "performances": 74,
+      "direction": 65
     },
     "keyPhrases": [
       {
+        "quote": "I've long loved this musical and I don't plan to abandon it as it ages out and becomes more needy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Idle's comic genius remains entirely evident here and he and Du Prez came up with the kind of brassy, swirling score that screamed Big Night Out on Broadway",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
         "quote": "I wish the revival, directed and choreographed by Josh Rhodes, had more of an explicit and distinct point of view",
         "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "the cast's exuberance adds too much moisture to the sandpaper-dry humor and even gets in the way of Du Prez and Idle's lyrics",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Leslie Rodriguez Kritzer, fun as she is",
-        "sentiment": "positive",
-        "strength": 2
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic expresses multiple significant criticisms about direction lacking vision and performances undermining the material, with only minor positive notes, suggesting more problems than strengths. | GPT-4o-mini: The review expresses significant concerns about the direction and overall execution while acknowledging some positive aspects, leading to a mixed recommendation.",
+    "reasoning": "The critic expresses genuine affection for the material and praises the score and certain performances, but has significant reservations about the revival's execution and relevance to modern audiences.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:17:39.239Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:08:24.111Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3446,
+    "outputTokens": 382,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 45,
@@ -73,7 +80,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 50,
   "archivePath": "data/archives/reviews/spamalot-2023/chicagotribune--chris-jones_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:51:23.571Z",
@@ -100,7 +107,7 @@
   ],
   "fetchTier": 2,
   "sourceMethod": "scrapingbee",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.030Z",
+  "rescoreCompletedAt": "2026-02-01T16:08:24.111Z",
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",

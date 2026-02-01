@@ -8,25 +8,25 @@
   "fullText": "When Ragtime was first staged in the mid-1990s, it embodied a certain post-Reagan excess with producer Garth Drabinksy's elaborate, budget-busting staging (fireworks! a working Model T!) and the epic sweep of a story based on E.L. Doctorow's doorstop of a novel about American life in the early 20th century. Over time, though, the show that was overshadowed at the 1998 Tony Awards by The Lion King has managed to endure in ways that its creators might not have imagined.\n\nDirector Lear DeBessonet, who debuted a version of this production last fall at New York City Center with much of the same cast, is making a statement by choosing Ragtime as the first in her tenure as the new artistic director of Lincoln Center Theater. For one thing, a musical with a cast of 32 performers and a 28-piece orchestra is not the sort of project that commercial Broadway producers are likely to take on in the current economic climate.\n\nStephen Flaherty's ambitious score, with lyrics by Lynn Ahrens that veer between poetic and portentous, is heavy on anthemic ballads that have an undeniable power — especially when produced by a full orchestra under James Moore's baton, with a chorus the size of a full platoon that achieves a robust sound and a rich blend. There's also a nice mix of styles — from light operetta for the middle-class white characters to Eastern European folk music for the immigrants to, of course, syncopated ragtime for the Harlem-based Black characters.\n\nDeBessonet has assembled a remarkable cast. This is, hands down, one of the best sung productions New Yorkers will hear this year. Joshua Henry shakes the rafters with his powerful vocals as the tragic ragtime musician Coalhouse Walker Jr., while Caissie Levy shows admirable vocal restraint as the New Rochelle housewife who gradually begins to assert herself over the course of the evening despite never getting a name beyond \"Mother.\" Other standouts include Nichelle Lewis as Coalhouse's stoic baby-mama, Sarah, Brandon Uranowitz as an enterprising Jewish immigrant, and Ben Levi Ross as Mother's younger brother.\n\nRagtime remains an unwieldy beast of a show, with too much exposition and characters stepping forward to narrate each other's lives rather than actually dramatizing events (the plot-heavy book is by the late Terrence McNally). Yet there's a precision to the storytelling, with finely pronounced echoes in the different story threads that DeBessonet highlights with clever stagecraft.\n\nBut this is no lumbering pageant. Despite the overstuffed plot, you find yourself getting caught up in the plight of characters whose efforts to get ahead in life are thwarted by prejudice and whose response to the obstacles they face varies from quiet persistence to anger to vengeance. DeBessonet's thoughtful staging underscores why Ragtime is still worth revisiting. As we approach the country's 250th anniversary, it's good to remember that harmony can only happen when we bring disparate voices together, and that doing so is a public act worth cherishing. And preserving. Great music can grease the wheels of the American Dream.",
   "bwwExcerpt": "But this is no lumbering pageant. Despite the overstuffed plot, you find yourself getting caught up in the plight of characters whose efforts to get ahead in life are thwarted by prejudice and whose response to the obstacles they face varies from quiet persistence to anger to vengeance. DeBessonet's thoughtful staging underscores why Ragtime is still worth revisiting. As we approach the country's 250th anniversary, it's good to remember that harmony can only happen when we bring disparate voices together, and that doing so is a public act worth cherishing. And preserving. Great music can grease the wheels of the American Dream.",
   "originalScore": "4/5",
-  "assignedScore": 84,
+  "assignedScore": 82,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-24T04:00:00.000Z",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 84,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 77.5,
-      "high": 90.5
+      "low": 78,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 58,
-      "music": 89,
-      "performances": 94,
-      "direction": 83
+      "book": 45,
+      "music": 88,
+      "performances": 92,
+      "direction": 82
     },
     "keyPhrases": [
       {
@@ -45,20 +45,27 @@
         "strength": 3
       }
     ],
-    "reasoning": "Claude: Strong praise for performances and music quality with clear statement that the show is 'worth revisiting', despite acknowledged flaws in the book structure. | GPT-4o-mini: The review expresses strong praise for the performances and music while acknowledging some issues with the book, leading to a solid positive recommendation overall.",
+    "reasoning": "Despite acknowledging the show's structural flaws, the critic praises exceptional performances, music, and direction while concluding it's 'worth revisiting' and emphasizing its cultural relevance.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T15:53:06.219Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:59:59.680Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3019,
+    "outputTokens": 358,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 82,
@@ -72,7 +79,7 @@
   "bwwThumb": "Up",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 84,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.996Z",
+  "rescoreCompletedAt": "2026-02-01T15:59:59.680Z",
   "contentTier": "complete",
   "wordCount": 502
 }

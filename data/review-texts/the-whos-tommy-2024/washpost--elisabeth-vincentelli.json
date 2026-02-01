@@ -21,10 +21,10 @@
   ],
   "llmScore": {
     "score": 50,
-    "confidence": "high",
+    "confidence": "low",
     "range": {
-      "low": 45,
-      "high": 55
+      "low": 40,
+      "high": 60
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -39,27 +39,29 @@
         "quote": "feels like it takes place in the multiverse",
         "sentiment": "neutral",
         "strength": 2
-      },
-      {
-        "quote": "A new revival",
-        "sentiment": "neutral",
-        "strength": 3
       }
     ],
-    "reasoning": "Claude: This single quote is too ambiguous to determine if 'multiverse' suggests exciting scope or confusing incoherence, requiring neutral scoring. | GPT-4o-mini: The review provides minimal information and lacks clear positive or negative sentiment, resulting in a mixed recommendation.",
+    "reasoning": "The single quoted phrase is ambiguous and could be interpreted positively (innovative/creative) or negatively (confusing/disconnected), with insufficient context to determine clear recommendation strength.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:20:52.283Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:30:10.875Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2315,
+    "outputTokens": 245,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 50,
@@ -106,5 +108,8 @@
     "no_ending_punctuation",
     "possible_mid_word_cutoff"
   ],
-  "textStatus": "truncated"
+  "textStatus": "truncated",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "previousLlmScore": 50,
+  "rescoreCompletedAt": "2026-02-01T16:30:10.875Z"
 }

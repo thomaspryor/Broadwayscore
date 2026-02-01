@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"...a pleasant excuse for stargazing\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-roommate-broadway",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 45,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -29,51 +29,58 @@
   ],
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 64,
+    "score": 45,
     "confidence": "high",
     "range": {
-      "low": 57.5,
-      "high": 70.5
+      "low": 40,
+      "high": 50
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
-      "book": 50,
+      "book": 35,
       "music": null,
-      "performances": 80,
-      "direction": 73
+      "performances": 85,
+      "direction": 60
     },
     "keyPhrases": [
       {
-        "quote": "If you have any affection for its stars, The Roommate will provide a fair amount of fun",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "there's so little to it that you fear it might curl up and blow away, like a piece of cornsilk on a windy afternoon",
+        "quote": "is the high point of the evening",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "Much of The Roommate is strictly formulaic, however, being filled with the bonding devices we've seen in so many just-us-girls plays",
+        "quote": "Silverman's play offers little more than an oddball pairing of sensibilities",
         "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Of course, the audience goes wild",
+        "sentiment": "positive",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic praises the star performances and professional production values but finds the script thin and formulaic, offering a qualified recommendation primarily for fans of the actors. | GPT-4o-mini: The review highlights strong performances and production quality but criticizes the thinness of the script, leading to a mixed recommendation.",
+    "reasoning": "The critic clearly states the opening applause 'is the high point of the evening' and dismisses the play as offering 'little more than an oddball pairing,' indicating the material fails to live up to the star power.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:34:29.450Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:24:33.224Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2968,
+    "outputTokens": 339,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 62,
@@ -86,7 +93,7 @@
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 64,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.104Z",
+  "rescoreCompletedAt": "2026-02-01T16:24:33.224Z",
   "textQualityOverride": "batch-fix-2026-01-30",
   "contentTier": "complete",
   "wordCount": 938

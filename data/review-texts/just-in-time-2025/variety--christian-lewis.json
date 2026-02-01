@@ -10,58 +10,65 @@
   "bwwExcerpt": "Contrary to its title, “Just in Time” is anything but timely, since the window of Darin’s relevancy has long gone. Even Darin himself admits in the show that by 1968 he was “yesterday’s news.” Just in time for what, we might ask? Do we really need a whole musical about a straight white man with a few hit songs in the 60s? For that matter, do we need multiple? This is in fact the second Bobby Darin musical (the other, “Dream Lover,” premiered in Australia in 2016), not to mention the Kevin Spacey-led biopic, “Beyond the Sea” from 2004. Does Bobby Darrin really merit this much attention?",
   "showScoreExcerpt": "âContrary to its title, âJust in Timeâ is anything but timely, since the window of Darinâs relevancy has long gone.â",
   "originalScore": null,
-  "assignedScore": 41,
+  "assignedScore": 25,
   "source": "dtli",
   "bwwThumb": "Meh",
   "bwwUrl": "https://variety.com/2025/legit/reviews/just-in-time-review-jonathan-groff-broadway-musical-1236379177/",
   "dtliThumb": "Down",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 41,
-    "confidence": "high",
+    "score": 25,
+    "confidence": "medium",
     "range": {
-      "low": 35,
-      "high": 47
+      "low": 20,
+      "high": 35
     },
-    "bucket": "Negative",
+    "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": 28,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 35
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "fail to go beyond the concert conceit, and never give us a real portrait of Darin",
+        "quote": "It might be time to call it quits on biographical jukebox musicals",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "its many spawn have been mostly ill-conceived",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "Groff and the team obviously love him and his work, but are we meant to?",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "fail to go beyond the concert conceit",
+        "quote": "To this less-than-honorable list we can now add 'Just in Time'",
         "sentiment": "negative",
         "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic identifies fundamental failures in direction and book writing, questioning the show's purpose and clarity while noting it fails to provide meaningful character development. | GPT-4o-mini: The review expresses significant disappointment in the production's failure to provide depth and clarity, leading to a strong negative recommendation.",
+    "reasoning": "The critic explicitly groups this show with a 'less-than-honorable list' of failed jukebox musicals and suggests the entire genre should end, indicating strong negative judgment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": true
+      "comparesToPrevious": true,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:33:04.210Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:24:30.223Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2457,
+    "outputTokens": 338,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 42,
@@ -107,7 +114,7 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251211050647/https://variety.com/2025/legit/reviews/just-in-time-review-jonathan-groff-broadway-musical-1236379177/",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 41,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.841Z",
+  "rescoreCompletedAt": "2026-02-01T15:24:30.223Z",
   "contentTier": "complete",
   "wordCount": 1302
 }

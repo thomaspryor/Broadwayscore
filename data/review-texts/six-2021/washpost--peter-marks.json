@@ -10,56 +10,63 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 88,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 84,
+    "score": 88,
     "confidence": "high",
     "range": {
-      "low": 77.5,
-      "high": 90.5
+      "low": 85,
+      "high": 92
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 85,
-      "performances": null,
-      "direction": null
+      "book": 82,
+      "music": 90,
+      "performances": 88,
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "sleek, swift and superbly sung evening to take you out of yourself",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "fits ideally in your itinerary",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the vibe becomes so contagious that it may float you out of your very seat",
+        "quote": "what an exhilarating jolt of musical-theater wit and joyful affirmation 'Six' supplies",
         "sentiment": "positive",
         "strength": 5
+      },
+      {
+        "quote": "If you're looking for a sleek, swift and superbly sung evening to take you out of yourself, the Brooks Atkinson Theatre fits ideally in your itinerary",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "spreads exactly the kind of energizing, inspirational illumination this town aches for",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review uses strong positive language throughout with clear recommendation language ('fits ideally in your itinerary') and emphasizes the show's engaging, transportive qualities without any caveats. | GPT-4o-mini: The review expresses strong enthusiasm for the experience, highlighting its quality and enjoyment without any significant reservations.",
+    "reasoning": "Strong positive review with enthusiastic language ('exhilarating jolt,' 'superbly sung,' 'energizing, inspirational') and clear recommendation to see it, with detailed praise for all elements and no significant criticisms.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T02:35:11.573Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:08:13.707Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3947,
+    "outputTokens": 390,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 82,
@@ -70,7 +77,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 84,
   "archivePath": "data/archives/reviews/six-2021/washpost--peter-marks_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:53:15.276Z",
@@ -93,7 +100,7 @@
   "textIssues": [
     "Show title not found in text"
   ],
-  "rescoreCompletedAt": "2026-01-29T14:31:52.029Z",
+  "rescoreCompletedAt": "2026-02-01T16:08:13.707Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
   "wordCount": 1050

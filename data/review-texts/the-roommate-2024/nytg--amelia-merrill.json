@@ -9,7 +9,7 @@
   "bwwExcerpt": "Although director Jack O’Brien’s production features too many prolonged scene transitions and the end of Silverman’s script is a tad self-indulgent, Farrow’s quietly captivating performance makes The Roommate worth the stay.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 72,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
@@ -31,19 +31,19 @@
   ],
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 72,
+    "confidence": "medium",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 68,
+      "high": 76
     },
     "bucket": "Mixed",
     "thumb": "Up",
     "components": {
-      "book": 68,
+      "book": 60,
       "music": null,
-      "performances": 79,
-      "direction": 64
+      "performances": 75,
+      "direction": 65
     },
     "keyPhrases": [
       {
@@ -62,20 +62,27 @@
         "strength": 3
       }
     ],
-    "reasoning": "Claude: Clear qualified recommendation based on Farrow's performance despite noted issues with direction and script, plus mixed assessment of LuPone's work. | GPT-4o-mini: The review highlights strong performances, particularly by Farrow, while noting some issues with the script and direction, leading to a positive but cautious recommendation.",
+    "reasoning": "The review gives a qualified recommendation based primarily on Farrow's strong performance, but notes significant issues with LuPone's performance, direction, and script that prevent full endorsement.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:35:16.277Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:24:56.224Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3060,
+    "outputTokens": 367,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -95,7 +102,7 @@
   "designation": "Recommended",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 74,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.105Z",
+  "rescoreCompletedAt": "2026-02-01T16:24:56.224Z",
   "contentTier": "complete",
   "wordCount": 538
 }

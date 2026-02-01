@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 38,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -30,51 +30,58 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 52,
-    "confidence": "medium",
+    "score": 38,
+    "confidence": "high",
     "range": {
-      "low": 43.5,
-      "high": 60.5
+      "low": 32,
+      "high": 45
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
-      "book": 40,
-      "music": 68,
-      "performances": 73,
-      "direction": 43
+      "book": null,
+      "music": 75,
+      "performances": null,
+      "direction": 25
     },
     "keyPhrases": [
       {
-        "quote": "their belting started to feel like an American Idol competition, and some of the dance numbers seemed so frenzied that at times they gave off an aura of desperation",
+        "quote": "goes too far",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "This unmodulated, artificial-feeling fervor made me wonder whether there were too many cities on their 13-city pre-Broadway tour",
+        "quote": "there is something more essential that's missing from this reworked Wiz",
         "sentiment": "negative",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "some of the hits in the score of 'The Wiz' still score, and there's obvious talent in this production",
-        "sentiment": "positive",
-        "strength": 3
+        "quote": "there's little sense of ease",
+        "sentiment": "negative",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic acknowledges talent and some good music but consistently criticizes the production's overly frenzied energy, budget constraints, and questionable creative choices, making it hard to recommend despite recognizing individual merits. | GPT-4o-mini: The review highlights strong performances and musical elements but expresses significant concerns about the direction and overall execution, leading to a mixed recommendation.",
+    "reasoning": "The critic fundamentally objects to core creative choices that remove iconic elements and finds the production lacking in essential theatrical ease, despite acknowledging the original's musical strengths.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:03:53.686Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:31:20.460Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2586,
+    "outputTokens": 317,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 48,
@@ -87,5 +94,8 @@
   },
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
-  "wordCount": 1128
+  "wordCount": 1128,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 52,
+  "rescoreCompletedAt": "2026-02-01T16:31:20.460Z"
 }

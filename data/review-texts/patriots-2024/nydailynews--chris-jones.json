@@ -18,48 +18,55 @@
     "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 78,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 78,
+      "book": 85,
       "music": null,
       "performances": 88,
-      "direction": 83
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "a gripping, juicy drama replete with a terrifying performance from Will Keen",
+        "quote": "gripping, juicy drama replete with a terrifying performance",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "a lively production from Rupert Goold and a uniformly excellent ensemble cast",
+        "quote": "singularly adept at explaining how the most basic human emotions...impact magnitudinous global events",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "a helpful, cautionary tale of unintended consequence",
+        "quote": "terrifying performance from Will Keen as a Richard III-like you-know-who",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Strong praise for performances, direction, and dramatic impact with only minor structural criticisms about exposition, indicating a clear positive recommendation. | GPT-4o-mini: The review expresses strong praise for the performances and production while acknowledging some narrative weaknesses, leading to a solid recommendation.",
+    "reasoning": "Strong praise for the writing craft, plot engagement ('gripping, juicy'), and standout performance, with no significant criticisms in this excerpt.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T05:33:51.944Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:51:07.974Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2465,
+    "outputTokens": 339,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -85,5 +92,8 @@
   "archiveOrgTimestamp": "20240606173412",
   "archiveOrgUrl": "http://web.archive.org/web/20240606173412/https://www.nydailynews.com/2024/04/22/broadway-review-patriots/",
   "contentTier": "complete",
-  "wordCount": 603
+  "wordCount": 603,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 82,
+  "rescoreCompletedAt": "2026-02-01T15:51:07.974Z"
 }

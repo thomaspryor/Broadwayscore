@@ -9,56 +9,63 @@
   "bwwExcerpt": "Between the two of them, you can’t really fail to enjoy an evening of theater, bumpy as the road may be at points. Farrow, especially, shines in a brisk yet moving conclusion that underscores the power of fleeting relationships to alter the trajectory or our lives. The Roommate, as with a real, solid house-sharing arrangement, is neither disastrous nor perfect. It entails moments of awkwardness and adjustment, some settling in and some compromises, to find the best of it.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 72,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "llmScore": {
-    "score": 69,
+    "score": 72,
     "confidence": "high",
     "range": {
-      "low": 63,
-      "high": 75
+      "low": 68,
+      "high": 76
     },
     "bucket": "Mixed",
-    "thumb": "Flat",
+    "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 55,
       "music": null,
-      "performances": 77,
-      "direction": null
+      "performances": 85,
+      "direction": 60
     },
     "keyPhrases": [
       {
-        "quote": "you can't really fail to enjoy an evening of theater, bumpy as the road may be at points",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "Farrow, especially, shines in a brisk yet moving conclusion",
+        "quote": "Between the two of them, you can't really fail to enjoy an evening of theater, bumpy as the road may be at points",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "is neither disastrous nor perfect. It entails moments of awkwardness and adjustment",
+        "quote": "The Roommate, as a play, has an odd, somewhat confounding pacing, ambling about in its first act, an awkward getting-to-know-you stage that leans into stock, to the point of near boredom",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The Roommate, as with a real, solid house-sharing arrangement, is neither disastrous nor perfect",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The review gives a qualified positive assessment using the metaphor of a solid but imperfect roommate arrangement, praising performances while acknowledging structural flaws. | GPT-4o-mini: The review indicates a generally positive experience with strong performances, but acknowledges imperfections and mixed elements.",
+    "reasoning": "The critic finds significant flaws in the script and pacing but strongly praises the legendary performances of LuPone and Farrow, ultimately concluding that the stars make it worth seeing despite the play's weaknesses.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:34:24.072Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:24:26.538Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3837,
+    "outputTokens": 408,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 68,
@@ -78,7 +85,6 @@
   "showScoreExcerpt": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 69,
   "isFullReview": true,
@@ -104,5 +110,6 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "rescoreCompletedAt": "2026-02-01T16:24:26.538Z"
 }

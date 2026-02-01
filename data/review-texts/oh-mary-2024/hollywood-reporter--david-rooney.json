@@ -16,48 +16,55 @@
     "score": 88,
     "confidence": "high",
     "range": {
-      "low": 80.5,
-      "high": 95.5
+      "low": 85,
+      "high": 92
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": 90,
       "music": null,
-      "performances": null,
+      "performances": 92,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "80 minutes of almost uninterrupted laughter",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "liberates audiences from the despair of the current political climate",
+        "quote": "cause for Big Gay Jubilation",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "a work of genius",
+        "quote": "gut-bustingly funny antics",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It's hard to imagine anyone with a sense of humor not joining the infectious laughter",
         "sentiment": "positive",
         "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic calls the show 'a work of genius' and describes it as delivering '80 minutes of almost uninterrupted laughter' that serves as audience liberation, indicating strong enthusiasm and clear recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the comedy's ability to provide joy and laughter, indicating a must-see experience.",
+    "reasoning": "The review is overwhelmingly enthusiastic with superlative language like 'Big Gay Jubilation', 'gut-bustingly funny', and 'infectious laughter', positioning it as broadly appealing entertainment that transcends niche audiences.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": false,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:18:13.599Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:44:05.702Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2451,
+    "outputTokens": 339,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 85,
@@ -109,7 +116,7 @@
   "showScoreExcerpt": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 88,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.926Z",
+  "rescoreCompletedAt": "2026-02-01T15:44:05.702Z",
   "contentTier": "complete",
   "wordCount": 1060,
   "truncationSignals": [

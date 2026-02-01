@@ -9,56 +9,63 @@
   "showScoreExcerpt": "\"Paul Tazewellâs magnificent costume design carries the cast through the MJ timeline seamlessly. A killer set by Derek McLane, amplified by gorgeous lighting by Natasha Katz, gives the show a visual beauty that makes it hard to look away.\n\nWhile Jackson's story is flawed, itâs too complicated for anyone who hasnât danced in his shoes. MJ The Musical, however, is the perfect salutation to the life of an imperfect but gifted icon.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/mj",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 92,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 79,
+    "score": 92,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 88,
+      "high": 95
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 63,
-      "music": null,
-      "performances": null,
-      "direction": 85
+      "book": 88,
+      "music": 90,
+      "performances": 95,
+      "direction": 92
     },
     "keyPhrases": [
       {
-        "quote": "magnificent costume design carries the cast through the MJ timeline seamlessly",
+        "quote": "MJ is the platinum standard the often uninspired, generic jukebox musical could benefit to emulate",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "gives the show a visual beauty that makes it hard to look away",
+        "quote": "a flawless production of MJ the Musical, a model biographical musical",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "the perfect salutation to the life of an imperfect but gifted icon",
+        "quote": "MJ The Musical, however, is the perfect salutation to the life of an imperfect but gifted icon",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: Strong praise for design elements and visual spectacle with concluding endorsement as 'perfect salutation' outweighs acknowledgment of story flaws. | GPT-4o-mini: The review highlights strong visual elements and a positive overall impression of the show, despite acknowledging flaws in Jackson's story.",
+    "reasoning": "The critic uses superlative language throughout ('flawless production', 'platinum standard', 'perfect salutation') with consistent praise for all elements and calls it a 'model biographical musical' that other shows should emulate.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:05.358Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:38:10.496Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3225,
+    "outputTokens": 369,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -69,7 +76,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 79,
   "archivePath": "data/archives/reviews/mj-2022/nytg--ayanna-prescod_2026-02-01.html",
   "textFetchedAt": "2026-02-01T03:30:30.074Z",
@@ -92,7 +99,7 @@
   "textIssues": [
     "Show title not found in text"
   ],
-  "rescoreCompletedAt": "2026-01-29T14:31:51.895Z",
+  "rescoreCompletedAt": "2026-02-01T15:38:10.496Z",
   "contentTier": "complete",
   "wordCount": 1081
 }

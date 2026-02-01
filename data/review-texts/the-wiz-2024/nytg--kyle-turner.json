@@ -9,51 +9,63 @@
   "showScoreExcerpt": "\"musical revival celebrates a history of Black creativity and culture\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-wiz-broadway",
   "originalScore": null,
-  "assignedScore": 71,
+  "assignedScore": 72,
   "source": "show-score",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 71,
-    "confidence": "high",
+    "score": 72,
+    "confidence": "medium",
     "range": {
-      "low": 65,
-      "high": 77
+      "low": 68,
+      "high": 76
     },
     "bucket": "Mixed",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "music": 78,
+      "performances": 75,
+      "direction": 65
     },
     "keyPhrases": [
       {
-        "quote": "celebrates a history of Black creativity and culture",
+        "quote": "There's a lot to enjoy in the revival of The Wiz",
         "sentiment": "positive",
         "strength": 3
       },
       {
-        "quote": "musical revival celebrates a history of Black creativity and culture",
+        "quote": "The maximalist approach that the show clearly aspires to is not quite executed with enough actual stagecraft",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "In these sequences of ecstasy, it feels like these forms of artistic expression are coming home",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The phrase 'celebrates' suggests positive regard, but this appears to be only a headline or brief description rather than a full review, making scoring highly uncertain. | GPT-4o-mini: The review highlights a positive aspect of the musical's celebration of culture but lacks detail for a stronger recommendation.",
+    "reasoning": "The review finds significant cultural value and praises the music/performances, but identifies clear execution problems with the production design and staging that prevent full recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:22:13.372Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:31:25.922Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3034,
+    "outputTokens": 343,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -71,7 +83,7 @@
   ],
   "bwwExcerpt": "There’s a lot to enjoy in the revival of The Wiz, the “super soul musical” retelling of The Wonderful Wizard of Oz first staged on Broadway in 1975. There are sparkling costumes by Sharen Davis, additional book material by Amber Ruffin, and a charming ensemble including Avery Wilson (Scarecrow), Phillip Johnson Richardons (Tinman), Kyle Ramar Freeman (Lion), and newcomer Nichelle Lewis (Dorothy). But the subtext is most compelling about this revival.\r\n.",
   "bwwThumb": "Up",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 71,
   "archivePath": "data/archives/reviews/the-wiz-2024/nytg--kyle-turner_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:28:36.204Z",
@@ -112,7 +124,7 @@
   "textIssues": [
     "Show title not found in text"
   ],
-  "rescoreCompletedAt": "2026-01-29T14:31:52.129Z",
+  "rescoreCompletedAt": "2026-02-01T16:31:25.922Z",
   "contentTier": "complete",
   "wordCount": 619
 }

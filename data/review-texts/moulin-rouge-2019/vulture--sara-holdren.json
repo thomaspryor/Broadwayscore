@@ -9,7 +9,7 @@
   "bwwExcerpt": "ellent company of actors achieve more fully-realized performances. There are certainly worse ways to spend and evening than with a musical so visually gorgeous and vibrantly performed. Sarah Holdren, Vulture : For all its splashy, glittery, high-kicking, butt-cheek-baring, sword-swallowing maximalism, Moulin Rouge! is something more unsettling than not good. It's not even very interesting. There's a shapelessness about it, a weird enervation underneath the flash and bang. It's directed by Alex Timbers, but it feels like it was assembled by committee, even by algorithm. The show veers broadly away from its beloved-by-millennials-everywhere source material, which in itself is no crime. But the path its creators have taken is one long trip through the Kingdom of Pandering, with multiple pit stops in the Meadows of Cutesiness and the Forest of Flat Characters. Everywhere it should be filthy, it's scrubbed aggressively clean, yet somehow it's still a hot mess. Adam Feldman, Time Out New Yor",
   "showScoreExcerpt": "\"'Moulin Rouge!' Is Broadwayâs Biggest Karaoke Night. It commits singlemindedly to stuffing as many additional hit tracks as possible.\"",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 52,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOULIN-ROUGE-Opens-On-Broadway-See-What-The-Critics-Think-20190725",
@@ -26,51 +26,53 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 25,
-    "confidence": "high",
+    "score": 52,
+    "confidence": "low",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 45,
+      "high": 60
     },
-    "bucket": "Pan",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 20,
-      "music": 30,
-      "performances": 43,
-      "direction": 18
+      "book": null,
+      "music": 45,
+      "performances": null,
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "It's not even very interesting. There's a shapelessness about it, a weird enervation underneath the flash and bang.",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "It's two and a half hours of karaoke on a multimillion-dollar budget.",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "The real frustration of Moulin Rouge! is that it feels so completely like a product. Underneath its pulsing, crimson exterior, it's creepily cold-blooded.",
+        "quote": "Broadwayâs Biggest Karaoke Night",
         "sentiment": "negative",
         "strength": 4
+      },
+      {
+        "quote": "commits singlemindedly to stuffing as many additional hit tracks as possible",
+        "sentiment": "negative",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic delivers a scathing pan, calling it 'not even very interesting,' comparing it to expensive karaoke, and describing it as a soulless product that never moves or even titillates audiences. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the show for its lack of substance, poor direction, and failure to engage emotionally, leading to a strong recommendation against seeing it.",
+    "reasoning": "The fragment criticizes the show as superficial karaoke focused on quantity over quality, but lacks sufficient context for a definitive negative assessment.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:39:19.894Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:42:11.143Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2340,
+    "outputTokens": 285,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 25,
@@ -95,7 +97,7 @@
   ],
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 25,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.918Z",
+  "rescoreCompletedAt": "2026-02-01T15:42:11.143Z",
   "contentTier": "complete",
   "wordCount": 1744,
   "truncationSignals": [

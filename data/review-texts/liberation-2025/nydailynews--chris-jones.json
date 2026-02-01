@@ -9,56 +9,63 @@
   "showScoreExcerpt": "\"Make no mistake, this is a sophisticated piece of writing that goes far beyond the usual 90 minutes on Broadway and is cleverly self-protected too\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/liberation-broadway",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 78,
   "source": "show-score",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 79,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 75,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 81,
+      "book": 82,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 85,
+      "direction": 78
     },
     "keyPhrases": [
       {
-        "quote": "sophisticated piece of writing",
+        "quote": "fascinating and superbly acted Broadway play",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "goes far beyond the usual 90 minutes on Broadway",
+        "quote": "this is a sophisticated piece of writing that goes far beyond the usual 90 minutes on Broadway",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "cleverly self-protected too",
+        "quote": "She makes everyone care about the questions she has herself and that's exactly what a playwright should be doing",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The excerpt shows clear appreciation for the writing quality and sophistication, but lacks explicit recommendation language or broader production elements to confirm strong endorsement. | GPT-4o-mini: The review indicates a strong appreciation for the writing, suggesting a positive recommendation, though it lacks explicit enthusiasm or mention of performances.",
+    "reasoning": "The critic offers sustained praise for the writing ('sophisticated'), performances ('superbly acted', 'formidable ensemble'), and the playwright's ambitious questioning, with minor reservations about elite perspective but overall clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:16:49.427Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:27:35.407Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3550,
+    "outputTokens": 356,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -74,7 +81,6 @@
   "bwwThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
   "isFullReview": true,
@@ -111,5 +117,6 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "rescoreCompletedAt": "2026-02-01T15:27:35.407Z"
 }

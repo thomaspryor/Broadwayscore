@@ -18,15 +18,15 @@
     "score": 95,
     "confidence": "high",
     "range": {
-      "low": 90,
-      "high": 100
+      "low": 92,
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": 95,
-      "music": 89,
-      "performances": 94,
+      "music": 88,
+      "performances": 92,
       "direction": 95
     },
     "keyPhrases": [
@@ -46,20 +46,27 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: This is an unqualified rave with superlatives like 'staggering achievement,' 'must-see American classic,' and comparisons to theater legends, showing complete critical enthusiasm. | GPT-4o-mini: The review expresses unqualified enthusiasm and praises multiple aspects of the production, indicating it is a must-see.",
+    "reasoning": "This is an unqualified rave with superlative language ('staggering achievement', 'must-see American classic', 'astonishing') and consistent praise for all elements with no meaningful reservations.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T02:28:03.474Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:12:03.543Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3622,
+    "outputTokens": 384,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 95,
@@ -86,5 +93,8 @@
   "archiveOrgTimestamp": "20251027141346",
   "archiveOrgUrl": "http://web.archive.org/web/20251027141346/https://www.nytimes.com/2024/04/19/theater/stereophonic-review.html",
   "contentTier": "complete",
-  "wordCount": 859
+  "wordCount": 859,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 95,
+  "rescoreCompletedAt": "2026-02-01T16:12:03.543Z"
 }

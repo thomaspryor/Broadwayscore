@@ -7,56 +7,63 @@
   "publishDate": "April 12, 2024",
   "dtliExcerpt": "Despite picture-perfect staging and a passionate cast of triple threats, “The Outsiders” coasts only on Golden-Age appeals — its traditional structure, its beautiful, big-feeling people and its aimless wanderlust.",
   "originalScore": null,
-  "assignedScore": 57,
+  "assignedScore": 48,
   "source": "dtli",
   "dtliThumb": "Meh",
   "scrapedAt": "2026-01-23T22:02:31.876Z",
   "llmScore": {
-    "score": 57,
-    "confidence": "high",
+    "score": 48,
+    "confidence": "medium",
     "range": {
-      "low": 50.5,
-      "high": 63.5
+      "low": 42,
+      "high": 54
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": 45,
       "music": null,
-      "performances": 73,
-      "direction": 70
+      "performances": 65,
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "picture-perfect staging and a passionate cast of triple threats",
-        "sentiment": "positive",
+        "quote": "a tame rendering of the American novel",
+        "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "coasts only on Golden-Age appeals",
+        "quote": "take creative (but unfortunately, not comprehensive) liberty",
         "sentiment": "negative",
         "strength": 3
       },
       {
-        "quote": "aimless wanderlust",
-        "sentiment": "negative",
+        "quote": "They are broken in some ways, deeply caring in others and wildly attractive",
+        "sentiment": "positive",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: Despite strong praise for staging and performances, the critic suggests the show lacks substance and merely 'coasts' on nostalgia, indicating a qualified mixed response. | GPT-4o-mini: While the staging and performances are praised, the review indicates a lack of depth in the material, leading to a mixed recommendation.",
+    "reasoning": "The critic finds the adaptation 'tame' and criticizes the writers for not taking comprehensive creative liberties, while praising character portrayal and performances, resulting in a mixed-negative assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:29:29.871Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:21:50.889Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2593,
+    "outputTokens": 340,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 58,
@@ -78,11 +85,10 @@
   "bwwThumb": null,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 57,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.094Z",
+  "rescoreCompletedAt": "2026-02-01T16:21:50.889Z",
   "garbageFullText": "Review — The Outsiders The Broadway Review: ‘The Outsiders,’ A rival-gang story void of any risk The Broadway adaptation of S.E. Hinton’s bestselling novel is a tame rendering of the American novel. , and Brittani Samuel April 12, 2024 . 1:07 AM 11 min read Share on Twitter Share on Facebook Share on LinkedIn Share via Email (L-R) Jason Schmidt as Sodapop Curtis, Sky Lakota-Lynch as Johnny Cade and Brody Grant as Ponyboy Curtis in Broadway’s “The Outsiders,” 2024 (Credit: Matthew Murphy) Good morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “The Outsiders.” RUNDOWN(L-R) Jason Schmidt as Sodapop Curtis and Brody Grant as Ponyboy Curtis in Broadway’s “The Outsiders,” 2024 (Credit: Matthew Murphy)Broadway has seen Shakespeare’s Capulets and Montagues, Arthur Laurents’ Sharks and Jets, and now, in “The Outsiders,” S.E. Hinton’s Greasers and Socs (short for “socialites”). The musical adaptation of the middle-school bookshelf staple uses the familiar antagonist framework found in those other works and treads closely to its original text, but book writers Adam Rapp and Justin Levine take creative (but unfortunately, not comprehensive) liberty to enhance the drama by sketching out all-white Socs and a mixed-race group of Greasers. All of our principal characters are still intact from the novel: the endearing, poetry-spinning protagonist Ponyboy (Brody Grant), his sheepish, ill-fated best friend Johnny (Sky Lakota-Lynch), his dudish brothers Sodapop (Jason Schmidt) and Darrel (Brent Comer). They are broken in some ways, deeply caring in others and wildly attractive. Case in point: A gaggle of young folks at the performance I attended squealed when Schmidt opened his shirt. (This demographic will undeniably be the lifeblood of this musical’s success.) But, scenic designers AMP and Tatiana Kahvegian’s tactile set of crunching dirt, exposed scaffolding and tire towers captures more authentic grit than any of the pugnacious characters do. That’s not to say that these actors lack talent. The production’s strenuous vocal, acting and dance demands are evident, and director Danya Taymor’s tight ensemble works like a well-oiled (well-greased?) machine. This post is for paying subscribers only Subscribe now Already have an account? Sign in Review — The Outsiders — Adam Rapp — Justin Levine — Jamestown Revival — Jonathan Clay — Zach Chance — Danya Taymor — Rick Kuperman and Jeff Kuperman — AMP — Tatiana Kahvegian — Sarafina Bush — Brian MacDevitt — Cody Spencer — Hana S. Kim — Alberto Alvarado — S.E. Hinton — Brody Grant — Sky Lakota-Lynch — Joshua Boone — Jason Schmidt — Brent Comer — Daryl Tofa Introductory Offer $1/month for 3 months Subscribe Already have an account? Log in Latest Closer Look What does it take to actually revise a musical? Closer Look How the original company of ‘Ragtime’ was cast Insights Loyalty Report: January 22, 2026 Closer Look How ‘Riverdance’ revolutionized the world of dance Podcast 30 years ago, Tracy Letts wrote a play tailor-made for today with ‘Bug’ Personnel Neil Mazzella steps down as CEO of Hudson entities Books The original music director of ‘Rent’ reveals scenes from the very first auditions Closer Look Christian Cowan uses detail and taste to make ‘The Queen of Versailles’ shine",
   "garbageReason": "Paywall/subscription prompt: \"subscribers only\"",
   "garbageFixedAt": "2026-01-29T22:45:23.287Z",
-  "needsRescore": true,
   "fullText": "The Broadway adaptation of S.E. Hinton’s bestselling novel is a tame rendering of the American novel.\n\nGood morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “The Outsiders.”\n\nBroadway has seen Shakespeare’s Capulets and Montagues, Arthur Laurents’ Sharks and Jets, and now, in “The Outsiders,” S.E. Hinton’s Greasers and Socs (short for “socialites”). The musical adaptation of the middle-school bookshelf staple uses the familiar antagonist framework found in those other works and treads closely to its original text, but book writers Adam Rapp and Justin Levine take creative (but unfortunately, not comprehensive) liberty to enhance the drama by sketching out all-white Socs and a mixed-race group of Greasers. All of our principal characters are still intact from the novel: the endearing, poetry-spinning protagonist Ponyboy (Brody Grant), his sheepish, ill-fated best friend Johnny (Sky Lakota-Lynch), his dudish brothers Sodapop (Jason Schmidt) and Darrel (Brent Comer). They are broken in some ways, deeply caring in others and wildly attractive. Case in point: A gaggle of young folks at the performance I attended squealed when Schmidt opened his shirt. (This demographic will undeniably be the lifeblood of this musical’s success.) But, scenic designers AMP and Tatiana Kahvegian’s tactile set of crunching dirt, exposed scaffolding and tire towers captures more authentic grit than any of the pugnacious characters do. That’s not to say that these actors lack talent. The production’s strenuous vocal, acting and dance demands are evident, and director Danya Taymor’s tight ensemble works like a well-oiled (well-greased?) machine.\n\nAlready have an account?\n              Log in",
   "fetchMethod": "archive",
   "fetchAttempts": [

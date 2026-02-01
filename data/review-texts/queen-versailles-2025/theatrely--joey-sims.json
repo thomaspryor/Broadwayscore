@@ -9,24 +9,24 @@
   "dtliExcerpt": "Saddled with an unmemorable score by Stephen Schwartz (Wicked, Pippin) and a confused book by Lindsey Ferrentino (Amy and the Orphans), Versailles glides by as bland bio-musical for much of its excessive runtime, the show’s perspective on Siegel meandering confusedly between misplaced sympathy and perverse fascination. That is until both the text and director Michael Arden’s staging (crisp up to this point, if sleepy) jolt suddenly to life in the story’s final section, as the overall tone shifts abruptly into bitter rage.",
   "bwwExcerpt": "Saddled with an unmemorable score by Stephen Schwartz (Wicked, Pippin) and a confused book by Lindsey Ferrentino (Amy and the Orphans), Versailles glides by as bland bio-musical for much of its excessive runtime, the show's perspective on Siegel meandering confusedly between misplaced sympathy and perverse fascination.",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 42,
   "source": "dtli",
   "scrapedAt": "2026-01-23T18:00:00.000Z",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 50,
-    "confidence": "medium",
+    "score": 42,
+    "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 60
+      "low": 38,
+      "high": 46
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
-      "book": 38,
-      "music": 50,
+      "book": 35,
+      "music": 40,
       "performances": 75,
-      "direction": 50
+      "direction": 45
     },
     "keyPhrases": [
       {
@@ -35,30 +35,37 @@
         "strength": 4
       },
       {
-        "quote": "Now, that intriguing late turn hardly redeems the plodding narrative that has preceded it",
-        "sentiment": "negative",
+        "quote": "Chenoweth herself is excellent throughout, finding pathos in Siegel's journey without ever sentimentalizing",
+        "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Chenoweth herself is excellent throughout, finding pathos in Siegel's journey without ever sentimentalizing",
-        "sentiment": "positive",
-        "strength": 3
+        "quote": "It's too little and too late, but suggests an intriguing road not taken",
+        "sentiment": "negative",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic finds the show 'mostly dull' and 'plodding' with only an 'intriguing late turn' that 'hardly redeems' the preceding narrative, making it difficult to recommend despite praising Chenoweth's performance. | GPT-4o-mini: The review highlights significant flaws in the book and overall execution, but acknowledges strong performances, leading to a mixed recommendation.",
+    "reasoning": "Despite praising Chenoweth's performance, the critic finds the show 'mostly dull' with an 'unmemorable score' and 'confused book', calling it a 'plodding narrative' that only briefly comes alive at the end.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:21:06.485Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:58:53.017Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3500,
+    "outputTokens": 381,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 45,
@@ -77,7 +84,7 @@
   "showScoreExcerpt": null,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 50,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.993Z",
+  "rescoreCompletedAt": "2026-02-01T15:58:53.017Z",
   "contentTier": "complete",
   "wordCount": 799
 }

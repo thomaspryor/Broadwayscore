@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 23,
+  "assignedScore": 25,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -18,51 +18,58 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 23,
+    "score": 25,
     "confidence": "high",
     "range": {
-      "low": 15.5,
-      "high": 30.5
+      "low": 20,
+      "high": 30
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": 15,
-      "music": null,
-      "performances": 38,
-      "direction": 20
+      "book": 20,
+      "music": 15,
+      "performances": 45,
+      "direction": 25
     },
     "keyPhrases": [
       {
-        "quote": "desperate charm can't salvage this cringy musical",
+        "quote": "that secret passageway would serve the audience better if it led out of the theatre",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "Broadway construction site that never finds its foundation",
+        "quote": "Even Kristin Chenoweth's desperate charm can't salvage this cringy musical",
         "sentiment": "negative",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "Even Kristin Chenoweth's desperate charm",
+        "quote": "a Broadway construction site that never finds its foundation",
         "sentiment": "negative",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review uses harsh language like 'cringy' and 'desperate' while employing a construction metaphor to suggest fundamental failure, with even a beloved star unable to save the production. | GPT-4o-mini: The review expresses strong disapproval of the musical's quality, indicating it fails to engage despite the presence of a talented performer.",
+    "reasoning": "This is a comprehensive pan that systematically criticizes every aspect of the production from book to score to direction, with the critic literally suggesting the audience would be better served by an exit route.",
     "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:44:10.776Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:58:13.213Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3066,
+    "outputTokens": 342,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 25,
@@ -75,7 +82,6 @@
       "Score (23 → Down) conflicts with aggregator thumbs (Flat)"
     ]
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 23,
   "archivePath": "data/archives/reviews/queen-versailles-2025/one-minute-critic--matthew-wexler_2026-01-30.html",
@@ -111,5 +117,6 @@
   "archiveOrgTimestamp": "20251212101530",
   "archiveOrgUrl": "http://web.archive.org/web/20251212101530/https://1minutecritic.com/kristin-chenoweth-queen-versailles-broadway-review/",
   "contentTier": "complete",
-  "wordCount": 512
+  "wordCount": 512,
+  "rescoreCompletedAt": "2026-02-01T15:58:13.213Z"
 }

@@ -9,16 +9,16 @@
   "showScoreExcerpt": "\"You want to leave shivering with the majesty of nature\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/redwood-broadway",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 50,
   "source": "show-score",
   "dtliThumb": "Down",
   "needsScoring": true,
   "llmScore": {
-    "score": 63,
+    "score": 50,
     "confidence": "low",
     "range": {
-      "low": 45.5,
-      "high": 80.5
+      "low": 40,
+      "high": 60
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -31,24 +31,31 @@
     "keyPhrases": [
       {
         "quote": "You want to leave shivering with the majesty of nature",
-        "sentiment": "positive",
+        "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: This single quote appears to describe a desired emotional outcome rather than an actual review assessment, making it impossible to determine the critic's recommendation. | GPT-4o-mini: The phrase suggests a strong emotional impact, indicating a positive recommendation, but lacks detail for a higher score. | Note: Models differed by 25 points.",
+    "reasoning": "This appears to be a fragment or quote rather than a complete review, making it impossible to determine the critic's actual recommendation or sentiment about the theatrical production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:55.280Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:05:10.880Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2315,
+    "outputTokens": 243,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 50,
@@ -70,6 +77,6 @@
   "bwwThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
-  "rescoreReason": "tiny-excerpt: only 56 chars, try re-fetching"
+  "rescoreReason": "tiny-excerpt: only 56 chars, try re-fetching",
+  "rescoreCompletedAt": "2026-02-01T16:05:10.880Z"
 }

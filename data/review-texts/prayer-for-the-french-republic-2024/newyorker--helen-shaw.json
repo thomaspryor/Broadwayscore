@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 65,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -19,51 +19,58 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 45,
+    "score": 65,
     "confidence": "medium",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 60,
+      "high": 70
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": null,
+      "book": 55,
       "music": null,
-      "performances": 35,
-      "direction": null
+      "performances": 72,
+      "direction": 60
     },
     "keyPhrases": [
       {
-        "quote": "whose discomfort with his narrator duties hobbles the play from the start",
+        "quote": "Harmon too often fails to make his characters into anything other than animated position papers",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "the competition is weighted toward the Off Broadway version",
-        "sentiment": "negative",
+        "quote": "the show, when it hits its stride, captures both the galvanizing and the infuriating aspects of incessant intellectual combat",
+        "sentiment": "positive",
         "strength": 3
       },
       {
-        "quote": "That production, though, now feels like a relic from another time",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "sometimes you can't go home",
+        "sentiment": "negative",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review criticizes key performance casting and suggests the Broadway transfer is inferior to the original, but the excerpt cuts off before any clear recommendation or final verdict.",
+    "reasoning": "The critic appreciates the play's intellectual ambitions and some performances (especially Robinette) but finds significant flaws in character development and feels this Broadway transfer has lost something essential from its Off-Broadway origins.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:12:25.330Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:52:49.330Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4513,
+    "outputTokens": 356,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 45,
@@ -74,7 +81,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 45,
   "archivePath": "data/archives/reviews/prayer-for-the-french-republic-2024/newyorker--helen-shaw_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:36:56.249Z",
@@ -94,7 +101,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251124015431",
   "archiveOrgUrl": "http://web.archive.org/web/20251124015431/https://www.newyorker.com/magazine/2024/01/22/prayer-for-the-french-republic-theatre-review",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.966Z",
+  "rescoreCompletedAt": "2026-02-01T15:52:49.330Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
   "wordCount": 1436

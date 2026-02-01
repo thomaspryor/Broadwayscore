@@ -11,12 +11,11 @@
   "originalScore": null,
   "_scoreFixedFrom": "D",
   "_scoreFixedReason": "Removed bogus D grade - review has no letter grade, D was extracted from garbage content",
-  "assignedScore": 29,
+  "assignedScore": 15,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": null,
   "needsScoring": false,
-  "needsRescore": true,
   "rescoreReason": "fullText cleaned - needs fresh LLM score on clean text",
   "archivePath": "data/archives/reviews/queen-versailles-2025/entertainment-weekly--dalton_2026-01-27.html",
   "textFetchedAt": "2026-01-27T20:23:53.917Z",
@@ -46,51 +45,58 @@
   "scoreConfidence": null,
   "extractedGrade": null,
   "llmScore": {
-    "score": 29,
+    "score": 15,
     "confidence": "high",
     "range": {
-      "low": 23,
-      "high": 35
+      "low": 10,
+      "high": 20
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": 25,
-      "music": 20,
-      "performances": 43,
-      "direction": 33
+      "book": 20,
+      "music": 15,
+      "performances": 65,
+      "direction": 25
     },
     "keyPhrases": [
       {
-        "quote": "a Broadway musical so undeserving of her talents",
+        "quote": "a show that simply presents obscene wealth without perspective, judgment, or insight—a documentary-style spectacle that mistakes footage for drama and confuses screen time with character development",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "how a show so big could also say so little. Grade: C–",
+        "quote": "expensive, elaborately designed, professionally performed, utterly beside the point",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "The songs packing so little punch throughout, and ranging from merely generic and forgettable to slightly embarrassing",
+        "quote": "The show's January 4 closing—barely two months after its November 9 opening—surprises no one",
         "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The review is consistently negative throughout with harsh criticism of the book, music, and direction, awarding a C- grade and describing the show as 'undeserving' of its star's talents. | GPT-4o-mini: The review is overwhelmingly negative, highlighting significant flaws in the script, music, and overall execution, leading to a clear recommendation against seeing the show.",
+    "reasoning": "This is an unqualified pan that systematically demolishes every creative element except performances, calling the show 'utterly beside the point' and noting its rapid closure with no surprise.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:42:21.171Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:56:55.731Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3732,
+    "outputTokens": 370,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 28,
@@ -111,7 +117,7 @@
   "originalScoreNormalized": null,
   "scoreExtractedFrom": null,
   "previousLlmScore": 29,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.982Z",
+  "rescoreCompletedAt": "2026-02-01T15:56:55.731Z",
   "contentTier": "complete",
   "wordCount": 970
 }

@@ -9,56 +9,63 @@
   "bwwExcerpt": "Peering behind the mystique of rock ’n’ roll has undeniable voyeuristic appeal. So there is an immediate thrill to seeing the mahogany-paneled control room and glassed-in sound booth that fill the Golden Theater stage, where “Stereophonic” opened on Friday. But David Adjmi’s astonishing new play, with songs by the former Arcade Fire member Will Butler, delivers far more than a dishy glimpse inside the recording studio during rock’s golden age.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 95,
   "source": "bww-roundup",
   "dtliThumb": "UP",
   "needsScoring": true,
   "llmScore": {
-    "score": 85,
+    "score": 95,
     "confidence": "high",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 92,
+      "high": 98
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 95,
+      "music": 88,
+      "performances": 92,
+      "direction": 95
     },
     "keyPhrases": [
       {
-        "quote": "David Adjmi's astonishing new play",
+        "quote": "The play is a staggering achievement, and already feels like a must-see American classic",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "delivers far more than a dishy glimpse",
+        "quote": "a fiery family drama, as electrifying as any since 'Who's Afraid of Virginia Woolf?'",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "immediate thrill to seeing",
+        "quote": "it's possible to imagine misty-eyed fans of this production...reflecting on the experience as if it were a once-in-a-lifetime stadium tour",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic uses strong positive language like 'astonishing' for the play and emphasizes it exceeds expectations, indicating clear enthusiasm and recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the play, highlighting its appeal and quality, indicating a clear recommendation to see it.",
+    "reasoning": "This is an unqualified rave with superlatives like 'staggering achievement,' 'must-see American classic,' and comparisons to theatrical masterpieces, with detailed praise for all production elements.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:43:53.721Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:11:50.925Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3622,
+    "outputTokens": 384,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 85,
@@ -79,7 +86,7 @@
   "designation": "Critics_Pick",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 85,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.043Z",
+  "rescoreCompletedAt": "2026-02-01T16:11:50.925Z",
   "archivePath": "data/archives/reviews/stereophonic-2024/nytimes--csa------naveen-kumar_2026-01-31.html",
   "textFetchedAt": "2026-01-31T22:31:41.704Z",
   "fetchMethod": "archive",

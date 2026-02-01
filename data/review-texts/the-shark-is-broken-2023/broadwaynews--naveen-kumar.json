@@ -15,7 +15,7 @@
     "confidence": "high",
     "range": {
       "low": 20,
-      "high": 30
+      "high": 35
     },
     "bucket": "Pan",
     "thumb": "Down",
@@ -42,7 +42,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic dismisses the play as superficial fan service that lacks narrative substance and offers nothing beyond basic information available elsewhere. | GPT-4o-mini: The review is predominantly negative, criticizing the play for lacking originality and depth.",
+    "reasoning": "The critic dismisses the play as lacking substance and having no compelling narrative beyond what's already publicly available, suggesting it offers nothing worthwhile.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,11 +51,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:08:58.707Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:25:51.434Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2356,
+    "outputTokens": 311,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 25,
@@ -76,7 +83,7 @@
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 25,
   "archivePath": "data/archives/reviews/the-shark-is-broken-2023/broadwaynews--naveen-kumar_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T15:05:05.684Z",
+  "textFetchedAt": "2026-02-01T14:09:04.456Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -92,7 +99,7 @@
   "textIssues": [
     "Word count too low: 239 (min: 300)"
   ],
-  "rescoreCompletedAt": "2026-01-29T14:31:52.110Z",
+  "rescoreCompletedAt": "2026-02-01T16:25:51.434Z",
   "contentTier": "truncated",
   "wordCount": 233,
   "isFullReview": false,

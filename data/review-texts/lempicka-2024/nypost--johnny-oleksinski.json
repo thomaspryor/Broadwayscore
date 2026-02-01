@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 15,
+  "assignedScore": 25,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "needsScoring": true,
@@ -22,38 +22,38 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 15,
+    "score": 25,
     "confidence": "high",
     "range": {
-      "low": 10,
-      "high": 20
+      "low": 20,
+      "high": 30
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": 20
+      "book": 15,
+      "music": 35,
+      "performances": 40,
+      "direction": 30
     },
     "keyPhrases": [
       {
-        "quote": "the ugly splatter that audiences are left to parse",
+        "quote": "the ugly splatter that audiences are left to parse is a ridiculous two-and-half-hour Eurovision act with stratospheric delusions of grandeur",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "a ridiculous two-and-half-hour Eurovision act with stratospheric delusions of grandeur",
+        "quote": "And 'Lempicka' is incoherent",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "having garishly blared open",
+        "quote": "It's hard to believe this muck is directed by the talented Chavkin",
         "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: This is an unqualified rejection using extremely harsh language like 'ugly splatter', 'ridiculous', and 'garishly blared' with no redeeming qualities mentioned. | GPT-4o-mini: The review is overwhelmingly negative, describing the production as a 'ridiculous' and 'ugly splatter', indicating a clear rejection of the show.",
+    "reasoning": "This is a comprehensive pan with harsh criticism of every element - calling it 'ugly splatter,' 'ridiculous,' 'incoherent,' and 'muck' with only minor acknowledgments of individual moments or performances.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -62,11 +62,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:05:31.126Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:25:16.674Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3614,
+    "outputTokens": 369,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 15,
@@ -79,7 +86,7 @@
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 15,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.845Z",
+  "rescoreCompletedAt": "2026-02-01T15:25:16.674Z",
   "contentTier": "complete",
   "wordCount": 800
 }

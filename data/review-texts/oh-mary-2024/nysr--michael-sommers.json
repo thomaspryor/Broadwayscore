@@ -22,42 +22,49 @@
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 38,
+      "book": 35,
       "music": null,
-      "performances": 60,
-      "direction": 68
+      "performances": 55,
+      "direction": 70
     },
     "keyPhrases": [
       {
-        "quote": "I blush to admit that Escola is an artist new to me and their charm eludes me so far",
+        "quote": "★★☆☆☆ A monumentally silly show",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "While the script may be flimsy, director Sam Pinkleton's production looks good at the Lyceum",
-        "sentiment": "neutral",
+        "quote": "I blush to admit that Escola is an artist new to me and their charm eludes me so far",
+        "sentiment": "negative",
         "strength": 3
       },
       {
-        "quote": "there's no denying he snags laughs",
-        "sentiment": "positive",
+        "quote": "While the script may be flimsy, director Sam Pinkleton's production looks good at the Lyceum",
+        "sentiment": "neutral",
         "strength": 2
       }
     ],
-    "reasoning": "Claude: The critic acknowledges the production's technical merits and supporting performances but finds the lead performer's charm elusive and describes the script as flimsy, suggesting qualified reservations that outweigh the positives. | GPT-4o-mini: The review expresses significant criticism of the script and overall execution while acknowledging some humor, leading to a mixed-negative recommendation.",
+    "reasoning": "The 2/5 star rating and phrases like 'monumentally silly' and 'their charm eludes me' signal a negative review, though the critic acknowledges some production values and laughs.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T15:52:29.782Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:44:23.493Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3272,
+    "outputTokens": 363,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 45,
@@ -78,7 +85,7 @@
   "showScoreExcerpt": null,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 45,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.927Z",
+  "rescoreCompletedAt": "2026-02-01T15:44:23.493Z",
   "originalScore": "2/5 stars",
   "originalScoreNormalized": 40,
   "scoreSource": "live-fetch",

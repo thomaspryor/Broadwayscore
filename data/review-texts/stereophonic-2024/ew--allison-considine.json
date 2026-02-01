@@ -9,27 +9,43 @@
   "bwwExcerpt": "The band is back together on Broadway. David Adjmi’s Stereophonic had a critically acclaimed, sold-out run off Broadway in fall 2023 at Playwrights Horizons, and now it’s hitting all the right notes at the Golden Theatre.        Average Rating: 95.0% {   \"@context\":\"https://schema.org\",   \"@type\":\"LiveBlogPosting\",   \"@id\":\"/article/Review-Roundup-Rock-N-Roll-Drama-STEREOPHONIC-Opens-On-Broadway-20240419\",   \"about\":{     \"@type\":\"Event\",     \"startDate\":\"2024-04-19T11:58:03-05:00\",          \"na",
   "bwwRoundupUrl": null,
   "originalScore": "B",
-  "assignedScore": 79,
+  "assignedScore": 88,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 79,
-    "confidence": "high",
+    "score": 88,
+    "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 85,
+      "high": 92
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 90,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 85,
+      "direction": 87
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B rating and enthusiastic language like 'salivary meta-trifecta' and praise for the 'finely-tuned naturalism' indicate a strong positive recommendation, though not quite reaching rave territory. | GPT-4o: The review praises the play's naturalism and the script's ability to capture complex portraits, indicating a strong positive reaction. The original rating of B supports a positive classification. | Gemini: The review is overwhelmingly positive, describing the play as an \"unshakeable, hyperreal slice-of-life drama\". The critic's B rating also indicates a positive recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Naturalism has never looked or sounded as good as it does",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "presents an unshakeable, hyperreal slice-of-life drama",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Adjmi builds complex portraits with painstakingly tiny brush strokes",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Strong praise for the naturalistic writing, hyperreal drama, and complex character work with superlative language like 'never looked or sounded as good' and 'unshakeable' indicating clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +54,20 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T14:59:03.354Z",
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:10:28.806Z",
     "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
+    "inputTokens": 2664,
+    "outputTokens": 347,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
-  "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "geminiScore": 78,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "scoreDelta": 2,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
-  },
+  "ensembleData": null,
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "dtliExcerpt": "Sometimes, a song is so good you want to live in it. You want to nestle into its melodies, unravel the chords holding it up and more than anything, wander in the mind fields of the people who created it. David Adjmi’s “Stereophonic” is the play that sparks this very desire.",
@@ -90,5 +98,5 @@
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "incomplete",
-  "rescoreCompletedAt": "2026-02-01T14:59:03.354Z"
+  "rescoreCompletedAt": "2026-02-01T16:10:28.806Z"
 }

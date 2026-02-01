@@ -7,7 +7,7 @@
   "publishDate": "July 11, 2024",
   "fullText": "Like so many before them, members of the “Oh, Mary!” creative team are proudly reclaiming an insulting epithet as a badge of honor.\n\nI don’t mean “queer”; they’re way past that. I mean “stupid.”\n\n“Oh, Mary!” is “the stupidest play,” Cole Escola, its author and star, tells anyone who will listen.\n\n“I have a huge hunger for deep stupidity,” Sam Pinkleton, its director, chimes in.\n\nThey protest too much. “Oh, Mary!” may be silly, campy, even pointless, but “stupid,” I think not. Rather, the play, which opened on Thursday at the Lyceum Theater, is one of the best crafted and most exactingly directed Broadway comedies in years. Which is a surprise on many levels, and on each level a gift.\n\nTo start with, we don’t get a lot of comedies these days, not the kind you can feel good laughing at. Most contemporary examples of the genre — say “Bootycandy” by Robert O’Hara and “Clybourne Park” by Bruce Norris — use the form the way doctors use an emetic: They want you to gag on the gags. But the totally unserious “Oh, Mary!” is not medicinal in that sense. It merely wants you to lose your breath guffawing, especially with a series of switchback shocks at the end, so cleverly conceived and executed they’re hilarious.\n\nBut the premise is already a joke. How else would you describe a back story in which Mary Todd Lincoln (Escola in a hoop skirt the size of a yurt) longs to return to her first love, cabaret, with its “madcap medleys” and built-in excuses for diva behavior?\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 88,
   "dtliThumb": "Up",
   "source": "dtli",
   "dtliExcerpt": "The laughs roll through the house and return, creating a loop that at times approaches hysteria. (Never for the actors though; they do not break.) And the technical aspects, though also enlarged, remain smarter than they are lavish, recalling the roots of the drag aesthetic in the handmade ethos of community and school.",
@@ -15,51 +15,58 @@
   "bwwExcerpt": "They protest too much. “Oh, Mary!” may be silly, campy, even pointless, but “stupid,” I think not. Rather, the play, which opened on Thursday at the",
   "bwwThumb": null,
   "llmScore": {
-    "score": 78,
-    "confidence": "high",
+    "score": 88,
+    "confidence": "medium",
     "range": {
-      "low": 70.5,
-      "high": 85.5
+      "low": 85,
+      "high": 92
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 85,
       "music": null,
-      "performances": 85,
-      "direction": 80
+      "performances": 88,
+      "direction": 90
     },
     "keyPhrases": [
       {
-        "quote": "The laughs roll through the house and return, creating a loop that at times approaches hysteria",
+        "quote": "one of the best crafted and most exactingly directed Broadway comedies in years",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It merely wants you to lose your breath guffawing",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "the technical aspects, though also enlarged, remain smarter than they are lavish",
+        "quote": "so cleverly conceived and executed they're hilarious",
         "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "Never for the actors though; they do not break",
-        "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review describes sustained audience laughter and praises both the disciplined performances and intelligent technical design, indicating clear recommendation despite being only a brief excerpt. | GPT-4o-mini: The review highlights strong comedic elements and technical aspects, indicating a solid recommendation despite lacking specific details on the script and performances.",
+    "reasoning": "The critic calls it 'one of the best crafted and most exactingly directed Broadway comedies in years' with high praise for direction, writing craft, and comedic execution despite acknowledging its silliness.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T02:27:53.363Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:44:38.581Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2722,
+    "outputTokens": 340,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 75,
@@ -71,7 +78,7 @@
     "needsReviewReasons": []
   },
   "designation": "Critics_Pick",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 78,
   "archivePath": "data/archives/reviews/oh-mary-2024/nytimes--jesse-green_2026-01-29.html",
   "textFetchedAt": "2026-01-29T03:04:18.164Z",
@@ -90,7 +97,7 @@
   "textIssues": [
     "Word count too low: 287 (min: 300)"
   ],
-  "rescoreCompletedAt": "2026-01-29T14:31:51.928Z",
+  "rescoreCompletedAt": "2026-02-01T15:44:38.581Z",
   "contentTier": "truncated",
   "wordCount": 287,
   "sources": [

@@ -9,56 +9,63 @@
   "showScoreExcerpt": "\"The 1993 musical's already bizarre story...even less clear in Des McAnuff's reanimation\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-who-s-tommy-broadway",
   "originalScore": null,
-  "assignedScore": 32,
+  "assignedScore": 38,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 32,
-    "confidence": "medium",
+    "score": 38,
+    "confidence": "high",
     "range": {
-      "low": 20.5,
-      "high": 43.5
+      "low": 32,
+      "high": 45
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 35,
-      "music": null,
-      "performances": null,
-      "direction": 28
+      "book": 25,
+      "music": 65,
+      "performances": 45,
+      "direction": 30
     },
     "keyPhrases": [
       {
-        "quote": "already bizarre story",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "even less clear in Des McAnuff's reanimation",
+        "quote": "yeesh, then the show gets going",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "the 1993 musical's already bizarre story",
+        "quote": "The production, more a reanimation than a revival, seems to think that there's no point in showing us the pinball machine since surely we remember it",
         "sentiment": "negative",
         "strength": 4
+      },
+      {
+        "quote": "McAnuff and Townshend's dramatization insists we're watching a story that does make sense, and then refuses to create that sense",
+        "sentiment": "negative",
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic directly criticizes both the source material and the director's revival, suggesting the production makes an already problematic story worse. | GPT-4o-mini: The review indicates significant confusion and dissatisfaction with the direction and clarity of the story, leading to a strong negative recommendation. | Note: Models differed by 13 points.",
+    "reasoning": "The critic delivers a detailed takedown of the production's storytelling, direction, and conceptual choices, with only occasional praise for music and isolated staging moments, concluding that the adaptation fundamentally fails to make coherent sense.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:20:34.832Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:28:34.639Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4253,
+    "outputTokens": 377,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 38,
@@ -69,7 +76,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 32,
   "archivePath": "data/archives/reviews/the-whos-tommy-2024/newyorker--helen-shaw_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:27:57.445Z",
@@ -86,7 +93,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250723072150",
   "archiveOrgUrl": "http://web.archive.org/web/20250723072150/https://www.newyorker.com/magazine/2024/04/08/the-whos-tommy-theatre-review",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.121Z",
+  "rescoreCompletedAt": "2026-02-01T16:28:34.639Z",
   "contentTier": "complete",
   "wordCount": 1508
 }

@@ -8,26 +8,26 @@
   "fullText": null,
   "showScoreExcerpt": "\"A triumph of theatrical imagination that reinvents the Disney animated classic for the stage...\"",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 92,
   "source": "show-score",
   "designation": null,
   "sourceMethod": "showscore",
   "scoreSource": "manual-override",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 65,
+    "score": 92,
     "confidence": "low",
     "range": {
-      "low": 30,
-      "high": 100
+      "low": 85,
+      "high": 95
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Rave",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 85
+      "direction": 92
     },
     "keyPhrases": [
       {
@@ -41,20 +41,27 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: While 'triumph of theatrical imagination' suggests strong praise for the production, this appears to be only a fragment or headline rather than a complete review, making it impossible to assess the critic's full recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm, indicating a strong recommendation to see the show. | Note: Models differed by 60 points.",
+    "reasoning": "The phrase 'triumph of theatrical imagination' is unqualified superlative language indicating rave-level enthusiasm, though the excerpt is too brief for high confidence.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:54:13.272Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:18:54.055Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2319,
+    "outputTokens": 279,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 35,
@@ -71,6 +78,6 @@
   "scoreOverrideAt": "2026-01-26T17:35:57.826Z",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
-  "rescoreReason": "tiny-excerpt: only 97 chars, try re-fetching"
+  "rescoreReason": "tiny-excerpt: only 97 chars, try re-fetching",
+  "rescoreCompletedAt": "2026-02-01T16:18:54.055Z"
 }

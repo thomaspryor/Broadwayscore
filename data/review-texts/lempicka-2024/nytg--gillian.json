@@ -15,18 +15,18 @@
   "needsScoring": true,
   "llmScore": {
     "score": 82,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 78,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 53,
-      "music": 86,
+      "book": 45,
+      "music": 85,
       "performances": 88,
-      "direction": 74
+      "direction": 75
     },
     "keyPhrases": [
       {
@@ -40,25 +40,32 @@
         "strength": 3
       },
       {
-        "quote": "superb lighting design by Bradley King, an eclectic and electric score, and captivating performances",
+        "quote": "captivating performances are the pulsating flesh and blood that ultimately render Lempicka's flaws like stray paint specks on canvas: keeping the work from 'perfection,' maybe, but not ruining it",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Despite criticizing the book as 'uneven' and 'exposition-heavy,' the critic's final verdict is unambiguously positive, calling it 'ravishing' and 'one of the best new musicals this season.' | GPT-4o-mini: The review expresses strong enthusiasm for the musical's performances and music while acknowledging some flaws in the book, leading to a solid recommendation.",
+    "reasoning": "Despite acknowledging significant flaws in the book and set design, the critic concludes the show is 'ravishing' and 'one of the best new musicals this season,' praising the performances, score, and lighting while suggesting the strengths outweigh the weaknesses.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:05:56.258Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:25:51.946Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3423,
+    "outputTokens": 406,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -76,7 +83,6 @@
     "dtli",
     "bww-roundup"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
   "archivePath": "data/archives/reviews/lempicka-2024/nytg--gillian_2026-01-31.html",
@@ -98,5 +104,6 @@
   "archiveOrgTimestamp": "20250815094044",
   "archiveOrgUrl": "http://web.archive.org/web/20250815094044/https://www.newyorktheatreguide.com/reviews/lempicka-broadway-review",
   "contentTier": "complete",
-  "wordCount": 803
+  "wordCount": 803,
+  "rescoreCompletedAt": "2026-02-01T15:25:51.946Z"
 }

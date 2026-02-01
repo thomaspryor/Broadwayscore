@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 53,
+  "assignedScore": 68,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -18,51 +18,58 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 53,
-    "confidence": "medium",
+    "score": 68,
+    "confidence": "high",
     "range": {
-      "low": 40.5,
-      "high": 65.5
+      "low": 65,
+      "high": 72
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 40,
-      "music": null,
-      "performances": 65,
-      "direction": 35
+      "book": 55,
+      "music": 50,
+      "performances": 85,
+      "direction": 60
     },
     "keyPhrases": [
       {
-        "quote": "the show is most moving in a brief aside",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Jackie might not grasp the fullness of her nanny's humanity",
-        "sentiment": "negative",
+        "quote": "The Queen of Versailles may have opened on Broadway with its scaffolding still up, but it's still compellingly ambitious in its scope and bold in its merciless portrayal",
+        "sentiment": "neutral",
         "strength": 3
       },
       {
-        "quote": "the creators of The Queen of Versailles would have done well to build an extra wing or two",
+        "quote": "Chenoweth's performance is. She's wholly persuasive in suggesting that Jackie starts out demanding more and more to provide for her children",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The Queen of Versailles refuses to pick one or settle down stylistically. Neither does Schwartz's score, which zig-zags between a folky pop sound and pastiche",
         "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic suggests the show fails to fully develop its supporting characters and that its most moving moment is just a brief aside, indicating significant structural weaknesses despite acknowledging Jackie as a 'complex centerpiece.' | GPT-4o-mini: The review highlights a poignant moment but critiques the show's failure to fully explore its themes, leading to a mixed recommendation. | Note: Models differed by 15 points.",
+    "reasoning": "The review acknowledges ambitious themes and praises Chenoweth's performance highly, but criticizes the show's lack of stylistic coherence and structural problems, resulting in a qualified mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:45:20.666Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:58:26.981Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3601,
+    "outputTokens": 406,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 45,
@@ -73,7 +80,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 53,
   "archivePath": "data/archives/reviews/queen-versailles-2025/slantmagazine--dan-rubins_2026-01-29.html",
   "textFetchedAt": "2026-01-29T07:08:25.965Z",
@@ -107,7 +114,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251229120418",
   "archiveOrgUrl": "http://web.archive.org/web/20251229120418/https://www.slantmagazine.com/theater/the-queen-of-versailles-review-kristin-chenoweth/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.991Z",
+  "rescoreCompletedAt": "2026-02-01T15:58:26.981Z",
   "contentTier": "complete",
   "wordCount": 882
 }

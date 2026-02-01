@@ -9,56 +9,63 @@
   "bwwExcerpt": "“Oh, Mary!” plays even better on Broadway than it did downtown at the Lucille Lortel Theater earlier this year. Experiencing this comedy with a few hundred more theatergoers takes the laughter from boisterous to atomic and the effect is absolutely radioactive. Plot-wise, it continues to be best to write as little as possible. There are outrageous twists and turns in the story that genuinely shock an audience into delayed convulsions of laughter. Let’s just say that Escola has somehow managed to ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240619",
   "originalScore": null,
-  "assignedScore": 86,
+  "assignedScore": 88,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 86,
-    "confidence": "medium",
+    "score": 88,
+    "confidence": "high",
     "range": {
-      "low": 77,
-      "high": 95
+      "low": 85,
+      "high": 92
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": 85,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 92,
+      "direction": 88
     },
     "keyPhrases": [
       {
-        "quote": "plays even better on Broadway than it did downtown",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the effect is absolutely radioactive",
+        "quote": "plays even better on Broadway than it did downtown... the effect is absolutely radioactive",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "outrageous twists and turns in the story that genuinely shock an audience into delayed convulsions of laughter",
+        "quote": "inspired, rollicking comedy... genuinely shock an audience into delayed convulsions of laughter",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "terrific cast, which Sam Pinkleton directs with all the subtlety of a wild man wielding a buzzsaw",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The review is enthusiastically positive with vivid language praising the comedy's improvement on Broadway and its shocking, hilarious plot twists, though the excerpt cuts off mid-sentence. | GPT-4o-mini: The review expresses strong enthusiasm and excitement about the production, indicating it is a must-see experience.",
+    "reasoning": "The critic expresses unqualified enthusiasm for the Broadway transfer, praising it as historic, radioactively funny, with brilliant performances and inspired comedy that plays even better than its acclaimed Off-Broadway run.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": false,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:43:24.587Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:45:08.290Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3030,
+    "outputTokens": 363,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 82,
@@ -78,7 +85,7 @@
   "showScoreExcerpt": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 86,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.930Z",
+  "rescoreCompletedAt": "2026-02-01T15:45:08.290Z",
   "contentTier": "complete",
   "wordCount": 475
 }

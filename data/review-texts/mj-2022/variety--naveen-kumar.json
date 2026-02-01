@@ -9,58 +9,65 @@
   "dtliExcerpt": "In answer to the question of whether it’s possible to separate the art from the artist, “MJ” performs a slick, crotch-grabbing sidestep. Packed with nearly 40 hits from Michael Jackson’s irresistible catalogue, the Broadway production from director and choreographer Christopher Wheeldon is not so much a biomusical as a high-shine and surface-skimming rehabilitation tour for its late subject, flattening rather than reckoning with his complex legacy.",
   "showScoreExcerpt": "\"In answer to the question of whether itâs possible to separate the art from the artist, âMJâ performs a slick, crotch-grabbing sidestep. Packed with nearly 40 hits from Michael Jacksonâs irresistible catalogue, the Broadway production from director and choreographer Christopher Wheeldon is not so much a biomusical as a high-shine and surface-skimming rehabilitation tour for its late subject, flattening rather than reckoning with his complex legacy.\"",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 62,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:05:16.048Z",
   "dtliThumb": "Meh",
   "bwwExcerpt": "The demons that Jackson battles in \"MJ,\" his father and the media, are figured as monstrous. But if there was darkness behind the angelic falsetto, a mix of light and shadow that made Michael Jackson a singular artist, \"MJ\" enacts a sleight of hand, insisting it didn't belong to him. It's a renouncement worthy enough of a smooth criminal.",
   "llmScore": {
-    "score": 45,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 58,
+      "high": 66
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 35,
-      "music": 75,
-      "performances": null,
-      "direction": 50
+      "book": 45,
+      "music": 85,
+      "performances": 75,
+      "direction": 70
     },
     "keyPhrases": [
       {
-        "quote": "not so much a biomusical as a high-shine and surface-skimming rehabilitation tour",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
         "quote": "Packed with nearly 40 hits from Michael Jackson's irresistible catalogue",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       },
       {
-        "quote": "flattening rather than reckoning with his complex legacy",
+        "quote": "not so much a biomusical as a high-shine and surface-skimming rehabilitation tour for its late subject, flattening rather than reckoning with his complex legacy",
         "sentiment": "negative",
         "strength": 4
+      },
+      {
+        "quote": "Myles Frost, impressive in perhaps an impossible role",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: While acknowledging the quality of Jackson's music and Wheeldon's slick production values, the critic fundamentally objects to the show's approach as superficial rehabilitation rather than meaningful artistic exploration. | GPT-4o-mini: The review expresses significant criticism of the production's approach to Michael Jackson's legacy, indicating more problems than strengths and suggesting a hard recommendation against it.",
+    "reasoning": "Mixed review that praises the music and lead performance but criticizes the show for avoiding meaningful examination of Jackson's legacy and relying on surface spectacle rather than substance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:14:25.157Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:38:43.317Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2557,
+    "outputTokens": 366,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 45,
@@ -110,7 +117,7 @@
   "bwwThumb": null,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 45,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.899Z",
+  "rescoreCompletedAt": "2026-02-01T15:38:43.317Z",
   "contentTier": "complete",
   "wordCount": 854
 }

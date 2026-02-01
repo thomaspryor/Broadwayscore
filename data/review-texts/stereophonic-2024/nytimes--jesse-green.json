@@ -9,56 +9,63 @@
   "showScoreExcerpt": "CRITICâS PICK: âSo however you want to categorize âStereophonicâ â perhaps a playical?...The music justifies the long buildup, and the play, Adjmiâs best so far, is as rich and lustrous as they come. You could even call it platinum.â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/stereophonic",
   "originalScore": null,
-  "assignedScore": 91,
+  "assignedScore": 88,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 91,
+    "score": 88,
     "confidence": "high",
     "range": {
       "low": 85,
-      "high": 97
+      "high": 92
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": 90,
-      "music": 88,
-      "performances": null,
-      "direction": null
+      "music": 85,
+      "performances": 88,
+      "direction": 90
     },
     "keyPhrases": [
       {
-        "quote": "CRITIC'S PICK",
+        "quote": "relentlessly compelling production by Daniel Aukin that has the grit of a documentary",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "as rich and lustrous as they come",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "You could even call it platinum",
+        "quote": "the play, Adjmi's best so far, is as rich and lustrous as they come. You could even call it platinum",
         "sentiment": "positive",
         "strength": 5
+      },
+      {
+        "quote": "I wouldn't have minded a 20-minute trim, if only to keep the material from falling, as it does occasionally, into the gap between drama and mini-series",
+        "sentiment": "negative",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The 'Critic's Pick' designation combined with superlative language like 'rich and lustrous as they come' and the platinum metaphor indicates unqualified enthusiasm and strong recommendation. | GPT-4o-mini: The review expresses strong enthusiasm and high praise for the play, indicating it is a must-see production.",
+    "reasoning": "Jesse Green delivers enthusiastic praise for multiple elements (calling it 'platinum' and Adjmi's 'best so far'), with only minor quibbles about pacing, indicating a strong positive recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:17:09.297Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:11:57.039Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4123,
+    "outputTokens": 383,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 92,
@@ -70,7 +77,7 @@
     "needsReviewReasons": []
   },
   "designation": "Critics_Pick",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 91,
   "archivePath": "data/archives/reviews/stereophonic-2024/nytimes--jesse-green_2026-02-01.html",
   "textFetchedAt": "2026-02-01T04:04:47.725Z",
@@ -89,9 +96,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251010005347",
   "archiveOrgUrl": "http://web.archive.org/web/20251010005347/https://www.nytimes.com/2023/10/29/theater/stereophonic-review-david-adjmi-will-butler.html",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.043Z",
+  "rescoreCompletedAt": "2026-02-01T16:11:57.040Z",
   "contentTier": "complete",
-  "wordCount": 1241,
-  "wrongProduction": true,
-  "wrongProductionNote": "Off-Broadway/pre-Broadway run at Playwrights Horizons. Reusable if off-Broadway show entry is created."
+  "wordCount": 1241
 }

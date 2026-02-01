@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 58,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -27,51 +27,58 @@
   "fetchTier": 1,
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 65,
-    "confidence": "high",
+    "score": 58,
+    "confidence": "medium",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 52,
+      "high": 65
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 53,
-      "music": 78,
-      "performances": 73,
-      "direction": 63
+      "book": null,
+      "music": 65,
+      "performances": 75,
+      "direction": 70
     },
     "keyPhrases": [
       {
-        "quote": "those songs have lost none of their appeal",
-        "sentiment": "positive",
-        "strength": 4
+        "quote": "The Who's hardcore fans may like these hard-charging spectacles the most",
+        "sentiment": "neutral",
+        "strength": 2
       },
       {
-        "quote": "This is where 'Tommy' begins to lose its footing, and the show starts to feel less diligent in its storytelling",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "from them, I do get the story",
+        "quote": "There are certainly some terrific stage effects",
         "sentiment": "positive",
         "strength": 3
+      },
+      {
+        "quote": "I appreciate the few quieter moments",
+        "sentiment": "positive",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The critic praises the enduring appeal of the songs and early performances but finds the second half loses narrative focus and becomes incoherent spectacle, resulting in a mixed recommendation that leans slightly positive due to the music's strength. | GPT-4o-mini: The review expresses appreciation for the music and some performances but highlights significant storytelling issues, leading to a mixed recommendation.",
+    "reasoning": "The review offers measured praise for specific elements (effects, performances, quieter moments) but implies the show works primarily for hardcore fans, suggesting limited broader appeal.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:03:47.541Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:29:05.147Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2403,
+    "outputTokens": 320,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "bwwExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated BWW excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 65,
@@ -86,5 +93,8 @@
   },
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
-  "wordCount": 1365
+  "wordCount": 1365,
+  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "previousLlmScore": 65,
+  "rescoreCompletedAt": "2026-02-01T16:29:05.147Z"
 }

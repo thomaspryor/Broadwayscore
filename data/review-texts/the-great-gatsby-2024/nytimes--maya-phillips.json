@@ -9,56 +9,63 @@
   "showScoreExcerpt": "“This production faces a typical problem for immersive adaptations of literary works: how to translate a beloved text via a format that is better served by a de-emphasis on the text.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-great-gatsby-musical",
   "originalScore": null,
-  "assignedScore": 48,
+  "assignedScore": 52,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 48,
+    "score": 52,
     "confidence": "high",
     "range": {
-      "low": 40.5,
-      "high": 55.5
+      "low": 48,
+      "high": 56
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": null,
+      "book": 35,
       "music": null,
-      "performances": null,
+      "performances": 65,
       "direction": 45
     },
     "keyPhrases": [
       {
-        "quote": "This production faces a typical problem for immersive adaptations",
+        "quote": "never, in its lagging two-and-a-half-hour running time, truly rises above the status of a mere attraction",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The writing of the characters' dialogue is often shaky, and noticeably weaker when it gets too far from Fitzgerald's pared-down style",
         "sentiment": "negative",
         "strength": 3
       },
       {
-        "quote": "better served by a de-emphasis on the text",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "how to translate a beloved text via a format that is better served by a de-emphasis on the text",
-        "sentiment": "negative",
+        "quote": "Casey Jay Andrews's exquisite set design, Vanessa Leuck's stylish costumes and the ever-shifting mood ring effect of Jeff Croiter's lighting beautifully coalesce into a vivid, comprehensive vision of 1920s New York. And it's a feat to behold.",
+        "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The excerpt identifies a fundamental structural problem with the production's approach but offers no positive elements or clear recommendation. | GPT-4o-mini: The review highlights a significant challenge in adapting the material, suggesting a lack of clarity on how well the production succeeds, leading to a mixed recommendation.",
+    "reasoning": "The critic acknowledges impressive production values and some strong performances but consistently criticizes the adaptation's fundamental flaws, stretched material, weak writing, and failure to capture the source material's deeper meaning, resulting in a qualified mixed response that leans slightly negative.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:17:13.595Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:18:18.476Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3738,
+    "outputTokens": 433,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 45,
@@ -70,7 +77,6 @@
     "needsReviewReasons": []
   },
   "designation": "Critics_Pick",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 48,
   "archivePath": "data/archives/reviews/the-great-gatsby-2024/nytimes--maya-phillips_2026-01-29.html",
@@ -92,6 +98,5 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250328100110/https://www.nytimes.com/2023/06/29/theater/the-great-gatsby-review.html",
   "contentTier": "complete",
   "wordCount": 982,
-  "wrongProduction": true,
-  "wrongProductionNote": "Off-Broadway/pre-Broadway run at Park Central Hotel (immersive). Reusable if off-Broadway show entry is created."
+  "rescoreCompletedAt": "2026-02-01T16:18:18.476Z"
 }

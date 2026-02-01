@@ -9,16 +9,16 @@
   "showScoreExcerpt": "Not only a joyous entertainment, it is also a moving tribute to the immigrant experience.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/real-women-have-curves-the-musical-broadway",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 82,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "low",
     "range": {
-      "low": 80.5,
-      "high": 95.5
+      "low": 75,
+      "high": 88
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -38,27 +38,29 @@
         "quote": "moving tribute",
         "sentiment": "positive",
         "strength": 4
-      },
-      {
-        "quote": "Not only a joyous entertainment",
-        "sentiment": "positive",
-        "strength": 5
       }
     ],
-    "reasoning": "Claude: Strong positive language ('joyous', 'moving tribute') suggests clear recommendation, but extremely brief excerpt limits confidence in precise scoring. | GPT-4o-mini: The review expresses strong enthusiasm and highlights both entertainment value and thematic depth, indicating a must-see experience.",
+    "reasoning": "Strong positive language with 'joyous' and 'moving tribute' suggests clear recommendation, but extremely brief excerpt limits confidence in score precision.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:17:22.220Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:03:32.781Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2320,
+    "outputTokens": 270,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 85,
@@ -69,7 +71,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 88,
   "archivePath": "data/archives/reviews/real-women-have-curves-2025/theater-scene--victor-gluck_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:46:33.717Z",
@@ -86,7 +88,7 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.007Z",
+  "rescoreCompletedAt": "2026-02-01T16:03:32.781Z",
   "textQualityOverride": "batch-fix-2026-01-30",
   "contentTier": "complete",
   "wordCount": 1145

@@ -10,56 +10,63 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 25,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 38,
+    "score": 25,
     "confidence": "high",
     "range": {
-      "low": 30.5,
-      "high": 45.5
+      "low": 20,
+      "high": 30
     },
-    "bucket": "Negative",
+    "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": null,
+      "book": 20,
       "music": null,
-      "performances": 55,
-      "direction": null
+      "performances": null,
+      "direction": 25
     },
     "keyPhrases": [
       {
-        "quote": "There is a two-hour-and-40-minute luxury-car crash happening at the St. James Theatre",
+        "quote": "swerves and overcorrects like a drunk driver",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "If I were the litigious type, I'd be trying to figure out how to sue for whiplash",
+        "quote": "Tonally, it's all over the map",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "Kristin Chenoweth glittering relentlessly at its center",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "confused, contorted product of a set of absolutely incompatible impulses",
+        "sentiment": "negative",
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic uses vivid negative metaphors (luxury-car crash, suing for whiplash) and describes a physically disorienting experience, suggesting a clear pan despite the excerpt being incomplete. | GPT-4o-mini: The review conveys a predominantly negative experience, describing the show as a painful ordeal rather than an enjoyable theatrical experience.",
+    "reasoning": "The review uses harsh metaphors and language indicating fundamental structural and tonal failures with no redeeming qualities mentioned.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T02:28:25.951Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:59:07.034Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2350,
+    "outputTokens": 289,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 35,
@@ -72,7 +79,7 @@
       "Score (38 → Down) conflicts with aggregator thumbs (Flat)"
     ]
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 38,
   "archivePath": "data/archives/reviews/queen-versailles-2025/vulture--sara-holdren-and-jesse-david-fox_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:58:45.482Z",
@@ -91,7 +98,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260116140220",
   "archiveOrgUrl": "http://web.archive.org/web/20260116140220/https://www.vulture.com/article/theater-review-the-queen-of-versailles-broadway-burning-cauldron-fiery-fire.html",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.994Z",
+  "rescoreCompletedAt": "2026-02-01T15:59:07.034Z",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "showScoreExcerpt": "\"The Queen of Versailles swerves and overcorrects like a drunk driver. Tonally, itâs all over the map...It is the confused, contorted product of a set of absolutely incompatible impulses\"",

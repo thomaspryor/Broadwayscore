@@ -9,24 +9,24 @@
   "bwwExcerpt": "Power-contralto Eden Espinosa strives mightily  to keep Lempicka – an overstuffed, formulaic musical – in forward motion, to mixed effect. Despite the evident willingness of co-creators Carson Kreitzer and Matt Gould to play fast and loose with history, the show plugs along like a Bugatti (an emblematic subject of the Polish-born painter) in need of a lube job.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": "2/5 stars",
-  "assignedScore": 44,
+  "assignedScore": 38,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 44,
+    "score": 38,
     "confidence": "high",
     "range": {
-      "low": 37.5,
-      "high": 50.5
+      "low": 35,
+      "high": 42
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 38,
-      "music": null,
-      "performances": 63,
-      "direction": 40
+      "book": 25,
+      "music": 30,
+      "performances": 65,
+      "direction": 35
     },
     "keyPhrases": [
       {
@@ -35,30 +35,37 @@
         "strength": 4
       },
       {
-        "quote": "Eden Espinosa strives mightily to keep Lempicka...in forward motion, to mixed effect",
-        "sentiment": "neutral",
-        "strength": 3
+        "quote": "worth the overall tedium of admission",
+        "sentiment": "negative",
+        "strength": 4
       },
       {
-        "quote": "the show plugs along like a Bugatti...in need of a lube job",
+        "quote": "Lempicka deserves – deserved – better",
         "sentiment": "negative",
         "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic acknowledges Espinosa's strong effort but describes the musical as 'overstuffed' and 'formulaic' with mechanical problems, using a vivid negative metaphor to conclude their assessment. | GPT-4o-mini: The review expresses significant criticism of the musical's structure and execution while acknowledging some effort in performances, leading to a negative overall recommendation.",
+    "reasoning": "The 2-star rating and phrases like 'overstuffed, formulaic' and 'overall tedium' indicate clear disappointment, with only scattered praise for individual performances unable to overcome fundamental flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:07:28.733Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:25:28.144Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3497,
+    "outputTokens": 306,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 42,
@@ -70,7 +77,7 @@
     "needsReviewReasons": []
   },
   "bwwThumb": "Down",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 44,
   "archivePath": "data/archives/reviews/lempicka-2024/nysr--sandy-macdonald_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:38:32.222Z",
@@ -88,7 +95,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240417185429",
   "archiveOrgUrl": "http://web.archive.org/web/20240417185429/https://nystagereview.com/2024/04/14/lempicka-a-paint-by-numbers-old-school-musical/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.845Z",
+  "rescoreCompletedAt": "2026-02-01T15:25:28.144Z",
   "dateSource": "extracted-from-url",
   "_scoreFixedFrom": "3/5 stars",
   "_scoreFixedAt": "2026-01-31T23:10:41.715Z",

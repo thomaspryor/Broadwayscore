@@ -9,38 +9,38 @@
   "showScoreExcerpt": "\"...it’s curious that, particularly in today's political environment, the show loops back to a relatively unquestioned idea about the meaning, value, and reality of the American dream.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/real-women-have-curves-the-musical-broadway",
   "originalScore": null,
-  "assignedScore": 48,
+  "assignedScore": 50,
   "source": "show-score",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "llmScore": {
-    "score": 48,
-    "confidence": "high",
+    "score": 50,
+    "confidence": "low",
     "range": {
-      "low": 40.5,
-      "high": 55.5
+      "low": 40,
+      "high": 60
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 40,
+      "book": 45,
       "music": null,
       "performances": null,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "it's curious that, particularly in today's political environment, the show loops back to a relatively unquestioned idea about the meaning, value, and reality of the American dream",
+        "quote": "it's curious that...the show loops back to a relatively unquestioned idea",
         "sentiment": "negative",
         "strength": 3
       },
       {
-        "quote": "curious that, particularly in today's political environment, the show loops back to a relatively unquestioned idea about the meaning, value, and reality of the American dream.",
+        "quote": "particularly in today's political environment",
         "sentiment": "neutral",
-        "strength": 3
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The critic questions the show's thematic relevance and suggests it fails to meaningfully engage with contemporary political realities, indicating disappointment with the material's depth. | GPT-4o-mini: The review presents a neutral observation without strong recommendations or criticisms, indicating a mixed sentiment.",
+    "reasoning": "The excerpt suggests mild criticism of the show's thematic approach as outdated or uncritical, but the limited text provides insufficient context for a confident assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -49,11 +49,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:16:38.629Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:03:09.611Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2340,
+    "outputTokens": 290,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 45,
@@ -72,7 +79,7 @@
   "bwwExcerpt": null,
   "bwwThumb": null,
   "designation": "Recommended",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 48,
   "archivePath": "data/archives/reviews/real-women-have-curves-2025/nytg--kyle-turner_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:37:41.744Z",
@@ -89,7 +96,7 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.007Z",
+  "rescoreCompletedAt": "2026-02-01T16:03:09.611Z",
   "contentTier": "complete",
   "wordCount": 1129
 }

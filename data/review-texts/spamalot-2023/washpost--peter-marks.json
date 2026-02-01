@@ -17,48 +17,55 @@
     "score": 85,
     "confidence": "high",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 82,
+      "high": 88
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 80,
+      "music": 75,
+      "performances": 90,
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "even funnier than in its birthing engagement earlier this year",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "brings joy to a land desperately short of guffaws and chuckles and snickers and giggles",
+        "quote": "gloriously, patently hilarious, two-hour strut-upon-the-stage",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "beefed up, gussied up",
+        "quote": "brings joy to a land desperately short of guffaws and chuckles and snickers and giggles",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
+      },
+      {
+        "quote": "even funnier than in its birthing engagement earlier this year at the Kennedy Center",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic uses enthusiastic language praising the revival as improved and funnier than before, explicitly stating it 'brings joy' and fills a need for comedy, indicating strong recommendation despite brief excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for the revival, highlighting its humor and improvements over the previous engagement.",
+    "reasoning": "The critic uses enthusiastic language throughout ('gloriously hilarious,' 'brings joy'), praises the cast extensively, and explicitly states this Broadway version is 'even funnier' than the previous production.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": false,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:19:33.559Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:10:10.013Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3346,
+    "outputTokens": 366,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 85,
@@ -69,7 +76,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 85,
   "archivePath": "data/archives/reviews/spamalot-2023/washpost--peter-marks_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:56:28.049Z",
@@ -85,7 +92,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20231117032039",
   "archiveOrgUrl": "http://web.archive.org/web/20231117032039/https://www.washingtonpost.com/entertainment/theater/2023/11/16/monty-python-spamalot-broadway-idle/",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.037Z",
+  "rescoreCompletedAt": "2026-02-01T16:10:10.013Z",
   "contentTier": "complete",
   "wordCount": 901
 }

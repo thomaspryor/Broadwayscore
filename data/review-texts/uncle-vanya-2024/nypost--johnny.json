@@ -47,50 +47,57 @@
   "archiveOrgUrl": "http://web.archive.org/web/20241003164521/https://nypost.com/2024/04/24/entertainment/uncle-vanya-review-steve-carells-broadway-play-is-funny-not-feeling/",
   "llmScore": {
     "score": 62,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 58,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": 65,
       "music": null,
-      "performances": 72,
+      "performances": 70,
       "direction": 55
     },
     "keyPhrases": [
       {
-        "quote": "So much is individually right about Lincoln Center's revival of 'Uncle Vanya.' But, like these mis-matched characters who are always at each other's throats, they just don't come together.",
+        "quote": "So much is individually right about Lincoln Center's revival of 'Uncle Vanya. But, like these mis-matched characters who are always at each other's throats, they just don't come together.",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "This half-there staging, on the other hand, has us in stitches in the first half and then exhausted after intermission when the drama revs up.",
-        "sentiment": "negative",
+        "quote": "turns out to be a splendid theater actor who is shrewdly cast",
+        "sentiment": "positive",
         "strength": 3
       },
       {
-        "quote": "His is the revival's finest performance, with Carell, whose face conceals an underlying darkness, in a close second.",
-        "sentiment": "positive",
-        "strength": 3
+        "quote": "This half-there staging, on the other hand, has us in stitches in the first half and then exhausted after intermission",
+        "sentiment": "negative",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review acknowledges individual strengths in performances and humor but criticizes the production's inability to achieve Chekhov's essential balance of comedy and pathos, with the final line explicitly stating the elements 'just don't come together.'",
+    "reasoning": "The review praises individual performances (especially Harper and Carell) but criticizes the production's inability to balance comedy and pathos, with the final line explicitly stating the elements 'just don't come together.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:05:22.188Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:34:19.508Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3328,
+    "outputTokens": 397,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 62,
@@ -108,7 +115,7 @@
   ],
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 62,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.139Z",
+  "rescoreCompletedAt": "2026-02-01T16:34:19.508Z",
   "contentTier": "complete",
   "wordCount": 618
 }

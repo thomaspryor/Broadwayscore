@@ -9,56 +9,63 @@
   "showScoreExcerpt": "\"Tommy’s saga delivers a pointed and potent take on trauma, fame, and individuality\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-who-s-tommy-broadway",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 85,
   "source": "show-score",
   "dtliThumb": "UP",
   "needsScoring": true,
   "llmScore": {
-    "score": 79,
+    "score": 85,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 82,
+      "high": 88
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "music": 88,
+      "performances": 82,
+      "direction": 87
     },
     "keyPhrases": [
       {
-        "quote": "pointed and potent take",
+        "quote": "eye-popping, ear-thumping, goosebump-inducing",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "delivers",
+        "quote": "Rock musicals don't come to Broadway often. It's rare when they truly rock – and The Who's Tommy does.",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 5
       },
       {
-        "quote": "Tommy’s saga delivers a pointed and potent take on trauma, fame, and individuality",
+        "quote": "The show takes off like a speeding bullet and it seldom, if ever, slows down.",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The use of strong positive descriptors like 'pointed and potent' suggests the critic found the show substantive and impactful, indicating a positive recommendation despite the extremely brief excerpt. | GPT-4o-mini: The review expresses a strong positive sentiment about the show's themes, indicating a clear recommendation despite the lack of detail.",
+    "reasoning": "The review is filled with enthusiastic praise for the production's energy, performances, and technical elements, with vivid positive descriptions and concludes that this rock musical 'truly rocks' - a clear strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:20:39.144Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:29:11.009Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3189,
+    "outputTokens": 364,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -76,7 +83,7 @@
   ],
   "bwwExcerpt": "That’s when this revival serves up “Pinball Wizard.” It’s one of the work’s most famous hits by Pete Townshend, who wrote the music and lyrics and co-authored the book with director Des McAnuff. Between the chronically catchy song, full-tilt performances, and movement to match, the number is electrifying. The great news is that what precedes and follows this moment also stirs and tickles the senses. That’s the way this rock opera rolls, as it spins the story of a boy so deeply damaged by life – ",
   "bwwThumb": "Up",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 79,
   "archivePath": "data/archives/reviews/the-whos-tommy-2024/nytg--joe-dziemianowicz_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:28:11.916Z",
@@ -94,7 +101,7 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.123Z",
+  "rescoreCompletedAt": "2026-02-01T16:29:11.009Z",
   "contentTier": "complete",
   "wordCount": 1093
 }

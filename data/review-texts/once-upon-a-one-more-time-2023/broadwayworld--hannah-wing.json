@@ -10,24 +10,24 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ONCE-UPON-A-ONE-MORE-TIME-2023",
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 68,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 68,
+    "confidence": "high",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 65,
+      "high": 72
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": null,
-      "music": 75,
-      "performances": 86,
-      "direction": null
+      "book": 45,
+      "music": 78,
+      "performances": 85,
+      "direction": 75
     },
     "keyPhrases": [
       {
@@ -36,30 +36,37 @@
         "strength": 4
       },
       {
-        "quote": "Heelan shines as a feminist version of Cinderella",
-        "sentiment": "positive",
+        "quote": "This modern fairytale is missing something that even the magic of a fantastic cast and high-quality production might not be able to fix",
+        "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "uproariously funny and witty",
-        "sentiment": "positive",
-        "strength": 4
+        "quote": "Once Upon a One More Time is close to 'happily ever after,' but it has some workshopping to do before it becomes a fairy tale fit for Broadway royalty",
+        "sentiment": "negative",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: Strong praise for cast performances and specific musical numbers with words like 'shines,' 'worthy of Broadway,' and 'uproariously funny' suggest clear positive recommendation, but excerpt is incomplete limiting confidence. | GPT-4o-mini: The review highlights strong performances and positive character portrayals, indicating a clear recommendation despite the lack of detail on the overall production.",
+    "reasoning": "The reviewer praises the cast performances and musical numbers highly but identifies significant structural problems with the story that prevent a full recommendation, concluding it needs more work before being Broadway-ready.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:19:41.996Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:45:33.626Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3080,
+    "outputTokens": 365,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -75,7 +82,6 @@
   ],
   "dateUnknown": true,
   "dateSource": "historical-review",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
   "archivePath": "data/archives/reviews/once-upon-a-one-more-time-2023/broadwayworld--hannah-wing_2026-01-30.html",
@@ -104,5 +110,6 @@
   "fetchTier": 3,
   "sourceMethod": "brightdata",
   "contentTier": "complete",
-  "wordCount": 520
+  "wordCount": 520,
+  "rescoreCompletedAt": "2026-02-01T15:45:33.626Z"
 }

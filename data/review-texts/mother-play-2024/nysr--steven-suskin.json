@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 60,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -18,51 +18,58 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 60,
-    "confidence": "medium",
+    "score": 82,
+    "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 78,
+      "high": 85
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 85,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 88,
+      "direction": 82
     },
     "keyPhrases": [
       {
-        "quote": "seems like Vogel has been inspired by Tennessee Williams’ The Glass Menagerie",
+        "quote": "Vogel's play and players merit a visit to the Helen Hayes",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "An accomplished playwright with something to say and an unconventional but effective way of saying it",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Mix 'em together, add a passel of dancing cucarachas (see below), what do you get? Paula Vogel's Mother Play",
         "sentiment": "positive",
         "strength": 3
-      },
-      {
-        "quote": "problematic mother losing composure during a series of revealing telephone calls",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "updated version of what might or could have happened",
-        "sentiment": "neutral",
-        "strength": 2
       }
     ],
-    "reasoning": "GPT-4o-mini: The review suggests an interesting premise but hints at issues with character development and emotional depth, leading to a mixed recommendation.",
+    "reasoning": "The 4/5 star rating combined with consistent praise for all elements (playwright, direction, performances, design) and an explicit recommendation to visit culminates in a clear positive endorsement.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:10:46.001Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:39:48.115Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3576,
+    "outputTokens": 361,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": null,
@@ -73,7 +80,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 60,
   "archivePath": "data/archives/reviews/mother-play-2024/nysr--steve-suskin_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:41:08.835Z",
@@ -95,7 +102,7 @@
   ],
   "fetchTier": 1,
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.903Z",
+  "rescoreCompletedAt": "2026-02-01T15:39:48.115Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
   "wordCount": 902

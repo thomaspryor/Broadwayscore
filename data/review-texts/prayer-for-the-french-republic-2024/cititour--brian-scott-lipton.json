@@ -9,28 +9,28 @@
   "bwwExcerpt": "With so many characters and so many themes, the work could feel overwhelming. But Cromer, as he has done so often, ensures the show flows smoothly and feels much shorter than its running time. However, neither the play, which can feel overwritten at times, nor the production is perfect. For example, Takeshi Kata’s set design is visually too spare for such a long show while Sarah Laux’s costumes feel uninspired. Still, we should be profoundly grateful that a work of such ambition, scope and impor",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 72,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 65,
-    "confidence": "high",
+    "score": 72,
+    "confidence": "medium",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 68,
+      "high": 76
     },
     "bucket": "Mixed",
-    "thumb": "Flat",
+    "thumb": "Up",
     "components": {
-      "book": 58,
+      "book": 65,
       "music": null,
       "performances": null,
-      "direction": 73
+      "direction": 78
     },
     "keyPhrases": [
       {
-        "quote": "ensures the show flows smoothly and feels much shorter than its running time",
+        "quote": "we should be profoundly grateful that a work of such ambition, scope and impor",
         "sentiment": "positive",
         "strength": 4
       },
@@ -40,25 +40,32 @@
         "strength": 3
       },
       {
-        "quote": "we should be profoundly grateful that a work of such ambition, scope and impor",
+        "quote": "ensures the show flows smoothly and feels much shorter than its running time",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The review is mixed with praise for direction keeping the show flowing but criticism of the overwritten script and production elements, ending on a positive note about the work's importance despite being cut off. | GPT-4o-mini: The review acknowledges both strengths and weaknesses, leading to a mixed recommendation with more positives than negatives overall.",
+    "reasoning": "Despite noting imperfections in script and design, the critic praises the direction and concludes with gratitude for the work's ambition and importance, suggesting qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:10:08.215Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:52:42.701Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2419,
+    "outputTokens": 351,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "bwwExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated BWW excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 65,
@@ -70,7 +77,7 @@
     "needsReviewReasons": []
   },
   "bwwThumb": "Up",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 65,
   "archivePath": "data/archives/reviews/prayer-for-the-french-republic-2024/cititour--brian-scott-lipton_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:46:21.022Z",
@@ -93,7 +100,7 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "scrapingbee",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.965Z",
+  "rescoreCompletedAt": "2026-02-01T15:52:42.701Z",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",

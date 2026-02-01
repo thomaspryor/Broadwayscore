@@ -9,43 +9,43 @@
   "bwwExcerpt": "The play works because of the cast’s incredible ability to play both young and old characters, and solemn and funny ones. In particular, Parsons’s humor shines as Carl, a quick-witted genius who holds the family together. One of the play’s throughlines is touch — or rather, the lack of it. Director Tina Landau beautifully incorporates moments of closeness and distance through careful staging.        Average Rating: 75.4% {   \"@context\":\"https://schema.org\",   \"@type\":\"LiveBlogPosting\",   \"@id\":\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 82,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 78,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 75,
       "music": null,
-      "performances": 85,
-      "direction": 80
+      "performances": 88,
+      "direction": 82
     },
     "keyPhrases": [
       {
-        "quote": "The play works because of the cast's incredible ability to play both young and old characters",
+        "quote": "It's the perfect vehicle for Jessica Lange's return to Broadway",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Parsons's humor shines as Carl, a quick-witted genius who holds the family together",
+        "quote": "Jessica Lange, best known for her Emmy Award-winning performance in the anthology series American Horror Story, is in her prime in Mother Play",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "Director Tina Landau beautifully incorporates moments of closeness and distance through careful staging",
+        "quote": "The play works because of the cast's incredible ability to play both young and old characters, and solemn and funny ones",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Consistently positive language praising both performances and direction with specific examples, plus the 75.4% average rating suggests clear recommendation despite being an excerpt.",
+    "reasoning": "This is a clearly positive review that praises the lead performance as masterful, celebrates the cast's versatility, and highlights strong direction and design elements with no significant criticisms.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -54,11 +54,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:11:18.971Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:39:58.786Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3125,
+    "outputTokens": 360,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -77,7 +84,7 @@
     "bww-roundup",
     "dtli"
   ],
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 78,
   "archivePath": "data/archives/reviews/mother-play-2024/nytg--allison-considine_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:32:30.162Z",
@@ -97,7 +104,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251009024729",
   "archiveOrgUrl": "http://web.archive.org/web/20251009024729/https://www.newyorktheatreguide.com/reviews/mother-play-broadway-review-jessica-lange-jim-parsons-celia-keenan-bolger",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.904Z",
+  "rescoreCompletedAt": "2026-02-01T15:39:58.786Z",
   "contentTier": "complete",
   "wordCount": 628
 }

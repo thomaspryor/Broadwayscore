@@ -9,51 +9,63 @@
   "showScoreExcerpt": "\"...full of funk, R&amp;B, gospel, and more, will still thrill and delight you.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-wiz-broadway",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 65,
   "source": "dtli",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 65,
+    "confidence": "high",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 62,
+      "high": 68
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": null,
-      "music": 80,
-      "performances": null,
-      "direction": null
+      "book": 45,
+      "music": 85,
+      "performances": 80,
+      "direction": 40
     },
     "keyPhrases": [
       {
-        "quote": "will still thrill and delight you",
+        "quote": "The score of The Wiz, full of funk, R&B, gospel, and more, will still thrill and delight you. Boy, can this cast sing",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "full of funk, R&B, gospel, and more",
-        "sentiment": "positive",
+        "quote": "although the talent is all over the stage, it's also trapped in confused and even ugly packaging",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The effect was, as with so much of the revival, of missing out on a moment that could have been great, if only given more care and fine tuning",
+        "sentiment": "negative",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The excerpt shows clear enthusiasm for the music with 'thrill and delight' language, suggesting a positive recommendation despite the very limited text available. | GPT-4o-mini: The review expresses strong enthusiasm for the show's musical elements and overall enjoyment, indicating a clear recommendation.",
+    "reasoning": "The critic praises the exceptional vocal performances and beloved score but heavily criticizes the production design, staging, and technical elements, resulting in a show that succeeds musically but fails theatrically.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:22:03.566Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:32:17.706Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4136,
+    "outputTokens": 387,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -73,7 +85,7 @@
   "bwwThumb": "Meh",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 82,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.132Z",
+  "rescoreCompletedAt": "2026-02-01T16:32:17.706Z",
   "truncationSignals": [
     "has_footer_junk"
   ],

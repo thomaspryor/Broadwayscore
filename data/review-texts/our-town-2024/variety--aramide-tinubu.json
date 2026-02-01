@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 71,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -21,51 +21,58 @@
     "show-score"
   ],
   "llmScore": {
-    "score": 71,
-    "confidence": "high",
+    "score": 80,
+    "confidence": "medium",
     "range": {
-      "low": 65,
-      "high": 77
+      "low": 75,
+      "high": 85
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
+      "book": null,
       "music": null,
-      "performances": null,
-      "direction": 75
+      "performances": 82,
+      "direction": 83
     },
     "keyPhrases": [
       {
-        "quote": "the last act does drag a bit",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Leon masters the core of Wilder's message",
+        "quote": "It takes a great deal of work to make the ordinary enticing, but that's precisely what director Kenny Leon does",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Still, Leon masters the core of Wilder's message",
+        "quote": "a perfectly cast Jim Parsons",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the play convincingly argues is the most essential aspect of life",
         "sentiment": "positive",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The review acknowledges significant flaws (dragging final act, melodramatic tendencies) but concludes that the director successfully captures Wilder's essential message, suggesting a qualified positive recommendation. | GPT-4o-mini: The review acknowledges some weaknesses in the final act but ultimately appreciates the core message and direction, leading to a mixed-positive recommendation.",
+    "reasoning": "The review expresses clear admiration for the direction and casting, particularly praising Leon's work making 'the ordinary enticing' and calling Parsons 'perfectly cast,' indicating a solid positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:16:17.904Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:50:07.681Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2716,
+    "outputTokens": 343,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -78,7 +85,7 @@
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 71,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.956Z",
+  "rescoreCompletedAt": "2026-02-01T15:50:07.681Z",
   "contentTier": "complete",
   "wordCount": 655
 }

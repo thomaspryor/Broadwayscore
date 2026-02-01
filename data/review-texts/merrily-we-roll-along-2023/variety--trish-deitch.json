@@ -9,16 +9,16 @@
   "showScoreExcerpt": "“What makes the musical hard for first-time audiences is the fact that it’s like a jigsaw puzzle doled out one piece at a time, so you don’t see a complete picture until the last piece is placed and the show is over...That’s why ‘Merrily We Roll Along’ is art and not comfortably commercial theater.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/merrily-we-roll-along-broadway",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 52,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 61,
-    "confidence": "high",
+    "score": 52,
+    "confidence": "low",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 45,
+      "high": 60
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,38 +28,46 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review discusses the show's anti-commercial theater themes and notes its original failure, but doesn't provide a clear recommendation about whether audiences should see this current production. | GPT-4o: The review highlights the show's lack of easy entertainment value, suggesting a mixed reception. The absence of clear positive or negative language results in a mixed classification. | Gemini: The review focuses on the show's initial failure and its challenging nature, suggesting a mixed experience. It doesn't explicitly recommend or discourage seeing it, but highlights its unconventional approach.",
+    "keyPhrases": [
+      {
+        "quote": "Commercial theater — theater written mostly to entertain audiences, for the purpose of making money — is the enemy",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "It's not a show written to easily entertain",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "flopped after 16 performances on Broadway in 1981",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "This excerpt appears to be analytical commentary about the show's philosophy and history rather than a review of the current production, making it impossible to determine the critic's recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T14:56:34.522Z",
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:36:46.231Z",
     "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
+    "inputTokens": 2438,
+    "outputTokens": 332,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
-  "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 60,
-    "geminiScore": 60,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 2,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
-  },
+  "ensembleData": null,
   "rescoreReason": "low-conf: prompt=3.0.0, delta=18, upgrading to V5 + 3 models",
   "previousLlmScore": 69,
   "archivePath": "data/archives/reviews/merrily-we-roll-along-2023/variety--trish-deitch_2026-01-28.html",
@@ -76,7 +84,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251207021119",
   "archiveOrgUrl": "http://web.archive.org/web/20251207021119/https://variety.com/2023/legit/reviews/merrily-we-roll-along-review-broadway-daniel-radcliffe-jonathan-groff-lindsay-mendez-1235750477/",
-  "rescoreCompletedAt": "2026-02-01T14:56:34.522Z",
+  "rescoreCompletedAt": "2026-02-01T15:36:46.231Z",
   "contentTier": "complete",
   "wordCount": 1058
 }

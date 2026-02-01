@@ -8,56 +8,63 @@
   "fullText": "Opposite can attract, but that doesn't mean they should. Katharine Hepburn and Spencer Tracy were the ultimate they-aren't-made-for-each-other couple that possessed real chemistry, threw off romantic sparks and usually ended up together at the end of the movie. The same could be said for Barbra Streisand and Robert Redford in their one movie together, \"The Way We Were,\" except for the fact that they split up at the end.\n\nAfter productions at London's Kiln Theatre and Cambridge's American Repertory Theater, the new musical \"Two Strangers (Carry a Cake Across New York)\" opened Thursday at the Longacre Theatre.\n\nIt stars Christiani Pitts and Sam Tutty, and these two barely make it passed intermission before it's time for them to call it quits.\n\nJim Barne and Kit Buchan wrote the songs and the book for this rom-com two-hander, and they begin \"Two Strangers\" with real promise. The young man Dougal (Tutty) is newly arrived at JFK from London and eager to meet his American father for the very first time. Dad's getting married and the bride's sister, Robin (Pitts), picks him up at the airport. As meet-cutes go, this one turns very problematic in Act 2, if not before.\n\nEven before he has left JFK, Dougal falls in love with this wonderful town and sings a song titled \"New York.\" While the tune doesn't top \"Conquering New York\" or \"New York, New York,\" it gets \"Two Strangers\" off to a rousing start.\n\n\"Two Strangers\" is one of those rom-coms where the two lovers are wrong for each other. He's too boyish, she's too brittle. It's a new soul/old soul dynamic. That frisson works initially because, in a story too complicated to tell here, he sets her up with another guy on a dating app. Maybe Dougal and Robin will just become very good friends. Unfortunately, no.",
   "dtliExcerpt": "“Two Strangers” is one of those rom-coms where the two lovers are wrong for each other. He’s too boyish, she’s too brittle. It’s a new soul/old soul dynamic. That frisson works initially because, in a story too complicated to tell here, he sets her up with another guy on a dating app. Maybe Dougal and Robin will just become very good friends. Unfortunately, no.",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 38,
   "source": "dtli",
   "dtliThumb": "Down",
   "scrapedAt": "2026-01-23T22:04:31.784Z",
   "llmScore": {
-    "score": 45,
+    "score": 38,
     "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 32,
+      "high": 45
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 40,
-      "music": null,
+      "book": 35,
+      "music": 50,
       "performances": 45,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "the two lovers are wrong for each other",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "That frisson works initially",
-        "sentiment": "positive",
-        "strength": 2
-      },
-      {
-        "quote": "Unfortunately, no.",
+        "quote": "these two barely make it passed intermission before it's time for them to call it quits",
         "sentiment": "negative",
         "strength": 4
+      },
+      {
+        "quote": "this one turns very problematic in Act 2, if not before",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "gets 'Two Strangers' off to a rousing start",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review criticizes fundamental character dynamics and concludes with disappointment, suggesting limited recommendation despite acknowledging some initial appeal. | GPT-4o-mini: The review expresses significant disappointment in the character dynamics and narrative complexity, indicating a hard-to-recommend experience.",
+    "reasoning": "The critic finds fundamental problems with the central romantic relationship and story structure, with only minor praise for the opening number, indicating a show that doesn't work despite some initial promise.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:31:42.690Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:33:36.517Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2759,
+    "outputTokens": 315,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 45,
@@ -75,7 +82,7 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 45,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.137Z",
+  "rescoreCompletedAt": "2026-02-01T16:33:36.517Z",
   "contentTier": "complete",
   "wordCount": 304
 }

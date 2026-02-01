@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 28,
+  "assignedScore": 38,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -32,25 +32,25 @@
   "archiveOrgTimestamp": "20241216051536",
   "archiveOrgUrl": "http://web.archive.org/web/20241216051536/https://www.vulture.com/article/theater-reviews-the-notebook-the-effect.html",
   "llmScore": {
-    "score": 28,
+    "score": 38,
     "confidence": "high",
     "range": {
-      "low": 20.5,
-      "high": 35.5
+      "low": 35,
+      "high": 42
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 28,
+      "book": 30,
       "music": 25,
-      "performances": 40,
+      "performances": 55,
       "direction": 25
     },
     "keyPhrases": [
       {
         "quote": "the show disappears from memory almost moment to moment",
         "sentiment": "negative",
-        "strength": 5
+        "strength": 4
       },
       {
         "quote": "There's a uniquely damp kind of fizzle when a show like The Notebook neither forges into compelling new territory nor even manages to deliver nostalgic satisfaction",
@@ -58,12 +58,12 @@
         "strength": 5
       },
       {
-        "quote": "aggressively generic",
+        "quote": "aggressively generic... heavy sanding block has still been taken to the material, smoothing the characters into cutouts",
         "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic systematically dismantles every aspect of The Notebook with pointed criticism of its generic songs, problematic storytelling choices, and failure to deliver even nostalgic satisfaction, describing it as instantly forgettable. | GPT-4o-mini: The review is overwhelmingly critical, highlighting significant flaws in the script, music, and direction, leading to a clear rejection of the show.",
+    "reasoning": "The critic delivers sustained criticism of nearly every creative element - calling the songs 'beige', the direction 'prosaic', the aesthetic 'sterile', and the overall experience forgettable, with only modest praise for some performers.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -72,11 +72,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T02:46:00.187Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:21:18.984Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 5643,
+    "outputTokens": 380,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 25,
@@ -93,5 +100,8 @@
   "dateSource": "could-not-extract",
   "showScoreExcerpt": "\"The Notebookâs songs at times barely make lyrical sense.\"",
   "contentTier": "complete",
-  "wordCount": 2755
+  "wordCount": 2755,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 28,
+  "rescoreCompletedAt": "2026-02-01T16:21:18.984Z"
 }

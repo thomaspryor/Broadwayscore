@@ -9,57 +9,64 @@
   "bwwExcerpt": "But for all its clairvoyance and foresight about technology, Marjorie Prime’s most potent superpowers are its sensitivity and tenderness. Harrison’s spare, gently gripping script is a model of eloquent economy as the characters grapple with grief and what it means to truly love and remember someone.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 84,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 77.5,
-      "high": 90.5
+      "low": 78,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 88,
+      "book": 85,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 88,
+      "direction": 80
     },
     "keyPhrases": [
       {
-        "quote": "most potent superpowers are its sensitivity and tenderness",
+        "quote": "Harrison's spare, gently gripping script is a model of eloquent economy",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "spare, gently gripping script is a model of eloquent economy",
+        "quote": "has assembled an A-list ensemble that hums like a finely tuned machine",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "hers is the performance I can't get out of my head",
         "sentiment": "positive",
         "strength": 5
-      },
-      {
-        "quote": "clairvoyance and foresight about technology",
-        "sentiment": "positive",
-        "strength": 4
       }
     ],
-    "reasoning": "Claude: Strong praise for the script's emotional depth and craftsmanship with superlative language like 'potent superpowers' and 'model of eloquent economy' indicates clear positive recommendation. | GPT-4o-mini: The review expresses strong admiration for the script's eloquence and emotional depth, indicating a clear recommendation to see the show.",
+    "reasoning": "The review consistently praises the script, performances, and direction with phrases like 'A-list ensemble that hums like a finely tuned machine' and calls it 'perceptive and prescient,' indicating a strong positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:19.576Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:31:22.250Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3190,
+    "outputTokens": 354,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 82,
@@ -73,7 +80,6 @@
   "dtliExcerpt": "Director Anne Kauffman, who staged the play’s 2015 Off-Broadway run, has assembled an A-list ensemble that hums like a finely tuned machine. The drama is a showcase for its women, with Squibb — newly 96 and last seen on Broadway in Waitress — infusing Marjorie with an irresistible, vinegary sass. Nixon, a two-time Tony winner with 45 years of Broadway experience, is without question in her prime: wry, vulnerable, and conflicted as Tess, who struggles to connect with the real Marjorie and her Prime. In a play that now hit me fathoms deeper than it did a decade ago, hers is the performance I can’t get out of my head.",
   "showScoreExcerpt": "\"For all its clairvoyance and foresight about technology, Marjorie Prime’s most potent superpowers are its sensitivity and tenderness.\"",
   "designation": "Recommended",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 84,
   "archivePath": "data/archives/reviews/marjorie-prime-2025/nytg--joe-dziemianowicz_2026-01-29.html",
@@ -92,5 +98,6 @@
   ],
   "sourceMethod": "playwright",
   "contentTier": "complete",
-  "wordCount": 732
+  "wordCount": 732,
+  "rescoreCompletedAt": "2026-02-01T15:31:22.250Z"
 }

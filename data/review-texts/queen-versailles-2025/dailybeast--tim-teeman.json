@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 20,
+  "assignedScore": 25,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "needsScoring": true,
@@ -20,51 +20,58 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 20,
-    "confidence": "medium",
+    "score": 25,
+    "confidence": "high",
     "range": {
-      "low": 10,
+      "low": 20,
       "high": 30
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": 20,
-      "music": null,
-      "performances": null,
+      "book": 15,
+      "music": 20,
+      "performances": 65,
       "direction": 25
     },
     "keyPhrases": [
+      {
+        "quote": "nearly three hours of grimly ugly musical theater",
+        "sentiment": "negative",
+        "strength": 5
+      },
       {
         "quote": "It's cheap tat, queasy spectacle, grubby glitz",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "It doesn't burrow beneath its surface wealth to ask anything of substance",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "It’s cheap tat, queasy spectacle, grubby glitz.",
-        "sentiment": "negative",
-        "strength": 5
+        "quote": "Chenoweth fans will rightly appreciate that she sings loud and proud; she absolutely gives it, belts it, her all",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic uses harshly dismissive language ('cheap tat', 'grubby glitz') and criticizes the show's fundamental lack of substance, indicating a clear pan with no redeeming qualities mentioned. | GPT-4o-mini: The review expresses strong disapproval of the production, labeling it as superficial and lacking substance, leading to a clear pan recommendation.",
+    "reasoning": "This is a comprehensive pan that savages nearly every aspect of the production while acknowledging only Chenoweth's vocal commitment, calling it 'grimly ugly musical theater' and 'cheap tat.'",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:44:32.873Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:56:43.341Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3971,
+    "outputTokens": 356,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 25,
@@ -77,7 +84,7 @@
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 20,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.980Z",
+  "rescoreCompletedAt": "2026-02-01T15:56:43.341Z",
   "contentTier": "complete",
   "wordCount": 1092
 }

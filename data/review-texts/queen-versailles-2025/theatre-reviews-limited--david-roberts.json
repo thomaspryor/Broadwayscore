@@ -9,7 +9,7 @@
   "showScoreExcerpt": "âIn a year when Broadway has given us genuinely ambitious work grappling with what it means to be American, \"The Queen of Versailles\" offers only spectacle without insight, a palace with no one home. What were they thinking?â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-queen-of-versailles-broadway",
   "originalScore": null,
-  "assignedScore": 20,
+  "assignedScore": 25,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
@@ -30,51 +30,53 @@
   ],
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 20,
-    "confidence": "medium",
+    "score": 25,
+    "confidence": "high",
     "range": {
-      "low": 10,
+      "low": 20,
       "high": 30
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": 15,
-      "music": 23,
-      "performances": 63,
-      "direction": 23
+      "book": 20,
+      "music": null,
+      "performances": null,
+      "direction": 25
     },
     "keyPhrases": [
       {
-        "quote": "a show that simply presents obscene wealth without perspective, judgment, or insight—a documentary-style spectacle that mistakes footage for drama and confuses screen time with character development",
+        "quote": "spectacle without insight, a palace with no one home",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "the evening just sits there—expensive, elaborately designed, professionally performed, utterly beside the point",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "The show's January 4 closing—barely two months after its November 9 opening—surprises no one",
+        "quote": "What were they thinking?",
         "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: This is a comprehensive pan that systematically dismantles every creative element except the performances, calling the show 'creative bankruptcy' and 'utterly beside the point' while noting its quick closure. | GPT-4o-mini: The review is overwhelmingly negative, highlighting significant flaws in the script, music, and direction, leading to a strong recommendation against seeing the show.",
+    "reasoning": "The review is a clear pan that criticizes the show as empty spectacle lacking substance, with the rhetorical question 'What were they thinking?' expressing bewilderment at the production's failures.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:45:06.154Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:58:46.785Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2354,
+    "outputTokens": 288,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 25,
@@ -87,7 +89,7 @@
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 20,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.993Z",
+  "rescoreCompletedAt": "2026-02-01T15:58:46.785Z",
   "contentTier": "truncated",
   "wordCount": 1120
 }

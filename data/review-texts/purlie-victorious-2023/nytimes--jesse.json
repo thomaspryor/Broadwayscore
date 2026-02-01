@@ -32,18 +32,18 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251027141347/https://www.nytimes.com/2023/09/27/theater/purlie-victorious-review.html",
   "llmScore": {
     "score": 88,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
-      "low": 83,
-      "high": 93
+      "low": 85,
+      "high": 92
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 82,
+      "book": 85,
       "music": null,
       "performances": 90,
-      "direction": 85
+      "direction": 88
     },
     "keyPhrases": [
       {
@@ -52,30 +52,37 @@
         "strength": 4
       },
       {
-        "quote": "Kenny Leon's thrillingly broad and warp-speed production aims to keep us in both time zones at once",
+        "quote": "Kenny Leon's thrillingly broad and warp-speed production",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "this necessary revival",
+        "quote": "Leslie Odom Jr. instantly stands out",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Jesse Green delivers strong praise for performances, direction, and the play's continued relevance, calling it a 'necessary revival' with 'thrillingly broad' production values and outstanding individual performances, particularly from Odom and Young.",
+    "reasoning": "The review delivers consistent praise for performances, direction, and the play's enduring relevance, with strong positive language like 'thrillingly,' 'scathingly funny,' and 'exhilarating' throughout.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:06:33.007Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:55:23.126Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2790,
+    "outputTokens": 346,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 88,
@@ -93,7 +100,7 @@
   ],
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 88,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.975Z",
+  "rescoreCompletedAt": "2026-02-01T15:55:23.126Z",
   "contentTier": "complete",
   "wordCount": 1119
 }

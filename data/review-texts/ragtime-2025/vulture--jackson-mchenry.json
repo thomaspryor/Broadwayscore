@@ -9,56 +9,63 @@
   "showScoreExcerpt": "\"The production is so powerfully sung and deeply felt that it overwhelms. Maybe these characters have false dreams, and maybe the showâs idea of hope is impossibly naÃ¯ve, but it lingers.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/ragtime-broadway",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 79,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 75,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 85,
-      "performances": 87,
-      "direction": null
+      "book": 65,
+      "music": 80,
+      "performances": 85,
+      "direction": 70
     },
     "keyPhrases": [
       {
-        "quote": "so powerfully sung and deeply felt that it overwhelms",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "it lingers",
+        "quote": "High points like that, when those voices combine with James Moore's sumptuous orchestra and crystallize into an omnisensory wallop, make this Ragtime impossible to dismiss",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Maybe these characters have false dreams, and maybe the show's idea of hope is impossibly naïve",
-        "sentiment": "negative",
+        "quote": "Ragtime, with its thudding sentimentality, is not a truly great musical, but deBessonet has enough finesse to convince you that it might come close",
+        "sentiment": "positive",
         "strength": 3
+      },
+      {
+        "quote": "As Coalhouse, a character first introduced as a virtuosic pianist who later goes on a quest for violent revenge, Henry is stunning",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Despite intellectual reservations about the show's themes, the critic is clearly moved by the powerful performances and music, with the emotional impact overriding conceptual doubts. | GPT-4o-mini: The review expresses strong praise for the singing and emotional impact, indicating a positive recommendation despite some reservations about the show's themes.",
+    "reasoning": "The critic acknowledges the musical's flaws but praises the production's evolution, standout performances, and emotional impact, ultimately finding it 'impossible to dismiss' despite being 'easy to quibble with.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:09.311Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:01:47.468Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4101,
+    "outputTokens": 415,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -78,7 +85,7 @@
   ],
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 79,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.002Z",
+  "rescoreCompletedAt": "2026-02-01T16:01:47.468Z",
   "truncationSignals": [
     "has_footer_junk"
   ],

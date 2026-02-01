@@ -9,23 +9,23 @@
   "bwwExcerpt": "It’s hard to picture a better cast for this first Broadway revival of Ossie Davis’s 1961 broad, biting comedy about racism in the Old South. As the title character, Leslie Odom Jr., assuming the role originated by Davis himself, feels especially well-matched. Odom of course made his name on Broadway delivering with uncommon clarity the pithiest raps in “Hamilton,” as smooth-talking, untrustworthy but surprisingly sympathetic Aaron Burr.  Similarly, as Purlie Victorious Judson, a newly-minted pre",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 72,
-    "confidence": "medium",
+    "score": 75,
+    "confidence": "low",
     "range": {
-      "low": 67,
-      "high": 77
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 78,
+      "performances": 82,
       "direction": null
     },
     "keyPhrases": [
@@ -45,7 +45,7 @@
         "strength": 2
       }
     ],
-    "reasoning": "Claude: Strong praise for casting and lead performance suggests positive recommendation, but excerpt cuts off mid-sentence limiting assessment of overall show quality.",
+    "reasoning": "Strong praise for casting and lead performance suggests positive recommendation, but review is incomplete making assessment uncertain.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -54,11 +54,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:07:15.206Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:55:06.417Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2426,
+    "outputTokens": 305,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "bwwExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated BWW excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -70,7 +77,7 @@
     "needsReviewReasons": []
   },
   "bwwThumb": "Up",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 72,
   "archivePath": "data/archives/reviews/purlie-victorious-2023/nyt-theater--jonathan-mandell_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:28:01.643Z",
@@ -84,7 +91,7 @@
   ],
   "fetchTier": 1,
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.974Z",
+  "rescoreCompletedAt": "2026-02-01T15:55:06.417Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
   "wordCount": 987

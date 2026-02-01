@@ -7,58 +7,55 @@
   "publishDate": "March 21, 2024",
   "dtliExcerpt": "Time was, when a dreamy kid felt oppressed, the allure of running away to join the circus would fire the imagination. An American myth, or sentimental lore, probably. But in the new musical “Water for Elephants,” ostensibly set in a seedy, second-rate circus, running off to join the crew would seem to be little more rebellious than joining an unusually boisterous Boy Scout troop.",
   "originalScore": null,
-  "assignedScore": 31,
+  "assignedScore": 38,
   "dtliThumb": "Meh",
   "source": "dtli",
   "showScoreExcerpt": "\"this musical adaptation of the hit novel loses much of its sourceâs pungency and grit.\"",
   "bwwExcerpt": "Still, the largely pasteurized manner in which the musical depicts the often-sordid lives of circus folk of the period lends “Water for Elephants” an anodyne weightlessness, at least until the denouement. I’m not sure if a more faithful adaptation of the book would make for a better musical—although John Kander and Fred Ebb, in their heyday, might have taken a good crack at it—but it certainly would have made for a more provocative and adventurous one.",
   "bwwThumb": "Down",
   "llmScore": {
-    "score": 31,
-    "confidence": "low",
+    "score": 38,
+    "confidence": "medium",
     "range": {
-      "low": 15,
-      "high": 47
+      "low": 32,
+      "high": 45
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": null,
+      "book": 35,
       "music": null,
       "performances": null,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "running off to join the crew would seem to be little more rebellious than joining an unusually boisterous Boy Scout troop",
+        "quote": "loses much of its sourceâs pungency and grit",
         "sentiment": "negative",
         "strength": 4
-      },
-      {
-        "quote": "ostensibly set in a seedy, second-rate circus",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "running off to join the crew would seem to be little more rebellious than joining an unusually boisterous Boy Scout troop.",
-        "sentiment": "negative",
-        "strength": 5
       }
     ],
-    "reasoning": "Claude: The review appears to criticize the show for lacking authentic circus atmosphere and being too sanitized, but this is only a partial excerpt making confidence low. | GPT-4o-mini: The review conveys a strong sense of disappointment and lack of excitement about the musical, indicating a clear negative recommendation. | Note: Models differed by 22 points.",
+    "reasoning": "The critic indicates the adaptation fails to capture the essential qualities that made the source material compelling, suggesting significant disappointment with the show's execution.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": true
+      "comparesToPrevious": true,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:03:32.694Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:37:01.639Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2323,
+    "outputTokens": 243,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 42,
@@ -94,6 +91,6 @@
   "garbageFixedAt": "2026-01-29T22:45:23.488Z",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
-  "rescoreReason": "tiny-excerpt: only 90 chars, try re-fetching"
+  "rescoreReason": "tiny-excerpt: only 90 chars, try re-fetching",
+  "rescoreCompletedAt": "2026-02-01T16:37:01.639Z"
 }

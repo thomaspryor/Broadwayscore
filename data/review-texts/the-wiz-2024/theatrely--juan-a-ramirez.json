@@ -12,50 +12,57 @@
   "source": "dtli",
   "llmScore": {
     "score": 78,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 75,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 80,
+      "book": 75,
+      "music": 78,
       "performances": 85,
-      "direction": null
+      "direction": 80
     },
     "keyPhrases": [
       {
-        "quote": "singing with an infectious joy typically missing from oft-retread properties",
+        "quote": "this iteration of The Wiz is pretty terrific",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "it's a golden one nonetheless",
+        "quote": "What this staging of the beloved 1974 musical has in spades are some of the liveliest performances in New York right now",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "The road to success might have a few bricks missing",
-        "sentiment": "negative",
-        "strength": 2
+        "quote": "The road to success might have a few bricks missing, but it's a golden one nonetheless",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Despite acknowledging some flaws ('few bricks missing'), the critic emphasizes the cast's joy and connection, concluding with a positive metaphor about a 'golden' road to success.",
+    "reasoning": "The critic gives clear praise calling the production 'pretty terrific' with 'some of the liveliest performances in New York right now,' acknowledging minor flaws but ultimately recommending it as 'a golden' road despite some missing bricks.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": true,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:12:23.682Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:31:55.657Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3313,
+    "outputTokens": 370,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -75,7 +82,7 @@
   "bwwThumb": "Up",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 78,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.131Z",
+  "rescoreCompletedAt": "2026-02-01T16:31:55.657Z",
   "contentTier": "complete",
   "wordCount": 720
 }

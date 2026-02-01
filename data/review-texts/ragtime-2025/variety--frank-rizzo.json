@@ -9,7 +9,7 @@
   "dtliExcerpt": "It’s a thrilling experience, though on the Vivian Beaumont Theater’s vast stage this pageant of a musical feels a bit skimpy. Not that the musical needs opulent sets, but it does call for stunning stagecraft to match the awe of its aspirations. It’s achieved here only intermittently.",
   "showScoreExcerpt": "\"In productions large or small â or, here, imperfectly in-between, though still glorious â everything is the service of the show that creates with words, music and movement a grand American tapestry â tears and all.\"",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 82,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
   "urlUpdated": "2026-01-23T05:27:32.724Z",
@@ -18,51 +18,58 @@
   "sourceMethod": "archive",
   "bwwExcerpt": "In productions large or small — or, here, imperfectly in-between, though still glorious — everything is the service of the show that creates with words, music and movement a grand American tapestry — tears and all.",
   "llmScore": {
-    "score": 64,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 57.5,
-      "high": 70.5
+      "low": 78,
+      "high": 86
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 58
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "It's a thrilling experience",
+        "quote": "reverberates with the directness, passion and allegorical heft of an American folk epic",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "feels a bit skimpy",
-        "sentiment": "negative",
-        "strength": 3
+        "quote": "expanded and exceptional version",
+        "sentiment": "positive",
+        "strength": 4
       },
       {
-        "quote": "It's achieved here only intermittently",
-        "sentiment": "negative",
-        "strength": 4
+        "quote": "It's a savvy choice given the positive reception it received",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review opens with strong praise calling it 'thrilling' but immediately undercuts this with significant criticisms about the production feeling inadequate for the venue and only intermittently achieving its goals. | GPT-4o-mini: The review expresses a mix of excitement and disappointment, highlighting a thrilling experience but also noting shortcomings in stagecraft, leading to a mixed-positive recommendation.",
+    "reasoning": "The review uses strong positive language like 'exceptional' and 'passion' while praising the director's vision and noting the production's positive reception, indicating clear recommendation despite being an excerpt.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:47:56.226Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:01:40.949Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2454,
+    "outputTokens": 332,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 62,
@@ -74,7 +81,6 @@
     "needsReviewReasons": []
   },
   "bwwThumb": "Up",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 64,
   "archivePath": "data/archives/reviews/ragtime-2025/variety--frank-rizzo_2026-01-30.html",
@@ -91,5 +97,6 @@
   "archiveOrgTimestamp": "20251119213256",
   "archiveOrgUrl": "http://web.archive.org/web/20251119213256/https://variety.com/2025/legit/reviews/ragtime-review-broadway-lincoln-center-theater-1236554453/",
   "contentTier": "complete",
-  "wordCount": 985
+  "wordCount": 985,
+  "rescoreCompletedAt": "2026-02-01T16:01:40.949Z"
 }

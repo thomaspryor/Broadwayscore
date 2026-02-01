@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "5/5 stars",
-  "assignedScore": 92,
+  "assignedScore": 95,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -31,21 +31,26 @@
   "archiveOrgTimestamp": "20250722160838",
   "archiveOrgUrl": "http://web.archive.org/web/20250722160838/https://nystagereview.com/2024/03/28/the-whos-tommy-a-rock-classic-is-triumphantly-reborn/",
   "llmScore": {
-    "score": 92,
-    "confidence": "medium",
+    "score": 95,
+    "confidence": "high",
     "range": {
-      "low": 83.5,
-      "high": 100
+      "low": 92,
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 90,
-      "performances": 92,
-      "direction": 94
+      "book": 90,
+      "music": 95,
+      "performances": 93,
+      "direction": 95
     },
     "keyPhrases": [
+      {
+        "quote": "It's a smash, Mrs. Walker, it's a smash",
+        "sentiment": "positive",
+        "strength": 5
+      },
       {
         "quote": "This production creates transcendent enjoyment. Not 'I get it, I love it,' but rather: It gets me. It understands me.",
         "sentiment": "positive",
@@ -55,27 +60,29 @@
         "quote": "creates an intermission buzz in the house unlike most I've encountered in decades of theatergoing – perhaps not since the premiere of Rent",
         "sentiment": "positive",
         "strength": 5
-      },
-      {
-        "quote": "the saga of little Tommy Walker, told through Townshend's genius words and music, gains greater emotional impact than ever",
-        "sentiment": "positive",
-        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic delivers enthusiastic praise throughout, comparing the audience reaction to legendary shows like Rent, praising the direction and design extensively, and concluding with deeply personal emotional impact - all indicating strong recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its emotional impact, strong performances, and innovative direction, indicating a must-see experience.",
+    "reasoning": "5-star review with superlative language ('smash', 'transcendent enjoyment'), detailed praise for all production elements, and comparison to landmark shows like Rent indicating exceptional quality.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:03:35.898Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:28:55.354Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3389,
+    "outputTokens": 373,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 88,
@@ -90,5 +97,8 @@
   "_scoreFixedFrom": "4/5 stars",
   "_scoreFixedAt": "2026-01-31T23:10:41.733Z",
   "contentTier": "complete",
-  "wordCount": 683
+  "wordCount": 683,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 92,
+  "rescoreCompletedAt": "2026-02-01T16:28:55.354Z"
 }

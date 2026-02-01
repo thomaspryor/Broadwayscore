@@ -22,42 +22,49 @@
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 38,
+      "book": 35,
       "music": 45,
-      "performances": null,
-      "direction": null
+      "performances": 75,
+      "direction": 65
     },
     "keyPhrases": [
       {
-        "quote": "the score...loses its precision",
+        "quote": "it's hard to imagine the UK-to-Broadway transfer Two Strangers inspiring Marmite-like reactions of either ecstasy or agony",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "too many novelty numbers...not really grounded in who these people are",
+        "quote": "their performances are far more flavorful than their jovially bland meet-cute",
         "sentiment": "negative",
-        "strength": 4
+        "strength": 3
       },
       {
-        "quote": "both far too long for the audience's attention and far too short for...transformations",
+        "quote": "it's hard to feel much of anything in return",
         "sentiment": "negative",
-        "strength": 5
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic identifies fundamental structural problems with the show's pacing, character development, and musical coherence, with no redeeming qualities mentioned to counterbalance these significant flaws. | GPT-4o-mini: The review highlights significant issues with the story's pacing and character development, leading to a recommendation against seeing the show.",
+    "reasoning": "The critic acknowledges strong performances, especially from Pitts, but finds the show structurally flawed with a bland story, weak songs after the opening, and an inability to generate emotional investment despite its length.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": false
+      "comparesToPrevious": false,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:31:37.175Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:33:25.637Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3553,
+    "outputTokens": 370,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 45,
@@ -73,7 +80,7 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 45,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.136Z",
+  "rescoreCompletedAt": "2026-02-01T16:33:25.637Z",
   "contentTier": "complete",
   "wordCount": 783
 }

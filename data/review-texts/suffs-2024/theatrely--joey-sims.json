@@ -10,56 +10,63 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 49,
+  "assignedScore": 65,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 49,
-    "confidence": "medium",
+    "score": 65,
+    "confidence": "high",
     "range": {
-      "low": 37.5,
-      "high": 60.5
+      "low": 62,
+      "high": 68
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 43,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 45,
+      "music": 75,
+      "performances": 72,
+      "direction": 50
     },
     "keyPhrases": [
       {
-        "quote": "at its most invigorating when Taub hits on these collisions of the political and personal",
+        "quote": "Suffs is a flawed work that fails to emotionally grab, but succeeds as a fresh reminder of the necessity and power of sustained political action",
+        "sentiment": "neutral",
+        "strength": 4
+      },
+      {
+        "quote": "Certainly Suffs is head and shoulders above most of this Broadway season's new musicals",
         "sentiment": "positive",
         "strength": 3
       },
       {
-        "quote": "But such moments are few and far between",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The show is overburdened by too many characters and too much historical ground to cover",
+        "quote": "The show is overburdened by too many characters and too much historical ground to cover, and Taub's score often falls back on generic inspirational anthems instead of emotional specificity",
         "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic acknowledges some effective moments but emphasizes these are rare in an 'overburdened' and 'sprawling' work with structural problems. | GPT-4o-mini: The review indicates a mixed response, highlighting some invigorating moments but ultimately criticizing the show's structure and character overload. | Note: Models differed by 13 points.",
+    "reasoning": "The critic acknowledges the show's admirable qualities (strong music, good performances, timely themes) but identifies significant structural problems and concludes it 'fails to emotionally grab' while still finding value in its message.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:39.953Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:15:21.209Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3873,
+    "outputTokens": 394,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 42,
@@ -72,7 +79,7 @@
       "Score (49 → Down) conflicts with aggregator thumbs (Flat)"
     ]
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 49,
   "archivePath": "data/archives/reviews/suffs-2024/theatrely--joey-sims_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:42:57.197Z",
@@ -88,7 +95,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251017180349",
   "archiveOrgUrl": "http://web.archive.org/web/20251017180349/https://www.theatrely.com/post/suffs-storms-broadway-review",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.059Z",
+  "rescoreCompletedAt": "2026-02-01T16:15:21.209Z",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",

@@ -17,25 +17,25 @@
     "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 78,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 86,
-      "direction": 83
+      "performances": 85,
+      "direction": 88
     },
     "keyPhrases": [
       {
-        "quote": "all four actors marvelously economical",
+        "quote": "master at creating emotion without hitting an audience over the head",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "quietly devastating",
+        "quote": "all four actors marvelously economical",
         "sentiment": "positive",
         "strength": 4
       },
@@ -45,7 +45,7 @@
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Strong praise for both the director's mastery and all four performances, with emphasis on lasting emotional impact, though lacks explicit superlatives or recommendation language. | GPT-4o-mini: The review expresses strong praise for the direction and performances, indicating a clear recommendation despite not explicitly stating 'must-see'.",
+    "reasoning": "Strong praise for the director's mastery and the actors' economical performances, with emphasis on lasting emotional impact, indicating clear recommendation despite no explicit directive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -54,11 +54,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:09:39.261Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:31:26.929Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2415,
+    "outputTokens": 316,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -78,7 +85,7 @@
   "bwwThumb": "Up",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 82,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.868Z",
+  "rescoreCompletedAt": "2026-02-01T15:31:26.929Z",
   "contentTier": "truncated",
   "wordCount": 88
 }

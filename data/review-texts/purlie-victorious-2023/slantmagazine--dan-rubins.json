@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 68,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -18,52 +18,60 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 64,
-    "confidence": "medium",
+    "score": 68,
+    "confidence": "high",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 65,
+      "high": 72
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": null,
+      "book": 55,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 78,
+      "direction": 65
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges entertaining performances and production elements but concludes the play 'never fully leaps out from the archives' and struggles to cohere its different ambitions, landing in mixed territory with reservations outweighing recommendations. | GPT-4o: The review acknowledges the play's historical significance and highlights strong performances, but it also points out issues with coherence and balance in the production. The positive elements are tempered by significant reservations, leading to a mixed overall impression. | Gemini: The review highlights strong performances and moments of triumph, but also points out flaws in the play's coherence and the uneven mix of silliness and sobriety. The final verdict leans towards a recommendation, albeit with reservations.",
+    "keyPhrases": [
+      {
+        "quote": "Davis's play never fully leaps out from the archives despite the cast's entertaining efforts to justify its reemergence",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "sends revitalizing currents through the long-dormant text, thanks to a bevy of boisterously engaged performances",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "If Purlie Victorious never completely conquers in cohering its disparate ambitions, its last moments offer an unexpected, quiet triumph",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The reviewer praises the performances and production elements but finds fundamental flaws in the dated material that prevent it from fully succeeding, resulting in a qualified mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T14:58:08.941Z",
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:55:35.920Z",
     "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
+    "inputTokens": 4203,
+    "outputTokens": 369,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
-  "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 75,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
-  },
+  "ensembleData": null,
   "rescoreReason": "low-conf: prompt=3.0.0, delta=30, upgrading to V5 + 3 models",
   "previousLlmScore": 60,
   "archivePath": "data/archives/reviews/purlie-victorious-2023/slantmagazine--dan-rubins_2026-01-29.html",
@@ -98,7 +106,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240606213714",
   "archiveOrgUrl": "http://web.archive.org/web/20240606213714/https://www.slantmagazine.com/theater/purlie-victorious-a-non-confederate-romp-through-the-cotton-patch-review/",
-  "rescoreCompletedAt": "2026-02-01T14:58:08.941Z",
+  "rescoreCompletedAt": "2026-02-01T15:55:35.920Z",
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",

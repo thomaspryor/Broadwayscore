@@ -9,57 +9,65 @@
   "bwwExcerpt": "Radcliffe really pops now, and Charley’s comedic cri de coeur “Franklin Shepard, Inc.” a showstopper. Actually, it’s a moment to close your eyes tight and swallow.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 83,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 80,
-    "confidence": "medium",
+    "score": 83,
+    "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 80,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 75,
+      "music": 88,
+      "performances": 85,
+      "direction": 82
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite noting slow first act pacing, the review is overwhelmingly positive, praising the performances, direction, and emotional impact with enthusiastic language about wanting to preserve the experience. | GPT-4o: The review is highly positive, highlighting the strong performances, emotional impact, and effective direction. The critic uses vivid language to convey the show's excellence, suggesting it is a must-see production. | Gemini: The review is overwhelmingly positive, calling the revival \"bracing\" and highlighting the riches throughout the musical. While mentioning a slow first act, the critic praises the performances and overall vision, indicating a strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "You're going to want to preserve the riches flowing throughout this hurts-so-good musical",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Her vision is clear, accessible, and very fine",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's nitpicking to note that the first act pacing is snail-mail slow, but it is",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Four-star review with consistent praise for performances, music, and direction, with only minor pacing criticism dismissed as 'nitpicking'.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T14:56:26.291Z",
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:35:56.817Z",
     "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
+    "inputTokens": 3172,
+    "outputTokens": 349,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
-  "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 82,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 12,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
-  },
+  "ensembleData": null,
   "bwwThumb": "Up",
   "showScoreExcerpt": "“You’re going to want to preserve the riches flowing throughout this hurts-so-good musical about growing up and growing apart.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/merrily-we-roll-along-broadway",
@@ -88,7 +96,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251208020157",
   "archiveOrgUrl": "http://web.archive.org/web/20251208020157/https://www.newyorktheatreguide.com/reviews/merrily-we-roll-along-broadway-review-jonathan-groff-daniel-radcliffe-lindsay-mendez",
-  "rescoreCompletedAt": "2026-02-01T14:56:26.291Z",
+  "rescoreCompletedAt": "2026-02-01T15:35:56.817Z",
   "contentTier": "complete",
   "wordCount": 1112
 }

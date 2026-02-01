@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 86,
+  "assignedScore": 72,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -32,51 +32,58 @@
   "archiveOrgTimestamp": "20251110045842",
   "archiveOrgUrl": "http://web.archive.org/web/20251110045842/https://www.showbiz411.com/2024/03/28/broadway-can-you-hear-me-the-whos-tommy-returns-vibrant-as-ever-after-30-years",
   "llmScore": {
-    "score": 86,
+    "score": 72,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 95
+      "low": 68,
+      "high": 76
     },
-    "bucket": "Positive",
+    "bucket": "Mixed",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 92,
-      "performances": 88,
-      "direction": 86
+      "music": 78,
+      "performances": null,
+      "direction": 75
     },
     "keyPhrases": [
       {
-        "quote": "It's sensational even if the timeline of the story is screwy. Who cares?",
+        "quote": "Tommy brims with fun",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Pete Townshend's music and lyrics have never sounded better. The orchestra is sensational.",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "I'll take this over a lot of musicals with unhummable songs and flat scores.",
+        "quote": "I'll take this over a lot of musicals with unhummable songs and flat scores",
         "sentiment": "positive",
         "strength": 4
+      },
+      {
+        "quote": "Maybe it's a little nostalgic for classic rock fans",
+        "sentiment": "neutral",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The critic uses enthusiastic language like 'sensational' throughout and clearly recommends this production over other contemporary musicals, despite minor timeline issues. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its sensational music and strong performances, indicating a must-see experience.",
+    "reasoning": "The critic offers qualified praise with positive comments about production values and music while positioning it as better than many current musicals, suggesting a recommendation despite some reservations.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": false
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:04:00.292Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:29:30.479Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2397,
+    "outputTokens": 326,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "bwwExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated BWW excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 82,
@@ -89,5 +96,8 @@
   },
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
-  "wordCount": 569
+  "wordCount": 569,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 86,
+  "rescoreCompletedAt": "2026-02-01T16:29:30.479Z"
 }

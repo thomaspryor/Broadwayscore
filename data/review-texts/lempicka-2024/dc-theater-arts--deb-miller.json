@@ -9,51 +9,63 @@
   "bwwExcerpt": "Lempicka offers a theatrical manifestation of the revival of interest in a woman artist who embraced the avant-garde style of Art Deco, along with a privileged lifestyle and free sexuality, as stated in her own bombastic and defiant words: “I live life in the margins of society, and the rules of normal society don’t apply to those who live on the fringe.” If only the sexualization of women and their nudity in art were not so standard. As questioned in the famous poster by the feminist/activist g",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 45,
+    "score": 62,
     "confidence": "medium",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 58,
+      "high": 66
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 55,
+      "music": 65,
+      "performances": 75,
+      "direction": 70
     },
     "keyPhrases": [
+      {
+        "quote": "Lempicka offers a theatrical manifestation of the revival of interest in a woman artist who embraced the avant-garde style of Art Deco",
+        "sentiment": "positive",
+        "strength": 3
+      },
       {
         "quote": "If only the sexualization of women and their nudity in art were not so standard",
         "sentiment": "negative",
         "strength": 3
       },
       {
-        "quote": "Lempicka offers a theatrical manifestation of the revival of interest in a woman artist",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "Andrew Samonsky brings his masterfully controlled and outstanding voice",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review fragment shows critical concern about the show's treatment of women's sexuality in art, suggesting problematic elements, but the excerpt is too incomplete to determine the critic's overall recommendation.",
+    "reasoning": "This is an academic, descriptive review that praises individual performances and production elements but offers no clear recommendation and ends with pointed criticism about the show's treatment of women.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:04:47.011Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:25:05.074Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4111,
+    "outputTokens": 356,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 45,
@@ -65,7 +77,7 @@
     "needsReviewReasons": []
   },
   "bwwThumb": "Meh",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 45,
   "archivePath": "data/archives/reviews/lempicka-2024/dc-theater-arts--deb-miller_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:38:17.866Z",
@@ -99,7 +111,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240518191647",
   "archiveOrgUrl": "http://web.archive.org/web/20240518191647/https://dctheaterarts.org/2024/04/14/bombastic-new-musical-on-the-life-art-and-times-of-polish-painter-lempicka-at-broadways-longacre-theatre/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.843Z",
+  "rescoreCompletedAt": "2026-02-01T15:25:05.074Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
   "wordCount": 1255

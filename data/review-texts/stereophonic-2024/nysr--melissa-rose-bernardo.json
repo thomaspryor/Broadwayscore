@@ -38,48 +38,50 @@
     "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 83.5,
-      "high": 100
+      "low": 85,
+      "high": 95
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 88,
-      "music": 92,
-      "performances": 93,
-      "direction": 86
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "★★★★★ David Adjmi and Will Butler's studio-set play moves to Broadway with a cast in perfect harmony and every note intact",
+        "quote": "the genius on display at the Golden Theatre",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "That doesn't even begin to describe the genius on display at the Golden Theatre",
+        "quote": "That doesn't even begin to describe",
         "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Could Stereophonic have lost five minutes here or there? Maybe. Could director Daniel Aukin have tightened up the pace a bit? Perhaps.",
-        "sentiment": "negative",
-        "strength": 2
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Five-star review with consistent praise calling it 'genius' and highlighting excellent performances and music, with only minor pacing concerns that don't significantly detract from the strong recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its genius, strong performances, and engaging themes, leading to a high recommendation score.",
+    "reasoning": "The critic uses superlative language like 'genius on display' and emphasizes that even a compelling elevator pitch undersells the show's quality, indicating very strong enthusiasm.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T02:27:56.093Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:11:29.328Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2386,
+    "outputTokens": 279,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "bwwExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated BWW excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 88,
@@ -92,5 +94,8 @@
   },
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
-  "wordCount": 677
+  "wordCount": 677,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 92,
+  "rescoreCompletedAt": "2026-02-01T16:11:29.328Z"
 }

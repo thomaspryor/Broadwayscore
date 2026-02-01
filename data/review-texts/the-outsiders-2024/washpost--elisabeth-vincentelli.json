@@ -9,7 +9,7 @@
   "bwwExcerpt": "n and Jonathan Clay and Zach Chance (better known as the band Jamestown Revival) proves a perfectly respectable effort with many laudable elements. What it mostly seems to lack is a reason for being. Elisabeth Vincentelli, The Washington Post: And therein lies the problem: The show overexplains everything, all the time. Hinton knew exactly how much to say and when — the paperback edition of “The Outsiders” is just 180 concise, evocative pages that let us discover things along with Ponyboy. Here, both the book and the songs tend to underestimate the audience’s intelligence. (This is surprising coming from Rapp, who is usually not afraid of ambiguity.) Matt Windman, amNY: At its best, “The Outsiders”(which is directed by Danya Taymor, “Pass Over”) is fresh and rambunctious, with an attractive period country-pop score by Jamestown Revival (Jonathan Clay and Zach Chance) and Justine Levine (with plainspoken lyrics and pulsating music reminiscent of Jason Robert Brown), well-executed choreo",
   "showScoreExcerpt": "\"...has great visual touches but falters when the characters open their mouths\"",
   "originalScore": null,
-  "assignedScore": 54,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-Opens-On-Broadway-20240411",
@@ -19,51 +19,58 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 54,
-    "confidence": "high",
+    "score": 62,
+    "confidence": "medium",
     "range": {
-      "low": 47.5,
-      "high": 60.5
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 38,
-      "music": 70,
-      "performances": null,
-      "direction": 60
+      "book": 40,
+      "music": 35,
+      "performances": 70,
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "What it mostly seems to lack is a reason for being",
+        "quote": "So yes, 'The Outsiders' is compelling from a visual standpoint. It's when the characters open their mouths that it falters.",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "The show overexplains everything, all the time",
-        "sentiment": "negative",
-        "strength": 4
+        "quote": "The big fight that takes place toward the end of the new show 'The Outsiders' ranks as one of the most impactful (literally) moments of this, or any, Broadway season.",
+        "sentiment": "positive",
+        "strength": 5
       },
       {
-        "quote": "At its best, 'The Outsiders' is fresh and rambunctious, with an attractive period country-pop score",
+        "quote": "Similar inventiveness is on display throughout, albeit on a smaller scale",
         "sentiment": "positive",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: Multiple critics find significant structural problems (overexplaining, lack of purpose) despite praising the music and some production elements, resulting in a mixed reception that leans slightly negative. | GPT-4o-mini: The review presents a mixed view, praising the music and some visual elements while criticizing the script and character dialogue, leading to a conditional recommendation.",
+    "reasoning": "The critic praises the direction and visual elements highly but clearly states the show 'falters' when characters speak, indicating significant problems with book and music that undermine the strong production values.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": false
+      "comparesToPrevious": false,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:57:59.188Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:24:02.903Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2891,
+    "outputTokens": 383,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 52,
@@ -74,7 +81,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 54,
   "archivePath": "data/archives/reviews/the-outsiders-2024/washpost--elisabeth-vincentelli_2026-01-29.html",
   "textFetchedAt": "2026-01-29T05:09:10.740Z",
@@ -89,7 +96,7 @@
   "fetchTier": 4,
   "archiveOrgTimestamp": "20250724124346",
   "archiveOrgUrl": "http://web.archive.org/web/20250724124346/https://www.washingtonpost.com/entertainment/theater/2024/04/11/outsiders-broadway-review/",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.101Z",
+  "rescoreCompletedAt": "2026-02-01T16:24:02.903Z",
   "contentTier": "complete",
   "wordCount": 765
 }

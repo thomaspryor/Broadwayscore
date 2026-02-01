@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 48,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "needsScoring": true,
@@ -20,51 +20,58 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 25,
-    "confidence": "medium",
+    "score": 48,
+    "confidence": "high",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 45,
+      "high": 52
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": null,
-      "music": 15,
-      "performances": 35,
-      "direction": null
+      "book": 35,
+      "music": 45,
+      "performances": 65,
+      "direction": 40
     },
     "keyPhrases": [
       {
-        "quote": "nothing but loud, caterwauling screeds to sing",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "give our ears a respite from all the noise",
+        "quote": "Why have Kreitzer and Gould given their Lempicka nothing but loud, caterwauling screeds to sing?",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "appears stuck trying to top 'Defying Gravity' in one female empowerment anthem after another",
+        "quote": "It's a great book song because it's not only tuneful but filled with action and character",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Only when the title character is off the stage are we able to give our ears a respite from all the noise",
         "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic harshly criticizes the music as 'caterwauling screeds' and 'noise,' suggesting the lead performer is miscast and the songs are repetitive and grating, with relief only coming when the title character leaves the stage.",
+    "reasoning": "Despite praising select songs and supporting performances, the critic finds the lead character's material 'caterwauling,' criticizes the direction as 'all over the place,' and suggests relief when the protagonist leaves the stage.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:09:01.705Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:26:32.961Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3321,
+    "outputTokens": 378,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 25,
@@ -77,7 +84,7 @@
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 25,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.851Z",
+  "rescoreCompletedAt": "2026-02-01T15:26:32.961Z",
   "contentTier": "complete",
   "wordCount": 834
 }

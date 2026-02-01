@@ -8,58 +8,65 @@
   "fullText": "Robert Icke is one of our best and most exciting theatrical talents, full stop. Any announcement of new work from the writer-director, known stateside lately for his incendiary updates of the Oresteia, Hamlet and The Doctor (from Schnitzler's Professor Bernhardi), are reason enough to immediately secure at least one round of tickets. So it's curious that he's hit a wall with Sophocles' Oedipus. There's still the baseline level of competence for which he's come to be known – a sleek, glass-paneled modernist set by Hildegard Bechtler; laser-sharp performances, this time led by the phenomenal pairing of Mark Strong and Lesley Manville – that is leagues above most others' hopes for excellence. But without the profound insight (modern and timeless) he's excavated from those other works, there's little to generate the same theatrical electricity.\n\nMaybe it's because, more than other Greek texts, Oedipus is something of a one-trick pony; a revelation waiting to happen. Icke is aware of this, writing in his script's introduction that, \"The tradition of Greek tragedy was to take a known story and re-tell it, changing it, re-making it to meet the present moment.\" This he does with his usual cleverness, setting the tale on election night and turning Oedipus into an Obama-esque charismatic campaigning on hope, and the promise to solve the cold-case murder of his predecessor (and his wife Jocasta's first husband).\n\nThat might not be the smartest investigation to open, as the blind prophet Teiresias (Samuel Brewer) sneaks into Oedipus' office to cryptically suggest. It's a nice Classical touch to keep the soothsayer, but it introduces a dramaturgical pitfall: In order to hold interest in a story whose surprises we already know, you either line up those dominoes and have a hell of a time toppling them, or you seek ways of making them fall that reveal fresh, new patterns. Icke's Oresteia managed both while leaning harder into the latter route; reframing its entire chain of events as a tribunal judging its main character's soul, and our own sense of right and wrong, every step of the way. His Oedipus, while glowing with his usual whip-smart language, doesn't have much fun in the toppling. Each domino falls with complete earnestness, and without broader examination, even though we'd been tipped off by an earlier character and our own cultural literacy. There's simply no tension. Thankfully, there's little of that, too, in wondering whether Icke's next project will be worthy of appraisal. And if you see me soon, front row, at Oedipus, it's because there are far worse places to be than at a Robert Icke production, or in the company of Strong and Manville.",
   "dtliExcerpt": "His Oedipus, while glowing with his usual whip-smart language, doesn’t have much fun in the toppling. Each domino falls (“I killed who?! You’re my what?”) with complete earnestness, and without broader examination, even though we’d been tipped off by an earlier character and our own cultural literacy. There’s simply no tension. Thankfully, there’s little of that, too, in wondering whether Icke’s next project – his every project – will be worthy of appraisal. And if you see me soon, front row, at Oedipus, it’s because there are far worse places to be than at a Robert Icke production, or in the company of Strong and Manville.",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 68,
   "source": "dtli",
   "dtliThumb": "Meh",
   "scrapedAt": "2026-01-23T23:40:00.000Z",
   "bwwExcerpt": "Robert Icke is one of our best and most exciting theatrical talents, full stop. Any announcement of new work from the writer-director, known stateside lately for his incendiary updates of the Oresteia, Hamlet and The Doctor (from Schnitzler’s Professor Bernhardi), are reason enough to immediately secure at least one round of tickets. So it’s curious that he’s hit a wall with Sophocles’ Oedipus.",
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 69,
-    "confidence": "medium",
+    "score": 68,
+    "confidence": "high",
     "range": {
-      "low": 60.5,
-      "high": 77.5
+      "low": 65,
+      "high": 72
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 55,
+      "book": 45,
       "music": null,
-      "performances": 84,
-      "direction": 73
+      "performances": 85,
+      "direction": 70
     },
     "keyPhrases": [
       {
-        "quote": "there are far worse places to be than at a Robert Icke production, or in the company of Strong and Manville",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "without the profound insight he's excavated from those other works, there's little to generate the same theatrical electricity",
+        "quote": "There's simply no tension",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "laser-sharp performances, this time led by the phenomenal pairing of Mark Strong and Lesley Manville – that is leagues above most others' hopes for excellence",
+        "quote": "laser-sharp performances, this time led by the phenomenal pairing of Mark Strong and Lesley Manville",
         "sentiment": "positive",
         "strength": 5
+      },
+      {
+        "quote": "there are far worse places to be than at a Robert Icke production",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic admires Icke's talent and praises the stellar performances and production values, but finds the adaptation lacks the theatrical electricity and insight of the director's previous work, ultimately offering a qualified recommendation based on the creative team's reputation. | GPT-4o-mini: While the performances and direction are praised, the script lacks the depth and engagement expected, leading to a mixed recommendation.",
+    "reasoning": "The critic praises the performances and direction while criticizing the script's lack of tension and insight, ultimately offering a qualified recommendation based on the creative team's reputation.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T15:52:13.902Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:43:19.475Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2955,
+    "outputTokens": 336,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -74,7 +81,7 @@
   "showScoreExcerpt": null,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 69,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.922Z",
+  "rescoreCompletedAt": "2026-02-01T15:43:19.475Z",
   "contentTier": "complete",
   "wordCount": 439
 }

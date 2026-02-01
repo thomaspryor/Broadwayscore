@@ -9,43 +9,43 @@
   "bwwExcerpt": "Harmon is the talented playwright of Significant Other, about the frailty of friendship; Admissions, about race and privilege; and Bad Jews, about family legacies. He digs deeper than ever in Prayer for the French Republic and strikes pure gold. It’s a plus-size play about big social issues that impresses in large structural ways as well as small moments.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 92,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 88,
-    "confidence": "medium",
+    "score": 92,
+    "confidence": "high",
     "range": {
-      "low": 83,
-      "high": 93
+      "low": 88,
+      "high": 95
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": 94,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 89,
+      "direction": 91
     },
     "keyPhrases": [
       {
-        "quote": "strikes pure gold",
+        "quote": "gripping, airtight play is a dramatic triumph",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "impresses in large structural ways as well as small moments",
+        "quote": "He digs deeper than ever in Prayer for the French Republic and strikes pure gold",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "digs deeper than ever",
+        "quote": "Directed with airtight elegance for Manhattan Theatre Club by David Cromer",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Strong praise for the playwright's work with superlative language like 'strikes pure gold' and emphasis on both structural excellence and intimate moments suggests clear enthusiasm and recommendation.",
+    "reasoning": "The review opens with 'dramatic triumph' in the headline and consistently uses superlatives like 'strikes pure gold' and 'airtight elegance' throughout, with no meaningful criticisms of the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,11 +54,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:13:42.004Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:53:18.223Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3049,
+    "outputTokens": 349,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 88,
@@ -77,7 +84,7 @@
     "bww-roundup",
     "dtli"
   ],
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 88,
   "archivePath": "data/archives/reviews/prayer-for-the-french-republic-2024/nytg--joe-dziemianowicz_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:38:11.883Z",
@@ -97,7 +104,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250715204455",
   "archiveOrgUrl": "http://web.archive.org/web/20250715204455/https://www.newyorktheatreguide.com/reviews/prayer-for-the-french-republic-broadway-review",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.968Z",
+  "rescoreCompletedAt": "2026-02-01T15:53:18.223Z",
   "contentTier": "complete",
   "wordCount": 631
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "There are indeed wonders to behold in 'Wicked,' the new musical that opened last night at the Gershwin Theater. There are also enough saggy stretches, moral miscalculations and awkward plot convolutions to kill a lesser species of musical entertainment.",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,36 +18,58 @@
   "showScoreExcerpt": "There are indeed wonders to behold in 'Wicked,' the new musical that opened last night at the Gershwin Theater. There are also enough saggy stretches, moral miscalculations and awkward plot convolutions to kill a lesser species of musical entertainment.",
   "needsScoring": true,
   "llmScore": {
-    "score": 63,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 75,
+      "high": 82
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 75,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 80,
+      "direction": 82
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review explicitly balances praise ('wonders to behold') with significant criticism ('saggy stretches, moral miscalculations'), presenting a genuinely mixed assessment without a clear recommendation either way. | GPT-4o: The review acknowledges impressive elements but also highlights significant flaws, leading to a mixed recommendation. | Gemini: The review acknowledges positive aspects ('wonders to behold') but also highlights significant flaws, resulting in a mixed assessment.",
+    "keyPhrases": [
+      {
+        "quote": "What I found isn't so easy to dismiss",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "What makes the play sing and sting is its radical yet perfectly organic shifts in tone",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "sustains a fluid, frantic sense of paradox that feels remarkably close to everyday life in the wake of 9/11",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic praises the production's vitality, performances, and direction while acknowledging some familiar elements, ultimately finding it compelling and well-executed despite initial skepticism.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T13:59:54.013Z",
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:37:40.891Z",
     "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
+    "inputTokens": 4277,
+    "outputTokens": 345,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 62,
@@ -65,14 +87,13 @@
     "modelAgreement": "All 3 models agree: Mixed"
   },
   "previousUrl": "https://www.nytimes.com/2003/10/31/theater/theater-review-there-s-a-girl-in-green-and-ooh-what-a-ceiling.html",
-  "urlDiscoveredAt": "2026-02-01T14:39:50.297Z",
+  "urlDiscoveredAt": "2026-02-01T14:04:38.023Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 63,
   "textWordCount": 1177,
   "archivePath": "data/archives/reviews/wicked-2003/nytimes--ben-brantley_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T14:39:50.301Z",
+  "textFetchedAt": "2026-02-01T14:04:38.029Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -87,5 +108,6 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251007211842",
-  "archiveOrgUrl": "http://web.archive.org/web/20251007211842/https://www.nytimes.com/2003/09/26/movies/theater-review-a-feisty-feast-of-wicked-wit.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251007211842/https://www.nytimes.com/2003/09/26/movies/theater-review-a-feisty-feast-of-wicked-wit.html",
+  "rescoreCompletedAt": "2026-02-01T16:37:40.891Z"
 }

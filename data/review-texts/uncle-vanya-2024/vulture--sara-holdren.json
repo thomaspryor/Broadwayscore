@@ -9,51 +9,63 @@
   "showScoreExcerpt": "\"Intertwined issues of script, casting, and direction are at work here.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/uncle-vanya-broadway",
   "originalScore": null,
-  "assignedScore": 40,
+  "assignedScore": 38,
   "source": "dtli",
   "dtliThumb": "Down",
   "needsScoring": true,
   "llmScore": {
-    "score": 40,
-    "confidence": "medium",
+    "score": 38,
+    "confidence": "high",
     "range": {
-      "low": 30,
-      "high": 50
+      "low": 35,
+      "high": 42
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 35,
+      "book": 45,
       "music": null,
       "performances": 35,
-      "direction": 35
+      "direction": 30
     },
     "keyPhrases": [
       {
-        "quote": "Intertwined issues of script, casting, and direction are at work here",
+        "quote": "it is, unhappily, an example of how all these things can fail to cohere into something powerful. Like its luckless hero, it shoots and misses.",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "We still don't know how to do Chekhov in this country",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "Intertwined issues of script, casting, and direction are at work here.",
+        "quote": "we're still liable to hear 'boredom' and end up with boring",
         "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic identifies fundamental problems across all major production elements (script, casting, direction), suggesting systemic failure without any counterbalancing praise. | GPT-4o-mini: The review highlights significant issues with the script, casting, and direction, indicating a negative overall sentiment.",
+    "reasoning": "The critic systematically dismantles the production across all elements - performances lack chemistry and depth, direction fails to find the play's emotional core, design choices feel generic and oppressive, and the overall execution misses the mark despite having major stars and a prestigious venue.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:22:14.990Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:35:01.991Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 5055,
+    "outputTokens": 382,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 35,
@@ -71,7 +83,6 @@
   "dtliExcerpt": "It’s got major names (Steve Carell is carrying the autumn roses and the gun), a major stage at Lincoln Center’s Vivian Beaumont, and a palpably earnest desire to excavate the story’s humanity. And it is, unhappily, an example of how all these things can fail to cohere into something powerful. Like its luckless hero, it shoots and misses.",
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 40,
   "archivePath": "data/archives/reviews/uncle-vanya-2024/vulture--sara-holdren_2026-01-29.html",
@@ -92,5 +103,6 @@
   "archiveOrgTimestamp": "20251228052154",
   "archiveOrgUrl": "http://web.archive.org/web/20251228052154/https://www.vulture.com/article/uncle-vanya-steve-carell-heidi-schreck.html",
   "contentTier": "complete",
-  "wordCount": 1901
+  "wordCount": 1901,
+  "rescoreCompletedAt": "2026-02-01T16:35:01.991Z"
 }

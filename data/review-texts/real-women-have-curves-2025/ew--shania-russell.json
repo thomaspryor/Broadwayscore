@@ -10,56 +10,63 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-REAL-WOMEN-HAVE-CURVES-Opens-on-Broadway-20250426",
   "bwwThumb": "Up",
   "originalScore": "A",
-  "assignedScore": 85,
+  "assignedScore": 83,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 85,
-    "confidence": "high",
+    "score": 83,
+    "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 78,
+      "high": 88
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": null,
+      "performances": 85,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "makes no apologies as it allows them to take up space; that demands its audience accept them",
+        "quote": "crowd-pleasing Broadway musical",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "always believes in their ability to grow",
+        "quote": "bigger, brighter and bursting with heart",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "the young Ana is indeed taking flight, but she is not soaring solo",
+        "quote": "no less prescient or powerful",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The review expresses clear admiration for the show's empowering message about women and character development, with passionate language about the story's impact and meaning. | GPT-4o-mini: The review conveys strong positive sentiment about the show's message and impact, suggesting a clear recommendation to see it.",
+    "reasoning": "Consistently positive language throughout with strong praise for the adaptation and lead performance, describing it as 'crowd-pleasing' and emphasizing its emotional impact and relevance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:29.496Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:02:33.928Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2490,
+    "outputTokens": 312,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 85,
@@ -76,7 +83,7 @@
     "dtli"
   ],
   "showScoreExcerpt": null,
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 85,
   "archivePath": "data/archives/reviews/real-women-have-curves-2025/ew--shania-russell_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:41:20.575Z",
@@ -107,7 +114,7 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "scrapingbee",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.005Z",
+  "rescoreCompletedAt": "2026-02-01T16:02:33.928Z",
   "contentTier": "complete",
   "wordCount": 1223
 }

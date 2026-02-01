@@ -9,56 +9,63 @@
   "showScoreExcerpt": "“The production’s overdesign is a symptom of the broader problem, which is a lack of ingenuity in favor of sheer excess. It is a paradox of throwing money onstage that it can easily come at the expense of creativity. There may be a way to reanimate ‘Spamalot,’ and for Monty Python’s random surrealism to infect a new generation and confront the current moment. But that grail is not to be found here.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/spamalot-broadway",
   "originalScore": null,
-  "assignedScore": 30,
+  "assignedScore": 38,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 30,
-    "confidence": "medium",
+    "score": 38,
+    "confidence": "high",
     "range": {
-      "low": 20,
-      "high": 40
+      "low": 32,
+      "high": 45
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": null,
+      "book": 25,
       "music": null,
       "performances": null,
-      "direction": 25
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "The production's overdesign is a symptom of the broader problem, which is a lack of ingenuity in favor of sheer excess",
+        "quote": "struggles to find anything fresh about material covered in a half-century of dust",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "It is a paradox of throwing money onstage that it can easily come at the expense of creativity",
+        "quote": "it's a shame that the first Broadway revival",
         "sentiment": "negative",
-        "strength": 4
+        "strength": 3
       },
       {
-        "quote": "But that grail is not to be found here",
+        "quote": "some tenants of comedy never die. But they do lose their vigor",
         "sentiment": "negative",
-        "strength": 5
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic systematically criticizes the production's excess over creativity and explicitly states the show fails to achieve its potential, concluding definitively that 'that grail is not to be found here.' | GPT-4o-mini: The review expresses strong criticism of the production's lack of creativity and excess, indicating a clear rejection of the show.",
+    "reasoning": "The critic finds the revival disappointingly stale and lacking freshness, with multiple phrases indicating the material has lost its comedic vigor despite acknowledging the original Python legacy.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:19:16.164Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:09:56.474Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2479,
+    "outputTokens": 337,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 35,
@@ -69,7 +76,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 30,
   "archivePath": "data/archives/reviews/spamalot-2023/variety--naveen-kumar_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:37:57.619Z",
@@ -85,7 +92,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251125123338",
   "archiveOrgUrl": "http://web.archive.org/web/20251125123338/https://variety.com/2023/legit/reviews/spamalot-review-broadway-2023-1235792687/",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.036Z",
+  "rescoreCompletedAt": "2026-02-01T16:09:56.474Z",
   "contentTier": "complete",
   "wordCount": 688
 }

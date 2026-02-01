@@ -9,19 +9,19 @@
   "showScoreExcerpt": "\"...this production of 'Tommy' is basically for old people, and not for a new generation\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-who-s-tommy-broadway",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 65,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 38,
-    "confidence": "high",
+    "score": 65,
+    "confidence": "low",
     "range": {
-      "low": 30.5,
-      "high": 45.5
+      "low": 55,
+      "high": 75
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -30,35 +30,42 @@
     },
     "keyPhrases": [
       {
-        "quote": "this production of 'Tommy' is basically for old people, and not for a new generation",
+        "quote": "bone-shaking, ear-splitting spectacles",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "I don't like this! Get me out of here!",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "this production of 'Tommy' is basically for old people",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "not for a new generation",
-        "sentiment": "negative",
-        "strength": 4
+        "quote": "overwhelming action",
+        "sentiment": "neutral",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic suggests the production is dated and lacks relevance for contemporary audiences, implying limited appeal and accessibility. | GPT-4o-mini: The review expresses a clear negative sentiment about the production's appeal, suggesting it is outdated and not suitable for younger audiences.",
+    "reasoning": "This excerpt focuses on the show's intense spectacle and audience reaction rather than providing clear critical assessment, making it difficult to determine the critic's actual recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:20:48.472Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T16:29:59.206Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2427,
+    "outputTokens": 310,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 40,
@@ -71,7 +78,6 @@
   },
   "bwwExcerpt": "There are standout performances. Mop-headed Ali Louis Bourzgui, who plays Tommy as a young adult, has stage presence and good pipes, and Alison Luff, playing Tommy’s mother, Mrs. Walker, brings real grit to her one solo, “Smash the Mirror.” Maybe if you’d missed the ’70s, when The Who’s exceptional album stirred the hearts of kids making enough noise to change the world, you wouldn’t care that this production of “Tommy” is basically for old people, and not for a new generation.",
   "bwwThumb": "Meh",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 38,
   "archivePath": "data/archives/reviews/the-whos-tommy-2024/variety--trish-deitch_2026-01-29.html",
@@ -89,5 +95,6 @@
   "archiveOrgTimestamp": "20251113141756",
   "archiveOrgUrl": "http://web.archive.org/web/20251113141756/https://variety.com/2024/legit/reviews/tommy-review-broadway-musical-2024-1235954615/",
   "contentTier": "complete",
-  "wordCount": 604
+  "wordCount": 604,
+  "rescoreCompletedAt": "2026-02-01T16:29:59.206Z"
 }

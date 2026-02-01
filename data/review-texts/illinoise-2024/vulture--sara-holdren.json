@@ -9,56 +9,63 @@
   "showScoreExcerpt": "\"Beyond...its few brief stumbles, Illinoise achieves a holistic transcendence.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/illinoise",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 92,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 85,
+    "score": 92,
     "confidence": "high",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 88,
+      "high": 95
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 88,
+      "music": 95,
+      "performances": 92,
+      "direction": 90
     },
     "keyPhrases": [
       {
-        "quote": "few brief stumbles",
-        "sentiment": "negative",
-        "strength": 2
-      },
-      {
-        "quote": "achieves a holistic transcendence",
+        "quote": "this is the real triumph of the new show... Illinoise achieves a holistic transcendence. For 90 glorious minutes, you do feel.",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "Illinoise achieves a holistic transcendence.",
+        "quote": "The show's extraordinary corps of dancers, musicians, and singers throws open a window to the cosmos",
         "sentiment": "positive",
         "strength": 5
+      },
+      {
+        "quote": "May it leave behind seeds for more theater that dances, literally or figuratively, with such joyful abandon.",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The phrase 'holistic transcendence' is extremely positive and elevated language that suggests a rave-level response, with only minor reservations acknowledged. | GPT-4o-mini: The review indicates strong overall praise with minor caveats, suggesting a clear recommendation.",
+    "reasoning": "The critic uses rapturous language like 'triumph,' 'holistic transcendence,' 'extraordinary,' and '90 glorious minutes,' with only minor reservations ('few brief stumbles'), clearly positioning this as a transformative theatrical experience worthy of emulation.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:20:52.518Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:20:22.566Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4613,
+    "outputTokens": 393,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 85,
@@ -78,7 +85,7 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 85,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.824Z",
+  "rescoreCompletedAt": "2026-02-01T15:20:22.566Z",
   "truncationSignals": [
     "has_footer_junk"
   ],

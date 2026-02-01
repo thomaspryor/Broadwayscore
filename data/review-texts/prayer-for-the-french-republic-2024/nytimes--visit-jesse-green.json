@@ -9,24 +9,24 @@
   "bwwExcerpt": "That this Manhattan Theater Club production, directed by David Cromer, remains mostly riveting is the result of the richness of Harmon’s novelistic detail — and the exceptional skill of the principal actors in realizing it.     Daniel D'Addario, Variety: That’s not to say that “Prayer for the French Republic” should have been about something other than the story it tells. But it doesn’t tell it in a compelling or nuanced manner — despite Harmon having set himself up to succeed with a flashback s",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": 55,
+  "assignedScore": 68,
   "source": "bww-roundup",
   "dtliThumb": "MEH",
   "needsScoring": true,
   "llmScore": {
-    "score": 55,
-    "confidence": "high",
+    "score": 68,
+    "confidence": "medium",
     "range": {
-      "low": 50,
-      "high": 60
+      "low": 62,
+      "high": 74
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 40,
-      "music": null,
-      "performances": 80,
-      "direction": 65
+      "book": 45,
+      "music": 75,
+      "performances": 82,
+      "direction": 78
     },
     "keyPhrases": [
       {
@@ -35,30 +35,37 @@
         "strength": 4
       },
       {
-        "quote": "it doesn't tell it in a compelling or nuanced manner",
+        "quote": "the play, for all its urgency, is already way too much. Running just over three hours... is still not long enough to do justice to the multiple histories it wants to tell",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "remains mostly riveting is the result of the richness of Harmon’s novelistic detail",
-        "sentiment": "positive",
+        "quote": "the arguments have stripped their gears completely, and the play ends in sentimental exhaustion",
+        "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Mixed signals with praise for performances and direction keeping it 'riveting' but criticism of the storytelling as lacking compelling narrative execution. | GPT-4o-mini: The review highlights strong performances but critiques the script's lack of compelling storytelling, leading to a mixed recommendation.",
+    "reasoning": "The critic finds the production 'mostly riveting' with exceptional performances and rich direction, but fundamentally flawed by an overstuffed, unfocused script that exhausts rather than illuminates.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:13:55.488Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:53:35.106Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4140,
+    "outputTokens": 386,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 55,
@@ -78,7 +85,7 @@
   ],
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 55,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.968Z",
+  "rescoreCompletedAt": "2026-02-01T15:53:35.106Z",
   "truncationSignals": [
     "no_ending_punctuation"
   ],
