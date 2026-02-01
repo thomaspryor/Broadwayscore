@@ -11,7 +11,7 @@
   "assignedScore": 82,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
-  "sourceMethod": "archive",
+  "sourceMethod": "brightdata",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -72,20 +72,49 @@
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
-  "archivePath": "data/archives/reviews/harry-potter-2021/variety--marilyn-stasio_2026-01-28.html",
-  "textFetchedAt": "2026-01-28T23:29:14.847Z",
-  "fetchMethod": "archive",
+  "archivePath": "data/archives/reviews/harry-potter-2021/variety--marilyn-stasio_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T21:55:25.096Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Paywall detected"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 3,
   "archiveOrgTimestamp": "20250605223002",
   "archiveOrgUrl": "http://web.archive.org/web/20250605223002/https://variety.com/2018/legit/reviews/harry-potter-and-the-cursed-child-review-broadway-1202757827/",
   "rescoreCompletedAt": "2026-01-29T14:31:51.772Z",
   "contentTier": "complete",
-  "wordCount": 889
+  "wordCount": 889,
+  "isFullReview": false,
+  "textWordCount": 164,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial"
 }
