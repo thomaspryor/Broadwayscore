@@ -32,6 +32,11 @@ on:
         required: false
         default: false
         type: boolean
+      outdated:
+        description: 'Re-score reviews with promptVersion older than current PROMPT_VERSION'
+        required: false
+        default: false
+        type: boolean
       rescore:
         description: 'Re-score all reviews (even already scored ones)'
         required: false
@@ -98,6 +103,11 @@ jobs:
           # Needs rescore (only reviews flagged for rescoring)
           if [ "${{ github.event.inputs.needs_rescore }}" == "true" ]; then
             ARGS="$ARGS --needs-rescore"
+          fi
+
+          # Outdated (rescore reviews with old prompt versions)
+          if [ "${{ github.event.inputs.outdated }}" == "true" ]; then
+            ARGS="$ARGS --outdated"
           fi
 
           # Rescore all (even already scored)
