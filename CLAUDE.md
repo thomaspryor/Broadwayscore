@@ -502,7 +502,7 @@ Documented from the Jan-Feb 2026 review corpus audit (1,825→2,022 reviews). Th
 
 ### Text Quality Issues
 
-**HTML entity pollution:** Variety, EW, and other outlets deliver text with unresolved HTML entities (`&#8220;`, `&#8217;`, `&hellip;`). This confuses LLM scoring — a clearly positive review (Maybe Happy Ending, Variety) scored 50/Mixed because the LLM parsed entity-polluted text. **Fix needed:** Decode HTML entities at write time in both `gather-reviews.js` and `collect-review-texts.js`.
+**HTML entity pollution (FIXED Feb 2026):** Entities decoded at three points: `cleanText()` in text-quality.js (LLM scorer path), `mergeReviews()` in review-normalization.js (incoming text), and `rebuild-show-reviews.js` (rebuild path). All use shared `decodeHtmlEntities()` from text-cleaning.js.
 
 **Outlet-specific junk in fullText:** Generic junk strippers miss outlet-specific patterns:
 - **EW:** Video player code, `<img>` srcsets, "Related Articles" blocks survive into fullText
@@ -511,7 +511,7 @@ Documented from the Jan-Feb 2026 review corpus audit (1,825→2,022 reviews). Th
 - **BroadwayNews:** Full site navigation menu (JavaScript-rendered content not waited for)
 - **Variety:** `\t\n` whitespace blocks, "Related Stories" / "Popular on Variety" interstitials
 
-**No quality classification in `gather-reviews.js`:** The web search step fetches fullText but doesn't run quality classification (contentTier, truncation signals). This means `collect-review-texts.js` quality checks don't apply to web-search-sourced reviews. As of Feb 2026, 172 web-search reviews have `contentTier: none`.
+**Quality classification in `gather-reviews.js` (FIXED Feb 2026):** `gather-reviews.js` now runs `classifyContentTier()` on every review before writing (line 1194). All 2,141 review files have contentTier assigned. Distribution: complete 1,108, excerpt 463, truncated 257, stub 293, other 20.
 
 ### Scoring Issues
 
