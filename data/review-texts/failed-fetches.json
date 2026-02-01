@@ -4060,18 +4060,6 @@
     "timestamp": "2026-01-30T19:53:49.606Z"
   },
   {
-    "reviewId": "cabaret-2024/village-voice--michael-musto.json",
-    "showId": "cabaret-2024",
-    "outlet": "Village Voice",
-    "critic": "Michael Musto",
-    "url": "https://www.villagevoice.com/review-cabaret-at-the-kit-kat-club-works-too-hard-but-finds-its-way/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"©2023 VILLAGE VOICE, LLC. ALL RIGHTS RESERVED\"",
-    "textLength": 9277,
-    "timestamp": "2026-01-30T19:57:21.571Z"
-  },
-  {
     "reviewId": "liberation-2025/timeout--adam-feldman.json",
     "showId": "liberation-2025",
     "outlet": "Time Out New York",
@@ -4898,5 +4886,17 @@
     "garbageReason": "Multiple article boundaries detected (2)",
     "textLength": 5073,
     "timestamp": "2026-02-01T15:14:36.613Z"
+  },
+  {
+    "reviewId": "cabaret-2024/village-voice--michael-musto.json",
+    "showId": "cabaret-2024",
+    "outlet": "Village Voice",
+    "critic": "Michael Musto",
+    "url": "https://www.villagevoice.com/review-cabaret-at-the-kit-kat-club-works-too-hard-but-finds-its-way/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©2023 VILLAGE VOICE, LLC. ALL RIGHTS RESERVED\"",
+    "textLength": 8666,
+    "timestamp": "2026-02-01T15:17:15.860Z"
   }
 ]
