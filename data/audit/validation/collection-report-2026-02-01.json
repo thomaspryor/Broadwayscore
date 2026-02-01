@@ -17,11 +17,11 @@
     "successRate": "10.3%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 5,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 2,
-    "archive": 8
+    "archive": 10
   },
   "statistics": {
     "tier1Attempts": 4,
@@ -38,8 +38,8 @@
     "scrapingBeeCreditsUsed": 10,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -56,7 +56,10 @@
     "stereophonic-2024/nytimes--jesse-green.json",
     "stereophonic-2024/ew--allison-considine.json",
     "stereophonic-2024/guardian--gloria-oladipo.json",
-    "stereophonic-2024/ap--mark-kennedy.json"
+    "stereophonic-2024/ap--mark-kennedy.json",
+    "the-roommate-2024/broadwaynews--brittani-samuel.json",
+    "the-roommate-2024/guardian--adrian-horton.json",
+    "the-roommate-2024/nydailynews--chris-jones.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -187,7 +190,8 @@
       "harry-potter-2021/melindas-malarky--melinda-pressler.json",
       "stereophonic-2024/ew--allison-considine.json",
       "stereophonic-2024/guardian--gloria-oladipo.json",
-      "stereophonic-2024/ap--mark-kennedy.json"
+      "stereophonic-2024/ap--mark-kennedy.json",
+      "the-roommate-2024/guardian--adrian-horton.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
@@ -203,9 +207,17 @@
       "harry-potter-2021/vanityfair--richard-lawson.json",
       "harry-potter-2021/village-voice--michael-feingold.json",
       "mj-2022/nytg--ayanna-prescod.json",
-      "stereophonic-2024/nytimes--jesse-green.json"
+      "stereophonic-2024/nytimes--jesse-green.json",
+      "the-roommate-2024/broadwaynews--brittani-samuel.json",
+      "the-roommate-2024/nydailynews--chris-jones.json"
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "operation-mincemeat-2025/observer--david-cote.json",
+      "oldUrl": "https://observer.com/2025/03/operation-mincemeat-broadway-review/",
+      "newUrl": "https://observer.com/2025/03/review-british-musical-farce-operation-mincemeat-is-anything-but-dead-on-arrival/"
+    }
+  ]
 }
