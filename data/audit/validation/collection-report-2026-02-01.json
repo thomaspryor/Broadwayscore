@@ -1,31 +1,31 @@
 {
-  "runDate": "2026-02-01T14:11:44.893Z",
+  "runDate": "2026-02-01T14:13:59.955Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "illinoise-2024",
+    "showFilter": "marjorie-prime-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 19,
-    "failed": 120,
+    "processed": 20,
+    "failed": 121,
     "skipped": 0,
-    "successRate": "13.7%"
+    "successRate": "14.2%"
   },
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 8,
     "browserbase": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 2,
     "archive": 10
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 0,
+    "tier1Attempts": 5,
+    "tier1Success": 3,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
@@ -33,13 +33,13 @@
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier4Attempts": 4,
-    "tier4Success": 3,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 10,
+    "tier4Success": 2,
+    "totalFailed": 3,
+    "scrapingBeeCreditsUsed": 11,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -60,8 +60,9 @@
     "mother-play-2024/broadwaynews--brittani-samuel.json",
     "mother-play-2024/ew--allison-considine.json",
     "mother-play-2024/guardian--benjamin-lee.json",
-    "illinoise-2024/broadwaynews--brittani-samuel.json",
-    "illinoise-2024/washpost--gloria-oladipo.json"
+    "marjorie-prime-2025/guardian--richard-lawson.json",
+    "marjorie-prime-2025/nydailynews--chris-jones.json",
+    "marjorie-prime-2025/observer--david-cote.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -182,8 +183,9 @@
     "mother-play-2024/timeout--adam-feldman.json",
     "mother-play-2024/wsj--charles-isherwood.json",
     "mother-play-2024/wsj--charles.json",
-    "illinoise-2024/nyt-theater--jonathan-mandell.json",
-    "illinoise-2024/deadline--greg-evans.json"
+    "marjorie-prime-2025/nytimes--elisabeth-vincentelli.json",
+    "marjorie-prime-2025/timeout--adam-feldman.json",
+    "marjorie-prime-2025/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -192,12 +194,12 @@
       "stereophonic-2024/guardian--gloria-oladipo.json",
       "stereophonic-2024/ap--mark-kennedy.json",
       "mother-play-2024/ew--allison-considine.json",
-      "mother-play-2024/guardian--benjamin-lee.json"
+      "mother-play-2024/guardian--benjamin-lee.json",
+      "marjorie-prime-2025/guardian--richard-lawson.json",
+      "marjorie-prime-2025/observer--david-cote.json"
     ],
     "browserbase": [],
-    "scrapingbee": [
-      "illinoise-2024/washpost--gloria-oladipo.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
       "mj-2022/usatoday--david-rooney.json"
@@ -212,9 +214,15 @@
       "mj-2022/nytg--ayanna-prescod.json",
       "stereophonic-2024/nytimes--jesse-green.json",
       "mother-play-2024/broadwaynews--brittani-samuel.json",
-      "illinoise-2024/broadwaynews--brittani-samuel.json"
+      "marjorie-prime-2025/nydailynews--chris-jones.json"
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "marjorie-prime-2025/observer--david-cote.json",
+      "oldUrl": "https://observer.com/2025/12/marjorie-prime-broadway-review/",
+      "newUrl": "https://observer.com/2025/12/review-marjorie-prime-hayes-theater-june-squibb/"
+    }
+  ]
 }
