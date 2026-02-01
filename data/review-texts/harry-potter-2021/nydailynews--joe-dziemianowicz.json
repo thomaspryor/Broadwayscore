@@ -8,57 +8,64 @@
   "fullText": "There are more magic wands than you can shake a stick at in the wildly theatrical and thrilling Broadway spectacle \"Harry Potter and the Cursed Child.\"\n\nTo say that this two-part, nearly six-hour epic that opened Sunday at the Lyric Theatre casts a spell with its fresh takes on beloved characters by J.K. Rowling — and new ones — is a major understatement. Eye-popping enchantment regularly flies off the stage.\n\nCredit the immeasurable wizardry of director John Tiffany (\"Once\"), who's a true master at creating stunning stage magic. He has outdone himself in this epic written by Jack Thorne based on an original story by himself, Tiffany and Rowling. You don't have to have read the seven books or seen the eight movies in the series about the boy wizard to revel in this Broadway party.\n\nFull disclosure: I haven't, but I crammed on the cheat sheet in the Playbill. Yes, there was a moment when Potterheads let out a collective gasp at the mention of a character's name that went over my head. But that didn't spoil my enjoyment for the twisty tale that starts where the book series ended.\n\nEnglish actor Jamie Parker, like the other principals in the cast, reprises his role from the play's earlier run in London. He anchors the production as Harry Potter, who's 37 and still has the jagged lightning-bolt scar on his forehead. He and wife Ginny (Poppy Miller) have kids going off to wizard school at Hogwarts. How'd-they-do-that marveling begins instantly as students go from street clothes to capes in a twirl. Jamie Harrison is credited for the jaw-dropping illusions that extend far beyond Katrina Lindsay's costumes.\n\nThe plot revolves around father-son drama between Harry and lonely son Albus (Sam Clemmett). The kid feels underappreciated and overshadowed by his famous dad and seeks solace, of all places, with Scorpius Malfoy (Anthony Boyle, wonderfully odd), the troubled son of Harry's bitter enemy Draco (Alex Price).\n\nHarry, meanwhile, depends on his longtime besties Hermione Granger (Noma Dumezweni, who nails the voice of authority) and goofy Ron Weasley (an appealing Paul Thornley), who are married with a daughter. Teenaged rebellion leads to risk-taking and, eventually, reconciliations — but not before some time travel and hairy battles between good and evil. Wicked Voldemort still casts a dark pall.\n\nAs with any story, it's all in the telling. What's so wondrous is how low-tech stagecraft brings such high-definition delight as the action unfolds on Christine Jones' arch-filled set bathed in glow and gloom by lighting designer Neil Austin. Suitcases turn into train cars; bookcases come alive; mobile staircases whirl as if in a living Escher print. Music by Imogen Heap and movement by Steven Hoggett create their own pinch-me moments.\n\nEventually, the ending gets a bit shaggy and Harry and Ginny's other kids simply go missing in action. But that's nitpicking. The show gleams like a bolt of lightning — not one that leaves marks on your forehead, just vivid memories in your mind.",
   "bwwExcerpt": "As with any story, it's all in the telling. What's so wondrous is how low-tech stagecraft brings such high-definition delight as the action unfolds on the Christine Jones' arch-filled set filled with glow and gloom by Neil Austin. Suitcases turn into train cars; bookcases come alive; mobile staircases whirl as if in a living Escher print. Music by Imogen Heap and movement by Steven Hoggett create their own pinch-me moments.",
   "originalScore": null,
-  "assignedScore": 87,
+  "assignedScore": 92,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "sourceMethod": "archive",
   "scoreSource": null,
   "llmScore": {
-    "score": 87,
-    "confidence": "medium",
+    "score": 92,
+    "confidence": "high",
     "range": {
-      "low": 78.5,
-      "high": 95.5
+      "low": 88,
+      "high": 95
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 85,
+      "book": 85,
+      "music": null,
       "performances": null,
-      "direction": 89
+      "direction": 95
     },
     "keyPhrases": [
       {
-        "quote": "What's so wondrous is how low-tech stagecraft brings such high-definition delight",
+        "quote": "wildly theatrical and thrilling Broadway spectacle",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "Music by Imogen Heap and movement by Steven Hoggett create their own pinch-me moments",
+        "quote": "casts a spell with its fresh takes on beloved characters...is a major understatement",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "mobile staircases whirl as if in a living Escher print",
+        "quote": "He has outdone himself in this epic",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Enthusiastic praise for technical elements and stagecraft with vivid, admiring language ('wondrous', 'high-definition delight', 'pinch-me moments') suggests strong positive recommendation despite being a partial excerpt. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production's design and creativity, indicating a strong recommendation to see the show.",
+    "reasoning": "Unqualified enthusiasm throughout with superlatives like 'thrilling spectacle,' 'major understatement,' and 'outdone himself,' plus explicit accessibility statement that broadens recommendation.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:26:38.339Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:08:02.884Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2491,
+    "outputTokens": 335,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 83,
@@ -72,7 +79,7 @@
   "sources": [
     "bww-roundup"
   ],
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 87,
   "archivePath": "data/archives/reviews/harry-potter-2021/nydailynews--joe-dziemianowicz_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:32:05.669Z",
@@ -87,7 +94,7 @@
   "fetchTier": 4,
   "archiveOrgTimestamp": "20180423135208",
   "archiveOrgUrl": "http://web.archive.org/web/20180423135208/http://beta.nydailynews.com/entertainment/theater-arts/cursed-child-review-wildly-harry-potter-broadway-article-1.3944034",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.765Z",
+  "rescoreCompletedAt": "2026-02-01T15:08:02.884Z",
   "contentTier": "complete",
   "wordCount": 498
 }
