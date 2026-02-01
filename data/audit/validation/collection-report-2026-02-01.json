@@ -1,45 +1,45 @@
 {
-  "runDate": "2026-02-01T15:09:47.510Z",
+  "runDate": "2026-02-01T15:12:48.094Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "the-cottage-2023",
+    "showFilter": "",
     "aggressive": false,
     "scrapingBeeEnabled": true,
-    "brightDataEnabled": true,
+    "brightDataEnabled": false,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 43,
-    "failed": 162,
+    "processed": 54,
+    "failed": 169,
     "skipped": 0,
-    "successRate": "21.0%"
+    "successRate": "24.2%"
   },
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 9,
     "browserbase": 0,
-    "scrapingbee": 5,
+    "scrapingbee": 7,
     "brightdata": 2,
-    "archive": 38
+    "archive": 43
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
-    "tier1_5Attempts": 0,
+    "tier1Attempts": 14,
+    "tier1Success": 6,
+    "tier1_5Attempts": 5,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
+    "tier2Attempts": 8,
+    "tier2Success": 5,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 2,
-    "tier4Success": 2,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 1,
+    "tier4Attempts": 43,
+    "tier4Success": 37,
+    "totalFailed": 18,
+    "scrapingBeeCreditsUsed": 80,
+    "browserbaseSessionsUsed": 5,
+    "browserbaseMinutesUsed": 1,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -86,7 +86,17 @@
     "the-lion-king-1997/vulture--john-simon.json",
     "the-outsiders/new-york-magazinevulture-sara-holdren--sara-holdren.json",
     "the-outsiders/variety-naveen-kumar--naveen-kumar.json",
-    "oedipus-2025/washpost--naveen-kumar.json"
+    "the-outsiders-2024/variety--naveen-kumar.json",
+    "boop/daily-beast-tim-teeman--tim-teeman.json",
+    "boop/new-york-post-johnny-oleksinski--johnny-oleksinski.json",
+    "boop/new-york-stage-review-bob-verini--bob-verini.json",
+    "boop/new-york-stage-review-frank-scheck--frank-scheck.json",
+    "boop/new-york-theatre-guide-allison-considine--allison-considine.json",
+    "buena-vista-social-club/new-york-stage-review-sandy-macdonald--unknown.json",
+    "buena-vista-social-club/new-york-theatre-guide-gillian-russo--gillian-russo.json",
+    "buena-vista-social-club/observer-david-cote--david-cote.json",
+    "buena-vista-social-club/the-daily-beast-tim-teeman--tim-teeman.json",
+    "buena-vista-social-club/the-wrap-robert-hofler--robert-hofler.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -249,8 +259,15 @@
     "stereophonic/variety-frank-rizzo--frank-rizzo.json",
     "suffs/vulture-sara-holdren--sara-holdren.json",
     "the-great-gatsby/new-york-magazinevulture-sara-holdren--unknown.json",
-    "the-cottage-2023/observer--rex-reed.json",
-    "the-cottage-2023/wsj--charles-isherwood.json"
+    "water-for-elephants/new-york-magazinevulture-sara-holdren--sara-holdren.json",
+    "boop/new-york-theater-jonathan-mandell--jonathan-mandell.json",
+    "boop/new-york-times-jesse-green--jesse-green.json",
+    "boop/the-wrap-robert-hofler--robert-hofler.json",
+    "boop/time-out-new-york-adam-feldman--adam-feldman.json",
+    "boop/washington-post-naveen-kumar--naveen-kumar.json",
+    "buena-vista-social-club/new-york-stage-review-frank-scheck--unknown.json",
+    "buena-vista-social-club/the-new-york-sun-elysa-gardner--elysa-gardner.json",
+    "buena-vista-social-club/the-new-york-times-jesse-green--jesse-green.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -259,7 +276,10 @@
       "appropriate-2023/ew--allison-considine.json",
       "appropriate-2023/observer--david-cote.json",
       "back-to-the-future-2023/ew--dalton-ross.json",
-      "book-of-mormon-2011/timeout--david-cote.json"
+      "book-of-mormon-2011/timeout--david-cote.json",
+      "boop/new-york-theatre-guide-allison-considine--allison-considine.json",
+      "buena-vista-social-club/new-york-theatre-guide-gillian-russo--gillian-russo.json",
+      "buena-vista-social-club/observer-david-cote--david-cote.json"
     ],
     "browserbase": [],
     "scrapingbee": [
@@ -267,7 +287,9 @@
       "here-lies-love-2023/nytimes--ben-brantley.json",
       "book-of-mormon-2011/newsday--linda-winer.json",
       "stereophonic/variety-frank-rizzo--frank-rizzo.json",
-      "oedipus-2025/washpost--naveen-kumar.json"
+      "the-great-gatsby/new-york-magazinevulture-sara-holdren--unknown.json",
+      "buena-vista-social-club/the-daily-beast-tim-teeman--tim-teeman.json",
+      "buena-vista-social-club/the-wrap-robert-hofler--robert-hofler.json"
     ],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
@@ -311,9 +333,29 @@
       "the-lion-king-1997/vulture--john-simon.json",
       "the-outsiders/new-york-magazinevulture-sara-holdren--sara-holdren.json",
       "the-outsiders/variety-naveen-kumar--naveen-kumar.json",
-      "back-to-the-future-2023/nysr--elysa-gardner.json"
+      "the-outsiders-2024/variety--naveen-kumar.json",
+      "boop/daily-beast-tim-teeman--tim-teeman.json",
+      "boop/new-york-post-johnny-oleksinski--johnny-oleksinski.json",
+      "boop/new-york-stage-review-bob-verini--bob-verini.json",
+      "boop/new-york-stage-review-frank-scheck--frank-scheck.json",
+      "buena-vista-social-club/new-york-stage-review-sandy-macdonald--unknown.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Hollywood Reporter (Demetrios Matheou)": {
+      "count": 1,
+      "domain": "hollywoodreporter.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "New York Magazine/Vulture (Sara Holdren)": {
+      "count": 1,
+      "domain": "vulture.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
