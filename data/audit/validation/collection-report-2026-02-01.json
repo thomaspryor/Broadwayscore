@@ -1,41 +1,41 @@
 {
-  "runDate": "2026-02-01T03:26:17.190Z",
+  "runDate": "2026-02-01T03:34:40.590Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "harry-potter-2021",
+    "showFilter": "the-whos-tommy-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 8,
-    "failed": 76,
+    "processed": 16,
+    "failed": 82,
     "skipped": 0,
-    "successRate": "9.5%"
+    "successRate": "16.3%"
   },
   "tierBreakdown": {
     "playwright": 1,
     "browserbase": 0,
-    "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 6
+    "scrapingbee": 2,
+    "brightdata": 2,
+    "archive": 11
   },
   "statistics": {
-    "tier1Attempts": 20,
-    "tier1Success": 2,
+    "tier1Attempts": 5,
+    "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 18,
-    "tier2Success": 1,
-    "tier3Attempts": 17,
-    "tier3Success": 0,
-    "tier4Attempts": 44,
-    "tier4Success": 2,
-    "totalFailed": 22,
-    "scrapingBeeCreditsUsed": 80,
+    "tier2Attempts": 5,
+    "tier2Success": 2,
+    "tier3Attempts": 2,
+    "tier3Success": 1,
+    "tier4Attempts": 14,
+    "tier4Success": 9,
+    "totalFailed": 6,
+    "scrapingBeeCreditsUsed": 30,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0
   },
@@ -47,7 +47,15 @@
     "harry-potter-2021/melindas-malarky--melinda-pressler.json",
     "harry-potter-2021/the-times--ann-treneman.json",
     "harry-potter-2021/vanityfair--richard-lawson.json",
-    "harry-potter-2021/village-voice--michael-feingold.json"
+    "harry-potter-2021/village-voice--michael-feingold.json",
+    "the-whos-tommy-2024/nytimes--jesse-green.json",
+    "the-whos-tommy-2024/nytimes--jesse.json",
+    "the-whos-tommy-2024/vulture--sara-holdren.json",
+    "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
+    "the-whos-tommy-2024/ew--emlyn.json",
+    "the-whos-tommy-2024/cititour--brian-scott-lipton.json",
+    "the-whos-tommy-2024/showbiz411--roger-friedman.json",
+    "the-whos-tommy-2024/washpost--elisabeth-vincentelli.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -125,16 +133,26 @@
     "harry-potter-2021/wnyc--jennifer-vanasco.json",
     "harry-potter-2021/wolf-entertainment-guide--william-wolf.json",
     "harry-potter-2021/woman-around-town--alix-cohen.json",
-    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
+    "harry-potter-2021/zeal-nyc--chris-caggiano.json",
+    "the-whos-tommy-2024/variety--frank-rizzo.json",
+    "the-whos-tommy-2024/deadline--greg-evans.json",
+    "the-whos-tommy-2024/theatermania--david-gordon.json",
+    "the-whos-tommy-2024/timeout--adam-feldman.json",
+    "the-whos-tommy-2024/wsj--charles-isherwood.json",
+    "the-whos-tommy-2024/wsj--charles.json"
   ],
   "tierDetails": {
     "playwright": [
       "harry-potter-2021/melindas-malarky--melinda-pressler.json"
     ],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "the-whos-tommy-2024/ew--emlyn.json",
+      "the-whos-tommy-2024/cititour--brian-scott-lipton.json"
+    ],
     "brightdata": [
-      "harry-potter-2021/cititour--brian-scott-lipton.json"
+      "harry-potter-2021/cititour--brian-scott-lipton.json",
+      "the-whos-tommy-2024/washpost--elisabeth-vincentelli.json"
     ],
     "archive": [
       "harry-potter-2021/hollywood-reporter--david-rooney.json",
@@ -142,128 +160,28 @@
       "harry-potter-2021/broadwayworld--michael-dale.json",
       "harry-potter-2021/the-times--ann-treneman.json",
       "harry-potter-2021/vanityfair--richard-lawson.json",
-      "harry-potter-2021/village-voice--michael-feingold.json"
+      "harry-potter-2021/village-voice--michael-feingold.json",
+      "the-whos-tommy-2024/nytimes--jesse-green.json",
+      "the-whos-tommy-2024/nytimes--jesse.json",
+      "the-whos-tommy-2024/vulture--sara-holdren.json",
+      "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
+      "the-whos-tommy-2024/showbiz411--roger-friedman.json"
     ]
   },
   "failuresByOutlet": {
-    "Broadway News": {
+    "Variety": {
       "count": 1,
-      "domain": "broadwaynews.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Deadline": {
-      "count": 1,
-      "domain": "deadline.com",
+      "domain": "variety.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
     },
-    "The Guardian": {
+    "TheaterMania": {
       "count": 1,
-      "domain": "theguardian.com",
+      "domain": "theatermania.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Broadway Blog": {
-      "count": 1,
-      "domain": "thebroadwayblog.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "CurtainUp": {
-      "count": 1,
-      "domain": "curtainup.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Exeunt Magazine": {
-      "count": 1,
-      "domain": "exeuntmagazine.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Front Row Center": {
-      "count": 1,
-      "domain": "frontrowcenter.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Front Mezz Junkies": {
-      "count": 1,
-      "domain": "frontmezzjunkies.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Medium": {
-      "count": 1,
-      "domain": "medium.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "NY1": {
-      "count": 1,
-      "domain": "ny1.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Theater Pizzazz": {
-      "count": 1,
-      "domain": "theaterpizzazz.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Troy Record": {
-      "count": 1,
-      "domain": "troyrecord.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Washington Post": {
-      "count": 1,
-      "domain": "washingtonpost.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "WNYC": {
-      "count": 1,
-      "domain": "wnyc.org",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Wolf Entertainment Guide": {
-      "count": 1,
-      "domain": "wolfentertainmentguide.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Woman Around Town": {
-      "count": 1,
-      "domain": "womanaroundtown.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Zeal NYC": {
-      "count": 1,
-      "domain": "zealnyc.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
+      "isKnownBlocked": true
     }
   }
 }
