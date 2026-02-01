@@ -1,45 +1,45 @@
 {
-  "runDate": "2026-02-01T14:49:08.073Z",
+  "runDate": "2026-02-01T15:05:19.924Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "",
+    "showFilter": "the-shark-is-broken-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
-    "brightDataEnabled": false,
+    "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 24,
-    "failed": 149,
+    "processed": 44,
+    "failed": 164,
     "skipped": 0,
-    "successRate": "13.9%"
+    "successRate": "21.2%"
   },
   "tierBreakdown": {
     "playwright": 6,
     "browserbase": 0,
-    "scrapingbee": 3,
+    "scrapingbee": 4,
     "brightdata": 2,
-    "archive": 18
+    "archive": 38
   },
   "statistics": {
-    "tier1Attempts": 52,
-    "tier1Success": 12,
-    "tier1_5Attempts": 5,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 26,
-    "tier2Success": 9,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 73,
-    "tier4Success": 16,
-    "totalFailed": 32,
-    "scrapingBeeCreditsUsed": 151,
-    "browserbaseSessionsUsed": 5,
-    "browserbaseMinutesUsed": 0.7,
-    "urlDiscoveryAttempts": 21,
-    "urlDiscoverySuccess": 17,
+    "tier4Attempts": 5,
+    "tier4Success": 5,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -66,7 +66,27 @@
     "appropriate-2023/observer--david-cote.json",
     "back-to-the-future-2023/ew--dalton-ross.json",
     "book-of-mormon-2011/newsday--linda-winer.json",
-    "book-of-mormon-2011/timeout--david-cote.json"
+    "book-of-mormon-2011/timeout--david-cote.json",
+    "boop/variety-frank-rizzo--frank-rizzo.json",
+    "bug-2026/variety-aramide-tinubu--aramide-tinubu.json",
+    "cabaret-2024/variety-david-benedict--david-benedict.json",
+    "hells-kitchen/variety-aramide-tinubu--aramide-tinubu.json",
+    "liberation/new-york-magazine-vulture-jackson-mchenry--unknown.json",
+    "mamma-mia/new-york-magazinevulture-jackson-mchenry--unknown.json",
+    "mamma-mia/variety-owen-gleiberman--owen-gleiberman.json",
+    "marjorie-prime/new-york-magazinevulture-sara-holdren--sara-holdren.json",
+    "oedipus/new-york-magazine-vulture-sara-holdren--sara-holdren.json",
+    "oh-mary/variety-christian-lewis--christian-lewis.json",
+    "operation-mincemeat/new-york-magazine-vulture-sara-holdren--sara-holdren.json",
+    "queen-of-versailles/variety-aramide-tinubu--aramide-tinubu.json",
+    "stereophonic/vulture-sara-holdren--sara-holdren.json",
+    "stranger-things/variety-david-benedict--david-benedict.json",
+    "suffs/variety-frank-rizzo--unknown.json",
+    "the-great-gatsby/variety-christian-lewis--christian-lewis.json",
+    "the-lion-king-1997/vulture--john-simon.json",
+    "the-outsiders/new-york-magazinevulture-sara-holdren--sara-holdren.json",
+    "the-outsiders/variety-naveen-kumar--naveen-kumar.json",
+    "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -217,7 +237,22 @@
     "boop-2025/ew--bob-verini.json",
     "boop-2025/timeout--adam-feldman.json",
     "buena-vista-social-club-2025/timeout--adam-feldman.json",
-    "bug-2026/deadline--greg-evans.json"
+    "bug-2026/deadline--greg-evans.json",
+    "cabaret-2024/the-hollywood-reporter-demetrios-matheou--demetrios-matheou.json",
+    "death-becomes-her/variety-steven-oxman--steven-oxman.json",
+    "hells-kitchen/vulture-jackson-mchenry--unknown.json",
+    "oh-mary/hollywood-reporter-david-rooney--david-rooney.json",
+    "oh-mary/new-york-magazinevulture-sara-holdren--sara-holdren.json",
+    "operation-mincemeat/variety-frank-rizzo--frank-rizzo.json",
+    "queen-of-versailles/new-york-magazine-vulture-sara-holdren--sara-holdren.json",
+    "stereophonic/the-hollywood-reporter-david-rooney--david-rooney.json",
+    "stereophonic/variety-frank-rizzo--frank-rizzo.json",
+    "suffs/vulture-sara-holdren--sara-holdren.json",
+    "the-great-gatsby/new-york-magazinevulture-sara-holdren--unknown.json",
+    "the-shark-is-broken-2023/deadline--greg-evans.json",
+    "the-shark-is-broken-2023/timeout--adam-feldman.json",
+    "the-shark-is-broken-2023/wsj--charles-isherwood.json",
+    "the-shark-is-broken-2023/wsj--charles.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -232,7 +267,8 @@
     "scrapingbee": [
       "grey-house-2023/newyorker--dan-stahl.json",
       "here-lies-love-2023/nytimes--ben-brantley.json",
-      "book-of-mormon-2011/newsday--linda-winer.json"
+      "book-of-mormon-2011/newsday--linda-winer.json",
+      "stereophonic/variety-frank-rizzo--frank-rizzo.json"
     ],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
@@ -256,138 +292,29 @@
       "the-great-gatsby-2024/variety--aramide-tinubu.json",
       "the-great-gatsby-2024/vulture--helen-shaw.json",
       "the-outsiders-2024/vulture--jackson-mchenry.json",
-      "wicked-2003/nytimes--ben-brantley.json"
+      "wicked-2003/nytimes--ben-brantley.json",
+      "boop/variety-frank-rizzo--frank-rizzo.json",
+      "bug-2026/variety-aramide-tinubu--aramide-tinubu.json",
+      "cabaret-2024/variety-david-benedict--david-benedict.json",
+      "hells-kitchen/variety-aramide-tinubu--aramide-tinubu.json",
+      "liberation/new-york-magazine-vulture-jackson-mchenry--unknown.json",
+      "mamma-mia/new-york-magazinevulture-jackson-mchenry--unknown.json",
+      "mamma-mia/variety-owen-gleiberman--owen-gleiberman.json",
+      "marjorie-prime/new-york-magazinevulture-sara-holdren--sara-holdren.json",
+      "oedipus/new-york-magazine-vulture-sara-holdren--sara-holdren.json",
+      "oh-mary/variety-christian-lewis--christian-lewis.json",
+      "operation-mincemeat/new-york-magazine-vulture-sara-holdren--sara-holdren.json",
+      "queen-of-versailles/variety-aramide-tinubu--aramide-tinubu.json",
+      "stereophonic/vulture-sara-holdren--sara-holdren.json",
+      "stranger-things/variety-david-benedict--david-benedict.json",
+      "suffs/variety-frank-rizzo--unknown.json",
+      "the-great-gatsby/variety-christian-lewis--christian-lewis.json",
+      "the-lion-king-1997/vulture--john-simon.json",
+      "the-outsiders/new-york-magazinevulture-sara-holdren--sara-holdren.json",
+      "the-outsiders/variety-naveen-kumar--naveen-kumar.json",
+      "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json"
     ]
   },
-  "failuresByOutlet": {
-    "The New York Times": {
-      "count": 2,
-      "domain": "nytimes.com",
-      "hasCredentials": false,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "The Hollywood Reporter": {
-      "count": 5,
-      "domain": "hollywoodreporter.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Variety": {
-      "count": 1,
-      "domain": "variety.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "New York Daily News": {
-      "count": 2,
-      "domain": "nydailynews.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "TheWrap": {
-      "count": 1,
-      "domain": "thewrap.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "The Wall Street Journal": {
-      "count": 2,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    }
-  },
-  "urlDiscoveries": [
-    {
-      "reviewId": "back-to-the-future-2023/hollywood-reporter--frank-scheck.json",
-      "oldUrl": "https://www.hollywoodreporter.com/movies/movie-reviews/back-to-the-future-the-musical-broadway-review-1235551654/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/back-to-the-future-the-musical-theater-review-a-fun-faithful-stage-adaptation-hits-broadway-1235548700/"
-    },
-    {
-      "reviewId": "book-of-mormon-2011/vulture--jesse-green.json",
-      "oldUrl": "https://www.vulture.com/2011/03/book-of-mormon-broadway-review.html",
-      "newUrl": "https://www.vulture.com/2019/12/re-reviewing-the-book-of-mormon-and-hamilton-in-2019.html"
-    },
-    {
-      "reviewId": "hells-kitchen-2024/nytimes--jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2024/04/21/theater/hells-kitchen-review.html",
-      "newUrl": "https://www.nytimes.com/2024/04/20/theater/hells-kitchen-review-alicia-keys.html"
-    },
-    {
-      "reviewId": "maybe-happy-ending-2024/variety--peter-marks.json",
-      "oldUrl": "https://variety.com/2024/legit/reviews/maybe-happy-ending-broadway-review-1236223542/",
-      "newUrl": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-broadway-musical-1236207518/"
-    },
-    {
-      "reviewId": "maybe-happy-ending-2024/vulture--jackson-mchenry.json",
-      "oldUrl": "https://www.vulture.com/article/maybe-happy-ending-broadway-review.html",
-      "newUrl": "https://www.vulture.com/article/theater-review-maybe-happy-ending.html"
-    },
-    {
-      "reviewId": "oh-mary-2024/hollywood-reporter--angie-han.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-broadway-review-1235943706/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/"
-    },
-    {
-      "reviewId": "oh-mary-2024/variety--aramide-tinubu.json",
-      "oldUrl": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236069342/",
-      "newUrl": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/"
-    },
-    {
-      "reviewId": "oh-mary-2024/vulture--helen-shaw.json",
-      "oldUrl": "https://www.vulture.com/article/oh-mary-broadway-review.html",
-      "newUrl": "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-transfer.html"
-    },
-    {
-      "reviewId": "our-town-2024/nytimes--pulitzer-prize-jesse-green.json",
-      "oldUrl": "https://www.nytimes.com/2024/10/10/theater/our-town-review-broadway.html",
-      "newUrl": "https://www.nytimes.com/2024/10/10/theater/our-town-review-jim-parsons.html"
-    },
-    {
-      "reviewId": "the-great-gatsby-2024/variety--aramide-tinubu.json",
-      "oldUrl": "https://variety.com/2024/legit/reviews/the-great-gatsby-review-broadway-musical-1235964203/",
-      "newUrl": "https://variety.com/2024/legit/reviews/the-great-gatsby-review-broadway-musical-jeremy-jordan-1235981841/"
-    },
-    {
-      "reviewId": "the-great-gatsby-2024/vulture--helen-shaw.json",
-      "oldUrl": "https://www.vulture.com/article/the-great-gatsby-musical-broadway-review.html",
-      "newUrl": "https://www.vulture.com/article/theater-review-great-gatsby-musical-broadway.html"
-    },
-    {
-      "reviewId": "the-outsiders-2024/vulture--jackson-mchenry.json",
-      "oldUrl": "https://www.vulture.com/article/the-outsiders-broadway-review.html",
-      "newUrl": "https://www.vulture.com/article/theater-review-the-outsiders-broadway-musical.html"
-    },
-    {
-      "reviewId": "wicked-2003/nytimes--ben-brantley.json",
-      "oldUrl": "https://www.nytimes.com/2003/10/31/theater/theater-review-there-s-a-girl-in-green-and-ooh-what-a-ceiling.html",
-      "newUrl": "https://www.nytimes.com/2003/09/26/movies/theater-review-a-feisty-feast-of-wicked-wit.html"
-    },
-    {
-      "reviewId": "and-juliet-2022/ew--leah-greenblatt.json",
-      "oldUrl": "https://ew.com/theater/theater-reviews/and-juliet-broadway-musical-review/",
-      "newUrl": "https://ew.com/theater/theater-reviews/and-juliet-broadway-review-max-martin-musical/?srsltid=AfmBOoo1fLd94KpF17fFAtRLHF-OrFNks8-MW9etauVJZiDVUAT86cPS"
-    },
-    {
-      "reviewId": "back-to-the-future-2023/ew--dalton-ross.json",
-      "oldUrl": "https://ew.com/theater/review/back-to-the-future-broadway-musical/",
-      "newUrl": "https://ew.com/theater/theater-reviews/back-to-the-future-review-musical-broadway/?srsltid=AfmBOopBpia8eBAdfcVQ5ehfC7fRFccBG8EJ16RlfroyPtFxKnC2mAr1"
-    },
-    {
-      "reviewId": "back-to-the-future-2023/observer--david-cote.json",
-      "oldUrl": "https://observer.com/2023/08/back-to-the-future-the-musical-review-broadway/",
-      "newUrl": "https://observer.com/2023/08/back-to-the-future-the-musical-review-the-delorean-flies-the-songs-sink/"
-    },
-    {
-      "reviewId": "book-of-mormon-2011/newsday--linda-winer.json",
-      "oldUrl": "https://www.newsday.com/entertainment/theater/book-of-mormon-broadway-review-2011/",
-      "newUrl": "https://www.newsday.com/news/new-york/theater-review-the-book-of-mormon-4-stars-p79294"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }
