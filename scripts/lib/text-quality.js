@@ -450,7 +450,9 @@ function getBestTextForScoring(review) {
 function cleanText(text) {
   if (!text) return text;
 
-  let cleaned = text;
+  // Decode HTML entities first (&#8217; → ', &#8220; → ", etc.)
+  const { decodeHtmlEntities } = require('./text-cleaning');
+  let cleaned = decodeHtmlEntities(text);
 
   // === LEADING JUNK ===
 

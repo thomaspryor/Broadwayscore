@@ -2297,8 +2297,22 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
     }
   }
 
-  // 1B. Byline cross-check
-  const bylineResult = extractByline(cleanedText);
+  // 1B. Byline cross-check (exclude cast/creative names to avoid false positives)
+  const showIdForByline = data.showId || review.showId || '';
+  let bylineExcludeNames = [];
+  try {
+    if (!_showsJsonCache) {
+      _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+    }
+    const showEntry = _showsJsonCache.shows.find(s => s.id === showIdForByline);
+    if (showEntry) {
+      bylineExcludeNames = [
+        ...(showEntry.cast || []).map(c => c.name),
+        ...(showEntry.creativeTeam || []).map(c => c.name)
+      ];
+    }
+  } catch (e) { /* shows.json unavailable */ }
+  const bylineResult = extractByline(cleanedText, { excludeNames: bylineExcludeNames });
   if (bylineResult.found) {
     const expectedCritic = data.criticName || review.critic || '';
     if (expectedCritic && !matchesCritic(bylineResult.name, expectedCritic)) {

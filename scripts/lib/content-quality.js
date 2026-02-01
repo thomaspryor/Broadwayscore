@@ -1064,9 +1064,50 @@ const BYLINE_PATTERNS = [
   /^(?:By|BY)\s+([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+(?:-[A-Z][a-z]+)?)/m,
   // "— Name" or "– Name" (em dash attribution)
   /(?:—|–|--)\s*([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+(?:-[A-Z][a-z]+)?)\s*$/m,
-  // "Written by Name" or "Reviewed by Name"
-  /(?:Written|Reviewed|Report(?:ed)?)\s+by\s+([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+(?:-[A-Z][a-z]+)?)/i,
+  // "Reviewed by Name" or "Reported by Name" (NOT "Written by" — always means playwright in theater reviews)
+  /(?:Reviewed|Report(?:ed)?)\s+by\s+([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+(?:-[A-Z][a-z]+)?)/i,
 ];
+
+// Words that indicate a byline match is not actually a person's name
+const NON_NAME_WORDS = new Set([
+  'prize', 'weekly', 'crown', 'theatre', 'theater', 'broadway',
+  'award', 'playwright', 'starring', 'actual', 'norwegian',
+  'american', 'entertainment', 'daily', 'musical', 'production',
+]);
+
+/**
+ * Check if a matched "name" contains a non-name word (e.g., "Pulitzer Prize", "Entertainment Weekly")
+ */
+function isNonNameWord(name) {
+  const parts = name.toLowerCase().split(/\s+/);
+  return parts.some(p => NON_NAME_WORDS.has(p));
+}
+
+/**
+ * Check if a matched name is in the exclusion list (cast/creative team members).
+ * Uses full last-name match + 3-char first-name prefix matching.
+ */
+function isExcludedName(matchedName, excludeNames) {
+  if (!excludeNames || excludeNames.length === 0) return false;
+  const matched = normalizeName(matchedName);
+  if (!matched) return false;
+  const mParts = matched.split(' ').filter(p => p.length > 0);
+  return excludeNames.some(name => {
+    const excluded = normalizeName(name);
+    if (!excluded) return false;
+    if (matched === excluded) return true;
+    const eParts = excluded.split(' ').filter(p => p.length > 0);
+    if (mParts.length < 2 || eParts.length < 2) return false;
+    const mLast = mParts[mParts.length - 1];
+    const eLast = eParts[eParts.length - 1];
+    if (mLast !== eLast) return false;
+    const mFirst = mParts[0];
+    const eFirst = eParts[0];
+    const minLen = Math.min(mFirst.length, eFirst.length);
+    if (minLen >= 3 && mFirst.substring(0, 3) === eFirst.substring(0, 3)) return true;
+    return false;
+  });
+}
 
 /**
  * Extract byline (author name) from review text.
@@ -1075,11 +1116,12 @@ const BYLINE_PATTERNS = [
  * @param {string} text - Review text
  * @returns {{ found: boolean, name: string | null, position: 'start' | 'end' | null }}
  */
-function extractByline(text) {
+function extractByline(text, options = {}) {
   if (!text || text.length < 50) {
     return { found: false, name: null, position: null };
   }
 
+  const { excludeNames } = options;
   const startChunk = text.substring(0, 500);
   const endChunk = text.length > 200 ? text.substring(text.length - 200) : text;
 
@@ -1087,7 +1129,10 @@ function extractByline(text) {
   for (const pattern of BYLINE_PATTERNS) {
     const match = startChunk.match(pattern);
     if (match && match[1]) {
-      return { found: true, name: match[1].trim(), position: 'start' };
+      const name = match[1].trim();
+      if (isNonNameWord(name)) continue;
+      if (isExcludedName(name, excludeNames)) continue;
+      return { found: true, name, position: 'start' };
     }
   }
 
@@ -1095,7 +1140,10 @@ function extractByline(text) {
   for (const pattern of BYLINE_PATTERNS) {
     const match = endChunk.match(pattern);
     if (match && match[1]) {
-      return { found: true, name: match[1].trim(), position: 'end' };
+      const name = match[1].trim();
+      if (isNonNameWord(name)) continue;
+      if (isExcludedName(name, excludeNames)) continue;
+      return { found: true, name, position: 'end' };
     }
   }
 

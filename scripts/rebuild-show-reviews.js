@@ -7,6 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 const { getOutletDisplayName } = require('./lib/review-normalization');
+const { decodeHtmlEntities } = require('./lib/text-cleaning');
 
 const SHOWS_TO_FIX = ['queen-versailles-2025', 'stereophonic-2024'];
 
@@ -19,37 +20,6 @@ const LETTER_TO_SCORE = {
   'D+': 45, 'D': 36, 'D-': 28,
   'F': 15
 };
-
-/**
- * Decode ALL HTML entities properly
- */
-function decodeHtmlEntities(text) {
-  if (!text) return text;
-  return text
-    // Numeric entities
-    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(parseInt(code, 10)))
-    .replace(/&#x([0-9a-fA-F]+);/g, (_, code) => String.fromCharCode(parseInt(code, 16)))
-    // Named entities - common ones
-    .replace(/&quot;/g, '"')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&rsquo;|&lsquo;/g, "'")
-    .replace(/&rdquo;|&ldquo;/g, '"')
-    .replace(/&mdash;/g, '—')
-    .replace(/&ndash;/g, '–')
-    .replace(/&hellip;/g, '...')
-    .replace(/&auml;/g, 'ä')
-    .replace(/&ouml;/g, 'ö')
-    .replace(/&uuml;/g, 'ü')
-    .replace(/&apos;/g, "'")
-    .replace(/&copy;/g, '©')
-    .replace(/&reg;/g, '®')
-    .replace(/&trade;/g, '™')
-    .replace(/&euro;/g, '€')
-    .replace(/&pound;/g, '£');
-}
 
 /**
  * Detect if text looks like website navigation/junk rather than review content
