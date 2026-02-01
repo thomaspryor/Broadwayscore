@@ -16,31 +16,13 @@
   "dtliThumb": null,
   "needsScoring": true,
   "textWordCount": 569,
-  "archivePath": "data/archives/reviews/the-whos-tommy-2024/showbiz411--roger-friedman_2026-01-29.html",
-  "textFetchedAt": "2026-01-29T02:38:41.305Z",
+  "archivePath": "data/archives/reviews/the-whos-tommy-2024/showbiz411--roger-friedman_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T03:32:47.272Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "Access blocked in Bright Data response"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
