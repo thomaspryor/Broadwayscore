@@ -5,7 +5,7 @@
   "criticName": "Andy Propst",
   "url": "https://www.theatermania.com/new-york-city-theater/reviews/juliet-broadway_92441.html",
   "publishDate": "November 3, 2022",
-  "fullText": "& Juliet is a jukebox musical that takes the pop songs of Max Martin and uses them to tell a story that asks: What if Juliet didn't die at the end of Romeo and Juliet?",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "& Juliet is a jukebox musical that takes the pop songs of Max Martin and uses them to tell a story that asks: What if Juliet didn't die at the end of Romeo and Juliet?",
   "originalScore": null,
@@ -65,8 +65,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
   },
-  "textQuality": "truncated",
-  "truncationSignals": [
-    "shorter_than_excerpt"
-  ]
+  "textQuality": "excerpt_only",
+  "truncationSignals": []
 }

@@ -5,7 +5,7 @@
   "criticName": "Bob Verini",
   "url": "https://www.billboard.com/culture/theater/aladdin-broadway-review-6037039/",
   "publishDate": "March 21, 2014",
-  "fullText": "Disney's 'Aladdin' is a visual feast that compensates for its narrative shortcomings with spectacular production values and genuinely funny moments.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "Disney's 'Aladdin' is a visual feast that compensates for its narrative shortcomings with spectacular production values and genuinely funny moments.",
   "originalScore": null,
@@ -65,8 +65,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "textQuality": "truncated",
-  "truncationSignals": [
-    "shorter_than_excerpt"
-  ]
+  "textQuality": "excerpt_only",
+  "truncationSignals": []
 }

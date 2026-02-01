@@ -5,7 +5,7 @@
   "criticName": "Lloyd Rose",
   "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-a-gorgeous-spectacle/8a5b5c5e-8b5a-4b5a-8b5a-8b5a8b5a8b5a/",
   "publishDate": "November 14, 1997",
-  "fullText": "The Lion King is a gorgeous spectacle that transforms the New Amsterdam Theater into a magical African landscape, with Julie Taymor's brilliant direction creating visual wonders that transcend the simple story.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The Lion King is a gorgeous spectacle that transforms the New Amsterdam Theater into a magical African landscape, with Julie Taymor's brilliant direction creating visual wonders that transcend the simple story.",
   "originalScore": null,
@@ -78,8 +78,6 @@
       "Models disagree by 18 points (Claude: 72, OpenAI: 90)"
     ]
   },
-  "textQuality": "truncated",
-  "truncationSignals": [
-    "shorter_than_excerpt"
-  ]
+  "textQuality": "excerpt_only",
+  "truncationSignals": []
 }
