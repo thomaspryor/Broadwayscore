@@ -10,5 +10,52 @@
     "nyc-theatre",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "https://www.theatermania.com/news/review-real-women-have-curves-is-the-realest-musical-on-broadway-right-now_1774090/"
+  "playbillVerdictUrl": "https://www.theatermania.com/news/review-real-women-have-curves-is-the-realest-musical-on-broadway-right-now_1774090/",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite acknowledging the plot may be 'all-over-the-place' and it's not the 'flashiest,' the review uses strong positive language like 'triumphant' and 'desperately needed,' concluding it's 'the realest thing Broadway has seen in quite some time.' | GPT-4o: The review uses strong positive language such as 'triumphant' and 'the realest thing Broadway has seen in quite some time,' indicating a highly enthusiastic recommendation. | Gemini: The review uses positive language like \"triumphant musical\" and \"empowering theme.\" While acknowledging some might find the plot \"all-over-the-place,\" the overall tone is positive and recommends the show for its important message.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T18:53:19.969Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

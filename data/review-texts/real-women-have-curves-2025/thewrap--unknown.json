@@ -10,5 +10,52 @@
     "nyc-theatre",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "https://www.thewrap.com/real-women-have-curves-broadway-review-latinas-take-cover-to-break-free/"
+  "playbillVerdictUrl": "https://www.thewrap.com/real-women-have-curves-broadway-review-latinas-take-cover-to-break-free/",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt emphasizes significant improvements over the source material with phrases like 'vast improvement' and 'great narrative precision', indicating a positive assessment, though limited text prevents higher confidence. | GPT-4o: The review highlights the musical's narrative precision and improvement over the original screenplay, suggesting a positive reception. However, without a full verdict, the confidence is medium. | Gemini: The review highlights the musical's improvement over the source material, suggesting a positive experience. While it doesn't explicitly recommend seeing it, the praise for the book implies a worthwhile adaptation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T18:53:25.780Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

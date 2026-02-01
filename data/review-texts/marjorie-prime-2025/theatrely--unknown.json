@@ -10,5 +10,52 @@
     "nyc-theatre",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "https://www.theatrely.com/post/june-squibb-finds-post-ai-humanity-in-marjorie-prime----review"
+  "playbillVerdictUrl": "https://www.theatrely.com/post/june-squibb-finds-post-ai-humanity-in-marjorie-prime----review",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt shows clear praise for the lead performance and direction with positive descriptors like 'exquisitely directed' and 'intelligent,' but as only curated excerpts are available, the full verdict may be more nuanced. | GPT-4o: The review uses highly positive language, praising the performances, direction, and thematic depth, indicating a strong recommendation to see the show. | Gemini: The review highlights Squibb's exceptional performance and praises the direction, indicating a positive experience overall. The description of the play as an \"intelligent prayer\" further supports a positive assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T18:49:58.482Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

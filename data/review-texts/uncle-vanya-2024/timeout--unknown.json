@@ -10,5 +10,52 @@
     "nyc-theatre",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "https://www.timeout.com/newyork/theater/uncle-vanya-9"
+  "playbillVerdictUrl": "https://www.timeout.com/newyork/theater/uncle-vanya-9",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'most pleasurable moments' suggests positive assessment, but with only a curated excerpt available, the full verdict is unclear and could be more nuanced. | GPT-4o: The review highlights pleasurable moments, suggesting a positive experience, but the lack of a full review or explicit recommendation tempers the enthusiasm. | Gemini: The quote suggests enjoyment and positive aspects, but without stronger language, it indicates a mild recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T18:56:50.715Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -10,5 +10,52 @@
     "nyc-theatre",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "https://www.wsj.com/articles/the-whos-tommy-review-broadway-des-mcanuff-pete-townshend-ali-louis-bourzgui-5a35a465"
+  "playbillVerdictUrl": "https://www.wsj.com/articles/the-whos-tommy-review-broadway-des-mcanuff-pete-townshend-ali-louis-bourzgui-5a35a465",
+  "assignedScore": 89,
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The language is overwhelmingly positive with phrases like 'big blast of pleasure,' 'thunderous and thoroughly intoxicating,' and 'seismic jolt' indicating strong enthusiasm and recommendation. | GPT-4o: The review uses highly positive language such as 'thunderous', 'intoxicating', and 'seismic jolt', indicating a strong recommendation and enthusiasm for the production. | Gemini: The review uses very positive language like \"thoroughly intoxicating\" and \"seismic jolt\" suggesting a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T18:56:19.390Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

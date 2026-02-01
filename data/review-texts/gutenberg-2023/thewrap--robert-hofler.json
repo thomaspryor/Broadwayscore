@@ -13,7 +13,6 @@
   "assignedScore": 25,
   "source": "bww-roundup",
   "dtliThumb": "Down",
-  "needsScoring": true,
   "dtliExcerpt": "There is a legendary anecdote, perhaps apocryphal but probably not, that after a performance of “The Addams Family” on Broadway, Elaine Stritch visited Nathan Lane backstage and told the star, “They’re not paying you enough.” That goes double for the musical “Gutenberg!,” which opened Thursday at the James Earl Jones Theatre. It manages to waste the talent of not one but two very talented performers.",
   "sources": [
     "bww-roundup",
@@ -77,21 +76,38 @@
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 25,
-  "archivePath": "data/archives/reviews/gutenberg-2023/thewrap--robert-hofler_2026-01-29.html",
-  "textFetchedAt": "2026-01-29T01:43:51.526Z",
-  "fetchMethod": "archive",
+  "archivePath": "data/archives/reviews/gutenberg/thewrap--robert-hofler_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T19:14:07.677Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
-      "tier": 0,
-      "method": "archive-first",
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 4,
-  "sourceMethod": "archive",
+  "fetchTier": 3,
+  "sourceMethod": "brightdata",
   "archiveOrgTimestamp": "20250918033019",
   "archiveOrgUrl": "http://web.archive.org/web/20250918033019/https://www.thewrap.com/gutenberg-the-musical-broadway-review-josh-gad-andrew-rannells/",
   "rescoreCompletedAt": "2026-01-29T14:31:51.720Z",
   "contentTier": "complete",
-  "wordCount": 642
+  "wordCount": 642,
+  "isFullReview": true,
+  "textWordCount": 642,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete"
 }

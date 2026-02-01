@@ -5,12 +5,12 @@
   "criticName": "Elizabeth Bradley",
   "url": "https://www.broadwaynews.com/review-harry-potter-and-the-cursed-child-retains-its-magic-and-its-heart/",
   "publishDate": "April 22, 2018",
-  "fullText": "When it was announced that “Harry Potter and the Cursed Child” would open at the Lyric Theatre in 2018, I confidently expected that the, um, curse that seemed to doom all shows in the cavernous space to financial-flop status would finally be lifted.\n\nWhen it was announced that “Harry Potter and the Cursed Child” would open at the Lyric Theatre in 2018, I confidently expected that the, um, curse that seemed to doom all shows in the cavernous space to financial-flop status would finally be lifted. The show is a commercial juggernaut, after all, and all things Harry Potter remain a global obsession. Lines form daily outside the new merchandise store on Fifth Avenue.\n\nBut the producers’ decision to cut the original two-part show down to just one part seemed to suggest that finances were proving trickier on Broadway — despite the show’s acclaim and its best play Tony win. Although they cited the pandemic in the announcement of the new version, the London, Melbourne and Hamburg productions will continue to perform the original version, indicating that the higher costs of Broadway production, and perhaps Americans’ attention spans, might also factor into the decision.",
+  "fullText": "When it was announced that “Harry Potter and the Cursed Child” would open at the Lyric Theatre in 2018, I confidently expected that the, um, curse that seemed to doom all shows in the cavernous space to financial-flop status would finally be lifted. When it was announced that “Harry Potter and the Cursed Child” would open at the Lyric Theatre in 2018, I confidently expected that the, um, curse that seemed to doom all shows in the cavernous space to financial-flop status would finally be lifted. The show is a commercial juggernaut, after all, and all things Harry Potter remain a global obsession. Lines form daily outside the new merchandise store on Fifth Avenue. But the producers’ decision to cut the original two-part show down to just one part seemed to suggest that finances were proving trickier on Broadway — despite the show’s acclaim and its best play Tony win. Although they cited the pandemic in the announcement of the new version, the London, Melbourne and Hamburg productions will continue to perform the original version, indicating that the higher costs of Broadway production, and perhaps Americans’ attention spans, might also factor into the decision.",
   "showScoreExcerpt": "\"What Tiffany and his team have created is an experience like no other...Prepare to be amazed, whether you're a Potter fan or a Muggle. This production is truly magical.\"",
   "originalScore": null,
   "assignedScore": 91,
   "source": "show-score",
-  "sourceMethod": "archive",
+  "sourceMethod": "playwright",
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -80,22 +80,22 @@
   "isFullReview": false,
   "textWordCount": 194,
   "archivePath": "data/archives/reviews/harry-potter-2021/broadwaynews--elizabeth-bradley_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T15:04:58.325Z",
-  "fetchMethod": "archive",
+  "textFetchedAt": "2026-02-01T19:18:33.465Z",
+  "fetchMethod": "playwright",
   "fetchAttempts": [
     {
-      "tier": 0,
-      "method": "archive-first",
+      "tier": 1,
+      "method": "playwright",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 1,
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "incomplete",
   "archiveOrgTimestamp": "20251116125520",
   "archiveOrgUrl": "http://web.archive.org/web/20251116125520/https://www.broadwaynews.com/review-harry-potter-and-the-cursed-child-retains-its-magic-and-its-heart/",
   "textIssues": [
-    "Word count too low: 200 (min: 300)"
+    "Word count too low: 206 (min: 300)"
   ]
 }

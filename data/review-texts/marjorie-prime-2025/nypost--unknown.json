@@ -10,5 +10,52 @@
     "nyc-theatre",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "https://nypost.com/2025/12/08/entertainment/marjorie-prime-review-96-year-old-june-squibb-is-a-marvel-in-an-early-highlight-of-the-broadway-season/"
+  "playbillVerdictUrl": "https://nypost.com/2025/12/08/entertainment/marjorie-prime-review-96-year-old-june-squibb-is-a-marvel-in-an-early-highlight-of-the-broadway-season/",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt focuses entirely on praising June Squibb's presence and performance with warm, appreciative language, though limited text prevents assessment of the full production verdict. | GPT-4o: The review highlights the presence of June Squibb as a significant positive aspect, suggesting a recommendation to see the show. However, without the full text, the overall tone is less clear, leading to a medium confidence level. | Gemini: The review excerpt focuses heavily on June Squibb's performance and presence, suggesting a positive experience for those who appreciate her work. While the excerpt doesn't explicitly recommend the play itself, the strong praise for Squibb implies a positive overall assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T18:49:47.674Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

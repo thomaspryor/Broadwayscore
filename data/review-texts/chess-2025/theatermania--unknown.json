@@ -10,5 +10,52 @@
     "nyc-theatre",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "https://www.theatermania.com/news/review-chess-returns-to-broadway-with-checkmate-vocals-and-a-checked-out-book_1812218/"
+  "playbillVerdictUrl": "https://www.theatermania.com/news/review-chess-returns-to-broadway-with-checkmate-vocals-and-a-checked-out-book_1812218/",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review acknowledges the show's emotional directness and lack of nuance as potential weaknesses, but expresses pleasant surprise at the actors' depth of performance, suggesting a positive assessment despite reservations. | GPT-4o: The review acknowledges the lack of nuance but praises the actors for their depth, suggesting a mixed but somewhat positive impression. | Gemini: The review excerpt highlights the actors' ability to find depth despite the show's overt emotionality, suggesting a positive experience with some reservations about the 'bombast and goofiness'.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T18:45:49.644Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }
