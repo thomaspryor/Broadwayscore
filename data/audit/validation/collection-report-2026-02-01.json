@@ -1,45 +1,45 @@
 {
-  "runDate": "2026-02-01T14:14:08.675Z",
+  "runDate": "2026-02-01T14:17:16.714Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "appropriate-2023",
+    "showFilter": "maybe-happy-ending-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 20,
-    "failed": 121,
+    "processed": 19,
+    "failed": 122,
     "skipped": 0,
-    "successRate": "14.2%"
+    "successRate": "13.5%"
   },
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 5,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 2,
-    "archive": 9
+    "archive": 12
   },
   "statistics": {
-    "tier1Attempts": 2,
+    "tier1Attempts": 12,
     "tier1Success": 2,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 3,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 3,
     "tier3Success": 0,
-    "tier4Attempts": 2,
-    "tier4Success": 2,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 1,
+    "tier4Attempts": 27,
+    "tier4Success": 5,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 16,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.3,
+    "urlDiscoveryAttempts": 6,
+    "urlDiscoverySuccess": 5,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -57,11 +57,11 @@
     "stereophonic-2024/ew--allison-considine.json",
     "stereophonic-2024/guardian--gloria-oladipo.json",
     "stereophonic-2024/ap--mark-kennedy.json",
-    "mother-play-2024/broadwaynews--brittani-samuel.json",
-    "mother-play-2024/ew--allison-considine.json",
-    "mother-play-2024/guardian--benjamin-lee.json",
-    "appropriate-2023/ew--allison-considine.json",
-    "appropriate-2023/observer--david-cote.json"
+    "maybe-happy-ending-2024/vulture--jackson-mchenry.json",
+    "maybe-happy-ending-2024/ew--shania-russell.json",
+    "maybe-happy-ending-2024/unknown--unknown.json",
+    "maybe-happy-ending-2024/washpost--naveen-kumar.json",
+    "maybe-happy-ending-2024/washpost--peter-marks.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -179,11 +179,13 @@
     "stereophonic-2024/deadline--greg-evans.json",
     "stereophonic-2024/observer--david-cote.json",
     "stereophonic-2024/timeout--adam-feldman.json",
-    "mother-play-2024/timeout--adam-feldman.json",
-    "mother-play-2024/wsj--charles-isherwood.json",
-    "mother-play-2024/wsj--charles.json",
-    "appropriate-2023/deadline--greg-evans.json",
-    "appropriate-2023/wsj--charles-isherwood.json"
+    "maybe-happy-ending-2024/variety--peter-marks.json",
+    "maybe-happy-ending-2024/deadline--greg-evans.json",
+    "maybe-happy-ending-2024/nydailynews--chris-jones.json",
+    "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+    "maybe-happy-ending-2024/timeout--adam-feldman.json",
+    "maybe-happy-ending-2024/wsj--charles-isherwood.json",
+    "maybe-happy-ending-2024/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -191,17 +193,13 @@
       "stereophonic-2024/ew--allison-considine.json",
       "stereophonic-2024/guardian--gloria-oladipo.json",
       "stereophonic-2024/ap--mark-kennedy.json",
-      "mother-play-2024/ew--allison-considine.json",
-      "mother-play-2024/guardian--benjamin-lee.json",
-      "appropriate-2023/ew--allison-considine.json",
-      "appropriate-2023/observer--david-cote.json"
+      "maybe-happy-ending-2024/ew--shania-russell.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "mj-2022/usatoday--david-rooney.json",
-      "purlie-victorious-2023/washpost--peter-marks.json"
+      "mj-2022/usatoday--david-rooney.json"
     ],
     "archive": [
       "harry-potter-2021/hollywood-reporter--david-rooney.json",
@@ -212,15 +210,74 @@
       "harry-potter-2021/village-voice--michael-feingold.json",
       "mj-2022/nytg--ayanna-prescod.json",
       "stereophonic-2024/nytimes--jesse-green.json",
-      "mother-play-2024/broadwaynews--brittani-samuel.json"
+      "maybe-happy-ending-2024/vulture--jackson-mchenry.json",
+      "maybe-happy-ending-2024/unknown--unknown.json",
+      "maybe-happy-ending-2024/washpost--naveen-kumar.json",
+      "maybe-happy-ending-2024/washpost--peter-marks.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Variety": {
+      "count": 1,
+      "domain": "variety.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Deadline": {
+      "count": 1,
+      "domain": "deadline.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "New York Daily News": {
+      "count": 1,
+      "domain": "nydailynews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": [
     {
-      "reviewId": "marjorie-prime-2025/observer--david-cote.json",
-      "oldUrl": "https://observer.com/2025/12/marjorie-prime-broadway-review/",
-      "newUrl": "https://observer.com/2025/12/review-marjorie-prime-hayes-theater-june-squibb/"
+      "reviewId": "maybe-happy-ending-2024/variety--peter-marks.json",
+      "oldUrl": "https://variety.com/2024/legit/reviews/maybe-happy-ending-broadway-review-1236223542/",
+      "newUrl": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-broadway-musical-1236207518/"
+    },
+    {
+      "reviewId": "maybe-happy-ending-2024/vulture--jackson-mchenry.json",
+      "oldUrl": "https://www.vulture.com/article/maybe-happy-ending-broadway-review.html",
+      "newUrl": "https://www.vulture.com/article/theater-review-maybe-happy-ending.html"
+    },
+    {
+      "reviewId": "maybe-happy-ending-2024/ew--shania-russell.json",
+      "oldUrl": "https://ew.com/maybe-happy-ending-broadway-review-2024/",
+      "newUrl": "https://ew.com/maybe-happy-ending-review-broadway-darren-criss-brings-charm-robot-love-story-8743079?srsltid=AfmBOor9EMf_NaIsXGNTY-n_PoPfgb0Ep1uECcEzEAB7LKnSRo3_hWeT"
+    },
+    {
+      "reviewId": "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+      "oldUrl": "https://nypost.com/2024/11/13/entertainment/maybe-happy-ending-review-charming-musical-about-robot-romance/",
+      "newUrl": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/"
+    },
+    {
+      "reviewId": "maybe-happy-ending-2024/washpost--peter-marks.json",
+      "oldUrl": "https://www.washingtonpost.com/theater-dance/2024/11/13/maybe-happy-ending-broadway-review/",
+      "newUrl": "https://www.washingtonpost.com/entertainment/theater/2024/11/12/maybe-happy-ending-broadway-review/"
     }
   ]
 }
