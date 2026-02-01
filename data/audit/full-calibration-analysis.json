@@ -1,0 +1,188 @@
+{
+  "timestamp": "2026-01-31T18:48:54.364Z",
+  "sample_size": {
+    "total_explicit_scores": 276,
+    "with_assigned_score": 276
+  },
+  "overall": {
+    "mae": 10.7,
+    "bias": -4.7,
+    "within_5_pts": 39.1,
+    "within_10_pts": 60.9,
+    "within_15_pts": 78.3
+  },
+  "calibration_offsets": {
+    "Rave (85-100)": {
+      "bias": -11,
+      "mae": 11.2,
+      "count": 83,
+      "correction": 11
+    },
+    "Positive (70-84)": {
+      "bias": -6.1,
+      "mae": 9.4,
+      "count": 123,
+      "correction": 6
+    },
+    "Mixed (55-69)": {
+      "bias": 2.4,
+      "mae": 10.7,
+      "count": 56,
+      "correction": -2
+    },
+    "Negative (35-54)": {
+      "bias": 11.9,
+      "mae": 15.7,
+      "count": 11,
+      "correction": -12
+    },
+    "Pan (0-34)": {
+      "bias": 36.7,
+      "mae": 36.7,
+      "count": 3,
+      "correction": -37
+    }
+  },
+  "worst_errors": [
+    {
+      "original": "1/5",
+      "numeric": 20,
+      "assigned": 83,
+      "error": 63,
+      "review": "wicked-2003/timeout--david-cote.json"
+    },
+    {
+      "original": "B",
+      "numeric": 83,
+      "assigned": 29,
+      "error": -54,
+      "review": "book-of-mormon-2011/toronto-star--richard-ouzounian.json"
+    },
+    {
+      "original": "5/5 stars",
+      "numeric": 100,
+      "assigned": 49,
+      "error": -51,
+      "review": "gutenberg-2023/nysr--frank-scheck.json"
+    },
+    {
+      "original": "A",
+      "numeric": 93,
+      "assigned": 46,
+      "error": -47,
+      "review": "the-shark-is-broken-2023/nypost--johnny-oleksinski.json"
+    },
+    {
+      "original": "A",
+      "numeric": 93,
+      "assigned": 50,
+      "error": -43,
+      "review": "moulin-rouge-2019/thewrap--robert-hofler.json"
+    },
+    {
+      "original": "4/5 stars",
+      "numeric": 80,
+      "assigned": 39,
+      "error": -41,
+      "review": "our-town-2024/nysr--steven-suskin.json"
+    },
+    {
+      "original": "4/5 stars",
+      "numeric": 80,
+      "assigned": 40,
+      "error": -40,
+      "review": "death-becomes-her-2024/nysr--david-finkle.json"
+    },
+    {
+      "original": "2/5 stars",
+      "numeric": 40,
+      "assigned": 79,
+      "error": 39,
+      "review": "death-becomes-her-2024/nysr--frank-scheck.json"
+    },
+    {
+      "original": "B",
+      "numeric": 83,
+      "assigned": 45,
+      "error": -38,
+      "review": "prayer-for-the-french-republic-2024/ew--helen-shaw.json"
+    },
+    {
+      "original": "B",
+      "numeric": 83,
+      "assigned": 46,
+      "error": -37,
+      "review": "the-outsiders-2024/ew--emlyn-travis.json"
+    },
+    {
+      "original": "4/5 stars",
+      "numeric": 80,
+      "assigned": 43,
+      "error": -37,
+      "review": "water-for-elephants-2024/nysr--frank-scheck.json"
+    },
+    {
+      "original": "2 stars",
+      "numeric": 40,
+      "assigned": 75,
+      "error": 35,
+      "review": "back-to-the-future-2023/nysr--elysa-gardner.json"
+    },
+    {
+      "original": 80,
+      "numeric": 80,
+      "assigned": 45,
+      "error": -35,
+      "review": "merrily-we-roll-along-2023/timeout--adam-feldman.json"
+    },
+    {
+      "original": "D",
+      "numeric": 63,
+      "assigned": 29,
+      "error": -34,
+      "review": "queen-versailles-2025/ew--dalton.json"
+    },
+    {
+      "original": "3/5",
+      "numeric": 60,
+      "assigned": 29,
+      "error": -31,
+      "review": "stranger-things-2024/timeout--adam-feldman.json"
+    },
+    {
+      "original": "4/5 stars",
+      "numeric": 80,
+      "assigned": 50,
+      "error": -30,
+      "review": "harmony-2023/nysr--sandy-macdonald.json"
+    },
+    {
+      "original": "4/5 stars",
+      "numeric": 80,
+      "assigned": 50,
+      "error": -30,
+      "review": "how-to-dance-in-ohio-2023/nysr--steven-suskin.json"
+    },
+    {
+      "original": "3/5 stars",
+      "numeric": 60,
+      "assigned": 90,
+      "error": 30,
+      "review": "our-town-2024/nysr--david-finkle.json"
+    },
+    {
+      "original": "3/5 stars",
+      "numeric": 60,
+      "assigned": 89,
+      "error": 29,
+      "review": "gutenberg-2023/nysr--roma-torre.json"
+    },
+    {
+      "original": "A",
+      "numeric": 93,
+      "assigned": 64,
+      "error": -29,
+      "review": "just-in-time-2025/ew--shania-russell.json"
+    }
+  ]
+}
