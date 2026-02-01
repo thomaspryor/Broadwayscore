@@ -5,7 +5,7 @@
   "criticName": "Thom Geier",
   "url": "https://culturesauce.com/2024/04/20/alicia-keys-hells-kitchen-broadway-review/",
   "publishDate": "2024-04-20",
-  "fullText": null,
+  "fullText": "Maleah Joi Moon in 'Hell’s Kitchen' (Photo: Marc J. Franklin) Hell’s Kitchen, based on the early life and song catalog of Alicia Keys, is a heaven-sent new musical that seems destined for a long and successful run on Broadway. Keys has written a handful of new plot-driven songs for the show, particularly in a first act that sets up the story of 17-year-old Ali (newcomer Maleah Joi Moon) in the 1990s, living with her harried single mom (Shoshana Bean) in a high-rise apartment building on 42nd Street at the Southern edge of Manhattan’s Hell’s Kitchen neighborhood. Moon delivers a star-making performance as the restless young artist-in-training, while Bean rivals her onstage daughter in belts and vocal runs even as her character struggles to hold down two jobs. Mainly, she just wants to prevent her hormone-frenzied teenage daughter from making the same mistakes she did — including an early pregnancy to Ali’s dad, her first love, a talented musician and perpetual no-show played with squirrelly charisma by Brandon Victor Dixon. Ali falls hard for Knuck (Chris Lee), an older hunk she meets as he practices bucket-drumming with his pals on the sidewalk outside her building. While his street music draws the ire of Ali’s mom, the building’s doorman (Chad Carstarphen), and the Rudy Giuliani-era NYPD, he’s actually a softie who holds down a working-class job as a house painter, attends church on Sundays, and rightly retreats when he learns that Ali has been lying about her age. Ali also experiences the joys of another blossoming romance: with piano, the instrument that will launch her career. Kecia Lewis emerges as an alternative maternal figure as Ali’s keyboard mentor, drumming home lessons in musical tradition as well as racial injustice with earth-mother gravitas. She brings a commanding authority and gospel-tinged alto to the #BlackLivesMatter anthem “Perfect Way to Die” that proves a powerful Act One closer. Kristoffer Diaz has crafted a thin wisp of a book from Keys’s relatively uneventful, PG-13 spurt of teenage rebellion – and the bumpy second act sometimes veers into melodrama. But director Michael Greif fills the gaps with music, movement, boundless energy and good will. Robert Brill’s erector-set like scenic design, coupled with Peter Nigrini’s projections and Natasha Katz’s lighting, evoke a ‘90s-era New York City that’s alive with possibilities. Dede Ayite’s costumes, full of color-blocked tops and loose baggy jeans, are a throwback to the urban styles of the era. Camille A. Brown’s pulsing and propulsive choreography, a mix of unison ensemble routines as well as individual kicks and flexes, accentuates Keys’s syncopated beats in a way that’s pure theater. The overall effect is to underscore the kinetic energy of city life, marked by both unified crowd flow and creative bursts of individuality. The stage elements all coalesce for an “Empire State of Mind” finale that’s truer to Keys’s original rendition (the one not featuring Jay Z), and which seamlessly functions as an 11 o’clock showstopper. The creators have made some smart adjustments since the show’s premiere at the Public Theater late last year, dropping a couple of songs from the saggy second act and scaling back the use of loose-limbed ensemble members from more intimate musical numbers. What sets Hell’s Kitchen apart from other recent jukebox musicals is that it doesn’t sound like Broadway — in the best possible way. (Sound designer Gareth Owen even cranks up the bass in places for club-style reverb.) Rather than adapting Keys’s hits into Glee-ified musical-theater arrangements, the show roots its radio-friendly score in its own aesthetic mix of pop, R&B, hip-hop and even jazz. Bean and Dixon disrupt the usual rhythms and time signatures of “Fallin’” to give the familiar tune an off-kilter feel that would be right at home at the Blue Note. (Credit for the arrangements goes to Keys and Adam Blackstone, who also did the orchestrations with Tom Kitt.) The show looks and sounds like now, or at least like the very recent past, kicking musical theater into bold, new directions. And ones that put talented women in the warm glow of the spotlight center stage. HELL’S KITCHENShubert Theatre, BroadwayRunning time: 2 hours, 35 minutes (with 1 intermission)Tickets on sale through November 2025 ‘Hell’s Kitchen’ will have you fallin’ for Alicia Keys as a major stage composer (Off Broadway review)November 19, 2023In \"Theater\" Why Off Broadway is the final destination for many hit shows these daysFebruary 28, 2025In \"Theater\" The best theater of 2023, from ‘Appropriate’ to ‘Waiting for Godot’December 20, 2023In \"Theater\" Save my name, email, and website in this browser for the next time I comment. Δ /* <![CDATA[ */ document.getElementById( \"ak_js_1\" ).setAttribute( \"value\", ( new Date() ).getTime() ); /* ]]> */",
   "showScoreExcerpt": "\"a heaven-sent new musical that seems destined for a long and successful run on Broadway.\"",
   "bwwExcerpt": null,
   "dtliExcerpt": null,
@@ -14,7 +14,7 @@
   "source": "webfetch-scraped",
   "sourceUrl": "https://culturesauce.com/2024/04/20/alicia-keys-hells-kitchen-broadway-review/",
   "needsFullText": true,
-  "sourceMethod": "webfetch",
+  "sourceMethod": "playwright",
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -74,5 +74,32 @@
     "needsReviewReasons": []
   },
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 91,
+  "isFullReview": true,
+  "textWordCount": 778,
+  "archivePath": "data/archives/reviews/hells-kitchen-2024/culturesauce--thom-geier_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T14:09:17.685Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "partial",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "partial"
 }
