@@ -1,43 +1,43 @@
 {
-  "runDate": "2026-02-01T15:08:31.001Z",
+  "runDate": "2026-02-01T15:10:42.606Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "doubt-2024",
+    "showFilter": "ragtime-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 45,
-    "failed": 167,
+    "processed": 44,
+    "failed": 163,
     "skipped": 0,
-    "successRate": "20.8%"
+    "successRate": "21.3%"
   },
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 6,
     "browserbase": 0,
-    "scrapingbee": 4,
+    "scrapingbee": 5,
     "brightdata": 2,
     "archive": 37
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 2,
-    "tier1_5Attempts": 2,
+    "tier1Attempts": 2,
+    "tier1Success": 1,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 3,
+    "tier2Attempts": 1,
     "tier2Success": 1,
-    "tier3Attempts": 2,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 8,
-    "tier4Success": 4,
-    "totalFailed": 7,
-    "scrapingBeeCreditsUsed": 30,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.7,
+    "tier4Attempts": 3,
+    "tier4Success": 2,
+    "totalFailed": 3,
+    "scrapingBeeCreditsUsed": 10,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -86,8 +86,7 @@
     "the-lion-king-1997/vulture--john-simon.json",
     "the-outsiders/new-york-magazinevulture-sara-holdren--sara-holdren.json",
     "the-outsiders/variety-naveen-kumar--naveen-kumar.json",
-    "doubt-2024/guardian--adrian-horton.json",
-    "doubt-2024/observer--david-cote.json"
+    "ragtime-2025/washpost--naveen-kumar.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -250,13 +249,9 @@
     "stereophonic/variety-frank-rizzo--frank-rizzo.json",
     "suffs/vulture-sara-holdren--sara-holdren.json",
     "the-great-gatsby/new-york-magazinevulture-sara-holdren--unknown.json",
-    "doubt-2024/deadline--greg-evans.json",
-    "doubt-2024/nydailynews--chris-jones.json",
-    "doubt-2024/nydailynews--chris.json",
-    "doubt-2024/timeout--adam-feldman.json",
-    "doubt-2024/wsj--charles-isherwood.json",
-    "doubt-2024/wsj--charles.json",
-    "doubt-2024/thestage--lane-williamson.json"
+    "ragtime-2025/deadline--greg-evans.json",
+    "ragtime-2025/timeout--adam-feldman.json",
+    "ragtime-2025/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -265,16 +260,15 @@
       "appropriate-2023/ew--allison-considine.json",
       "appropriate-2023/observer--david-cote.json",
       "back-to-the-future-2023/ew--dalton-ross.json",
-      "book-of-mormon-2011/timeout--david-cote.json",
-      "doubt-2024/guardian--adrian-horton.json",
-      "doubt-2024/observer--david-cote.json"
+      "book-of-mormon-2011/timeout--david-cote.json"
     ],
     "browserbase": [],
     "scrapingbee": [
       "grey-house-2023/newyorker--dan-stahl.json",
       "here-lies-love-2023/nytimes--ben-brantley.json",
       "book-of-mormon-2011/newsday--linda-winer.json",
-      "stereophonic/variety-frank-rizzo--frank-rizzo.json"
+      "stereophonic/variety-frank-rizzo--frank-rizzo.json",
+      "ragtime-2025/washpost--naveen-kumar.json"
     ],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
@@ -320,14 +314,6 @@
       "the-outsiders/variety-naveen-kumar--naveen-kumar.json"
     ]
   },
-  "failuresByOutlet": {
-    "New York Daily News": {
-      "count": 2,
-      "domain": "nydailynews.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
