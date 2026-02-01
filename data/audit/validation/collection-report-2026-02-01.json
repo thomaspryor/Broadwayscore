@@ -1,45 +1,45 @@
 {
-  "runDate": "2026-02-01T15:10:42.068Z",
+  "runDate": "2026-02-01T15:14:40.883Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "merrily-we-roll-along-2023",
+    "showFilter": "moulin-rouge-2019",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 44,
-    "failed": 164,
+    "processed": 48,
+    "failed": 167,
     "skipped": 0,
-    "successRate": "21.2%"
+    "successRate": "22.3%"
   },
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 7,
     "browserbase": 0,
-    "scrapingbee": 4,
-    "brightdata": 3,
-    "archive": 37
+    "scrapingbee": 5,
+    "brightdata": 2,
+    "archive": 40
   },
   "statistics": {
-    "tier1Attempts": 2,
+    "tier1Attempts": 9,
     "tier1Success": 1,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 3,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
-    "tier3Attempts": 1,
+    "tier2Attempts": 5,
+    "tier2Success": 1,
+    "tier3Attempts": 2,
     "tier3Success": 1,
-    "tier4Attempts": 3,
-    "tier4Success": 3,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "tier4Attempts": 19,
+    "tier4Success": 6,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 25,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 0.9,
+    "urlDiscoveryAttempts": 5,
+    "urlDiscoverySuccess": 3,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -86,7 +86,11 @@
     "the-lion-king-1997/vulture--john-simon.json",
     "the-outsiders/new-york-magazinevulture-sara-holdren--sara-holdren.json",
     "the-outsiders/variety-naveen-kumar--naveen-kumar.json",
-    "merrily-we-roll-along-2023/the-times--will-pavia.json"
+    "moulin-rouge-2019/ew--leah-greenblatt.json",
+    "moulin-rouge-2019/guardian--alexis-soloski.json",
+    "moulin-rouge-2019/nydailynews--joe-dziemianowicz.json",
+    "moulin-rouge-2019/nypost--johnny-oleksinski.json",
+    "moulin-rouge-2019/telegraph--diane-snyder.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -249,10 +253,13 @@
     "stereophonic/variety-frank-rizzo--frank-rizzo.json",
     "suffs/vulture-sara-holdren--sara-holdren.json",
     "the-great-gatsby/new-york-magazinevulture-sara-holdren--unknown.json",
-    "merrily-we-roll-along-2023/deadline--greg-evans.json",
-    "merrily-we-roll-along-2023/timeout--adam-feldman.json",
-    "merrily-we-roll-along-2023/wsj--charles-isherwood.json",
-    "merrily-we-roll-along-2023/the-village-voice--michael-musto.json"
+    "moulin-rouge-2019/observer--david-cote.json",
+    "moulin-rouge-2019/thewrap--robert-hofler.json",
+    "moulin-rouge-2019/timeout--adam-feldman.json",
+    "moulin-rouge-2019/wsj--terry-teachout.json",
+    "moulin-rouge-2019/amny--matt-windman.json",
+    "moulin-rouge-2019/dailybeast--tim-teeman.json",
+    "moulin-rouge-2019/nysr--jesse-oxfeld.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -261,7 +268,8 @@
       "appropriate-2023/ew--allison-considine.json",
       "appropriate-2023/observer--david-cote.json",
       "back-to-the-future-2023/ew--dalton-ross.json",
-      "book-of-mormon-2011/timeout--david-cote.json"
+      "book-of-mormon-2011/timeout--david-cote.json",
+      "moulin-rouge-2019/ew--leah-greenblatt.json"
     ],
     "browserbase": [],
     "scrapingbee": [
@@ -269,12 +277,11 @@
       "here-lies-love-2023/nytimes--ben-brantley.json",
       "book-of-mormon-2011/newsday--linda-winer.json",
       "stereophonic/variety-frank-rizzo--frank-rizzo.json",
-      "ragtime-2025/washpost--naveen-kumar.json"
+      "moulin-rouge-2019/guardian--alexis-soloski.json"
     ],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "mj-2022/usatoday--david-rooney.json",
-      "merrily-we-roll-along-2023/the-times--will-pavia.json"
+      "mj-2022/usatoday--david-rooney.json"
     ],
     "archive": [
       "harry-potter-2021/hollywood-reporter--david-rooney.json",
@@ -314,9 +321,49 @@
       "the-lion-king-1997/vulture--john-simon.json",
       "the-outsiders/new-york-magazinevulture-sara-holdren--sara-holdren.json",
       "the-outsiders/variety-naveen-kumar--naveen-kumar.json",
-      "back-to-the-future-2023/nysr--elysa-gardner.json"
+      "moulin-rouge-2019/nydailynews--joe-dziemianowicz.json",
+      "moulin-rouge-2019/nypost--johnny-oleksinski.json",
+      "moulin-rouge-2019/telegraph--diane-snyder.json"
     ]
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "failuresByOutlet": {
+    "TheWrap": {
+      "count": 1,
+      "domain": "thewrap.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "amNewYork": {
+      "count": 1,
+      "domain": "amny.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The Daily Beast": {
+      "count": 1,
+      "domain": "thedailybeast.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "moulin-rouge-2019/ew--leah-greenblatt.json",
+      "oldUrl": "https://ew.com/moulin-rouge-broadway-review/",
+      "newUrl": "https://ew.com/theater-reviews/2019/07/25/moulin-rouge-musical-review/?srsltid=AfmBOopgUeUDDZnaxxpUNiC1vg4tleSLsY_YMUzpXVZy6jWC2NnLXcEr"
+    },
+    {
+      "reviewId": "moulin-rouge-2019/nydailynews--joe-dziemianowicz.json",
+      "oldUrl": "https://www.nydailynews.com/2019/07/25/moulin-rouge-broadway-review/",
+      "newUrl": "https://www.nydailynews.com/2019/07/25/review-broadways-moulin-rouge-the-musical-is-dazzling-decadent-live-translation-of-2001-movie/"
+    },
+    {
+      "reviewId": "moulin-rouge-2019/nypost--johnny-oleksinski.json",
+      "oldUrl": "https://nypost.com/2019/07/25/moulin-rouge-broadway-review/",
+      "newUrl": "https://nypost.com/2019/07/25/moulin-rouge-review-nycs-hottest-nightclub-is-on-broadway/"
+    }
+  ]
 }
