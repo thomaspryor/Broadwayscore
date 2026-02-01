@@ -12,6 +12,7 @@
  * with premium proxy to extract dates from production pages.
  */
 
+const { JSDOM } = require('jsdom');
 const { fetchPage, cleanup } = require('./scraper');
 
 const IBDB_BASE = 'https://www.ibdb.com';
@@ -35,14 +36,13 @@ async function searchIBDB(title, options = {}) {
 
   let results = [];
 
-  // Try ScrapingBee Google SERP first
+  // Try ScrapingBee Google SERP first (dedicated search endpoint)
   try {
     const scrapingBeeKey = process.env.SCRAPINGBEE_API_KEY;
     if (scrapingBeeKey) {
-      const url = `https://app.scrapingbee.com/api/v1/?` +
+      const url = `https://app.scrapingbee.com/api/v1/store/google?` +
         `api_key=${scrapingBeeKey}` +
-        `&search=${encodeURIComponent(query)}` +
-        `&search_engine=google`;
+        `&search=${encodeURIComponent(query)}`;
 
       const resp = await fetch(url);
       if (resp.ok) {
@@ -55,6 +55,9 @@ async function searchIBDB(title, options = {}) {
             title: r.title || '',
             year: extractYearFromUrl(r.url)
           }));
+        if (results.length > 0) {
+          console.log(`  ✅ Found ${results.length} IBDB production URL(s) via ScrapingBee SERP`);
+        }
       }
     }
   } catch (e) {
@@ -181,51 +184,72 @@ async function extractDatesFromIBDBPage(url) {
 
   if (!content) return result;
 
+  // Normalize content to plain text for regex matching
+  // IBDB pages may come as HTML or markdown depending on scraper
+  let text = content;
+  if (content.includes('<html') || content.includes('<div')) {
+    // HTML content - extract text via JSDOM
+    try {
+      const dom = new JSDOM(content);
+      text = dom.window.document.body.textContent || '';
+    } catch (e) {
+      // Fall through with raw content
+    }
+  }
+
   // Check if we got redirected to homepage (page not found)
-  if (content.includes('Opening Nights in History') && !content.includes('Opening Date')) {
+  if (text.includes('Opening Nights in History') && !text.includes('Opening Date')) {
     console.log(`  ⚠️  IBDB page redirected to homepage (production not found)`);
     return result;
   }
 
-  // Parse dates from markdown/text content
-  // Format observed: "Opening Date\n\nNov 12, 2024"
-  // and "1st Preview\n\nOct 16, 2024"
+  // Date pattern: month day, year (e.g., "Nov 12, 2024" or "November 12, 2024")
+  const datePattern = '([A-Z][a-z]{2,8}\\s+\\d{1,2},\\s*\\d{4})';
 
-  // Opening Date
-  const openingMatch = content.match(/Opening Date\s*\n+\s*([A-Z][a-z]{2,8}\s+\d{1,2},\s*\d{4})/);
-  if (openingMatch) {
-    result.openingDate = parseIBDBDate(openingMatch[1]);
-  }
-
-  // Also try "Open Date:" format (seen in structured data section)
-  if (!result.openingDate) {
-    const openDateMatch = content.match(/Open Date:\s*([A-Z][a-z]{2,8}\s+\d{1,2},\s*\d{4})/);
-    if (openDateMatch) {
-      result.openingDate = parseIBDBDate(openDateMatch[1]);
+  // Opening Date - try multiple formats seen in IBDB pages
+  const openingPatterns = [
+    new RegExp('Opening Date\\s*' + datePattern),
+    new RegExp('Open Date:\\s*' + datePattern),
+    new RegExp('Opening Date[\\s\\S]{0,20}?' + datePattern)
+  ];
+  for (const pat of openingPatterns) {
+    const m = text.match(pat);
+    if (m) {
+      result.openingDate = parseIBDBDate(m[1]);
+      if (result.openingDate) break;
     }
   }
 
   // 1st Preview
-  const previewMatch = content.match(/1st Preview\s*\n+\s*([A-Z][a-z]{2,8}\s+\d{1,2},\s*\d{4})/);
-  if (previewMatch) {
-    result.previewsStartDate = parseIBDBDate(previewMatch[1]);
-  }
-
-  // Closing Date
-  const closingMatch = content.match(/Closing Date\s*\n+\s*([A-Z][a-z]{2,8}\s+\d{1,2},\s*\d{4})/);
-  if (closingMatch) {
-    result.closingDate = parseIBDBDate(closingMatch[1]);
-  }
-  // Also try "Close Date:" format
-  if (!result.closingDate) {
-    const closeDateMatch = content.match(/Close Date:\s*([A-Z][a-z]{2,8}\s+\d{1,2},\s*\d{4})/);
-    if (closeDateMatch) {
-      result.closingDate = parseIBDBDate(closeDateMatch[1]);
+  const previewPatterns = [
+    new RegExp('1st Preview\\s*' + datePattern),
+    new RegExp('1st Preview[\\s\\S]{0,20}?' + datePattern),
+    new RegExp('Previews?\\s+' + datePattern)
+  ];
+  for (const pat of previewPatterns) {
+    const m = text.match(pat);
+    if (m) {
+      result.previewsStartDate = parseIBDBDate(m[1]);
+      if (result.previewsStartDate) break;
     }
   }
 
-  // Theatre - from "Theatres" section or structured text
-  const theatreMatch = content.match(/Theatres[^\n]*\n+\s*\[([^\]]+)\]/);
+  // Closing Date
+  const closingPatterns = [
+    new RegExp('Closing Date\\s*' + datePattern),
+    new RegExp('Close Date:\\s*' + datePattern),
+    new RegExp('Closing Date[\\s\\S]{0,20}?' + datePattern)
+  ];
+  for (const pat of closingPatterns) {
+    const m = text.match(pat);
+    if (m) {
+      result.closingDate = parseIBDBDate(m[1]);
+      if (result.closingDate) break;
+    }
+  }
+
+  // Theatre - from text near "Theatres" heading
+  const theatreMatch = text.match(/Theatres?\s*([A-Z][A-Za-z\s']+Theatre)/);
   if (theatreMatch) {
     result.theatre = theatreMatch[1].trim();
   }
