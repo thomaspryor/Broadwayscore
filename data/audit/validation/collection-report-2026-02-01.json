@@ -1,45 +1,45 @@
 {
-  "runDate": "2026-02-01T15:13:14.287Z",
+  "runDate": "2026-02-01T15:17:17.473Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "our-town-2024",
+    "showFilter": "cabaret-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 43,
-    "failed": 166,
+    "processed": 53,
+    "failed": 172,
     "skipped": 0,
-    "successRate": "20.6%"
+    "successRate": "23.6%"
   },
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 11,
     "browserbase": 0,
-    "scrapingbee": 4,
+    "scrapingbee": 8,
     "brightdata": 2,
-    "archive": 37
+    "archive": 40
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 1,
-    "tier1_5Attempts": 2,
+    "tier1Attempts": 14,
+    "tier1Success": 6,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 0,
-    "tier4Attempts": 5,
-    "tier4Success": 3,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 10,
-    "browserbaseSessionsUsed": 2,
+    "tier2Attempts": 8,
+    "tier2Success": 4,
+    "tier3Attempts": 3,
+    "tier3Success": 2,
+    "tier4Attempts": 11,
+    "tier4Success": 9,
+    "totalFailed": 10,
+    "scrapingBeeCreditsUsed": 41,
+    "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -85,7 +85,17 @@
     "the-great-gatsby/variety-christian-lewis--christian-lewis.json",
     "the-lion-king-1997/vulture--john-simon.json",
     "the-outsiders/new-york-magazinevulture-sara-holdren--sara-holdren.json",
-    "the-outsiders/variety-naveen-kumar--naveen-kumar.json"
+    "the-outsiders/variety-naveen-kumar--naveen-kumar.json",
+    "cabaret-2024/the-hollywood-reporter-demetrios-matheou--demetrios-matheou.json",
+    "cabaret-2024/broadwaynews--brittani-samuel.json",
+    "cabaret-2024/ew--amelia-merrill.json",
+    "cabaret-2024/inews-fiona-mountford--fiona-mountford.json",
+    "cabaret-2024/the-guardian-arifa-akbar--arifa-akbar.json",
+    "cabaret-2024/evening-standard-nick-curtis--nick-curtis.json",
+    "cabaret-2024/hello-magazine-emmy-griffiths--emmy-griffiths.json",
+    "cabaret-2024/independent-alexandra-pollard--alexandra-pollard.json",
+    "cabaret-2024/londontheatrecouk-suzy-evans--suzy-evans.json",
+    "cabaret-2024/the-telegraph-dominic-cavendish--dominic-cavendish.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -248,12 +258,18 @@
     "stereophonic/variety-frank-rizzo--frank-rizzo.json",
     "suffs/vulture-sara-holdren--sara-holdren.json",
     "the-great-gatsby/new-york-magazinevulture-sara-holdren--unknown.json",
-    "our-town-2024/deadline--greg-evans.json",
-    "our-town-2024/ny-sun--elysa-gardner.json",
-    "our-town-2024/nydailynews--chris-jones.json",
-    "our-town-2024/thewrap--robert-hofler.json",
-    "our-town-2024/timeout--adam-feldman.json",
-    "our-town-2024/wsj--charles-isherwood.json"
+    "cabaret-2024/nyt-theater--jonathan-mandell.json",
+    "cabaret-2024/culturewhisper-holly-omahony--unknown.json",
+    "cabaret-2024/deadline--greg-evans.json",
+    "cabaret-2024/observer--rex-reed.json",
+    "cabaret-2024/time-out-london-andrzej-lukowski--andrzej-lukowski.json",
+    "cabaret-2024/timeout--adam-feldman.json",
+    "cabaret-2024/wsj--charles-isherwood.json",
+    "cabaret-2024/wsj--charles.json",
+    "cabaret-2024/queerty--matthew-wexler.json",
+    "cabaret-2024/the-arts-desk-david-nice--david-nice.json",
+    "cabaret-2024/the-daily-mail-patrick-marmion--patrick-marmion.json",
+    "cabaret-2024/village-voice--michael-musto.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -263,19 +279,26 @@
       "appropriate-2023/observer--david-cote.json",
       "back-to-the-future-2023/ew--dalton-ross.json",
       "book-of-mormon-2011/timeout--david-cote.json",
-      "aladdin-2014/ap--mark-kennedy.json"
+      "cabaret-2024/ew--amelia-merrill.json",
+      "cabaret-2024/inews-fiona-mountford--fiona-mountford.json",
+      "cabaret-2024/the-guardian-arifa-akbar--arifa-akbar.json",
+      "cabaret-2024/evening-standard-nick-curtis--nick-curtis.json",
+      "cabaret-2024/londontheatrecouk-suzy-evans--suzy-evans.json"
     ],
     "browserbase": [],
     "scrapingbee": [
       "grey-house-2023/newyorker--dan-stahl.json",
       "here-lies-love-2023/nytimes--ben-brantley.json",
       "book-of-mormon-2011/newsday--linda-winer.json",
-      "stereophonic/variety-frank-rizzo--frank-rizzo.json"
+      "stereophonic/variety-frank-rizzo--frank-rizzo.json",
+      "cabaret-2024/hello-magazine-emmy-griffiths--emmy-griffiths.json",
+      "cabaret-2024/independent-alexandra-pollard--alexandra-pollard.json",
+      "cabaret-2024/the-daily-mail-patrick-marmion--patrick-marmion.json",
+      "cabaret-2024/the-telegraph-dominic-cavendish--dominic-cavendish.json"
     ],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "mj-2022/usatoday--david-rooney.json",
-      "merrily-we-roll-along-2023/the-times--will-pavia.json"
+      "mj-2022/usatoday--david-rooney.json"
     ],
     "archive": [
       "harry-potter-2021/hollywood-reporter--david-rooney.json",
@@ -314,16 +337,19 @@
       "the-great-gatsby/variety-christian-lewis--christian-lewis.json",
       "the-lion-king-1997/vulture--john-simon.json",
       "the-outsiders/new-york-magazinevulture-sara-holdren--sara-holdren.json",
-      "the-outsiders/variety-naveen-kumar--naveen-kumar.json"
+      "the-outsiders/variety-naveen-kumar--naveen-kumar.json",
+      "cabaret-2024/the-hollywood-reporter-demetrios-matheou--demetrios-matheou.json",
+      "cabaret-2024/broadwaynews--brittani-samuel.json",
+      "cabaret-2024/culturewhisper-holly-omahony--unknown.json"
     ]
   },
   "failuresByOutlet": {
-    "New York Daily News": {
+    "The Arts Desk (David Nice)": {
       "count": 1,
-      "domain": "nydailynews.com",
+      "domain": "theartsdesk.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": true
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": []
