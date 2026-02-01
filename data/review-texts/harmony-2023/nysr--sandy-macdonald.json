@@ -10,19 +10,19 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 50,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 50,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "low",
     "range": {
-      "low": 45,
-      "high": 55
+      "low": 70,
+      "high": 85
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -31,35 +31,42 @@
     },
     "keyPhrases": [
       {
-        "quote": "you would think that a recording superstar on the level of Barry Manilow might enjoy a bit of a step up",
-        "sentiment": "negative",
+        "quote": "★★★★☆",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "considerable acclaim",
+        "sentiment": "positive",
         "strength": 3
       },
       {
         "quote": "hit every conceivable bump in the road",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "to considerable acclaim",
-        "sentiment": "positive",
-        "strength": 3
+        "sentiment": "neutral",
+        "strength": 2
       }
     ],
-    "reasoning": "GPT-4o-mini: The review indicates both challenges faced by the production and some positive reception, leading to a mixed recommendation.",
+    "reasoning": "The 4/5 star rating indicates a clear positive recommendation despite the truncated review text that focuses more on the show's development history than critical assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:22:38.920Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:04:40.858Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2481,
+    "outputTokens": 304,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": null,
@@ -72,7 +79,7 @@
       "Score (50 → Flat) conflicts with aggregator thumbs (Up)"
     ]
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 50,
   "archivePath": "data/archives/reviews/harmony-2023/nysr--sandy-macdonald_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:49:48.707Z",
@@ -94,7 +101,7 @@
   ],
   "fetchTier": 1,
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.752Z",
+  "rescoreCompletedAt": "2026-02-01T15:04:40.858Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
   "wordCount": 721

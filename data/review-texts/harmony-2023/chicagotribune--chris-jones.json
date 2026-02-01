@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 71,
+  "assignedScore": 72,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -21,51 +21,58 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 71,
+    "score": 72,
     "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 77
+      "low": 68,
+      "high": 76
     },
     "bucket": "Mixed",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 77,
-      "performances": null,
-      "direction": null
+      "book": 45,
+      "music": 82,
+      "performances": 78,
+      "direction": 68
     },
     "keyPhrases": [
       {
-        "quote": "it's a rare pleasure and the vocal arrangements here...come with an uncommon amount of theatricality",
+        "quote": "for Barry Manilow to deliver to Broadway an accessible but nonetheless varied and harmonically sophisticated score for a new musical at the age of 80 is a remarkable capper on an extraordinary songwriting and performance career",
         "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This is not a deeply sophisticated book and the interaction between narration and dramatization is often choppy",
+        "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "The score will have its detractors, perhaps",
-        "sentiment": "negative",
-        "strength": 2
-      },
-      {
-        "quote": "his decadeslong mastery of the kind of arrangements that bring anthems to a climax and people to their feet",
+        "quote": "it deserved its long-delayed berth on Broadway at what has turned out to be both the perfect and a truly awful moment",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The excerpt praises the vocal arrangements and Manilow's mastery while acknowledging the score may be divisive, but this appears to be only a fragment of a larger review making confident scoring difficult. | GPT-4o-mini: The review highlights the strengths of the vocal arrangements and their theatricality but acknowledges potential criticisms of the score, leading to a mixed-positive recommendation.",
+    "reasoning": "The critic acknowledges significant structural flaws in the book but praises Manilow's score, strong performances (especially Benko), and finds the show emotionally resonant and timely, ultimately supporting its Broadway placement despite reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:21:51.234Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:03:57.893Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3558,
+    "outputTokens": 401,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -76,7 +83,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 71,
   "archivePath": "data/archives/reviews/harmony-2023/chicagotribune--chris-jones_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:48:32.141Z",
@@ -108,7 +115,7 @@
   ],
   "fetchTier": 3,
   "sourceMethod": "brightdata",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.749Z",
+  "rescoreCompletedAt": "2026-02-01T15:03:57.893Z",
   "contentTier": "complete",
   "wordCount": 862
 }
