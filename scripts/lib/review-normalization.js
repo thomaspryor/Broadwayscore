@@ -16,6 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { decodeHtmlEntities } = require('./text-cleaning');
 
 // Cache for the outlet registry data
 let _registryCache = null;
@@ -554,10 +555,11 @@ function areOutletsSame(outlet1, outlet2) {
 function mergeReviews(existing, incoming) {
   const merged = { ...existing };
 
-  // Prefer longer/more complete fullText
+  // Prefer longer/more complete fullText (decode entities on incoming text)
   if (incoming.fullText) {
-    if (!existing.fullText || incoming.fullText.length > existing.fullText.length) {
-      merged.fullText = incoming.fullText;
+    const decodedFullText = decodeHtmlEntities(incoming.fullText);
+    if (!existing.fullText || decodedFullText.length > existing.fullText.length) {
+      merged.fullText = decodedFullText;
     }
   }
 
@@ -566,18 +568,18 @@ function mergeReviews(existing, incoming) {
     merged.url = incoming.url;
   }
 
-  // Keep all excerpts
+  // Keep all excerpts (decode entities on incoming)
   if (incoming.dtliExcerpt && !existing.dtliExcerpt) {
-    merged.dtliExcerpt = incoming.dtliExcerpt;
+    merged.dtliExcerpt = decodeHtmlEntities(incoming.dtliExcerpt);
   }
   if (incoming.bwwExcerpt && !existing.bwwExcerpt) {
-    merged.bwwExcerpt = incoming.bwwExcerpt;
+    merged.bwwExcerpt = decodeHtmlEntities(incoming.bwwExcerpt);
   }
   if (incoming.showScoreExcerpt && !existing.showScoreExcerpt) {
-    merged.showScoreExcerpt = incoming.showScoreExcerpt;
+    merged.showScoreExcerpt = decodeHtmlEntities(incoming.showScoreExcerpt);
   }
   if (incoming.nycTheatreExcerpt && !existing.nycTheatreExcerpt) {
-    merged.nycTheatreExcerpt = incoming.nycTheatreExcerpt;
+    merged.nycTheatreExcerpt = decodeHtmlEntities(incoming.nycTheatreExcerpt);
   }
 
   // Keep thumb data
