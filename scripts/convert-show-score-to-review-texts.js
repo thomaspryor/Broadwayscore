@@ -145,8 +145,7 @@ function main() {
         originalScore: null,
         assignedScore: null,
         source: 'show-score',
-        dtliThumb: null,
-        needsScoring: true
+        dtliThumb: null
       };
 
       fs.writeFileSync(filePath, JSON.stringify(reviewData, null, 2));
