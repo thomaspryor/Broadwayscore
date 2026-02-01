@@ -45,5 +45,60 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": 88,
+      "performances": 94,
+      "direction": 92
+    },
+    "keyPhrases": [
+      {
+        "quote": "Audiences may feel the same way after seeing this work of theatrical virtuosity, realizing that all the tiny details, wild rhythms, and clever hooks presented on stage have added up to a work that is brave, purposeful, and rich.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "making the slightest adjustments in tempo and tuning to Adjmi's composition and the performances to make it all come together into a breathtaking whole",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "But throughout the three hours of the play's recording sessions, all eyes are on Diana, at first belittled and emotionally beaten by Peter's brilliance and bullying. As played by Pidgeon, Diana's incremental discovery of her own confidence, voice and courage to go her own way gives the play's emotional through-line.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The review uses superlative language throughout ('theatrical virtuosity', 'breathtaking whole', 'work that is brave, purposeful, and rich') with detailed praise for all elements including performances, direction, music, and script, indicating an unqualified rave recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:44:03.886Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3750,
+    "outputTokens": 469,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

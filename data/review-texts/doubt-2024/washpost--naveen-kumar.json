@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 39,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -18,51 +18,58 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 39,
+    "score": 42,
     "confidence": "high",
     "range": {
-      "low": 33,
-      "high": 45
+      "low": 38,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": null,
+      "book": 65,
       "music": null,
-      "performances": 38,
-      "direction": null
+      "performances": 45,
+      "direction": 35
     },
     "keyPhrases": [
       {
+        "quote": "uncertainty is curiously scarce in the first Broadway revival of \"Doubt\"",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the answer seems too obvious",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
         "quote": "the lead performances are miscalibrated",
         "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "lacks a threatening underside, like a rock without worms squirming beneath",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "she seems to throw them for the sake of it, with an absence of fear or disgust",
-        "sentiment": "negative",
-        "strength": 3
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic harshly criticizes both lead performances as fundamentally flawed and miscalibrated, with vivid negative metaphors suggesting core deficiencies in the actors' interpretations. | GPT-4o-mini: The review predominantly critiques the lead performances as miscalibrated, indicating a lack of recommendation.",
+    "reasoning": "The critic finds fundamental flaws in the revival's approach and execution, particularly criticizing the lack of ambiguity that makes the play work and calling the lead performances 'miscalibrated,' despite acknowledging some technical merits.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:37:46.072Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:35:32.119Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3724,
+    "outputTokens": 338,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 38,
@@ -73,7 +80,6 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 39,
   "archivePath": "data/archives/reviews/doubt-2024/washpost--naveen-kumar_2026-01-29.html",
@@ -92,5 +98,6 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250723030821/https://www.washingtonpost.com/entertainment/theater/2024/03/07/doubt-broadway-review-the-hunt/",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
-  "wordCount": 871
+  "wordCount": 871,
+  "rescoreCompletedAt": "2026-02-01T17:35:32.119Z"
 }

@@ -13,5 +13,60 @@
     "playbill-verdict"
   ],
   "originalScore": "2/5 stars",
-  "playbillVerdictUrl": "https://nystagereview.com/2025/11/16/chess-thank-you-for-the-music/"
+  "playbillVerdictUrl": "https://nystagereview.com/2025/11/16/chess-thank-you-for-the-music/",
+  "assignedScore": 38,
+  "llmScore": {
+    "score": 38,
+    "confidence": "high",
+    "range": {
+      "low": 32,
+      "high": 44
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": 65,
+      "performances": 68,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "the spectacle wears out its welcome long before the end of a near-three-hour running time",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the promise of an effective staged Chess – if indeed it's a promise and not a chimera – remains stubbornly out of reach",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "they are fine. They put over the beloved classics...with minimal melisma and maximal emotional connection",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic systematically dismantles the show's concept, script, and direction while acknowledging solid performances and music, concluding it fails to achieve an effective stage version.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:42:16.487Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3500,
+    "outputTokens": 366,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

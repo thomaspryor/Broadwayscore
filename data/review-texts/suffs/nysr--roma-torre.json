@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "5/5 stars"
+  "originalScore": "5/5 stars",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": 95,
+      "performances": 92,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "Suffs, much like Hamilton, transcends entertainment, serving as a poignant reminder that history matters",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "her work on this production is nothing short of masterful",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Suffs, like Hamilton before it, is poised to etch its own place in theatre history",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "The reviewer uses superlatives throughout ('masterful', 'sublime', 'phenomenal'), compares it favorably to Hamilton multiple times, praises every aspect of the production extensively, and explicitly states it will make theatre history.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:44:14.929Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3830,
+    "outputTokens": 363,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

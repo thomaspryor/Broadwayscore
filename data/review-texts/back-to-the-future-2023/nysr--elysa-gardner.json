@@ -7,7 +7,7 @@
   "publishDate": "August 3, 2023",
   "showScoreExcerpt": null,
   "bwwExcerpt": "theme park ride with songs causing sensory overload and auditory assault",
-  "assignedScore": 39,
+  "assignedScore": 55,
   "source": "bww-roundup",
   "archivePath": "data/archives/reviews/back-to-the-future-2023/nysr--elysa-gardner_2026-02-01.html",
   "textFetchedAt": "2026-02-01T15:08:39.103Z",
@@ -18,18 +18,23 @@
     "invalidatedAt": "2026-02-01T00:00:00.000Z"
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T04:05:35.691Z",
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:31:46.069Z",
     "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": 40,
-    "previousVersion": "3.0.0"
+    "inputTokens": 2406,
+    "outputTokens": 287,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "bwwThumb": "Down",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 39,
-  "rescoreCompletedAt": "2026-01-28T23:31:58.329Z",
+  "rescoreCompletedAt": "2026-02-01T17:31:46.069Z",
   "garbageFullText": "The page you are looking for no longer exists. Perhaps you can return back to the homepage and see if you can find what you are looking for. Or, you can try finding it by using the search form below. ★★★★☆ Playwright Simon Stephens and tech wizards concoct the world’s first mixed reality play ★★★☆☆ Ian McKellen is among the performers appearing virtually in this one-act play by Simon Stephens ★★★☆☆ Erica Schmidt’s world premiere dramedy skewers a self-absorbed filmmaker and the people who love him ★★★☆☆ Hamish Linklater, Miriam Silverman, and Dylan Baker are among the stars of Erica Schmidt's world premiere play riffing on show business and marriage ★★★★☆ A new production of the Tony-nominated musical comedy goes to the head of the class ★★★★☆ Lesley Manville and Mark Strong have disturbingly good chemistry as theater’s most famous twice-related couple ★★★★★ Laurie Metcalf and Micah Stock star in Samuel D. Hunter's acclaimed drama, previously seen at Steppenwolf Theatre Company ★★★★★ Bess Wohl takes inspiration from her mother’s life for her clever, decade-jumping memory play ★★★★★ Joshua Henry gives what’s destined to be a Tony-winning performance in this much-needed revival ★★★★☆ Jonathan Groff gives a once-in-a-lifetime performance as the Grammy-winning “Beyond the Sea” singer Copyright © 2026 • New York Stage Review • .",
   "garbageReason": "Error/404 page: \"The page you are looking for\"",
   "garbageFixedAt": "2026-01-29T22:45:22.682Z",
@@ -82,27 +87,38 @@
     "invalidatedAt": "2026-02-01T04:02:00.804Z"
   },
   "llmScore": {
-    "score": 39,
-    "confidence": "medium",
+    "score": 55,
+    "confidence": "low",
     "range": {
-      "low": 34,
-      "high": 44
+      "low": 45,
+      "high": 65
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": null,
-      "music": null,
+      "book": 45,
+      "music": 40,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The 2/5 star rating combined with harsh language describing the show as an 'auditory assault' and 'sensory overload' clearly indicates a negative recommendation. | GPT-4o: The critic's original rating of 2/5 stars and the harsh language used in the key quote indicate a strongly negative review. The description suggests a highly unpleasant experience, aligning with a 'Pan' classification. | Gemini: The review excerpt uses strongly negative language, describing the show as a sensory overload and auditory assault. Given the 2/5 star rating and the negative excerpt, it's classified as negative.",
+    "keyPhrases": [
+      {
+        "quote": "Sometimes the latter can be fun and even stylish",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "generally unsurprising storylines and usually lackluster original scores",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "This appears to be a general commentary on Broadway trends rather than a specific show review, with mild acknowledgment of potential enjoyment tempered by criticism of typical weaknesses.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "ensembleData": {
@@ -122,7 +138,6 @@
   },
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "fullText": "For years, theater fans have been lamenting the &#8220;Disneyfication&#8221; of Broadway, but that term isn&#8217;t quite fair to Disney. In truth, a whole cabal of studios and abetting producers enabled the trend in blockbuster movies being converted into flashy musical spectacles. Sometimes the latter can be fun and even stylish, if you can look and listen past the generally unsurprising storylines and usually lackluster original scores.\n\nThen there are shows like Back to the Future: The Musical, whose title is something of a misnomer: This adaptation of the Universal Pictures/Amblin Entertainment hit about a teenager who finds himself bounced back from 1985 to 1955 is less a musical than a two-and-a-half-hour theme park ride with songs, offering as much sensory overload as an afternoon at Magic Kingdom.\n\nIndeed, the warnings that can accompany splashily high-tech productions, to pregnant women and theatergoers prone to migraines and seizures, should have been emblazoned on the playbill cover in this case. Strobe lights and other visual shenanigans, from Finn Ross&#8217;s dizzying video design to a flying car, are just the beginning; for me, the auditory assaults leveled by sound designer Gareth Owen (in conjunction with musical supervisor Nick Finlow and music director Ted Arthur, I assume) hit the hardest. Before the first act was even half over, I had crafted makeshift earplugs out of tissue paper, a trick I typically reserve for the loudest rock concerts.\n\n[Read Steven Suskin’s ★★★★☆ review here.]\n\nBut perhaps that&#8217;s the vibe this Back to the Future&#8216;s creators, among them original co-screenwriter Bob Gale, were going for. The film showcased two songs by Huey Lewis and the News—hardly headbangers, to be fair—including the chart-topping &#8220;The Power of Love&#8221;; both tunes are featured in the stage incarnation, along with early rock classics &#8220;Johnny B. Goode&#8221; and &#8220;Earth Angel,&#8221; which were also included on the soundtrack.\n\nExcerpts from Alan Silvestri&#8217;s film score are inserted into the action, and Silvestri and pop veteran Glen Ballard—best known by rock and Broadway fans for his contributions to Alanis Morissette&#8217;s Jagged Little Pill, the album and musical (though he also co-wrote the score for Ghost: The Musical and has songs featured in MJ The Musical)—have crafted a bunch of turbo-charged tunes that are memorable mostly for the affable banality of their lyrics.\n\n&#8220;Now the walls just keep closing in/And I don&#8217;t know if I&#8217;ll ever win,” sings our hero, Marty McFly, played by an agreeable Casey Likes, who made his Broadway bow last year in a similar role—yearning teenager thrust into extraordinary adventure—in another musical adaptation of a hit film, Almost Famous. Marty&#8217;s mom, whom he will awkwardly encounter as a nubile beauty in the &#8217;50s, is portrayed by a winsome Liana Hunt, who gets to croon, in the same song, &#8220;You look around/And you start to see/That you&#8217;re living out your fantasy/It starts to feel like destiny/Like it&#8217;s meant to be.&#8221;\n\nHugh Coles steals a scene or two as Marty&#8217;s dad, an über-nerd who has his own solo number, with the following chorus: &#8220;My myopia/Is my utopia/And I&#8217;m hoping you’re feeling it/See how I&#8217;m dealing with it/I&#8217;m hoping you’re feeling it too.&#8221; Who says they don’t write &#8217;em like they used to?\n\nThe role of Doc Brown, the freaky scientist whose experiments accidentally hurl Marty back in time, is played by Roger Bart, whose considerable comedic gifts enhanced the 1999 revival of You&#8217;re A Good Man, Charlie Brown and the original production of The Producers, among other shows. Here Bart is pretty much relegated to reproducing the kind of shtick that got Christopher Lloyd, who was Doc to Michael J. Fox&#8217;s Marty on screen, laughs, with director John Rando gamely milking each exchange.\n\nAt the preview of Back to the Future I attended, in fact, audience members reserved their greatest enthusiasm for references to the film and special effects, though not necessarily in that order. Towards the end, a character called Uncle Huey materializes, a nod to Lewis&#8217;s cameo in the movie—which is readily available on streaming outlets, for a tiny fraction of the cost of a Broadway ticket. A day pass to Six Flags Great Adventure might also prove a better bargain.\n\nBack to the Future opened August 3, 2023, at the Winter Garden Theatre. Tickets and information: backtothefuturemusical.com\n\nElysa Gardner covered theater and music at USA Today until 2016, and has since written for The New York Times, The Village Voice, Town & Country, Entertainment Weekly, Entertainment Tonight, Out, American Theatre, Broadway Direct, and the BBC. Twitter: @ElysaGardner. Email: elysa@nystagereview.com.",
   "isFullReview": true,
   "textWordCount": 748,

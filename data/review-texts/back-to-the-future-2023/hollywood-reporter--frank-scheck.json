@@ -9,57 +9,64 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": "It’s a terrifically fun and amusing story that works nearly as well onstage as it did on film, although the original songs, as is so often the case with these adaptations, mainly come across as superfluous. Not that they’re all that bad, mind you.",
   "originalScore": null,
-  "assignedScore": 71,
+  "assignedScore": 65,
   "source": "bww-roundup",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 71,
-    "confidence": "high",
+    "score": 65,
+    "confidence": "low",
     "range": {
-      "low": 65,
-      "high": 77
+      "low": 58,
+      "high": 72
     },
     "bucket": "Mixed",
-    "thumb": "Up",
+    "thumb": "Flat",
     "components": {
-      "book": 77,
-      "music": 48,
-      "performances": null,
+      "book": 60,
+      "music": null,
+      "performances": 55,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "terrifically fun and amusing story that works nearly as well onstage as it did on film",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the original songs, as is so often the case with these adaptations, mainly come across as superfluous",
+        "quote": "weren't taking any chances",
         "sentiment": "negative",
         "strength": 3
       },
       {
-        "quote": "a terrifically fun and amusing story",
+        "quote": "snagged a 2022 Olivier Award for Best New Musical",
         "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "hard to tell whether it's tribute or appropriation",
+        "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic clearly enjoys the story and finds the adaptation successful, but has notable reservations about the music, creating a qualified positive recommendation. | GPT-4o-mini: The review expresses enjoyment of the story but notes significant shortcomings in the music, leading to a mixed-positive recommendation overall.",
+    "reasoning": "This excerpt describes a safe but potentially unoriginal adaptation with concerning performance choices, suggesting mixed reception despite past awards.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:03:31.938Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:31:29.426Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2452,
+    "outputTokens": 310,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -79,7 +86,6 @@
   "previousUrl": "https://www.hollywoodreporter.com/movies/movie-reviews/back-to-the-future-the-musical-broadway-review-1235551654/",
   "urlDiscoveredAt": "2026-02-01T13:57:21.485Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 71,
   "isFullReview": true,
@@ -102,5 +108,6 @@
   ],
   "textStatus": "truncated",
   "archiveOrgTimestamp": "20250725130440",
-  "archiveOrgUrl": "http://web.archive.org/web/20250725130440/https://www.hollywoodreporter.com/lifestyle/arts/back-to-the-future-the-musical-theater-review-a-fun-faithful-stage-adaptation-hits-broadway-1235548700/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250725130440/https://www.hollywoodreporter.com/lifestyle/arts/back-to-the-future-the-musical-theater-review-a-fun-faithful-stage-adaptation-hits-broadway-1235548700/",
+  "rescoreCompletedAt": "2026-02-01T17:31:29.426Z"
 }

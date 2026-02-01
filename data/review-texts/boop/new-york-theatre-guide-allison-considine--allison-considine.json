@@ -32,5 +32,60 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "assignedScore": 72,
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 76
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 55,
+      "music": 60,
+      "performances": 85,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "BOOP! The Musical proves that bringing Betty Boop to life on stage is a worthy endeavor, even if only for the spectacle of it all",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The show's book, written by Bob Martin, is much like the storylines of the Fleischer Studio Betty Boop cartoons: full of romance, slapstick, and science fiction. It is also a bit silly and far-fetched at times, with unengaging subplots",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "In an astonishing performance, Jasmine Amy Rogers fully embodies Betty Boop",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Review praises spectacular production values and standout performances but criticizes unmemorable songs and weak book, concluding it's a 'worthy endeavor' primarily for its spectacle.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:41:14.244Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3140,
+    "outputTokens": 414,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

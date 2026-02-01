@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "2/5 stars"
+  "originalScore": "2/5 stars",
+  "assignedScore": 38,
+  "llmScore": {
+    "score": 38,
+    "confidence": "high",
+    "range": {
+      "low": 35,
+      "high": 42
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": 45,
+      "performances": 55,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "Those with fond memories of M-G-M's 1939 Wizard of Oz, or William F. Brown and Charlie Smalls' brash, funky 1975 Tony winner The Wiz, might elect to give the current revival of the latter a pass. It could break your heart.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Under Schele Williams' direction, the story is perfunctory, just a series of disconnected scenes. Moment by moment there is little character reality to play",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Of the cast, Richardson comes off best because he's allowed most of the time to speak like a normal person",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "The critic fundamentally warns fans away ('might elect to give it a pass. It could break your heart') and systematically critiques the direction, book, and execution while offering only scattered praise for individual performers.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:44:59.866Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3463,
+    "outputTokens": 426,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

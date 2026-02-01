@@ -8,28 +8,28 @@
   "showScoreExcerpt": "\"Brimming with cheerful obscenity, sharp satire and catchy tunes, The Book of Mormon is a sick mystic revelation, the most exuberantly entertaining Broadway musical in years.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-book-of-mormon",
   "originalScore": 100,
-  "assignedScore": 94,
+  "assignedScore": 92,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 94,
+    "score": 92,
     "confidence": "high",
     "range": {
-      "low": 87.5,
-      "high": 100
+      "low": 88,
+      "high": 95
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 93,
-      "music": 92,
-      "performances": 90,
-      "direction": 93
+      "book": null,
+      "music": 90,
+      "performances": null,
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "The Book of Mormon is a sick mystic revelation, the most exuberantly entertaining Broadway musical in years",
+        "quote": "the most exuberantly entertaining Broadway musical in years",
         "sentiment": "positive",
         "strength": 5
       },
@@ -39,25 +39,32 @@
         "strength": 4
       },
       {
-        "quote": "you will be transported back ten years, when The Producers and Urinetown resurrected American musical comedy",
+        "quote": "sick mystic revelation",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: 5/5 stars with unqualified superlatives like 'sick mystic revelation' and 'most exuberantly entertaining Broadway musical in years' indicate a rave review despite controversial content. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the show's humor, writing, and overall entertainment value with no significant reservations.",
+    "reasoning": "The superlative 'most exuberantly entertaining Broadway musical in years' combined with unqualified praise for multiple elements signals an unequivocal rave recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:34:22.027Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:32:12.339Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2345,
+    "outputTokens": 329,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 92,
@@ -75,13 +82,12 @@
   ],
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 94,
-  "rescoreCompletedAt": "2026-01-28T23:34:22.027Z",
+  "rescoreCompletedAt": "2026-02-01T17:32:12.339Z",
   "garbageFullText": "Thanks for subscribing! Look out for your first newsletter in your inbox soon!\n\nThe best of New York straight to your inbox\n\nBy entering your email address you agree to our Terms of Use and Privacy Policy and consent to receive emails from Time Out about news, events, offers and partner promotions.\n\nThanks for subscribing! Look out for your first newsletter in your inbox soon!\n\nDéjà vu! We already have this email. Try another?\n\nBy entering your email address you agree to our Terms of Use and Privacy Policy and consent to receive emails from Time Out about news, events, offers and partner promotions.\n\nPhotograph: Joan Marcus | The Book of MormonReview\n\n5 out of 5 starsTheater, MusicalsEugene O'Neill Theatre, Midtown WestOpen runRecommendedThursday March 15 2012ShareCopy LinkFacebookTwitterPinterestEmailWhatsAppBuy ticketWritten by David CoteAdvertisingTime Out saysIf theater is your religion and the Broadway musical your sect, you've been woefully faith-challenged of late. Venturesome, boundary-pushing works such as Spring Awakening, Bloody Bloody Andrew Jackson and Next to Normal closed too soon. American Idiot was shamefully ignored at the Tonys and will be gone in three weeks. Meanwhile, that airborne infection Spider-Man: Turn Off the Dark dominates headlines and rakes in millions, without even opening. Celebrities and corporate brands sell poor material, innovation gets shown the door, and crap floats to the top. It's enough to turn you heretic, to sing along with The Book of Mormon's Ugandan villagers: \"Fuck you God in the ass, mouth and cunt-a, fuck you in the eye.\"\n\nSuch deeply penetrating lyrics offer a smidgen of the manifold scato-theological joys to be had at this viciously hilarious treat crafted by Trey Parker and Matt Stone, of South Park fame, and composer-lyricist Robert Lopez, who cowrote Avenue Q. As you laugh your head off at perky Latter-day Saints tap-dancing while fiercely repressing gay tendencies deep in the African bush, you will be transported back ten years, when The Producers and Urinetown resurrected American musical comedy, imbuing time-tested conventions with metatheatrical irreverence and a healthy dose of bad-taste humor. Brimming with cheerful obscenity, sharp satire and catchy tunes, The Book of Mormon is a sick mystic revelation, the most exuberantly entertaining Broadway musical in years.\n\nThe high quality of the writing, design and direction (the latter duty shared by Parker and the seasoned Casey Nicholaw) should surprise no one: Parker and Stone have been honing their musical-theater chops for nearly two decades. The team's student film, Cannibal! The Musical, was made in 1993, and in 1999, South Park: Bigger, Longer and Uncut was aptly (if cheekily) hailed as the year's best new musical. More recently, Team America: World Police paid snarky homage to Rent with the parody ballad \"Everyone Has AIDS.\" As for Lopez, his long-running puppets-behaving-badly hit speaks for itself. These song-and-dance pranksters were destined to one day mock the Church of Latter-day Saints, an institution that, like the Broadway musical, is a singularly American invention.\n\nStarting off in (where else?) Salt Lake City, Utah, The Book of Mormon follows a mismatched pair of proselytizers, Elders Price (Rannells) and Cunningham (Gad). The former is the clean-cut ideal of a Mormon doorbell-pusher: white-bread, well-groomed and safely asexual. Cunningham, however, is a fat, slovenly manchild who tends to lie. Despite Price's callow wish to be assigned missionary work in Orlando, Florida, the two are sent to save souls in war-torn, AIDS-ravaged, poverty-stricken Uganda. The dawning horror on Rannells's face and the spastic, gleeful incomprehension on Gad's upon hearing the news is priceless. The evolving friendship between their two characters lays the emotional foundation for the show, and gives even the cruelest jokes about disease, racism and homophobic self-loathing a sweetish, innocent finish. That human dimension reminds you that the long-lived comic genius of South Park (heading into its 15th year) relies on children blinded by navet, but who can see through society's lies.\n\nLikewise, by smashing together two disparate worlds—prim, über-Caucasoid Mormons and long-suffering, hope-starved Africans—the creators can lampoon Western illusions about that complex, troubled continent (the anthem \"I Am Africa\" is sung by distinctly pale cast members), while scoring laughs off the sort of horrors that should never be put on a Broadway stage (\"I have maggots in my scrotum\" is a recurring lament). We chortle disgustedly at an African man who thinks raping a baby will cure his AIDS (a documented crime), but truly grotesque is the notion that a couple of Bible-toting white boys can be of any real help.\n\nIn fact, the uses and abuses of faith, the strange persistence of these ancient (or in the case of Mormonism, not so ancient) bedtime stories, is a central theme. Religion, the creators firmly point out, is showbiz, and the satire bites into both the absurdities of Joseph Smith and his angel Moroni, and the intoxicating frivolity of musicals. Of the dozen or so classics referenced by musical pastiche, sight gag or laugh line, there's Wicked, Pacific Overtures, Jesus Christ Superstar, The Music Man, The Lion King (naturally) and The Producers.\n\nSuch a magpie aesthetic makes perfect sense for a show that examines, with impressive insight, cultural transmission, adaptation and assimilation. \"It was a bunch of stuff you made up,\" Price says to comfort Cunningham, who fabricates a wildly blasphemous version of Mormonism for the natives. \"But it pointed to something bigger.\" Just so, The Book of Mormon is more than a collection of offensive jokes about female genital mutilation, bestiality and Mormon kitsch; it's about our ineradicable hunger for narrative and mystery—no matter how weird, sick or damnably fake.\n\nFollow David Cote on Twitter: @davidcote\n\nRunning time: 2hrs 35mins. One intermission.\n\nBeen there, done that? Think again, my friend.\n\nBy entering your email address you agree to our Terms of Use and Privacy Policy and consent to receive emails from Time Out about news, events, offers and partner promotions.\n\nThanks for subscribing! Look out for your first newsletter in your inbox soon!\n\nDiscover Time Out original video\n\nBack to TopCloseGet us in your inbox\n\nBy entering your email address you agree to our Terms of Use and Privacy Policy and consent to receive emails from Time Out about news, events, offers and partner promotions.\n\nThanks for subscribing! Look out for your first newsletter in your inbox soon!\n\ntiktokfacebooktwitteryoutubeAbout us\n\nPay to remove ads with contentpass\n\nAccess Time Out and over 600 other websites without banner ads, personalized tracking and video ads for only £3.49 per month.\n\nAlready have a contentpass account?\n\nMore information about our ads is available in our privacy manager\n\nYou can withdraw your consent at any time by visiting Privacy Preferences in the footer. Your consent only applies to this website. For more information, please see our Privacy Policy.\n\nThe following vendors use this purpose:",
   "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
   "garbageFixedAt": "2026-01-29T22:45:22.696Z",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "fullText": "In The Book of Mormon, Broadway gets treated to one of its funniest and most irreverent Broadway musicals of all time. We knew that the show's creators, Trey Parker and Matt Stone (South Park) and Robert Lopez (Avenue Q), could be counted on to bring the comedy. But nothing could prepare critics or audiences for the blasphemous hilarity and zestful vulgarity of The Book of Mormon. Two squeaky-clean missionaries from the Church of Jesus Christ of Latter-day Saints are sent from Utah to proselytize in Uganda; set down in a beleaguered village terrorized by a local warlord and suffering from disease and other horrors, our Mormon boys find their work cut out for them. Parker, Stone and Lopez gleefully lampoon Mormonism as well as African stereotypes—and they do so in the framework of a traditional book musical that references a host of canonical musicals, from The Lion King to The King and I. Smart, vicious but surprisingly sweet at its center, The Book of Mormon is New York theater lovers’ heaven and one of the best Broadway shows. The Book of Mormon is a musical comedy by Trey Parker, Robert Lopez and Matt Stone. It is directed by Trey Parker and Casey Nicholaw. It began previews on February 24, 2011, and opened on March 24, 2011. It is the winner of nine 2011 Tony Awards, including Best Musical. The Book of Mormon plays at Broadway's Eugene O'Neill Theatre, located at 230 West 49th Street between Broadway and Eighth Avenue. The Book of Mormon plays eight times a week, on the following schedule: Tuesdays through Thursdays at 7pm; Fridays at 8pm; Saturdays at 2pm and 8pm; and Sundays at 2pm and 7pm. Tickets to The Book of Mormon are sold online. They can also be purchased by phone (877-250-2929) or in person at the Eugene O'Neill Theatre box office. Tickets cost $89–$172, and premium tickets cost $199–$299. A limited number of $32 tickets are sold via lottery; entries are accepted at the box office two and a half hours before each performances, and the drawing takes place two hours before curtain time. Standing-toom tickets cost $27 and are sold at the box office directly following the lottery drawing. If you're looking to buy last-minute Broadway tickets and don't want to risk losing the lottery, you can try your luck on the secondary or resale market. The running time of The Book of Mormon is 2 hours and 35 minutes, with one intermission. The cast of The Book of Mormon currently includes Nic Rouleau (Elder Price), Christopher John O'Neill (Elder Cunningham), Nikki Renée Daniels (Nabulungi), Grey Henson (Elder McKinley) and Daniel Breaker (Mafala Hatimbi). If theater is your religion and the Broadway musical your sect, you've been woefully faith-challenged of late. Venturesome, boundary-pushing works such as Spring Awakening, Bloody Bloody Andrew Jackson and Next to Normal closed too soon. American Idiot was shamefully ignored at the Tonys and will be gone in three weeks. Meanwhile, that airborne infection Spider-Man: Turn Off the Dark dominates headlines and rakes in millions, without even opening. Celebrities and corporate brands sell poor material, innovation gets shown the door, and crap floats to the top. It's enough to turn you heretic, to sing along with The Book of Mormon's Ugandan villagers: \"Fuck you God in the ass, mouth and cunt-a, fuck you in the eye.\" Read the full review by David Cote • Josh Gad as Elder Cunningham • Andrew Rannells as Elder Price • Nikki M. James as Nabulungi • Rory O'Malley as Elder McKinley, Moroni • Michael Potts as Mafala Hatimbi • Lewis Cleale as Price's Dad, Mission President • Kevin Duda as Cunningham's Dad, Ensemble • Brian Tyree Henry as General, Ensemble • Michael James Scott as Doctor, Ensemble • Rema Webb as Mrs. Brown, Ensemble • Casey Nicholaw and Trey Parker - Directors • Trey Parker, Robert Lopez, and Matt Stone - Book, Music, and Lyrics • Casey Nicholaw - Choreographer • Scott Pask - Scenic Design • Ann Roth - Costume Design • Brian MacDevitt - Lighting Design • Brian Ronan - Sound Design • Anne Garefino, Scott Rudin, Roger Berlind, Scott M. Delman, Jean Doumanian, Sonia Friedman Productions, Roy Furman, Important Musicals, Stephanie P. McClelland, Kevin Morris, Jon B. Platt, Stuart Thompson - Producers 2011 Tony Awards• Best Musical• Best Book of a Musical - Trey Parker, Robert Lopez, and Matt Stone• Best Original Score - Trey Parker, Robert Lopez, and Matt Stone• Best Performance by a Featured Actress in a Musical - Nikki M. James• Best Direction of a Musical - Casey Nicholaw and Trey Parker• Best Orchestrations - Larry Hochman and Stephen Oremus• Best Scenic Design - Scott Pask• Best Lighting Design - Brian MacDevitt• Best Sound Design - Brian Ronan2011 New York Drama Critics' Circle Awards• Best Musical2011 Drama Desk Awards• Outstanding Musical• Outstanding Lyrics - Trey Parker, Robert Lopez, and Matt Stone• Outstanding Music - Trey Parker, Robert Lopez, and Matt Stone• Outstanding Director of a Musical - Casey Nicholaw and Trey Parker• Outstanding Orchestrations - Larry Hochman and Stephen Oremus2012 Grammy Awards• Best Musical Theater Album - Original Broadway Cast Buy The Book of Mormon's original Broadway cast album on Amazon TJ Maxx is opening its first new store in NYC in over a decade The best things to do in NYC this weekend These are the most romantic restaurants in New York, according to OpenTable These NYC restaurants are closed today in solidarity with the ICE strike This historic New York hotel is throwing an epic murder mystery weekend—here's how you can attend Discover Time Out original video",
   "isFullReview": true,
   "textWordCount": 933,

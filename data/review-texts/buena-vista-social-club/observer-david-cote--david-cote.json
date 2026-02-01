@@ -27,5 +27,60 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": 85,
+      "performances": 82,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "And the cast is immensely appealing, from the adorable Browne to Belcon's forbidding diva. The voices can be rough and angelic at once; the rapid string work by guitar hero Renesito Avich is pure fire.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "For a brief time, our cold and fretful island becomes a different one, which has its troubles, but also a sound that brings the world to its door.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Notably trim, the show requires book writer Marco Ramirez to cram a lot of (fictionalized) back story into two hours.",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "The reviewer appreciates the musical performances, staging, and atmosphere while noting some structural limitations in the book, ultimately finding it an appealing and transporting theatrical experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:41:36.640Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3479,
+    "outputTokens": 418,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

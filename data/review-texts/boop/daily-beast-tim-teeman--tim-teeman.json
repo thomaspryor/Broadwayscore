@@ -46,5 +46,60 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251128060750",
-  "archiveOrgUrl": "http://web.archive.org/web/20251128060750/https://www.thedailybeast.com/review-boop-the-musical-should-turn-betty-boop-into-the-new-barbie/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251128060750/https://www.thedailybeast.com/review-boop-the-musical-should-turn-betty-boop-into-the-new-barbie/",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 82,
+      "performances": 85,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "you will likely have more fun at Boop! than in many other theaters this spring",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this is an old-fashioned stage-frolic filled show, with big songs and bigger dancing",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It goes on far too long (at least half an hour could be cut), but—just wait for the finale!—you even forgive it that",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Clear positive recommendation despite pacing issues, with enthusiastic praise for performances, design, choreography, and entertainment value.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:40:49.609Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3624,
+    "outputTokens": 353,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

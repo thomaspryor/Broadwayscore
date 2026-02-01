@@ -9,56 +9,63 @@
   "bwwExcerpt": "Understanding the roots of dependency starts by acknowledging that people do drugs – drink booze, take opiates, smoke, shoot up – because it feels better doing them than not doing them. So it is for Joe and Kirsten Clay, and by not shying away from the good vibrations that controlled substances promise, this new Days of Wine and Roses is a small step in the right direction toward making a difference in America’s current addiction crisis. Which is not to say that very many opioid addicts are like",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "originalScore": "B",
-  "assignedScore": 65,
+  "assignedScore": 38,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "llmScore": {
-    "score": 65,
-    "confidence": "medium",
+    "score": 38,
+    "confidence": "high",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 32,
+      "high": 45
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 25,
+      "music": 35,
+      "performances": 65,
+      "direction": 55
     },
     "keyPhrases": [
       {
-        "quote": "this new Days of Wine and Roses is a small step in the right direction",
-        "sentiment": "positive",
+        "quote": "doesn't go down easy. And while you may exit Studio 54 shaken by the work, you won't be stirred",
+        "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "people do drugs – drink booze, take opiates, smoke, shoot up – because it feels better doing them than not doing them",
-        "sentiment": "neutral",
-        "strength": 3
+        "quote": "passion-lacking passion project",
+        "sentiment": "negative",
+        "strength": 4
       },
       {
-        "quote": "not shying away from the good vibrations that controlled substances promise",
-        "sentiment": "positive",
+        "quote": "an entire production cannot rest on the laurels of chemistry alone",
+        "sentiment": "negative",
         "strength": 3
       }
     ],
-    "reasoning": "GPT-4o-mini: The review acknowledges a positive step in addressing addiction but lacks strong enthusiasm or clear recommendations, leading to a mixed-positive score.",
+    "reasoning": "The review systematically criticizes the core elements (shallow story, rushed character development, mismatched performances to material) while offering only minor praise for chemistry and direction, making it difficult to recommend.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:13:10.266Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:34:31.751Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2837,
+    "outputTokens": 346,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": null,
@@ -75,7 +82,6 @@
   "showScoreExcerpt": "\" ‘Days of Wine and Roses,’ a ‘beautifully’ executed musical\"",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 65,
   "isFullReview": true,
@@ -97,5 +103,6 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
-  "wrongAttribution": true
+  "wrongAttribution": true,
+  "rescoreCompletedAt": "2026-02-01T17:34:31.751Z"
 }

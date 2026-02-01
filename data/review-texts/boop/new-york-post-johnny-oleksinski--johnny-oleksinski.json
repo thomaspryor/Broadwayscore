@@ -28,5 +28,60 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250723113506",
-  "archiveOrgUrl": "http://web.archive.org/web/20250723113506/https://nypost.com/2025/04/07/entertainment/boop-review-broadway-star-jasmine-amy-rogers-is-born-in-new-musical/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250723113506/https://nypost.com/2025/04/07/entertainment/boop-review-broadway-star-jasmine-amy-rogers-is-born-in-new-musical/",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 76
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 45,
+      "music": 65,
+      "performances": 85,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "a fun if not fantastic musical",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "I mostly enjoyed the bump-free ride to a happy ending",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The basic and predictable book from writer Bob Martin",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic clearly enjoyed the show despite acknowledging significant flaws, praising the lead performance highly while criticizing the predictable book, landing in qualified recommendation territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:40:55.050Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3136,
+    "outputTokens": 322,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

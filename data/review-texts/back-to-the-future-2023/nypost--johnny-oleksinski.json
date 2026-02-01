@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": "2 stars",
-  "assignedScore": 25,
+  "assignedScore": 35,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -18,51 +18,63 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 25,
-    "confidence": "high",
+    "score": 35,
+    "confidence": "low",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 30,
+      "high": 40
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 25,
+      "music": 15,
+      "performances": 65,
+      "direction": 30
     },
     "keyPhrases": [
       {
-        "quote": "the musical left me cold and uninvolved",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "It made me want to go back… to the movie!",
+        "quote": "doesn't have much going for it in the way of tuneful songs, show-stopping dances or enthralling storytelling",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "speaking as one of those super fans",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "a bloated gizmo nobody asked for that... never justifies its perplexing existence as a stage musical",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "the musical left me cold and uninvolved. It made me want to go back… to the movie!",
+        "sentiment": "negative",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: A devoted fan of the source material explicitly states the musical adaptation left them 'cold and uninvolved' and made them want to return to the original movie instead. | GPT-4o-mini: The critic expresses a strong disappointment in the musical, indicating it fails to engage even a dedicated fan of the original films.",
+    "reasoning": "The critic systematically dismantles the musical while calling it a 'bloated gizmo nobody asked for' and concluding it left them 'cold and uninvolved,' with only isolated praise for specific performances.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": true
+    },
+    "humanReviewOverride": {
+      "previousConfidence": "high",
+      "reason": "LLM Pan (25) too harsh for Meh review. Override to thumb-based 60.",
+      "appliedAt": "2026-02-01T17:37:53.670Z"
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:12:14.667Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:31:41.501Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3752,
+    "outputTokens": 378,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 25,
@@ -75,7 +87,6 @@
       "Score (25 → Down) conflicts with aggregator thumbs (Flat)"
     ]
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 25,
   "archivePath": "data/archives/reviews/back-to-the-future-2023/nypost--johnny-oleksinki_2026-01-30.html",
@@ -94,5 +105,6 @@
   "archiveOrgTimestamp": "20240430204152",
   "archiveOrgUrl": "http://web.archive.org/web/20240430204152/https://nypost.com/2023/08/03/back-to-the-future-the-musical-review-watch-the-movie-instead/",
   "contentTier": "complete",
-  "wordCount": 879
+  "wordCount": 879,
+  "rescoreCompletedAt": "2026-02-01T17:31:41.501Z"
 }

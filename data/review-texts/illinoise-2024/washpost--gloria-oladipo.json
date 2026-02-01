@@ -53,5 +53,49 @@
     "Show title not found in text"
   ],
   "wrongProduction": true,
-  "wrongProductionNote": "Off-Broadway/pre-Broadway run at Park Avenue Armory. Reusable if off-Broadway show entry is created."
+  "wrongProductionNote": "Off-Broadway/pre-Broadway run at Park Avenue Armory. Reusable if off-Broadway show entry is created.",
+  "llmScore": {
+    "score": 75,
+    "confidence": "low",
+    "range": {
+      "low": 65,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "have crafted something cinematic",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The phrase 'crafted something cinematic' suggests skillful artistic achievement in direction/production, indicating a positive recommendation despite the extremely limited text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:42:48.274Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2315,
+    "outputTokens": 236,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
+  }
 }

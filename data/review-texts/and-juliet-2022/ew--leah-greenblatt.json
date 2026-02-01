@@ -6,7 +6,7 @@
   "url": "https://ew.com/theater/theater-reviews/and-juliet-broadway-review-max-martin-musical/?srsltid=AfmBOoo1fLd94KpF17fFAtRLHF-OrFNks8-MW9etauVJZiDVUAT86cPS",
   "publishDate": "2022-11-17",
   "originalScore": "B+",
-  "assignedScore": 79,
+  "assignedScore": 72,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "As much as the show feels directed toward a strenuously young demographic - some of them possibly not even born yet when Backstreet were singing about their fire, or their one desire - the script makes several knowing nods, much like a Pixar movie, to the ancient grown-ups in the room. There's something a little relentless about & Juliet's dogged eagerness to entertain, but nakedly joyful too: a violent delight, flipped for the TikTok era. Grade: B+",
@@ -16,13 +16,18 @@
   "scoreSource": "letter-grade",
   "scoreConfidence": "medium",
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T04:05:29.372Z",
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:30:46.036Z",
     "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "5.0.0"
+    "inputTokens": 2459,
+    "outputTokens": 368,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "dtliThumb": "Up",
   "dtliExcerpt": "There's something a little relentless about & Juliet's dogged eagerness to entertain, but nakedly joyful too: a violent delight, flipped for the TikTok era.",
@@ -75,22 +80,38 @@
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "llmScore": {
-    "score": 79,
-    "confidence": "high",
+    "score": 72,
+    "confidence": "low",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 65,
+      "high": 78
     },
-    "bucket": "Positive",
+    "bucket": "Mixed",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
+      "book": 70,
+      "music": 75,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B+ grade clearly indicates a positive recommendation, and despite noting the show's 'relentless' eagerness to entertain, the critic finds it 'nakedly joyful' and entertaining across demographics. | GPT-4o: The review describes the show as 'nakedly joyful' and 'a violent delight,' which indicates a strong positive reaction. The grade of B+ further supports a positive verdict. | Gemini: The review acknowledges some flaws ('relentless eagerness') but ultimately describes the show as 'nakedly joyful' and a 'violent delight,' suggesting a positive, albeit qualified, recommendation. The B+ grade further supports this.",
+    "keyPhrases": [
+      {
+        "quote": "busy, exuberant jukebox musical",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The Venn diagram of Shakespeare and Britney Spears turns out to be much closer to a perfect circle than any Broadway fantasist might have guessed",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "book writer David West Read has the benefit of Swedish pop godhead Max Martin's full catalog at his disposal",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The review expresses surprised approval at how well the concept works, with positive descriptors like 'exuberant' and praise for the song catalog, though this appears to be an excerpt lacking a clear recommendation verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -113,13 +134,12 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "rescoreCompletedAt": "2026-02-01T04:05:29.372Z",
+  "rescoreCompletedAt": "2026-02-01T17:30:46.036Z",
   "contentTier": "excerpt",
   "wordCount": 0,
   "previousUrl": "https://ew.com/theater/theater-reviews/and-juliet-broadway-musical-review/",
   "urlDiscoveredAt": "2026-02-01T14:41:48.216Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "previousLlmScore": 79,
   "fullText": "A classic tale gets a twist — and a full pop treatment — in Broadway's newest jukebox musical. The Venn diagram of Shakespeare and Britney Spears turns out to be much closer to a perfect circle than any Broadway fantasist might have guessed in & Juliet, a busy, exuberant jukebox musical opening this week at the Stephen Sondheim Theatre. To be fair, Britney doesn't have to carry the load alone; book writer David West Read has the benefit of Swedish pop godhead Max Martin's full catalog at his disposal — nearly 30 millennium-straddling hits from the Backstreet Boys, Katy Perry, Kelly Clarkson, Ariana Grande and more. The premise is simple: What if Juliet (Lorna Courtney) woke up from her sleeping draught, saw Romeo dead, and decided… to live? Or at least that's the pitch Sir William (Kinky Boots' Stark Sands) gets from his long-suffering wife, Anne (Betsy Wolfe). She's watched him write enough tragedies, and she has her own ideas for happier endings, if he'll allow her to offer up a few suggestions to the tune of Backstreet's \"I Want It That Way.\" Juliet might be a widow, but she is, after all, only 14. Why not leave this messy Capulets-and-Montagues business behind and run off to Paris with her best friend, May (Justin David Sullivan), and beloved nurse, Angelique (Melanie La Barrie)? They can have adventures, go clubbing, maybe find somebody to make out with by the end of the night. But not before she grieves just a little bit for her lost love (cue \"Baby One More Time.\") If the cast and costumes and bright neon signage that greets showgoers at the door haven't yet made it abundantly clear, this is pure Gen Z Shakespeare, as blithely modern and self-aware as Riverdale. Read, probably best known as a writer and executive producer of Schitt's Creek, plays with the Bard's language like a kitten with a ping-pong ball, letting it skim and ricochet across the stage. His story beats, though, are cleverly, sometimes ingeniously calibrated to sync with the songs, as when May questions their gender identity to Spears' \"I'm Not a Girl, Not Yet a Woman\" or when one character's unwelcome return compels a raucous chorus of Clarkson's \"Since U Been Gone.\" The choreography, by Jennifer Weber (KPOP), is energetic if not particularly inspired, landing somewhere between High School Musical and So You Think You Can Dance, and the hectic let's-put-on-a-show energy has an undeniable cruise-ship tilt to it. But Courtney, a Queens native whose Broadway credits include Dear Evan Hansen and West Side Story, is a tiny dynamo, her singing voice scraping the rafters on showstopper anthems like \"Stronger\" and \"Roar.\" Romeo, played on this preview night by understudy Brandon Antonio, becomes a deliciously dim himbo, and Wolfe, as a Renaissance housewife desperate to breathe the air out there, brings a great, spiky irreverence to her disgruntled Anne. Read's script makes room in this explosion of youth for her more muted dreams and tribulations, along with a budding queer romance for May and a midlife second chance at love for Angelique and her long-ago suitor Lance (Paolo Szot). The set design, by Soutra Gilmour (Macbeth, Evita), comes in every shade of strobe light and confetti, and West End director Luke Shepard (In the Heights) keeps it all moving at a headlong clip, even as the production wends toward two and a half hours. (No one will emerge from & Juliet with the knowledge to pass a pop quiz on soliloquies, though Sand's preening William gets a few great, punny winks at his own iconography.) As much as the show feels directed toward a strenuously young demographic — some of them possibly not even born yet when Backstreet were harmonizing their fire, or their one desire — the script makes several knowing nods, much like a Pixar movie, to the ancient grown-ups in the room. There's something a little relentless about & Juliet's dogged eagerness to entertain, but nakedly joyful too: a star-crossed night of violent delights, flipped for the TikTok era. Grade: B+",
   "isFullReview": true,

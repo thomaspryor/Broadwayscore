@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,36 +21,58 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 60,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 78,
+      "high": 85
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 85,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 78,
+      "direction": 72
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt only provides contextual commentary about the play's relevance to current events, with no clear recommendation or assessment of the production's quality. The phrase 'skin-crawling acuity' suggests the play effectively captures contemporary anxieties, but this could be positive or negative depending on the full review. | GPT-4o: The excerpt is too limited to provide a clear recommendation. The phrase 'skin-crawling acuity' suggests a notable impact but lacks a clear positive or negative verdict. The absence of explicit recommendation language results in a mixed classification. | Gemini: Due to the truncated nature of the review and lack of an explicit recommendation, it's difficult to determine the overall verdict. The provided quote suggests a potentially positive aspect, but without more context, a mixed assessment is most appropriate.",
+    "keyPhrases": [
+      {
+        "quote": "In 2025, in the aftermath of QAnon, Pizzagate, and that benign tourist expedition on January 6, Bug, has acquired a skin-crawling acuity",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Carrie Coon's Agnes --- taut, whippet-thin, getting by a diet of vodka and Coke plus the odd puff -- is on point throughout",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "his handling of the first act is a bit slack, a problem partly due to casting",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic fundamentally reassesses and elevates their opinion of the play, praising Letts' prescient vision and Coon's performance, with only minor reservations about pacing and one casting choice.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T13:58:17.988Z",
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:33:43.327Z",
     "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
+    "inputTokens": 3569,
+    "outputTokens": 399,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 60,
@@ -67,7 +89,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 60,
   "textWordCount": 1132,
@@ -91,5 +112,6 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-01T17:33:43.327Z"
 }

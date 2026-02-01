@@ -29,5 +29,60 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 95,
+      "music": null,
+      "performances": 88,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "Read our five-star review of Prayer for the French Republic on Broadway",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "He digs deeper than ever in Prayer for the French Republic and strikes pure gold",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Directed with airtight elegance for Manhattan Theatre Club by David Cromer",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "This is explicitly labeled a five-star review with superlative praise like 'strikes pure gold' and 'airtight elegance', indicating unqualified enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:43:45.537Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3029,
+    "outputTokens": 349,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

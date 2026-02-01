@@ -10,56 +10,63 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 59,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 59,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 53,
-      "high": 65
+      "low": 75,
+      "high": 82
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": 65,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 82,
+      "direction": 88
     },
     "keyPhrases": [
       {
-        "quote": "suspense is the spell that keeps it whooshing along",
+        "quote": "exuberantly, flabbergastingly, Playbill-shreddingly theatrical",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 5
       },
       {
-        "quote": "fans of the source texts (who cheered and gasped their way through a recent, all-day performance",
+        "quote": "The stage illusions, created by Jamie Harrison in concert with a crack team of designers, are you-won't-believe-your-eyes stunners",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 5
       },
       {
-        "quote": "Cynics not already ensorcelled will wonder if Harry Potter belongs on Broadway at all",
+        "quote": "Thorne's eventful, jam-packed script sometimes leans on its metaphors and Freudianisms a little heavily",
         "sentiment": "negative",
-        "strength": 4
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review excerpt presents mixed signals - praising the suspense and noting fan enthusiasm while questioning whether the material belongs on Broadway, but the fragment is too incomplete for confident scoring. | GPT-4o-mini: The review presents a mixed sentiment, acknowledging the appeal for fans while also raising doubts about the show's legitimacy on Broadway.",
+    "reasoning": "Despite criticisms of the script being heavy-handed and male-focused, the critic is overwhelmingly enthusiastic about the theatrical spectacle, direction, performances, and staging, calling it 'exuberantly theatrical' with 'stunning' stage illusions.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:23:35.214Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:36:46.820Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3969,
+    "outputTokens": 392,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 58,
@@ -74,7 +81,6 @@
   "dateSource": "historical-review",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 59,
   "isFullReview": true,
@@ -94,5 +100,6 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "rescoreCompletedAt": "2026-02-01T17:36:46.820Z"
 }

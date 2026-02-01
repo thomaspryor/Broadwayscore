@@ -7,7 +7,7 @@
   "publishDate": "2011-03-24",
   "fullText": "\"The Book of Mormon\" (Joan Marcus) Credit: \"The Book of Mormon\" (Joan Marcus)\n\nDon’t expect to find any members of the Mormon faith protesting outside “The Book of Mormon,” a tuneful, unabashedly silly and absolutely uproarious new musical by Matt Stone and Trey Parker.\n\nAssisted by “Avenue Q” composer Robert Lopez and “Drowsy Chaperone” director Casey Nicholaw, the “South Park” creators parody Mormonism while also celebrating the power of religion — any religion — to give people hope in the face of despair.\n\nThe story begins with Elder Price and Elder Cunningham — two male Mormon teens from Salt Lake City — finishing their missionary training and being shipped off to Uganda to try to baptize the inhabitants of a small village.\n\nOnce there, they learn that Africa is nothing like “The Lion King.” They are confronted with warlords, death, AIDS and famine. In a brilliant production number, the Ugandans explain their philosophy of “Hasa Diga Eebowai,” the translation of which cannot be printed in this publication.\n\nGet the latest breaking news as it happens.\n\nBy clicking Sign up, you agree to our privacy policy.\n\nPrice, the cockiest student of his class, is disheartened by his inability to make a difference.\n\nCunningham, an outcast who has yet to actually read the Book of Mormon, impulsively starts to preach his own religious teachings that derive from “Star Wars” and “Lord of the Rings.” His stories, designed to speak directly to his new audience, are surprisingly effective.\n\nWhile the plot is somewhat thin and occasionally feels like an overextended sketch, the musical ultimately comes across as fresh, smart and heartfelt.\n\nAs you’d probably expect, the show’s potty-mouth creators do not refrain from using explicit language. But in spite of the curse words, “The Book of Mormon” is an upbeat, even sentimental musical that combines Rodgers & Hammerstein, “Les Miz”-style powerhouse ballads and tap dancing.\n\nThe cast, led by Josh Gad, Andrew Rannells and Nikki M. James, is uniformly excellent and marked by endless energy and enthusiasm.\n\nIf you go: \"The Book of Mormon\" plays an open run at the Eugene O’Neill Theatre. 230 W. 49th St., 212-239-6200, bookofmormononbroadway.com.\n\nWhat you need to know about Gov. Hochul's proposed $50M Jamaica station redesign NewsdayTV's Macy Egeland and Newsday transportation reporter Alfonso Castillo talk to commuters and experts about what a revamped Jamaica station would mean.\n\nGet more on these and other NewsdayTV stories\n\nWhat you need to know about Gov. Hochul's proposed $50M Jamaica station redesign NewsdayTV's Macy Egeland and Newsday transportation reporter Alfonso Castillo talk to commuters and experts about what a revamped Jamaica station would mean.\n\nGet more on these and other NewsdayTV stories\n\nSeniors at New York Should Claim These Benefits\n\nThe Newsday app makes it easier to access content without having to log in.\n\nUnlimited Digital AccessOnly 25¢for 6 months",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 92,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "'The Book of Mormon,\" the jubilant and expert one-joke Broadway musical by Trey Parker and Matt Stone, is everything you should expect from a show by the heat-seeking rascals of \"South Park.\" What you may not expect, however, is the sweetness.",
@@ -15,38 +15,38 @@
   "scoreSource": "sentiment-strong-negative",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 81,
+    "score": 92,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 87
+      "low": 88,
+      "high": 95
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 85
+      "direction": 90
     },
     "keyPhrases": [
       {
-        "quote": "jubilant and expert one-joke Broadway musical",
+        "quote": "An exhilarating Broadway musical",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "everything you should expect from a show by the heat-seeking rascals of 'South Park'",
+        "quote": "at once revolutionary and classic",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 5
       },
       {
-        "quote": "What you may not expect, however, is the sweetness",
+        "quote": "uncompromising in production standards",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic uses strongly positive language like 'jubilant and expert' while highlighting an unexpected emotional depth ('sweetness') that elevates the show beyond expectations. | GPT-4o-mini: The review expresses a clear positive sentiment towards the show, highlighting its jubilance and unexpected sweetness, suggesting a strong recommendation.",
+    "reasoning": "Unqualified praise with powerful superlatives like 'exhilarating' and 'revolutionary' combined with praise for production standards indicates a strong rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,11 +55,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:06:20.260Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:32:07.466Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2338,
+    "outputTokens": 321,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 82,
@@ -76,7 +83,6 @@
   "previousUrl": "https://www.newsday.com/entertainment/theater/book-of-mormon-broadway-review-2011/",
   "urlDiscoveredAt": "2026-02-01T14:47:10.507Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 81,
   "isFullReview": true,
@@ -105,5 +111,6 @@
     "has_paywall_text",
     "possible_mid_word_cutoff"
   ],
-  "textStatus": "truncated"
+  "textStatus": "truncated",
+  "rescoreCompletedAt": "2026-02-01T17:32:07.466Z"
 }

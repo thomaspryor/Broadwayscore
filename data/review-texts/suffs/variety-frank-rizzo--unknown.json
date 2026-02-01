@@ -28,5 +28,60 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250104071638",
-  "archiveOrgUrl": "http://web.archive.org/web/20250104071638/https://variety.com/2024/legit/reviews/suffs-review-musical-broadway-1235974881/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250104071638/https://variety.com/2024/legit/reviews/suffs-review-musical-broadway-1235974881/",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "smart, inspiring and thoroughly entertaining",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "captures the sweep of history in all its complexities without sacrifice of character or credibility",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's sure to find a following",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic consistently praises the show's achievement in balancing historical scope with character development, calling it 'smart, inspiring and thoroughly entertaining' with clear recommendation signals.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:44:19.607Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2496,
+    "outputTokens": 328,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

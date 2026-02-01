@@ -28,5 +28,60 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251222104446",
-  "archiveOrgUrl": "http://web.archive.org/web/20251222104446/https://www.vulture.com/article/theater-review-mamma-mia-broadway-revival-abba.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251222104446/https://www.vulture.com/article/theater-review-mamma-mia-broadway-revival-abba.html",
+  "assignedScore": 48,
+  "llmScore": {
+    "score": 48,
+    "confidence": "high",
+    "range": {
+      "low": 45,
+      "high": 52
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 65,
+      "performances": 55,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "The air of 'eh, fine enough' is not much of a surprise",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the fantasy is more than a little long in the tooth",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "this cast, seemingly hemmed in by careful brand management, comes across as competent and dutiful, not the vibe you want",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic finds this touring production tired and cheaply made, with performances that are competent but lack the energy and charisma needed, resulting in an 'eh, fine enough' experience that's hard to recommend.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:42:59.277Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3068,
+    "outputTokens": 360,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

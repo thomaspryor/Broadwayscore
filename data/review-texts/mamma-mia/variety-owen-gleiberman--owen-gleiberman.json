@@ -28,5 +28,60 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250919114548",
-  "archiveOrgUrl": "http://web.archive.org/web/20250919114548/https://variety.com/2025/legit/reviews/mamma-mia-review-broadway-2025-1236488886/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250919114548/https://variety.com/2025/legit/reviews/mamma-mia-review-broadway-2025-1236488886/",
+  "assignedScore": 88,
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 92
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 95,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "still a feast for your pleasure centers",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "generates a kind of wall-to-wall karaoke ecstasy",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "hearing those songs can make one feel like the music-fan equivalent of a blissed-out cokehead doing lines",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "The critic uses rapturous language throughout ('feast for your pleasure centers', 'wall-to-wall karaoke ecstasy', 'blissed-out') and describes ABBA's music as 'propulsively beautiful' and 'sublime', clearly recommending this as a joyful theatrical experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:43:04.474Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2676,
+    "outputTokens": 372,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

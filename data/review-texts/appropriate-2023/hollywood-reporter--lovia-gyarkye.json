@@ -9,43 +9,43 @@
   "showScoreExcerpt": "“...funny and sophisticated. The jokes are biting and some lines are impressively abrasive. But it edges away from the satire. Neugebauer’s fine direction instead leans into the acid drama of fraught sibling relationships. The play treats each character’s plight with an earnest consideration. There’s a more reflective, tragicomic stance as it considers what happens to families afraid to confront the past.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/appropriate-broadway",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 50,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 77,
-    "confidence": "high",
+    "score": 50,
+    "confidence": "low",
     "range": {
-      "low": 70.5,
-      "high": 83.5
+      "low": 40,
+      "high": 60
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 80
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "funny and sophisticated. The jokes are biting and some lines are impressively abrasive",
-        "sentiment": "positive",
-        "strength": 4
+        "quote": "caustic family drama",
+        "sentiment": "neutral",
+        "strength": 2
       },
       {
-        "quote": "Neugebauer's fine direction instead leans into the acid drama of fraught sibling relationships",
-        "sentiment": "positive",
-        "strength": 3
+        "quote": "blistering reunion of his heirs",
+        "sentiment": "neutral",
+        "strength": 2
       },
       {
-        "quote": "There's a more reflective, tragicomic stance as it considers what happens to families afraid to confront the past",
-        "sentiment": "positive",
-        "strength": 3
+        "quote": "The production is the first of Jacobs-Jenkins' original works to be on Broadway",
+        "sentiment": "neutral",
+        "strength": 1
       }
     ],
-    "reasoning": "Claude: Consistent praise for the writing quality, direction, and thematic depth with no significant criticisms suggests a clear positive recommendation. | GPT-4o-mini: The review expresses positive sentiments about the direction and character treatment, indicating a clear recommendation despite some reservations about the play's focus.",
+    "reasoning": "This excerpt appears to be primarily plot summary and background information without any clear evaluative language or recommendation signals.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,11 +54,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:11:37.654Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:31:07.298Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2493,
+    "outputTokens": 306,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -69,7 +76,6 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "archivePath": "data/archives/reviews/appropriate-2023/hollywood-reporter--lovia-gyarkye_2026-01-29.html",
@@ -91,5 +97,6 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250213100804/https://www.hollywoodreporter.com/lifestyle/arts/appropriate-theater-review-sarah-paulson-elle-fanning-1235765661/",
   "textQualityOverride": "batch-fix-2026-01-30",
   "contentTier": "complete",
-  "wordCount": 1371
+  "wordCount": 1371,
+  "rescoreCompletedAt": "2026-02-01T17:31:07.298Z"
 }

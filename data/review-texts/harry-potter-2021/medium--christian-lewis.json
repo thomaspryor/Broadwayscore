@@ -8,44 +8,44 @@
   "fullText": "Perhaps the most anticipated theatrical event of the season was last week’s opening of “Harry Potter and the Cursed Child, Parts One and Two.” This spell-binding new work is the product of three geniuses: the iconic J. K. Rowling (author of the original books), John Tiffany (the play’s profound director), and Jack Thorne (the playwright). Together they managed to create magic onstage in a way theatrical audiences have never seen before.\n\nPerhaps thanks to the 35 million dollar budget (a record for a play) and the massive cast of 40, or perhaps due to the demands of the fantastical source material, “Cursed Child” takes stage magic to an entirely new level. Even the theater itself — a newly renovated Lyric Theatre complete with “H” monograms, gold phoenixes, and several mini-gift stores, transports you to the wonderful world of Harry Potter.\n\nSadly, before I go any further, I must be upfront and I say I am bound by the Laws of Magic and forbidden to reveal any of the secrets of the play or even to discuss the plot. All I can say is that the play’s use of special effects and magic is unprecedented; you will never see a wire, or a trap door, or a body double. Objects disappear, actors seemingly teleport across the stage, wands produce spells, furniture flies, bodies are transfigured — all…\n\nTheater Critic. Vassar College alum, current PhD candidate at the CUNY Graduate Center.",
   "showScoreExcerpt": "\"Spell-binding...Takes stage magic to an entirely new level...The script is certainly not stellar...Some bizarre pacing issues...But these flaws are entirely with the script, in production there is so much magic that it is all too easy to get swept up and not even notice the problems in the writing...The extended choreographic transitions are unnecessary...But just as the magic saves any textual issues, the fantastic music gives the choreography a pass.\"",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 88,
   "source": "show-score",
   "sourceMethod": "brightdata",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 88,
+    "confidence": "medium",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 85,
+      "high": 92
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 43,
-      "music": 80,
+      "book": null,
+      "music": null,
       "performances": null,
-      "direction": 80
+      "direction": 90
     },
     "keyPhrases": [
       {
-        "quote": "Spell-binding...Takes stage magic to an entirely new level",
+        "quote": "This spell-binding new work is the product of three geniuses",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "The script is certainly not stellar...Some bizarre pacing issues",
-        "sentiment": "negative",
-        "strength": 4
+        "quote": "managed to create magic onstage in a way theatrical audiences have never seen before",
+        "sentiment": "positive",
+        "strength": 5
       },
       {
-        "quote": "there is so much magic that it is all too easy to get swept up and not even notice the problems",
+        "quote": "takes stage magic to an entirely new level",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Despite significant script flaws, the critic is clearly swept away by the production's magic and music, suggesting the overall experience overcomes the writing problems enough to recommend seeing it. | GPT-4o-mini: The review expresses strong enthusiasm for the production's magic and music while acknowledging significant flaws in the script, leading to a positive overall recommendation.",
+    "reasoning": "The critic uses superlative language like 'geniuses,' 'spell-binding,' and 'unprecedented' while emphasizing the groundbreaking nature of the theatrical magic, indicating strong enthusiasm despite being unable to discuss plot details.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,11 +54,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:26:04.041Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:36:57.064Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2630,
+    "outputTokens": 343,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -71,7 +78,6 @@
   },
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 74,
   "isFullReview": false,
@@ -110,5 +116,6 @@
   "textStatus": "incomplete",
   "textIssues": [
     "Word count too low: 239 (min: 300)"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-01T17:36:57.064Z"
 }

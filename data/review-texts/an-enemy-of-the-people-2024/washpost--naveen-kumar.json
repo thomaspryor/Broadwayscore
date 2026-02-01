@@ -9,18 +9,18 @@
   "showScoreExcerpt": "\"Climate activists disrupting Jeremy Strong was the best part of the play\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/an-enemy-of-the-people-broadway",
   "originalScore": null,
-  "assignedScore": 20,
+  "assignedScore": 35,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 20,
-    "confidence": "medium",
+    "score": 35,
+    "confidence": "low",
     "range": {
-      "low": 15,
-      "high": 25
+      "low": 25,
+      "high": 45
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": null,
@@ -28,23 +28,39 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Pan | Claude: This statement directly implies that an external disruption was better than the actual performance, indicating the critic found the play itself severely lacking. | GPT-4o: The quote suggests that the most memorable or enjoyable aspect of the play was an external disruption, implying the play itself did not offer much value or entertainment. | Gemini: The critic stating that the disruption was the best part of the play indicates a very negative view of the actual production.",
+    "keyPhrases": [
+      {
+        "quote": "an otherwise stolid revival",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "delivering an invigorating coup",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The review describes the production as 'stolid' (dull/unexciting) and suggests the most thrilling moment was an actual protest disruption rather than the show itself.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:15:06.813Z",
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:30:40.613Z",
     "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": 18,
-    "previousVersion": "3.0.0"
+    "inputTokens": 2652,
+    "outputTokens": 280,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 25,
@@ -63,7 +79,6 @@
   },
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 20,
   "isFullReview": true,
@@ -98,5 +113,6 @@
   "sourceMethod": "scrapingbee",
   "textIssues": [
     "Word count too low: 232 (min: 300)"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-01T17:30:40.613Z"
 }

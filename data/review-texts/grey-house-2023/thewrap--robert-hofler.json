@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 39,
+  "assignedScore": 35,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -18,51 +18,58 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 39,
+    "score": 35,
     "confidence": "high",
     "range": {
-      "low": 33,
-      "high": 45
+      "low": 30,
+      "high": 40
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 28,
+      "book": 25,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 60,
+      "direction": 30
     },
     "keyPhrases": [
       {
-        "quote": "Stories of horror are fantastical, but need to follow their own inner logic once the parameters of that fantasy have been established",
+        "quote": "His direction exhausts every cliché of stage terror about half an hour into this 100-minute one-act",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "Well, many lies are told and Raleigh, while tortured, somehow survives. If she's the kids' mother, why doesn't she die?",
+        "quote": "By the time Max screams in terror upon seeing the ghost late in the play, the audience does not join her. We're already bored with the creature",
         "sentiment": "negative",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "Raleigh survives because if she didn't, 'Grey House' would end well before Holloway del",
-        "sentiment": "negative",
-        "strength": 3
+        "quote": "Her Mommie Weirdest performance provides a number of belly laughs",
+        "sentiment": "positive",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The excerpt reveals significant criticism of the play's internal logic and plot holes, suggesting structural problems with the script, though the review appears incomplete. | GPT-4o-mini: The review raises significant questions about the logic and coherence of the story, indicating a lack of recommendation.",
+    "reasoning": "The critic systematically dismantles the play's logic, pacing, and effectiveness while finding fault with nearly every creative element except some performances.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:16:03.380Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:35:52.269Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3344,
+    "outputTokens": 361,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 38,
@@ -73,7 +80,6 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 39,
   "archivePath": "data/archives/reviews/grey-house-2023/thewrap--robert-hofler_2026-01-29.html",
@@ -111,5 +117,6 @@
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",
-  "wordCount": 721
+  "wordCount": 721,
+  "rescoreCompletedAt": "2026-02-01T17:35:52.269Z"
 }

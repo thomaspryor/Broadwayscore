@@ -18,7 +18,7 @@
   "dtliThumb": "Meh",
   "llmScore": {
     "score": 28,
-    "confidence": "high",
+    "confidence": "low",
     "range": {
       "low": 25,
       "high": 32
@@ -54,6 +54,11 @@
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": true
+    },
+    "humanReviewOverride": {
+      "previousConfidence": "high",
+      "reason": "LLM Pan (28) too harsh for Meh review. Override to thumb-based 60.",
+      "appliedAt": "2026-02-01T17:37:53.684Z"
     }
   },
   "llmMetadata": {

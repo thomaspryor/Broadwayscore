@@ -9,43 +9,43 @@
   "bwwExcerpt": "Director Lila Neugebauer carefully threads the complexities of grief and racism with humor and lightness. The characters lob sharp-tongued dialogue (and a few punches) at one another. It’s a thrilling match.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217",
   "originalScore": "B",
-  "assignedScore": 84,
+  "assignedScore": 92,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 84,
+    "score": 92,
     "confidence": "high",
     "range": {
-      "low": 77.5,
-      "high": 90.5
+      "low": 88,
+      "high": 95
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": 95,
       "music": null,
-      "performances": null,
-      "direction": 84
+      "performances": 92,
+      "direction": 90
     },
     "keyPhrases": [
       {
-        "quote": "carefully threads the complexities of grief and racism with humor and lightness",
+        "quote": "When plays demonstrate as much merit as \"Appropriate,\" it's difficult to identify which star in director Lila Neugebauer's galaxy shines brightest",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "sharp-tongued dialogue",
+        "quote": "Branden Jacobs-Jenkins' masterful script, laced with insightful irony and biting prose",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 5
       },
       {
-        "quote": "It's a thrilling match",
+        "quote": "The play runs 165 minutes and you'll hold your breath for every one",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Consistent praise for direction and writing with enthusiastic language like 'thrilling' and appreciation for the director's skill in handling complex themes. | GPT-4o-mini: The review expresses strong praise for the direction and the engaging dialogue, indicating a clear recommendation to see the show.",
+    "reasoning": "The review uses superlatives like 'masterful' and 'merit' while praising every element (script, design, ensemble, direction) with no meaningful reservations, indicating a clear rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,11 +54,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:10:33.665Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:30:57.847Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2975,
+    "outputTokens": 385,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 82,
@@ -74,7 +81,6 @@
   "dtliExcerpt": "When plays demonstrate as much merit as “Appropriate,” it’s difficult to identify which star in director Lila Neugebauer’s galaxy shines brightest. Is it Branden Jacobs-Jenkins’ masterful script, laced with insightful irony and biting prose? Is it scenic design collective dots’ lifelike erection of the aging home, littered with racist relics? Or is it the hypnotizing synergy of this ensemble, all of whom balance the horrible actions and the redeeming hearts of these human beings with ease? Yes to all.",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 84,
   "isFullReview": true,
@@ -95,5 +101,6 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "rescoreCompletedAt": "2026-02-01T17:30:57.847Z"
 }

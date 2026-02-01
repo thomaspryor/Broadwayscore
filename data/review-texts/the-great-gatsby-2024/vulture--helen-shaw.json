@@ -21,33 +21,55 @@
     "score": 42,
     "confidence": "high",
     "range": {
-      "low": 37,
-      "high": 47
+      "low": 38,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 45,
+      "music": 40,
+      "performances": 65,
+      "direction": 25
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The review clearly criticizes the production as hollow and substance-free despite its spectacle, indicating the critic does not recommend seeing it. | GPT-4o: The review criticizes the production for being superficial and lacking depth, suggesting that it fails to deliver a meaningful experience. | Gemini: The review uses negative language like \"hollow\" and \"mistakes flash for substance,\" indicating a lack of recommendation. The reviewer clearly finds the production disappointing.",
+    "keyPhrases": [
+      {
+        "quote": "this Gatsby feels like it belongs on a cruise or in a theme park",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "They're just all in a vapid musical-shaped-musical while Zdrojeski is in The Great Gatsby",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Zdrojeski is turning in a mesmerizing performance — menacing, vain, subtle when it needs to be",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic finds the production fundamentally misguided and vapid, praising only Zdrojeski's performance while condemning the direction, design, and overall approach as theme park-level spectacle that misses the novel's deeper meaning.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T13:59:26.628Z",
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:39:57.858Z",
     "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
+    "inputTokens": 4141,
+    "outputTokens": 382,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 42,
@@ -67,7 +89,6 @@
   "previousUrl": "https://www.vulture.com/article/the-great-gatsby-musical-broadway-review.html",
   "urlDiscoveredAt": "2026-02-01T14:26:38.953Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 42,
   "textWordCount": 1294,
@@ -87,5 +108,6 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260103203214",
-  "archiveOrgUrl": "http://web.archive.org/web/20260103203214/https://www.vulture.com/article/theater-review-great-gatsby-musical-broadway.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20260103203214/https://www.vulture.com/article/theater-review-great-gatsby-musical-broadway.html",
+  "rescoreCompletedAt": "2026-02-01T17:39:57.858Z"
 }

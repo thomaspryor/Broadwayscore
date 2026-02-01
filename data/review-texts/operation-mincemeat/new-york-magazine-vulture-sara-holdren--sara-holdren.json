@@ -28,5 +28,60 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251114223444",
-  "archiveOrgUrl": "http://web.archive.org/web/20251114223444/https://www.vulture.com/article/theater-review-operation-mincemeat-on-broadway.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251114223444/https://www.vulture.com/article/theater-review-operation-mincemeat-on-broadway.html",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 70,
+      "performances": 85,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "Operation Mincemeat isn't exactly blazingly clever—the jokes fly thick and fast, and they tend toward broad grin-crackers rather than breathless zingers—but it overflows with good humor and heartfelt commitment",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "SpitLip argues vigorously and convincingly in favor of delight",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Operation Mincemeat has plenty of joy to go around",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic finds the show charming, funny, and joyful with strong performances and direction, despite acknowledging it's not groundbreaking—a clear positive recommendation with enthusiasm for the experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:43:40.594Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4773,
+    "outputTokens": 377,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

@@ -31,5 +31,60 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250725025647",
-  "archiveOrgUrl": "http://web.archive.org/web/20250725025647/https://nystagereview.com/2025/04/07/boop-boop-oop-a-doop/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250725025647/https://nystagereview.com/2025/04/07/boop-boop-oop-a-doop/",
+  "assignedScore": 72,
+  "llmScore": {
+    "score": 72,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 35,
+      "music": 60,
+      "performances": 85,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "But you know what? You'll have a hell of a good time anyway.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "She's single-handedly responsible for that fourth star you see in the box above this review.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Boop! suffers from myriad problems, including a clunky book, generally unmemorable score, and cheap-looking production values.",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Despite harsh criticism of the book and music, the critic gives 4/5 stars and explicitly states audiences will 'have a hell of a good time' due to the exceptional lead performance and energetic production.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:41:08.458Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3530,
+    "outputTokens": 370,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

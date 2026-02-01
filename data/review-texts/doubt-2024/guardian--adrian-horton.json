@@ -9,56 +9,63 @@
   "bwwExcerpt": "this new production, directed by Scott Ellis and starring Schreiber and Amy Ryan, stands on its own. Like its forebears, the revival, which runs through mid-April, keeps things simple – four well-acted performances with a powerful alchemy of faith and righteousness, judicious costumes by Linda Cho, a set by David Rockwell that economically transforms from principal’s office, exterior walled garden and spare pulpit at St Nicholas’s parish in the Bronx, 1964. The stage version carries the subtitle",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 76,
-    "confidence": "medium",
+    "score": 82,
+    "confidence": "high",
     "range": {
-      "low": 67,
+      "low": 78,
       "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 85,
       "music": null,
-      "performances": 82,
-      "direction": 78
+      "performances": 88,
+      "direction": 80
     },
     "keyPhrases": [
       {
-        "quote": "stands on its own",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "four well-acted performances with a powerful alchemy of faith and righteousness",
+        "quote": "this new production, directed by Scott Ellis and starring Schreiber and Amy Ryan, stands on its own",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "keeps things simple",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "It's a testament to the magnetism of the performances and the play itself – its pared-down structure, its tension of agendas at odds – that the 90-minute show breezes by in what feels like half that",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Little in this story, as in life, is certain, though it's no doubt fascinating to watch",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The excerpt shows consistent praise for performances and production elements, but the fragment cuts off mid-sentence making a definitive assessment difficult. | GPT-4o-mini: The review highlights strong performances and effective direction, indicating a solid recommendation despite a lack of explicit enthusiasm.",
+    "reasoning": "The critic praises the production as standing on its own despite heavy precedent, highlights compelling performances and magnetism that makes time fly by, and calls it 'fascinating to watch' with clear admiration for the craft.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:34:59.909Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:35:08.308Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3898,
+    "outputTokens": 395,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -74,7 +81,6 @@
   "dateSource": "could-not-extract",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
   "isFullReview": true,
@@ -94,5 +100,6 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "rescoreCompletedAt": "2026-02-01T17:35:08.308Z"
 }

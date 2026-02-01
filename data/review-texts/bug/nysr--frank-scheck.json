@@ -13,5 +13,60 @@
     "nyc-theatre"
   ],
   "originalScore": "4/5 stars",
-  "nycTheatreExcerpt": "When Bug was first seen Off-Broadway in 2004, it seemed prescient in its portrayal of mental illness and conspiracy theories. Now  after the world has gone collectively crazy with wacky notions about COVID, pedophile rings, vaccines, and 5G, among countless other things  Tracy Letts' play practically feels quaint. Receiving its Broadway premiere in a Manhattan Theatre Club production in association with Steppenwolf Theatre Company, it nonetheless remains a grippingly unnerving thriller that feels like a waking nightmare."
+  "nycTheatreExcerpt": "When Bug was first seen Off-Broadway in 2004, it seemed prescient in its portrayal of mental illness and conspiracy theories. Now  after the world has gone collectively crazy with wacky notions about COVID, pedophile rings, vaccines, and 5G, among countless other things  Tracy Letts' play practically feels quaint. Receiving its Broadway premiere in a Manhattan Theatre Club production in association with Steppenwolf Theatre Company, it nonetheless remains a grippingly unnerving thriller that feels like a waking nightmare.",
+  "assignedScore": 68,
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 72
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 72,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "it nonetheless remains a grippingly unnerving thriller that feels like a waking nightmare",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "His staging proves atypically lackluster, lacking the pacing and shock effects necessary",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "it's hard to escape the feeling that on Broadway, Bug has lost some of its bite",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic acknowledges the play's strengths (Coon's performance, disturbing impact) but identifies significant problems with direction, pacing, and venue size that diminish the overall impact compared to previous productions.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:41:59.993Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3231,
+    "outputTokens": 364,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

@@ -22,7 +22,7 @@
   ],
   "llmScore": {
     "score": 25,
-    "confidence": "medium",
+    "confidence": "low",
     "range": {
       "low": 20,
       "high": 30
@@ -58,6 +58,11 @@
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
+    },
+    "humanReviewOverride": {
+      "previousConfidence": "medium",
+      "reason": "LLM Pan (25) too harsh for Meh review. Override to thumb-based 60.",
+      "appliedAt": "2026-02-01T17:37:53.676Z"
     }
   },
   "llmMetadata": {

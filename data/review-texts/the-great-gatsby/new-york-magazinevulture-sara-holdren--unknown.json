@@ -39,5 +39,60 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "assignedScore": 25,
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 30,
+      "music": null,
+      "performances": null,
+      "direction": 20
+    },
+    "keyPhrases": [
+      {
+        "quote": "this Gatsby feels like it belongs on a cruise or in a theme park",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "Under Marc Bruni's jazz-hands-happy direction",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "sentences are one thing. Spirit is another",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic dismisses the production as cruise ship/theme park quality entertainment that lacks the spirit of Fitzgerald's work, with only superficial adherence to the source material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:44:24.609Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2702,
+    "outputTokens": 327,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

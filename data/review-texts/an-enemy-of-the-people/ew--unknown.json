@@ -30,5 +30,60 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250723094854",
-  "archiveOrgUrl": "http://web.archive.org/web/20250723094854/https://ew.com/an-enemy-of-the-people-review-jeremy-strong-michael-imperioli-8610065"
+  "archiveOrgUrl": "http://web.archive.org/web/20250723094854/https://ew.com/an-enemy-of-the-people-review-jeremy-strong-michael-imperioli-8610065",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 80,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 88,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "And they will not be disappointed. The actors are tremendous and completely lose themselves in the parts.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "A–",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Strong is captivating as the steadfast yet hopelessly naïve do-gooder, completely immersing himself so much in the role",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Clear A- grade with consistent praise for performances ('tremendous', 'captivating'), direction, and timely relevance, with no significant reservations expressed.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:40:42.483Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3260,
+    "outputTokens": 343,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

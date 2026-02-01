@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 40,
+  "assignedScore": 25,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -18,51 +18,58 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 40,
+    "score": 25,
     "confidence": "high",
     "range": {
-      "low": 35,
-      "high": 45
+      "low": 20,
+      "high": 30
     },
-    "bucket": "Negative",
+    "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": null,
-      "music": 35,
-      "performances": null,
-      "direction": null
+      "book": 30,
+      "music": 15,
+      "performances": 45,
+      "direction": 20
     },
     "keyPhrases": [
       {
-        "quote": "lackluster",
+        "quote": "Silvestri and Ballard's original score is so derivative it gives jukebox musicals a good name",
         "sentiment": "negative",
-        "strength": 3
+        "strength": 5
       },
       {
-        "quote": "The Sherman brothers score is definitely more engaging than the songs Alan Silvestri and Glen Ballard have written for 'Back to the Future'",
+        "quote": "The songs and jokes are dreary",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "the Sherman brothers score is definitely more engaging than the songs",
+        "quote": "I was very happy not to be sitting in the theater's first half dozen rows",
         "sentiment": "negative",
-        "strength": 5
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review criticizes the new musical's songs as inferior to a previous show that was itself described as 'lackluster,' suggesting significant problems with the score, though the excerpt is incomplete. | GPT-4o-mini: The review expresses a clear preference for the music of a previous show over the new musical's score, indicating significant disappointment.",
+    "reasoning": "The critic systematically dismantles nearly every element of the production - calling the score derivative, the lyrics cliched, the direction incomprehensible, and expressing relief at not sitting closer to the stage.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:12:46.362Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:31:57.407Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3180,
+    "outputTokens": 350,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 40,
@@ -75,7 +82,6 @@
       "Score (40 → Down) conflicts with aggregator thumbs (Flat)"
     ]
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 40,
   "archivePath": "data/archives/reviews/back-to-the-future-2023/thewrap--robert-hofler_2026-01-30.html",
@@ -93,5 +99,6 @@
   "archiveOrgTimestamp": "20250724220430",
   "archiveOrgUrl": "http://web.archive.org/web/20250724220430/https://www.thewrap.com/back-to-the-future-broadway-review/",
   "contentTier": "complete",
-  "wordCount": 590
+  "wordCount": 590,
+  "rescoreCompletedAt": "2026-02-01T17:31:57.407Z"
 }

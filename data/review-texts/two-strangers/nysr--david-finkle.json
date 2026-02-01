@@ -13,5 +13,60 @@
     "nyc-theatre"
   ],
   "originalScore": "4/5 stars",
-  "nycTheatreExcerpt": "This is a show so charming, so adorable, that you can easily overlook its flaws. A little bit like falling in love."
+  "nycTheatreExcerpt": "This is a show so charming, so adorable, that you can easily overlook its flaws. A little bit like falling in love.",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 85,
+      "performances": 88,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "sneaks into town as an adroitly-wrought and probing winner",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the huge plus for a vital Two Strangers (Carry a Cake Across New York) run",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Beginning with Dougal's explosive \"New York,\" the score is notable for several sometimes cute, sometimes pungent numbers",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic calls the show 'an adroitly-wrought and probing winner' with strong praise for performances, music, and design, indicating a clear positive recommendation despite no explicit 'see it' statement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:45:12.994Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3519,
+    "outputTokens": 372,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

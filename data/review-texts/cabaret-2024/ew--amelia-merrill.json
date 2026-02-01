@@ -9,56 +9,63 @@
   "bwwExcerpt": "Kander and Ebb's Cabaret is a much-loved and -revived property such that its twists may not be secrets anymore. Despite the stellar Gayle Rankin’s best efforts to inject the latest revival with a sense of urgency as star performer Sally Bowles, director Rebecca Frecknall’s production, now on Broadway after winning multiple awards in London, stays stagnant. This is not due to the excellent company of dancers at the Kit Kat Club (into which the August Wilson Theatre has been remodeled), but to a d",
   "bwwRoundupUrl": null,
   "originalScore": "B",
-  "assignedScore": 52,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 52,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 43.5,
-      "high": 60.5
+      "low": 78,
+      "high": 86
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 73,
-      "direction": 38
+      "performances": 80,
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "stays stagnant",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "stellar Gayle Rankin's best efforts",
+        "quote": "visually arresting production",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "excellent company of dancers",
+        "quote": "pulls you in with fantasy, then crushes you with reality",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
+      },
+      {
+        "quote": "The lush bacchanal of the theater's dressing seeps into every aspect of this production",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review praises individual performances but criticizes the direction as 'stagnant,' suggesting more problems than strengths despite some positive elements. | GPT-4o-mini: The review highlights strong performances but criticizes the direction, leading to a mixed recommendation overall.",
+    "reasoning": "The review is overwhelmingly positive about the production design, direction, and immersive theatrical experience, with consistent praise for the creative vision and execution.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:43:21.003Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:34:00.947Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2624,
+    "outputTokens": 326,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 48,
@@ -74,7 +81,6 @@
   "dtliExcerpt": "The lush bacchanal of the theater’s dressing seeps into every aspect of this production, from Julia Cheng’s sensual, prurient choreography to Eddie Redmayne’s eerie performance as the Emcee.",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 52,
   "isFullReview": false,
@@ -98,5 +104,6 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Word count too low: 218 (min: 300)"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-01T17:34:00.947Z"
 }

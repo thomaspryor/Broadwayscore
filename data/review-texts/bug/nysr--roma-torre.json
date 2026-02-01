@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "3/5 stars"
+  "originalScore": "3/5 stars",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 72,
+      "music": null,
+      "performances": 85,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bug is likely to stay with you for awhile, in part for its wild finish, but also because it's been given a first rate production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I wouldn't call it a great play but it is an admirably combustible one. And if you're looking to get creeped out, it gets the job done",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The two stars deserve high praise for making a most incredible climax make perfect sense",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic praises the 'first rate production,' performances, and direction while acknowledging the play as 'minor work' but still recommends it for those seeking to 'get creeped out.'",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:42:05.388Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3315,
+    "outputTokens": 382,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

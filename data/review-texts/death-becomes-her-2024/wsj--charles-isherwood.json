@@ -7,7 +7,7 @@
   "publishDate": "November 21, 2024",
   "showScoreExcerpt": "\"Megan Hilty and Jennifer Simard give boisterously funny performances as preening rivals\"",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 75,
   "source": "show-score",
   "needsFullText": true,
   "fetchedAt": "2026-01-24T20:00:00.000Z",
@@ -15,14 +15,14 @@
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 63,
+    "score": 75,
     "confidence": "low",
     "range": {
-      "low": 40.5,
-      "high": 85.5
+      "low": 65,
+      "high": 85
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -31,35 +31,37 @@
     },
     "keyPhrases": [
       {
-        "quote": "may be one of the funnier new musicals to splash down on Broadway",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "in a nearly blinding glare of sequins",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "two bright-burning female stars",
+        "quote": "boisterously funny performances",
         "sentiment": "positive",
         "strength": 4
+      },
+      {
+        "quote": "preening rivals",
+        "sentiment": "neutral",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: This appears to be an incomplete excerpt that cuts off mid-sentence, making it impossible to determine the critic's overall recommendation or final verdict. | GPT-4o-mini: The review highlights the humor and strong performances, particularly from Megan Hilty, indicating a positive recommendation despite not providing extensive details on other aspects. | Note: Models differed by 35 points.",
+    "reasoning": "Strong praise for lead performances suggests positive recommendation, but excerpt is too brief to assess overall show quality or provide confident scoring.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:47:52.745Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:35:00.291Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2323,
+    "outputTokens": 267,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 45,
@@ -108,12 +110,11 @@
   ],
   "rescoreReason": "tiny-excerpt: only 89 chars, try re-fetching",
   "previousLlmScore": 74,
-  "rescoreCompletedAt": "2026-01-29T01:47:52.745Z",
+  "rescoreCompletedAt": "2026-02-01T17:35:00.291Z",
   "garbageFullText": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-hilty-jennifer-simard-58c2761b\n\nMegan Hilty and Jennifer Simard Matthew Murphy and Evan ZimmermanNew York\n\n“Death Becomes Her” may be one of the funnier new musicals to splash down on Broadway, in a nearly blinding glare of sequins, in recent seasons. But perhaps none of its ample array of gags, whether low, high or occasionally borrowed, is quite as ingenious as the joke supplied by Megan Hilty, one of the show’s two bright-burning female stars.\n\nCopyright ©2025 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nNew York Film Festival 2025 Review: Full of Daring and Delights",
   "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
   "garbageFixedAt": "2026-01-29T22:45:22.777Z",
   "bwwExcerpt": "As the plot grows more ludicrous and convoluted, the fun peters out like a slowly deflating helium balloon sagging to earth. And if the show intended to make any pertinent commentary on the uselessness or dangerousness of chasing after one’s vanishing youth, it is swallowed up in the glossy production. Ms. Hilty and Ms. Simard are sufficiently seductive performers to hold our attention and affection through their witty work.",
   "contentTier": "excerpt",
-  "wordCount": 0,
-  "needsRescore": true
+  "wordCount": 0
 }

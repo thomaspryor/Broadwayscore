@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "4/5 stars"
+  "originalScore": "4/5 stars",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 45,
+      "performances": 88,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical adaptation, newly arrived on Broadway after a Chicago tryout, is a laugh riot from start to finish",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The only thing missing are memorable songs, but fortunately the show is so entertaining you'll find yourself not minding very much",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It turns out that Death Becomes Her becomes Broadway",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Despite significant criticism of the forgettable score, the critic finds the show consistently entertaining with stellar performances and production values, calling it 'superior to the film' and 'a laugh riot from start to finish.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:42:22.989Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3325,
+    "outputTokens": 361,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

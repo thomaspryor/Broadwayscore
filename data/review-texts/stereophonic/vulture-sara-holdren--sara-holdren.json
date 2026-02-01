@@ -28,5 +28,60 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251207235733",
-  "archiveOrgUrl": "http://web.archive.org/web/20251207235733/https://www.vulture.com/article/theater-review-stereophonic-broadway.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251207235733/https://www.vulture.com/article/theater-review-stereophonic-broadway.html",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": 88,
+      "performances": 92,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "one of the most exhilarating moments I've experienced in a theater in recent memory",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "a stunning feat of scoring by Adjmi",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "makes Stereophonic such a meaningful and exceptional piece of work",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "The critic uses superlative language throughout ('exhilarating', 'stunning feat', 'exceptional piece of work') with detailed praise for all elements and no significant caveats, indicating a strong rave recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:44:09.805Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3422,
+    "outputTokens": 355,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

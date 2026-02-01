@@ -28,5 +28,60 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250114073625",
-  "archiveOrgUrl": "http://web.archive.org/web/20250114073625/https://www.vulture.com/article/theater-review-the-outsiders-broadway-musical.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250114073625/https://www.vulture.com/article/theater-review-the-outsiders-broadway-musical.html",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 80,
+      "performances": 88,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Outsiders is taking a real swing at being the strongest entry in this season's wave of singer-songwriter outings on Broadway",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "if The Outsiders sometimes traffics, perhaps unavoidably, in cliché, it makes up for it with the tenderness and muscle of not just its songs but its staging and performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "She's constantly and compellingly repurposing the basic elements of the show's gritty warehouselike set... and both mid-rumble and elsewhere, she suspends time to great effect",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The reviewer gives extensive praise for performances, direction, and choreography while acknowledging minor weaknesses in the book's reliance on clichés, resulting in a clear positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:44:32.736Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4646,
+    "outputTokens": 406,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

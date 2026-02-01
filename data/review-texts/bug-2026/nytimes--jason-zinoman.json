@@ -9,58 +9,65 @@
   "dtliExcerpt": "But what really holds this production together is Coon, an excitingly live-wire performer who sells the play’s hard-boiled poetry with conviction. “I just get sick of it, my lousy life, laundromats and grocery stores, dumb marriages and lost kids,” she says, making you feel her pain. She’s fed up and ready for something, anything new.",
   "showScoreExcerpt": "\"It wants to make you scream and maybe chuckle to yourself about it, though its most disturbing suggestion is that the descent into conspiratorial thinking might feel a little like falling in love.\"",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 82,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Carrie-Coon-Namir-Smallwood-and-More-Star-in-BUG-on-Broadway-20260108",
   "dtliThumb": "Up",
   "designation": "Critics_Pick",
   "bwwExcerpt": "CRITIC'S PICK. This new Manhattan Theater Club production, which opened Thursday at the Samuel J. Friedman Theater, is more tender and balanced, with Namir Smallwood rendering Peter as a gentler, less alien figure. The focus has shifted to his romantic partner, Agnes (Coon), a desperate sad sack hau...",
   "llmScore": {
-    "score": 78,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 70.5,
-      "high": 85.5
+      "low": 78,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 85,
       "music": null,
-      "performances": 85,
-      "direction": null
+      "performances": 88,
+      "direction": 80
     },
     "keyPhrases": [
       {
-        "quote": "what really holds this production together is Coon",
+        "quote": "In a superb performance, Coon provides the alpha energy this time, her eruptive anger masking an inner conflict worn on her weary face.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "This revival announces 'Bug' as a layered and assured tragedy for our cracked moment.",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "an excitingly live-wire performer who sells the play's hard-boiled poetry with conviction",
+        "quote": "No play this century dramatizes this better, and with as much twisted horror, as 'Bug,' Tracy Letts's nerve-rattling shocker",
         "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "making you feel her pain",
-        "sentiment": "positive",
-        "strength": 3
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: Strong praise for Coon's performance with vivid descriptive language suggests positive recommendation, but this excerpt focuses entirely on one performer without broader production assessment. | GPT-4o-mini: The review highlights the strong performance of Coon but does not provide enough context about the overall production to warrant a higher score.",
+    "reasoning": "The review consistently praises the production's relevance, performances (especially Coon's 'superb' work), and Letts's writing, calling it a 'layered and assured tragedy' that effectively captures contemporary anxieties about conspiracy theories.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T04:58:14.168Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:33:30.747Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4003,
+    "outputTokens": 395,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 75,
@@ -76,7 +83,6 @@
   "bwwThumb": "Up",
   "contentTier": "truncated",
   "wordCount": 55,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "isFullReview": true,
@@ -109,5 +115,6 @@
   "textStatus": "complete",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-01T17:33:30.747Z"
 }

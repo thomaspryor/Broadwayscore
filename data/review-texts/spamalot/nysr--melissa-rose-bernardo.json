@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "4/5 stars"
+  "originalScore": "4/5 stars",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 80,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's as wonderfully silly as ever",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "this is the Spamalot you remember—right down to the logo; it's just a little…slimmed down",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "After slaying in a short run last May at the Kennedy Center",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The review expresses clear enthusiasm for the revival with phrases like 'wonderfully silly as ever' and 'slaying' at Kennedy Center, while noting it's somewhat 'slimmed down' but still fundamentally the beloved show fans remember.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:43:55.934Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2821,
+    "outputTokens": 357,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

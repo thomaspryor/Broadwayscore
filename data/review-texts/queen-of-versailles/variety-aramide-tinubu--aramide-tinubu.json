@@ -28,5 +28,55 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251111020955",
-  "archiveOrgUrl": "http://web.archive.org/web/20251111020955/https://variety.com/2025/legit/reviews/the-queen-of-versailles-broadway-review-kristin-chenoweth-1236571652/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251111020955/https://variety.com/2025/legit/reviews/the-queen-of-versailles-broadway-review-kristin-chenoweth-1236571652/",
+  "assignedScore": 35,
+  "llmScore": {
+    "score": 35,
+    "confidence": "medium",
+    "range": {
+      "low": 30,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 30,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Unfortunately, Greenfield's dazzling assessment of greed, consumption and the American dream doesn't translate on the stage",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Kristin Chenoweth is stepping into Jackie Siegel's sparkling pink stilettos and bringing her story to Broadway",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "The review's concluding statement that the source material 'doesn't translate on the stage' is a fundamental criticism that undermines the entire production despite noting the impressive creative team.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:43:50.344Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2534,
+    "outputTokens": 318,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

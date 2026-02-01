@@ -9,56 +9,63 @@
   "showScoreExcerpt": "âEven if the musical doesnât have a discernible heartbeat, Hilty and Simard ensure Death Becomes Her stays fun and fabulous.â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/death-becomes-her-broadway",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 72,
   "source": "dtli",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "llmScore": {
-    "score": 64,
+    "score": 72,
     "confidence": "high",
     "range": {
-      "low": 57.5,
-      "high": 70.5
+      "low": 68,
+      "high": 76
     },
     "bucket": "Mixed",
-    "thumb": "Flat",
+    "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 40,
-      "performances": 77,
-      "direction": null
+      "book": 75,
+      "music": 35,
+      "performances": 85,
+      "direction": 70
     },
     "keyPhrases": [
       {
-        "quote": "the musical doesn't have a discernible heartbeat",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Hilty and Simard ensure Death Becomes Her stays fun and fabulous",
+        "quote": "Hilty and Simard ensure 'Death Becomes Her' stays fun and fabulous",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "doesn’t have a discernible heartbeat",
+        "quote": "The songs by Julia Mattison and Noel Carey are mediocre. And there are far too many of them",
         "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "whenever the material sags, like aging skin, its sensational stars inject the show with new vibrancy",
+        "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic acknowledges fundamental problems with the musical itself but finds the lead performances compelling enough to maintain entertainment value, suggesting a qualified, mixed recommendation. | GPT-4o-mini: The review highlights enjoyable performances but notes a significant flaw in the musical's emotional impact, leading to a mixed recommendation.",
+    "reasoning": "The critic finds significant flaws in the music but is clearly entertained by the stellar performances and production, ending on a positive note that the show 'stays fun and fabulous.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:16:20.782Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:34:50.697Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3367,
+    "outputTokens": 367,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 62,
@@ -78,7 +85,6 @@
   "bwwThumb": null,
   "contentTier": "truncated",
   "wordCount": 20,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 64,
   "isFullReview": true,
@@ -110,5 +116,6 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "browserbase"
+  "sourceMethod": "browserbase",
+  "rescoreCompletedAt": "2026-02-01T17:34:50.697Z"
 }

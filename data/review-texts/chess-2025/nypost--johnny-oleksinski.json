@@ -23,42 +23,49 @@
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": 30,
+      "book": 15,
+      "music": 45,
+      "performances": 65,
       "direction": 20
     },
     "keyPhrases": [
       {
-        "quote": "The endless production becomes totally reliant on the amped-up singing of leads",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "I was board all right",
+        "quote": "nearly three-hour slog through Siberia",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "I was bored all right.",
+        "quote": "the revival of 'Chess' has already given up",
         "sentiment": "negative",
         "strength": 5
+      },
+      {
+        "quote": "When Christopher, with a voice sent from the gods, wails Act 1 closer 'Anthem'... the music does indeed lift the fog of flop for a moment",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic explicitly states they were bored and criticizes the production as 'endless' and overly reliant on loud performances to compensate for other weaknesses. | GPT-4o-mini: The review expresses clear dissatisfaction with the production, indicating a lack of engagement and reliance on singing rather than a well-rounded experience.",
+    "reasoning": "Despite isolated praise for Nicholas Christopher's vocals, the review is overwhelmingly negative, calling it a 'slog' that 'has already given up' with harsh criticism of direction, book, and overall experience.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:22.999Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:34:19.493Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2880,
+    "outputTokens": 361,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 25,
@@ -69,7 +76,6 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 25,
   "archivePath": "data/archives/reviews/chess-2025/nypost--johnny-oleksinski_2026-01-29.html",
@@ -87,5 +93,6 @@
   "archiveOrgTimestamp": "20251205130608",
   "archiveOrgUrl": "http://web.archive.org/web/20251205130608/https://nypost.com/2025/11/16/entertainment/chess-review-lea-michele-leaves-you-cold-in-cold-war-musical-revival-on-broadway/",
   "contentTier": "complete",
-  "wordCount": 824
+  "wordCount": 824,
+  "rescoreCompletedAt": "2026-02-01T17:34:19.493Z"
 }

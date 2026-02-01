@@ -7,56 +7,58 @@
   "publishDate": "March 20, 2025",
   "dtliExcerpt": "Faults in the sometimes wooden acting from principal cast members (some of whom, to be fair, come from the music world) are eclipsed by the sonic brilliance of it all.",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 72,
   "source": "dtli",
   "dtliThumb": "Meh",
   "scrapedAt": "2026-01-23T22:02:08.338Z",
   "llmScore": {
-    "score": 45,
-    "confidence": "low",
+    "score": 72,
+    "confidence": "medium",
     "range": {
-      "low": 20,
-      "high": 70
+      "low": 68,
+      "high": 76
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Up",
     "components": {
       "book": null,
-      "music": 75,
-      "performances": null,
+      "music": 85,
+      "performances": 45,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "skims over pre- and post-Revolution Cuban life",
+        "quote": "Faults in the sometimes wooden acting from principal cast members",
         "sentiment": "negative",
-        "strength": 3
+        "strength": 4
       },
       {
-        "quote": "leaves history behind",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "vividly displays what came of it: incredible music",
+        "quote": "eclipsed by the sonic brilliance of it all",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review text appears to be truncated and mostly consists of publication metadata rather than actual critical content, making assessment difficult. | GPT-4o-mini: The review highlights the vibrant music but criticizes the lack of historical depth, leading to a mixed recommendation. | Note: Models differed by 40 points.",
+    "reasoning": "The critic acknowledges significant acting flaws but indicates the musical elements are so strong they overcome these problems, suggesting a qualified positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
       "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:37:43.430Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:32:49.943Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2341,
+    "outputTokens": 281,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 25,
@@ -77,11 +79,10 @@
   "bwwThumb": null,
   "rescoreReason": "garbage-text: HTML/navigation instead of review content",
   "previousLlmScore": 45,
-  "rescoreCompletedAt": "2026-01-29T01:37:43.430Z",
+  "rescoreCompletedAt": "2026-02-01T17:32:49.943Z",
   "garbageFullText": "Review — Buena Vista Social Club The Broadway Review: ‘Buena Vista Social Club’ brings ebullient trova music to Broadway but leaves history behind Marco Ramirez’s musical — a transfer from Off-Broadway — skims over pre- and post-Revolution Cuban life, but vividly displays what came of it: incredible music. , and Brittani Samuel March 20, 2025 . 12:41 AM 10 min read Share on Twitter Share on Facebook Share on LinkedIn Share via Email The cast of “Buena Vista Social Club” on Broadway, 2025 (Credit: Matthew Murphy) This post is for paying subscribers only Subscribe now Already have an account? Sign in Review — Buena Vista Social Club — News — Marco Ramirez — Saheem Ali — Julio Monge — Natalie Venetia Belcon — Ashley De La Rosa — Isa Antonetti — Marco Paguia — Justin Peck — Patricia Delgado — Atlantic Theater Company — Arnulfo Maldonado — Dede Ayite — Tyler Micoleau — Jonathan Deans Introductory Offer $1/month for 3 months Subscribe Already have an account? Log in Latest Closer Look What does it take to actually revise a musical? Closer Look How the original company of ‘Ragtime’ was cast Insights Loyalty Report: January 22, 2026 Closer Look How ‘Riverdance’ revolutionized the world of dance Podcast 30 years ago, Tracy Letts wrote a play tailor-made for today with ‘Bug’ Personnel Neil Mazzella steps down as CEO of Hudson entities Books The original music director of ‘Rent’ reveals scenes from the very first auditions Closer Look Christian Cowan uses detail and taste to make ‘The Queen of Versailles’ shine",
   "garbageReason": "Paywall/subscription prompt: \"subscribers only\"",
   "garbageFixedAt": "2026-01-29T22:45:22.716Z",
-  "needsRescore": true,
   "fullText": null,
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [

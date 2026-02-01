@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "5/5 stars"
+  "originalScore": "5/5 stars",
+  "assignedScore": 87,
+  "llmScore": {
+    "score": 87,
+    "confidence": "high",
+    "range": {
+      "low": 84,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 78,
+      "performances": 92,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "are simply divine delivering a master class in musical comedy and likely setting a land/speed record for laughs per minute",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It takes something really good to pull off something so bad. Happily, the entire creative team was up to the task",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "makes Gutenberg the theatrical equivalent of an irresistible page-turner",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Enthusiastic praise throughout with superlatives like 'divine,' 'master class,' and 'irresistible page-turner,' plus strong appreciation for all creative elements despite acknowledging the intentionally silly premise.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:42:29.749Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3498,
+    "outputTokens": 370,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

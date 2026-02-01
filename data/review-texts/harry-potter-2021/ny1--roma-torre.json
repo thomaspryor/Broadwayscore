@@ -8,22 +8,22 @@
   "fullText": "It's been called the \"Hamilton\" of the United Kingdom, and it's now on Broadway. \"Harry Potter and the Cursed Child\" continues to work its special magic on the live stage, shattering box office records as it casts its undeniable spell on hordes of delighted Muggles. So sure of its success on Broadway, the producers spent millions renovating the Lyric Theatre where Spider-Man once flew. And how convenient, as the \"Harry Potter\" designers were able to rig some incredible flying effects of their own. But while the show is packed with many more dazzling tricks and illusions, it's the story, conceived by author J.K. Rowling with director John Tiffany and playwright Jack Thorne, that's drawing fans to this eighth installment in the popular series. Clocking in at more than five hours, the plot-heavy two-part drama features dozens of familiar characters from the novels — the living and dead — as time travel figures prominently. I will say no more about the story except that it takes place 19 years later. Harry, Hermione, and Ron are now 37 years old, with children of their own attending Hogwarts, and we find Harry's celebrity status is both a boon and burden to his family. The large bravura cast is led by the seven principal actors from the London production. Jamie Parker's Harry, with his trademark glasses, is the moral center, and Paul Thornley as ginger Ron provides the comic relief. Hermione is played by Norma Dumezweni. The dynamic is still perfectly matched, with the irresistible chemistry featured in the books and films. As in the books, the play takes a dark turn with strong psychological overtones. Tiffany is a wizard himself, navigating the emotional terrain with his own theatrical magic. Alongside his longtime collaborator Steven Hoggett as movement director, and the genius design team, they have crafted a stunningly immersive and moving experience. As much as I truly enjoyed the production, I should point out the British accents might be a little hard to make out at times. And if contemplating whether to take a child, consider that a working knowledge of the books or films is highly recommended. That's pretty true for us adult Muggles as well.",
   "showScoreExcerpt": "\"While the show is packed with many more dazzling tricks and illusions, it's the story that's drawing fans to this eighth installment in the popular series...As in the books, the play takes a dark turn with strong psychological overtones. Tiffany is a wizard himself, navigating the emotional terrain with his own theatrical magic. Alongside his longtime collaborator Steven Hoggett, and the genius design team, they have crafted a stunningly immersive and moving experience.\"",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 82,
   "source": "show-score",
   "sourceMethod": "playwright",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 84,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 77.5,
-      "high": 90.5
+      "low": 78,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 80,
+      "book": 78,
       "music": null,
       "performances": 85,
       "direction": 88
@@ -35,30 +35,37 @@
         "strength": 5
       },
       {
-        "quote": "navigating the emotional terrain with his own theatrical magic",
+        "quote": "As much as I truly enjoyed the production",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "it's the story that's drawing fans",
+        "quote": "continues to work its special magic on the live stage",
         "sentiment": "positive",
-        "strength": 3
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Strong praise for the immersive experience, performances, and direction with superlative language ('stunningly', 'genius design team') indicating clear positive recommendation. | GPT-4o-mini: The review expresses strong praise for the immersive experience and direction, indicating a clear recommendation despite not explicitly stating it.",
+    "reasoning": "The critic clearly enjoyed the production with strong praise for direction, design, and performances, though minor caveats about accents and accessibility keep it from being a rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:26:59.325Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:37:02.222Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2803,
+    "outputTokens": 320,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 82,
@@ -71,7 +78,6 @@
   },
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 84,
   "isFullReview": true,
@@ -96,5 +102,6 @@
   "fetchTier": 1,
   "textQuality": "full",
   "truncationSignals": [],
-  "textStatus": "complete"
+  "textStatus": "complete",
+  "rescoreCompletedAt": "2026-02-01T17:37:02.222Z"
 }

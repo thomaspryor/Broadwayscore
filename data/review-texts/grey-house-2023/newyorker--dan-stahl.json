@@ -9,24 +9,24 @@
   "showScoreExcerpt": "\"They’re frighteningly convincing, as are most of the ghoulish effects and all the performers. Joe Mantello directs one hell of a show.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/grey-house-broadway",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 85,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 82,
+    "score": 85,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 87
+      "low": 80,
+      "high": 90
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 88
+      "performances": 88,
+      "direction": 90
     },
     "keyPhrases": [
       {
@@ -40,12 +40,12 @@
         "strength": 5
       },
       {
-        "quote": "ghoulish effects and all the performers",
+        "quote": "all the performers",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Strong praise for direction ('one hell of a show') and performances ('frighteningly convincing') with no negative caveats signals clear positive recommendation.",
+    "reasoning": "Strong praise for performances, direction, and production effects with emphatic language ('one hell of a show', 'frighteningly convincing') indicates clear recommendation despite brief excerpt.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
@@ -54,11 +54,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:17:48.690Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:35:47.094Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2336,
+    "outputTokens": 314,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 82,
@@ -71,7 +78,6 @@
   },
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
   "isFullReview": false,
@@ -106,5 +112,6 @@
   "sourceMethod": "scrapingbee",
   "textIssues": [
     "Word count too low: 203 (min: 300)"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-01T17:35:47.094Z"
 }

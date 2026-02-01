@@ -20,7 +20,7 @@
   "sourceMethod": "archive",
   "llmScore": {
     "score": 68,
-    "confidence": "high",
+    "confidence": "low",
     "range": {
       "low": 65,
       "high": 72
@@ -56,6 +56,11 @@
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": true
+    },
+    "humanReviewOverride": {
+      "previousConfidence": "high",
+      "reason": "Both thumbs Up but current score 68. Override to thumb-based 80.",
+      "appliedAt": "2026-02-01T17:37:53.691Z"
     }
   },
   "llmMetadata": {

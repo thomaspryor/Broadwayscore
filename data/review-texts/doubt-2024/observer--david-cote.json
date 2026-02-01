@@ -16,16 +16,16 @@
     "score": 88,
     "confidence": "high",
     "range": {
-      "low": 80.5,
-      "high": 95.5
+      "low": 85,
+      "high": 92
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 91,
+      "book": 92,
       "music": null,
-      "performances": 92,
-      "direction": 88
+      "performances": 85,
+      "direction": 87
     },
     "keyPhrases": [
       {
@@ -34,30 +34,37 @@
         "strength": 5
       },
       {
-        "quote": "Scott Ellis's faithful and beautifully designed revival",
+        "quote": "Classically balanced, fiendishly focused, lean and eloquent, the play keeps you guessing until that shocking ending",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "Classically balanced, fiendishly focused, lean and eloquent, the play keeps you guessing until that shocking ending",
+        "quote": "Scott Ellis's faithful and beautifully designed revival is the inaugural production",
         "sentiment": "positive",
-        "strength": 5
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic calls this one of the top ten American dramas of the century with superlative praise for the script, strong appreciation for the performances (especially Schreiber and Ryan), and admiration for the production design, with only minor casting quibbles. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and the script, highlighting the production's excellence and the significance of the play, indicating a must-see recommendation.",
+    "reasoning": "Critic declares this play among the top ten American dramas of the century with superlative praise for the script, performances, and production values, despite minor quibbles about casting choices.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:49:19.286Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:35:25.945Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3818,
+    "outputTokens": 376,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 85,
@@ -85,7 +92,7 @@
   "sourceMethod": "playwright",
   "archiveOrgTimestamp": "20250517121907",
   "archiveOrgUrl": "http://web.archive.org/web/20250517121907/https://observer.com/2024/03/review-a-priest-and-a-nun-walk-into-a-war-in-contemporary-classic-doubt/",
-  "rescoreCompletedAt": "2026-01-29T01:49:19.286Z",
+  "rescoreCompletedAt": "2026-02-01T17:35:25.945Z",
   "garbageFullText": "Doubt | 1hr 30mins. No intermission. | Todd Haimes Theatre | 227 West 42nd Street | 212-719-1300\n\nSign Up\t\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\tThank you for signing up!\n\nBy clicking submit, you agree to our <a href=\"http://observermedia.com/terms\">terms of service</a> and acknowledge we may use your information to send you emails, product samples, and promotions on this website and other properties. You can opt out anytime.\n\n“Credo quia absurdum,” goes a declaration derived from early Christian apologist Tertullian: “I believe because it is absurd.” The more outlandish the claim the tighter one’s fingers curl around the rosary beads. Faith should negate the need for evidence or trial; proof of the divine would, paradoxically, diminish faith and lead believers into heresy. One might even argue that miracles are cheating (likewise theology, the pseudo-science of the imaginary). That terrible gap between inner conviction and outward facticity is a fiery chasm running down the middle of Doubt, currently in an impressive revival at the Roundabout.\n\nWhat gives John Patrick Shanley’s 2004 “parable” its dramatic charge is how very un-absurd the crime that Sister Aloysius (Amy Ryan) suspects Father Flynn (Liev Schreiber) has committed: grooming a boy. It’s 1964 and Donald Muller is the first Black student at the Bronx Catholic school she runs. Aloysius knows all too well what the world has come to realize: the Church protects its predators, who are legion. When guileless young Sister James (Zoe Kazan) reports to Aloysius that Donald returned to class after a private meeting with Flynn behaving oddly and with alcohol on his breath, we, like Aloysius, assume the worst.\n\nWho is Father Flynn? An avatar of Vatican II’s welcoming embrace of modernity who keeps his nails a bit long and believes children need love, not ruthless discipline—as Aloysius would have it. Shanley gives Flynn the first word in a stirring sermon on the subject of, yes, doubt. How uncertainty in our most trying times may be torture, but also connects us as humans—all of us stumbling in darkness. Dogmatism is dehumanizing. In Schreiber’s physically imposing but strangely soothing presence, you soon forget that he’s about twenty years too old for Flynn (who’s in his late thirties) and simply marvel when this magnetic stage animal furrows his brow or shifts his weight from left to right, sending ripples of tension across a room. Schreiber is an actor of tremendous economy and focus, a marked contrast to the 2004 Flynn (the more boyish and vulnerable Brían F. O’Byrne); he’s unnervingly seductive, manly, authoritative. The pleasure lies in watching that pugilist bulk bowed under Aloysius’ sustained assault.\n\nIf Schreiber presents a more menacing Flynn, Ryan does something opposite. Twenty years ago, Cherry Jones’s Aloysius was a monolith of frosty glares, curt retorts and sheer willpower. She was one tough nun on a moral crusade. Indeed, Aloysius is an open invitation for any actress to play a bonneted dragon lady, impregnable to softer emotions. Ryan modulates her portrayal with little touches of sweetness and hesitancy that Jones avoided. This is a more traditionally feminine portrayal, even if Ryan&#8217;s armor grows thicker as her path to justice twists and dips. Ryan’s shading pays off, however, in the sickening swerve of a finale, in which Aloysius realizes her victory may have paved the way for more wrongdoing. Confessing uncertainty, she crumbles, sobbing, into James’s arms (Jones was more restrained).\n\nNot only is Doubt in the top ten American dramas of this century, but Sister Aloysius is one of the greatest stage characters in decades. From her pinched lips Shanley issues forth a series of chiseled, moralizing epigrams—Wilde by way of Savonarola. “Satisfaction is vice,” she informs the timorous James. “Innocence is a form of laziness.” “When you take a step to address wrongdoing, you are taking a step away from God, but in His service.” When James recoils from the thought of confronting Flynn on his suspected perversions, Aloysius assumes the haughty tones of a Holmes correcting a squeamish Watson: “Do not indulge yourself in witless adolescent scruples. I assure you I would prefer a more seasoned confederate. But you are the one who came to me.”\n\nScott Ellis’s faithful (excuse the term) and beautifully designed revival is the inaugural production at the Roundabout’s rechristened Todd Haimes Theatre, named after the late, long-serving artistic director. One of Haimes’s legacies was the casting of first (or second) tier TV and movie celebrities, a policy that might have brought in audiences but wasn’t always best for the art. (Originally, Tyne Daly was cast as Aloysius, but had to leave for medical reasons.) I’m happy to say that the casting here is mostly spot on (Kazan lays on the awkward geek-girl shtick a bit thick). She only gets one scene, but the wry, incisive Quincy Tyler Bernstine is achingly effective as Donald’s long-suffering mother, determined her son will get to high school and escape the abusive household.\n\nChronologically smack in the middle of his career (thus far) Doubt is Shanley’s finest work, a modern fable that’s less concerned with sexual abuse in the Catholic Church, per se, than the mental prisons that render us both inmate and warden. An expert design team reinforces this carceral motif: David Rockwell’s glowering, Gothic Revival architecture, Kenneth Posner’s dance of autumnal light and shadow, the ominous croaking of crows in Mikaal Sulaiman’s sound, and Linda Cho’s drab but textured habits and vestments. Classically balanced, fiendishly focused, lean and eloquent, the play keeps you guessing until that shocking ending—and still withholds the truth.\n\nAlso unexpected, from Shanley: Doubt is not an urban love story or whimsical mediation on the courtship rituals of men and women. Let me qualify that last point. Doubt is very much about female agency in a male-dominated institution, and how, while trying to fight an injustice you know is real, you may perpetuate evil. It would be absurd if it weren’t so tragic.\n\nWe noticed you're using an ad blocker.\n\t\t\tWe get it: you like to have control of your own internet experience. But advertising revenue helps support our journalism. To read our full stories, please turn off your ad blocker.We'd really appreciate it.\n\nBelow are steps you can take in order to whitelist Observer.com on your browser:\n\nClick the AdBlock button on your browser and select Don't run on pages on this domain.\n\nClick the AdBlock Plus button on your browser and select Enabled on this site.\n\nClick the AdBlock Plus button on your browser and select Disable on Observer.com.",
   "garbageReason": "/ad ?block(er)?/i",
   "garbageFixedAt": "2026-01-29T22:45:22.784Z",
@@ -93,7 +100,6 @@
   "dateSource": "could-not-extract",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "fullText": "Doubt | 1hr 30mins. No intermission. | Todd Haimes Theatre | 227 West 42nd Street | 212-719-1300 By clicking submit, you agree to our <a href=\"http://observermedia.com/terms\">terms of service</a> and acknowledge we may use your information to send you emails, product samples, and promotions on this website and other properties. You can opt out anytime. “Credo quia absurdum,” goes a declaration derived from early Christian apologist Tertullian: “I believe because it is absurd.” The more outlandish the claim the tighter one’s fingers curl around the rosary beads. Faith should negate the need for evidence or trial; proof of the divine would, paradoxically, diminish faith and lead believers into heresy. One might even argue that miracles are cheating (likewise theology, the pseudo-science of the imaginary). That terrible gap between inner conviction and outward facticity is a fiery chasm running down the middle of Doubt, currently in an impressive revival at the Roundabout. What gives John Patrick Shanley’s 2004 “parable” its dramatic charge is how very un-absurd the crime that Sister Aloysius (Amy Ryan) suspects Father Flynn (Liev Schreiber) has committed: grooming a boy. It’s 1964 and Donald Muller is the first Black student at the Bronx Catholic school she runs. Aloysius knows all too well what the world has come to realize: the Church protects its predators, who are legion. When guileless young Sister James (Zoe Kazan) reports to Aloysius that Donald returned to class after a private meeting with Flynn behaving oddly and with alcohol on his breath, we, like Aloysius, assume the worst. Who is Father Flynn? An avatar of Vatican II’s welcoming embrace of modernity who keeps his nails a bit long and believes children need love, not ruthless discipline—as Aloysius would have it. Shanley gives Flynn the first word in a stirring sermon on the subject of, yes, doubt. How uncertainty in our most trying times may be torture, but also connects us as humans—all of us stumbling in darkness. Dogmatism is dehumanizing. In Schreiber’s physically imposing but strangely soothing presence, you soon forget that he’s about twenty years too old for Flynn (who’s in his late thirties) and simply marvel when this magnetic stage animal furrows his brow or shifts his weight from left to right, sending ripples of tension across a room. Schreiber is an actor of tremendous economy and focus, a marked contrast to the 2004 Flynn (the more boyish and vulnerable Brían F. O’Byrne); he’s unnervingly seductive, manly, authoritative. The pleasure lies in watching that pugilist bulk bowed under Aloysius’ sustained assault. If Schreiber presents a more menacing Flynn, Ryan does something opposite. Twenty years ago, Cherry Jones’s Aloysius was a monolith of frosty glares, curt retorts and sheer willpower. She was one tough nun on a moral crusade. Indeed, Aloysius is an open invitation for any actress to play a bonneted dragon lady, impregnable to softer emotions. Ryan modulates her portrayal with little touches of sweetness and hesitancy that Jones avoided. This is a more traditionally feminine portrayal, even if Ryan’s armor grows thicker as her path to justice twists and dips. Ryan’s shading pays off, however, in the sickening swerve of a finale, in which Aloysius realizes her victory may have paved the way for more wrongdoing. Confessing uncertainty, she crumbles, sobbing, into James’s arms (Jones was more restrained). Not only is Doubt in the top ten American dramas of this century, but Sister Aloysius is one of the greatest stage characters in decades. From her pinched lips Shanley issues forth a series of chiseled, moralizing epigrams—Wilde by way of Savonarola. “Satisfaction is vice,” she informs the timorous James. “Innocence is a form of laziness.” “When you take a step to address wrongdoing, you are taking a step away from God, but in His service.” When James recoils from the thought of confronting Flynn on his suspected perversions, Aloysius assumes the haughty tones of a Holmes correcting a squeamish Watson: “Do not indulge yourself in witless adolescent scruples. I assure you I would prefer a more seasoned confederate. But you are the one who came to me.” Scott Ellis’s faithful (excuse the term) and beautifully designed revival is the inaugural production at the Roundabout’s rechristened Todd Haimes Theatre, named after the late, long-serving artistic director. One of Haimes’s legacies was the casting of first (or second) tier TV and movie celebrities, a policy that might have brought in audiences but wasn’t always best for the art. (Originally, Tyne Daly was cast as Aloysius, but had to leave for medical reasons.) I’m happy to say that the casting here is mostly spot on (Kazan lays on the awkward geek-girl shtick a bit thick). She only gets one scene, but the wry, incisive Quincy Tyler Bernstine is achingly effective as Donald’s long-suffering mother, determined her son will get to high school and escape the abusive household. Chronologically smack in the middle of his career (thus far) Doubt is Shanley’s finest work, a modern fable that’s less concerned with sexual abuse in the Catholic Church, per se, than the mental prisons that render us both inmate and warden. An expert design team reinforces this carceral motif: David Rockwell’s glowering, Gothic Revival architecture, Kenneth Posner’s dance of autumnal light and shadow, the ominous croaking of crows in Mikaal Sulaiman’s sound, and Linda Cho’s drab but textured habits and vestments. Classically balanced, fiendishly focused, lean and eloquent, the play keeps you guessing until that shocking ending—and still withholds the truth. Also unexpected, from Shanley: Doubt is not an urban love story or whimsical mediation on the courtship rituals of men and women. Let me qualify that last point. Doubt is very much about female agency in a male-dominated institution, and how, while trying to fight an injustice you know is real, you may perpetuate evil. It would be absurd if it weren’t so tragic.",
   "isFullReview": true,
   "textWordCount": 967,

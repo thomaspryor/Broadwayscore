@@ -9,56 +9,63 @@
   "bwwExcerpt": "It’s been said “dying is easy, comedy is hard”.  Well, anyone who’s seen Gutenberg! The Musical might challenge that little showbiz maxim because Josh Gad and Andrew Rannells—the entire cast of this hilarious two-hander—are making the comedy seem downright effortless. The two stars, appearing together on Broadway for the first time since their Tony nominated turns in the original company of The Book of Mormon, are simply divine delivering a master class in musical comedy and likely setting a lan",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": "B",
-  "assignedScore": 89,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmScore": {
-    "score": 89,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 82.5,
-      "high": 95.5
+      "low": 58,
+      "high": 66
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": 95,
-      "direction": null
+      "book": 45,
+      "music": 50,
+      "performances": 82,
+      "direction": 70
     },
     "keyPhrases": [
       {
-        "quote": "are making the comedy seem downright effortless",
-        "sentiment": "positive",
+        "quote": "They are winning leading men — even as their antics on a bare-bones, brick-backed set rarely surmount to much beyond a SNL sketch",
+        "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "are simply divine delivering a master class in musical comedy",
-        "sentiment": "positive",
-        "strength": 5
+        "quote": "The entire show might be better suited for the late-night slot at a comedy club as opposed to Broadway",
+        "sentiment": "negative",
+        "strength": 4
       },
       {
-        "quote": "this hilarious two-hander",
+        "quote": "Gad and Rannells strike perfect comedic balance. The two deliver pitch-perfect utterances",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: Strong praise for performances with superlatives like 'divine' and 'master class', plus calling the show 'hilarious', indicates clear positive recommendation despite incomplete excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for the performances, particularly highlighting the comedic talent of the cast, indicating a must-see experience.",
+    "reasoning": "The reviewer praises the lead performances highly but clearly questions whether the material belongs on Broadway, suggesting it's more suitable for a comedy club - this indicates entertainment value but doubts about the show's Broadway worthiness.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": false
+      "comparesToPrevious": false,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:05:30.274Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:35:58.435Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2769,
+    "outputTokens": 377,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 87,
@@ -74,7 +81,6 @@
   "dtliExcerpt": "Two-handers run the risk of tilting in favor of one performer over the other, but Gad and Rannells strike perfect comedic balance.",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 89,
   "isFullReview": true,
@@ -96,5 +102,6 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
-  "wrongAttribution": true
+  "wrongAttribution": true,
+  "rescoreCompletedAt": "2026-02-01T17:35:58.435Z"
 }
