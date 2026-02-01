@@ -16,6 +16,7 @@ const { JSDOM } = require('jsdom');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const { checkKnownShow, detectPlayFromTitle } = require('./lib/known-shows');
 const { slugify, checkForDuplicate } = require('./lib/deduplication');
+const { batchLookupIBDBDates } = require('./lib/ibdb-dates');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'new-shows-pending.json');
@@ -197,6 +198,58 @@ async function discoverShows() {
     });
   }
 
+  // IBDB date enrichment: get accurate preview/opening/closing dates
+  if (newShows.length > 0) {
+    console.log('');
+    console.log('🔎 Enriching dates from IBDB...');
+    try {
+      const lookupList = newShows.map(s => ({
+        title: s.title,
+        openingYear: s.openingDate ? parseInt(s.openingDate.split('-')[0]) : new Date().getFullYear(),
+        venue: s.venue
+      }));
+
+      const ibdbResults = await batchLookupIBDBDates(lookupList);
+
+      for (const show of newShows) {
+        const ibdb = ibdbResults.get(show.title);
+        if (!ibdb || !ibdb.found) {
+          // IBDB lookup failed: treat Broadway.org "Begins:" as previewsStartDate
+          // since it's often the preview start, not the true opening
+          if (show.openingDate) {
+            show.previewsStartDate = show.openingDate;
+            show.openingDate = null;
+            console.log(`  ℹ️  "${show.title}": No IBDB data, treating Begins date as previewsStartDate`);
+          }
+          continue;
+        }
+
+        // IBDB opening date is authoritative - overwrite Broadway.org "Begins:"
+        if (ibdb.openingDate) {
+          show.openingDate = ibdb.openingDate;
+        }
+
+        // Fill in preview start date
+        if (ibdb.previewsStartDate) {
+          show.previewsStartDate = ibdb.previewsStartDate;
+        }
+
+        // Fill in closing date if available
+        if (ibdb.closingDate && !show.closingDate) {
+          show.closingDate = ibdb.closingDate;
+        }
+
+        // Store IBDB URL for reference
+        if (ibdb.ibdbUrl) {
+          show.ibdbUrl = ibdb.ibdbUrl;
+        }
+      }
+    } catch (e) {
+      console.log(`⚠️  IBDB enrichment failed (continuing without): ${e.message}`);
+    }
+    console.log('');
+  }
+
   // Log skipped duplicates for debugging
   if (skippedDuplicates.length > 0) {
     console.log(`⏭️  Skipped ${skippedDuplicates.length} duplicate(s):`);
@@ -254,7 +307,7 @@ async function discoverShows() {
       let status;
 
       if (show.openingDate) {
-        // Show has an opening date from Broadway.org
+        // Show has an opening date (from IBDB or Broadway.org)
         openingDate = show.openingDate;
         const openingDateObj = new Date(openingDate);
         const today = new Date();
@@ -262,6 +315,10 @@ async function discoverShows() {
 
         // If opening date is in the future, mark as previews
         status = openingDateObj > today ? 'previews' : 'open';
+      } else if (show.previewsStartDate) {
+        // No opening date but have preview date - show is in previews
+        openingDate = null;
+        status = 'previews';
       } else {
         // No opening date found - show is already running
         // Use placeholder date (will need manual update)
@@ -282,7 +339,7 @@ async function discoverShows() {
         title: show.title,
         slug: show.slug,
         venue: show.venue,
-        openingDate: openingDate,
+        openingDate: openingDate || null,
         closingDate: show.closingDate || null,
         status: status,
         type: detection.detectedType, // Auto-detected with revival logic
