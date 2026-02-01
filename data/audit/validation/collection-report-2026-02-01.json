@@ -1,45 +1,43 @@
 {
-  "runDate": "2026-02-01T04:04:47.749Z",
+  "runDate": "2026-02-01T04:25:52.680Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 2,
+    "maxReviews": 50,
     "priority": "all",
-    "showFilter": "stereophonic-2024",
+    "showFilter": "hamilton-2015",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 11,
-    "failed": 110,
+    "processed": 13,
+    "failed": 140,
     "skipped": 0,
-    "successRate": "9.1%"
+    "successRate": "8.5%"
   },
   "tierBreakdown": {
     "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 2,
-    "archive": 8
+    "archive": 10
   },
   "statistics": {
-    "tier1Attempts": 1,
+    "tier1Attempts": 19,
     "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 16,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 9,
     "tier3Success": 0,
-    "tier4Attempts": 2,
-    "tier4Success": 1,
-    "totalFailed": 1,
-    "scrapingBeeCreditsUsed": 0,
+    "tier4Attempts": 35,
+    "tier4Success": 4,
+    "totalFailed": 21,
+    "scrapingBeeCreditsUsed": 70,
     "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 0
+    "browserbaseMinutesUsed": 0
   },
   "processed": [
     "harry-potter-2021/hollywood-reporter--david-rooney.json",
@@ -52,7 +50,9 @@
     "harry-potter-2021/village-voice--michael-feingold.json",
     "mj-2022/nytg--ayanna-prescod.json",
     "mj-2022/usatoday--david-rooney.json",
-    "stereophonic-2024/nytimes--jesse-green.json"
+    "moulin-rouge-2019/nysr--jesse-oxfeld.json",
+    "hamilton-2015/nytimes--ben-brantley.json",
+    "hamilton-2015/huffpost--steven-suskin.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -164,7 +164,37 @@
     "moulin-rouge-2019/nydailynews--joe-dziemianowicz.json",
     "moulin-rouge-2019/nypost--johnny-oleksinski.json",
     "moulin-rouge-2019/observer--david-cote.json",
-    "stereophonic-2024/hollywood-reporter--angie-han.json"
+    "moulin-rouge-2019/observer--rex-reed.json",
+    "moulin-rouge-2019/theatermania--jesse-green.json",
+    "moulin-rouge-2019/thewrap--robert-hofler.json",
+    "moulin-rouge-2019/timeout--adam-feldman.json",
+    "moulin-rouge-2019/wsj--terry-teachout.json",
+    "moulin-rouge-2019/amny--matt-windman.json",
+    "moulin-rouge-2019/dailybeast--tim-teeman.json",
+    "moulin-rouge-2019/rollingstone--alan-light.json",
+    "moulin-rouge-2019/usatoday--kelly-lawler.json",
+    "moulin-rouge-2019/washpost--peter-marks.json",
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/vulture--jesse-green.json",
+    "hamilton-2015/ew--tim-stack.json",
+    "hamilton-2015/guardian--jesse-green.json",
+    "hamilton-2015/nbcnews--elysa-gardner.json",
+    "hamilton-2015/nbcnews--kristy-puchko.json",
+    "hamilton-2015/nbcnews--melissa-locker.json",
+    "hamilton-2015/newsday--linda-winer.json",
+    "hamilton-2015/nypost--jesse-green.json",
+    "hamilton-2015/nypost--johnny-oleksinski.json",
+    "hamilton-2015/observer--david-cote.json",
+    "hamilton-2015/observer--rex-reed.json",
+    "hamilton-2015/theatermania--adam-feldman.json",
+    "hamilton-2015/theatermania--charles-isherwood.json",
+    "hamilton-2015/timeout--david-cote.json",
+    "hamilton-2015/wsj--terry-teachout.json",
+    "hamilton-2015/ap--mark-kennedy.json",
+    "hamilton-2015/dailybeast--tim-teeman.json",
+    "hamilton-2015/rollingstone--rob-sheffield.json",
+    "hamilton-2015/the-clyde-fitch-report--david-finkle.json",
+    "hamilton-2015/thisbroadsway--sandra-mcfarland.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -184,7 +214,9 @@
       "harry-potter-2021/vanityfair--richard-lawson.json",
       "harry-potter-2021/village-voice--michael-feingold.json",
       "mj-2022/nytg--ayanna-prescod.json",
-      "stereophonic-2024/nytimes--jesse-green.json"
+      "moulin-rouge-2019/nysr--jesse-oxfeld.json",
+      "hamilton-2015/nytimes--ben-brantley.json",
+      "hamilton-2015/huffpost--steven-suskin.json"
     ]
   },
   "failuresByOutlet": {
@@ -194,7 +226,97 @@
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
+    },
+    "Vulture": {
+      "count": 1,
+      "domain": "vulture.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "Entertainment Weekly": {
+      "count": 1,
+      "domain": "ew.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Guardian": {
+      "count": 1,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "NBC News": {
+      "count": 3,
+      "domain": "nbcnews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Newsday": {
+      "count": 1,
+      "domain": "newsday.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "New York Post": {
+      "count": 2,
+      "domain": "nypost.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Observer": {
+      "count": 2,
+      "domain": "observer.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "TheaterMania": {
+      "count": 2,
+      "domain": "theatermania.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "Associated Press": {
+      "count": 1,
+      "domain": "apnews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Daily Beast": {
+      "count": 1,
+      "domain": "thedailybeast.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Rolling Stone": {
+      "count": 1,
+      "domain": "rollingstone.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Clyde Fitch Report": {
+      "count": 1,
+      "domain": "clydefitchreport.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
-  },
-  "urlDiscoveries": []
+  }
 }
