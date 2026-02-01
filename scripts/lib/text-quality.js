@@ -291,6 +291,20 @@ function scoreSource(source) {
  * @returns {{text: string, type: string, status: string, confidence: string, reasoning: string}}
  */
 function getBestTextForScoring(review) {
+  // 2B: Skip scoring of flagged text — treat fullText as null so excerpt fallback is used
+  const hasDataQualityFlag = review.misattributedFullText || review.wrongShow ||
+    review.wrongProduction || review.showNotMentioned;
+
+  if (hasDataQualityFlag && review.fullText) {
+    const flagName = review.misattributedFullText ? 'misattributedFullText' :
+      review.wrongShow ? 'wrongShow' : review.wrongProduction ? 'wrongProduction' : 'showNotMentioned';
+    // Proceed without fullText — only excerpts will be used
+    const reviewWithoutFullText = { ...review, fullText: null };
+    const excerptResult = getBestTextForScoring(reviewWithoutFullText);
+    excerptResult.reasoning = `Skipped fullText (${flagName} flag). ${excerptResult.reasoning}`;
+    return excerptResult;
+  }
+
   const sources = [];
 
   // Assess fullText if present - use CLEANED text for assessment and output
@@ -345,6 +359,27 @@ function getBestTextForScoring(review) {
   sources.sort((a, b) => b.score - a.score);
 
   const best = sources[0];
+
+  // 2A: Augment short fullText (300-1000 chars) with non-duplicate excerpts
+  if (best.type === 'fullText' && best.text && best.text.length >= 300 && best.text.length <= 1000) {
+    const excerptSources = sources.filter(s => s.type === 'excerpt');
+    if (excerptSources.length > 0) {
+      const additionalExcerpts = [];
+      for (const excerptSource of excerptSources) {
+        // Skip if the excerpt is already a substring of fullText
+        if (best.text.includes(excerptSource.text)) continue;
+        additionalExcerpts.push(excerptSource.text);
+      }
+      if (additionalExcerpts.length > 0) {
+        const separator = '\n\n--- Additional context from this review ---\n';
+        const combined = best.text + separator + additionalExcerpts.join('\n\n');
+        // Cap at 3000 chars total
+        best.text = combined.substring(0, 3000);
+        best.augmented = true;
+        best.augmentedExcerptCount = additionalExcerpts.length;
+      }
+    }
+  }
 
   // Determine confidence level
   let confidence;

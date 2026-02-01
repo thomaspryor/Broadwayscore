@@ -576,25 +576,60 @@ function getBestScore(data) {
     }
   }
 
-  // Priority 2: Thumbs OVERRIDE low-confidence/needs-review LLM scores
-  // Rationale: When LLM confidence is low, it's often because text is incomplete.
-  // Aggregator editors saw the full review - their judgment is more reliable.
+  // Priority 2: Nuanced thumb override of low-confidence/needs-review LLM scores (3A)
   const hasLowConfLlm = data.llmScore?.score &&
     (data.llmScore.confidence === 'low' || data.ensembleData?.needsReview);
 
   if (hasLowConfLlm) {
-    const thumbScore = data.dtliThumb ? THUMB_TO_SCORE[data.dtliThumb] :
-                       data.bwwThumb ? THUMB_TO_SCORE[data.bwwThumb] : null;
+    const dtliThumbNorm = data.dtliThumb ? normalizeThumb(data.dtliThumb) : null;
+    const bwwThumbNorm = data.bwwThumb ? normalizeThumb(data.bwwThumb) : null;
+    const dtliScore = data.dtliThumb ? THUMB_TO_SCORE[data.dtliThumb] : null;
+    const bwwScore = data.bwwThumb ? THUMB_TO_SCORE[data.bwwThumb] : null;
+    const llmScore = data.llmScore.score;
+    const llmBucket = scoreToBucket(llmScore);
 
-    if (thumbScore) {
-      // Flag if thumb overrides LLM by a large margin
-      const scoreDiff = Math.abs(thumbScore - data.llmScore.score);
-      if (scoreDiff > 20) {
-        flagForHumanReview(data, 'thumb-override-large-delta',
-          `LLM=${data.llmScore.score} (${data.llmScore.confidence}), thumb=${thumbScore}, delta=${scoreDiff}`);
+    // Helper: map thumb direction to bucket range
+    const thumbBucket = (thumb) => {
+      if (thumb === 'Up') return 'Positive'; // 70-84
+      if (thumb === 'Down') return 'Negative'; // 35-54
+      return 'Mixed'; // Flat/Meh = 55-69
+    };
+
+    // Rule 3: Meh/Flat thumbs (value=60) → DO NOT override, they were wrong 83% of the time
+    const dtliIsMeh = dtliThumbNorm === 'Flat';
+    const bwwIsMeh = bwwThumbNorm === 'Flat';
+
+    if ((dtliIsMeh && !bwwScore) || (bwwIsMeh && !dtliScore) || (dtliIsMeh && bwwIsMeh)) {
+      // Both are Meh or only Meh available — don't override
+      data.mehThumbIgnored = true;
+      // Fall through to LLM fallback (Priority 3)
+    } else {
+      // Rule 1: Both thumbs agree AND disagree with LLM bucket → override (high signal)
+      if (dtliThumbNorm && bwwThumbNorm && dtliThumbNorm === bwwThumbNorm && !dtliIsMeh) {
+        const agreeBucket = thumbBucket(dtliThumbNorm);
+        if (agreeBucket !== llmBucket) {
+          const thumbScore = dtliScore; // Both agree, use dtli
+          const scoreDiff = Math.abs(thumbScore - llmScore);
+          flagForHumanReview(data, 'both-thumbs-override-llm',
+            `LLM=${llmScore} (${llmBucket}), both thumbs=${data.dtliThumb} (${agreeBucket}), delta=${scoreDiff}`);
+          stats.thumbOverrideLlm = (stats.thumbOverrideLlm || 0) + 1;
+          return { score: thumbScore, source: 'thumb-override-llm' };
+        }
       }
-      stats.thumbOverrideLlm = (stats.thumbOverrideLlm || 0) + 1;
-      return { score: thumbScore, source: 'thumb-override-llm' };
+
+      // Rule 2: Single thumb, delta >25, AND LLM confidence is low/excerpt-only → override
+      const singleThumb = dtliScore && !dtliIsMeh ? dtliScore : (bwwScore && !bwwIsMeh ? bwwScore : null);
+      if (singleThumb) {
+        const delta = Math.abs(singleThumb - llmScore);
+        const isExcerptBased = data.llmMetadata?.textSource?.type === 'excerpt' ||
+          data.llmMetadata?.textSource?.status === 'excerpt-only';
+        if (delta > 25 && (data.llmScore.confidence === 'low' || isExcerptBased)) {
+          flagForHumanReview(data, 'single-thumb-override-low-conf',
+            `LLM=${llmScore} (${data.llmScore.confidence}), thumb=${singleThumb}, delta=${delta}`);
+          stats.thumbOverrideLlm = (stats.thumbOverrideLlm || 0) + 1;
+          return { score: singleThumb, source: 'thumb-override-llm' };
+        }
+      }
     }
   }
 
@@ -813,6 +848,84 @@ allReviews.sort((a, b) => {
   if (a.showId !== b.showId) return a.showId.localeCompare(b.showId);
   return (a.outlet || '').localeCompare(b.outlet || '');
 });
+
+// ========================================
+// 3B: SCORE-DRIFT GUARD
+// ========================================
+// Compare new scores against current reviews.json to detect silent cascading changes.
+const DRIFT_THRESHOLD = 20; // Max reviews that can shift >10 points before warning
+const DRIFT_POINT_THRESHOLD = 10; // Score difference to count as "drift"
+
+let driftReport = null;
+if (fs.existsSync(reviewsJsonPath)) {
+  try {
+    const currentData = JSON.parse(fs.readFileSync(reviewsJsonPath, 'utf8'));
+    const currentReviews = currentData.reviews || [];
+
+    // Build lookup: showId+outlet+critic → score
+    const currentScoreMap = new Map();
+    for (const r of currentReviews) {
+      const key = `${r.showId}|${(r.outlet || '').toLowerCase()}|${(r.criticName || '').toLowerCase()}`;
+      currentScoreMap.set(key, r.assignedScore);
+    }
+
+    // Find drifted reviews
+    const driftedReviews = [];
+    for (const r of allReviews) {
+      const key = `${r.showId}|${(r.outlet || '').toLowerCase()}|${(r.criticName || '').toLowerCase()}`;
+      const oldScore = currentScoreMap.get(key);
+      if (oldScore !== undefined) {
+        const delta = Math.abs(r.assignedScore - oldScore);
+        if (delta > DRIFT_POINT_THRESHOLD) {
+          driftedReviews.push({
+            showId: r.showId,
+            outlet: r.outlet,
+            critic: r.criticName,
+            oldScore,
+            newScore: r.assignedScore,
+            delta
+          });
+        }
+      }
+    }
+
+    if (driftedReviews.length > 0) {
+      driftReport = {
+        timestamp: new Date().toISOString(),
+        totalDrifted: driftedReviews.length,
+        threshold: DRIFT_THRESHOLD,
+        reviews: driftedReviews.sort((a, b) => b.delta - a.delta)
+      };
+
+      // Write drift report
+      const auditDir = path.join(__dirname, '../data/audit');
+      if (!fs.existsSync(auditDir)) {
+        fs.mkdirSync(auditDir, { recursive: true });
+      }
+      fs.writeFileSync(
+        path.join(auditDir, 'rebuild-score-drift.json'),
+        JSON.stringify(driftReport, null, 2) + '\n'
+      );
+
+      console.log(`\n⚠️  SCORE DRIFT: ${driftedReviews.length} reviews shifted by >${DRIFT_POINT_THRESHOLD} points`);
+      driftedReviews.slice(0, 10).forEach(d => {
+        console.log(`  ${d.showId}: ${d.outlet} (${d.critic}) ${d.oldScore}→${d.newScore} (Δ${d.delta})`);
+      });
+      if (driftedReviews.length > 10) {
+        console.log(`  ...and ${driftedReviews.length - 10} more`);
+      }
+
+      // In CI: fail if drift exceeds threshold (unless ALLOW_DRIFT=true)
+      if (driftedReviews.length > DRIFT_THRESHOLD && process.env.CI && !process.env.ALLOW_DRIFT) {
+        console.error(`\n❌ DRIFT GUARD: ${driftedReviews.length} reviews drifted (threshold: ${DRIFT_THRESHOLD})`);
+        console.error('Set ALLOW_DRIFT=true to override, or review data/audit/rebuild-score-drift.json');
+        process.exit(1);
+      }
+    }
+  } catch (e) {
+    // Can't read current file, skip drift check (first build)
+  }
+}
 
 // Build output
 const output = {

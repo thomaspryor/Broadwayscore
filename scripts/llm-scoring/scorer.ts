@@ -279,6 +279,11 @@ export class ReviewScorer {
       };
     }
 
+    // 2D: Cap LLM result confidence when input confidence is low
+    if (textSelection.confidence === 'low' && outcome.result.confidence === 'high') {
+      outcome.result.confidence = 'medium';
+    }
+
     const scoredFile: ScoredReviewFile = {
       ...reviewFile,
       assignedScore: outcome.result.score,
