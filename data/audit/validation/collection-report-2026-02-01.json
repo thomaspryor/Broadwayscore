@@ -11,26 +11,26 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 18,
-    "failed": 120,
+    "processed": 17,
+    "failed": 122,
     "skipped": 0,
-    "successRate": "13.0%"
+    "successRate": "12.2%"
   },
   "tierBreakdown": {
     "playwright": 8,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 2,
-    "archive": 9
+    "archive": 12
   },
   "statistics": {
     "tier1Attempts": 2,
     "tier1Success": 2,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier2Attempts": 3,
+    "tier2Success": 1,
+    "tier3Attempts": 2,
     "tier3Success": 0,
     "tier4Attempts": 3,
     "tier4Success": 1,
@@ -196,7 +196,9 @@
       "just-in-time-2025/guardian--adrian-horton.json"
     ],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "suffs-2024/the-times--nancy-durrant.json"
+    ],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
       "mj-2022/usatoday--david-rooney.json"
