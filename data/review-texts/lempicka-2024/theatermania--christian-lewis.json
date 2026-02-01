@@ -70,15 +70,16 @@
   "sources": [
     "dtli"
   ],
-  "isFullReview": true,
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 76,
   "rescoreCompletedAt": "2026-01-29T14:31:51.851Z",
-  "textQuality": "full",
-  "truncationSignals": [],
-  "textWordCount": 988,
-  "textQualityOverride": "batch-fix-2026-01-30"
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textQualityOverride": "batch-fix-2026-01-30",
+  "contentTier": "complete",
+  "wordCount": 988
 }

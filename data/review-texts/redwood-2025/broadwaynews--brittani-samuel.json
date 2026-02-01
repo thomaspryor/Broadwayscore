@@ -70,13 +70,11 @@
   "sources": [
     "dtli"
   ],
-  "isFullReview": true,
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 70,
-  "textWordCount": 239,
   "archivePath": "data/archives/reviews/redwood-2025/broadwaynews--brittani-samuel_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:29:40.169Z",
   "fetchMethod": "archive",
@@ -88,18 +86,16 @@
     }
   ],
   "fetchTier": 4,
-  "textQuality": "truncated",
   "truncationSignals": [
-    "no_ending_punctuation",
-    "has_paywall_text",
-    "possible_mid_word_cutoff"
+    "no_ending_punctuation"
   ],
-  "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251114032647",
   "archiveOrgUrl": "http://web.archive.org/web/20251114032647/https://www.broadwaynews.com/the-broadway-review-redwood-is-a-good-natured-but-mundane-musical/",
   "textIssues": [
     "Word count too low: 239 (min: 300)"
   ],
-  "rescoreCompletedAt": "2026-01-29T14:31:52.009Z"
+  "rescoreCompletedAt": "2026-01-29T14:31:52.009Z",
+  "contentTier": "truncated",
+  "wordCount": 239
 }

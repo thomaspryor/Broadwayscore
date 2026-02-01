@@ -77,11 +77,9 @@
   "sources": [
     "dtli"
   ],
-  "isFullReview": true,
   "designation": "Critics_Pick",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 74,
-  "textWordCount": 1102,
   "archivePath": "data/archives/reviews/real-women-have-curves-2025/nytimes--laura-collins-hughes_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:37:45.210Z",
   "fetchMethod": "archive",
@@ -93,15 +91,13 @@
     }
   ],
   "fetchTier": 4,
-  "textQuality": "truncated",
   "truncationSignals": [
-    "no_ending_punctuation",
-    "has_read_more_prompt",
-    "possible_mid_word_cutoff"
+    "no_ending_punctuation"
   ],
-  "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250731090845",
   "archiveOrgUrl": "http://web.archive.org/web/20250731090845/https://www.nytimes.com/2025/04/27/theater/real-women-have-curves-review.html",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.007Z"
+  "rescoreCompletedAt": "2026-01-29T14:31:52.007Z",
+  "contentTier": "complete",
+  "wordCount": 1102
 }

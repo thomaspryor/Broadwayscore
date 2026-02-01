@@ -6,7 +6,6 @@
   "url": "http://nymag.com/listings/theater/the_lion_king/",
   "publishDate": "November 15, 1997",
   "fullText": "Home > Arts & Events > Theater > The Lion King Minskoff Theatre 200 W. 45th St., New York, NY 10036 40.757951 -73.985661 at Broadway See Map | Subway Directions work212-869-0550 Send to Phone Andile Gumbi, Chantel Riley, Alton Fitzgerald White, Buyi Zama, Gareth Saxe, Derek Johnson, Caleb McLaughlin, Alonie Dowden, Bobbi Bordley, Ben Jeffrey, Jeff Binder, Fred Berman, James Brown-Orleans, Enrique Segura, Bonita J. Hamilton Come to The Lion King with two pairs of eyes, one ear, and half a brain. You will be bombarded by some of the most beautiful and spectacular sights theater can offer from before and behind, so eyes in the back of the head will come in handy. You will be harangued by second-rate standard-show music and lyrics by Elton John and Tim Rice, and also by Lebo Mï's stirring African chants and ululations, to which your active ear should be cocked. Finally, you will be subjected to a well-worn, simplistic children's tale about a lion cub's hard road to adulthood and the throne of the animal kingdom, usurped by his wicked uncle in cahoots with some murderously laughing hyenas. Kiddies, of course, will delightedly swallow it whole, unless they are tiny and flappable. But this is the one such show adults will feast on, too, mostly because of the wonders wrought by Julie Taymor, who designed and directed this cornucopia of dazzlements. First, the animals, large and small, re-created with unparalleled imagination, underpropped by costumes that artfully blend realism with fantasy: The prancing giraffes and leaping antelopes, the nodding elephant and barreling warthog, keep you marveling even during the story's stodgiest galumphing. — John Simon",
-  "isFullReview": true,
   "dtliExcerpt": "Come to The Lion King with two pairs of eyes, one ear, and half a brain. You will be bombarded by some of the most beautiful and spectacular sights theater can offer from before and behind, so eyes in the back of the head will come in handy. You will be harangued by second-rate standard-show music and lyrics by Elton John and Tim Rice, and also by Lebo Mï's stirring African chants and ululations, to which your active ear should be cocked. Finally, you will be subjected to a well-worn, simplistic children's tale about a lion cub's hard road to adulthood and the throne of the animal kingdom, usurped by his wicked uncle in cahoots with some murderously laughing hyenas.",
   "showScoreExcerpt": "\"You will be bombarded by some of the most beautiful and spectacular sights theater can offer from before and behind, so eyes in the back of the head will come in handy.",
   "originalScore": null,
@@ -71,15 +70,12 @@
       "Models disagree by 37 points (Claude: 72, OpenAI: 35)"
     ]
   },
-  "textStatus": "partial",
   "textIssue": "too_short",
-  "textWordCount": 272,
   "archivePath": "data/archives/reviews/the-lion-king-1997/new-york-magazine--john-simon_2026-01-25.html",
   "textFetchedAt": "2026-01-25T05:22:49.646Z",
   "textIssues": [
     "Word count too low: 272 (min: 300)"
   ],
-  "textQuality": "partial",
   "sourceMethod": "dtli",
   "sources": [
     "dtli",
@@ -89,5 +85,10 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 54,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.082Z"
+  "rescoreCompletedAt": "2026-01-29T14:31:52.082Z",
+  "contentTier": "truncated",
+  "wordCount": 272,
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ]
 }

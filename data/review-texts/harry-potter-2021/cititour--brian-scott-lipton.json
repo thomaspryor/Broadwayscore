@@ -6,13 +6,10 @@
   "url": "https://www.cititour.com/harry-potter-cursed-child-review/",
   "publishDate": "April 22, 2018",
   "fullText": "NYC Events, Restaurants, Music, & Nightlife\n\nCititour.com is your guide to interesting places throughout New York City. Use our listings to locate restaurants, exciting clubs and nightlife, bars and pubs, shopping destinations, landmarks and parks; and shows, concerts, and other events too.\n\nCititour.com is your guide to interesting places throughout New York City. Use our listings to locate restaurants, exciting clubs and nightlife, bars and pubs, shopping destinations, landmarks and parks; and shows, concerts, and other events too.",
-  "isFullReview": false,
   "showScoreExcerpt": "\"A breathtaking production...The illusions are unlike anything seen on Broadway before.\"",
   "originalScore": null,
   "assignedScore": 89,
   "source": "show-score",
-  "textStatus": "incomplete",
-  "textQuality": "partial",
   "sourceMethod": "brightdata",
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
@@ -72,7 +69,6 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "textWordCount": 78,
   "archivePath": "data/archives/reviews/harry-potter-2021/cititour--brian-scott-lipton_2026-01-31.html",
   "textFetchedAt": "2026-01-31T23:18:55.897Z",
   "fetchMethod": "brightdata",
@@ -106,8 +102,9 @@
     "Word count too low: 86 (min: 300)",
     "Show title not found in text"
   ],
-  "truncationSignals": [],
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 89,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.759Z"
+  "rescoreCompletedAt": "2026-01-29T14:31:51.759Z",
+  "contentTier": "truncated",
+  "wordCount": 78
 }

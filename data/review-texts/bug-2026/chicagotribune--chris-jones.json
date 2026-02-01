@@ -5,7 +5,6 @@
   "criticName": "Chris Jones",
   "url": "https://www.chicagotribune.com/2026/01/08/review-bug-steppenwolf-broadway/",
   "publishDate": "2026-01-08",
-  "isFullReview": true,
   "originalScore": null,
   "assignedScore": 82,
   "source": "reviews-json-stub",
@@ -68,12 +67,9 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "textStatus": "complete",
-  "textWordCount": 873,
   "textFetchedAt": "2026-01-30T18:34:02.849Z",
   "textFetchMethod": "playwright-stealth",
   "archivePath": "data/archives/reviews/bug-2026/chicagotribune--chris-jones_2026-01-30.html",
-  "textQuality": "full",
   "sourceMethod": "scrapingbee",
   "bwwThumb": "Up",
   "sources": [
@@ -110,8 +106,9 @@
     }
   ],
   "fetchTier": 2,
-  "truncationSignals": [],
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "contentTier": "complete",
+  "wordCount": 873
 }

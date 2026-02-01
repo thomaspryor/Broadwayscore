@@ -5,7 +5,6 @@
   "criticName": "Chris",
   "url": "https://www.nydailynews.com/2024/03/07/broadway-review-doubt-revival-leaves-no-doubt-a-parable-shanley-amy-ryan/",
   "publishDate": "March 7, 2024",
-  "isFullReview": false,
   "dtliExcerpt": "Twenty years later, all reasonable doubt has been removed from Shanley’s parable. This taut drama, back in a gripping new Broadway production from the Roundabout Theatre Company and director Scott Ellis, plays like a cautionary tale, an ode to those who found the courage to stand up to abusers and side with the young and the vulnerable.",
   "originalScore": null,
   "assignedScore": 75,
@@ -31,7 +30,6 @@
   ],
   "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available",
   "previousLlmScore": 84,
-  "textWordCount": 631,
   "archivePath": "data/archives/reviews/doubt-2024/nydailynews--chris_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:35:02.188Z",
   "fetchMethod": "archive",
@@ -43,9 +41,6 @@
     }
   ],
   "fetchTier": 4,
-  "textQuality": "excerpt_only",
-  "truncationSignals": [],
-  "textStatus": "garbage_cleared",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240316135403",
   "archiveOrgUrl": "http://web.archive.org/web/20240316135403/https://www.nydailynews.com/2024/03/07/broadway-review-doubt-revival-leaves-no-doubt-a-parable-shanley-amy-ryan/",
@@ -145,5 +140,7 @@
     ],
     "ensembleSource": "ensemble-no-consensus",
     "modelAgreement": "No bucket consensus - using median score"
-  }
+  },
+  "contentTier": "invalid",
+  "wordCount": 0
 }

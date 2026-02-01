@@ -5,7 +5,6 @@
   "criticName": "Michael Musto",
   "url": "https://www.villagevoice.com/review-a-new-production-of-the-wiz-brings-oz-back-to-broadway/",
   "publishDate": null,
-  "isFullReview": false,
   "bwwExcerpt": "I became hopeful on learning that the new Broadway revival, directed by Schele Williams, stars 24-four-year-old Nichelle Lewis, making her Broadway debut, and sure enough she more accurately conveys the innocence of adolescence, with big sad eyes burrowing into the audience at odd moments. The earnest Lewis can also sing like an angel, though at times her Dorothy is so lost that she tends to become a cog in the aggressively flashy happenings around her.",
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
@@ -14,7 +13,6 @@
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "textWordCount": 1385,
   "archivePath": "data/archives/reviews/the-wiz-2024/village-voice--michael-musto_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:39:20.188Z",
   "fetchMethod": "scrapingbee",
@@ -32,12 +30,6 @@
     }
   ],
   "fetchTier": 2,
-  "textQuality": "excerpt_only",
-  "truncationSignals": [
-    "no_ending_punctuation",
-    "has_footer_text"
-  ],
-  "textStatus": "garbage_cleared",
   "sourceMethod": "scrapingbee",
   "textIssues": [
     "Show title not found in text"
@@ -104,5 +96,7 @@
   "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
   "garbageFixedAt": "2026-01-29T22:45:23.384Z",
   "dateUnknown": true,
-  "dateSource": "could-not-extract"
+  "dateSource": "could-not-extract",
+  "contentTier": "invalid",
+  "wordCount": 0
 }

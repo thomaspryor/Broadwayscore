@@ -5,7 +5,6 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.wsj.com/articles/the-roommate-review-on-broadway-an-odd-couple-in-iowa-3b5631c0",
   "publishDate": null,
-  "isFullReview": false,
   "bwwExcerpt": "The estimable Mr. O’Brien, who won a well-deserved Lifetime Achievement Tony Award just this year, calibrates the fluctuations in the women’s relationship with subtlety and grace, allowing these two superb actors to navigate the changes in the play’s tone and rhythm at their own pace, on a handsome set by Bob Crowley that hints at both possibility—those rich blue skies—and perhaps vulnerability.",
   "bwwRoundupUrl": null,
   "originalScore": null,
@@ -15,7 +14,6 @@
   "needsScoring": true,
   "showScoreExcerpt": "\"...Jen Silverman’s funny, moving Broadway play\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-roommate-broadway",
-  "textWordCount": 88,
   "archivePath": "data/archives/reviews/the-roommate-2024/wsj--charles-isherwood_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:37:52.391Z",
   "fetchMethod": "archive",
@@ -27,12 +25,6 @@
     }
   ],
   "fetchTier": 4,
-  "textQuality": "excerpt_only",
-  "truncationSignals": [
-    "no_ending_punctuation",
-    "has_footer_text"
-  ],
-  "textStatus": "garbage_cleared",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251117122315",
   "archiveOrgUrl": "http://web.archive.org/web/20251117122315/https://www.wsj.com/articles/the-roommate-review-on-broadway-an-odd-couple-in-iowa-3b5631c0",
@@ -104,5 +96,7 @@
   "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
   "garbageFixedAt": "2026-01-29T22:45:23.322Z",
   "dateUnknown": true,
-  "dateSource": "could-not-extract"
+  "dateSource": "could-not-extract",
+  "contentTier": "invalid",
+  "wordCount": 0
 }

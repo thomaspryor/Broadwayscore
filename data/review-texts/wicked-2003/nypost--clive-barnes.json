@@ -11,8 +11,6 @@
   "assignedScore": 50,
   "source": "reviews-json-stub",
   "needsFullText": true,
-  "textStatus": "complete",
-  "textQuality": "full",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
@@ -72,8 +70,6 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "isFullReview": true,
-  "textWordCount": 539,
   "archivePath": "data/archives/reviews/wicked-2003/nyp--clive-barnes_2026-01-26.html",
   "textFetchedAt": "2026-01-26T23:23:24.148Z",
   "fetchMethod": "archive",
@@ -107,5 +103,7 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251122192606/https://nypost.com/2003/10/31/broom-shtick-wicked-witches-most-entrancing/",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 50,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.155Z"
+  "rescoreCompletedAt": "2026-01-29T14:31:52.155Z",
+  "contentTier": "complete",
+  "wordCount": 539
 }

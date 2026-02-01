@@ -63,10 +63,8 @@
       "mergedAt": "2026-01-28T21:15:21.849Z"
     }
   ],
-  "isFullReview": true,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "textQuality": "full",
   "garbageTextRemoved": {
     "removedAt": "2026-01-29T02:00:00.000Z",
     "reason": "Broadway News site navigation/menu HTML - not review content",
@@ -76,7 +74,6 @@
   "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 67,
-  "textWordCount": 560,
   "archivePath": "data/archives/reviews/grey-house-2023/broadwaynews--brittani-samuel_2026-01-29.html",
   "textFetchedAt": "2026-01-29T15:16:09.782Z",
   "fetchMethod": "scrapingbee",
@@ -100,8 +97,11 @@
     }
   ],
   "fetchTier": 2,
-  "truncationSignals": [],
-  "textStatus": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
   "sourceMethod": "scrapingbee",
-  "textQualityOverride": "batch-fix-2026-01-30"
+  "textQualityOverride": "batch-fix-2026-01-30",
+  "contentTier": "complete",
+  "wordCount": 560
 }

@@ -761,6 +761,255 @@ function assessTextQuality(text, showId, showTitle) {
   return { quality, confidence, issues };
 }
 
+/**
+ * =============================================================================
+ * CONTENT TIER CLASSIFICATION (5-Tier Taxonomy)
+ * =============================================================================
+ *
+ * Classifies review content into mutually exclusive quality tiers:
+ * - T1: complete  - Full review successfully scraped
+ * - T2: truncated - Partial text due to paywall/bot detection
+ * - T3: excerpt   - Only aggregator quotes available
+ * - T4: stub      - Has metadata but no text content
+ * - T5: invalid   - Garbage/wrong show/corrupted
+ */
+
+/**
+ * Truncation signal patterns
+ */
+const TRUNCATION_SIGNALS = {
+  // Severe signals - definitely truncated
+  severe: [
+    /subscribe\s+to\s+(continue|read|access)/i,
+    /sign\s+in\s+to\s+(continue|read|access)/i,
+    /log\s+in\s+to\s+(continue|read)/i,
+    /members?\s+only/i,
+    /read\s+more\s*\.{0,3}$/i,
+    /continue\s+reading/i,
+    /click\s+here\s+to\s+read/i,
+    /full\s+(article|story)\s+(available|requires)/i,
+  ],
+  // Moderate signals - likely truncated
+  moderate: [
+    /\.{3}\s*$/,  // Ends with ellipsis
+    /…\s*$/,      // Unicode ellipsis
+    /\[\s*\.\.\.\s*\]/,  // [...]
+  ],
+  // Footer junk - text continues past review ending
+  footer: [
+    /privacy\s+policy/i,
+    /terms\s+of\s+(use|service)/i,
+    /©\s*\d{4}/,
+    /all\s+rights\s+reserved/i,
+    /cookie\s+(policy|settings)/i,
+    /advertise\s+with\s+us/i,
+  ]
+};
+
+/**
+ * Detect truncation signals in text
+ * @param {string} text - Text to analyze
+ * @returns {{ signals: string[], severeCount: number, moderateCount: number, likelyTruncated: boolean }}
+ */
+function detectTruncationSignals(text) {
+  if (!text) return { signals: [], severeCount: 0, moderateCount: 0, likelyTruncated: false };
+
+  const signals = [];
+  let severeCount = 0;
+  let moderateCount = 0;
+
+  // Check severe signals
+  for (const pattern of TRUNCATION_SIGNALS.severe) {
+    if (pattern.test(text)) {
+      signals.push('paywall_or_login_prompt');
+      severeCount++;
+      break; // One severe is enough
+    }
+  }
+
+  // Check moderate signals
+  for (const pattern of TRUNCATION_SIGNALS.moderate) {
+    if (pattern.test(text)) {
+      signals.push('ends_with_ellipsis');
+      moderateCount++;
+      break;
+    }
+  }
+
+  // Check if text ends with proper punctuation
+  const trimmed = text.trim();
+  if (trimmed.length > 100 && !/[.!?"'"")\]]$/.test(trimmed)) {
+    signals.push('no_ending_punctuation');
+    moderateCount++;
+  }
+
+  // Check for footer junk (indicates text went past review ending)
+  const lastChunk = text.slice(-500);
+  for (const pattern of TRUNCATION_SIGNALS.footer) {
+    if (pattern.test(lastChunk)) {
+      signals.push('has_footer_junk');
+      break;
+    }
+  }
+
+  return {
+    signals,
+    severeCount,
+    moderateCount,
+    likelyTruncated: severeCount > 0 || moderateCount >= 2
+  };
+}
+
+/**
+ * Count words in text
+ * @param {string} text
+ * @returns {number}
+ */
+function countWords(text) {
+  if (!text) return 0;
+  return text.trim().split(/\s+/).filter(w => w.length > 0).length;
+}
+
+/**
+ * Classify a review into one of five content tiers
+ *
+ * @param {Object} review - Review object with fullText, excerpts, etc.
+ * @returns {{
+ *   contentTier: 'complete' | 'truncated' | 'excerpt' | 'stub' | 'invalid',
+ *   wordCount: number,
+ *   truncationSignals: string[],
+ *   tierReason: string
+ * }}
+ */
+function classifyContentTier(review) {
+  const fullText = review.fullText || '';
+  const wordCount = countWords(fullText);
+  const charCount = fullText.length;
+
+  // Check for excerpts
+  const hasExcerpt = !!(review.dtliExcerpt || review.bwwExcerpt || review.showScoreExcerpt);
+  const longestExcerptLen = Math.max(
+    (review.dtliExcerpt || '').length,
+    (review.bwwExcerpt || '').length,
+    (review.showScoreExcerpt || '').length
+  );
+
+  // T5: INVALID - Check first (garbage, wrong show, corrupted)
+  if (review.textStatus === 'garbage_cleared' || review.wrongProduction) {
+    return {
+      contentTier: 'invalid',
+      wordCount,
+      truncationSignals: [],
+      tierReason: review.textStatus === 'garbage_cleared' ? 'Marked as garbage' : 'Wrong production'
+    };
+  }
+
+  // Check if fullText is garbage
+  if (charCount >= 100) {
+    const garbageCheck = isGarbageContent(fullText);
+    if (garbageCheck.isGarbage) {
+      return {
+        contentTier: 'invalid',
+        wordCount,
+        truncationSignals: [],
+        tierReason: `Garbage content: ${garbageCheck.reason}`
+      };
+    }
+  }
+
+  // T4: STUB - No usable text at all
+  if (charCount < 100 && !hasExcerpt) {
+    return {
+      contentTier: 'stub',
+      wordCount,
+      truncationSignals: [],
+      tierReason: charCount === 0 ? 'No text content' : 'Insufficient text and no excerpts'
+    };
+  }
+
+  // T3: EXCERPT - Only aggregator excerpts, no meaningful fullText
+  if (charCount < 100 && hasExcerpt) {
+    return {
+      contentTier: 'excerpt',
+      wordCount,
+      truncationSignals: [],
+      tierReason: 'Only aggregator excerpts available'
+    };
+  }
+
+  // Now we have fullText with 100+ chars - check if complete or truncated
+  const truncation = detectTruncationSignals(fullText);
+
+  // T1: COMPLETE - Full review with no truncation issues
+  // Check ending - allow URLs, ticket info at end (common footer pattern)
+  const trimmed = fullText.trim();
+  const endsWithPunctuation = /[.!?"'"")\]]$/.test(trimmed);
+  const endsWithUrl = /\.(com|org|net|co\.uk)\/?$/.test(trimmed);
+  const hasProperEnding = endsWithPunctuation || endsWithUrl;
+
+  const isLongEnough = wordCount >= 300 && charCount >= 1500;
+  const isVeryLong = wordCount >= 500; // Very long reviews are likely complete
+  const longerThanExcerpts = !hasExcerpt || charCount >= longestExcerptLen * 1.5;
+
+  // Complete if: long enough with proper ending and no severe truncation
+  // OR very long (500+ words) with no severe truncation (footer junk is OK)
+  if (truncation.severeCount === 0 && longerThanExcerpts) {
+    if ((isLongEnough && hasProperEnding && truncation.moderateCount <= 1) ||
+        (isVeryLong && truncation.moderateCount <= 1)) {
+      return {
+        contentTier: 'complete',
+        wordCount,
+        truncationSignals: truncation.signals,
+        tierReason: 'Full review text'
+      };
+    }
+  }
+
+  // T2: TRUNCATED - Has text but known/likely incomplete
+  return {
+    contentTier: 'truncated',
+    wordCount,
+    truncationSignals: truncation.signals,
+    tierReason: truncation.likelyTruncated
+      ? `Truncation detected: ${truncation.signals.join(', ')}`
+      : wordCount < 300
+        ? `Short text (${wordCount} words)`
+        : `Missing proper ending or other signals`
+  };
+}
+
+/**
+ * Get scraping priority for a review based on content tier
+ * Higher number = higher priority for re-scraping
+ *
+ * @param {Object} review - Review with contentTier
+ * @returns {{ priority: number, reason: string }}
+ */
+function getScrapingPriority(review) {
+  const tier = review.contentTier;
+  const hasUrl = !!review.url;
+
+  switch (tier) {
+    case 'truncated':
+      return hasUrl
+        ? { priority: 5, reason: 'Truncated with URL - try Archive.org or login' }
+        : { priority: 2, reason: 'Truncated without URL - need to find URL first' };
+    case 'excerpt':
+      return hasUrl
+        ? { priority: 4, reason: 'Excerpt only with URL - scrape full text' }
+        : { priority: 1, reason: 'Excerpt only without URL - excerpts may suffice' };
+    case 'stub':
+      return hasUrl
+        ? { priority: 3, reason: 'Stub with URL - attempt scraping' }
+        : { priority: 0, reason: 'Stub without URL - lowest priority' };
+    case 'invalid':
+      return { priority: -1, reason: 'Invalid - needs manual review or deletion' };
+    case 'complete':
+    default:
+      return { priority: 0, reason: 'Complete - no action needed' };
+  }
+}
+
 module.exports = {
   isGarbageContent,
   hasReviewContent,
@@ -769,6 +1018,11 @@ module.exports = {
   validateShowMentioned,
   detectMultiShowContent,
   detectConcatenatedArticles,
+  // Content tier classification (5-tier taxonomy)
+  classifyContentTier,
+  detectTruncationSignals,
+  getScrapingPriority,
+  countWords,
   // Export individual detectors for testing/debugging
   detectAdBlocker,
   detectPaywall,
@@ -783,4 +1037,5 @@ module.exports = {
   THEATER_KEYWORDS,
   CURRENT_BROADWAY_SHOWS,
   ARTICLE_BOUNDARY_PATTERNS,
+  TRUNCATION_SIGNALS,
 };

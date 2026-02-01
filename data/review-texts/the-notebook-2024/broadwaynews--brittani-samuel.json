@@ -5,17 +5,13 @@
   "criticName": "Brittani Samuel",
   "url": "https://www.broadwaynews.com/the-broadway-review-the-notebook-a-swoonful-new-musical-that-conjures-its-former-selves/",
   "publishDate": "March 15, 2024",
-  "isFullReview": true,
   "dtliExcerpt": "A show this steeped in grief and heartbreak has never felt so damn good.",
   "originalScore": null,
   "assignedScore": 85,
   "source": "dtli",
   "dtliThumb": "Up",
-  "textStatus": "truncated",
-  "textWordCount": 483,
   "archivePath": "data/archives/reviews/the-notebook-2024/broadwaynews--brittani-samuel_2026-01-30.html",
   "textFetchedAt": "2026-01-30T16:05:44.587Z",
-  "textQuality": "full",
   "sourceMethod": "archive",
   "showScoreExcerpt": "\"The Notebook is leaping off the page and onto the stage...its finest adaptation yet.\"",
   "llmScore": {
@@ -96,8 +92,12 @@
     }
   ],
   "fetchTier": 4,
-  "truncationSignals": [],
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
   "archiveOrgTimestamp": "20251117164626",
   "archiveOrgUrl": "http://web.archive.org/web/20251117164626/https://www.broadwaynews.com/the-broadway-review-the-notebook-a-swoonful-new-musical-that-conjures-its-former-selves/",
-  "textQualityOverride": "batch-fix-2026-01-30"
+  "textQualityOverride": "batch-fix-2026-01-30",
+  "contentTier": "truncated",
+  "wordCount": 483
 }

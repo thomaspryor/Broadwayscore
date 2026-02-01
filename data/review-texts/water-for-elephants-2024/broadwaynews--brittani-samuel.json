@@ -5,17 +5,13 @@
   "criticName": "Brittani Samuel",
   "url": "https://www.broadwaynews.com/the-broadway-review-water-for-elephants-explores-familiar-territory-through-novel-theatrics/",
   "publishDate": "March 22, 2024",
-  "isFullReview": true,
   "dtliExcerpt": "Director Jessica Stone beautifully navigates the musical’s tricky order: execute the level of physical extravagance any circus-musical hybrid of this monumental scale demands, but keep Jacob’s potent, time-leaping personal story intact.",
   "originalScore": null,
   "assignedScore": 76,
   "source": "dtli",
   "dtliThumb": "Up",
-  "textStatus": "truncated",
-  "textWordCount": 450,
   "archivePath": "data/archives/reviews/water-for-elephants-2024/broadwaynews--brittani-samuel_2026-01-30.html",
   "textFetchedAt": "2026-01-30T18:35:28.847Z",
-  "textQuality": "full",
   "sourceMethod": "archive",
   "llmScore": {
     "score": 76,
@@ -96,8 +92,12 @@
     }
   ],
   "fetchTier": 4,
-  "truncationSignals": [],
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
   "archiveOrgTimestamp": "20250713173816",
   "archiveOrgUrl": "http://web.archive.org/web/20250713173816/https://www.broadwaynews.com/the-broadway-review-water-for-elephants-explores-familiar-territory-through-novel-theatrics/",
-  "textQualityOverride": "batch-fix-2026-01-30"
+  "textQualityOverride": "batch-fix-2026-01-30",
+  "contentTier": "truncated",
+  "wordCount": 450
 }

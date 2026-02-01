@@ -5,13 +5,11 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.wsj.com/articles/back-to-the-future-the-musical-review-docs-delorean-on-broadway-silvestri-roger-bart-f9a2349d",
   "publishDate": "August 3, 2023",
-  "isFullReview": false,
   "showScoreExcerpt": "“The musical has been staged in lavish style...And the DeLorean, with its glowing neon trim, has been glamorized effectively...But the musical as a whole never achieves liftoff, or even the stage equivalent of 88 miles an hour. It cruises along in a low gear for almost three hours.”",
   "bwwExcerpt": "In the unlikely event that I find myself inside a plutonium-fueled DeLorean—I suppose today it would be a Tesla—capable of transporting me to the past, and thus enabling me to alter my future, fairly high on the list of life changes I’d consider would be somehow avoiding having to view the sluggish slog that is the stage adaptation of “Back to the Future.”",
   "originalScore": null,
   "assignedScore": 15,
   "source": "show-score",
-  "textQuality": "excerpt_only",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-negative",
   "scoreConfidence": "medium",
@@ -71,7 +69,6 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "textWordCount": 97,
   "archivePath": "data/archives/reviews/back-to-the-future-2023/wsj--charles-isherwood_2026-01-27.html",
   "textFetchedAt": "2026-01-27T05:45:46.406Z",
   "fetchMethod": "archive",
@@ -101,12 +98,6 @@
     }
   ],
   "fetchTier": 4,
-  "truncationSignals": [
-    "no_ending_punctuation",
-    "has_footer_text",
-    "possible_mid_word_cutoff"
-  ],
-  "textStatus": "garbage_cleared",
   "archiveOrgTimestamp": "20251224094918",
   "archiveOrgUrl": "http://web.archive.org/web/20251224094918/https://www.wsj.com/articles/back-to-the-future-the-musical-review-docs-delorean-on-broadway-silvestri-roger-bart-f9a2349d",
   "textIssues": [
@@ -118,5 +109,7 @@
   "rescoreCompletedAt": "2026-01-28T23:33:14.194Z",
   "garbageFullText": "https://www.wsj.com/articles/back-to-the-future-the-musical-review-docs-delorean-on-broadway-silvestri-roger-bart-f9a2349d\n\nRoger Bart and Casey Likes Matthew Murphy and Evan ZimmermanNew York\n\nIn the unlikely event that I find myself inside a plutonium-fueled DeLorean—I suppose today it would be a Tesla—capable of transporting me to the past, and thus enabling me to alter my future, fairly high on the list of life changes I’d consider would be somehow avoiding having to view the sluggish slog that is the stage adaptation of “Back to the Future.”\n\nCopyright ©2025 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\n‘The Queen of Versailles’ Review: Kristin Chenoweth’s Musical of Gilded Dreams",
   "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
-  "garbageFixedAt": "2026-01-29T22:45:22.689Z"
+  "garbageFixedAt": "2026-01-29T22:45:22.689Z",
+  "contentTier": "invalid",
+  "wordCount": 0
 }

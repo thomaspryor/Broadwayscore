@@ -65,13 +65,11 @@
   "sources": [
     "dtli"
   ],
-  "isFullReview": true,
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 92,
-  "textWordCount": 896,
   "archivePath": "data/archives/reviews/merrily-we-roll-along-2023/theatermania--david-gordon_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:35:21.025Z",
   "fetchMethod": "archive",
@@ -83,12 +81,14 @@
     }
   ],
   "fetchTier": 4,
-  "textQuality": "full",
-  "truncationSignals": [],
-  "textStatus": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260120182051",
   "archiveOrgUrl": "http://web.archive.org/web/20260120182051/https://www.theatermania.com/news/review-its-a-hit-daniel-radcliffe-jonathan-groff-and-lindsay-mendez-bring-heavenly-merrily-we-roll-along-to-broadway_1717001/",
   "rescoreCompletedAt": "2026-01-29T14:31:51.886Z",
-  "textQualityOverride": "batch-fix-2026-01-30"
+  "textQualityOverride": "batch-fix-2026-01-30",
+  "contentTier": "complete",
+  "wordCount": 896
 }

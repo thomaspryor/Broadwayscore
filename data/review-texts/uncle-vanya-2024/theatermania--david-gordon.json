@@ -70,14 +70,12 @@
   "sources": [
     "dtli"
   ],
-  "isFullReview": true,
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
   "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 54,
-  "textWordCount": 913,
   "archivePath": "data/archives/reviews/uncle-vanya-2024/theatermania--david-gordon_2026-01-29.html",
   "textFetchedAt": "2026-01-29T15:25:58.647Z",
   "fetchMethod": "archive",
@@ -89,11 +87,13 @@
     }
   ],
   "fetchTier": 4,
-  "textQuality": "full",
-  "truncationSignals": [],
-  "textStatus": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251117025150",
   "archiveOrgUrl": "http://web.archive.org/web/20251117025150/https://www.theatermania.com/news/review-steve-carell-leads-an-all-over-the-place-uncle-vanya-at-lincoln-center-theater_1738133/",
-  "textQualityOverride": "batch-fix-2026-01-30"
+  "textQualityOverride": "batch-fix-2026-01-30",
+  "contentTier": "complete",
+  "wordCount": 913
 }

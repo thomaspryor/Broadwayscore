@@ -70,13 +70,11 @@
   "sources": [
     "dtli"
   ],
-  "isFullReview": true,
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 91,
-  "textWordCount": 570,
   "archivePath": "data/archives/reviews/real-women-have-curves-2025/broadwaynews--brittani-samuel_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:40:46.143Z",
   "fetchMethod": "scrapingbee",
@@ -100,10 +98,12 @@
     }
   ],
   "fetchTier": 2,
-  "textQuality": "full",
-  "truncationSignals": [],
-  "textStatus": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
   "sourceMethod": "scrapingbee",
   "rescoreCompletedAt": "2026-01-29T14:31:52.003Z",
-  "textQualityOverride": "batch-fix-2026-01-30"
+  "textQualityOverride": "batch-fix-2026-01-30",
+  "contentTier": "complete",
+  "wordCount": 570
 }

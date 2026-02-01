@@ -70,13 +70,11 @@
   "sources": [
     "dtli"
   ],
-  "isFullReview": true,
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 88,
-  "textWordCount": 1057,
   "archivePath": "data/archives/reviews/the-whos-tommy-2024/theatermania--david-gordon_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:30:04.870Z",
   "fetchMethod": "archive",
@@ -88,12 +86,14 @@
     }
   ],
   "fetchTier": 4,
-  "textQuality": "full",
-  "truncationSignals": [],
-  "textStatus": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250829115704",
   "archiveOrgUrl": "http://web.archive.org/web/20250829115704/https://www.theatermania.com/news/review-the-whos-tommy-is-back-to-introduce-a-new-generation-to-the-best-rock-opera-ever_1735790/",
   "rescoreCompletedAt": "2026-01-29T14:31:52.124Z",
-  "textQualityOverride": "batch-fix-2026-01-30"
+  "textQualityOverride": "batch-fix-2026-01-30",
+  "contentTier": "complete",
+  "wordCount": 1057
 }

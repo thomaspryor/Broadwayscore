@@ -65,13 +65,11 @@
   "sources": [
     "dtli"
   ],
-  "isFullReview": true,
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 48,
-  "textWordCount": 565,
   "archivePath": "data/archives/reviews/the-cottage-2023/broadwaynews--brittani-samuel_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:32:42.290Z",
   "fetchMethod": "scrapingbee",
@@ -95,10 +93,12 @@
     }
   ],
   "fetchTier": 2,
-  "textQuality": "full",
-  "truncationSignals": [],
-  "textStatus": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
   "sourceMethod": "scrapingbee",
   "rescoreCompletedAt": "2026-01-29T14:31:52.061Z",
-  "textQualityOverride": "batch-fix-2026-01-30"
+  "textQualityOverride": "batch-fix-2026-01-30",
+  "contentTier": "complete",
+  "wordCount": 565
 }

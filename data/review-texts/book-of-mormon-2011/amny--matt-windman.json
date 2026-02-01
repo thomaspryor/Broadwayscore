@@ -67,9 +67,6 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "isFullReview": true,
-  "textStatus": "complete",
-  "textWordCount": 382,
   "archivePath": "data/archives/reviews/book-of-mormon-2011/amny--unknown_2026-01-26.html",
   "textFetchedAt": "2026-01-26T20:11:12.231Z",
   "fetchMethod": "archive",
@@ -99,7 +96,6 @@
     }
   ],
   "fetchTier": 4,
-  "textQuality": "full",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20120420091637",
   "archiveOrgUrl": "http://web.archive.org/web/20120420091637/http://www.amny.com/urbanite-1.812039/theater-review-the-book-of-mormon-4-stars-1.2780979",
@@ -114,5 +110,10 @@
   ],
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 77,
-  "rescoreCompletedAt": "2026-01-28T23:33:22.813Z"
+  "rescoreCompletedAt": "2026-01-28T23:33:22.813Z",
+  "contentTier": "complete",
+  "wordCount": 382,
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ]
 }

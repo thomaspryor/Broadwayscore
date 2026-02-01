@@ -6,14 +6,11 @@
   "url": "http://www.catholictranscript.org/arts-media/theater-reviews/3404-aladdin.html",
   "publishDate": "May 30, 2014",
   "fullText": null,
-  "isFullReview": false,
   "showScoreExcerpt": "\"Mainly, this Aladdin is F-U-N because it was so craftily assembled. Aladdin is a treat for the eye and ear.\"",
   "originalScore": null,
   "assignedScore": 78,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
-  "textStatus": "excerpt_only",
-  "textQuality": "excerpt_only",
   "sourceMethod": "playwright",
   "scoreSource": null,
   "llmScore": {
@@ -64,7 +61,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "textWordCount": 33,
   "archivePath": "data/archives/reviews/aladdin-2014/catholic-transcript--bernard-carragher_2026-01-27.html",
   "textFetchedAt": "2026-01-27T20:27:34.072Z",
   "fetchMethod": "playwright",
@@ -80,13 +76,12 @@
     "Word count too low: 33 (min: 300)",
     "Show title not found in text"
   ],
-  "truncationSignals": [
-    "no_ending_punctuation"
-  ],
   "garbageTextRemoved": {
     "removedAt": "2026-01-29T02:00:00.000Z",
     "reason": "Japanese gaming PC content (Galleria, MDL.make brands) - completely unrelated to Broadway",
     "previousScore": 0,
     "restoredScore": 84
-  }
+  },
+  "contentTier": "excerpt",
+  "wordCount": 0
 }

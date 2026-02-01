@@ -5,7 +5,6 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.wsj.com/articles/liberation-review-feminism-and-frustration-on-broadway-537a92b7",
   "publishDate": "October 28, 2025",
-  "isFullReview": false,
   "showScoreExcerpt": "\"Ms. White does elicit uniformly terrific performances that keep the play lively and humming with bright humor.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/liberation-broadway",
   "originalScore": null,
@@ -66,7 +65,6 @@
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
-  "textWordCount": 144,
   "archivePath": "data/archives/reviews/liberation-2025/wsj--charles-isherwood_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:48:49.971Z",
   "fetchMethod": "archive",
@@ -78,13 +76,6 @@
     }
   ],
   "fetchTier": 4,
-  "textQuality": "excerpt_only",
-  "truncationSignals": [
-    "no_ending_punctuation",
-    "has_footer_text",
-    "possible_mid_word_cutoff"
-  ],
-  "textStatus": "garbage_cleared",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260119035810",
   "archiveOrgUrl": "http://web.archive.org/web/20260119035810/https://www.wsj.com/articles/liberation-review-feminism-and-frustration-on-broadway-537a92b7",
@@ -94,5 +85,7 @@
   "rescoreCompletedAt": "2026-01-29T14:31:51.860Z",
   "garbageFullText": "https://www.wsj.com/articles/liberation-review-feminism-and-frustration-on-broadway-537a92b7\n\nSusannah Flood Joan MarcusEditor’s note: “Liberation” has transferred to Broadway after an off-Broadway run last season. The principal cast and creative team remain the same. Below is the Journal’s review of the off-Broadway production.\n\n“Why does it feel somehow like it’s all slipping away? And how do we get it back?” That lament is spoken by the narrator of “Liberation,” a funny if meandering new play by Bess Wohl presented by the Roundabout Theatre Company that explores the idealistic aims and frequent frustrations of women in the feminist movement in the early 1970s.\n\nCopyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nDavid Baldacci Pushed Through Tons of Rejections Before Writing ‘Absolute Power’\n\nTom Stoppard, Playwright of Ideas, Dies at 88\n\n‘Joan Crawford’ Review: In a Hurry to the Top\n\nVisiting the Scotland That Inspired Mary Shelley’s ‘Frankenstein’—and the 2025 Movie",
   "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
-  "garbageFixedAt": "2026-01-29T22:45:22.978Z"
+  "garbageFixedAt": "2026-01-29T22:45:22.978Z",
+  "contentTier": "invalid",
+  "wordCount": 0
 }

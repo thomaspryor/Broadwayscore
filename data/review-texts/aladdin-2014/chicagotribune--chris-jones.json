@@ -5,7 +5,6 @@
   "criticName": "Chris Jones",
   "url": "https://www.chicagotribune.com/entertainment/theater/ct-aladdin-broadway-review-column.html",
   "publishDate": "2014-03-20",
-  "isFullReview": true,
   "originalScore": null,
   "assignedScore": 64,
   "source": "reviews-json-stub",
@@ -61,12 +60,9 @@
     "modelAgreement": "2/3 models agree: Mixed"
   },
   "bwwExcerpt": "You might argue that nobody cares about such veracity in a show based on a cartoon and now expanded into a family musical full of color and exuberance - if still wanting for an overarching theatrical reason for being. But if the director Casey Nicholaw, the book writer Chad Beguelin and their cast a...",
-  "textStatus": "truncated",
-  "textWordCount": 878,
   "textFetchedAt": "2026-01-30T16:15:12.293Z",
   "textFetchMethod": "playwright",
   "archivePath": "data/archives/reviews/aladdin-2014/chicagotribune--chris-jones_2026-01-30.html",
-  "textQuality": "full",
   "sourceMethod": "archive",
   "sources": [
     "reviews-json-stub",
@@ -89,8 +85,12 @@
     }
   ],
   "fetchTier": 4,
-  "truncationSignals": [],
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
   "archiveOrgTimestamp": "20220915160749",
   "archiveOrgUrl": "http://web.archive.org/web/20220915160749/https://www.chicagotribune.com/entertainment/theater/ct-aladdin-broadway-review-column.html",
-  "textQualityOverride": "manual-review-2026-01-30"
+  "textQualityOverride": "manual-review-2026-01-30",
+  "contentTier": "complete",
+  "wordCount": 878
 }

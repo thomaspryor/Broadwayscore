@@ -12,14 +12,11 @@
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "Told the creators of \"South Park\" were making a Broadway musical, you'd naturally expect a broad, foul-mouthed, juvenile, scatological, irreverent satire. Sure enough, \"The Book of Mormon,\" which opened last night, is all that - and much, much more. It's a fiendishly well-crafted, hilariously smart - or maybe smartly hilarious - song-and-dance extravaganza. The show's a hoot. The show's a hit.",
-  "textStatus": "complete",
   "urlSource": "show-score",
   "urlUpdatedAt": "2026-01-25T14:20:46.955Z",
-  "textWordCount": 682,
   "textFetchedAt": "2026-01-25T14:23:23.582Z",
   "textFetchMethod": "playwright-stealth",
   "archivePath": "data/archives/reviews/book-of-mormon-2011/NYP--elisabeth-vincentelli_2026-01-25.html",
-  "textQuality": "full",
   "sourceMethod": "stub",
   "scoreSource": "letter-grade",
   "scoreConfidence": "medium",
@@ -88,5 +85,10 @@
   "scoreExtractedFrom": "fullText",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 94,
-  "rescoreCompletedAt": "2026-01-28T23:33:54.376Z"
+  "rescoreCompletedAt": "2026-01-28T23:33:54.376Z",
+  "contentTier": "complete",
+  "wordCount": 682,
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ]
 }

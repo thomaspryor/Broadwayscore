@@ -5,15 +5,12 @@
   "criticName": "Adam Feldman",
   "url": "https://www.timeout.com/newyork/theater/hadestown-review-broadway",
   "publishDate": "April 17, 2019",
-  "isFullReview": false,
   "dtliExcerpt": "Here’s my advice: Go to hell. And by hell, of course, I mean Hadestown, Anaïs Mitchell’s fizzy, moody, thrilling new Broadway musical. Ostensibly, at least, the show is a modern retelling of the ancient Greek myth of Orpheus and Eurydice: Boy meets girl, boy loses girl, boy goes to the land of the dead in hopes of retrieving girl, boy loses girl again. “It’s an old song,” sings our narrator, the messenger god Hermes (André De Shields, a master of arch razzle-dazzle). “And we’re gonna sing it again.” But it’s the newness of Mitchell’s musical account—and Rachel Chavkin’s gracefully dynamic staging—that bring this old story to quivering life.",
   "originalScore": "4/5",
   "assignedScore": 80,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
-  "textStatus": "garbage_cleared",
-  "textWordCount": 566,
   "archivePath": "data/archives/reviews/hadestown-2019/timeout--adam-feldman_2026-01-27.html",
   "textFetchedAt": "2026-01-27T02:08:34.234Z",
   "fetchMethod": "scrapingbee",
@@ -31,7 +28,6 @@
     }
   ],
   "fetchTier": 2,
-  "textQuality": "excerpt_only",
   "sourceMethod": "scrapingbee",
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
@@ -149,5 +145,7 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
-  }
+  },
+  "contentTier": "invalid",
+  "wordCount": 0
 }

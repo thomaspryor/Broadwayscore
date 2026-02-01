@@ -22,13 +22,11 @@
   "sources": [
     "dtli"
   ],
-  "isFullReview": false,
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
   "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available",
   "previousLlmScore": 64,
-  "textWordCount": 10895,
   "archivePath": "data/archives/reviews/redwood-2025/deadline--greg-evans_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:29:45.553Z",
   "fetchMethod": "archive",
@@ -40,12 +38,6 @@
     }
   ],
   "fetchTier": 4,
-  "textQuality": "excerpt_only",
-  "truncationSignals": [
-    "has_read_more_prompt",
-    "has_footer_text"
-  ],
-  "textStatus": "garbage_cleared",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260108162427",
   "archiveOrgUrl": "http://web.archive.org/web/20260108162427/https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/",
@@ -143,5 +135,7 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
-  }
+  },
+  "contentTier": "invalid",
+  "wordCount": 0
 }

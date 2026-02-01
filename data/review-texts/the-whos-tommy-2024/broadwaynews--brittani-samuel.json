@@ -67,16 +67,12 @@
   "sources": [
     "dtli"
   ],
-  "isFullReview": true,
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 58,
   "rescoreCompletedAt": "2026-01-29T14:31:52.120Z",
-  "textQuality": "partial",
-  "truncationSignals": [],
-  "textWordCount": 268,
   "archivePath": "data/archives/reviews/the-whos-tommy-2024/broadwaynews--brittani-samuel_2026-02-01.html",
   "textFetchedAt": "2026-02-01T03:30:10.978Z",
   "fetchMethod": "archive",
@@ -88,11 +84,12 @@
     }
   ],
   "fetchTier": 4,
-  "textStatus": "incomplete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250907140040",
   "archiveOrgUrl": "http://web.archive.org/web/20250907140040/https://www.broadwaynews.com/the-whos-tommy-maximum-hertz-maximum-heart/",
   "textIssues": [
     "Word count too low: 274 (min: 300)"
-  ]
+  ],
+  "contentTier": "truncated",
+  "wordCount": 268
 }

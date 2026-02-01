@@ -12,10 +12,8 @@
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "\"Animated\" doesn't begin to describe the frantic, screwball version of Disney's \"Aladdin\" that opened Thursday night on Broadway at the New Amsterdam Theatre, with a bushel of new songs and a Genie who works so hard you wouldn't be stunned to find him continuing to grant wishes at the stage door....",
-  "textStatus": "complete",
   "urlSource": "show-score",
   "urlUpdatedAt": "2026-01-25T14:20:46.943Z",
-  "textQuality": "full",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
@@ -67,8 +65,6 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Mixed"
   },
-  "isFullReview": true,
-  "textWordCount": 832,
   "archivePath": "data/archives/reviews/aladdin-2014/the-washington-post--peter-marks_2026-01-26.html",
   "textFetchedAt": "2026-01-26T19:51:43.185Z",
   "fetchMethod": "archive",
@@ -108,5 +104,7 @@
   "dtliExcerpt": "Disney's 'Aladdin' is a magic carpet ride of a musical that soars when it trusts in its own theatrical magic. The show is at its best when it embraces the medium of live theater rather than trying to replicate the film.",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 61,
-  "rescoreCompletedAt": "2026-01-28T23:27:01.990Z"
+  "rescoreCompletedAt": "2026-01-28T23:27:01.990Z",
+  "contentTier": "complete",
+  "wordCount": 832
 }

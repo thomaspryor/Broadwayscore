@@ -9,16 +9,12 @@
   "assignedScore": 94,
   "source": "reviews-json-stub",
   "needsFullText": true,
-  "textStatus": "partial",
-  "isFullReview": false,
-  "textWordCount": 15,
   "archivePath": "data/archives/reviews/book-of-mormon-2011/vult--jesse-green_2026-01-25.html",
   "textFetchedAt": "2026-01-25T04:26:42.515Z",
   "textIssues": [
     "Word count too low: 15 (min: 300)",
     "Show title not found in text"
   ],
-  "textQuality": "excerpt_only",
   "sourceMethod": "stub",
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
@@ -83,5 +79,7 @@
     "reviews-json-stub",
     "web-search"
   ],
-  "rescoreCompletedAt": "2026-01-29T14:31:51.666Z"
+  "rescoreCompletedAt": "2026-01-29T14:31:51.666Z",
+  "contentTier": "excerpt",
+  "wordCount": 0
 }

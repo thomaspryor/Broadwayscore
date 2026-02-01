@@ -72,12 +72,10 @@
   "sources": [
     "dtli"
   ],
-  "isFullReview": true,
   "bwwExcerpt": null,
   "bwwThumb": null,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 74,
-  "textWordCount": 898,
   "archivePath": "data/archives/reviews/mother-play-2024/theatermania--rachel-graham_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:37:28.989Z",
   "fetchMethod": "archive",
@@ -89,12 +87,14 @@
     }
   ],
   "fetchTier": 4,
-  "textQuality": "full",
-  "truncationSignals": [],
-  "textStatus": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250814211746",
   "archiveOrgUrl": "http://web.archive.org/web/20250814211746/https://www.theatermania.com/news/review-jessica-lange-as-a-parent-from-hell-in-paula-vogels-emotional-mother-play_1738247/",
   "rescoreCompletedAt": "2026-01-29T14:31:51.908Z",
-  "textQualityOverride": "batch-fix-2026-01-30"
+  "textQualityOverride": "batch-fix-2026-01-30",
+  "contentTier": "complete",
+  "wordCount": 898
 }

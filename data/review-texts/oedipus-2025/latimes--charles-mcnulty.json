@@ -9,16 +9,12 @@
   "assignedScore": 82,
   "source": "reviews-json-stub",
   "needsFullText": true,
-  "textStatus": "incomplete",
-  "isFullReview": false,
-  "textWordCount": 207,
   "archivePath": "data/archives/reviews/oedipus-2025/latimes--charles-mcnulty_2026-01-30.html",
   "textFetchedAt": "2026-01-30T20:02:26.483Z",
   "textIssues": [
     "Word count too low: 207 (min: 300)",
     "Show title not found in text"
   ],
-  "textQuality": "excerpt",
   "sourceMethod": "brightdata",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
@@ -124,7 +120,6 @@
     }
   ],
   "fetchTier": 3,
-  "truncationSignals": [
-    "no_ending_punctuation"
-  ]
+  "contentTier": "truncated",
+  "wordCount": 207
 }

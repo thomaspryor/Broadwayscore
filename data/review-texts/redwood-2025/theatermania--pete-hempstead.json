@@ -70,13 +70,11 @@
   "sources": [
     "dtli"
   ],
-  "isFullReview": true,
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 54,
-  "textWordCount": 980,
   "archivePath": "data/archives/reviews/redwood-2025/theatermania--pete-hempstead_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:31:37.524Z",
   "fetchMethod": "archive",
@@ -88,12 +86,14 @@
     }
   ],
   "fetchTier": 4,
-  "textQuality": "full",
-  "truncationSignals": [],
-  "textStatus": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250527024131",
   "archiveOrgUrl": "http://web.archive.org/web/20250527024131/https://www.theatermania.com/news/review-idina-menzel-climbs-a-tree-on-broadway-in-new-musical-redwood_1763672/",
   "rescoreCompletedAt": "2026-01-29T14:31:52.014Z",
-  "textQualityOverride": "batch-fix-2026-01-30"
+  "textQualityOverride": "batch-fix-2026-01-30",
+  "contentTier": "complete",
+  "wordCount": 980
 }
