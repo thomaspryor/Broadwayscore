@@ -5008,18 +5008,6 @@
     "timestamp": "2026-02-01T19:15:05.086Z"
   },
   {
-    "reviewId": "gutenberg-2023/wsj--charles.json",
-    "showId": "gutenberg-2023",
-    "outlet": "The Wall Street Journal",
-    "critic": "Charles",
-    "url": "https://www.wsj.com/articles/gutenberg-the-musical-review-broadway-andrew-rannells-josh-gad-420d906c",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
-    "textLength": 585,
-    "timestamp": "2026-02-01T19:15:28.988Z"
-  },
-  {
     "reviewId": "hadestown-2019/timeout--adam-feldman.json",
     "showId": "hadestown-2019",
     "outlet": "Time Out New York",
@@ -5222,78 +5210,6 @@
     "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
     "textLength": 2642,
     "timestamp": "2026-02-01T19:24:26.901Z"
-  },
-  {
-    "reviewId": "how-to-dance-in-ohio-2023/deadline--greg-evans.json",
-    "showId": "how-to-dance-in-ohio-2023",
-    "outlet": "Deadline",
-    "critic": "Greg Evans",
-    "url": "https://deadline.com/2023/12/how-to-dance-in-ohio-review-broadway-1235658895/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
-    "textLength": 14174,
-    "timestamp": "2026-02-01T19:24:31.191Z"
-  },
-  {
-    "reviewId": "how-to-dance-in-ohio-2023/timeout--adam-feldman.json",
-    "showId": "how-to-dance-in-ohio-2023",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/how-to-dance-in-ohio-broadway-review-musical-autism",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 6289,
-    "timestamp": "2026-02-01T19:24:38.472Z"
-  },
-  {
-    "reviewId": "i-need-that-2023/deadline--greg-evans.json",
-    "showId": "i-need-that-2023",
-    "outlet": "Deadline",
-    "critic": "Greg Evans",
-    "url": "https://deadline.com/2023/11/danny-devito-i-need-that-broadway-review-1235589573/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
-    "textLength": 6365,
-    "timestamp": "2026-02-01T19:24:42.435Z"
-  },
-  {
-    "reviewId": "i-need-that-2023/timeout--adam-feldman.json",
-    "showId": "i-need-that-2023",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/i-need-that-broadway-review-danny-devito",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 4049,
-    "timestamp": "2026-02-01T19:24:56.552Z"
-  },
-  {
-    "reviewId": "i-need-that-2023/timeout--adam.json",
-    "showId": "i-need-that-2023",
-    "outlet": "Time Out New York",
-    "critic": "Adam",
-    "url": "https://www.timeout.com/newyork/theater/i-need-that-broadway-review-danny-devito",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 4049,
-    "timestamp": "2026-02-01T19:25:03.368Z"
-  },
-  {
-    "reviewId": "i-need-that-2023/timeout--will-gleason.json",
-    "showId": "i-need-that-2023",
-    "outlet": "Time Out New York",
-    "critic": "Will Gleason",
-    "url": "https://www.timeout.com/newyork/theater/i-need-that-broadway-review-danny-devito",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 4049,
-    "timestamp": "2026-02-01T19:25:10.181Z"
   },
   {
     "reviewId": "i-need-that-2023/wsj--charles-isherwood.json",
@@ -6098,5 +6014,101 @@
     "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
     "textLength": 585,
     "timestamp": "2026-02-01T23:55:46.370Z"
+  },
+  {
+    "reviewId": "gutenberg-2023/wsj--charles.json",
+    "showId": "gutenberg-2023",
+    "outlet": "The Wall Street Journal",
+    "critic": "Charles",
+    "url": "https://www.wsj.com/articles/gutenberg-the-musical-review-broadway-andrew-rannells-josh-gad-420d906c",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
+    "textLength": 585,
+    "timestamp": "2026-02-01T23:55:49.836Z"
+  },
+  {
+    "reviewId": "how-to-dance-in-ohio-2023/deadline--greg-evans.json",
+    "showId": "how-to-dance-in-ohio-2023",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/2023/12/how-to-dance-in-ohio-review-broadway-1235658895/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
+    "textLength": 14174,
+    "timestamp": "2026-02-01T23:56:50.211Z"
+  },
+  {
+    "reviewId": "how-to-dance-in-ohio-2023/theatermania--david-finkle.json",
+    "showId": "how-to-dance-in-ohio-2023",
+    "outlet": "TheaterMania",
+    "critic": "David Finkle",
+    "url": "https://www.theatermania.com/broadway/reviews/how-to-dance-in-ohio_94588.html",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©1999-2026 TheaterMania.com, Inc. All Rights Reserved\"",
+    "textLength": 2280,
+    "timestamp": "2026-02-01T23:56:57.997Z"
+  },
+  {
+    "reviewId": "how-to-dance-in-ohio-2023/timeout--adam-feldman.json",
+    "showId": "how-to-dance-in-ohio-2023",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/how-to-dance-in-ohio-broadway-review-musical-autism",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 6500,
+    "timestamp": "2026-02-01T23:57:01.661Z"
+  },
+  {
+    "reviewId": "i-need-that-2023/deadline--greg-evans.json",
+    "showId": "i-need-that-2023",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/2023/11/danny-devito-i-need-that-broadway-review-1235589573/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
+    "textLength": 6365,
+    "timestamp": "2026-02-01T23:57:04.929Z"
+  },
+  {
+    "reviewId": "i-need-that-2023/timeout--adam-feldman.json",
+    "showId": "i-need-that-2023",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/i-need-that-broadway-review-danny-devito",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 4324,
+    "timestamp": "2026-02-01T23:57:15.024Z"
+  },
+  {
+    "reviewId": "i-need-that-2023/timeout--adam.json",
+    "showId": "i-need-that-2023",
+    "outlet": "Time Out New York",
+    "critic": "Adam",
+    "url": "https://www.timeout.com/newyork/theater/i-need-that-broadway-review-danny-devito",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 4324,
+    "timestamp": "2026-02-01T23:57:17.310Z"
+  },
+  {
+    "reviewId": "i-need-that-2023/timeout--will-gleason.json",
+    "showId": "i-need-that-2023",
+    "outlet": "Time Out New York",
+    "critic": "Will Gleason",
+    "url": "https://www.timeout.com/newyork/theater/i-need-that-broadway-review-danny-devito",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 4324,
+    "timestamp": "2026-02-01T23:57:19.565Z"
   }
 ]
