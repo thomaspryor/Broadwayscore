@@ -5,7 +5,7 @@
   "criticName": "Frank Rizzo",
   "url": "https://variety.com/2024/legit/reviews/stereophonic-review-broadway-1235976418/",
   "publishDate": "April 19, 2024",
-  "fullText": "There's a moment in David Adjmi's play \"Stereophonic\" when a discordant, mid-'70s band-on-the rise hears one of its songs played back to them in the recording studio for the first time, with all its multiple tracks layered together into an artful whole.\n\nIt leaves the ever-bickering band suddenly speechless, emotionally stunned and still with the realization that they have just heard something truly great.\n\nAudiences may feel the same way after seeing this work of theatrical virtuosity, realizing that all the tiny details, wild rhythms, and clever hooks presented on stage have added up to a work that is brave, purposeful, and rich.",
+  "fullText": "This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. There was an error. Please try again later. There was an error please try again later. Does not meet password requirements Password must be at least 12 characters. This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. You can log in with the Vox Media account you created on We’ve sent an email with instructions for setting a new password. Sign in with your new password below.",
   "dtliExcerpt": "Audiences may feel the same way after seeing this work of theatrical virtuosity, realizing that all the tiny details, wild rhythms, and clever hooks presented on stage have added up to a work that is brave, purposeful, and rich.",
   "originalScore": null,
   "assignedScore": 88,
@@ -77,18 +77,24 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "sourceMethod": "archive",
+  "sourceMethod": "playwright",
   "archivePath": "data/archives/reviews/stereophonic-2024/variety--frank-rizzo_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T23:13:00.568Z",
-  "fetchMethod": "archive",
+  "textFetchedAt": "2026-02-01T23:39:09.363Z",
+  "fetchMethod": "playwright",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 1,
   "archiveOrgTimestamp": "20250210024557",
   "archiveOrgUrl": "http://web.archive.org/web/20250210024557/https://variety.com/2024/legit/reviews/stereophonic-review-broadway-1235976418/",
   "bwwThumb": "Up",
@@ -102,8 +108,16 @@
   "contentTier": "complete",
   "wordCount": 1012,
   "isFullReview": false,
-  "textWordCount": 103,
-  "textQuality": "partial",
-  "truncationSignals": [],
-  "textStatus": "partial"
+  "textWordCount": 118,
+  "textQuality": "excerpt",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "incomplete",
+  "designation": "Recommended",
+  "textIssues": [
+    "Word count too low: 118 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true
 }
