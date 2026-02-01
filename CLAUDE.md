@@ -234,6 +234,8 @@ data/
 - `scripts/discover-new-shows.js` - Broadway.org show discovery (daily), enriches dates from IBDB
 - `scripts/lib/deduplication.js` - Centralized show deduplication (9 checks)
 - `scripts/lib/review-normalization.js` - Outlet/critic name normalization
+- `scripts/lib/text-cleaning.js` - Centralized text cleaning (HTML entity decoding, junk stripping)
+- `scripts/lib/content-quality.js` - Text quality classification + garbage detection
 - `scripts/lib/ibdb-dates.js` - IBDB date lookup module (preview, opening, closing dates)
 - `scripts/enrich-ibdb-dates.js` - Standalone IBDB date enrichment (`--dry-run`, `--verify`, `--force`, `--show=SLUG`)
 - `scripts/scrape-grosses.ts` - BroadwayWorld weekly grosses + history enrichment
@@ -278,6 +280,10 @@ Review-text directories use **versioned show IDs** matching `shows.json` (e.g., 
 ### Review Normalization System
 
 `scripts/lib/review-normalization.js` prevents duplicate review files by normalizing outlet/critic names. Key functions: `normalizeOutlet()`, `normalizeCritic()`, `generateReviewFilename()`, `areCriticsSimilar()`, `validateCriticOutlet()`. Add new aliases to `OUTLET_ALIASES` (40+ variations) or `CRITIC_ALIASES` (30+ variations) in the file.
+
+**Outlet-critic concatenation handling:** `normalizeOutlet()` automatically strips critic names from concatenated outlet IDs (e.g., `variety-frank-rizzo` → `variety`, `new-york-magazinevulture-sara-holdren` → `vulture`). This catches upstream data sources that merge outlet and critic names.
+
+**First-name prefix dedup:** `gather-reviews.js` checks if an incoming critic's name is a first-name prefix of an existing critic at the same outlet (e.g., incoming "Jesse" at nytimes matches existing "Jesse Green"). Merges into the existing file instead of creating a duplicate.
 
 ### Review Data Quality
 
@@ -325,9 +331,14 @@ Auto-generated system to catch when reviews are attributed to the wrong outlet. 
 - `no_ending_punctuation` - Doesn't end with .!?"')
 - `possible_mid_word_cutoff` - Ends with lowercase letter
 
+**Garbage detection guards (Feb 2026):** To prevent false positives on legitimate reviews:
+- Legal page patterns (e.g., "All Rights Reserved") are skipped for texts >500 chars — copyright footers are not garbage
+- Error page patterns (e.g., "has been removed") only check first 300 chars for long texts — prevents theatrical context matches
+- Ad blocker detection requires full message context, not just the word "adblock"
+
 **Automated quality checks:**
 - `scripts/audit-text-quality.js` - Runs in CI, enforces thresholds (35% full, <40% truncated, <5% unknown)
-- Quality classification happens automatically during `collect-review-texts.js`
+- Quality classification happens automatically during `collect-review-texts.js` and `gather-reviews.js`
 - `review-refresh.yml` now rebuilds `reviews.json` after collecting new reviews
 
 ## Automated Testing
@@ -504,12 +515,7 @@ Documented from the Jan-Feb 2026 review corpus audit (1,825→2,022 reviews). Th
 
 **HTML entity pollution (FIXED Feb 2026):** Entities decoded at three points: `cleanText()` in text-quality.js (LLM scorer path), `mergeReviews()` in review-normalization.js (incoming text), and `rebuild-show-reviews.js` (rebuild path). All use shared `decodeHtmlEntities()` from text-cleaning.js.
 
-**Outlet-specific junk in fullText:** Generic junk strippers miss outlet-specific patterns:
-- **EW:** Video player code, `<img>` srcsets, "Related Articles" blocks survive into fullText
-- **The Times (UK):** Paywall message prefix ("We haven't been able to take payment...") precedes actual review
-- **BWW:** "Get Access To Every Broadway Story" paywall text instead of review
-- **BroadwayNews:** Full site navigation menu (JavaScript-rendered content not waited for)
-- **Variety:** `\t\n` whitespace blocks, "Related Stories" / "Popular on Variety" interstitials
+**Outlet-specific junk in fullText (FIXED Feb 2026):** `scripts/lib/text-cleaning.js` now has outlet-specific trailing junk patterns for EW (`<img>` tags, srcset, "Related Articles"), BWW ("Get Access To Every Broadway Story"), Variety ("Related Stories", "Popular on Variety"), BroadwayNews (site navigation), and The Times UK (paywall prefix). Applied at write time in all three consumer scripts via `cleanText()`.
 
 **Quality classification in `gather-reviews.js` (FIXED Feb 2026):** `gather-reviews.js` now runs `classifyContentTier()` on every review before writing (line 1194). All 2,141 review files have contentTier assigned. Distribution: complete 1,108, excerpt 463, truncated 257, stub 293, other 20.
 
@@ -521,8 +527,8 @@ Documented from the Jan-Feb 2026 review corpus audit (1,825→2,022 reviews). Th
 
 ### Deduplication Issues
 
-**URL uniqueness gap:** The dedup system checks outlet+critic but not URL uniqueness within a show. A Variety review appeared under both "Christian Lewis" and "Peter Marks" because both entries shared the same URL. **Fix needed:** Add URL-based dedup check in `scripts/lib/deduplication.js`.
+**URL uniqueness (FIXED Feb 2026):** `gather-reviews.js` checks URL uniqueness across all files in a show directory (not just same outlet+critic). First-name prefix matching and outlet-critic concatenation normalization prevent the most common duplicate patterns. In Feb 2026 cleanup: 158 duplicate files deleted, validation went from 18 to 0 duplicate outlet+critic combos.
 
 ### Workflow Issues
 
-**Parallel push conflicts:** When 3+ workflows push to `main` simultaneously, `git pull --rebase` fails with unstaged changes or merge conflicts. Fixed in `gather-reviews.yml` and `rebuild-reviews.yml` (Feb 2026) with `git checkout -- . && git clean -fd` before rebase and `-X theirs` for auto-conflict resolution. **All parallel-safe workflows should use this pattern.**
+**Parallel push conflicts (FIXED Feb 2026):** All 8 parallel-safe workflows now use robust push retry: `git checkout -- . && git clean -fd` before rebase, `-X theirs` for auto-conflict resolution, `rebase --abort` on failure, random 10-30s backoff, 5 retries. Fixed in: `gather-reviews.yml`, `rebuild-reviews.yml`, `scrape-nysr.yml`, `scrape-new-aggregators.yml`, `fetch-guardian-reviews.yml`, `process-review-submission.yml`, `review-refresh.yml`, `update-commercial.yml`.
