@@ -5,10 +5,10 @@
   "criticName": "Elysa Gardner",
   "url": "https://www.broadwaynews.com/the-broadway-review-lempicka-is-a-seductive-unpolished-musical-about-a-groundbreaking-polish-painter/",
   "publishDate": null,
-  "fullText": null,
+  "fullText": "Co-writers Carson Kreitzer and Matt Gould color outside the traditional lines, but are backed by enough talent to render a captivating portrait. Good morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Lempicka.” Musicalizing the formative years of an icon is easy fodder for Broadway aspirants. Most often it involves a character that’s easy to root for who embarks on a journey with a clear moral arc. “Lempicka” enlists a more nuanced form, the Künstlerroman, a narrative about an artist's maturation. The new musical paints the life of Polish art deco pioneer Tamara de Lempicka (portrayed here by Eden Espinosa). Co-writers Carson Kreitzer and Matt Gould’s voluptuous new musical weaves together grandiose ideals about what it means to be an artist, what it means to be a woman and what it means to be at war with intimacies about queer love and female ambition. Ultimately, they scrape together a delicious, delirious portrait of this largely unknown juggernaut.",
   "bwwExcerpt": "As Tamara, Eden Espinosa gets to once again use the siren-like belt and the mix of might and vulnerability she deployed during several stints as Elphaba in “Wicked” — this time while sporting a platinum-blonde bob that makes her look like 1990s-era Madonna (a noted Lempicka fan, naturally). Granted, the vocal showcases she is provided by composer Matt Gould and lyricist Carson Kreitzer — who collaborated on the book, brd on Ms. Kreitzer’s concept — are seldom as tuneful as they are flamboyant.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
-  "originalScore": null,
+  "originalScore": "B",
   "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": "Up",
@@ -73,5 +73,30 @@
   "dateSource": "could-not-extract",
   "dtliExcerpt": "Ultimately, they scrape together a delicious, delirious portrait of this largely unknown juggernaut.",
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 64,
+  "isFullReview": false,
+  "textWordCount": 174,
+  "archivePath": "data/archives/reviews/lempicka-2024/ew--elysa-gardner_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T14:03:01.608Z",
+  "originalScoreNormalized": 85,
+  "scoreSource": "letter-grade",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 186 (min: 300)"
+  ]
 }
