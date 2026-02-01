@@ -1,30 +1,30 @@
 {
-  "runDate": "2026-02-01T14:05:35.839Z",
+  "runDate": "2026-02-01T14:09:11.417Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "here-lies-love-2023",
+    "showFilter": "merrily-we-roll-along-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 16,
-    "failed": 120,
+    "processed": 18,
+    "failed": 122,
     "skipped": 0,
-    "successRate": "11.8%"
+    "successRate": "12.9%"
   },
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 6,
     "browserbase": 0,
     "scrapingbee": 1,
     "brightdata": 2,
     "archive": 9
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 2,
     "tier1Success": 1,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
@@ -32,13 +32,13 @@
     "tier2Success": 1,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 7,
-    "tier4Success": 4,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 11,
+    "tier4Attempts": 3,
+    "tier4Success": 3,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 10,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -57,8 +57,10 @@
     "stereophonic-2024/ew--allison-considine.json",
     "stereophonic-2024/guardian--gloria-oladipo.json",
     "stereophonic-2024/ap--mark-kennedy.json",
-    "here-lies-love-2023/nytimes--ben-brantley.json",
-    "here-lies-love-2023/nypost--johnny-oleksinski.json"
+    "mother-play-2024/broadwaynews--brittani-samuel.json",
+    "mother-play-2024/ew--allison-considine.json",
+    "mother-play-2024/guardian--benjamin-lee.json",
+    "merrily-we-roll-along-2023/the-times--will-pavia.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -176,11 +178,13 @@
     "stereophonic-2024/deadline--greg-evans.json",
     "stereophonic-2024/observer--david-cote.json",
     "stereophonic-2024/timeout--adam-feldman.json",
-    "here-lies-love-2023/deadline--greg-evans.json",
-    "here-lies-love-2023/timeout--adam-feldman.json",
-    "here-lies-love-2023/wsj--charles-isherwood.json",
-    "here-lies-love-2023/wsj--charles.json",
-    "here-lies-love-2023/bergen-record--robert-feldberg.json"
+    "mother-play-2024/timeout--adam-feldman.json",
+    "mother-play-2024/wsj--charles-isherwood.json",
+    "mother-play-2024/wsj--charles.json",
+    "merrily-we-roll-along-2023/deadline--greg-evans.json",
+    "merrily-we-roll-along-2023/timeout--adam-feldman.json",
+    "merrily-we-roll-along-2023/wsj--charles-isherwood.json",
+    "merrily-we-roll-along-2023/the-village-voice--michael-musto.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -188,11 +192,12 @@
       "stereophonic-2024/ew--allison-considine.json",
       "stereophonic-2024/guardian--gloria-oladipo.json",
       "stereophonic-2024/ap--mark-kennedy.json",
-      "here-lies-love-2023/nypost--johnny-oleksinski.json"
+      "mother-play-2024/ew--allison-considine.json",
+      "mother-play-2024/guardian--benjamin-lee.json"
     ],
     "browserbase": [],
     "scrapingbee": [
-      "here-lies-love-2023/nytimes--ben-brantley.json"
+      "merrily-we-roll-along-2023/the-times--will-pavia.json"
     ],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
@@ -207,17 +212,9 @@
       "harry-potter-2021/village-voice--michael-feingold.json",
       "mj-2022/nytg--ayanna-prescod.json",
       "stereophonic-2024/nytimes--jesse-green.json",
-      "lempicka-2024/broadwaynews--brittani-samuel.json"
+      "mother-play-2024/broadwaynews--brittani-samuel.json"
     ]
   },
-  "failuresByOutlet": {
-    "The Record (Bergen)": {
-      "count": 1,
-      "domain": "northjersey.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
