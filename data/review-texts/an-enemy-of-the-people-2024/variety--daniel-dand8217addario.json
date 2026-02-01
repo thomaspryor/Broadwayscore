@@ -65,9 +65,31 @@
   "showScoreExcerpt": "\"An actorly, Broadway face-off between Jeremy Strong and Michael Imperioli\"",
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 66,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 77,
   "rescoreCompletedAt": "2026-01-28T23:28:47.337Z",
   "contentTier": "complete",
-  "wordCount": 1260
+  "wordCount": 1260,
+  "needsRescore": true,
+  "isFullReview": false,
+  "textWordCount": 82,
+  "archivePath": "data/archives/reviews/an-enemy-of-the-people-2024/variety--daniel-d--8217-addario_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T21:19:46.215Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "shorter_than_excerpt"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20260101011754",
+  "archiveOrgUrl": "http://web.archive.org/web/20260101011754/https://variety.com/2024/legit/news/an-enemy-of-the-people-jeremy-strong-broadway-michael-imperioli-1235944570/"
 }
