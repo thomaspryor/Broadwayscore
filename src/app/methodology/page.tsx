@@ -111,7 +111,7 @@ const faqSchema = {
       name: 'What is Audience Buzz?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Audience Buzz aggregates theatergoer sentiment from Show Score, Mezzanine, and Reddit into four designations: Loving (88+), Liking (78-87), Shrugging (68-77), and Loathing (0-67). Sources are weighted dynamically based on sample size, with Reddit capturing buzz at 20% and Show Score/Mezzanine splitting the remaining 80% proportionally.',
+        text: 'Audience Buzz aggregates theatergoer sentiment from Show Score, Mezzanine, and Reddit into four designations: Loving It (88+), Liking It (78-87), Shrugging (68-77), and Loathing It (0-67). Sources are weighted dynamically based on sample size, with Reddit capturing buzz at 20% and Show Score/Mezzanine splitting the remaining 80% proportionally.',
       },
     },
     {
@@ -348,14 +348,14 @@ export default function MethodologyPage() {
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
               <div className="flex items-center gap-2 w-40 flex-shrink-0">
                 <span className="text-2xl">❤️</span>
-                <span className="text-white font-medium">Loving</span>
+                <span className="text-white font-medium">Loving It</span>
               </div>
               <div className="text-gray-500 text-sm">88+ score — Audiences rave about it</div>
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
               <div className="flex items-center gap-2 w-40 flex-shrink-0">
                 <span className="text-2xl">👍</span>
-                <span className="text-white font-medium">Liking</span>
+                <span className="text-white font-medium">Liking It</span>
               </div>
               <div className="text-gray-500 text-sm">78-87 score — Strong positive reception</div>
             </div>
@@ -369,7 +369,7 @@ export default function MethodologyPage() {
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
               <div className="flex items-center gap-2 w-40 flex-shrink-0">
                 <span className="text-2xl">💩</span>
-                <span className="text-white font-medium">Loathing</span>
+                <span className="text-white font-medium">Loathing It</span>
               </div>
               <div className="text-gray-500 text-sm">0-67 score — Audiences disappointed</div>
             </div>
