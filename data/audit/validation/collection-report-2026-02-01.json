@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-02-01T15:07:28.354Z",
+  "runDate": "2026-02-01T15:09:47.510Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "spamalot-2023",
+    "showFilter": "the-cottage-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,29 +12,29 @@
   },
   "summary": {
     "processed": 43,
-    "failed": 164,
+    "failed": 162,
     "skipped": 0,
-    "successRate": "20.8%"
+    "successRate": "21.0%"
   },
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 6,
     "browserbase": 0,
     "scrapingbee": 4,
     "brightdata": 2,
     "archive": 37
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 1,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 2,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 6,
-    "tier4Success": 1,
-    "totalFailed": 4,
+    "tier4Attempts": 2,
+    "tier4Success": 2,
+    "totalFailed": 2,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -248,10 +248,8 @@
     "stereophonic/variety-frank-rizzo--frank-rizzo.json",
     "suffs/vulture-sara-holdren--sara-holdren.json",
     "the-great-gatsby/new-york-magazinevulture-sara-holdren--unknown.json",
-    "spamalot-2023/deadline--greg-evans.json",
-    "spamalot-2023/timeout--adam-feldman.json",
-    "spamalot-2023/wsj--charles-isherwood.json",
-    "spamalot-2023/wsj--charles.json"
+    "the-cottage-2023/observer--rex-reed.json",
+    "the-cottage-2023/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -260,8 +258,7 @@
       "appropriate-2023/ew--allison-considine.json",
       "appropriate-2023/observer--david-cote.json",
       "back-to-the-future-2023/ew--dalton-ross.json",
-      "book-of-mormon-2011/timeout--david-cote.json",
-      "i-need-that-2023/observer--david-cote.json"
+      "book-of-mormon-2011/timeout--david-cote.json"
     ],
     "browserbase": [],
     "scrapingbee": [
@@ -314,14 +311,6 @@
       "the-outsiders/variety-naveen-kumar--naveen-kumar.json"
     ]
   },
-  "failuresByOutlet": {
-    "The Wall Street Journal": {
-      "count": 2,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
