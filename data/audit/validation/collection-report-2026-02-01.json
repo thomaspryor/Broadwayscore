@@ -1,45 +1,45 @@
 {
-  "runDate": "2026-02-01T14:05:28.425Z",
+  "runDate": "2026-02-01T14:07:52.876Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "days-of-wine-and-roses-2024",
+    "showFilter": "an-enemy-of-the-people-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 16,
-    "failed": 118,
+    "processed": 15,
+    "failed": 119,
     "skipped": 0,
-    "successRate": "11.9%"
+    "successRate": "11.2%"
   },
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 4,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 2,
-    "archive": 10
+    "archive": 8
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 2,
-    "tier1_5Attempts": 1,
+    "tier1Attempts": 3,
+    "tier1Success": 0,
+    "tier1_5Attempts": 2,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 0,
+    "tier2Attempts": 3,
+    "tier2Success": 1,
     "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier4Attempts": 4,
-    "tier4Success": 1,
-    "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 20,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 1,
+    "tier3Success": 0,
+    "tier4Attempts": 7,
+    "tier4Success": 2,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 30,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.4,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -57,8 +57,7 @@
     "stereophonic-2024/ew--allison-considine.json",
     "stereophonic-2024/guardian--gloria-oladipo.json",
     "stereophonic-2024/ap--mark-kennedy.json",
-    "days-of-wine-and-roses-2024/ew--bob-verini.json",
-    "days-of-wine-and-roses-2024/guardian--lauren-mechling.json"
+    "an-enemy-of-the-people-2024/washpost--naveen-kumar.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -176,21 +175,22 @@
     "stereophonic-2024/deadline--greg-evans.json",
     "stereophonic-2024/observer--david-cote.json",
     "stereophonic-2024/timeout--adam-feldman.json",
-    "days-of-wine-and-roses-2024/deadline--greg-evans.json",
-    "days-of-wine-and-roses-2024/timeout--adam-feldman.json",
-    "days-of-wine-and-roses-2024/washpost--naveen-kumar.json"
+    "an-enemy-of-the-people-2024/deadline--greg-evans.json",
+    "an-enemy-of-the-people-2024/nydailynews--chris-jones.json",
+    "an-enemy-of-the-people-2024/nydailynews--chris.json",
+    "an-enemy-of-the-people-2024/timeout--adam-feldman.json"
   ],
   "tierDetails": {
     "playwright": [
       "harry-potter-2021/melindas-malarky--melinda-pressler.json",
       "stereophonic-2024/ew--allison-considine.json",
       "stereophonic-2024/guardian--gloria-oladipo.json",
-      "stereophonic-2024/ap--mark-kennedy.json",
-      "days-of-wine-and-roses-2024/ew--bob-verini.json",
-      "days-of-wine-and-roses-2024/guardian--lauren-mechling.json"
+      "stereophonic-2024/ap--mark-kennedy.json"
     ],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "an-enemy-of-the-people-2024/washpost--naveen-kumar.json"
+    ],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
       "mj-2022/usatoday--david-rooney.json"
@@ -203,18 +203,16 @@
       "harry-potter-2021/vanityfair--richard-lawson.json",
       "harry-potter-2021/village-voice--michael-feingold.json",
       "mj-2022/nytg--ayanna-prescod.json",
-      "stereophonic-2024/nytimes--jesse-green.json",
-      "the-roommate-2024/broadwaynews--brittani-samuel.json",
-      "the-roommate-2024/nydailynews--chris-jones.json"
+      "stereophonic-2024/nytimes--jesse-green.json"
     ]
   },
   "failuresByOutlet": {
-    "The Washington Post": {
-      "count": 1,
-      "domain": "washingtonpost.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
+    "New York Daily News": {
+      "count": 2,
+      "domain": "nydailynews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
     }
   },
   "urlDiscoveries": []
