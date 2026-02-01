@@ -15,7 +15,7 @@
   "urlUpdated": "2026-01-23T05:27:32.724Z",
   "scrapedAt": "2026-01-23T22:05:53.343Z",
   "dtliThumb": "Up",
-  "sourceMethod": "archive",
+  "sourceMethod": "brightdata",
   "bwwExcerpt": "In productions large or small — or, here, imperfectly in-between, though still glorious — everything is the service of the show that creates with words, music and movement a grand American tapestry — tears and all.",
   "llmScore": {
     "score": 82,
@@ -84,16 +84,28 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 64,
   "archivePath": "data/archives/reviews/ragtime-2025/variety--frank-rizzo_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T23:03:08.599Z",
-  "fetchMethod": "archive",
+  "textFetchedAt": "2026-02-01T23:40:58.749Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
-      "tier": 0,
-      "method": "archive-first",
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 33 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 3,
   "archiveOrgTimestamp": "20251119213256",
   "archiveOrgUrl": "http://web.archive.org/web/20251119213256/https://variety.com/2025/legit/reviews/ragtime-review-broadway-lincoln-center-theater-1236554453/",
   "contentTier": "complete",

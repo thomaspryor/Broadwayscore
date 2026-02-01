@@ -91,39 +91,23 @@
   "isFullReview": false,
   "textWordCount": 102,
   "archivePath": "data/archives/reviews/prayer-for-the-french-republic-2024/variety--daniel-d-addario_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T22:55:55.803Z",
-  "fetchMethod": "brightdata",
+  "textFetchedAt": "2026-02-01T23:38:29.833Z",
+  "fetchMethod": "archive",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
-      "success": false,
-      "error": "No archive snapshot available"
-    },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Insufficient text extracted: 0 chars"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 3,
+  "fetchTier": 4,
   "textQuality": "truncated",
   "truncationSignals": [
     "shorter_than_excerpt"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "brightdata",
-  "duplicateTextOf": "variety--charles-isherwood.json"
+  "sourceMethod": "archive",
+  "duplicateTextOf": "variety--charles-isherwood.json",
+  "archiveOrgTimestamp": "20251101030635",
+  "archiveOrgUrl": "http://web.archive.org/web/20251101030635/https://variety.com/2024/legit/reviews/prayer-for-the-french-republic-review-broadway-1235865240/"
 }

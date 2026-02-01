@@ -89,20 +89,32 @@
   "isFullReview": false,
   "textWordCount": 126,
   "archivePath": "data/archives/reviews/queen-versailles-2025/variety--aramide-timubu_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T23:03:05.168Z",
-  "fetchMethod": "archive",
+  "textFetchedAt": "2026-02-01T23:40:22.294Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
-      "tier": 0,
-      "method": "archive-first",
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 33 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 3,
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "partial",
-  "sourceMethod": "archive",
+  "sourceMethod": "brightdata",
   "archiveOrgTimestamp": "20251113134025",
   "archiveOrgUrl": "http://web.archive.org/web/20251113134025/https://variety.com/2025/theater/reviews/the-queen-of-versailles-broadway-review-kristin-chenoweth-1236571652/",
   "duplicateTextOf": "variety-aramide-tinubu--aramide-tinubu.json"
