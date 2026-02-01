@@ -5,7 +5,7 @@
   "criticName": "Peter Marks",
   "url": "https://variety.com/2023/legit/reviews/merrily-we-roll-along-review-broadway-1235822943/",
   "publishDate": "December 1, 2023",
-  "fullText": "The production, directed by Maria Friedman, is a triumph of casting and conception that makes the case for this Sondheim musical more persuasively than any previous incarnation.",
+  "fullText": "Commercial theater — theater written mostly to entertain audiences, for the purpose of making money — is the enemy in Stephen Sondheim and George Furth's 1981 musical, \"Merrily We Roll Along,\" now on Broadway at the Hudson Theatre. According to \"Merrily,\" it's theater that doesn't sacrifice its profundity to make it easy on audiences that has any real value at all. But if commercial theater is the enemy, then it's not surprising that \"Merrily We Roll Along\" flopped after 16 performances on Broadway in 1981: It's not a show written to easily entertain.",
   "isFullReview": false,
   "dtliExcerpt": "The production, directed by Maria Friedman, is a triumph of casting and conception that makes the case for this Sondheim musical more persuasively than any previous incarnation.",
   "originalScore": null,
@@ -65,5 +65,43 @@
       "confidence": "high",
       "reasoning": "Complete review text with verdict"
     }
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 88,
+  "textWordCount": 93,
+  "archivePath": "data/archives/reviews/merrily-we-roll-along-2023/variety--peter-marks_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T22:24:19.975Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "sourceMethod": "brightdata",
+  "duplicateTextOf": "variety--trish-deitch.json"
 }

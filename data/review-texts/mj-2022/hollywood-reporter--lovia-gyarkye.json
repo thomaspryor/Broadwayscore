@@ -77,7 +77,7 @@
     "needsReviewReasons": []
   },
   "textIssue": "truncated",
-  "sourceMethod": "stub",
+  "sourceMethod": "brightdata",
   "dtliExcerpt": "MJ, a remarkable Broadway musical written by Lynn Nottage and directed and choreographed by Christopher Wheeldon, deftly probes this weighty topic. The show was produced by arrangement with the musician’s estate, and uses Jackson’s archives and place within the public’s imagination to conduct a Freudian analysis of the artist’s life. How do you tell a story of a person who dissolved into the roles he created for himself and the roles the public created for him? Well, it depends on where and when you start.",
   "dtliThumb": "Up",
   "sources": [
@@ -90,11 +90,45 @@
   "rescoreCompletedAt": "2026-02-01T15:37:42.053Z",
   "contentTier": "complete",
   "wordCount": 1268,
-  "truncationSignals": [
-    "no_ending_punctuation"
-  ],
+  "truncationSignals": [],
   "humanReviewScore": 78,
   "humanReviewPreviousScore": 25,
   "humanReviewAt": "2026-02-01T19:59:47.221Z",
-  "showNotMentioned": true
+  "showNotMentioned": true,
+  "isFullReview": false,
+  "textWordCount": 166,
+  "archivePath": "data/archives/reviews/mj-2022/hollywood-reporter--lovia-gyarkye_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T22:31:41.345Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "textStatus": "incomplete",
+  "textIssues": [
+    "Show title not found in text"
+  ]
 }

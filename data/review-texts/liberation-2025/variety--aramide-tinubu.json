@@ -67,8 +67,7 @@
     }
   },
   "ensembleData": null,
-  "textIssue": "truncated",
-  "sourceMethod": "playwright",
+  "sourceMethod": "archive",
   "scoreSource": "sentiment-positive",
   "scoreConfidence": "medium",
   "bwwExcerpt": "It can be challenging to deliver something fresh and unique to the memory play genre. However, in writer Bess Wohl‘s new Broadway show, “Liberation,” she manages to do just that.",
@@ -84,5 +83,23 @@
   "previousLlmScore": 56,
   "rescoreCompletedAt": "2026-02-01T15:28:35.495Z",
   "contentTier": "complete",
-  "wordCount": 796
+  "wordCount": 796,
+  "isFullReview": false,
+  "textWordCount": 94,
+  "archivePath": "data/archives/reviews/liberation-2025/variety--aramide-tinubu_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T22:20:35.281Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "archiveOrgTimestamp": "20251113101131",
+  "archiveOrgUrl": "http://web.archive.org/web/20251113101131/https://variety.com/2025/legit/reviews/liberation-review-broadway-1236562420/"
 }

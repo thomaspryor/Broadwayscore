@@ -80,31 +80,13 @@
   },
   "textIssue": "too_short",
   "sourceMethod": "archive",
-  "archivePath": "data/archives/reviews/mj-2022/variety--naveen-kumar_2026-01-26.html",
-  "textFetchedAt": "2026-01-26T15:55:06.233Z",
+  "archivePath": "data/archives/reviews/mj-2022/variety--naveen-kumar_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T22:31:35.364Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "Access blocked in Bright Data response"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
@@ -120,5 +102,10 @@
   "rescoreCompletedAt": "2026-02-01T15:38:43.317Z",
   "contentTier": "complete",
   "wordCount": 854,
-  "showNotMentioned": true
+  "showNotMentioned": true,
+  "isFullReview": false,
+  "textWordCount": 156,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete"
 }
