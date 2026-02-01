@@ -5,7 +5,7 @@
   "criticName": "John Simon",
   "url": "http://nymag.com/listings/theater/the_lion_king/",
   "publishDate": "November 15, 1997",
-  "fullText": null,
+  "fullText": "Ongoing  Every Tue, 7pm; Wed, Fri-Sat, 2pm; Wed-Sat, 8pm; Sun, 3pm\n\nSkip to content, or skip to search.\n\nSkip to content, or skip to search.\n\nSearch Help\n\n  Home > \n  \n    \n    Arts & Events >\n  \n    \n    Theater >\n  \n  The Lion King\n\nMinskoff Theatre\n            \n          \n        \n\n        \n\n        \n          \n200 W. 45th St.,\n\nNew York,  NY  10036\n\n\n\t40.757951\n\t-73.985661\n\n\n\n  at Broadway \n  \n    See Map\n  \n  \n    |\n    Subway Directions \n  \n\n\n\n        \n\n        \n          work212-869-0550\n          \n        \n          Send to Phone\n\nAndile Gumbi, Chantel Riley, Alton Fitzgerald White, Buyi Zama, Gareth Saxe, Derek Johnson, Caleb McLaughlin, Alonie Dowden, Bobbi Bordley, Ben Jeffrey, Jeff Binder, Fred Berman, James Brown-Orleans, Enrique Segura, Bonita J. Hamilton\n\n1, 2, 3, 7, N, Q, R, S at Times Sq.-42nd St.\n\nCome to The Lion King with two pairs of eyes, one ear, and half a brain. You will be bombarded by some of the most beautiful and spectacular sights theater can offer from before and behind, so eyes in the back of the head will come in handy. You will be harangued by second-rate standard-show music and lyrics by Elton John and Tim Rice, and also by Lebo M&#239;'s stirring African chants and ululations, to which your active ear should be cocked. Finally, you will be subjected to a well-worn, simplistic children's tale about a lion cub's hard road to adulthood and the throne of the animal kingdom, usurped by his wicked uncle in cahoots with some murderously laughing hyenas. Kiddies, of course, will delightedly swallow it whole, unless they are tiny and flappable. But this is the one such show adults will feast on, too, mostly because of the wonders wrought by Julie Taymor, who designed and directed this cornucopia of dazzlements. First, the animals, large and small, re-created with unparalleled imagination, underpropped by costumes that artfully blend realism with fantasy: The prancing giraffes and leaping antelopes, the nodding elephant and barreling warthog, keep you marveling even during the story's stodgiest galumphing. \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n — John Simon",
   "dtliExcerpt": "Come to The Lion King with two pairs of eyes, one ear, and half a brain. You will be bombarded by some of the most beautiful and spectacular sights theater can offer from before and behind, so eyes in the back of the head will come in handy. You will be harangued by second-rate standard-show music and lyrics by Elton John and Tim Rice, and also by Lebo Mï's stirring African chants and ululations, to which your active ear should be cocked. Finally, you will be subjected to a well-worn, simplistic children's tale about a lion cub's hard road to adulthood and the throne of the animal kingdom, usurped by his wicked uncle in cahoots with some murderously laughing hyenas.",
   "showScoreExcerpt": "\"You will be bombarded by some of the most beautiful and spectacular sights theater can offer from before and behind, so eyes in the back of the head will come in handy.",
   "originalScore": null,
@@ -70,30 +70,40 @@
       "Models disagree by 37 points (Claude: 72, OpenAI: 35)"
     ]
   },
-  "textIssue": "too_short",
-  "archivePath": "data/archives/reviews/the-lion-king-1997/new-york-magazine--john-simon_2026-01-25.html",
-  "textFetchedAt": "2026-01-25T05:22:49.646Z",
-  "textIssues": [
-    "Word count too low: 272 (min: 300)"
-  ],
-  "sourceMethod": "dtli",
+  "archivePath": "data/archives/reviews/the-lion-king-1997/vulture--john-simon_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T15:03:03.576Z",
+  "sourceMethod": "archive",
   "sources": [
     "dtli",
     "show-score"
   ],
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "rescoreReason": "garbage-text: HTML/navigation instead of review content",
+  "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 54,
   "rescoreCompletedAt": "2026-01-29T14:31:52.082Z",
   "contentTier": "needs-rescrape",
   "wordCount": 272,
   "truncationSignals": [
-    "no_ending_punctuation"
+    "no_ending_punctuation",
+    "possible_mid_word_cutoff"
   ],
   "needsRescore": true,
   "previousFullText": "Home > Arts & Events > Theater > The Lion King Minskoff Theatre 200 W. 45th St., New York, NY 10036 40.757951 -73.985661 at Broadway See Map | Subway Directions work212-869-0550 Send to Phone Andile Gumbi, Chantel Riley, Alton Fitzgerald White, Buyi Zama, Gareth Saxe, Derek Johnson, Caleb McLaughlin, Alonie Dowden, Bobbi Bordley, Ben Jeffrey, Jeff Binder, Fred Berman, James Brown-Orleans, Enrique Segura, Bonita J. Hamilton Come to The Lion King with two pairs of eyes, one ear, and half a brain. You will be bombarded by some of the most beautiful and spectacular sights theater can offer from before and behind, so eyes in the back of the head will come in handy. You will be harangued by second-rate standard-show music and lyrics by Elton John and Tim Rice, and also by Lebo Mï's stirring African chants and ululations, to which your active ear should be cocked. Finally, you will be subjected to a well-worn, simplistic children's tale about a lion cub's hard road to adulthood and the throne of the animal kingdom, usurped by his wicked uncle in cahoots with some murderously laughing hyenas. Kiddies, of course, will delightedly swallow it whole, unless they are tiny and flappable. But this is the one such show adults will feast on, too, mostly because of the wonders wrought by Julie Taymor, who designed and directed this cornucopia of dazzlements. First, the animals, large and small, re-created with unparalleled imagination, underpropped by costumes that artfully blend realism with fantasy: The prancing giraffes and leaping antelopes, the nodding elephant and barreling warthog, keep you marveling even during the story's stodgiest galumphing. — John Simon",
-  "isFullReview": false,
-  "textQuality": null,
-  "textWordCount": 0
+  "isFullReview": true,
+  "textQuality": "truncated",
+  "textWordCount": 311,
+  "designation": "Recommended",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textStatus": "truncated",
+  "archiveOrgTimestamp": "20200918181207",
+  "archiveOrgUrl": "http://web.archive.org/web/20200918181207/https://nymag.com/listings/theater/the_lion_king/"
 }
