@@ -37,7 +37,7 @@ jobs:
       - name: Generate scoring audit
         id: audit
         run: |
-          node scripts/generate-scoring-audit.js
+          node scripts/generate-scoring-audit.js || true
           echo "flagged=$(cat data/audit/scoring-audit.json | jq '.flags.total')" >> $GITHUB_OUTPUT
           echo "flag_pct=$(cat data/audit/scoring-audit.json | jq '.flagPctOfTotal')" >> $GITHUB_OUTPUT
           echo "total=$(cat data/audit/scoring-audit.json | jq '.summary.totalReviews')" >> $GITHUB_OUTPUT
@@ -74,3 +74,9 @@ jobs:
               body: report,
               labels: ['scoring-audit', 'automated']
             });
+
+      - name: Fail if threshold exceeded
+        if: steps.audit.outputs.exceeds == 'true'
+        run: |
+          echo "❌ AUDIT THRESHOLD EXCEEDED: ${{ steps.audit.outputs.flag_pct }}% flagged (threshold: 10%)"
+          exit 1
