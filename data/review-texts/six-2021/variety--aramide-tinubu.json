@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "The Broadway iteration of 'Six' is a triumphant celebration of sisterhood that cleverly reimagines the wives of Henry VIII as modern-day pop stars.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The Broadway iteration of 'Six' is a triumphant celebration of sisterhood that cleverly reimagines the wives of Henry VIII as modern-day pop stars.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The word 'triumphant' signals strong enthusiasm and the phrase 'cleverly reimagines' indicates high praise for the creative concept, pointing to a rave recommendation. | GPT-4o: The review uses strong positive language, describing the show as a 'triumphant celebration,' indicating a highly enthusiastic recommendation. | Gemini: The review uses the word \"triumphant\" which indicates a very positive assessment and strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T20:59:10.294Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

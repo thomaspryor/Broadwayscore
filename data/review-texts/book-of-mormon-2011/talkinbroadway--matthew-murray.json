@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "The Book of Mormon is that rarest of Broadway commodities: a new musical that's both hilariously funny and toe-tappingly entertaining, while also being smart, sophisticated, and surprisingly sweet.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The Book of Mormon is that rarest of Broadway commodities: a new musical that's both hilariously funny and toe-tappingly entertaining, while also being smart, sophisticated, and surprisingly sweet.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 94,
+    "confidence": "medium",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review uses superlative language calling it the 'rarest of Broadway commodities' and lists multiple strong positive attributes without any reservations or criticisms. | GPT-4o: The review uses highly enthusiastic language, describing the show as 'hilariously funny', 'entertaining', 'smart', 'sophisticated', and 'sweet', indicating a strong recommendation. | Gemini: The review uses positive language to describe the musical as funny, entertaining, smart, and sweet, indicating a recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T20:58:34.398Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

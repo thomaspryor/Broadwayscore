@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "Stereophonic is a technical marvel and an emotional powerhouse, a three-hour epic that feels both intimate and expansive in its portrait of artistic creation and human frailty.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Stereophonic is a technical marvel and an emotional powerhouse, a three-hour epic that feels both intimate and expansive in its portrait of artistic creation and human frailty.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses strong positive language like 'marvel' and 'powerhouse' and the original rating of 80 aligns perfectly with the positive bucket range. | GPT-4o: The review uses strong positive language, describing the show as a 'technical marvel' and 'emotional powerhouse,' indicating a highly enthusiastic recommendation. The original rating of 80 from a major publication supports a high score within the Rave bucket. | Gemini: The review uses highly positive language such as \"technical marvel\" and \"emotional powerhouse\", aligning with a positive recommendation. The critic's original rating of 80 further supports this classification.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T20:59:33.907Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 85,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

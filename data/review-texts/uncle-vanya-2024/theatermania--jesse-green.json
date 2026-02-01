@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "Carell's performance anchors this thoughtful revival, bringing unexpected depth to Chekhov's melancholy masterpiece.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Carell's performance anchors this thoughtful revival, bringing unexpected depth to Chekhov's melancholy masterpiece.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses clearly positive language calling it a 'thoughtful revival' and praising Carell's performance for bringing 'unexpected depth' to a 'masterpiece,' indicating a solid recommendation. | GPT-4o: The review highlights the performance as a key strength and refers to the production as a 'thoughtful revival' of a 'melancholy masterpiece', indicating a strong recommendation. | Gemini: The review highlights a strong performance and calls the production \"thoughtful,\" indicating a positive assessment despite the melancholy nature of the play.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T21:02:30.597Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 88,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

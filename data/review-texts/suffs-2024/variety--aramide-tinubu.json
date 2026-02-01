@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "Taub's score is ambitious and sweeping, with moments of genuine beauty and power, particularly in the ensemble numbers that showcase the collective strength of the suffrage movement.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Taub's score is ambitious and sweeping, with moments of genuine beauty and power, particularly in the ensemble numbers that showcase the collective strength of the suffrage movement.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the score as 'ambitious and sweeping' with 'genuine beauty and power,' indicating positive assessment, though this appears to be a fragment focusing only on musical elements. | GPT-4o: The review highlights the ambitious and powerful nature of the score, indicating a positive reception of the production's musical elements. | Gemini: The review highlights positive aspects of the score, indicating a recommendation, but the phrase \"moments of\" suggests it's not consistently excellent, hence a 'Positive' bucket with a mid-range score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T21:00:44.453Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

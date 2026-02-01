@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "Six is a triumph of concept and execution, a historically minded musical that manages to be both educational and genuinely entertaining.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Six is a triumph of concept and execution, a historically minded musical that manages to be both educational and genuinely entertaining.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The word 'triumph' signals strong enthusiasm, and the review praises both the concept and execution while noting it's both educational and genuinely entertaining. | GPT-4o: The review uses strong positive language, describing the show as a 'triumph' and 'genuinely entertaining', indicating a highly enthusiastic recommendation. | Gemini: The review uses the word \"triumph\" and describes the show as both educational and genuinely entertaining, indicating a very positive and enthusiastic recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T20:59:00.745Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

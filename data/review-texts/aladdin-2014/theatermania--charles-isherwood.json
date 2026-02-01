@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "The new Disney musical is a colorful, energetic show that should please families, even if it doesn't quite capture the magic of the animated film.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new Disney musical is a colorful, energetic show that should please families, even if it doesn't quite capture the magic of the animated film.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear recommendation ('should please families') but with noted limitations about not matching the source material's magic, indicating a positive but reserved endorsement. | GPT-4o: The review describes the show as colorful and energetic, suggesting it is enjoyable and worth seeing, especially for families, despite not fully capturing the magic of the original film. | Gemini: The review indicates that the show is pleasing and energetic, which suggests a positive experience, but it also acknowledges that it doesn't fully capture the magic of the film, indicating a reservation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T20:57:22.654Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of Nicholas Sparks' romance novel is a handsomely mounted production that hits all the expected emotional beats, even if it doesn't always transcend its source material's more saccharine qualities.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical adaptation of Nicholas Sparks' romance novel is a handsomely mounted production that hits all the expected emotional beats, even if it doesn't always transcend its source material's more saccharine qualities.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review acknowledges the production's professional quality ('handsomely mounted') but clearly indicates it doesn't rise above the limitations of its source material, suggesting a competent but unremarkable show. | GPT-4o: The review acknowledges the production's quality and emotional impact, suggesting it's worth seeing despite some reservations about its saccharine elements. | Gemini: The review acknowledges the show's positive aspects while noting its limitations, indicating a recommendation with reservations. The phrase 'hits all the expected emotional beats' suggests a positive experience, but the caveat about the source material prevents a higher score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T21:01:09.669Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

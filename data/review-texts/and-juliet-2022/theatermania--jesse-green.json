@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a jukebox musical that reimagines what happens after Shakespeare's Romeo and Juliet, with Juliet surviving and embarking on her own journey of self-discovery set to the pop hits of Max Martin.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is a jukebox musical that reimagines what happens after Shakespeare's Romeo and Juliet, with Juliet surviving and embarking on her own journey of self-discovery set to the pop hits of Max Martin.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 58,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be only plot/concept description with no evaluative language or critical assessment of the production's quality, performances, or whether it's worth seeing. | GPT-4o: The review text is truncated and lacks evaluative content, making it difficult to determine the critic's stance. Without clear positive or negative language, a mixed classification is the safest assumption. | Gemini: The provided text is purely descriptive and doesn't offer any evaluative statements about the quality of the production. Without further context, it's impossible to determine if the critic recommends or discourages seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T20:57:51.048Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 55,
+    "geminiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

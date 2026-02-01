@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "Taub's musical is an ambitious, earnest, and largely successful attempt to give the suffragettes the rousing Broadway treatment they deserve.",
   "originalScore": 88,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Taub's musical is an ambitious, earnest, and largely successful attempt to give the suffragettes the rousing Broadway treatment they deserve.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic's own 88 rating places this firmly in Rave territory, and the language 'largely successful' and 'deserve' indicates strong endorsement of both the production quality and its worthiness as subject matter. | GPT-4o: The critic's original rating of 88 places it in the Rave category, and the review text describes the musical as largely successful, indicating a strong recommendation. | Gemini: The review uses positive language and the critic's rating is 88, indicating a positive but not rave review. The phrase \"largely successful\" suggests some reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T21:00:13.846Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 88,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

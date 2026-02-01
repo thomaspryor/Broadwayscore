@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "Julie Taymor has created a visual spectacular that is unlike anything else on Broadway, transforming the New Amsterdam Theater into an African savanna where actors become antelopes, birds, and lions through ingenious costumes and masks.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Julie Taymor has created a visual spectacular that is unlike anything else on Broadway, transforming the New Amsterdam Theater into an African savanna where actors become antelopes, birds, and lions through ingenious costumes and masks.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the visual creativity and uniqueness but appears truncated, focusing only on spectacle without addressing other elements like story or performances. | GPT-4o: The review uses strong positive language, describing the production as a 'visual spectacular' and 'unlike anything else on Broadway,' indicating a highly enthusiastic recommendation. | Gemini: The review highlights the visual spectacle and uniqueness of the production, indicating a positive experience and recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T21:01:06.561Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "Steve Carell brings a weary, melancholic presence to Chekhov's drama, finding both comedy and pathos in his portrayal of the titular character.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Steve Carell brings a weary, melancholic presence to Chekhov's drama, finding both comedy and pathos in his portrayal of the titular character.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The description of Carell 'finding both comedy and pathos' suggests skilled performance work, but the brevity and moderate tone indicate reserved rather than enthusiastic praise. | GPT-4o: The review highlights Steve Carell's effective performance, suggesting a positive impression of the production. However, the lack of additional context makes the recommendation less emphatic. | Gemini: The review highlights a strong performance by the lead actor, suggesting a positive experience overall. The description of Carell's performance indicates a worthwhile aspect of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T21:02:19.374Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

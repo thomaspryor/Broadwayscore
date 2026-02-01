@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "The Notebook is a musical that knows exactly what it is: a big, swoony, unabashedly romantic spectacle that trades in the currency of feelings.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The Notebook is a musical that knows exactly what it is: a big, swoony, unabashedly romantic spectacle that trades in the currency of feelings.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic describes the show positively as knowing what it is and being an effective romantic spectacle, though the brief excerpt limits confidence in the full assessment. | GPT-4o: The review describes the musical as a 'big, swoony, unabashedly romantic spectacle,' which suggests a positive and enthusiastic recommendation. The tone is clear and unambiguous in its appreciation of the show's romantic spectacle. | Gemini: The review describes the musical in positive terms, indicating a recommendation, though not an overwhelmingly enthusiastic one.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T21:01:27.226Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

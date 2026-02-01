@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a family drama that gets under your skin and stays there, a searing look at how the past never really goes away and how secrets have a way of destroying everything in their path.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is a family drama that gets under your skin and stays there, a searing look at how the past never really goes away and how secrets have a way of destroying everything in their path.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The vivid, appreciative language ('gets under your skin', 'searing look') suggests strong emotional engagement and artistic merit, indicating a positive recommendation despite the serious subject matter. | GPT-4o: The review describes the drama as impactful and memorable, suggesting a strong positive impression. However, without explicit recommendation language, the confidence is medium. | Gemini: The review describes the play as a \"searing look\" and says it \"gets under your skin,\" indicating a positive, though not ecstatic, recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T20:58:04.613Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 81,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

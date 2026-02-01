@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "SIX is a concert musical that tells the story of the six wives of Henry VIII as if they were pop stars competing for who had the worst time being married to the notorious monarch.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "SIX is a concert musical that tells the story of the six wives of Henry VIII as if they were pop stars competing for who had the worst time being married to the notorious monarch.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 58,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be only a plot summary or opening description with no evaluative content about the production quality, performances, or recommendation to see the show. | GPT-4o: The review text is truncated and lacks evaluative content, making it difficult to determine the critic's recommendation. The description of the show is neutral, leading to a mixed classification with low confidence. | Gemini: The provided text is purely descriptive, setting up the premise of the show without offering any evaluative judgment. Without further information, it's impossible to determine if the critic recommends or discourages seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T20:59:03.793Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 55,
+    "geminiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

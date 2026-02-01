@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "The Lafayette family's sins are not just personal but generational, and the play's horror lies not in any supernatural elements but in the very real damage that racism inflicts across time.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The Lafayette family's sins are not just personal but generational, and the play's horror lies not in any supernatural elements but in the very real damage that racism inflicts across time.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a single thematic observation about the play's content rather than an evaluative review. Without clear critical assessment or recommendation language, cannot determine the critic's verdict. | GPT-4o: The review text is truncated and lacks a clear verdict, focusing on thematic elements rather than evaluative content about the production itself. Without more context, the recommendation is unclear. | Gemini: The review focuses on the themes and subject matter of the play without providing a clear recommendation for or against seeing it. It describes the play's horror but doesn't evaluate the production's quality or effectiveness.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T20:58:15.241Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

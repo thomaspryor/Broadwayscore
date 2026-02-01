@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "Appropriate is a play that demands to be seen, and this production at Second Stage Theater is a triumph of acting, directing, and design that brings Brandon Jacobs-Jenkins's devastating family drama to vivid, uncomfortable life.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Appropriate is a play that demands to be seen, and this production at Second Stage Theater is a triumph of acting, directing, and design that brings Brandon Jacobs-Jenkins's devastating family drama to vivid, uncomfortable life.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review uses strong superlative language including 'demands to be seen' and 'triumph' while praising multiple aspects of the production (acting, directing, design). | GPT-4o: The review uses strong, enthusiastic language such as 'demands to be seen' and 'triumph,' indicating a highly positive recommendation. | Gemini: The review uses strong positive language like \"demands to be seen\" and \"triumph\" indicating a rave review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T20:58:08.178Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

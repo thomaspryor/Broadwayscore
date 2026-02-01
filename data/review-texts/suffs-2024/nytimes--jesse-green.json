@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "Though 'Suffs' is often more admirable than enjoyable, it succeeds in making the long struggle for women's voting rights feel immediate and personal.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Though 'Suffs' is often more admirable than enjoyable, it succeeds in making the long struggle for women's voting rights feel immediate and personal.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic explicitly states the show is 'more admirable than enjoyable' but acknowledges it 'succeeds' in its mission, indicating a qualified assessment that neither strongly recommends nor discourages. | GPT-4o: The review acknowledges the show's success in making historical events feel immediate and personal, but also notes that it is more admirable than enjoyable, indicating a mixed reception. | Gemini: The review states that the show 'succeeds' in making the struggle feel immediate and personal, indicating a positive recommendation despite the reservation that it's more admirable than enjoyable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T21:00:22.314Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

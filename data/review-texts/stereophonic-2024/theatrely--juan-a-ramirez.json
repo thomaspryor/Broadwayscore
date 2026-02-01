@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "Stereophonic is a masterpiece of theatrical storytelling that captures the messy, beautiful process of creating art while relationships crumble and reform around it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Stereophonic is a masterpiece of theatrical storytelling that captures the messy, beautiful process of creating art while relationships crumble and reform around it.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic explicitly calls it a 'masterpiece' and praises both the storytelling and emotional depth, indicating strong enthusiasm for the production. | GPT-4o: The review uses the term 'masterpiece', indicating a strong, enthusiastic recommendation. The language is unambiguously positive. | Gemini: The review uses the word \"masterpiece\" which is a strong indicator of a rave review. The rest of the sentence further supports this classification.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T20:59:47.781Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

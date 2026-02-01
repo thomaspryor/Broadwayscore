@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "This Uncle Vanya is a production that finds new heartbreak in Chekhov's familiar despair, with Steve Carell delivering a performance of surprising depth and melancholy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This Uncle Vanya is a production that finds new heartbreak in Chekhov's familiar despair, with Steve Carell delivering a performance of surprising depth and melancholy.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the production for finding 'new heartbreak' and highlights Carell's performance as having 'surprising depth and melancholy,' indicating a positive recommendation. | GPT-4o: The review praises the production for its fresh take on a classic and highlights Steve Carell's performance as one of surprising depth, indicating a strong recommendation. | Gemini: The review highlights the production's ability to find new depth in a classic play and praises Steve Carell's performance, indicating a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T21:02:39.672Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 88,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

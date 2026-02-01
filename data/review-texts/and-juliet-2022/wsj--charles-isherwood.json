@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "This jukebox musical built around the songs of Max Martin is a candy-colored confection that manages to be both silly and surprisingly sweet.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This jukebox musical built around the songs of Max Martin is a candy-colored confection that manages to be both silly and surprisingly sweet.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review describes it as a 'candy-colored confection' that is 'surprisingly sweet,' indicating enjoyment despite acknowledging its silliness. The positive tone suggests a recommendation, though not enthusiastic. | GPT-4o: The review describes the musical as 'silly and surprisingly sweet,' which suggests an enjoyable experience despite its light nature. The tone is positive, indicating a recommendation. | Gemini: The review uses positive language like \"sweet\" and describes the show as a \"confection,\" indicating a recommendation, albeit perhaps with some reservations due to the \"silly\" aspect.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T20:58:01.701Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

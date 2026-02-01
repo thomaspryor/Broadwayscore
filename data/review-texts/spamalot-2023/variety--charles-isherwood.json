@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of the Monty Python musical brings fresh energy to the beloved comedy, though it doesn't quite capture the anarchic spirit of the original production.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of the Monty Python musical brings fresh energy to the beloved comedy, though it doesn't quite capture the anarchic spirit of the original production.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review acknowledges positive elements (fresh energy) but the qualifying 'though' indicates significant reservations about not capturing the original's spirit, suggesting neither strong recommendation nor discouragement. | GPT-4o: The review acknowledges the fresh energy brought to the musical, indicating a positive experience, but notes it falls short of the original's spirit, suggesting some reservations. | Gemini: The review acknowledges fresh energy, indicating a positive experience, but the comparison to the original suggests it falls slightly short of being a rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T20:59:31.639Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

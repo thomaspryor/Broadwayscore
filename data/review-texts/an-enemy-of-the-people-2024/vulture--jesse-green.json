@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "Jeremy Strong brings his trademark intensity to Ibsen's drama, though the production sometimes feels more like a lecture than a play.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jeremy Strong brings his trademark intensity to Ibsen's drama, though the production sometimes feels more like a lecture than a play.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges Strong's intensity as a positive but delivers a significant criticism about the production feeling didactic rather than theatrical, indicating neither strong recommendation nor strong discouragement. | GPT-4o: The review highlights a strong performance by Jeremy Strong but criticizes the production for lacking theatricality, indicating a mixed reception. | Gemini: The review acknowledges a positive aspect (Strong's performance) but also a significant drawback (feeling like a lecture). This suggests a mixed experience, neither strongly recommending nor discouraging.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T20:57:44.620Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

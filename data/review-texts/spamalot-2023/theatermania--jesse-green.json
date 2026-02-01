@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "The new Broadway revival of Spamalot at the St. James Theatre is a joyous, silly, and thoroughly entertaining production that captures the anarchic spirit of Monty Python while updating the material for contemporary audiences.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new Broadway revival of Spamalot at the St. James Theatre is a joyous, silly, and thoroughly entertaining production that captures the anarchic spirit of Monty Python while updating the material for contemporary audiences.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses multiple positive descriptors (joyous, thoroughly entertaining) and notes it successfully captures the source material's spirit while updating appropriately, indicating a clear recommendation. | GPT-4o: The review describes the production as 'joyous' and 'thoroughly entertaining,' indicating a strong recommendation to see the show. | Gemini: The review uses positive language like \"joyous,\" \"silly,\" and \"thoroughly entertaining,\" indicating a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T20:59:21.089Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

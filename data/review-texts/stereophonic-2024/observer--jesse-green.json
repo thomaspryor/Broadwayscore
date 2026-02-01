@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "Stereophonic is a marvel of theatrical engineering, a show that makes you feel like you're witnessing the creation of music itself in real time.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Stereophonic is a marvel of theatrical engineering, a show that makes you feel like you're witnessing the creation of music itself in real time.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 90,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The language 'marvel of theatrical engineering' and the immersive description indicate strong enthusiasm and recommendation from this respected critic. | GPT-4o: The review uses highly enthusiastic language, describing the show as a 'marvel' and suggesting an immersive experience, indicating a strong recommendation. | Gemini: The review uses very strong positive language, calling the show a \"marvel\" and highlighting its ability to make the audience feel like they are witnessing the creation of music in real time. This indicates a very enthusiastic recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T20:59:36.762Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "The Broadway production of 'Back to the Future: The Musical' is an energetic spectacle that captures the essence of the beloved film trilogy while adding its own theatrical magic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The Broadway production of 'Back to the Future: The Musical' is an energetic spectacle that captures the essence of the beloved film trilogy while adding its own theatrical magic.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses positive language like 'energetic spectacle' and 'theatrical magic' indicating a recommendation, though the brief excerpt lacks explicit verdict language for higher confidence. | GPT-4o: The review describes the production as an 'energetic spectacle' and praises its ability to capture the essence of the film while adding theatrical elements, indicating a strong positive recommendation. | Gemini: The review uses positive language like \"energetic spectacle\" and \"theatrical magic,\" indicating a recommendation, though not an overwhelming one.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T20:58:31.048Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

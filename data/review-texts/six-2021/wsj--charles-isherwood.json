@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "This wildly entertaining musical about the six wives of Henry VIII transforms these historical figures into pop stars, each getting her moment to shine in a concert-style format that's both educational and exhilarating.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This wildly entertaining musical about the six wives of Henry VIII transforms these historical figures into pop stars, each getting her moment to shine in a concert-style format that's both educational and exhilarating.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses enthusiastic language like 'wildly entertaining' and 'exhilarating' while describing the show as both educational and entertaining, indicating a clear positive recommendation. | GPT-4o: The review describes the musical as 'wildly entertaining' and 'exhilarating,' indicating a strong recommendation to see the show. | Gemini: The review uses the phrase \"wildly entertaining\" and describes the show as \"exhilarating,\" indicating a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T20:59:13.681Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }
