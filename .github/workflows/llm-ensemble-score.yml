@@ -167,14 +167,47 @@ jobs:
             if git rebase origin/${{ github.ref_name }}; then
               echo "Rebase successful"
             else
-              echo "Rebase failed, trying merge..."
-              git rebase --abort 2>/dev/null || true
+              echo "Rebase had conflicts, attempting auto-resolution..."
+              # Resolve modify/delete conflicts: if remote deleted a file, accept the deletion
+              # (the file was likely a cleaned-up duplicate; our score updates don't matter for it)
+              CONFLICTED=$(git diff --name-only --diff-filter=U 2>/dev/null || true)
+              if [ -n "$CONFLICTED" ]; then
+                echo "Resolving conflicts by accepting deletions:"
+                echo "$CONFLICTED"
+                echo "$CONFLICTED" | while read -r f; do
+                  git rm --force "$f" 2>/dev/null || git checkout --theirs "$f" && git add "$f" 2>/dev/null || true
+                done
+                if git rebase --continue 2>/dev/null; then
+                  echo "Rebase completed after conflict resolution"
+                else
+                  echo "Rebase still failing, trying merge..."
+                  git rebase --abort 2>/dev/null || true
 
-              # Reset to our commit and try merge
-              git reset --hard HEAD
-              if ! git pull --no-rebase -X ours origin ${{ github.ref_name }}; then
-                echo "Merge also failed, will retry..."
-                git merge --abort 2>/dev/null || true
+                  # Reset to our commit and try merge
+                  git reset --hard HEAD
+                  git fetch origin ${{ github.ref_name }}
+                  if git merge origin/${{ github.ref_name }} -X ours --no-edit 2>/dev/null; then
+                    echo "Merge successful"
+                  else
+                    # Resolve any remaining modify/delete conflicts
+                    MERGE_CONFLICTS=$(git diff --name-only --diff-filter=U 2>/dev/null || true)
+                    if [ -n "$MERGE_CONFLICTS" ]; then
+                      echo "Resolving merge conflicts:"
+                      echo "$MERGE_CONFLICTS" | while read -r f; do
+                        git rm --force "$f" 2>/dev/null || git checkout --theirs "$f" && git add "$f" 2>/dev/null || true
+                      done
+                      git commit --no-edit 2>/dev/null || true
+                    else
+                      echo "Merge failed with non-file conflicts, will retry..."
+                      git merge --abort 2>/dev/null || true
+                      sleep $((i * 2))
+                      continue
+                    fi
+                  fi
+                fi
+              else
+                echo "No conflicted files found, aborting rebase..."
+                git rebase --abort 2>/dev/null || true
                 sleep $((i * 2))
                 continue
               fi
