@@ -5,7 +5,7 @@
   "criticName": "Naveen Kumar",
   "url": "https://www.washingtonpost.com/entertainment/theater/2026/01/08/bug-broadway-carrie-coon-review/",
   "publishDate": "January 8, 2026",
-  "fullText": "As Agnes, Coon is loose-limbed, quick-witted and frank, with a fragility that flits close to the surface. She’s magnificent onstage, returning to Broadway for the first time since Steppenwolf’s 2012 revival of “Who’s Afraid of Virginia Woolf” (co-starring Letts, whom she married the next year). Though Agnes is lightly sketched around a formative trauma, Coon inhabits her with specificity and shattering intensity, as she’s engulfed in Peter’s twisted fears involving tiny bugs.",
+  "fullText": "Democracy Dies in DarknessReview by  Naveen KumarNEW YORK — The distinction between truth and delusion has taken some tough blows in the digital age — from lying politicians, the internet, politicians lying on the internet — and that was before AI. But it used to be that for a conspiracy to spread, it had to take hold of a single mind and jump from person to person in the flesh.\n\n9 CommentsMost ReadOpinionMichael ShermerI’ve reported on UFO sightings for decades — and come to this conclusionJanuary 29, 2026Salvador RizzoDOJ misconduct complaint against D.C. federal judge dismissedEarlier todayOpinionEditorial BoardTrump’s tariffs can’t cover a bill this staggeringJanuary 26, 2026NewsletterFridaysBook ClubOur weekly selection of book reviews and recommendations from Book World editor Ron Charles.Sign up",
   "showScoreExcerpt": "\"The sensationally unnerving Broadway premiere of 'Bug'... reads like an origin story for our climate of mistrust and isolation.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/bug-broadway",
   "originalScore": null,
@@ -77,5 +77,41 @@
   "bwwExcerpt": null,
   "bwwThumb": null,
   "contentTier": "truncated",
-  "wordCount": 72
+  "wordCount": 72,
+  "isFullReview": false,
+  "textWordCount": 122,
+  "archivePath": "data/archives/reviews/bug-2026/washpost--naveen-kumar_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T14:13:23.133Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Paywall detected - login may have failed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 122 (min: 300)",
+    "Show title not found in text"
+  ]
 }
