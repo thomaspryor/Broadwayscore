@@ -1,24 +1,29 @@
-# Data Integrity Report - 2026-01-30
+# Data Integrity Report - 2026-02-01
 
 ## Summary
 
 | Metric | Current | Previous | Change |
 |--------|---------|----------|--------|
-| Total Reviews | 2111 | 2111 | - |
+| Total Reviews | 1684 | 2111 | -427 |
 | Unknown Outlets | 0 | 0 | - |
 | Duplicates | 0 | 0 | - |
-| Sync Delta | 14 | 14 | - |
+| Sync Delta | 399 | 14 | +385 |
 
 ## Issues Found
 
-### 🟡 sync_delta
+### 🔴 review_count_decrease
 
-review-texts (2111) and reviews.json (2097) are out of sync by 14 reviews
+Review count decreased by 427 (20.2%) from 2111 to 1684
+
+### 🔴 sync_delta
+
+review-texts (1684) and reviews.json (2083) are out of sync by 399 reviews
 
 ## Recommendations
 
 - Run `node scripts/rebuild-all-reviews.js` to sync reviews.json with review-texts
+- Investigate missing reviews - check recent git history for deleted files
 
 ---
 
-*Report generated: 2026-01-30T21:42:09.880Z*
+*Report generated: 2026-02-01T05:06:28.961Z*
