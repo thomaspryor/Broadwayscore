@@ -1,45 +1,45 @@
 {
-  "runDate": "2026-02-01T14:10:25.466Z",
+  "runDate": "2026-02-01T14:13:34.577Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "six-2021",
+    "showFilter": "the-outsiders-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 18,
-    "failed": 123,
+    "processed": 19,
+    "failed": 124,
     "skipped": 0,
-    "successRate": "12.8%"
+    "successRate": "13.3%"
   },
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 6,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 2,
-    "archive": 9
+    "archive": 12
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 1,
-    "tier1_5Attempts": 1,
+    "tier1Attempts": 11,
+    "tier1Success": 3,
+    "tier1_5Attempts": 3,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 5,
     "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 0,
-    "tier4Attempts": 10,
-    "tier4Success": 3,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 12,
-    "browserbaseSessionsUsed": 1,
+    "tier3Attempts": 3,
+    "tier3Success": 1,
+    "tier4Attempts": 23,
+    "tier4Success": 7,
+    "totalFailed": 8,
+    "scrapingBeeCreditsUsed": 15,
+    "browserbaseSessionsUsed": 3,
     "browserbaseMinutesUsed": 0.4,
-    "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 5,
+    "urlDiscoverySuccess": 4,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -57,10 +57,11 @@
     "stereophonic-2024/ew--allison-considine.json",
     "stereophonic-2024/guardian--gloria-oladipo.json",
     "stereophonic-2024/ap--mark-kennedy.json",
-    "mother-play-2024/broadwaynews--brittani-samuel.json",
-    "mother-play-2024/ew--allison-considine.json",
-    "mother-play-2024/guardian--benjamin-lee.json",
-    "six-2021/ew--ruth-kinane.json"
+    "the-outsiders-2024/vulture--jackson-mchenry.json",
+    "the-outsiders-2024/ew--emlyn-travis.json",
+    "the-outsiders-2024/nydailynews--chris-jones.json",
+    "the-outsiders-2024/culturesauce--thom-geier.json",
+    "the-outsiders-2024/unknown--unknown.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -178,14 +179,15 @@
     "stereophonic-2024/deadline--greg-evans.json",
     "stereophonic-2024/observer--david-cote.json",
     "stereophonic-2024/timeout--adam-feldman.json",
-    "mother-play-2024/timeout--adam-feldman.json",
-    "mother-play-2024/wsj--charles-isherwood.json",
-    "mother-play-2024/wsj--charles.json",
-    "six-2021/deadline--greg-evans.json",
-    "six-2021/observer--david-cote.json",
-    "six-2021/timeout--adam-feldman.json",
-    "six-2021/amny--matt-windman.json",
-    "six-2021/front-row-center--tulis-mccall.json"
+    "the-outsiders-2024/hollywood-reporter--angie-han.json",
+    "the-outsiders-2024/hollywood-reporter--david-rooney.json",
+    "the-outsiders-2024/variety--maya-phillips.json",
+    "the-outsiders-2024/deadline--greg-evans.json",
+    "the-outsiders-2024/theatermania--adam-feldman.json",
+    "the-outsiders-2024/timeout--adam-feldman.json",
+    "the-outsiders-2024/timeout--adam.json",
+    "the-outsiders-2024/wsj--charles-isherwood.json",
+    "the-outsiders-2024/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -193,9 +195,8 @@
       "stereophonic-2024/ew--allison-considine.json",
       "stereophonic-2024/guardian--gloria-oladipo.json",
       "stereophonic-2024/ap--mark-kennedy.json",
-      "mother-play-2024/ew--allison-considine.json",
-      "mother-play-2024/guardian--benjamin-lee.json",
-      "six-2021/ew--ruth-kinane.json"
+      "the-outsiders-2024/ew--emlyn-travis.json",
+      "the-outsiders-2024/culturesauce--thom-geier.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
@@ -212,30 +213,48 @@
       "harry-potter-2021/village-voice--michael-feingold.json",
       "mj-2022/nytg--ayanna-prescod.json",
       "stereophonic-2024/nytimes--jesse-green.json",
-      "mother-play-2024/broadwaynews--brittani-samuel.json"
+      "the-outsiders-2024/variety--maya-phillips.json",
+      "the-outsiders-2024/vulture--jackson-mchenry.json",
+      "the-outsiders-2024/nydailynews--chris-jones.json",
+      "the-outsiders-2024/unknown--unknown.json"
     ]
   },
   "failuresByOutlet": {
-    "Observer": {
-      "count": 1,
-      "domain": "observer.com",
+    "The Hollywood Reporter": {
+      "count": 2,
+      "domain": "hollywoodreporter.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
     },
-    "amNewYork": {
+    "Talkin' Broadway": {
       "count": 1,
-      "domain": "amny.com",
+      "domain": "talkinbroadway.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": true
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "six-2021/ew--ruth-kinane.json",
-      "oldUrl": "https://ew.com/theater/six-broadway-review/",
-      "newUrl": "https://ew.com/theater/theater-reviews/six-review/?srsltid=AfmBOopi0EwEBrE0elGbxEnV8hhY-8lxlz7yXFazC52W_v-S38CdruWi"
+      "reviewId": "the-outsiders-2024/variety--maya-phillips.json",
+      "oldUrl": "https://variety.com/2024/legit/reviews/the-outsiders-review-broadway-musical-1235971234/",
+      "newUrl": "https://variety.com/2024/legit/reviews/the-outsiders-review-broadway-musical-1235966796/"
+    },
+    {
+      "reviewId": "the-outsiders-2024/vulture--jackson-mchenry.json",
+      "oldUrl": "https://www.vulture.com/article/the-outsiders-broadway-review.html",
+      "newUrl": "https://www.vulture.com/article/theater-review-the-outsiders-broadway-musical.html"
+    },
+    {
+      "reviewId": "the-outsiders-2024/ew--emlyn-travis.json",
+      "oldUrl": "https://ew.com/the-outsiders-broadway-review/",
+      "newUrl": "https://ew.com/the-outsiders-review-broadway-musical-8629965?srsltid=AfmBOoolm4c-10TOhyNeZKZcNkZ6rotRuy9hu86_sJcf0rFcYfnZjdY0"
+    },
+    {
+      "reviewId": "the-outsiders-2024/nydailynews--chris-jones.json",
+      "oldUrl": "https://www.nydailynews.com/2024/04/11/the-outsiders-broadway-review/",
+      "newUrl": "https://www.nydailynews.com/2024/04/11/broadway-review-s-e-hintons-gang-classic-the-outsiders-doesnt-cut-it-as-stage-show/"
     }
   ]
 }
