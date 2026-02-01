@@ -258,16 +258,18 @@ function getScoreContext(review) {
 
 function getCriticExplicitScore(review) {
   // Get the critic's explicit score, normalized to 0-100
-  // Priority: originalScoreNormalized > normalize(originalScore) > originalScore if numeric
-  if (typeof review.originalScoreNormalized === 'number') {
-    return review.originalScoreNormalized;
-  }
+  // ALWAYS re-normalize from originalScore to catch stale originalScoreNormalized values
+  // Priority: normalize(originalScore) > originalScore if numeric > originalScoreNormalized (fallback)
   if (review.originalScore !== null && review.originalScore !== undefined) {
-    // Try to normalize it
+    // Try to normalize it fresh
     const normalized = normalizeScore(String(review.originalScore));
     if (normalized !== null) return normalized;
     // If originalScore is already a number, use it directly
     if (typeof review.originalScore === 'number') return review.originalScore;
+  }
+  // Fallback to stored value only if originalScore couldn't be normalized
+  if (typeof review.originalScoreNormalized === 'number') {
+    return review.originalScoreNormalized;
   }
   return null;
 }
