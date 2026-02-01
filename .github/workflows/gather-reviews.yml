@@ -98,8 +98,8 @@ jobs:
             git checkout -- . 2>/dev/null || true
             git clean -fd 2>/dev/null || true
 
-            # Pull and rebase
-            if git pull --rebase origin main; then
+            # Pull and rebase, auto-resolve conflicts by preferring our freshly-gathered data
+            if git pull --rebase -X theirs origin main; then
               # Try to push
               if git push origin main; then
                 echo "Successfully pushed changes"
