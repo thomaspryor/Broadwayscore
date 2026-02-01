@@ -442,16 +442,13 @@ async function scrapeNYCTheatreRoundups() {
       }
 
       // Verify page is actually about this show (prevent cross-show contamination)
+      // NYC Theatre pages have the site name in h1/title, so check the full page text instead
       const $page = cheerio.load(html);
-      const pageTitle = ($page('h1').first().text() || $page('title').text() || '').toLowerCase();
+      const pageText = $page('body').text().toLowerCase();
       const showTitleLower = show.title.toLowerCase()
-        .replace(/^the\s+/, '').replace(/\s*\(.*?\)\s*$/, '').trim();
-      // Check if page title contains the show name (strip common prefixes/suffixes)
-      const pageTitleClean = pageTitle.replace(/reviews?\s*(for|of|:)?\s*/i, '')
-        .replace(/broadway\s*/i, '').trim();
-      if (showTitleLower.length > 3 && !pageTitleClean.includes(showTitleLower) &&
-          !showTitleLower.includes(pageTitleClean.slice(0, 20))) {
-        console.log(`  [SKIP] Page title "${pageTitle.slice(0, 60)}" doesn't match show "${show.title}"`);
+        .replace(/^the\s+/, '').replace(/\s*\(.*?\)\s*$/, '').replace(/:\s+.*$/, '').trim();
+      if (showTitleLower.length > 3 && !pageText.includes(showTitleLower)) {
+        console.log(`  [SKIP] Page doesn't mention "${show.title}" — likely wrong show`);
         continue;
       }
 
