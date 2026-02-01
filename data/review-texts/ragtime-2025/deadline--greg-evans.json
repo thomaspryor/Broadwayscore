@@ -12,7 +12,7 @@
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
   "dtliThumb": "Meh",
-  "sourceMethod": "archive",
+  "sourceMethod": "playwright",
   "llmScore": {
     "score": 74,
     "confidence": "high",
@@ -69,35 +69,17 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "archivePath": "data/archives/reviews/ragtime-2025/deadline--greg-evans_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:27:32.649Z",
-  "fetchMethod": "archive",
+  "archivePath": "data/archives/reviews/ragtime-2025/deadline--greg-evans_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T23:50:41.397Z",
+  "fetchMethod": "playwright",
   "fetchAttempts": [
     {
       "tier": 1,
       "method": "playwright",
-      "success": false,
-      "error": "Insufficient text extracted: 0 chars"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "Access blocked in Bright Data response"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 1,
   "archiveOrgTimestamp": "20260109163939",
   "archiveOrgUrl": "http://web.archive.org/web/20260109163939/https://deadline.com/2025/10/ragtime-broadway-review-1236583715/",
   "bwwThumb": "Up",
@@ -109,5 +91,17 @@
   "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
   "garbageFixedAt": "2026-01-29T22:45:23.143Z",
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "fullText": "Get our Breaking News Alerts and Keep your inbox happy. I absolutely loved the review of ‘Ragtime’! It’s great to see such a classic getting the recognition it deserves again. The insights on the direction and staging were spot on. Can’t wait to see it live! Indeed. This is very well written. It’s clear Mr. Evans knows theatre. I appreciated the reference to Titanic. Hopefully, that show will get a revival in the next few seasons. It is a show that examines societal classes as they relate to “The American Dream” in a brilliant manner. Signup for Breaking News Alerts & Newsletters By providing your information, you agree to our Terms of Use and our Privacy Policy. We use vendors that may also process your information to help provide our services. This site is protected by reCAPTCHA Enterprise and the Google Privacy Policy and Terms of Service apply.",
+  "isFullReview": false,
+  "textWordCount": 148,
+  "designation": "Recommended",
+  "textQuality": "partial",
+  "truncationSignals": [
+    "has_footer_text"
+  ],
+  "textStatus": "incomplete",
+  "textIssues": [
+    "Word count too low: 148 (min: 300)"
+  ]
 }

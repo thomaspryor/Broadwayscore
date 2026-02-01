@@ -5,7 +5,7 @@
   "criticName": "Jesse Green",
   "url": "https://www.theatermania.com/broadway/reviews/prayer-for-the-french-republic_96847.html",
   "publishDate": "February 9, 2024",
-  "fullText": "Joshua Harmon's sprawling family drama about Jewish identity and antisemitism in France is both deeply personal and politically urgent, though it sometimes struggles under the weight of its ambitions.",
+  "fullText": "It seems we can't find what you're looking for. Perhaps searching can help.\n\n Search for:\n \n \n \n \n\n \n\n \n\n \n \n\n \n\n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n Latest Videos\n \n \n \n \n \n \n\n \n \n \n \n \n \n \n Watch Jessica Vosk and Kelli Barrett Sing a Song From the Upcoming Broadway Musical Beaches \n \n \n Broadway performances start on March 27 at the Majestic Theatre.",
   "isFullReview": false,
   "dtliExcerpt": "Joshua Harmon's sprawling family drama about Jewish identity and antisemitism in France is both deeply personal and politically urgent, though it sometimes struggles under the weight of its ambitions.",
   "originalScore": null,
@@ -67,5 +67,43 @@
     }
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "textWordCount": 42,
+  "archivePath": "data/archives/reviews/prayer-for-the-french-republic-2024/theatermania--jesse-green_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T23:50:04.311Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 468 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 42 (min: 300)",
+    "Show title not found in text"
+  ]
 }
