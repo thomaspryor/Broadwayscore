@@ -5,12 +5,12 @@
   "criticName": "Christian Lewis",
   "url": "https://medium.com/@christianlewis_11156/review-harry-potter-and-the-cursed-child-is-even-more-magical-than-expected-9d88587832a6",
   "publishDate": "May 1, 2018",
-  "fullText": null,
+  "fullText": "Perhaps the most anticipated theatrical event of the season was last week’s opening of “Harry Potter and the Cursed Child, Parts One and Two.” This spell-binding new work is the product of three geniuses: the iconic J. K. Rowling (author of the original books), John Tiffany (the play’s profound director), and Jack Thorne (the playwright). Together they managed to create magic onstage in a way theatrical audiences have never seen before.\n\nPerhaps thanks to the 35 million dollar budget (a record for a play) and the massive cast of 40, or perhaps due to the demands of the fantastical source material, “Cursed Child” takes stage magic to an entirely new level. Even the theater itself — a newly renovated Lyric Theatre complete with “H” monograms, gold phoenixes, and several mini-gift stores, transports you to the wonderful world of Harry Potter.\n\nSadly, before I go any further, I must be upfront and I say I am bound by the Laws of Magic and forbidden to reveal any of the secrets of the play or even to discuss the plot. All I can say is that the play’s use of special effects and magic is unprecedented; you will never see a wire, or a trap door, or a body double. Objects disappear, actors seemingly teleport across the stage, wands produce spells, furniture flies, bodies are transfigured — all…\n\nTheater Critic. Vassar College alum, current PhD candidate at the CUNY Graduate Center.",
   "showScoreExcerpt": "\"Spell-binding...Takes stage magic to an entirely new level...The script is certainly not stellar...Some bizarre pacing issues...But these flaws are entirely with the script, in production there is so much magic that it is all too easy to get swept up and not even notice the problems in the writing...The extended choreographic transitions are unnecessary...But just as the magic saves any textual issues, the fantastic music gives the choreography a pass.\"",
   "originalScore": null,
   "assignedScore": 74,
   "source": "show-score",
-  "sourceMethod": "showscore",
+  "sourceMethod": "brightdata",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -70,5 +70,45 @@
     "needsReviewReasons": []
   },
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 74,
+  "isFullReview": false,
+  "textWordCount": 239,
+  "archivePath": "data/archives/reviews/harry-potter-2021/medium--christian-lewis_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T15:12:06.970Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "Insufficient text in archive: 355 chars"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "textIssues": [
+    "Word count too low: 239 (min: 300)"
+  ]
 }
