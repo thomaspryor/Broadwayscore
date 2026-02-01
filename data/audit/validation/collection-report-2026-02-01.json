@@ -1,45 +1,45 @@
 {
-  "runDate": "2026-02-01T14:07:35.605Z",
+  "runDate": "2026-02-01T14:11:42.127Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "the-notebook-2024",
+    "showFilter": "our-town-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 15,
-    "failed": 121,
+    "processed": 19,
+    "failed": 123,
     "skipped": 0,
-    "successRate": "11.0%"
+    "successRate": "13.4%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 7,
     "browserbase": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 2,
-    "archive": 8
+    "archive": 10
   },
   "statistics": {
     "tier1Attempts": 4,
     "tier1Success": 2,
-    "tier1_5Attempts": 2,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 0,
     "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 2,
+    "tier3Attempts": 1,
     "tier3Success": 0,
     "tier4Attempts": 8,
-    "tier4Success": 3,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 20,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.6,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "tier4Success": 4,
+    "totalFailed": 5,
+    "scrapingBeeCreditsUsed": 11,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.3,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -57,7 +57,11 @@
     "stereophonic-2024/ew--allison-considine.json",
     "stereophonic-2024/guardian--gloria-oladipo.json",
     "stereophonic-2024/ap--mark-kennedy.json",
-    "the-notebook-2024/guardian--gloria-oladipo.json"
+    "mother-play-2024/broadwaynews--brittani-samuel.json",
+    "mother-play-2024/ew--allison-considine.json",
+    "mother-play-2024/guardian--benjamin-lee.json",
+    "our-town-2024/nytimes--pulitzer-prize-jesse-green.json",
+    "our-town-2024/nypost--johnny-oleksinski.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -175,12 +179,14 @@
     "stereophonic-2024/deadline--greg-evans.json",
     "stereophonic-2024/observer--david-cote.json",
     "stereophonic-2024/timeout--adam-feldman.json",
-    "the-notebook-2024/deadline--greg-evans.json",
-    "the-notebook-2024/nydailynews--chris-jones.json",
-    "the-notebook-2024/nydailynews--chris.json",
-    "the-notebook-2024/timeout--adam-feldman.json",
-    "the-notebook-2024/wsj--charles-isherwood.json",
-    "the-notebook-2024/wsj--charles.json"
+    "mother-play-2024/timeout--adam-feldman.json",
+    "mother-play-2024/wsj--charles-isherwood.json",
+    "mother-play-2024/wsj--charles.json",
+    "our-town-2024/deadline--greg-evans.json",
+    "our-town-2024/ny-sun--elysa-gardner.json",
+    "our-town-2024/nydailynews--chris-jones.json",
+    "our-town-2024/timeout--adam-feldman.json",
+    "our-town-2024/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -188,12 +194,12 @@
       "stereophonic-2024/ew--allison-considine.json",
       "stereophonic-2024/guardian--gloria-oladipo.json",
       "stereophonic-2024/ap--mark-kennedy.json",
-      "the-notebook-2024/guardian--gloria-oladipo.json"
+      "mother-play-2024/ew--allison-considine.json",
+      "mother-play-2024/guardian--benjamin-lee.json",
+      "our-town-2024/nypost--johnny-oleksinski.json"
     ],
     "browserbase": [],
-    "scrapingbee": [
-      "wicked-2003/washpost--peter-marks.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
       "mj-2022/usatoday--david-rooney.json"
@@ -206,17 +212,25 @@
       "harry-potter-2021/vanityfair--richard-lawson.json",
       "harry-potter-2021/village-voice--michael-feingold.json",
       "mj-2022/nytg--ayanna-prescod.json",
-      "stereophonic-2024/nytimes--jesse-green.json"
+      "stereophonic-2024/nytimes--jesse-green.json",
+      "mother-play-2024/broadwaynews--brittani-samuel.json",
+      "our-town-2024/nytimes--pulitzer-prize-jesse-green.json"
     ]
   },
   "failuresByOutlet": {
     "New York Daily News": {
-      "count": 2,
+      "count": 1,
       "domain": "nydailynews.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "our-town-2024/nytimes--pulitzer-prize-jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2024/10/10/theater/our-town-review-broadway.html",
+      "newUrl": "https://www.nytimes.com/2024/10/10/theater/our-town-review-jim-parsons.html"
+    }
+  ]
 }
