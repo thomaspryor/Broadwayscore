@@ -1,43 +1,43 @@
 {
-  "runDate": "2026-02-01T14:07:35.605Z",
+  "runDate": "2026-02-01T14:10:53.171Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "the-notebook-2024",
+    "showFilter": "death-becomes-her-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 15,
+    "processed": 19,
     "failed": 121,
     "skipped": 0,
-    "successRate": "11.0%"
+    "successRate": "13.6%"
   },
   "tierBreakdown": {
-    "playwright": 4,
-    "browserbase": 0,
-    "scrapingbee": 1,
+    "playwright": 7,
+    "browserbase": 2,
+    "scrapingbee": 0,
     "brightdata": 2,
-    "archive": 8
+    "archive": 9
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 2,
-    "tier1_5Attempts": 2,
-    "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "tier1Attempts": 2,
+    "tier1Success": 1,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 2,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 8,
+    "tier4Attempts": 5,
     "tier4Success": 3,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 20,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.6,
+    "totalFailed": 3,
+    "scrapingBeeCreditsUsed": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.5,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -57,7 +57,11 @@
     "stereophonic-2024/ew--allison-considine.json",
     "stereophonic-2024/guardian--gloria-oladipo.json",
     "stereophonic-2024/ap--mark-kennedy.json",
-    "the-notebook-2024/guardian--gloria-oladipo.json"
+    "mother-play-2024/broadwaynews--brittani-samuel.json",
+    "mother-play-2024/ew--allison-considine.json",
+    "mother-play-2024/guardian--benjamin-lee.json",
+    "death-becomes-her-2024/guardian--benjamin-lee.json",
+    "death-becomes-her-2024/nypost--johnny-oleksinski.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -175,12 +179,12 @@
     "stereophonic-2024/deadline--greg-evans.json",
     "stereophonic-2024/observer--david-cote.json",
     "stereophonic-2024/timeout--adam-feldman.json",
-    "the-notebook-2024/deadline--greg-evans.json",
-    "the-notebook-2024/nydailynews--chris-jones.json",
-    "the-notebook-2024/nydailynews--chris.json",
-    "the-notebook-2024/timeout--adam-feldman.json",
-    "the-notebook-2024/wsj--charles-isherwood.json",
-    "the-notebook-2024/wsj--charles.json"
+    "mother-play-2024/timeout--adam-feldman.json",
+    "mother-play-2024/wsj--charles-isherwood.json",
+    "mother-play-2024/wsj--charles.json",
+    "death-becomes-her-2024/deadline--greg-evans.json",
+    "death-becomes-her-2024/timeout--adam-feldman.json",
+    "death-becomes-her-2024/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -188,12 +192,15 @@
       "stereophonic-2024/ew--allison-considine.json",
       "stereophonic-2024/guardian--gloria-oladipo.json",
       "stereophonic-2024/ap--mark-kennedy.json",
-      "the-notebook-2024/guardian--gloria-oladipo.json"
+      "mother-play-2024/ew--allison-considine.json",
+      "mother-play-2024/guardian--benjamin-lee.json",
+      "death-becomes-her-2024/guardian--benjamin-lee.json"
     ],
-    "browserbase": [],
-    "scrapingbee": [
-      "wicked-2003/washpost--peter-marks.json"
+    "browserbase": [
+      "data/review-texts/death-becomes-her-2024/nypost--johnny-oleksinski.json",
+      "death-becomes-her-2024/nypost--johnny-oleksinski.json"
     ],
+    "scrapingbee": [],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
       "mj-2022/usatoday--david-rooney.json"
@@ -206,17 +213,10 @@
       "harry-potter-2021/vanityfair--richard-lawson.json",
       "harry-potter-2021/village-voice--michael-feingold.json",
       "mj-2022/nytg--ayanna-prescod.json",
-      "stereophonic-2024/nytimes--jesse-green.json"
+      "stereophonic-2024/nytimes--jesse-green.json",
+      "mother-play-2024/broadwaynews--brittani-samuel.json"
     ]
   },
-  "failuresByOutlet": {
-    "New York Daily News": {
-      "count": 2,
-      "domain": "nydailynews.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
