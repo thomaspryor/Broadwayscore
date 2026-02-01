@@ -30,6 +30,17 @@ try {
   checkForDuplicate = null;
 }
 
+// Import review normalization for critic-outlet validation
+let normalizeCritic, normalizeOutlet, validateCriticOutlet;
+try {
+  const normalization = require('./lib/review-normalization');
+  normalizeCritic = normalization.normalizeCritic;
+  normalizeOutlet = normalization.normalizeOutlet;
+  validateCriticOutlet = normalization.validateCriticOutlet;
+} catch (e) {
+  console.warn('Review normalization module not found, skipping critic-outlet validation');
+}
+
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_FILE = path.join(DATA_DIR, 'shows.json');
 const GROSSES_FILE = path.join(DATA_DIR, 'grosses.json');

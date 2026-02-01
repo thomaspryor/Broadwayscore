@@ -22,7 +22,7 @@ const path = require('path');
 const https = require('https');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
-const { normalizeOutlet, normalizeCritic } = require('./lib/review-normalization');
+const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -249,12 +249,16 @@ function extractReviewsFromRoundup(html, showId) {
   if (reviews.length > 0) return reviews;
 
   // --- Pattern B: "excerpt text" - Outlet Name (outlet at end after dash) ---
+  // Only accept outlet names that match KNOWN_OUTLETS to prevent capturing
+  // excerpt text fragments as outlet names
   $('p').each((_, el) => {
     const text = $(el).text().trim();
     // Match: "...text..." - Outlet Name  or  "...text..." – Outlet Name
     const trailingOutlet = text.match(/["\u201d']\s*[-\u2013\u2014]\s*([A-Z][A-Za-z\s.&']{2,50})\s*$/);
     if (trailingOutlet && text.length > 60) {
       const outlet = trailingOutlet[1].trim();
+      // Only accept if it matches a known outlet name
+      if (!looksLikeOutlet(outlet)) return;
       // Strip the trailing " - Outlet" from the excerpt
       const excerpt = text.replace(/\s*[-\u2013\u2014]\s*[A-Z][A-Za-z\s.&']{2,50}\s*$/, '').trim();
       // Clean leading/trailing quotes
@@ -298,38 +302,26 @@ function saveNycTheatreExcerpt(showId, reviewInfo) {
   const outletId = normalizeOutlet(reviewInfo.outlet);
   if (!outletId) return 'skipped';
 
-  // Look for existing review file by outlet match (any critic)
-  let existingFile = null;
-  if (fs.existsSync(showDir)) {
-    const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
-    for (const file of files) {
-      if (file.startsWith(`${outletId}--`)) {
-        existingFile = file;
-        break;
-      }
-    }
-  }
+  // Use cross-scraper dedup: find existing review file regardless of filename format
+  const existing = findExistingReviewFile(showDir, reviewInfo.outlet, null);
 
-  if (existingFile) {
-    const filepath = path.join(showDir, existingFile);
-    const existing = JSON.parse(fs.readFileSync(filepath, 'utf8'));
-
-    if (existing.nycTheatreExcerpt) {
+  if (existing && existing.data) {
+    if (existing.data.nycTheatreExcerpt) {
       stats.skippedExisting++;
       return 'skipped';
     }
 
-    // Add the excerpt
-    existing.nycTheatreExcerpt = reviewInfo.excerpt;
-    if (reviewInfo.url && !existing.url) {
-      existing.url = reviewInfo.url;
+    // Add the excerpt to existing file
+    existing.data.nycTheatreExcerpt = reviewInfo.excerpt;
+    if (reviewInfo.url && !existing.data.url) {
+      existing.data.url = reviewInfo.url;
     }
 
-    const sources = new Set(existing.sources || [existing.source || '']);
+    const sources = new Set(existing.data.sources || [existing.data.source || '']);
     sources.add('nyc-theatre');
-    existing.sources = Array.from(sources).filter(Boolean);
+    existing.data.sources = Array.from(sources).filter(Boolean);
 
-    fs.writeFileSync(filepath, JSON.stringify(existing, null, 2) + '\n');
+    fs.writeFileSync(existing.path, JSON.stringify(existing.data, null, 2) + '\n');
     stats.updatedReviews++;
     return 'updated';
   }
@@ -344,10 +336,10 @@ function saveNycTheatreExcerpt(showId, reviewInfo) {
   const filepath = path.join(showDir, filename);
 
   if (fs.existsSync(filepath)) {
-    const existing = JSON.parse(fs.readFileSync(filepath, 'utf8'));
-    if (!existing.nycTheatreExcerpt) {
-      existing.nycTheatreExcerpt = reviewInfo.excerpt;
-      fs.writeFileSync(filepath, JSON.stringify(existing, null, 2) + '\n');
+    const data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+    if (!data.nycTheatreExcerpt) {
+      data.nycTheatreExcerpt = reviewInfo.excerpt;
+      fs.writeFileSync(filepath, JSON.stringify(data, null, 2) + '\n');
       stats.updatedReviews++;
       return 'updated';
     }
@@ -446,6 +438,20 @@ async function scrapeNYCTheatreRoundups() {
 
       if (!html || html.length < 500) {
         console.log(`  Empty or too short page.`);
+        continue;
+      }
+
+      // Verify page is actually about this show (prevent cross-show contamination)
+      const $page = cheerio.load(html);
+      const pageTitle = ($page('h1').first().text() || $page('title').text() || '').toLowerCase();
+      const showTitleLower = show.title.toLowerCase()
+        .replace(/^the\s+/, '').replace(/\s*\(.*?\)\s*$/, '').trim();
+      // Check if page title contains the show name (strip common prefixes/suffixes)
+      const pageTitleClean = pageTitle.replace(/reviews?\s*(for|of|:)?\s*/i, '')
+        .replace(/broadway\s*/i, '').trim();
+      if (showTitleLower.length > 3 && !pageTitleClean.includes(showTitleLower) &&
+          !showTitleLower.includes(pageTitleClean.slice(0, 20))) {
+        console.log(`  [SKIP] Page title "${pageTitle.slice(0, 60)}" doesn't match show "${show.title}"`);
         continue;
       }
 
