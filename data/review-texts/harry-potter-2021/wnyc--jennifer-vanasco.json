@@ -5,12 +5,12 @@
   "criticName": "Jennifer Vanasco",
   "url": "https://www.wnyc.org/story/review-harry-potter-cursed-child-magical-tale-about-parents-and-children/",
   "publishDate": "April 28, 2018",
-  "fullText": null,
+  "fullText": "When last we saw Harry Potter in J.K. Rowling's novels, he and his wife Ginny were just about to send their younger son off to Hogwarts School of Witchcraft and Wizardry. And that's where we find him at the beginning of this five-hour, two-part drama which transferred to Broadway after rave reviews in London's West End. That younger son, Albus Severus Potter (Sam Clemmett) is nervous: He has a feeling wizard school isn't for him. Still, Albus tries. For example, he follows his father's directive to try to make friends, but winds up cavorting with the son of Harry's arch enemy, Scorpius Malfoy (whose gawky kindness is a surprisingly delightful addition to Hogwarts). At every turn, Albus finds his peers comparing him unfavorably to Harry, the boy who saved the world. The general mismatch between who Albus is and who he is expected to be sets off a time-travel misadventure that leads to a dark, authoritarian place with a fascist leader. I can't say much more here without revealing the plot's many secrets and surprise cameos. But just know that the gang's back together, and Harry (Jamie Parker), Hermione (Noma Dumezweni) and Ron (Paul Thornley) are just as delightful as they ever were. The result is thrilling, thanks in part to enchanting stagecraft — including flying wizards, glowing wands and fantastic spell-casting duels. But there are also events on stage that seem impossible, and effects that are simply astonishing. But the reason this show is magical is not just due to theater wizardry. It's also because the themes at its heart are moving ones. It explores the relationships between fathers and their children; sons, mainly, but also a daughter. It explores the futile wish to change the past. And it speaks about the curse of loneliness, and about how the only way to reverse it is friendship. Harry Potter and the Cursed Child by Jack Thorne, based on a story by J.K. Rowling, Jack Thorne and John Tiffany. Directed by Jack Thorne at the Lyric Theatre. Open run.",
   "showScoreExcerpt": "\"The gang's back together, and Harry, Hermione, and Ron are just as delightful as they ever were...The result is thrilling, thanks in part to enchanting stagecraft...There are events on stage that seem impossible, and effects that are simply astonishing...But the reason this show is magical is not just due to theater wizardry. It's also because the themes at its heart are moving ones.\"",
   "originalScore": null,
   "assignedScore": 89,
   "source": "show-score",
-  "sourceMethod": "showscore",
+  "sourceMethod": "playwright",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -70,5 +70,30 @@
     "needsReviewReasons": []
   },
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 89,
+  "isFullReview": true,
+  "textWordCount": 338,
+  "archivePath": "data/archives/reviews/harry-potter-2021/wnyc--jennifer-vanasco_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T15:14:18.294Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "Insufficient text in archive: 0 chars"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete"
 }

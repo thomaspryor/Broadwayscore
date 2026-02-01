@@ -9,56 +9,63 @@
   "showScoreExcerpt": "\"A few instances of more heavy-handed literalism are sprinkled through the piece\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/illinoise",
   "originalScore": null,
-  "assignedScore": 48,
+  "assignedScore": 78,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 48,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 40.5,
-      "high": 55.5
+      "low": 75,
+      "high": 82
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 45,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 70,
+      "music": 85,
+      "performances": 82,
+      "direction": 75
     },
     "keyPhrases": [
       {
-        "quote": "heavy-handed literalism",
-        "sentiment": "negative",
+        "quote": "otherwise gorgeously crafted show",
+        "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "a few instances",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "Peck's choreography, however, leaves a lasting impression",
+        "sentiment": "positive",
+        "strength": 4
       },
       {
-        "quote": "A few instances of more heavy-handed literalism are sprinkled through the piece",
+        "quote": "choices like this from director/choreographer Peck put too fine a point on",
         "sentiment": "negative",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: This tiny excerpt criticizes 'heavy-handed literalism' but the scope ('a few instances') suggests it's not pervasive, making it impossible to determine overall recommendation. | GPT-4o-mini: The mention of 'heavy-handed literalism' suggests a critical view of the script, leading to a mixed recommendation.",
+    "reasoning": "Despite some criticism of heavy-handed directorial choices, the review consistently praises the choreography, performances, and overall craft, describing it as 'gorgeously crafted' with 'lasting impression' choreography.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:21:01.305Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:19:22.542Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3075,
+    "outputTokens": 340,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 45,
@@ -69,7 +76,6 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 48,
   "archivePath": "data/archives/reviews/illinoise-2024/nytg--amelia-merrill_2026-01-29.html",
@@ -109,5 +115,8 @@
   "archiveOrgTimestamp": "20250709005058",
   "archiveOrgUrl": "http://web.archive.org/web/20250709005058/https://www.newyorktheatreguide.com/reviews/illinoise-off-broadway-review-sufjan-stevens",
   "contentTier": "complete",
-  "wordCount": 618
+  "wordCount": 618,
+  "rescoreCompletedAt": "2026-02-01T15:19:22.542Z",
+  "wrongProduction": true,
+  "wrongProductionNote": "Off-Broadway/pre-Broadway run at Park Avenue Armory. Reusable if off-Broadway show entry is created."
 }
