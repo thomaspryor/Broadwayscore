@@ -10,7 +10,7 @@ const { getOutletDisplayName } = require('./lib/review-normalization');
 
 const SHOWS_TO_FIX = ['queen-versailles-2025', 'stereophonic-2024'];
 
-const THUMB_TO_SCORE = { 'Up': 78, 'Meh': 55, 'Flat': 55, 'Down': 35 };
+const THUMB_TO_SCORE = { 'Up': 80, 'Meh': 60, 'Flat': 60, 'Down': 35 };
 const STAR_TO_SCORE = { 5: 92, 4: 82, 3: 63, 2: 45, 1: 25, 0: 10 };
 const LETTER_TO_SCORE = {
   'A+': 97, 'A': 93, 'A-': 89,

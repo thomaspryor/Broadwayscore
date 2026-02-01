@@ -23,6 +23,30 @@ const fs = require('fs');
 const path = require('path');
 const { getOutletDisplayName } = require('./lib/review-normalization');
 
+// Human review queue — flagged items written to data/audit/needs-human-review.json
+const humanReviewQueue = [];
+
+function normalizeThumb(thumb) {
+  if (thumb === 'Meh' || thumb === 'Flat') return 'Flat';
+  return thumb; // 'Up' or 'Down'
+}
+
+function flagForHumanReview(data, reason, detail) {
+  humanReviewQueue.push({
+    showId: data.showId,
+    outletId: data.outletId || data.outlet,
+    criticName: data.criticName || null,
+    reason,
+    detail,
+    llmScore: data.llmScore?.score || null,
+    llmBucket: data.llmScore?.bucket || null,
+    llmConfidence: data.llmScore?.confidence || null,
+    dtliThumb: data.dtliThumb || null,
+    bwwThumb: data.bwwThumb || null,
+    flaggedAt: new Date().toISOString()
+  });
+}
+
 // Score mappings
 const THUMB_TO_SCORE = { 'Up': 80, 'Meh': 60, 'Flat': 60, 'Down': 35 };
 const BUCKET_TO_SCORE = { 'Rave': 90, 'Positive': 82, 'Mixed': 65, 'Negative': 48, 'Pan': 30 };
@@ -531,6 +555,14 @@ function getBestScore(data) {
 
     // High/medium confidence: use directly
     if (confidence !== 'low' && !needsReview) {
+      // Flag if BOTH thumbs agree with each other but disagree with LLM direction
+      const llmThumb = data.llmScore.score >= 70 ? 'Up' : data.llmScore.score >= 55 ? 'Flat' : 'Down';
+      const dtli = data.dtliThumb ? normalizeThumb(data.dtliThumb) : null;
+      const bww = data.bwwThumb ? normalizeThumb(data.bwwThumb) : null;
+      if (dtli && bww && dtli === bww && dtli !== llmThumb) {
+        flagForHumanReview(data, 'both-thumbs-disagree-with-llm',
+          `LLM=${data.llmScore.score} (${llmThumb}), both thumbs=${data.dtliThumb}`);
+      }
       return { score: data.llmScore.score, source: 'llmScore' };
     }
   }
@@ -546,6 +578,12 @@ function getBestScore(data) {
                        data.bwwThumb ? THUMB_TO_SCORE[data.bwwThumb] : null;
 
     if (thumbScore) {
+      // Flag if thumb overrides LLM by a large margin
+      const scoreDiff = Math.abs(thumbScore - data.llmScore.score);
+      if (scoreDiff > 20) {
+        flagForHumanReview(data, 'thumb-override-large-delta',
+          `LLM=${data.llmScore.score} (${data.llmScore.confidence}), thumb=${thumbScore}, delta=${scoreDiff}`);
+      }
       stats.thumbOverrideLlm = (stats.thumbOverrideLlm || 0) + 1;
       return { score: thumbScore, source: 'thumb-override-llm' };
     }
@@ -869,6 +907,36 @@ if (stats.needsLlmScoring.length > 0) {
   if (Object.keys(byShow).length > 10) {
     console.log(`  ... and ${Object.keys(byShow).length - 10} more shows`);
   }
+}
+
+// Write human review queue if any items were flagged
+if (humanReviewQueue.length > 0) {
+  const auditDir = path.join(__dirname, '../data/audit');
+  if (!fs.existsSync(auditDir)) {
+    fs.mkdirSync(auditDir, { recursive: true });
+  }
+
+  const auditPath = path.join(auditDir, 'needs-human-review.json');
+  const auditOutput = {
+    _meta: {
+      generatedAt: new Date().toISOString(),
+      totalFlagged: humanReviewQueue.length,
+      reasons: {}
+    },
+    reviews: humanReviewQueue
+  };
+
+  // Count by reason
+  humanReviewQueue.forEach(r => {
+    auditOutput._meta.reasons[r.reason] = (auditOutput._meta.reasons[r.reason] || 0) + 1;
+  });
+
+  fs.writeFileSync(auditPath, JSON.stringify(auditOutput, null, 2) + '\n');
+  console.log(`\nHUMAN REVIEW QUEUE: ${humanReviewQueue.length} reviews flagged`);
+  Object.entries(auditOutput._meta.reasons).forEach(([reason, count]) => {
+    console.log(`  ${reason}: ${count}`);
+  });
+  console.log(`  Written to: ${auditPath}`);
 }
 
 console.log('\n=== DONE ===');

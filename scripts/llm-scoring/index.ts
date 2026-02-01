@@ -58,6 +58,8 @@ import { ReviewTextFile, ScoringPipelineOptions, PipelineRunSummary } from './ty
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { assessTextQuality } = require('../lib/content-quality.js');
 
+import { detectMultiShow } from './multi-show-detector';
+
 // ========================================
 // CONSTANTS
 // ========================================
@@ -486,6 +488,28 @@ async function main(): Promise<void> {
         if (options.verbose) {
           console.log(`(WARNING: ${qualityResult.issues.join(', ')}) `);
         }
+      }
+    }
+
+    // Multi-show detection: skip roundup articles
+    if (scorableText && reviewFile.showId) {
+      const multiShowResult = detectMultiShow(scorableText, reviewFile.showId);
+
+      if (multiShowResult.recommendation === 'skip') {
+        console.log(`SKIPPED (multi-show: ${multiShowResult.reason})`);
+        // Mark the file so it's not retried
+        if (!options.dryRun) {
+          const fileData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+          fileData.isMultiShowReview = true;
+          fileData.multiShowReason = multiShowResult.reason;
+          saveReviewFile(filePath, fileData);
+        }
+        skipped++;
+        continue;
+      }
+
+      if (multiShowResult.recommendation === 'warn' && options.verbose) {
+        console.log(`(WARNING: ${multiShowResult.reason}) `);
       }
     }
 
