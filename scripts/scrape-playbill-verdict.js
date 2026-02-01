@@ -18,7 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { matchTitleToShow, loadShows, cleanExternalTitle } = require('./lib/show-matching');
-const { normalizeOutlet, normalizeCritic, generateReviewFilename } = require('./lib/review-normalization');
+const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
 const cheerio = require('cheerio');
 
 // Paths
@@ -170,7 +170,7 @@ function extractArticlesFromCategoryPage(content) {
 // Filter to Broadway only
 // ---------------------------------------------------------------------------
 
-function isOffBroadway(title) {
+function isNotBroadway(title) {
   const lower = title.toLowerCase();
   return (
     lower.includes('off-broadway') ||
@@ -179,9 +179,26 @@ function isOffBroadway(title) {
     lower.includes('opera') ||
     lower.includes('london') ||
     lower.includes('national tour') ||
-    lower.includes('touring production')
+    lower.includes('touring production') ||
+    lower.includes('in chicago') ||
+    lower.includes('world premiere') ||
+    lower.includes('on screen') ||
+    lower.includes('on film') ||
+    lower.includes('movie') ||
+    lower.includes('filmed version') ||
+    // Specific venue mentions that indicate non-Broadway
+    lower.includes('playhouse theatre') ||
+    lower.includes('chicago shakespeare')
   );
 }
+
+// Known NYSR critics — when Playbill lists just the critic name as the "outlet",
+// we should detect this and use "nysr" as the outlet instead
+const NYSR_CRITICS = [
+  'frank scheck', 'melissa rose bernardo', 'david finkle', 'roma torre',
+  'bob verini', 'michael sommers', 'sandy macdonald', 'steven suskin',
+  'elysa gardner'
+];
 
 // ---------------------------------------------------------------------------
 // Extract review links from a Verdict article
@@ -267,26 +284,57 @@ function extractReviewLinksFromArticle(html, showId) {
 function saveReviewFromPlaybill(showId, reviewInfo) {
   const showDir = path.join(reviewTextsDir, showId);
 
-  // Normalize outlet
-  const outletId = normalizeOutlet(reviewInfo.outlet) || normalizeOutlet(reviewInfo.outletDomain) || reviewInfo.outletDomain;
+  // Detect NYSR critic-as-outlet: when Playbill lists "Frank Scheck" as the outlet
+  let outletName = reviewInfo.outlet || reviewInfo.outletDomain;
+  let criticName = reviewInfo.critic || '';
+  if (NYSR_CRITICS.some(c => outletName.toLowerCase().includes(c))) {
+    criticName = outletName; // The "outlet" is actually the critic name
+    outletName = 'New York Stage Review';
+  }
+
+  // Normalize outlet using the shared normalization system
+  const outletId = normalizeOutlet(outletName) || normalizeOutlet(reviewInfo.outletDomain) || reviewInfo.outletDomain;
   if (!outletId) return 'skipped';
 
-  // Generate filename
-  const criticSlug = reviewInfo.critic
-    ? normalizeCritic(reviewInfo.critic) || reviewInfo.critic.toLowerCase().replace(/\s+/g, '-')
+  // Normalize critic
+  const criticSlug = criticName
+    ? normalizeCritic(criticName)
     : 'unknown';
+
+  // Check for existing file BEFORE creating — use cross-scraper dedup
+  const existing = findExistingReviewFile(showDir, outletName, criticName || null);
+  if (existing && existing.data) {
+    // File exists for this outlet (+critic) — just add playbillVerdictUrl
+    if (!existing.data.playbillVerdictUrl) {
+      existing.data.playbillVerdictUrl = reviewInfo.url;
+      if (!existing.data.url && reviewInfo.url) {
+        existing.data.url = reviewInfo.url;
+      }
+      const sources = new Set(existing.data.sources || [existing.data.source || '']);
+      sources.add('playbill-verdict');
+      existing.data.sources = Array.from(sources).filter(Boolean);
+      fs.writeFileSync(existing.path, JSON.stringify(existing.data, null, 2) + '\n');
+      stats.updatedReviews++;
+      return 'updated';
+    }
+    stats.skippedExisting++;
+    return 'skipped';
+  }
+
+  // Also check exact filename match (belt and suspenders)
   const filename = `${outletId}--${criticSlug}.json`;
   const filepath = path.join(showDir, filename);
-
   if (fs.existsSync(filepath)) {
-    // Add playbillVerdictUrl if not already present
-    const existing = JSON.parse(fs.readFileSync(filepath, 'utf8'));
-    if (!existing.playbillVerdictUrl) {
-      existing.playbillVerdictUrl = reviewInfo.url;
-      const sources = new Set(existing.sources || [existing.source || '']);
+    const existingData = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+    if (!existingData.playbillVerdictUrl) {
+      existingData.playbillVerdictUrl = reviewInfo.url;
+      if (!existingData.url && reviewInfo.url) {
+        existingData.url = reviewInfo.url;
+      }
+      const sources = new Set(existingData.sources || [existingData.source || '']);
       sources.add('playbill-verdict');
-      existing.sources = Array.from(sources).filter(Boolean);
-      fs.writeFileSync(filepath, JSON.stringify(existing, null, 2) + '\n');
+      existingData.sources = Array.from(sources).filter(Boolean);
+      fs.writeFileSync(filepath, JSON.stringify(existingData, null, 2) + '\n');
       stats.updatedReviews++;
       return 'updated';
     }
@@ -302,8 +350,8 @@ function saveReviewFromPlaybill(showId, reviewInfo) {
   const reviewData = {
     showId,
     outletId,
-    outlet: reviewInfo.outlet || reviewInfo.outletDomain,
-    criticName: reviewInfo.critic || 'Unknown',
+    outlet: outletName,
+    criticName: criticName || 'Unknown',
     url: reviewInfo.url,
     playbillVerdictUrl: reviewInfo.url,
     source: 'playbill-verdict',
@@ -367,7 +415,7 @@ async function scrapePlaybillVerdict() {
   const unmatchedShows = new Set(shows.map(s => s.slug || s.id));
 
   for (const article of uniqueArticles) {
-    if (isOffBroadway(article.title)) {
+    if (isNotBroadway(article.title)) {
       stats.skippedOffBroadway++;
       continue;
     }
@@ -410,6 +458,14 @@ async function scrapePlaybillVerdict() {
     }
 
     if (!html) continue;
+
+    // Validate the fetched article is about Broadway (not London, Chicago, film, etc.)
+    const $article = cheerio.load(html);
+    const articlePageTitle = $article('title').text() + ' ' + $article('h1').text();
+    if (isNotBroadway(articlePageTitle)) {
+      console.log(`    [SKIP] Article is not about Broadway: "${articlePageTitle.slice(0, 80)}"`);
+      continue;
+    }
 
     // Extract review links
     const reviewLinks = extractReviewLinksFromArticle(html, article.showId);
@@ -458,6 +514,15 @@ async function scrapePlaybillVerdict() {
 
         const html = await fetchHtml(articleUrl);
         if (html) {
+          // Validate the article is about Broadway (not London, Chicago, film, etc.)
+          const $ = cheerio.load(html);
+          const pageTitle = $('title').text() + ' ' + $('h1').text();
+          if (isNotBroadway(pageTitle)) {
+            console.log(`    [SKIP] Article is not about Broadway: "${pageTitle.slice(0, 80)}"`);
+            await sleep(2000);
+            continue;
+          }
+
           const archivePath = path.join(archiveDir, `${showId}.html`);
           fs.writeFileSync(archivePath, html);
 

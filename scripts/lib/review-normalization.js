@@ -632,6 +632,103 @@ function getOutletTier(outletId) {
   return outlet?.tier || 3;
 }
 
+// =====================================================
+// CRITIC-OUTLET VALIDATION
+// =====================================================
+
+let _criticRegistryCache = null;
+
+/**
+ * Load and cache the critic registry from JSON file.
+ * Returns null if registry doesn't exist (non-fatal).
+ */
+function loadCriticRegistry() {
+  if (_criticRegistryCache) return _criticRegistryCache;
+  try {
+    const registryPath = path.join(__dirname, '..', '..', 'data', 'critic-registry.json');
+    const data = fs.readFileSync(registryPath, 'utf-8');
+    _criticRegistryCache = JSON.parse(data);
+    return _criticRegistryCache;
+  } catch (err) {
+    return null;
+  }
+}
+
+/**
+ * Validate whether a critic is expected at a given outlet.
+ * Uses the auto-generated critic registry for data-driven detection.
+ *
+ * @param {string} critic - Critic name
+ * @param {string} outlet - Outlet name or ID
+ * @returns {{ isSuspicious: boolean, confidence: string, reason?: string, knownOutlets?: string[] }}
+ */
+function validateCriticOutlet(critic, outlet) {
+  const normalizedCritic = normalizeCritic(critic);
+  const normalizedOutlet = normalizeOutlet(outlet);
+
+  if (normalizedCritic === 'unknown' || normalizedOutlet === 'unknown') {
+    return { isSuspicious: false, confidence: 'low', reason: 'Unknown critic or outlet' };
+  }
+
+  const registry = loadCriticRegistry();
+  if (!registry || !registry.critics) {
+    return { isSuspicious: false, confidence: 'low', reason: 'No critic registry available' };
+  }
+
+  // Look up by slugified critic name
+  const criticSlug = normalizedCritic.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const criticEntry = registry.critics[criticSlug];
+  if (!criticEntry) {
+    return { isSuspicious: false, confidence: 'low', reason: 'Critic not in registry' };
+  }
+
+  const knownOutlets = criticEntry.knownOutlets || [];
+  if (knownOutlets.length === 0) {
+    return { isSuspicious: false, confidence: 'low', reason: 'No known outlets for critic' };
+  }
+
+  // Freelancers get a pass - they write for many outlets
+  if (criticEntry.isFreelancer) {
+    return { isSuspicious: false, confidence: 'low', reason: 'Critic is a known freelancer' };
+  }
+
+  if (knownOutlets.includes(normalizedOutlet)) {
+    return { isSuspicious: false, confidence: 'high' };
+  }
+
+  const totalReviews = criticEntry.totalReviews || 0;
+  const outletCount = criticEntry.outletCounts?.[normalizedOutlet] || 0;
+
+  // High confidence: 10+ reviews, 0 at this outlet, not a freelancer
+  if (totalReviews >= 10 && outletCount === 0) {
+    return {
+      isSuspicious: true,
+      confidence: 'high',
+      reason: `${critic} has ${totalReviews} reviews, all at ${knownOutlets.join(', ')} -- never at ${outlet}`,
+      knownOutlets,
+    };
+  }
+
+  // Medium confidence: 5+ reviews, target outlet <10% share
+  if (totalReviews >= 5 && outletCount <= 1) {
+    return {
+      isSuspicious: true,
+      confidence: 'medium',
+      reason: `${critic} has only ${outletCount}/${totalReviews} reviews at ${outlet}`,
+      knownOutlets,
+    };
+  }
+
+  return { isSuspicious: false, confidence: 'low' };
+}
+
+/**
+ * Clear the critic registry cache (for testing or after regeneration).
+ */
+function clearCriticRegistryCache() {
+  _criticRegistryCache = null;
+}
+
 /**
  * Get the canonical display name for an outlet ID.
  * Priority: outlet-registry.json, then built-in fallback.
@@ -733,6 +830,55 @@ function normalizePublishDate(dateStr) {
   return dateStr.replace(/(\d+)(st|nd|rd|th)/gi, '$1');
 }
 
+/**
+ * Find an existing review file for the same outlet in a show directory.
+ * Checks all filename variants: normalized outlet ID, raw slug, with/without critic.
+ * Returns { path, data } if found, null if no existing file for this outlet.
+ *
+ * Used by aggregator scrapers to prevent creating duplicate files when different
+ * scrapers use different outlet name formats (e.g., "variety-frank-rizzo" vs "variety").
+ */
+function findExistingReviewFile(showDir, outletName, criticName) {
+  if (!fs.existsSync(showDir)) return null;
+
+  const normalizedOutlet = normalizeOutlet(outletName);
+  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
+
+  for (const file of files) {
+    const parts = file.replace('.json', '').split('--');
+    if (parts.length !== 2) continue;
+
+    const fileOutlet = parts[0];
+    const fileCritic = parts[1];
+
+    // Check if file's outlet matches our normalized outlet
+    const fileOutletNormalized = normalizeOutlet(fileOutlet);
+    if (fileOutletNormalized === normalizedOutlet) {
+      // If we have a critic name and file has a different named critic, skip
+      // (different critics at same outlet are separate reviews)
+      if (criticName && criticName.toLowerCase() !== 'unknown' &&
+          fileCritic !== 'unknown') {
+        const normalizedCritic = normalizeCritic(criticName);
+        const fileNormalizedCritic = normalizeCritic(fileCritic);
+        if (normalizedCritic !== fileNormalizedCritic &&
+            !areCriticsSimilar(criticName, fileCritic.replace(/-/g, ' '))) {
+          continue; // Different critic at same outlet — not a duplicate
+        }
+      }
+
+      const filePath = path.join(showDir, file);
+      try {
+        const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+        return { path: filePath, filename: file, data };
+      } catch {
+        return { path: filePath, filename: file, data: null };
+      }
+    }
+  }
+
+  return null;
+}
+
 module.exports = {
   normalizeOutlet,
   normalizeCritic,
@@ -749,6 +895,10 @@ module.exports = {
   getOutletTier,
   loadOutletRegistry,
   levenshteinDistance,
+  findExistingReviewFile,
+  validateCriticOutlet,
+  loadCriticRegistry,
+  clearCriticRegistryCache,
   OUTLET_ALIASES,
   CRITIC_ALIASES,
 };
