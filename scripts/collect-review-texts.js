@@ -189,6 +189,70 @@ const CONFIG = {
 
   // Request delays
   requestDelay: 2000,
+
+  // Outlet-to-domain mapping for URL discovery via Google SERP
+  outletDomains: {
+    'nytimes': 'nytimes.com',
+    'nyt': 'nytimes.com',
+    'variety': 'variety.com',
+    'hollywood-reporter': 'hollywoodreporter.com',
+    'thr': 'hollywoodreporter.com',
+    'vulture': 'vulture.com',
+    'vult': 'vulture.com',
+    'timeout': 'timeout.com',
+    'time-out': 'timeout.com',
+    'deadline': 'deadline.com',
+    'wsj': 'wsj.com',
+    'ew': 'ew.com',
+    'entertainment-weekly': 'ew.com',
+    'nypost': 'nypost.com',
+    'new-york-post': 'nypost.com',
+    'guardian': 'theguardian.com',
+    'the-guardian': 'theguardian.com',
+    'chicagotribune': 'chicagotribune.com',
+    'chicago-tribune': 'chicagotribune.com',
+    'wapo': 'washingtonpost.com',
+    'washpost': 'washingtonpost.com',
+    'washington-post': 'washingtonpost.com',
+    'usatoday': 'usatoday.com',
+    'usa-today': 'usatoday.com',
+    'ap': 'apnews.com',
+    'associated-press': 'apnews.com',
+    'rollingstone': 'rollingstone.com',
+    'rolling-stone': 'rollingstone.com',
+    'daily-beast': 'thedailybeast.com',
+    'thedailybeast': 'thedailybeast.com',
+    'observer': 'observer.com',
+    'the-wrap': 'thewrap.com',
+    'thewrap': 'thewrap.com',
+    'nydailynews': 'nydailynews.com',
+    'new-york-daily-news': 'nydailynews.com',
+    'newsday': 'newsday.com',
+    'theatermania': 'theatermania.com',
+    'newyorktheatreguide': 'newyorktheatreguide.com',
+    'new-york-theatre-guide': 'newyorktheatreguide.com',
+    'nystagereview': 'nystagereview.com',
+    'ny-stage-review': 'nystagereview.com',
+    'new-york-stage-review': 'nystagereview.com',
+    'theatrely': 'theatrely.com',
+    'newyorktheater': 'newyorktheater.me',
+    'broadwayworld': 'broadwayworld.com',
+    'bww': 'broadwayworld.com',
+    'cititour': 'cititour.com',
+    'amny': 'amny.com',
+    'am-new-york': 'amny.com',
+    'newyorker': 'newyorker.com',
+    'the-new-yorker': 'newyorker.com',
+    'indiewire': 'indiewire.com',
+    'forward': 'forward.com',
+    'talkinbroadway': 'talkinbroadway.com',
+    'talkin-broadway': 'talkinbroadway.com',
+    'broadway-news': 'broadwaynews.com',
+    'stage-and-cinema': 'stageandcinema.com',
+    'culture-sauce': 'culturesauce.com',
+    'dc-metro-theater-arts': 'dcmetrotheaterarts.com',
+    'nj-arts': 'njarts.net',
+  },
 };
 
 // Statistics tracking
@@ -209,6 +273,11 @@ const stats = {
   browserbaseMinutesUsed: 0,
   // Track failures by outlet for end-of-run reporting
   failuresByOutlet: {},  // { outletName: { count, urls: [], domain, hasCredentials, isPaywalled } }
+  // URL discovery stats
+  urlDiscoveryAttempts: 0,
+  urlDiscoverySuccess: 0,
+  urlDiscoveryCapped: 0,  // Skipped due to per-run cap
+  urlDiscoveryDetails: [],  // { reviewId, oldUrl, newUrl }
 };
 
 // State tracking
@@ -456,27 +525,47 @@ async function loginToSite(domain, email, password) {
 
   try {
     if (domain === 'nytimes.com') {
+      // NYT login is behind DataDome CAPTCHA - headless Playwright cannot solve it.
+      // Strategy: Navigate to the login page. If CAPTCHA is detected, skip login
+      // and rely on Archive.org / other tiers for NYT content.
+      // Browserbase (Tier 1.5) has CAPTCHA solving and handles NYT separately.
       await page.goto('https://myaccount.nytimes.com/auth/login', { timeout: CONFIG.loginTimeout });
-      await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+      await page.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {});
+      await page.waitForTimeout(2000);
 
-      // Email step - try multiple selectors (NYT login form changes)
+      // Check for CAPTCHA / bot detection (DataDome)
+      const hasCaptcha = await page.evaluate(() => {
+        const iframes = document.querySelectorAll('iframe');
+        for (const f of iframes) {
+          if (f.src && f.src.includes('captcha-delivery.com')) return true;
+        }
+        const text = document.body?.innerText || '';
+        if (text.includes('confirm that you are human') || text.includes('Slide right to complete')) return true;
+        return false;
+      });
+
+      if (hasCaptcha) {
+        console.log('    ✗ NYT login blocked by CAPTCHA (DataDome) - skipping Playwright login');
+        console.log('      → NYT articles will use Archive.org or Browserbase (CAPTCHA-solving) tiers');
+        return false;
+      }
+
+      // If no CAPTCHA, try the standard login flow
       const emailInput = await page.$('input[name="email"], input[type="email"], #email');
       if (emailInput) {
-        await emailInput.fill(email);
+        await emailInput.type(email, { delay: 50 });
         await page.click('button[data-testid="submit-email"], button[type="submit"]').catch(() => {});
         await page.waitForTimeout(3000);
 
-        // Password step
         const passInput = await page.$('input[name="password"], input[type="password"]');
         if (passInput) {
-          await passInput.fill(password);
+          await passInput.type(password, { delay: 50 });
           await page.click('button[data-testid="login-button"], button[type="submit"]').catch(() => {});
           await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
           await page.waitForTimeout(3000);
         }
       }
 
-      // Verify: check for user menu, account link, or absence of login form
       const verified = await page.evaluate(() => {
         const userMenu = document.querySelector('[data-testid="user-menu"], [data-testid="user-settings-button"]');
         const loginForm = document.querySelector('input[name="email"]');
@@ -496,7 +585,7 @@ async function loginToSite(domain, email, password) {
         console.log('    ✓ NYT login likely succeeded (login form gone)');
         return true;
       }
-      console.log('    ⚠ NYT login uncertain (login form still visible) - continuing anyway');
+      console.log('    ⚠ NYT login uncertain - continuing anyway');
       return true;
     }
 
@@ -513,22 +602,27 @@ async function loginToSite(domain, email, password) {
       }
 
       // Step 1: Enter email and submit
+      // IMPORTANT: Must use type() not fill() - the "Submit Email" button is disabled
+      // until React detects input events, which fill() doesn't trigger
       const emailField = await page.$('input[type="email"], input[name="email"], [role="textbox"]');
       if (!emailField) {
         console.log('    ✗ Vulture login FAILED (no email field found on subs.nymag.com)');
         return false;
       }
-      await emailField.fill(email);
-      await page.waitForTimeout(500);
+      await emailField.click();
+      await emailField.type(email, { delay: 30 });
+      await page.waitForTimeout(1000);
 
-      // Click "Submit Email" button
-      const submitEmailBtn = await page.$('button:has-text("Submit Email"), button[type="submit"]');
+      // Click "Submit Email" button (should now be enabled after typing)
+      const submitEmailBtn = await page.$('button:has-text("Submit Email"):not([disabled])');
       if (submitEmailBtn) {
         await submitEmailBtn.click();
       } else {
+        // Fallback: try pressing Enter
+        console.log('    ⚠ Submit Email button still disabled, trying Enter key');
         await page.keyboard.press('Enter');
       }
-      await page.waitForTimeout(3000);
+      await page.waitForTimeout(4000);
 
       // Step 2: Enter password (page transitions to password form)
       const passwordField = await page.$('input[type="password"]');
@@ -536,7 +630,8 @@ async function loginToSite(domain, email, password) {
         console.log('    ✗ Vulture login FAILED (no password field after email submit - may be magic link flow)');
         return false;
       }
-      await passwordField.fill(password);
+      await passwordField.click();
+      await passwordField.type(password, { delay: 30 });
       await page.waitForTimeout(500);
 
       // Click "Sign In" button
@@ -574,14 +669,50 @@ async function loginToSite(domain, email, password) {
     }
 
     if (domain === 'washingtonpost.com') {
+      // WaPo uses a two-step login: email → "Next" button → password → submit
       await page.goto('https://www.washingtonpost.com/subscribe/signin/', { timeout: CONFIG.loginTimeout });
-      await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+      await page.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {});
+      await page.waitForTimeout(2000);
 
-      await page.fill('input[name="email"], input[type="email"]', email).catch(() => {});
-      await page.fill('input[name="password"], input[type="password"]', password).catch(() => {});
-      await page.click('button[type="submit"], [data-testid="sign-in-btn"]').catch(() => {});
-      await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
-      await page.waitForTimeout(3000);
+      // Step 1: Enter email
+      const emailInput = await page.$('input[type="email"], input[name="email"], [role="textbox"]');
+      if (!emailInput) {
+        console.log('    ✗ WaPo login FAILED (no email field found)');
+        return false;
+      }
+      await emailInput.click();
+      await emailInput.type(email, { delay: 30 });
+      await page.waitForTimeout(500);
+
+      // Click "Next" button (not "submit")
+      const nextBtn = await page.$('button:has-text("Next"), button:has-text("Sign in"), button[type="submit"]');
+      if (nextBtn) {
+        await nextBtn.click();
+      } else {
+        await page.keyboard.press('Enter');
+      }
+      await page.waitForTimeout(4000);
+
+      // Step 2: Enter password (page transitions to password form)
+      const passInput = await page.$('input[type="password"], input[name="password"]');
+      if (passInput) {
+        await passInput.click();
+        await passInput.type(password, { delay: 30 });
+        await page.waitForTimeout(500);
+
+        // Click sign in button
+        const signInBtn = await page.$('button:has-text("Sign in"), button:has-text("Submit"), button[type="submit"]');
+        if (signInBtn) {
+          await signInBtn.click();
+        } else {
+          await page.keyboard.press('Enter');
+        }
+        await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+        await page.waitForTimeout(3000);
+      } else {
+        console.log('    ✗ WaPo login FAILED (no password field after email step)');
+        return false;
+      }
 
       // Verify: check if redirected away from signin or user indicator appears
       const postUrl = page.url();
@@ -602,26 +733,61 @@ async function loginToSite(domain, email, password) {
     }
 
     if (domain === 'wsj.com') {
+      // WSJ redirects to sso.accounts.dowjones.com for login
+      // Two-step: email/username → "Continue" button → password → "Continue" button
       await page.goto('https://accounts.wsj.com/login', { timeout: CONFIG.loginTimeout });
-      await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+      await page.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {});
+      await page.waitForTimeout(3000); // Allow redirect to sso.accounts.dowjones.com
 
-      // WSJ has 2-step login: username first, then password
-      await page.fill('input[name="username"], input[name="email"], input[type="email"]', email).catch(() => {});
-      await page.click('button[type="submit"]').catch(() => {});
-      await page.waitForTimeout(3000);
+      // Step 1: Enter email/username
+      // The field may not have standard name attributes - use role-based or generic selectors
+      const emailInput = await page.$('input[type="email"], input[name="username"], input[name="email"], [role="textbox"]');
+      if (!emailInput) {
+        console.log('    ✗ WSJ login FAILED (no email/username field found)');
+        return false;
+      }
+      await emailInput.click();
+      await emailInput.type(email, { delay: 30 });
+      await page.waitForTimeout(500);
 
-      await page.fill('input[name="password"], input[type="password"]', password).catch(() => {});
-      await page.click('button[type="submit"]').catch(() => {});
-      await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
-      await page.waitForTimeout(3000);
+      // Click "Continue" button (WSJ uses "Continue" not "Submit")
+      const continueBtn = await page.$('button:has-text("Continue"), button:has-text("Sign In"), button[type="submit"]');
+      if (continueBtn) {
+        await continueBtn.click();
+      } else {
+        await page.keyboard.press('Enter');
+      }
+      await page.waitForTimeout(4000);
 
-      // Verify: check if redirected away from login
+      // Step 2: Enter password
+      const passInput = await page.$('input[type="password"], input[name="password"]');
+      if (passInput) {
+        await passInput.click();
+        await passInput.type(password, { delay: 30 });
+        await page.waitForTimeout(500);
+
+        // Click Continue/Sign In for password step
+        const signInBtn = await page.$('button:has-text("Continue"), button:has-text("Sign In"), button[type="submit"]');
+        if (signInBtn) {
+          await signInBtn.click();
+        } else {
+          await page.keyboard.press('Enter');
+        }
+        await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+        await page.waitForTimeout(3000);
+      } else {
+        console.log('    ✗ WSJ login FAILED (no password field after email step)');
+        return false;
+      }
+
+      // Verify: check if redirected away from login (both old and new URLs)
       const postUrl = page.url();
-      const leftLogin = !postUrl.includes('accounts.wsj.com/login');
+      const leftLogin = !postUrl.includes('accounts.wsj.com/login') && !postUrl.includes('accounts.dowjones.com/login');
       const hasError = await page.$('[class*="error"], [class*="Error"], .message--error').catch(() => null);
 
       if (hasError) {
-        console.log('    ✗ WSJ login FAILED (error shown - check credentials)');
+        const errorText = await hasError.textContent().catch(() => '');
+        console.log(`    ✗ WSJ login FAILED (error: ${errorText.substring(0, 80)})`);
         return false;
       }
       if (leftLogin) {
@@ -1039,6 +1205,184 @@ async function fetchFromArchive(url) {
 }
 
 // ============================================================================
+// URL DISCOVERY - Find correct URLs for reviews with dead/fabricated links
+// ============================================================================
+
+/**
+ * Discover the correct URL for a review by searching Google via ScrapingBee SERP API.
+ * Used when the existing URL returns 404 (common with ~88 fabricated web-search URLs).
+ *
+ * @param {Object} review - Review object with showId, outletId, outlet, criticName, url
+ * @returns {string|null} - Discovered URL, or null if not found
+ */
+const URL_DISCOVERY_MAX_PER_RUN = 50; // Cap SERP API calls to control costs
+
+async function discoverCorrectUrl(review) {
+  if (!CONFIG.scrapingBeeKey || !axios) {
+    return null;
+  }
+
+  // Per-run cap to prevent runaway SERP API costs
+  if (stats.urlDiscoveryAttempts >= URL_DISCOVERY_MAX_PER_RUN) {
+    stats.urlDiscoveryCapped++;
+    console.log(`    ⚠ URL discovery capped (${URL_DISCOVERY_MAX_PER_RUN}/run limit reached)`);
+    return null;
+  }
+
+  stats.urlDiscoveryAttempts++;
+
+  // Look up real show title from shows.json (handles apostrophes, special chars)
+  // Falls back to slug-derived title if lookup fails
+  let showTitle;
+  let showYear = '';
+  try {
+    const showsData = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+    const showEntry = showsData.shows.find(s => s.id === review.showId);
+    if (showEntry) {
+      showTitle = showEntry.title;
+      showYear = (showEntry.openingDate || '').substring(0, 4);
+    }
+  } catch (e) { /* fall through to slug-based */ }
+
+  if (!showTitle) {
+    showTitle = (review.showId || '')
+      .replace(/-\d{4}$/, '')
+      .replace(/-/g, ' ');
+    // Extract year from showId as fallback
+    const yearMatch = (review.showId || '').match(/-(\d{4})$/);
+    if (yearMatch) showYear = yearMatch[1];
+  }
+
+  if (!showTitle) return null;
+
+  // Get domain for the outlet
+  const outletId = (review.outletId || '').toLowerCase();
+  const domain = CONFIG.outletDomains[outletId];
+
+  // Build search query — include year to disambiguate revivals (Our Town 2024 vs 2009)
+  // NOTE: We intentionally omit the critic name from the query. Fabricated reviews
+  // (source: "web-search") often have wrong critic attributions, and including a
+  // non-existent critic name kills the search (0 results). The goal is to find
+  // the real review URL at the outlet, not to verify the critic.
+  const yearClause = showYear ? ` ${showYear}` : '';
+  let query;
+  if (domain) {
+    query = `site:${domain} "${showTitle}" Broadway review${yearClause}`;
+  } else {
+    // No known domain - use outlet name
+    const outletName = review.outlet || outletId;
+    query = `"${showTitle}" Broadway review${yearClause} "${outletName}"`;
+  }
+
+  console.log(`  [URL Discovery] Searching: ${query}`);
+
+  try {
+    const response = await axios.get('https://app.scrapingbee.com/api/v1/store/google', {
+      params: {
+        api_key: CONFIG.scrapingBeeKey,
+        search: query,
+      },
+      timeout: 30000,
+    });
+
+    // ScrapingBee SERP API returns JSON with organic_results
+    const data = response.data;
+    const results = data.organic_results || data.results || [];
+
+    if (!results.length) {
+      console.log('    ✗ No search results found');
+      return null;
+    }
+
+    // Extract the old URL's domain for comparison
+    let oldDomain = '';
+    try {
+      oldDomain = new URL(review.url).hostname.replace(/^www\./, '');
+    } catch (e) {}
+
+    // Find best matching result
+    const targetDomain = domain || oldDomain;
+    const showTitleLower = showTitle.toLowerCase();
+
+    for (const result of results.slice(0, 5)) {
+      const url = result.url || result.link;
+      if (!url) continue;
+
+      // Skip non-article URLs (homepage, category pages, search results)
+      const urlLower = url.toLowerCase();
+      if (urlLower.endsWith('.com/') || urlLower.endsWith('.com')) continue;
+      if (urlLower.includes('/search?') || urlLower.includes('/tag/') || urlLower.includes('/category/')) continue;
+
+      // Skip if same as the dead URL
+      if (url === review.url) continue;
+
+      // Check domain match
+      let urlDomain = '';
+      try {
+        urlDomain = new URL(url).hostname.replace(/^www\./, '');
+      } catch (e) { continue; }
+
+      if (targetDomain && !urlDomain.includes(targetDomain.replace(/^www\./, ''))) continue;
+
+      // Check relevance - title must mention the show (snippets have too many false positives)
+      const title = (result.title || '').toLowerCase();
+      const showSlugCheck = showTitleLower.replace(/\s+/g, '-');
+
+      const titleHasShow = title.includes(showTitleLower);
+      const urlHasShow = urlLower.includes(showSlugCheck);
+      const titleHasReview = title.includes('review');
+
+      // Require: (title mentions show) OR (URL contains show slug)
+      // AND at least one signal it's a review (title says "review" or URL contains "review")
+      if (!titleHasShow && !urlHasShow) continue;
+      if (!titleHasReview && !urlLower.includes('review')) continue;
+
+      // Looks like a match
+      console.log(`    ✓ Found: ${url}`);
+      stats.urlDiscoverySuccess++;
+      stats.urlDiscoveryDetails.push({
+        reviewId: review.reviewId || `${review.showId}/${review.file}`,
+        oldUrl: review.url,
+        newUrl: url,
+      });
+      return url;
+    }
+
+    // Fallback: if we have domain match but no title match, take first domain-matching result
+    if (targetDomain) {
+      for (const result of results.slice(0, 3)) {
+        const url = result.url || result.link;
+        if (!url || url === review.url) continue;
+        let urlDomain = '';
+        try { urlDomain = new URL(url).hostname.replace(/^www\./, ''); } catch (e) { continue; }
+        if (urlDomain.includes(targetDomain.replace(/^www\./, ''))) {
+          const urlLower = url.toLowerCase();
+          if (urlLower.endsWith('.com/') || urlLower.endsWith('.com')) continue;
+          // Accept only if URL path contains show-related slug (not just "review" — too permissive)
+          const showSlug = showTitleLower.replace(/\s+/g, '-');
+          if (urlLower.includes(showSlug)) {
+            console.log(`    ✓ Found (fallback): ${url}`);
+            stats.urlDiscoverySuccess++;
+            stats.urlDiscoveryDetails.push({
+              reviewId: review.reviewId || `${review.showId}/${review.file}`,
+              oldUrl: review.url,
+              newUrl: url,
+            });
+            return url;
+          }
+        }
+      }
+    }
+
+    console.log('    ✗ No matching URL found in search results');
+    return null;
+  } catch (error) {
+    console.log(`    ✗ URL discovery failed: ${error.message}`);
+    return null;
+  }
+}
+
+// ============================================================================
 // UNIFIED FETCH FUNCTION
 // ============================================================================
 
@@ -1131,6 +1475,7 @@ async function fetchReviewText(review) {
       console.log(`    ✗ Failed: ${error.message}`);
 
       // If 404, only try Archive.org then bail - don't waste API credits on dead URLs
+      // (URL discovery is handled by processReview after this function throws)
       if (error.message.includes('404')) {
         console.log('  [Tier 4] Archive.org (404 detected - skipping other tiers)...');
         try {
@@ -1190,6 +1535,7 @@ async function fetchReviewText(review) {
       attempts.push({ tier: 2, method: 'scrapingbee', success: false, error: error.message });
       console.log(`    ✗ Failed: ${error.message}`);
       // If ScrapingBee also got 404, URL is confirmed dead - bail out
+      // (URL discovery is handled by processReview after this function throws)
       if (error.message.includes('404')) {
         throw new Error(`URL confirmed dead (404 from multiple tiers): ${JSON.stringify(attempts)}`);
       }
@@ -2327,6 +2673,63 @@ async function processReview(review) {
 
   } catch (error) {
     console.log(`  ✗ FAILED: ${error.message}`);
+
+    // URL Discovery: If the failure was a 404 and we haven't retried yet, try to find the correct URL
+    if (error.message.includes('404') && !review._discoveryAttempted && review.filePath) {
+      review._discoveryAttempted = true;
+      console.log('\n  [URL Discovery] Attempting to find correct URL via Google...');
+      const discoveredUrl = await discoverCorrectUrl(review);
+
+      if (discoveredUrl) {
+        const originalUrl = review.url;
+        review.url = discoveredUrl;
+        console.log(`  [Retry] Re-attempting fetch with discovered URL...`);
+
+        try {
+          const retryResult = await fetchReviewText(review);
+          console.log(`  ✓ SUCCESS via ${retryResult.method} with discovered URL (${retryResult.text.length} chars)`);
+
+          // Update the review file's URL atomically (write to .tmp, then rename)
+          try {
+            const reviewData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+            reviewData.url = discoveredUrl;
+            reviewData.previousUrl = originalUrl;
+            reviewData.urlDiscoveredAt = new Date().toISOString();
+            reviewData.urlDiscoveryMethod = 'google-serp';
+            const tmpPath = review.filePath + '.tmp';
+            fs.writeFileSync(tmpPath, JSON.stringify(reviewData, null, 2));
+            fs.renameSync(tmpPath, review.filePath);
+            console.log(`    → Updated review URL: ${originalUrl} → ${discoveredUrl}`);
+          } catch (writeErr) {
+            console.log(`    ⚠ Could not update URL in file: ${writeErr.message}`);
+          }
+
+          // Continue with normal success processing (quality check, validation, etc.)
+          const showTitle = review.showId ? review.showId.replace(/-\d{4}$/, '').replace(/-/g, ' ') : '';
+          const qualityCheck = assessTextQuality(retryResult.text, showTitle);
+          if (qualityCheck.quality === 'garbage' && qualityCheck.confidence === 'high') {
+            console.log(`  ✗ GARBAGE CONTENT from discovered URL: ${qualityCheck.issues[0]}`);
+            stats.totalFailed++;
+            return { success: false, error: 'garbage_content_from_discovered_url' };
+          }
+
+          const archivePath = retryResult.html ? archiveHtml(retryResult.html, review, retryResult.method) : null;
+          const validation = validateReviewText(retryResult.text, review);
+          updateReviewJson(review, retryResult.text, validation, archivePath, retryResult.method, retryResult.attempts, retryResult.archiveData || {}, retryResult.html || '', null);
+
+          if (retryResult.method && state.tierBreakdown[retryResult.method]) {
+            state.tierBreakdown[retryResult.method].push(review.reviewId);
+          }
+
+          return { success: true, method: retryResult.method + '+url-discovery', validation };
+        } catch (retryErr) {
+          // Discovered URL also failed — restore original and fall through to normal failure
+          review.url = originalUrl;
+          console.log(`    ✗ Discovered URL also failed: ${retryErr.message}`);
+        }
+      }
+    }
+
     stats.totalFailed++;
 
     // Track failures by outlet for end-of-run reporting
@@ -2465,11 +2868,14 @@ function generateReport() {
       scrapingBeeCreditsUsed: stats.scrapingBeeCreditsUsed,
       browserbaseSessionsUsed: stats.browserbaseSessionsUsed,
       browserbaseMinutesUsed: Math.round(stats.browserbaseMinutesUsed * 10) / 10,
+      urlDiscoveryAttempts: stats.urlDiscoveryAttempts,
+      urlDiscoverySuccess: stats.urlDiscoverySuccess,
     },
     processed: state.processed,
     failed: state.failed,
     tierDetails: state.tierBreakdown,
     failuresByOutlet: stats.failuresByOutlet,
+    urlDiscoveries: stats.urlDiscoveryDetails,
   };
 
   const date = new Date().toISOString().split('T')[0];
@@ -2494,6 +2900,21 @@ function generateReport() {
   console.log(`║ API USAGE                                                ║`);
   console.log(`║ ├─ ScrapingBee credits: ${String(stats.scrapingBeeCreditsUsed).padStart(32)} ║`);
   console.log(`║ └─ Browserbase sessions: ${String(stats.browserbaseSessionsUsed).padStart(31)} ║`);
+  if (stats.urlDiscoveryAttempts > 0) {
+    console.log(`${'╠' + '═'.repeat(58) + '╣'}`);
+    console.log(`║ URL DISCOVERY                                            ║`);
+    console.log(`║ ├─ Attempted: ${String(stats.urlDiscoveryAttempts).padStart(42)} ║`);
+    console.log(`║ ├─ Found: ${String(stats.urlDiscoverySuccess).padStart(46)} ║`);
+    const rate = stats.urlDiscoveryAttempts > 0
+      ? ((stats.urlDiscoverySuccess / stats.urlDiscoveryAttempts) * 100).toFixed(0) + '%'
+      : 'N/A';
+    console.log(`║ └─ Success rate: ${String(rate).padStart(39)} ║`);
+    if (stats.urlDiscoveryDetails.length > 0) {
+      for (const d of stats.urlDiscoveryDetails) {
+        console.log(`║   ${d.reviewId.substring(0, 54).padEnd(55)}║`);
+      }
+    }
+  }
   console.log(`${'╚' + '═'.repeat(58) + '╝'}`);
 
   // Print failures by outlet - helps identify which sites need subscriptions or better scraping

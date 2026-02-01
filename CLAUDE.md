@@ -354,6 +354,16 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 
 **When creating/editing workflows:** Always check if the script needs API keys and add the appropriate `env:` block.
 
+### Local API Keys
+
+**All API keys are also available locally** in the `.env` file at the project root. When running scripts locally or calling external APIs (OpenAI, Gemini, ScrapingBee, etc.), source this file first:
+
+```bash
+source /Users/tompryor/Broadwayscore/.env
+```
+
+This file contains the same keys listed in the GitHub Secrets table above. **Do not claim keys are unavailable locally** — they are in `.env`.
+
 ## Broadway Investment Tracker (`/biz`)
 
 Dedicated section for recoupment tracking and investment analysis.
