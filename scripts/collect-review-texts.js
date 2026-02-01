@@ -851,6 +851,75 @@ async function loginToSite(domain, email, password) {
 // ============================================================================
 
 /**
+ * Login to paywalled sites via Browserbase (same flow as Playwright but with CAPTCHA solving).
+ * Supports WSJ, NYT, WaPo, Vulture/NYMag. Returns true if login appears successful.
+ */
+async function browserbaseLogin(bbPage, domain, email, password) {
+  if (domain === 'wsj.com') {
+    await bbPage.goto('https://accounts.wsj.com/login', { timeout: CONFIG.loginTimeout });
+    await bbPage.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {});
+    await bbPage.waitForTimeout(3000);
+
+    const emailInput = await bbPage.$('input[name="emailOrUsername"], input#emailOrUsername-form-item, input[type="email"], input[name="username"]');
+    if (!emailInput) return false;
+    await emailInput.click();
+    await emailInput.type(email, { delay: 30 });
+    await bbPage.waitForTimeout(500);
+
+    const continueBtn = await bbPage.$('button:has-text("Continue"), button:has-text("Sign In"), button[type="submit"]');
+    if (continueBtn) await continueBtn.click();
+    else await bbPage.keyboard.press('Enter');
+    await bbPage.waitForTimeout(4000);
+
+    const passInput = await bbPage.$('input[type="password"]');
+    if (!passInput) return false;
+    await passInput.click();
+    await passInput.type(password, { delay: 30 });
+    await bbPage.waitForTimeout(500);
+
+    const signInBtn = await bbPage.$('button:has-text("Continue"), button:has-text("Sign In"), button[type="submit"]');
+    if (signInBtn) await signInBtn.click();
+    else await bbPage.keyboard.press('Enter');
+    await bbPage.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+    await bbPage.waitForTimeout(3000);
+
+    const postUrl = bbPage.url();
+    return !postUrl.includes('accounts.wsj.com/login') && !postUrl.includes('accounts.dowjones.com/login');
+  }
+
+  if (domain === 'nytimes.com') {
+    await bbPage.goto('https://myaccount.nytimes.com/auth/login', { timeout: CONFIG.loginTimeout });
+    await bbPage.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {});
+    await bbPage.waitForTimeout(3000);
+
+    const emailInput = await bbPage.$('input[name="email"], input[type="email"]');
+    if (!emailInput) return false;
+    await emailInput.click();
+    await emailInput.type(email, { delay: 30 });
+
+    const continueBtn = await bbPage.$('button:has-text("Continue"), button[data-testid="submit-email"]');
+    if (continueBtn) await continueBtn.click();
+    else await bbPage.keyboard.press('Enter');
+    await bbPage.waitForTimeout(3000);
+
+    const passInput = await bbPage.$('input[type="password"]');
+    if (!passInput) return false;
+    await passInput.click();
+    await passInput.type(password, { delay: 30 });
+
+    const loginBtn = await bbPage.$('button:has-text("Log In"), button[type="submit"]');
+    if (loginBtn) await loginBtn.click();
+    else await bbPage.keyboard.press('Enter');
+    await bbPage.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+    await bbPage.waitForTimeout(3000);
+
+    return !bbPage.url().includes('auth/login');
+  }
+
+  return false;
+}
+
+/**
  * Load Browserbase usage from disk (tracks daily spending)
  */
 function loadBrowserbaseUsage() {
@@ -976,6 +1045,23 @@ async function fetchWithBrowserbase(url, review) {
     const bbContext = contexts[0] || await bbBrowser.newContext();
     bbPage = await bbContext.newPage();
 
+    // Login to paywalled sites before navigating to the review URL
+    // Browserbase has CAPTCHA solving, making it ideal for sites that block Playwright
+    const paywallCreds = getPaywallCredentials(url);
+    if (paywallCreds && paywallCreds.email) {
+      console.log(`    → Browserbase login to ${paywallCreds.domain}...`);
+      try {
+        const loginOk = await browserbaseLogin(bbPage, paywallCreds.domain, paywallCreds.email, paywallCreds.password);
+        if (loginOk) {
+          console.log(`    ✓ Browserbase login to ${paywallCreds.domain} succeeded`);
+        } else {
+          console.log(`    ⚠ Browserbase login to ${paywallCreds.domain} uncertain - continuing`);
+        }
+      } catch (loginErr) {
+        console.log(`    ⚠ Browserbase login failed: ${loginErr.message} - continuing without login`);
+      }
+    }
+
     // Navigate to the URL
     await bbPage.goto(url, {
       waitUntil: 'domcontentloaded',
@@ -1005,13 +1091,26 @@ async function fetchWithBrowserbase(url, review) {
       throw new Error('Paywall detected');
     }
 
-    // Extract text using same method as Playwright
+    // Extract text using same method as Playwright (full selector list)
     const text = await bbPage.evaluate(() => {
       const selectors = [
+        // NYT
+        '[data-testid="article-body"]', 'section[name="articleBody"]',
+        // Vulture / NY Mag / Condé Nast
+        '[class*="ArticlePageChunks"]', '[class*="RawHtmlBody"]',
+        // TimeOut (hashed class names)
+        '[class*="_articleContent_"]',
+        // WSJ
+        '.article-content .wsj-snippet-body', 'div.article-content', '[class*="article_body"]',
+        // WaPo
+        '[data-qa="article-body"]', '.article-body',
+        // Entertainment Weekly / People
+        '[data-testid="article-body-content"]',
+        // Generic (ordered by specificity)
         'article .entry-content', 'article .post-content', 'article .article-body',
-        '[data-testid="article-body"]', '.article-body', '.story-body', '.entry-content',
-        '.post-content', '.review-content', '.article__body', '.article-content',
-        '.rich-text', '[class*="ArticleBody"]', '[class*="article-body"]',
+        '.story-body', '.entry-content', '.post-content', '.review-content',
+        '.article__body', '.article-content', '.rich-text',
+        '[class*="ArticleBody"]', '[class*="article-body"]',
         '[class*="story-body"]', '[class*="StoryBody"]', 'main article',
         '.story-content', '[role="article"]', 'article', 'main',
       ];
