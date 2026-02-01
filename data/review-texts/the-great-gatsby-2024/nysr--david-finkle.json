@@ -23,6 +23,9 @@
   "sourceMethod": "bww-roundup",
   "scoreSource": "live-fetch",
   "scoreConfidence": "medium",
+  "needsRescore": true,
+  "_llmScoreInvalidReason": "LLM was fed garbage 404 page text with reviews of OTHER shows. Score of 75 is completely wrong - bwwExcerpt says 'sorry to report, a travesty' and explicit score is 2/5 (40).",
+  "_llmScoreInvalidAt": "2026-01-31T23:55:00.000Z",
   "llmScore": {
     "score": 75,
     "confidence": "medium",
