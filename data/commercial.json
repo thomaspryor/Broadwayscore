@@ -82,7 +82,7 @@
       "recoupedDate": "2019-11",
       "recoupedWeeks": 30,
       "recoupedSource": "Broadway News / Playbill",
-      "notes": "First musical of 2018-2019 season to recoup. Won 8 Tony Awards including Best Musical. Grosses have softened recently but remains profitable."
+      "notes": "First musical of 2018-2019 season to recoup. Won 8 Tony Awards including Best Musical. Recouped in ~30 weeks (6 months). Received $10M SVOG grant during COVID shutdown — one of at least 15 Broadway shows to receive the maximum grant. Grosses have softened recently but remains profitable."
     },
     "mj": {
       "designation": "Windfall",
@@ -182,14 +182,38 @@
     "hells-kitchen": {
       "designation": "Fizzle",
       "capitalization": 22000000,
-      "capitalizationSource": "NY Times",
-      "weeklyRunningCost": 775000,
+      "capitalizationSource": "NY Times / Broadway Journal",
+      "weeklyRunningCost": 750000,
       "costMethodology": "reddit-standard",
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Closing Feb 2026 without recouping. Won 2 Tonys + Grammy. Grossed $100M+ but high running costs prevented recoupment. International productions planned.",
+      "estimatedRecoupmentPct": [55, 65],
+      "estimatedRecoupmentSource": "AM New York: returned ~60% of $22M capitalization by closing",
+      "estimatedRecoupmentDate": "2026-01-31",
+      "insiderProfitSharePct": 10,
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com",
+          "date": "2024-07-03",
+          "excerpt": "Alicia Keys earns 10% of net profits at recoupment (12.5% at 150% recoupment). At 200% recoupment, 35% of net profits split among Keys, book writer, director, GM, Public Theater, and workshop actors."
+        },
+        {
+          "type": "trade",
+          "url": "https://www.amny.com",
+          "date": "2026-01-18",
+          "excerpt": "Returned only ~60% of $22M capitalization. Did not recoup."
+        }
+      ],
+      "deepResearch": {
+        "verifiedFields": ["capitalization", "estimatedRecoupmentPct", "insiderProfitSharePct"],
+        "verifiedDate": "2026-01-31",
+        "verifiedBy": "manual",
+        "notes": "ChatGPT Deep Research confirmed ~60% recovery and Alicia Keys' outsized profit participation structure (Broadway Journal, Jul 2024)."
+      },
+      "notes": "Closed Feb 22, 2026 without recouping. Returned ~60% of $22M to investors. Won 2 Tonys + Grammy. Alicia Keys had outsized insider profit participation: sole lead producer + underlying rights holder, earning 10% of net profits at recoupment (12.5% at 150%, 35% insider split at 200%). Similar structure to Harry Potter's Cursed Child. Had the show recouped, investors would have seen diluted returns. Weekly nut ~$750K. International productions planned may improve overall investor returns.",
       "isEstimate": {
         "weeklyRunningCost": true
       }
@@ -370,8 +394,8 @@
       "recouped": true,
       "recoupedDate": "2025-12",
       "recoupedWeeks": 89,
-      "recoupedSource": "Reddit Grosses Analysis / Broadway Journal",
-      "notes": "Won Best Musical Tony 2024. Recouped $22M investment week ending December 28, 2025 after 744 performances (~89 weeks) and $121M total grosses. First new musical to recoup since 2022. Post-Tony grosses hit $1.4M/week record at Bernard B. Jacobs Theatre.",
+      "recoupedSource": "Broadway News (announced Jan 27, 2026)",
+      "notes": "Won Best Musical Tony 2024. Recouped $22M investment week ending December 28, 2025 after 744 performances (~89 weeks) and $121M total grosses. First new musical to recoup since 2022. Post-Tony grosses hit $1.4M/week record at Bernard B. Jacobs Theatre. West End production and tour announced.",
       "isEstimate": {
         "weeklyRunningCost": true
       }
