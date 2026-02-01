@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-02-01T15:08:31.001Z",
+  "runDate": "2026-02-01T15:11:52.306Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "doubt-2024",
+    "showFilter": "hamilton-2015",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,34 +12,34 @@
   },
   "summary": {
     "processed": 45,
-    "failed": 167,
+    "failed": 166,
     "skipped": 0,
-    "successRate": "20.8%"
+    "successRate": "21.3%"
   },
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 7,
     "browserbase": 0,
     "scrapingbee": 4,
     "brightdata": 2,
-    "archive": 37
+    "archive": 38
   },
   "statistics": {
     "tier1Attempts": 5,
-    "tier1Success": 2,
+    "tier1Success": 1,
     "tier1_5Attempts": 2,
     "tier1_5Success": 0,
     "tier2Attempts": 3,
-    "tier2Success": 1,
+    "tier2Success": 0,
     "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier4Attempts": 8,
+    "tier4Attempts": 12,
     "tier4Success": 4,
-    "totalFailed": 7,
-    "scrapingBeeCreditsUsed": 30,
+    "totalFailed": 6,
+    "scrapingBeeCreditsUsed": 22,
     "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.7,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "browserbaseMinutesUsed": 0.2,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -86,8 +86,8 @@
     "the-lion-king-1997/vulture--john-simon.json",
     "the-outsiders/new-york-magazinevulture-sara-holdren--sara-holdren.json",
     "the-outsiders/variety-naveen-kumar--naveen-kumar.json",
-    "doubt-2024/guardian--adrian-horton.json",
-    "doubt-2024/observer--david-cote.json"
+    "hamilton-2015/newsday--linda-winer.json",
+    "hamilton-2015/ap--mark-kennedy.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -250,13 +250,12 @@
     "stereophonic/variety-frank-rizzo--frank-rizzo.json",
     "suffs/vulture-sara-holdren--sara-holdren.json",
     "the-great-gatsby/new-york-magazinevulture-sara-holdren--unknown.json",
-    "doubt-2024/deadline--greg-evans.json",
-    "doubt-2024/nydailynews--chris-jones.json",
-    "doubt-2024/nydailynews--chris.json",
-    "doubt-2024/timeout--adam-feldman.json",
-    "doubt-2024/wsj--charles-isherwood.json",
-    "doubt-2024/wsj--charles.json",
-    "doubt-2024/thestage--lane-williamson.json"
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/observer--david-cote.json",
+    "hamilton-2015/timeout--david-cote.json",
+    "hamilton-2015/wsj--terry-teachout.json",
+    "hamilton-2015/the-clyde-fitch-report--david-finkle.json",
+    "hamilton-2015/thisbroadsway--sandra-mcfarland.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -266,8 +265,7 @@
       "appropriate-2023/observer--david-cote.json",
       "back-to-the-future-2023/ew--dalton-ross.json",
       "book-of-mormon-2011/timeout--david-cote.json",
-      "doubt-2024/guardian--adrian-horton.json",
-      "doubt-2024/observer--david-cote.json"
+      "hamilton-2015/ap--mark-kennedy.json"
     ],
     "browserbase": [],
     "scrapingbee": [
@@ -317,17 +315,38 @@
       "the-great-gatsby/variety-christian-lewis--christian-lewis.json",
       "the-lion-king-1997/vulture--john-simon.json",
       "the-outsiders/new-york-magazinevulture-sara-holdren--sara-holdren.json",
-      "the-outsiders/variety-naveen-kumar--naveen-kumar.json"
+      "the-outsiders/variety-naveen-kumar--naveen-kumar.json",
+      "hamilton-2015/newsday--linda-winer.json"
     ]
   },
   "failuresByOutlet": {
-    "New York Daily News": {
-      "count": 2,
-      "domain": "nydailynews.com",
+    "The Hollywood Reporter": {
+      "count": 1,
+      "domain": "hollywoodreporter.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
+    },
+    "Observer": {
+      "count": 1,
+      "domain": "observer.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The Clyde Fitch Report": {
+      "count": 1,
+      "domain": "clydefitchreport.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "hamilton-2015/newsday--linda-winer.json",
+      "oldUrl": "https://www.newsday.com/entertainment/theater/hamilton-broadway-review-2015/",
+      "newUrl": "https://www.newsday.com/entertainment/theater/hamilton-review-even-better-on-broadway-p56633"
+    }
+  ]
 }
