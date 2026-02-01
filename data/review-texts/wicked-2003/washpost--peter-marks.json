@@ -5,13 +5,13 @@
   "criticName": "Peter Marks",
   "url": "http://journaltimes.com/entertainment/a-radical-retelling-of-wizard-of-oz/article_de42e691-cb2a-5d4b-90a4-36ae0171c1e3.html",
   "publishDate": "November 1, 2003",
-  "fullText": "What saves 'Wicked' from the dustbin of Broadway also-rans is the ferocious talent of Idina Menzel, who plays Elphaba, the future Wicked Witch of the West.",
+  "fullText": "Get local news delivered to your inbox!\n\nBeginning of dialog window. Escape will cancel and close the window.\n\nGet up-to-the-minute news sent straight to your device.\n\nBack\n                        \n\n                        \n                            ×\n                           \n                        Enjoy unlimited digital access to journaltimes.com!\n                    \n                    \n\n                        \n                            \n    Sorry, an error occurred.\n\n*offer available for new customers only\n\n*offer available for new customers only\n\nAccount processing issue - the email address may already exist\n\nYour account has been registered, and you are now logged in.\n\nInvalid password or account does not exist\n\nSubmitting this form below will send a message to your email with a link to change your password.\n\nAn email message containing instructions on how to reset your password has been sent to the email address listed on your account.\n\nSecure transaction.\n            Secure transaction. Cancel anytime.\n\nYour gift purchase was successful!\n                                        Your purchase was successful, and you are now logged in.\n\nA receipt was sent to your email.",
   "showScoreExcerpt": "\"Wicked makes endearingly whimsical noises, the sounds of a bona fide crowd-pleaser. Much of the rest of the time, however, the magic fades as the show pursues its rather charmless agenda as a parable about the roots of political evil.\"",
   "originalScore": null,
   "assignedScore": 57,
   "source": "show-score",
   "needsFullText": true,
-  "sourceMethod": "showscore",
+  "sourceMethod": "scrapingbee",
   "scoreSource": "sentiment-strong-negative",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -76,5 +76,40 @@
     "web-search"
   ],
   "contentTier": "truncated",
-  "wordCount": 26
+  "wordCount": 26,
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 57,
+  "isFullReview": false,
+  "textWordCount": 146,
+  "archivePath": "data/archives/reviews/wicked-2003/washpost--peter-marks_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T14:08:01.633Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "textIssues": [
+    "Word count too low: 146 (min: 300)",
+    "Show title not found in text"
+  ]
 }
