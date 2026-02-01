@@ -5,7 +5,7 @@
   "criticName": "Aramide Tinubu",
   "url": "https://variety.com/2024/legit/reviews/stereophonic-review-broadway-1235997112/",
   "publishDate": "April 19, 2024",
-  "fullText": "This deeply immersive production is a technical marvel that showcases the creative process behind making a legendary album, while also exploring the personal costs of artistic ambition.",
+  "fullText": "There's a moment in David Adjmi's play \"Stereophonic\" when a discordant, mid-'70s band-on-the rise hears one of its songs played back to them in the recording studio for the first time, with all its multiple tracks layered together into an artful whole.\n\nIt leaves the ever-bickering band suddenly speechless, emotionally stunned and still with the realization that they have just heard something truly great.",
   "isFullReview": false,
   "dtliExcerpt": "This deeply immersive production is a technical marvel that showcases the creative process behind making a legendary album, while also exploring the personal costs of artistic ambition.",
   "originalScore": null,
@@ -63,5 +63,42 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 78,
+  "textWordCount": 64,
+  "archivePath": "data/archives/reviews/stereophonic-2024/variety--aramide-tinubu_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T23:13:21.393Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Paywall detected - login may have failed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "sourceMethod": "brightdata"
 }

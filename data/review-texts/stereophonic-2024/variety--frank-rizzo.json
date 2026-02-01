@@ -78,31 +78,13 @@
     "needsReviewReasons": []
   },
   "sourceMethod": "archive",
-  "archivePath": "data/archives/reviews/stereophonic-2024/variety--frank-rizzo_2026-01-26.html",
-  "textFetchedAt": "2026-01-26T19:15:25.092Z",
+  "archivePath": "data/archives/reviews/stereophonic-2024/variety--frank-rizzo_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T23:13:00.568Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Insufficient text extracted: 0 chars"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "timeout of 60000ms exceeded"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "Access blocked in Bright Data response"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
@@ -118,5 +100,10 @@
   "previousLlmScore": 85,
   "rescoreCompletedAt": "2026-02-01T16:12:33.588Z",
   "contentTier": "complete",
-  "wordCount": 1012
+  "wordCount": 1012,
+  "isFullReview": false,
+  "textWordCount": 103,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial"
 }
