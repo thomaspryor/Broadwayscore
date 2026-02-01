@@ -8,7 +8,7 @@
   "isFullReview": false,
   "showScoreExcerpt": null,
   "bwwExcerpt": "theme park ride with songs causing sensory overload and auditory assault",
-  "assignedScore": 75,
+  "assignedScore": 40,
   "source": "bww-roundup",
   "textStatus": "garbage_cleared",
   "textWordCount": 215,
@@ -19,48 +19,40 @@
   ],
   "textQuality": "excerpt_only",
   "sourceMethod": "bww-roundup",
-  "needsRescore": true,
-  "_llmScoreInvalidReason": "LLM was fed garbage 404 page text with reviews of OTHER shows (Joshua Henry/Purlie, Lesley Manville/Ghosts). Score of 75 is completely wrong - explicit score of 2/5 (40) is correct.",
-  "_llmScoreInvalidAt": "2026-01-31T23:55:00.000Z",
   "llmScore": {
-    "score": 75,
-    "confidence": "medium",
+    "score": 40,
+    "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 35,
+      "high": 45
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
-      "music": null,
-      "performances": 85,
+      "music": 35,
+      "performances": null,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "Joshua Henry gives what’s destined to be a Tony-winning performance",
-        "sentiment": "positive",
+        "quote": "theme park ride with songs causing sensory overload and auditory assault",
+        "sentiment": "negative",
         "strength": 5
-      },
-      {
-        "quote": "Lesley Manville and Mark Strong have disturbingly good chemistry",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "a self-absorbed filmmaker and the people who love him",
-        "sentiment": "neutral",
-        "strength": 3
       }
     ],
-    "reasoning": "GPT-4o-mini: The review highlights strong performances and chemistry among the cast, indicating a positive recommendation despite a lack of detailed critique on the script or direction.",
+    "reasoning": "Score based on critic's explicit 2/5 star rating and bwwExcerpt describing 'sensory overload and auditory assault'. Previous LLM score of 75 was invalid (based on 404 page garbage text).",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
+  },
+  "_previousInvalidLlmScore": {
+    "score": 75,
+    "reason": "LLM was fed garbage 404 page text with reviews of OTHER shows (Joshua Henry/Purlie, Lesley Manville/Ghosts)",
+    "invalidatedAt": "2026-02-01T00:00:00.000Z"
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",

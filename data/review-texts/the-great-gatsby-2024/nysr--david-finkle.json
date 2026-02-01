@@ -7,7 +7,7 @@
   "publishDate": "2024-04-25",
   "isFullReview": false,
   "bwwExcerpt": "uction team’s penchant for bells and whistles. If all you’re seeking is a spectacle, you will get one. For some real resonance and depth, though, you may just have to wait a while—or reread the book. David Finkle, New York Stage Review: This musical take on The Great Gatsby presents Jay Gatsby and Daisy Fay Buchanan as a sympathetic couple caught in unfortunate Jazz Age circumstances. In other words, the transfiguration of F. Scott Fitzgerald’s The Great Gatsby is, sorry to report, a travesty. Caroline Cao, New York Theatre Guide: All in all, this Great Gatsby shies away from making us think hard of the blood spilled due to Gatsby’s dealings, which are relegated to lines of dialogue and the campy song “Shady.” Something about the production feels too spic and span by the time it ends: Missing is a mess left behind by the Roaring Twenties excess. I felt the warmth in The Great Gatsby, but it was begging to bring on the heat. Gloria Oladipo, The Guardian: The production splashes in exces",
-  "assignedScore": 75,
+  "assignedScore": 40,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
@@ -23,48 +23,40 @@
   "sourceMethod": "bww-roundup",
   "scoreSource": "live-fetch",
   "scoreConfidence": "medium",
-  "needsRescore": true,
-  "_llmScoreInvalidReason": "LLM was fed garbage 404 page text with reviews of OTHER shows. Score of 75 is completely wrong - bwwExcerpt says 'sorry to report, a travesty' and explicit score is 2/5 (40).",
-  "_llmScoreInvalidAt": "2026-01-31T23:55:00.000Z",
   "llmScore": {
-    "score": 75,
-    "confidence": "medium",
+    "score": 40,
+    "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 30,
+      "high": 45
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Pan",
+    "thumb": "Down",
     "components": {
-      "book": null,
+      "book": 25,
       "music": null,
-      "performances": 85,
+      "performances": null,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "Joshua Henry gives what’s destined to be a Tony-winning performance",
-        "sentiment": "positive",
+        "quote": "the transfiguration of F. Scott Fitzgerald's The Great Gatsby is, sorry to report, a travesty",
+        "sentiment": "negative",
         "strength": 5
-      },
-      {
-        "quote": "Lesley Manville and Mark Strong have disturbingly good chemistry",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Erica Schmidt’s world premiere dramedy skewers a self-absorbed filmmaker",
-        "sentiment": "neutral",
-        "strength": 3
       }
     ],
-    "reasoning": "GPT-4o-mini: The review highlights strong performances and chemistry among the cast, indicating a clear recommendation despite the lack of detailed commentary on the script or direction.",
+    "reasoning": "Score based on critic's explicit 2/5 star rating and bwwExcerpt calling the show 'a travesty'. Previous LLM score of 75 was invalid (based on 404 page garbage text).",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
+  },
+  "_previousInvalidLlmScore": {
+    "score": 75,
+    "reason": "LLM was fed garbage 404 page text with reviews of OTHER shows",
+    "invalidatedAt": "2026-02-01T00:00:00.000Z"
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
