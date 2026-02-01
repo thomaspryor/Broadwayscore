@@ -5,12 +5,12 @@
   "criticName": "William Wolf",
   "url": "http://www.wolfentertainmentguide.com/viewpage.aspx?cat=theater&record=9433",
   "publishDate": "April 23, 2018",
-  "fullText": null,
+  "fullText": "HARRY POTTER AND THE CURSED CHILD--PARTS ONE AND TWO Send This Review to a Friend The saga is being presented in two separate performances, and one can see them in combinations that include a same day option, with matinee and evening performances and a break for dinner. That is what I opted for, and it was quite a hefty experience. Dramatically, we now find wizard Harry Potter as a father, played by Jamie Parker, and there are father-son issues. Time has marched on, you see. The plot gets complicated, of course, but what’s special about the play is the production. We find the basic set, designed by Christine Jones, the great central hall of Hogwarts School of Witchcraft and Wizardry, dominated by the huge clock. That serves as a major playing area with constant changes. Be prepared for astonishing effects, such as flashes of firepower shooting across stage as part of the illusions and magic design by Jamie Harrison. The plot toys with time, and a battery of clocks on either side of the stage light up as racing clock hands go backward or forward. The impact is very dramatic. At one point ghost-like figures swirl over the spectators. The visuals are enough to enthrall even the youngest in an audience. As for the story of working out the relationships, the issues and the dangers, the plot heavy on talk begins to wear some in Part 2, but sudden bursts of action liven things. The cast members are all excellent. Harry’s wife Ginny is played by Poppy Miller and Noma Dumezweni is fun as Hermione Granger, running the Ministry of Magic, where Harry works. Fans of the book will find depictions of assorted memorable characters. While admiring Rowling’s achievement but not being a Potter groupie, I can’t vouch for the accuracy of all the play’s characterizations. But I can vouch for the dynamic impact of this production, which cost a record $68 million to stage. Director John Tiffany has done a great job in keeping most of the show eye-catching as well as trying to spin out the plot with clarity, a tough task as given all of the elements that go into the new storyline. “Harry Potter and the Cursed Child” looms as a big box office hit that will further the legend of Rowling’s creation that has won over millions of fans the world over. At the Lyric Theatre, 214 West 43rd Street. Harrypottertheplay.com/us. Reviewed April 23, 2018. [Film] [Theater] [Cabaret] [About Town] [Wolf] [Special Reports] [Travel] [HOME]",
   "showScoreExcerpt": "\"The result is spectacular...The plot gets complicated, of course, but what's special about the play is the production...The visuals are enough to enthrall even the youngest in an audience. As for the story of working out the relationships, the issues and the dangers, the plot heavy on talk begins to wear some in Part 2, but sudden bursts of action liven things...Tiffany has done a great job in keeping most of the show eye-catching as well as trying to spin out the plot with clarity.\"",
   "originalScore": null,
   "assignedScore": 74,
   "source": "show-score",
-  "sourceMethod": "showscore",
+  "sourceMethod": "playwright",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -70,5 +70,32 @@
     "needsReviewReasons": []
   },
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 74,
+  "isFullReview": true,
+  "textWordCount": 420,
+  "archivePath": "data/archives/reviews/harry-potter-2021/wolf-entertainment-guide--william-wolf_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T15:14:34.167Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "partial",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "partial"
 }
