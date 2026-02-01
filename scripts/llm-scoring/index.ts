@@ -167,14 +167,16 @@ function parseArgs(): ScoringPipelineOptions & {
 /**
  * Get all review text files
  */
-function getAllReviewFiles(showId?: string): Array<{ path: string; data: ReviewTextFile }> {
+function getAllReviewFiles(showId?: string, showIds?: string[]): Array<{ path: string; data: ReviewTextFile }> {
   const files: Array<{ path: string; data: ReviewTextFile }> = [];
 
   if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
     return files;
   }
 
-  const shows = showId
+  const shows = showIds
+    ? showIds
+    : showId
     ? [showId]
     : fs.readdirSync(REVIEW_TEXTS_DIR).filter(f => {
         const fullPath = path.join(REVIEW_TEXTS_DIR, f);
@@ -329,7 +331,9 @@ async function main(): Promise<void> {
   }
 
   // Get review files
-  const allFiles = getAllReviewFiles(options.showId);
+  // Support comma-separated show IDs: --show=foo,bar,baz
+  const showIds = options.showId?.includes(',') ? options.showId.split(',') : undefined;
+  const allFiles = getAllReviewFiles(showIds ? undefined : options.showId, showIds);
 
   if (allFiles.length === 0) {
     console.log('No review files found.');
