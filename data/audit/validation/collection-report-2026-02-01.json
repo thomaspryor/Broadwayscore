@@ -11,26 +11,26 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 18,
-    "failed": 120,
+    "processed": 19,
+    "failed": 121,
     "skipped": 0,
-    "successRate": "13.0%"
+    "successRate": "13.6%"
   },
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 8,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 2,
-    "archive": 9
+    "archive": 10
   },
   "statistics": {
     "tier1Attempts": 2,
     "tier1Success": 1,
     "tier1_5Attempts": 1,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier2Attempts": 3,
+    "tier2Success": 1,
+    "tier3Attempts": 1,
     "tier3Success": 0,
     "tier4Attempts": 3,
     "tier4Success": 1,
@@ -195,7 +195,9 @@
       "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json"
     ],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "oedipus-2025/nytimes--alexis-soloski.json"
+    ],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
       "mj-2022/usatoday--david-rooney.json"
@@ -209,7 +211,8 @@
       "harry-potter-2021/village-voice--michael-feingold.json",
       "mj-2022/nytg--ayanna-prescod.json",
       "stereophonic-2024/nytimes--jesse-green.json",
-      "mother-play-2024/broadwaynews--brittani-samuel.json"
+      "mother-play-2024/broadwaynews--brittani-samuel.json",
+      "oedipus-2025/latimes--charles-mcnulty.json"
     ]
   },
   "failuresByOutlet": {},
