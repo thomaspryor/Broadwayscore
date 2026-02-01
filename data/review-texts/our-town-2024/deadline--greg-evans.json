@@ -72,18 +72,18 @@
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 57,
-  "archivePath": "data/archives/reviews/our-town-2024/deadline--greg-evans_2026-01-28.html",
-  "textFetchedAt": "2026-01-28T23:35:30.303Z",
-  "fetchMethod": "archive",
+  "archivePath": "data/archives/reviews/our-town-2024/deadline--greg-evans_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T23:44:06.537Z",
+  "fetchMethod": "playwright",
   "fetchAttempts": [
     {
-      "tier": 0,
-      "method": "archive-first",
+      "tier": 1,
+      "method": "playwright",
       "success": true
     }
   ],
-  "fetchTier": 4,
-  "sourceMethod": "archive",
+  "fetchTier": 1,
+  "sourceMethod": "playwright",
   "archiveOrgTimestamp": "20260108163309",
   "archiveOrgUrl": "http://web.archive.org/web/20260108163309/https://deadline.com/2024/10/our-town-broadway-review-1236109200/",
   "rescoreCompletedAt": "2026-01-29T14:31:51.948Z",
@@ -93,5 +93,19 @@
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "fullText": "Get our Breaking News Alerts and Keep your inbox happy. Disappointing. Parsons is excellent but otherwise the forced re-interpretations of character, time, place and beliefs often fall short. Signup for Breaking News Alerts & Newsletters By providing your information, you agree to our Terms of Use and our Privacy Policy. We use vendors that may also process your information to help provide our services. This site is protected by reCAPTCHA Enterprise and the Google Privacy Policy and Terms of Service apply.",
+  "isFullReview": false,
+  "textWordCount": 81,
+  "designation": "Recommended",
+  "textQuality": "partial",
+  "truncationSignals": [
+    "has_footer_text"
+  ],
+  "textStatus": "incomplete",
+  "textIssues": [
+    "Word count too low: 81 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true
 }
