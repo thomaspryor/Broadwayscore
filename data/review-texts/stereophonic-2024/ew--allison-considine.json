@@ -9,74 +9,19 @@
   "bwwExcerpt": "The band is back together on Broadway. David Adjmi’s Stereophonic had a critically acclaimed, sold-out run off Broadway in fall 2023 at Playwrights Horizons, and now it’s hitting all the right notes at the Golden Theatre.        Average Rating: 95.0% {   \"@context\":\"https://schema.org\",   \"@type\":\"LiveBlogPosting\",   \"@id\":\"/article/Review-Roundup-Rock-N-Roll-Drama-STEREOPHONIC-Opens-On-Broadway-20240419\",   \"about\":{     \"@type\":\"Event\",     \"startDate\":\"2024-04-19T11:58:03-05:00\",          \"na",
   "bwwRoundupUrl": null,
   "originalScore": "B",
-  "assignedScore": 63,
+  "assignedScore": null,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
-  "llmScore": {
-    "score": 63,
-    "confidence": "low",
-    "range": {
-      "low": 25.5,
-      "high": 100
-    },
-    "bucket": "Mixed",
-    "thumb": "Flat",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "The band is back together on Broadway",
-        "sentiment": "positive",
-        "strength": 2
-      },
-      {
-        "quote": "hitting all the right notes at the Golden Theatre",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "Average Rating: 95.0%",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: This appears to be a severely truncated excerpt that cuts off mid-sentence with technical metadata, making it impossible to determine the actual critical assessment despite some positive opening phrases. | GPT-4o-mini: The review indicates strong enthusiasm and a high recommendation for the show, suggesting it is a must-see. | Note: Models differed by 65 points.",
-    "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:42:22.423Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 30,
-    "openaiScore": 95,
-    "scoreDelta": 65,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 65 points (Claude: 30, OpenAI: 95)"
-    ]
-  },
+  "llmScore": null,
+  "llmMetadata": null,
+  "ensembleData": null,
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "dtliExcerpt": "Sometimes, a song is so good you want to live in it. You want to nestle into its melodies, unravel the chords holding it up and more than anything, wander in the mind fields of the people who created it. David Adjmi’s “Stereophonic” is the play that sparks this very desire.",
   "showScoreExcerpt": "\"Drama from the studio enters the stage, and it's a hit\"",
   "needsRescore": true,
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "low-conf: prompt=3.0.0, delta=65, upgrading to V5 + 3 models",
   "previousLlmScore": 63,
   "archivePath": "data/archives/reviews/stereophonic-2024/ew--allison-considine_2026-02-01.html",
   "textFetchedAt": "2026-02-01T13:54:07.221Z",

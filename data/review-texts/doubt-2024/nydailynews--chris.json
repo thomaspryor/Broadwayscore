@@ -28,7 +28,7 @@
     "dtli",
     "bww-roundup"
   ],
-  "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available",
+  "rescoreReason": "tiny-excerpt: only 69 chars, try re-fetching",
   "previousLlmScore": 84,
   "archivePath": "data/archives/reviews/doubt-2024/nydailynews--chris_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:35:02.188Z",
@@ -142,5 +142,6 @@
     "modelAgreement": "No bucket consensus - using median score"
   },
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true
 }

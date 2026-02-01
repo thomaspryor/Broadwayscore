@@ -9,70 +9,15 @@
   "bwwExcerpt": "As they become younger, Frank, Charley, and Mary de-age into starry-eyed dreamers who swear to keep their flames lit forever. But roads bend and dreams will shapeshift over the years due to realities and unheeded follies. A good production of 'Merrily We Roll Along' ensures that the stargazing 'Our Time' finale packs that wallop. Embracing its newly acquired Broadway scope, the musical concludes with stars blazing upon the ceiling of the Hudson Theatre. Only by reflecting upon the old times can ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": null,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "llmScore": {
-    "score": 68,
-    "confidence": "low",
-    "range": {
-      "low": 50.5,
-      "high": 85.5
-    },
-    "bucket": "Mixed",
-    "thumb": "Flat",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": 78
-    },
-    "keyPhrases": [
-      {
-        "quote": "A good production of 'Merrily We Roll Along' ensures that the stargazing 'Our Time' finale packs that wallop",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Embracing its newly acquired Broadway scope, the musical concludes with stars blazing upon the ceiling of the Hudson Theatre",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "A good production of 'Merrily We Roll Along' ensures that the stargazing 'Our Time' finale packs that wallop.",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The excerpt shows appreciation for the production's visual elements and staging but cuts off mid-sentence, making it impossible to determine the critic's overall recommendation or identify any reservations they may have expressed. | GPT-4o-mini: The review expresses a positive sentiment towards the production's direction and its emotional impact, indicating a strong recommendation despite some ambiguity. | Note: Models differed by 25 points.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": true
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:08:35.187Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 55,
-    "openaiScore": 80,
-    "scoreDelta": 25,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 25 points (Claude: 55, OpenAI: 80)"
-    ]
-  },
+  "llmScore": null,
+  "llmMetadata": null,
+  "ensembleData": null,
   "bwwThumb": "Up",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "low-conf: prompt=3.0.0, delta=25, upgrading to V5 + 3 models",
   "previousLlmScore": 68,
   "archivePath": "data/archives/reviews/merrily-we-roll-along-2023/slash-film--caroline-cao_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:39:20.009Z",
@@ -91,5 +36,6 @@
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",
-  "wordCount": 1291
+  "wordCount": 1291,
+  "needsRescore": true
 }

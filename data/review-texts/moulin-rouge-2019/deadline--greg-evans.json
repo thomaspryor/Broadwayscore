@@ -11,69 +11,14 @@
   "_removedScore": "Negative",
   "_removedScoreReason": "Sentiment placeholder, not an actual explicit score. Deadline doesn't use letter/star grades.",
   "_removedAt": "2026-01-31T23:45:00.000Z",
-  "assignedScore": 38,
+  "assignedScore": null,
   "source": "reviews-json-stub",
   "needsRescore": true,
   "sourceMethod": "archive",
   "showScoreExcerpt": "\"âMoulin Rouge! The Musicalâ Review: All You Need Is Love Songs By The Dozens\"",
-  "llmScore": {
-    "score": 38,
-    "confidence": "low",
-    "range": {
-      "low": 20.5,
-      "high": 55.5
-    },
-    "bucket": "Negative",
-    "thumb": "Down",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Most, though, remember to turn the damn spigot off",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Most, though, remember to turn the damn spigot off.",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "All You Need Is Love Songs By The Dozens",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The metaphor about turning off a spigot suggests the show is excessive and overwrought, implying poor creative restraint. | GPT-4o-mini: The review lacks clear positive or negative sentiment, suggesting a mixed recommendation. | Note: Models differed by 25 points.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": true
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:39:41.188Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 50,
-    "scoreDelta": 25,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 25 points (Claude: 25, OpenAI: 50)"
-    ]
-  },
+  "llmScore": null,
+  "llmMetadata": null,
+  "ensembleData": null,
   "archivePath": "data/archives/reviews/moulin-rouge-2019/deadline--greg-evans_2026-01-26.html",
   "textFetchedAt": "2026-01-26T23:30:27.719Z",
   "fetchMethod": "archive",
@@ -106,7 +51,7 @@
   "archiveOrgTimestamp": "20241217202511",
   "archiveOrgUrl": "http://web.archive.org/web/20241217202511/https://deadline.com/2019/07/moulin-rouge-musical-broadway-review-alex-timbers-1202653416/",
   "designation": "Recommended",
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "low-conf: prompt=3.0.0, delta=25, upgrading to V5 + 3 models",
   "previousLlmScore": 38,
   "rescoreCompletedAt": "2026-01-29T14:31:51.911Z",
   "_garbageRestored": true,

@@ -8,72 +8,17 @@
   "bwwExcerpt": "There is near total overlap with the queer love story, involving Ben Cook as Carl, Henry’s small town friend and first love; Gaby Diaz as Shelby, Carl’s first love; and Ahmad Simmons as Douglas, Henry’s big-city mature love. If love suffuses the tale, it is as much about risk, adventure, loss and grief.  This overwhelming jumble of emotions is expressed through an impressive synthesis of classical, modern and street choreography, accompanying an eclectic and pleasing mix of orchestral music, jaz",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ILLINOISE-2024",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": null,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
-  "llmScore": {
-    "score": 65,
-    "confidence": "low",
-    "range": {
-      "low": 50,
-      "high": 80
-    },
-    "bucket": "Mixed",
-    "thumb": "Flat",
-    "components": {
-      "book": null,
-      "music": 70,
-      "performances": null,
-      "direction": 65
-    },
-    "keyPhrases": [
-      {
-        "quote": "overwhelming jumble of emotions",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "impressive synthesis of classical, modern and street choreography",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "eclectic and pleasing mix of orchestral music",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The excerpt shows mixed signals with praise for choreography and music but describes emotions as an 'overwhelming jumble,' and the text cuts off mid-sentence, making assessment difficult. | GPT-4o-mini: The review highlights strong emotional themes and impressive choreography, indicating a clear recommendation despite some ambiguity in the overall narrative structure. | Note: Models differed by 20 points.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": true
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:36:12.962Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 55,
-    "openaiScore": 75,
-    "scoreDelta": 20,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 20 points (Claude: 55, OpenAI: 75)"
-    ]
-  },
+  "llmScore": null,
+  "llmMetadata": null,
+  "ensembleData": null,
   "bwwThumb": "Up",
   "showScoreExcerpt": "\"It's extraordinary, it's queer, it's often thrilling\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/illinoise",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "low-conf: prompt=3.0.0, delta=20, upgrading to V5 + 3 models",
   "previousLlmScore": 65,
   "archivePath": "data/archives/reviews/illinoise-2024/nyt-theater--jonathan-mandell_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:29:54.018Z",
@@ -93,5 +38,6 @@
   "garbageFixedAt": "2026-01-29T22:45:22.930Z",
   "dateSource": "extracted-from-url",
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true
 }

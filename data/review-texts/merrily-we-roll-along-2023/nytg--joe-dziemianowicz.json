@@ -9,68 +9,13 @@
   "bwwExcerpt": "Radcliffe really pops now, and Charley’s comedic cri de coeur “Franklin Shepard, Inc.” a showstopper. Actually, it’s a moment to close your eyes tight and swallow.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": null,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
-  "llmScore": {
-    "score": 63,
-    "confidence": "low",
-    "range": {
-      "low": 40.5,
-      "high": 85.5
-    },
-    "bucket": "Mixed",
-    "thumb": "Flat",
-    "components": {
-      "book": null,
-      "music": 40,
-      "performances": 78,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Radcliffe really pops now",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "a showstopper. Actually, it's a moment to close your eyes tight and swallow",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Charley’s comedic cri de coeur 'Franklin Shepard, Inc.' a showstopper",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: Praises Radcliffe's performance but immediately undercuts the musical highlight with visceral negative imagery, suggesting discomfort with the material despite individual strengths. | GPT-4o-mini: The review highlights strong performances and a standout musical moment, indicating a positive recommendation despite some ambiguity. | Note: Models differed by 35 points.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": false,
-      "mixedSignals": true
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:07:55.963Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 80,
-    "scoreDelta": 35,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 35 points (Claude: 45, OpenAI: 80)"
-    ]
-  },
+  "llmScore": null,
+  "llmMetadata": null,
+  "ensembleData": null,
   "bwwThumb": "Up",
   "showScoreExcerpt": "“You’re going to want to preserve the riches flowing throughout this hurts-so-good musical about growing up and growing apart.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/merrily-we-roll-along-broadway",
@@ -79,7 +24,7 @@
     "bww-roundup",
     "dtli"
   ],
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "low-conf: prompt=3.0.0, delta=35, upgrading to V5 + 3 models",
   "previousLlmScore": 63,
   "archivePath": "data/archives/reviews/merrily-we-roll-along-2023/nytg--joe-dziemianowicz_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:29:58.208Z",
@@ -101,5 +46,6 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251208020157/https://www.newyorktheatreguide.com/reviews/merrily-we-roll-along-broadway-review-jonathan-groff-daniel-radcliffe-lindsay-mendez",
   "rescoreCompletedAt": "2026-01-29T14:31:51.885Z",
   "contentTier": "complete",
-  "wordCount": 1112
+  "wordCount": 1112,
+  "needsRescore": true
 }

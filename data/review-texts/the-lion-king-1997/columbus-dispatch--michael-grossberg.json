@@ -70,5 +70,7 @@
   "scoreOverrideReason": "LLM confused by truncated text; headline clearly indicates sentiment",
   "scoreOverrideAt": "2026-01-26T17:35:57.826Z",
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true,
+  "rescoreReason": "tiny-excerpt: only 97 chars, try re-fetching"
 }

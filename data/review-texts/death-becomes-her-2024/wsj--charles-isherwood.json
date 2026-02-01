@@ -106,7 +106,7 @@
   "textIssues": [
     "Word count too low: 94 (min: 300)"
   ],
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "tiny-excerpt: only 89 chars, try re-fetching",
   "previousLlmScore": 74,
   "rescoreCompletedAt": "2026-01-29T01:47:52.745Z",
   "garbageFullText": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-hilty-jennifer-simard-58c2761b\n\nMegan Hilty and Jennifer Simard Matthew Murphy and Evan ZimmermanNew York\n\n“Death Becomes Her” may be one of the funnier new musicals to splash down on Broadway, in a nearly blinding glare of sequins, in recent seasons. But perhaps none of its ample array of gags, whether low, high or occasionally borrowed, is quite as ingenious as the joke supplied by Megan Hilty, one of the show’s two bright-burning female stars.\n\nCopyright ©2025 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nNew York Film Festival 2025 Review: Full of Daring and Delights",
@@ -114,5 +114,6 @@
   "garbageFixedAt": "2026-01-29T22:45:22.777Z",
   "bwwExcerpt": "As the plot grows more ludicrous and convoluted, the fun peters out like a slowly deflating helium balloon sagging to earth. And if the show intended to make any pertinent commentary on the uselessness or dangerousness of chasing after one’s vanishing youth, it is swallowed up in the glossy production. Ms. Hilty and Ms. Simard are sufficiently seductive performers to hold our attention and affection through their witty work.",
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true
 }

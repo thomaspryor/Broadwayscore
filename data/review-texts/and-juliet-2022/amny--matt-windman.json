@@ -9,7 +9,7 @@
   "dtliExcerpt": null,
   "showScoreExcerpt": "\"The glam, glossy, and tongue-in-cheek new jukebox musical '& Juliet' proposes an intriguing solution to the dilemma faced every year by high school English teachers who struggle over how to get their students interested in Shakespeare.\"",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": null,
   "source": "show-score",
   "dtliThumb": null,
   "designation": null,
@@ -20,56 +20,13 @@
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-negative",
   "scoreConfidence": "medium",
-  "llmScore": {
-    "score": 69,
-    "confidence": "low",
-    "range": {
-      "low": 64,
-      "high": 74
-    },
-    "bucket": "Mixed",
-    "thumb": "Flat",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The review acknowledges entertaining elements like catchy songs and strong performances, but criticizes the book as 'tedious and didactic' with one-dimensional characters, resulting in a lukewarm assessment that neither strongly recommends nor discourages attendance. | Gemini: The review highlights both positive and negative aspects, but ultimately leans towards a recommendation due to the entrancing qualities and catchy songs. The book is criticized, but the performances and overall exuberance are praised.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:15:28.050Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": 69,
-    "previousVersion": "3.0.0"
-  },
-  "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": null,
-    "geminiScore": 75,
-    "claudeBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
-  },
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "llmScore": null,
+  "llmMetadata": null,
+  "ensembleData": null,
+  "rescoreReason": "low-conf: prompt=5.0.0, delta=13, upgrading to V5 + 3 models",
   "previousLlmScore": 69,
   "rescoreCompletedAt": "2026-01-28T23:28:59.786Z",
   "contentTier": "complete",
-  "wordCount": 530
+  "wordCount": 530,
+  "needsRescore": true
 }

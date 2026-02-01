@@ -7,62 +7,12 @@
   "publishDate": "March 29, 2024",
   "fullText": "Director Des McAnuff’s high-frequency revival pushes Broadway’s boundaries and possibly, its sound barriers.\n\nGood morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “The Who’s Tommy.”\n\nIf the first 10 minutes of a show are supposed to rope you in, “The Who’s Tommy” dares you to need more than 10 seconds. Director Des McAnuff’s revival staging of the electric rock opera he co-wrote explodes onto the Nederlander Theatre stage in a paroxysm of booming sound, blinding light and crackling projections. That digital gluttony carries throughout this high-octane production about a traumatized young boy named Tommy, who morphs into a “pinball wizard” and then a rock music demigod. At first, it may seem odd that McAnuff encases his and co-book writer Pete Townshend’s story about a young man’s spiritual ascension in so much high-tech, but that juxtaposition is exactly where the magic (and music, also by Townshend) lies. Because amid the digital frenzy, the heart of this musical is still the sad, abused human at its center. There is a darkness to the way Ali Louis Bourzgui plays Tommy — crooning through Townshend’s iconic, primarily sung-through score, his posture erect as he pulls haunting focus. And what a score it is: Townshend’s layered compositions have never sounded better, and sound designer Gareth Owen maintains control. The full band is so loud, yet we can still hear individual chord progressions. There is a cacophony of guitar strums and drum beats, but we can still hear individual zippy sound effects of the pinball machine.",
   "originalScore": null,
-  "assignedScore": 58,
+  "assignedScore": null,
   "dtliThumb": "Up",
   "source": "dtli",
-  "llmScore": {
-    "score": 58,
-    "confidence": "low",
-    "range": {
-      "low": 40.5,
-      "high": 75.5
-    },
-    "bucket": "Mixed",
-    "thumb": "Flat",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": 65
-    },
-    "keyPhrases": [
-      {
-        "quote": "dares you to need more than 10 seconds",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "explodes onto the Nederlander Theatre stage in a paroxysm of booming sound, blinding light and crackling projections",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: This excerpt shows mixed signals - praising the explosive staging while suggesting the opening challenges audience patience, but the fragment is too brief to determine the critic's overall recommendation. | GPT-4o-mini: The review highlights strong production elements but suggests a lack of immediate engagement, leading to a mixed-positive recommendation. | Note: Models differed by 25 points.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": true
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:03:43.321Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 70,
-    "scoreDelta": 25,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 25 points (Claude: 45, OpenAI: 70)"
-    ]
-  },
+  "llmScore": null,
+  "llmMetadata": null,
+  "ensembleData": null,
   "dtliExcerpt": "If the first 10 minutes of a show are supposed to rope you in, “The Who’s Tommy” dares you to need more than 10 seconds. Director Des McAnuff’s revival staging of the electric rock opera he co-wrote explodes onto the Nederlander Theatre stage in a paroxysm of booming sound, blinding light and crackling projections",
   "sources": [
     "dtli"
@@ -70,7 +20,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "low-conf: prompt=3.0.0, delta=25, upgrading to V5 + 3 models",
   "previousLlmScore": 58,
   "rescoreCompletedAt": "2026-01-29T14:31:52.120Z",
   "archivePath": "data/archives/reviews/the-whos-tommy-2024/broadwaynews--brittani-samuel_2026-02-01.html",
@@ -91,5 +41,6 @@
     "Word count too low: 274 (min: 300)"
   ],
   "contentTier": "truncated",
-  "wordCount": 268
+  "wordCount": 268,
+  "needsRescore": true
 }

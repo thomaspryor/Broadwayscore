@@ -8,62 +8,14 @@
   "fullText": null,
   "bwwExcerpt": "You could be forgiven for thinking that this tale has reached its sell-by date. But Moulin Rouge is one of those shows that is not only critic-proof, but maybe also story-proof. In Alex Timbers's production, with a book by",
   "originalScore": "3/5",
-  "assignedScore": 56,
+  "assignedScore": null,
   "source": "reviews-json-stub",
   "sourceMethod": "stub",
-  "llmScore": {
-    "score": 56,
-    "confidence": "low",
-    "range": {
-      "low": 35,
-      "high": 77
-    },
-    "bucket": "Mixed",
-    "thumb": "Flat",
-    "components": {
-      "book": 35,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Characters are thinly drawn",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "the show is critic-proof",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The 'critic-proof' phrase suggests the show succeeds despite flaws and will likely please audiences, outweighing the character criticism. | GPT-4o-mini: The review indicates significant issues with character development, leading to a negative overall impression despite the mention of the show being 'critic-proof'. | Note: Models differed by 32 points.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": true
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:39:51.853Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 40,
-    "scoreDelta": 32,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 32 points (Claude: 72, OpenAI: 40)"
-    ]
-  },
+  "llmScore": null,
+  "llmMetadata": null,
+  "ensembleData": null,
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true,
+  "rescoreReason": "low-conf: prompt=3.0.0, delta=32, upgrading to V5 + 3 models"
 }

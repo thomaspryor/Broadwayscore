@@ -9,52 +9,13 @@
   "bwwExcerpt": "In addition to her years of teaching playwriting at Brown and Yale, Vogel is best-known for her Pulitzer-winning 1997 play How I Learned to Drive, which finally made it to Broadway in 2022 and remains unquestionably one of the very best works of recent American theater. That’s a hard standard to match, especially since the various twists and turns are almost impossible to predict when watching How I Learned to Drive for the first time. By contrast, Mother Play probably isn’t the first story you’",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": null,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "needsScoring": true,
-  "llmScore": {
-    "score": 50,
-    "confidence": "low",
-    "range": {
-      "low": 45,
-      "high": 55
-    },
-    "bucket": "Mixed",
-    "thumb": "Flat",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [],
-    "reasoning": "No reasoning available",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": true
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:08:32.092Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": null,
-    "scoreDelta": 0,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Both models failed to score"
-    ]
-  },
+  "llmScore": null,
+  "llmMetadata": null,
+  "ensembleData": null,
   "bwwThumb": "Up",
   "showScoreExcerpt": "\"...Vogel’s latest hits the emotional beats...reminder to call your mom now and then.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/mother-play-broadway",
@@ -63,7 +24,7 @@
     "bww-roundup",
     "dtli"
   ],
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "low-conf: prompt=3.0.0, delta=0, upgrading to V5 + 3 models",
   "previousLlmScore": 50,
   "archivePath": "data/archives/reviews/mother-play-2024/ew--christian-holub_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:34:37.110Z",
@@ -94,5 +55,6 @@
   "sourceMethod": "scrapingbee",
   "rescoreCompletedAt": "2026-01-29T14:31:51.901Z",
   "contentTier": "complete",
-  "wordCount": 799
+  "wordCount": 799,
+  "needsRescore": true
 }
