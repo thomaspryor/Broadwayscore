@@ -118,8 +118,11 @@ data/
   new-shows-pending.json          # New shows awaiting review data
   historical-shows-pending.json   # Historical shows awaiting metadata
   image-sources.json              # Backup of original CDN URLs
+  critic-registry.json              # Auto-generated critic-outlet affinity data
   review-texts/{show-id}/         # Individual review JSON files
     {outlet}--{critic}.json       # e.g., nytimes--ben-brantley.json
+  audit/                           # Audit reports (auto-generated)
+    critic-outlet-affinity.json    # Flagged reviews + freelancer list
   aggregator-archive/             # Archived HTML from aggregator sites
     show-score/ | dtli/ | bww-roundups/
 ```
@@ -233,6 +236,7 @@ data/
 - `scripts/lib/review-normalization.js` - Outlet/critic name normalization
 - `scripts/scrape-grosses.ts` - BroadwayWorld weekly grosses + history enrichment
 - `scripts/validate-data.js` - **Run before pushing** - validates shows.json + reviews.json
+- `scripts/audit-critic-outlets.js` - Generates critic-outlet affinity registry from corpus (`npm run audit:critics`)
 - `scripts/gather-reviews.js` - Main review gathering from all aggregator sources
 - `scripts/collect-review-texts.js` - Full review text scraper with multi-tier fallback
 - `scripts/rebuild-show-reviews.js` - Rebuilds reviews.json from review-texts data
@@ -255,11 +259,31 @@ data/
 
 ### Review Normalization System
 
-`scripts/lib/review-normalization.js` prevents duplicate review files by normalizing outlet/critic names. Key functions: `normalizeOutlet()`, `normalizeCritic()`, `generateReviewFilename()`, `areCriticsSimilar()`. Add new aliases to `OUTLET_ALIASES` (40+ variations) or `CRITIC_ALIASES` (30+ variations) in the file.
+`scripts/lib/review-normalization.js` prevents duplicate review files by normalizing outlet/critic names. Key functions: `normalizeOutlet()`, `normalizeCritic()`, `generateReviewFilename()`, `areCriticsSimilar()`, `validateCriticOutlet()`. Add new aliases to `OUTLET_ALIASES` (40+ variations) or `CRITIC_ALIASES` (30+ variations) in the file.
 
 ### Review Data Quality
 
 In Jan 2026, we discovered 147 misattributed reviews (7%) where critics were incorrectly attributed to wrong outlets. `validate-data.js` now catches these. **Always run validation after bulk data changes.**
+
+### Critic-Outlet Misattribution Detection
+
+Auto-generated system to catch when reviews are attributed to the wrong outlet. No manual database maintenance — everything is derived from the corpus.
+
+**How it works:**
+1. `scripts/audit-critic-outlets.js` scans all `review-texts/` files, builds per-critic outlet frequency stats, writes `data/critic-registry.json` (106 critics with 3+ reviews, 31 freelancers identified)
+2. `validateCriticOutlet(critic, outlet)` in `review-normalization.js` checks the registry and returns `{ isSuspicious, confidence, reason, knownOutlets }`
+3. `validate-data.js` runs two checks: cross-outlet same-critic detection (same critic at 2+ outlets for same show) and registry-based misattribution flagging
+4. `gather-reviews.js` warns (never blocks) when saving a review with a suspicious critic-outlet pairing
+
+**Confidence levels:** High (10+ reviews, 0 at target outlet, not freelancer), Medium (5+ reviews, <10% share), Low (insufficient data)
+
+**Freelancer detection:** `isFreelancer = true` when 3+ outlets or no single outlet >70% share. Freelancers are never flagged. Known freelancers list in audit script (Chris Jones, Charles Isherwood, etc.)
+
+**Auto-updated:** Registry regenerates during daily `rebuild-reviews.yml` workflow and is committed if changed.
+
+**Files:**
+- `data/critic-registry.json` — Auto-generated, consumed by `validateCriticOutlet()`
+- `data/audit/critic-outlet-affinity.json` — Detailed report with flagged reviews and freelancer list
 
 ### Text Quality Classification
 
