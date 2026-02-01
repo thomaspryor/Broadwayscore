@@ -1,36 +1,93 @@
 {
-  "timestamp": "2026-02-01T05:06:28.960Z",
+  "timestamp": "2026-02-01T23:17:23.787Z",
   "hasIssues": true,
   "current": {
+    "date": "2026-02-01",
+    "totalReviews": 4598,
+    "unknownOutlets": 134,
+    "duplicates": 0,
+    "syncDelta": 2433
+  },
+  "previous": {
     "date": "2026-02-01",
     "totalReviews": 1684,
     "unknownOutlets": 0,
     "duplicates": 0,
     "syncDelta": 399
   },
-  "previous": {
-    "date": "2026-01-30",
-    "totalReviews": 2111,
-    "unknownOutlets": 0,
-    "duplicates": 0,
-    "syncDelta": 14
-  },
   "issues": [
     {
-      "type": "review_count_decrease",
+      "type": "unknown_outlets",
       "severity": "critical",
-      "message": "Review count decreased by 427 (20.2%) from 2111 to 1684"
+      "message": "134 reviews have unknown outlets",
+      "examples": [
+        {
+          "file": "data/review-texts/aladdin/unknown--unknown.json",
+          "outletId": "unknown",
+          "outlet": "unknown"
+        },
+        {
+          "file": "data/review-texts/aladdin-2014/unknown--unknown.json",
+          "outletId": "unknown",
+          "outlet": "unknown"
+        },
+        {
+          "file": "data/review-texts/an-enemy-of-the-people/unknown--unknown.json",
+          "outletId": "unknown",
+          "outlet": "unknown"
+        },
+        {
+          "file": "data/review-texts/an-enemy-of-the-people-2024/unknown--unknown.json",
+          "outletId": "unknown",
+          "outlet": "unknown"
+        },
+        {
+          "file": "data/review-texts/and-juliet/unknown--unknown.json",
+          "outletId": "unknown",
+          "outlet": "unknown"
+        },
+        {
+          "file": "data/review-texts/and-juliet-2022/unknown--unknown.json",
+          "outletId": "unknown",
+          "outlet": "unknown"
+        },
+        {
+          "file": "data/review-texts/appropriate/unknown--unknown.json",
+          "outletId": "unknown",
+          "outlet": "unknown"
+        },
+        {
+          "file": "data/review-texts/appropriate-2023/unknown--unknown.json",
+          "outletId": "unknown",
+          "outlet": "unknown"
+        },
+        {
+          "file": "data/review-texts/back-to-the-future/unknown--unknown.json",
+          "outletId": "unknown",
+          "outlet": "unknown"
+        },
+        {
+          "file": "data/review-texts/back-to-the-future-2023/unknown--unknown.json",
+          "outletId": "unknown",
+          "outlet": "unknown"
+        }
+      ]
     },
     {
       "type": "sync_delta",
       "severity": "critical",
-      "message": "review-texts (1684) and reviews.json (2083) are out of sync by 399 reviews"
+      "message": "review-texts (4598) and reviews.json (2165) are out of sync by 2433 reviews"
+    },
+    {
+      "type": "unknown_outlets_degradation",
+      "severity": "warning",
+      "message": "Unknown outlets increased from 0 to 134"
     }
   ],
   "summary": {
-    "totalReviews": 1684,
-    "unknownOutlets": 0,
+    "totalReviews": 4598,
+    "unknownOutlets": 134,
     "duplicates": 0,
-    "syncDelta": 399
+    "syncDelta": 2433
   }
 }
