@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "Though the show occasionally feels more like a concert than a cohesive musical, when it works, it's transcendent — a celebration of Cuban music that pulses with life and passion.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Though the show occasionally feels more like a concert than a cohesive musical, when it works, it's transcendent — a celebration of Cuban music that pulses with life and passion.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges flaws (feels like a concert rather than cohesive musical) but concludes with strong praise for the transcendent moments and passionate celebration of music, indicating a positive recommendation. | GPT-4o: The review acknowledges some structural issues but ultimately praises the show for its transcendent moments and celebration of Cuban music, indicating a positive recommendation with some reservations. | Gemini: The review acknowledges flaws ('feels more like a concert') but ultimately praises the show's high points, suggesting a positive but not rave recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T18:29:12.216Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

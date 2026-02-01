@@ -10,6 +10,7 @@
     "lint": "next lint",
     "test": "npm run test:data && npm run test:e2e",
     "test:data": "node scripts/validate-data.js && node scripts/validate-aggregator-truth.js",
+    "audit:critics": "node scripts/audit-critic-outlets.js",
     "test:aggregator": "node scripts/validate-aggregator-truth.js",
     "test:e2e": "npx playwright test",
     "test:e2e:ui": "npx playwright test --ui",

@@ -1,0 +1,94 @@
+{
+  "showId": "buena-vista-social-club-2025",
+  "outletId": "the-wrap-robert-hofler",
+  "outlet": "The Wrap (Robert Hofler)",
+  "criticName": "Robert Hofler",
+  "url": "https://www.thewrap.com/buena-vista-social-club-off-broadway-review/",
+  "playbillVerdictUrl": "https://www.thewrap.com/buena-vista-social-club-off-broadway-review/",
+  "source": "playbill-verdict",
+  "sources": [
+    "playbill-verdict"
+  ],
+  "fullText": "Skip to content\n\tSkip to content\n\n\t\n\t\t\n\t\t\t\n\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\n\t\t\t\t\t\t\t\n\t\n\t\t\t\t\t\n\t\t\t\t\n\t\t\t\n\t\t\n\t\n\n\t\n\t\t\n\t\t\t\n\n\t\t\t\n\t\t\t\t\n\t\t\t\t\t\n\n\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\n\t\t\t\t\t\n\t\t\t\t\n\t\t\t\n\t\t\n\t\n\n\t\n\n\t\n\t\t\n\t\t\t\n\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\n\n\t\t\t\t\t\t\t\n\t\n\t\t\t\t\t\n\t\t\t\t\n\n\t\t\t\n\t\t\n\n\t\t\n\t\t\t\n\n\n\t\n\n\t\n\t\t\n\t\t\t\n\t\t\t\t\n\n\t\t\t\t It has not been a great year for dance on the musical theater stage – until now. Choreographers Patricia Delgado and New York City Ballet’s Justin Peck bring it all to the tiny stage at the Atlantic Theater Company. The many dances this married duo has created for the new musical “Buena Vista Social Club” erupt in a chemical reaction where ballet, Afro-Cuban, contemporary and a variety of social dances both blend and slam into each other.",
+  "isFullReview": false,
+  "textWordCount": 83,
+  "archivePath": "data/archives/reviews/buena-vista-social-club/the-wrap-robert-hofler--robert-hofler_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T15:12:45.065Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 83 (min: 300)"
+  ],
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "It has not been a great year for dance on the musical theater stage – until now",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "erupt in a chemical reaction where ballet, Afro-Cuban, contemporary and a variety of social dances both blend and slam into each other",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "bring it all to the tiny stage at the Atlantic Theater Company",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The review enthusiastically praises the choreography as exceptional and transformative for the year's dance offerings, using vivid positive imagery like 'erupt in a chemical reaction' to describe the innovative dance fusion.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T17:41:54.328Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2408,
+    "outputTokens": 359,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
+}

@@ -52,6 +52,10 @@ jobs:
       - name: Rebuild reviews.json
         run: node scripts/rebuild-all-reviews.js
 
+      - name: Update critic registry
+        run: node scripts/audit-critic-outlets.js
+        continue-on-error: true
+
       - name: Get new review count
         id: after
         run: |
@@ -77,6 +81,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
 
           git add data/reviews.json
+          git add data/critic-registry.json data/audit/critic-outlet-affinity.json 2>/dev/null || true
 
           BEFORE=${{ steps.before.outputs.count }}
           AFTER=${{ steps.after.outputs.count }}

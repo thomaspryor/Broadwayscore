@@ -411,49 +411,69 @@ function validateReviewsJson() {
     ok('No duplicate outlet+critic combos in reviews.json');
   }
 
-  // Check for known critic misattribution
-  // Note: Many critics have worked at multiple outlets over their careers
-  const KNOWN_CRITICS = {
-    'jesse green': ['the new york times', 'nytimes', 'nyt', 'vulture', 'new york magazine', 'ny mag'],
-    'maya phillips': ['the new york times', 'nytimes', 'nyt'],
-    'peter marks': ['the washington post', 'washington post', 'washpost'],
-    'adam feldman': ['time out', 'time out new york', 'timeout', 'theatermania', 'variety'],
-    'charles isherwood': ['the wall street journal', 'wsj', 'the new york times', 'nytimes', 'nyt', 'variety'],
-    'ben brantley': ['the new york times', 'nytimes', 'nyt'],
-    'frank scheck': ['the hollywood reporter', 'hollywood reporter', 'newsday'],
-    'david rooney': ['the hollywood reporter', 'hollywood reporter', 'variety'],
-    'helen shaw': ['vulture', 'new york magazine', 'time out', 'timeout'],
-    'sara holdren': ['vulture', 'new york magazine'],
-    'johnny oleksinski': ['new york post', 'nypost'],
-    'chris jones': ['chicago tribune', 'chicagotribune', 'new york daily news', 'nydailynews'],
-  };
+  // Cross-outlet same-critic detection: flag when same critic appears at 2+ outlets for same show
+  if (normalizeCritic && normalizeOutlet) {
+    const byCriticShow = {};
+    for (const r of reviews) {
+      const critic = normalizeCritic(r.criticName || 'unknown');
+      const outlet = normalizeOutlet(r.outlet || 'unknown');
+      if (critic === 'unknown' || outlet === 'unknown') continue;
 
-  const misattributed = [];
-  for (const r of reviews) {
-    const criticLower = (r.criticName || '').toLowerCase().trim();
-    const outletLower = (r.outlet || '').toLowerCase().trim();
+      const key = `${r.showId}:${critic}`;
+      if (!byCriticShow[key]) byCriticShow[key] = new Set();
+      byCriticShow[key].add(outlet);
+    }
 
-    if (KNOWN_CRITICS[criticLower]) {
-      const allowedOutlets = KNOWN_CRITICS[criticLower];
-      const isAllowed = allowedOutlets.some(o => outletLower.includes(o) || o.includes(outletLower));
+    const crossOutlet = Object.entries(byCriticShow)
+      .filter(([, outlets]) => outlets.size > 1)
+      .map(([key, outlets]) => {
+        const [showId, critic] = key.split(':');
+        return { showId, critic, outlets: [...outlets] };
+      });
 
-      if (!isAllowed) {
-        misattributed.push({ showId: r.showId, outlet: r.outlet, critic: r.criticName });
+    if (crossOutlet.length > 0) {
+      warn(`Found ${crossOutlet.length} cases where same critic appears at multiple outlets for same show:`);
+      crossOutlet.slice(0, 10).forEach(c => {
+        warn(`  ${c.showId}: ${c.critic} at ${c.outlets.join(', ')}`);
+      });
+      if (crossOutlet.length > 10) {
+        warn(`  ...and ${crossOutlet.length - 10} more`);
       }
+    } else {
+      ok('No cross-outlet same-critic duplicates in reviews.json');
     }
   }
 
-  if (misattributed.length > 0) {
-    // Downgraded to warning - critics often freelance for multiple outlets
-    warn(`Found ${misattributed.length} reviews where critic is at unexpected outlet (may be freelance):`);
-    misattributed.slice(0, 5).forEach(m => {
-      warn(`  ${m.showId}: ${m.critic} at ${m.outlet}`);
-    });
-    if (misattributed.length > 5) {
-      warn(`  ...and ${misattributed.length - 5} more`);
+  // Registry-based critic-outlet misattribution detection
+  if (validateCriticOutlet) {
+    const misattributed = [];
+    for (const r of reviews) {
+      const validation = validateCriticOutlet(r.criticName, r.outlet);
+      if (validation.isSuspicious && (validation.confidence === 'high' || validation.confidence === 'medium')) {
+        misattributed.push({
+          showId: r.showId,
+          outlet: r.outlet,
+          critic: r.criticName,
+          confidence: validation.confidence,
+          reason: validation.reason,
+        });
+      }
+    }
+
+    if (misattributed.length > 0) {
+      warn(`Found ${misattributed.length} suspected critic-outlet misattributions:`);
+      misattributed.slice(0, 10).forEach(m => {
+        warn(`  [${m.confidence}] ${m.showId}: ${m.critic} at ${m.outlet}`);
+        if (m.reason) warn(`    ${m.reason}`);
+      });
+      if (misattributed.length > 10) {
+        warn(`  ...and ${misattributed.length - 10} more`);
+      }
+    } else {
+      ok('No critic-outlet misattributions detected (registry-based)');
     }
   } else {
-    ok('No known critic misattributions detected');
+    info('Skipping registry-based misattribution check (validateCriticOutlet not available)');
   }
 }
 

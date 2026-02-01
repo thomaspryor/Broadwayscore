@@ -43,6 +43,7 @@ const {
   generateReviewKey,
   getOutletDisplayName,
   mergeReviews,
+  validateCriticOutlet,
 } = require('./lib/review-normalization');
 const { verifyProduction, quickDateCheck } = require('./lib/production-verifier');
 let chromium, playwright;
@@ -1117,6 +1118,14 @@ function createReviewFile(showId, reviewData) {
         console.log(`      - ${issue.message}`);
       }
       return false;
+    }
+  }
+
+  // CRITIC-OUTLET VALIDATION: Warn if critic is at an unexpected outlet
+  if (validateCriticOutlet) {
+    const validation = validateCriticOutlet(reviewData.criticName, reviewData.outlet || reviewData.outletId);
+    if (validation.isSuspicious && validation.confidence === 'high') {
+      console.log(`    ⚠ SUSPICIOUS: ${reviewData.criticName} at ${reviewData.outlet || reviewData.outletId} (known outlets: ${validation.knownOutlets.join(', ')})`);
     }
   }
 
