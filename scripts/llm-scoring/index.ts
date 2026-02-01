@@ -12,6 +12,7 @@
  *   --unscored-only       Only score reviews without existing LLM scores (default: true)
  *   --rescore             Re-score even if already scored
  *   --needs-rescore       Only score reviews flagged with needsRescore=true (excerpt→fullText upgrades)
+ *   --outdated            Re-score reviews with promptVersion older than current PROMPT_VERSION
  *   --dry-run             Don't save results, just print what would happen
  *   --verbose             Detailed logging
  *   --limit=N             Only process N reviews
@@ -59,6 +60,24 @@ import { ReviewTextFile, ScoringPipelineOptions, PipelineRunSummary } from './ty
 const { assessTextQuality } = require('../lib/content-quality.js');
 
 import { detectMultiShow } from './multi-show-detector';
+import { PROMPT_VERSION } from './config';
+
+// ========================================
+// SEMVER COMPARISON
+// ========================================
+
+/**
+ * Compare two semver strings. Returns <0 if a<b, 0 if equal, >0 if a>b.
+ */
+function compareSemver(a: string, b: string): number {
+  const pa = a.split('.').map(Number);
+  const pb = b.split('.').map(Number);
+  for (let i = 0; i < 3; i++) {
+    const diff = (pa[i] || 0) - (pb[i] || 0);
+    if (diff !== 0) return diff;
+  }
+  return 0;
+}
 
 // ========================================
 // CONSTANTS
@@ -98,6 +117,7 @@ function parseArgs(): ScoringPipelineOptions & {
   ensemble: boolean;
   groundTruth: boolean;
   needsRescore: boolean;
+  outdated: boolean;
   ensembleCalibrateOnly: boolean;
 } {
   const args = process.argv.slice(2);
@@ -117,9 +137,11 @@ function parseArgs(): ScoringPipelineOptions & {
     ? 'claude-3-5-haiku-20241022' as const
     : 'claude-sonnet-4-20250514' as const;
 
+  const outdated = args.includes('--outdated');
+
   return {
     showId,
-    unscoredOnly: !args.includes('--rescore') && !args.includes('--needs-rescore'),
+    unscoredOnly: !args.includes('--rescore') && !args.includes('--needs-rescore') && !outdated,
     minTextLength: 50,
     model,
     dryRun: args.includes('--dry-run'),
@@ -133,6 +155,7 @@ function parseArgs(): ScoringPipelineOptions & {
     ensemble: args.includes('--ensemble'),
     groundTruth: args.includes('--ground-truth'),
     needsRescore: args.includes('--needs-rescore'),
+    outdated,
     ensembleCalibrateOnly: args.includes('--ensemble-calibrate')
   };
 }
@@ -319,6 +342,14 @@ async function main(): Promise<void> {
     // Filter to reviews flagged for rescoring (had excerpt-based score, now have fullText)
     filesToProcess = allFiles.filter(f => (f.data as any).needsRescore === true);
     console.log(`Filtering to reviews flagged for rescoring: ${filesToProcess.length} reviews\n`);
+  } else if (options.outdated) {
+    // Filter to reviews scored with an older prompt version
+    filesToProcess = allFiles.filter(f => {
+      const meta = (f.data as any).llmMetadata;
+      if (!meta || !meta.promptVersion) return false;
+      return compareSemver(meta.promptVersion, PROMPT_VERSION) < 0;
+    });
+    console.log(`Filtering to outdated reviews (promptVersion < ${PROMPT_VERSION}): ${filesToProcess.length} reviews\n`);
   } else if (options.unscoredOnly) {
     // Filter to unscored reviews
     filesToProcess = allFiles.filter(f => !(f.data as any).llmScore);
@@ -706,6 +737,8 @@ Options:
   --all                 Process all shows (default if no --show)
   --unscored-only       Only score reviews without existing LLM scores (default)
   --rescore             Re-score even if already scored
+  --needs-rescore       Only score reviews flagged with needsRescore=true
+  --outdated            Re-score reviews with promptVersion older than current
   --dry-run             Don't save results, just print what would happen
   --verbose             Detailed logging
   --limit=N             Only process N reviews
