@@ -1139,6 +1139,39 @@ function createReviewFile(showId, reviewData) {
         const existingReview = JSON.parse(fs.readFileSync(path.join(showDir, existingFile), 'utf8'));
         const existingKey = generateReviewKey(existingReview.outlet, existingReview.criticName);
 
+        // Check if same outlet + critic is a first-name prefix match
+        // e.g., incoming "Jesse" at "nytimes" should match existing "Jesse Green" at "nytimes"
+        const existingOutletId = normalizeOutlet(existingReview.outlet || existingReview.outletId);
+        if (existingOutletId === normalizedOutletId && existingKey !== reviewKey) {
+          const existingCriticSlug = normalizeCritic(existingReview.criticName);
+          const incomingCriticSlug = normalizedCriticName;
+          // If incoming is a prefix of existing (e.g., "jesse" is prefix of "jesse-green")
+          // or existing is a prefix of incoming
+          if (incomingCriticSlug.length >= 3 && existingCriticSlug.startsWith(incomingCriticSlug + '-')) {
+            // Incoming "jesse" matches existing "jesse-green" — merge into existing
+            const merged = mergeReviews(existingReview, {
+              ...reviewData,
+              source: reviewData.source || 'gather-reviews',
+            });
+            fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
+            console.log(`    ⟳ Prefix match: merged ${filename} into ${existingFile}`);
+            return true;
+          }
+          if (existingCriticSlug.length >= 3 && incomingCriticSlug.startsWith(existingCriticSlug + '-')) {
+            // Existing "jesse" matches incoming "jesse-green" — merge and rename
+            const merged = mergeReviews(existingReview, {
+              ...reviewData,
+              source: reviewData.source || 'gather-reviews',
+            });
+            fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
+            if (existingFile !== filename) {
+              fs.renameSync(path.join(showDir, existingFile), filepath);
+            }
+            console.log(`    ⟳ Prefix match: merged ${existingFile} into ${filename}`);
+            return true;
+          }
+        }
+
         // Check if same review (by key or URL)
         if (existingKey === reviewKey) {
           // Same outlet+critic - merge data instead of skipping
