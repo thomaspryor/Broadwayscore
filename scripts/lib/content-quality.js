@@ -308,6 +308,126 @@ function detectWrongArticle(text, showTitle) {
 }
 
 /**
+ * Current Broadway shows for multi-show detection
+ * Used to detect 404/index pages that list multiple shows
+ * @type {string[]}
+ */
+const CURRENT_BROADWAY_SHOWS = [
+  'purlie', 'ghosts', 'maybe happy ending', 'death becomes her',
+  'stereophonic', 'cabaret', 'sunset boulevard', 'the outsiders',
+  'hamilton', 'wicked', 'the lion king', 'chicago', 'phantom',
+  'hadestown', 'moulin rouge', 'back to the future', 'merrily we roll along',
+  'sweeney todd', 'the notebook', 'the great gatsby', 'water for elephants',
+  'hell\'s kitchen', 'the who\'s tommy', 'suffs', 'the wiz', 'gypsy',
+  'oh mary', 'appropriate', 'prayer for the french republic', 'mother play',
+  'enemy of the people', 'mary jane', 'our town', 'mcneal', 'romeo juliet',
+  'yellowjackets', 'queen versailles', 'once upon a mattress', 'left on tenth',
+];
+
+/**
+ * Validate that text mentions the expected show
+ * More robust than the basic check in assessTextQuality
+ *
+ * @param {string} text - Review text
+ * @param {string} showTitle - Expected show title (human readable)
+ * @param {string} showId - Show ID (e.g., "back-to-the-future-2023")
+ * @returns {{ valid: boolean, confidence: 'high' | 'medium' | 'low', reason: string }}
+ */
+function validateShowMentioned(text, showTitle, showId) {
+  if (!text || text.length < 100) {
+    return { valid: false, confidence: 'high', reason: 'Text too short to validate' };
+  }
+
+  const lower = text.toLowerCase();
+
+  // Check 1: Exact show title match
+  if (showTitle && showTitle.length > 3) {
+    const titleLower = showTitle.toLowerCase();
+    if (lower.includes(titleLower)) {
+      return { valid: true, confidence: 'high', reason: 'Exact show title found' };
+    }
+
+    // Check title without "The" prefix
+    const withoutThe = titleLower.replace(/^the\s+/, '');
+    if (withoutThe.length > 3 && lower.includes(withoutThe)) {
+      return { valid: true, confidence: 'high', reason: 'Show title (without "The") found' };
+    }
+  }
+
+  // Check 2: Show ID words (e.g., "back-to-the-future-2023" -> ["back", "future"])
+  if (showId) {
+    // Remove year suffix and split
+    const idBase = showId.replace(/-\d{4}$/, '');
+    const idWords = idBase.split('-').filter(w => w.length > 3 && !['the', 'and', 'for'].includes(w));
+
+    if (idWords.length >= 2) {
+      const matchCount = idWords.filter(w => lower.includes(w)).length;
+      if (matchCount >= 2 || (matchCount === idWords.length)) {
+        return { valid: true, confidence: 'medium', reason: `${matchCount}/${idWords.length} show ID words found` };
+      }
+    } else if (idWords.length === 1 && idWords[0].length > 4) {
+      // Single significant word (e.g., "cabaret", "hamilton")
+      if (lower.includes(idWords[0])) {
+        return { valid: true, confidence: 'medium', reason: 'Show name word found' };
+      }
+    }
+  }
+
+  // Check 3: For very long reviews, relax the requirement slightly
+  if (text.length > 3000) {
+    // Long reviews might use pronouns or "the show" instead of title
+    const hasTheaterContext = THEATER_KEYWORDS.filter(kw => lower.includes(kw)).length >= 5;
+    if (hasTheaterContext) {
+      return { valid: true, confidence: 'low', reason: 'Long review with theater context (title not found)' };
+    }
+  }
+
+  return { valid: false, confidence: 'high', reason: `Show "${showTitle || showId}" not mentioned in text` };
+}
+
+/**
+ * Detect if text contains references to multiple different Broadway shows
+ * This indicates a 404/index page or navigation junk, not a single review
+ *
+ * @param {string} text - Text to check
+ * @param {string} [expectedShowId] - The show this review should be about (excluded from count)
+ * @returns {{ detected: boolean, showsFound: string[], reason: string | null }}
+ */
+function detectMultiShowContent(text, expectedShowId) {
+  if (!text || text.length < 200) {
+    return { detected: false, showsFound: [], reason: null };
+  }
+
+  const lower = text.toLowerCase();
+
+  // Extract the expected show's key words to exclude them
+  const expectedWords = expectedShowId
+    ? expectedShowId.replace(/-\d{4}$/, '').split('-').filter(w => w.length > 3)
+    : [];
+
+  // Find which shows are mentioned
+  const foundShows = CURRENT_BROADWAY_SHOWS.filter(show => {
+    // Skip if this is the expected show
+    const showWords = show.split(/\s+/);
+    const isExpectedShow = expectedWords.some(ew => showWords.some(sw => sw.includes(ew) || ew.includes(sw)));
+    if (isExpectedShow) return false;
+
+    return lower.includes(show);
+  });
+
+  // If 3+ different shows are mentioned, this is likely a 404/index page
+  if (foundShows.length >= 3) {
+    return {
+      detected: true,
+      showsFound: foundShows,
+      reason: `Multiple shows mentioned (${foundShows.length}): ${foundShows.slice(0, 5).join(', ')}${foundShows.length > 5 ? '...' : ''}`
+    };
+  }
+
+  return { detected: false, showsFound: foundShows, reason: null };
+}
+
+/**
  * Check if text contains indicators of a horror/film review (common scraping mistake)
  * @param {string} text - Text to check
  * @returns {{ detected: boolean, reason: string | null }}
@@ -451,10 +571,11 @@ function hasReviewContent(text) {
  * Comprehensive text quality assessment
  *
  * @param {string} text - The fullText content to assess
- * @param {string} [showTitle] - Optional show title for additional checks
+ * @param {string} [showId] - Optional show ID for additional checks (e.g., "back-to-the-future-2023")
+ * @param {string} [showTitle] - Optional show title for additional checks (human readable)
  * @returns {{ quality: 'valid' | 'garbage' | 'suspicious', confidence: 'high' | 'medium' | 'low', issues: string[] }}
  */
-function assessTextQuality(text, showTitle) {
+function assessTextQuality(text, showId, showTitle) {
   const issues = [];
 
   // First check if it's garbage
@@ -467,29 +588,39 @@ function assessTextQuality(text, showTitle) {
     };
   }
 
+  // Check for multi-show content (indicates 404/index page)
+  const multiShowCheck = detectMultiShowContent(text, showId);
+  if (multiShowCheck.detected) {
+    return {
+      quality: 'garbage',
+      confidence: 'high',
+      issues: [multiShowCheck.reason]
+    };
+  }
+
   // Check for review content
   const reviewCheck = hasReviewContent(text);
   if (!reviewCheck.hasReviewContent) {
     issues.push('No theater-related keywords found');
   }
 
-  // Check if show title is mentioned (if provided)
-  if (showTitle && showTitle.length > 3) {
-    const lower = text.toLowerCase();
-    const showLower = showTitle.toLowerCase();
-
-    // Check exact match or partial match for multi-word titles
-    const titleWords = showLower.split(/\s+/).filter(w => w.length > 3);
-    const exactMatch = lower.includes(showLower);
-    const partialMatch = titleWords.some(w => lower.includes(w));
-
-    if (!exactMatch && !partialMatch) {
-      issues.push(`Show title "${showTitle}" not mentioned`);
+  // Use the enhanced show title validation
+  const showToValidate = showTitle || showId;
+  if (showToValidate && text.length >= 200) {
+    const showValidation = validateShowMentioned(text, showTitle, showId);
+    if (!showValidation.valid) {
+      // For high confidence invalid, it's a serious issue
+      if (showValidation.confidence === 'high') {
+        issues.push(`Show not mentioned: ${showValidation.reason}`);
+      } else {
+        // Low/medium confidence - add as warning but don't fail immediately
+        issues.push(`Warning: ${showValidation.reason}`);
+      }
     }
   }
 
   // Check for wrong article
-  const wrongArticle = detectWrongArticle(text, showTitle);
+  const wrongArticle = detectWrongArticle(text, showTitle || showId);
   if (wrongArticle.detected) {
     issues.push(wrongArticle.reason);
   }
@@ -505,13 +636,20 @@ function assessTextQuality(text, showTitle) {
   let quality;
   let confidence;
 
-  if (issues.length === 0) {
+  // Count serious issues (not warnings)
+  const seriousIssues = issues.filter(i => !i.startsWith('Warning:'));
+  const warningIssues = issues.filter(i => i.startsWith('Warning:'));
+
+  if (seriousIssues.length === 0 && warningIssues.length === 0) {
     quality = 'valid';
     confidence = 'high';
-  } else if (issues.length === 1 && !issues[0].includes('No theater')) {
+  } else if (seriousIssues.length === 0 && warningIssues.length > 0) {
     quality = 'valid';
     confidence = 'medium';
-  } else if (issues.length <= 2) {
+  } else if (seriousIssues.length === 1 && !seriousIssues[0].includes('No theater')) {
+    quality = 'valid';
+    confidence = 'medium';
+  } else if (seriousIssues.length <= 2) {
     quality = 'suspicious';
     confidence = 'medium';
   } else {
@@ -526,6 +664,9 @@ module.exports = {
   isGarbageContent,
   hasReviewContent,
   assessTextQuality,
+  // New enhanced validation functions
+  validateShowMentioned,
+  detectMultiShowContent,
   // Export individual detectors for testing/debugging
   detectAdBlocker,
   detectPaywall,
@@ -538,4 +679,5 @@ module.exports = {
   detectHorrorFilmContent,
   // Export constants for reference
   THEATER_KEYWORDS,
+  CURRENT_BROADWAY_SHOWS,
 };
