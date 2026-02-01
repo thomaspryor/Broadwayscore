@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "Rachel McAdams gives a performance of such emotional authenticity and raw power that you feel as if you're witnessing something deeply private and profound.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Rachel McAdams gives a performance of such emotional authenticity and raw power that you feel as if you're witnessing something deeply private and profound."
+  "showScoreExcerpt": "Rachel McAdams gives a performance of such emotional authenticity and raw power that you feel as if you're witnessing something deeply private and profound.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 85,
+    "confidence": "low",
+    "range": {
+      "low": 75,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 90,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "performance of such emotional authenticity and raw power",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "witnessing something deeply private and profound",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Excerpt gives extraordinary praise for McAdams' performance with superlative language, but provides no information about the overall show quality or explicit recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:04:27.245Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2331,
+    "outputTokens": 275,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

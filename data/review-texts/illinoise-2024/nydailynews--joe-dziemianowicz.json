@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a transcendent experience that uses dance as its primary language to tell stories both personal and universal, with Sufjan Stevens' intricate compositions providing the emotional backbone.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "The show is a transcendent experience that uses dance as its primary language to tell stories both personal and universal, with Sufjan Stevens' intricate compositions providing the emotional backbone."
+  "showScoreExcerpt": "The show is a transcendent experience that uses dance as its primary language to tell stories both personal and universal, with Sufjan Stevens' intricate compositions providing the emotional backbone.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 85,
+    "confidence": "low",
+    "range": {
+      "low": 75,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 90,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "transcendent experience",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "intricate compositions providing the emotional backbone",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Uses superlative language like 'transcendent experience' suggesting strong enthusiasm, but excerpt is too brief to determine full recommendation strength.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:00:34.823Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2337,
+    "outputTokens": 267,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

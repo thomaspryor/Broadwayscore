@@ -9,11 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "Michael Stuhlbarg delivers a powerhouse performance as Boris Berezovsky in this gripping political drama that feels unnervingly relevant to today's world. The production crackles with tension and intelligence.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Michael Stuhlbarg delivers a powerhouse performance as Boris Berezovsky in this gripping political drama that feels unnervingly relevant to today's world. The production crackles with tension and intelligence."
+  "showScoreExcerpt": "Michael Stuhlbarg delivers a powerhouse performance as Boris Berezovsky in this gripping political drama that feels unnervingly relevant to today's world. The production crackles with tension and intelligence.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 88,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "powerhouse performance",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "crackles with tension and intelligence",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "unnervingly relevant",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Strong praise for lead performance and production qualities with clear enthusiasm, though brief excerpt limits confidence in overall assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:10:30.796Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2345,
+    "outputTokens": 288,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

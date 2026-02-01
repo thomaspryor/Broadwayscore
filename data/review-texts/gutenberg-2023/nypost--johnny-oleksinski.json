@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Josh Gad and Andrew Rannells are absolutely delightful as Bud and Doug, two hapless musical theater writers who have penned what they believe is the next 'Hamilton.'",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 65,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,36 +17,53 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Josh Gad and Andrew Rannells are absolutely delightful as Bud and Doug, two hapless musical theater writers who have penned what they believe is the next 'Hamilton.'",
   "llmScore": {
-    "score": 77,
-    "confidence": "high",
+    "score": 65,
+    "confidence": "low",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 55,
+      "high": 75
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": null,
+      "performances": 80,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'absolutely delightful' is clearly positive praise for the lead performances, though this appears to be truncated text which limits confidence in the overall assessment. | GPT-4o: The review highlights the performances of the lead actors as 'absolutely delightful,' suggesting a positive experience and recommendation. | Gemini: The review highlights the positive performances of the leads, suggesting an enjoyable experience, even if the overall show isn't explicitly praised beyond their performances.",
+    "keyPhrases": [
+      {
+        "quote": "absolutely delightful",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "hapless musical theater writers",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Strong praise for the lead performances but this appears to be only a fragment of a larger review, making it impossible to assess the critic's overall recommendation for the show.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:31:18.662Z",
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:00:11.824Z",
     "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
+    "inputTokens": 2344,
+    "outputTokens": 270,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 75,
@@ -63,7 +80,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "textWordCount": 768,
@@ -86,5 +102,6 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240604194650",
-  "archiveOrgUrl": "http://web.archive.org/web/20240604194650/https://nypost.com/2023/10/13/gutenberg-the-musical-review-gad-and-rannells-have-almost-too-much-fun/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240604194650/https://nypost.com/2023/10/13/gutenberg-the-musical-review-gad-and-rannells-have-almost-too-much-fun/",
+  "rescoreCompletedAt": "2026-02-01T20:00:11.824Z"
 }

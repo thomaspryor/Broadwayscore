@@ -9,14 +9,69 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 40,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The show pulses with a distinctly chingona spirit–it is bold and defiantly optimistic despite relentlessly biased\"\n\nRead more",
+  "needsScoring": true,
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 40,
+    "confidence": "low",
+    "range": {
+      "low": 25,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "pulses with a distinctly chingona spirit",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "bold and defiantly optimistic",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "relentlessly biased",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The fragment shows mixed signals with praise for the show's spirit and boldness but criticism of being 'relentlessly biased,' and the incomplete nature makes scoring highly uncertain.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:13:10.503Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2334,
+    "outputTokens": 289,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
+  }
 }

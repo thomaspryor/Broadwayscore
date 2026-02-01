@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "The show works best when it focuses on Jackson's creative process and his perfectionist drive in the recording studio, with Myles Frost delivering a committed performance that captures the pop icon's distinctive mannerisms and vocal style.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "The show works best when it focuses on Jackson's creative process and his perfectionist drive in the recording studio, with Myles Frost delivering a committed performance that captures the pop icon's distinctive mannerisms and vocal style."
+  "showScoreExcerpt": "The show works best when it focuses on Jackson's creative process and his perfectionist drive in the recording studio, with Myles Frost delivering a committed performance that captures the pop icon's distinctive mannerisms and vocal style.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 65,
+    "confidence": "low",
+    "range": {
+      "low": 55,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 78,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show works best when it focuses on Jackson's creative process",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Myles Frost delivering a committed performance that captures the pop icon's distinctive mannerisms and vocal style",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "This appears to be a partial excerpt that praises specific elements (performance, creative process scenes) but implies the show has weaker moments when not focusing on these strengths.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:06:01.438Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2347,
+    "outputTokens": 297,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

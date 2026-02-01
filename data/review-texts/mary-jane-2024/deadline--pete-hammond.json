@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "Rachel McAdams gives a tour de force performance in Amy Herzog's deeply moving and authentic play about a mother dealing with her chronically ill son.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Rachel McAdams gives a tour de force performance in Amy Herzog's deeply moving and authentic play about a mother dealing with her chronically ill son."
+  "showScoreExcerpt": "Rachel McAdams gives a tour de force performance in Amy Herzog's deeply moving and authentic play about a mother dealing with her chronically ill son.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 90,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "tour de force performance",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "deeply moving and authentic play",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Strong praise for both lead performance ('tour de force') and the play itself ('deeply moving and authentic') indicates clear positive recommendation despite brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:03:51.594Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2331,
+    "outputTokens": 249,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

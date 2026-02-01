@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "Illinoise is a show that succeeds on multiple levels, offering both visual and aural delights that complement each other beautifully.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Illinoise is a show that succeeds on multiple levels, offering both visual and aural delights that complement each other beautifully."
+  "showScoreExcerpt": "Illinoise is a show that succeeds on multiple levels, offering both visual and aural delights that complement each other beautifully.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "low",
+    "range": {
+      "low": 72,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 80,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "succeeds on multiple levels",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "visual and aural delights that complement each other beautifully",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Clear positive language about success and beauty, but extremely brief excerpt limits confidence in full critical assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:00:43.899Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2330,
+    "outputTokens": 267,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

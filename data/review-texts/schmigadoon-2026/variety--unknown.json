@@ -44,5 +44,60 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 35,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If, like this critic, you think there's something ineffably cringey about it",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "you may not find yourself on the wavelength of a show defined by its strenuousness",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "If you think it's a clever, charming wink... then you may very well be along for the ride",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "The critic expresses clear personal distaste for the show's fundamental approach, calling it 'cringey' and 'strenuous,' while acknowledging others might enjoy it but making no recommendation themselves.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:13:58.015Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2441,
+    "outputTokens": 359,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

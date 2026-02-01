@@ -9,14 +9,69 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“When a previously referenced plot point suddenly clicks into place amongst the audience, or when its knockout trio are firing on all cylinders at its forefront, ’Merrily’ is truly a sight to behold. What a time to be alive, indeed.”\n\nRead more",
+  "needsScoring": true,
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "low",
+    "range": {
+      "low": 75,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "truly a sight to behold",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "What a time to be alive, indeed",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "knockout trio are firing on all cylinders",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Strong positive language about peak moments and performances suggests enthusiasm, but brief excerpt limits confidence in overall assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:04:57.729Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2359,
+    "outputTokens": 298,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
+  }
 }

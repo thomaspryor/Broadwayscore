@@ -29,5 +29,60 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250723035951",
-  "archiveOrgUrl": "http://web.archive.org/web/20250723035951/https://www.nytimes.com/2021/07/15/arts/television/review-schmigadoon.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250723035951/https://www.nytimes.com/2021/07/15/arts/television/review-schmigadoon.html",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": 75,
+      "performances": 85,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "To my fellow Melissas: Dust off your character shoes. Our time is now.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Tveit and DeBose are particularly electric, and when they are singing — or even better, singing and dancing — it's impossible not to root for them.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The Joshes of the world are unlikely ever to warm to 'Schmigadoon!'",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The review shows clear enthusiasm for the performances and concept while acknowledging the show won't appeal to everyone, with the critic explicitly encouraging musical theater fans to watch.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:13:52.324Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2981,
+    "outputTokens": 365,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

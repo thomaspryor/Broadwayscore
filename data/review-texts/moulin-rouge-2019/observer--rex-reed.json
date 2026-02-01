@@ -9,11 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "Moulin Rouge! The Musical is a gaudy, glitzy, over-the-top extravaganza that assaults the senses with relentless energy and spectacular production values. It's a sensory overload that somehow works despite its excesses.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Moulin Rouge! The Musical is a gaudy, glitzy, over-the-top extravaganza that assaults the senses with relentless energy and spectacular production values. It's a sensory overload that somehow works despite its excesses."
+  "showScoreExcerpt": "Moulin Rouge! The Musical is a gaudy, glitzy, over-the-top extravaganza that assaults the senses with relentless energy and spectacular production values. It's a sensory overload that somehow works despite its excesses.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "somehow works despite its excesses",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "spectacular production values",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "sensory overload",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Despite describing the show as excessive and overwhelming, the critic ultimately concludes it 'somehow works' and praises the spectacular production values, indicating qualified approval.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:07:22.148Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2357,
+    "outputTokens": 302,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

@@ -9,14 +9,69 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"It is the sense of restraint that jacks up one's sense of dread to nearly unbearable levels. A shattering, life-crushing series of events unfolds before us, and it is impossible to look away.\"\n\nRead more",
+  "needsScoring": true,
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "A shattering, life-crushing series of events unfolds before us",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it is impossible to look away",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "restraint that jacks up one's sense of dread to nearly unbearable levels",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic uses intensely positive language about the theatrical experience ('shattering', 'impossible to look away') and praises the production's restraint and effectiveness in creating dramatic tension.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:07:50.994Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2353,
+    "outputTokens": 334,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
+  }
 }

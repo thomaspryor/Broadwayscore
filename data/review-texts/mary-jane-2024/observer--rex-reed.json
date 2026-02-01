@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "Rachel McAdams gives a performance of such raw emotional power and authenticity that she transforms what could have been a depressing evening into something transcendent.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Rachel McAdams gives a performance of such raw emotional power and authenticity that she transforms what could have been a depressing evening into something transcendent."
+  "showScoreExcerpt": "Rachel McAdams gives a performance of such raw emotional power and authenticity that she transforms what could have been a depressing evening into something transcendent.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "low",
+    "range": {
+      "low": 70,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 90,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "performance of such raw emotional power and authenticity",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "transforms what could have been a depressing evening into something transcendent",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Extraordinary praise for McAdams' performance with transformative language suggests strong positive recommendation, but excerpt focuses solely on one element without broader show assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:04:13.093Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2332,
+    "outputTokens": 280,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

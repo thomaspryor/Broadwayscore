@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a sugar rush of pure theatrical joy, even if it occasionally threatens to give you diabetes from its relentless sweetness.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "The show is a sugar rush of pure theatrical joy, even if it occasionally threatens to give you diabetes from its relentless sweetness."
+  "showScoreExcerpt": "The show is a sugar rush of pure theatrical joy, even if it occasionally threatens to give you diabetes from its relentless sweetness.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "sugar rush of pure theatrical joy",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "occasionally threatens to give you diabetes from its relentless sweetness",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The review expresses genuine enthusiasm with 'pure theatrical joy' but includes a notable caveat about excessive sweetness, indicating a positive recommendation with reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:07:26.571Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2329,
+    "outputTokens": 278,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

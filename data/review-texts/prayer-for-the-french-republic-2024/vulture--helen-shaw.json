@@ -9,11 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "Joshua Harmon's sprawling family drama about French Jews contemplating emigration is both overstuffed and underdeveloped, but it's anchored by a magnificent performance from Betsy Aidem.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Joshua Harmon's sprawling family drama about French Jews contemplating emigration is both overstuffed and underdeveloped, but it's anchored by a magnificent performance from Betsy Aidem."
+  "showScoreExcerpt": "Joshua Harmon's sprawling family drama about French Jews contemplating emigration is both overstuffed and underdeveloped, but it's anchored by a magnificent performance from Betsy Aidem.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "overstuffed and underdeveloped",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "magnificent performance from Betsy Aidem",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "anchored by",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Strong criticism of the script balanced by high praise for the lead performance creates a mixed but slightly positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:12:16.109Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2346,
+    "outputTokens": 299,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

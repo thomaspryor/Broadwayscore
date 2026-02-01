@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a visual feast with stunning costumes and sets that capture the Art Deco period beautifully, but the musical itself lacks the emotional depth needed to match its gorgeous surface.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 48,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "The show is a visual feast with stunning costumes and sets that capture the Art Deco period beautifully, but the musical itself lacks the emotional depth needed to match its gorgeous surface."
+  "showScoreExcerpt": "The show is a visual feast with stunning costumes and sets that capture the Art Deco period beautifully, but the musical itself lacks the emotional depth needed to match its gorgeous surface.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 48,
+    "confidence": "medium",
+    "range": {
+      "low": 42,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 35,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "visual feast with stunning costumes and sets",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "lacks the emotional depth needed to match its gorgeous surface",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Strong praise for production design is undermined by fundamental criticism that the musical lacks emotional depth, indicating beautiful packaging but hollow content.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:02:10.808Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2340,
+    "outputTokens": 282,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

@@ -9,11 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "The result is a mesmerizing evening of dance, music and visual poetry that transcends the boundaries of traditional musical theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "The result is a mesmerizing evening of dance, music and visual poetry that transcends the boundaries of traditional musical theater."
+  "showScoreExcerpt": "The result is a mesmerizing evening of dance, music and visual poetry that transcends the boundaries of traditional musical theater.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 88,
+    "confidence": "low",
+    "range": {
+      "low": 82,
+      "high": 95
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 88,
+      "performances": null,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "mesmerizing evening",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "transcends the boundaries of traditional musical theater",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "visual poetry",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Highly positive language with superlatives like 'mesmerizing' and 'transcends' indicates strong recommendation, but excerpt is too brief to determine full critical assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:00:39.561Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2326,
+    "outputTokens": 308,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

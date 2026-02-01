@@ -28,5 +28,60 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241226130526",
-  "archiveOrgUrl": "http://web.archive.org/web/20241226130526/https://www.vulture.com/article/theater-review-paula-vogel-mother-play.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20241226130526/https://www.vulture.com/article/theater-review-paula-vogel-mother-play.html",
+  "assignedScore": 48,
+  "llmScore": {
+    "score": 48,
+    "confidence": "medium",
+    "range": {
+      "low": 42,
+      "high": 54
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That cleverness, however, has a domineering quality",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Her title, like many theatrical matriarchs, is awfully hard to live up to, which is also what Mother Play struggles to do",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "There's already wit and bite to the phrase 'mother play'",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "The critic acknowledges clever elements but concludes that the play 'struggles' to live up to its promising title and concept, suggesting disappointment with execution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:06:53.790Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2586,
+    "outputTokens": 346,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

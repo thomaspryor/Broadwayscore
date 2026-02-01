@@ -9,14 +9,69 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"What keeps the play riveting is the vigor with which Harmon considers every side of the central question, creating confrontations from which nobody emerges unscathed.\"\n\nRead more",
+  "needsScoring": true,
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 78,
+    "confidence": "low",
+    "range": {
+      "low": 70,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "keeps the play riveting",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "vigor with which Harmon considers every side",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "nobody emerges unscathed",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic praises the play as 'riveting' with vigorous examination of complex themes, suggesting strong appreciation for the writing's intellectual rigor and dramatic impact.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:12:02.222Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2340,
+    "outputTokens": 312,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt with verdict"
+    }
+  }
 }

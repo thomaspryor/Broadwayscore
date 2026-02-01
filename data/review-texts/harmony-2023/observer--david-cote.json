@@ -10,55 +10,62 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 57,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 57,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 50.5,
-      "high": 63.5
+      "low": 58,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 48,
-      "music": null,
-      "performances": null,
-      "direction": 40
+      "book": 45,
+      "music": 40,
+      "performances": 75,
+      "direction": 70
     },
     "keyPhrases": [
       {
-        "quote": "A story this compelling could have made a good musical—with less narration, more character development, and a finale that milked the nostalgia less",
+        "quote": "You might leave humming the title tune, but also unsatisfied",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "Harmony aims higher than jukebox navel-gazing",
-        "sentiment": "positive",
+        "quote": "A story this compelling could have made a good musical—with less narration, more character development, and a finale that milked the nostalgia less",
+        "sentiment": "negative",
         "strength": 3
       },
       {
-        "quote": "I slightly dreaded this one, after suffering through A Beautiful Noise a year ago",
-        "sentiment": "negative",
+        "quote": "Director and choreographer Warren Carlyle skillfully weaves the elements together and gets the Harmonists—a handsome six-pack of triple threats—on their feet and dancing",
+        "sentiment": "positive",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic acknowledges the show's ambitions and compelling story but identifies significant structural problems with execution, suggesting a mixed experience that could have been better. | GPT-4o-mini: The review expresses a mix of disappointment with the execution of the story while acknowledging some potential, leading to a conditional recommendation.",
+    "reasoning": "The critic acknowledges the show's ambition and some strong elements (performances, direction) but finds significant flaws in the music and book, concluding audiences will leave 'unsatisfied' despite some positives.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:23:01.583Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:01:21.220Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3839,
+    "outputTokens": 386,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 58,
@@ -73,7 +80,6 @@
   "dateSource": "historical-review",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 57,
   "isFullReview": true,
@@ -93,5 +99,6 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "rescoreCompletedAt": "2026-02-01T20:01:21.220Z"
 }

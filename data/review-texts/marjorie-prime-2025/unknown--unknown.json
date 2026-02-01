@@ -9,14 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The play is far more disquieting, merely as a consequence of the passage of time. In fact, I can’t ever remember ever seeing a play whose impact felt so utterly different a decade later.\"\n\nRead more",
+  "needsScoring": true,
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 65,
+    "confidence": "low",
+    "range": {
+      "low": 55,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play is far more disquieting, merely as a consequence of the passage of time",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "I can't ever remember ever seeing a play whose impact felt so utterly different a decade later",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "This excerpt suggests the play has gained unexpected relevance and impact over time, but 'disquieting' is ambiguous and there's no clear recommendation or evaluation of production quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:03:03.882Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2348,
+    "outputTokens": 303,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
+  }
 }

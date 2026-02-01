@@ -9,11 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "Rachel McAdams gives a performance of such deep authenticity and emotional precision that she makes Amy Herzog's sometimes schematic play feel like lived experience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Rachel McAdams gives a performance of such deep authenticity and emotional precision that she makes Amy Herzog's sometimes schematic play feel like lived experience."
+  "showScoreExcerpt": "Rachel McAdams gives a performance of such deep authenticity and emotional precision that she makes Amy Herzog's sometimes schematic play feel like lived experience.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": 88,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "performance of such deep authenticity and emotional precision",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "makes Amy Herzog's sometimes schematic play feel like lived experience",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "sometimes schematic play",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Strong praise for McAdams' transformative performance elevates material that the critic acknowledges has structural limitations, resulting in a positive recommendation despite reservations about the script.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:04:17.968Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2331,
+    "outputTokens": 316,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

@@ -9,15 +9,67 @@
   "dtliExcerpt": "“Maybe Happy Ending” is an undeniably moving, well-made, adorable musical, and it is a pleasant surprise to see an audience weep at a show about two robots in love.",
   "showScoreExcerpt": "\"Both Criss and Shen give excellent, very different performances... One of the achievements of the production is the very complete world that director Michael Arden has created. The sleek, futuristic set (by Dane Laffrey) draws on Korean design, provides a clear sense of time and place... “Maybe Happy Ending” is an undeniably moving, well-made, adorable musical, and it is a pleasant surprise to see an audience weep at a show about two robots in love.\"",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:04:06.568Z",
   "urlUpdated": "2026-01-23T05:35:52.589Z",
   "dtliThumb": "Up",
   "bwwExcerpt": "“Maybe Happy Ending” is an undeniably moving, well-made, adorable musical, and it is a pleasant surprise to see an audience weep at a show about two robots in love. The musical makes the bold claim that maybe we are not that different from robots after all, or that they are not that different from u...",
-  "llmScore": null,
-  "llmMetadata": null,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": 78,
+      "performances": 85,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "an undeniably moving, well-made, adorable musical, and it is a pleasant surprise to see an audience weep at a show about two robots in love",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Both Criss and Shen give excellent, very different performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The musical has too many endings, but perhaps this is part of the point",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "The critic consistently praises the performances, direction, and thematic depth while acknowledging minor structural issues, culminating in calling it 'undeniably moving' and 'well-made' - clear positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:04:38.778Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3938,
+    "outputTokens": 368,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  },
   "ensembleData": null,
   "sourceMethod": "archive",
   "archivePath": "data/archives/reviews/maybe-happy-ending-2024/variety--christian-lewis_2026-01-26.html",

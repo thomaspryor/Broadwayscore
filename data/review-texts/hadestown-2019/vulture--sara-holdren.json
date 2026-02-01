@@ -6,30 +6,25 @@
   "bwwExcerpt": "Hadestown has arrived on Broadway. Like so many of its mythic antecedents, it's the product of much metamorphosis, and its current manifestation feels lush, vigorous, and formally exciting, not to mention, in certain moments, witchily prescient.",
   "source": "bww-roundup",
   "showScoreExcerpt": "“’Hadestown’ has arrived...And its current manifestation feels lush, vigorous, and formally exciting, not to mention witchily prescient...As an intricate and gorgeous feat of songwriting, as a vehicle for dynamite performances, as a visionary long-term collaboration and a courageous experiment with form, ‘Hadestown’ is cause for celebration...Mitchell’s lyrics are image-rich and clever, her tunes exhilarating...Page and Gray are the twin sensations of the show.”",
-  "assignedScore": 92,
+  "assignedScore": 83,
   "llmScore": {
-    "score": 92,
-    "confidence": "medium",
+    "score": 83,
+    "confidence": "high",
     "range": {
-      "low": 83.5,
-      "high": 100
+      "low": 80,
+      "high": 86
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 94,
-      "performances": 93,
-      "direction": 85
+      "book": 75,
+      "music": 88,
+      "performances": 85,
+      "direction": 80
     },
     "keyPhrases": [
       {
-        "quote": "feels lush, vigorous, and formally exciting",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "As an intricate and gorgeous feat of songwriting, as a vehicle for dynamite performances, as a visionary long-term collaboration and a courageous experiment with form, 'Hadestown' is cause for celebration",
+        "quote": "as an intricate and gorgeous feat of songwriting, as a vehicle for dynamite performances, as a visionary long-term collaboration and a courageous experiment with form, Hadestown is cause for celebration",
         "sentiment": "positive",
         "strength": 5
       },
@@ -37,22 +32,34 @@
         "quote": "Page and Gray are the twin sensations of the show",
         "sentiment": "positive",
         "strength": 4
+      },
+      {
+        "quote": "in terms of character and narrative pathos, Hadestown is more than a bit out of balance",
+        "sentiment": "negative",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review uses consistently enthusiastic language with phrases like 'cause for celebration,' 'gorgeous feat,' and 'dynamite performances,' indicating strong critical approval with no significant reservations. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production's music and performances, indicating it as a must-see experience.",
+    "reasoning": "Despite noting some character imbalances and pacing issues, the critic celebrates the show as a 'gorgeous feat of songwriting' with 'dynamite performances' and calls it 'cause for celebration,' indicating strong overall recommendation.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": false
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-30T23:16:27.274Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:00:48.309Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4490,
+    "outputTokens": 381,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 88,
@@ -66,7 +73,6 @@
   "contentTier": "excerpt",
   "wordCount": 0,
   "url": "https://www.vulture.com/2019/04/hadestown-is-a-songwriting-and-storytelling-tour-de-force.html",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 92,
   "fullText": "Things you buy through our links may earn Vox Media a commission.\n\nFrom Hadestown, at the Walter Kerr.\n                  Photo: Matthew Murphy\n              \n            \n              \n        It only seems right that Hadestown — a play so much concerned with the ancient, sustained, and sustaining act of storytelling — should have a long story all its own. It’s also downright eerie that a show that ends its first act with a sinister, xenophobic workers’ chant called “Why We Build the Wall” should have started life more than ten years ago as a song cycle that developed into a cult concept album and then a musical. But there it is, and here we are. Over a decade after singer-songwriter Anaïs Mitchell first performed a suite of songs intertwining the myths of Orpheus and Eurydice and Hades and Persephone — and three years since the New York Theatre Workshop premiere of the musical adaptation Mitchell created with director Rachel Chavkin — Hadestown has arrived on Broadway. Like so many of its mythic antecedents, it’s the product of much metamorphosis, and its current manifestation feels lush, vigorous, and formally exciting, not to mention, in certain moments, witchily prescient.\n\nMitchell has quipped that any similarities between her wall-building underworld boss Hades and certain contemporary figures are “purely archetypal.” It seems unavoidable, in the moment Hadestown has grown up into, that the show should read primarily as a protest musical, and at times its stalwart “Do You Hear the People Sing?” earnestness left me a little under-roused. But as an intricate and gorgeous feat of songwriting, as a vehicle for dynamite performances, as a visionary long-term collaboration and a courageous experiment with form, Hadestown is cause for celebration. There’s a bit of cognitive dissonance in experiencing its anti-capitalist symphony smack in the heart of midtown, and still, I’m all for more of it. Or rather, more that’s just as different. Burn it down with love, and then build it back up again.\n\nHadestown is more opera than straight musical, and it still retains the feeling of a concert. The jazzy, jubilant band — led by music director Liam Robinson at the piano and featuring some hair-raisingly fantastic trombone acrobatics by Brian Drye — sits perched onstage, giving the show the feeling of a brassy New Orleans wake. Rachel Hauck’s multilevel set evokes a steampunked Big Easy — Vieux Carré meets City of Ember — while Michael Krass’s costumes run the gamut from lavish flapper-era finery for the gods to drab and dusty (but hip and form-fitting) work garb for the ensemble, the members of which are each burning approximately 2,000 calories a night thanks to David Neumann’s muscular choreography. There’s a lot of design going on, maybe a touch too much, but I don’t begrudge its exuberance. Hadestown began as a folk musician and a puppeteer driving a bus around Vermont — now it gets to discover what it is as a Broadway blowout.\n\nAnd it’s still, as the fleet-footed messenger god Hermes (André De Shields) tells us, “an old song … an old tale from way back when … It’s a sad tale, it’s a tragedy” — and they’re “gonna sing it anyway.” A Broadway deity himself (he originated the title role in The Wiz), the silver-haired, silver-suited De Shields is an unimpeachable narrator. Playing Mercury the god, he looks, moves, and sings like mercury the element — smooth and glinting, cool and elusive. He introduces us to the Fates (Jewelle Blackman, Yvette Gonzalez-Nacer, and Kay Trinidad) — an ominous trio of ladies in wispy, smokelike dresses, who are “always singing in the back of your mind” — and to the young lovers, Orpheus (Reeve Carney) and Eurydice (Eva Noblezada).\n\nIn this version of the myth — set in a timeless present somewhere between the Dust Bowl and the end times — Orpheus is a dreamy poet working on a song that “brings the world back into tune” (he and Roger-from-Rent would get along). In the meantime, he’s wiping tables in a dive bar located somewhere “on the road to hell.” Persephone (the magnificent Amber Gray) comes to town for six months every year, as per her agreement with her husband Hades (the human thunder sheet Patrick Page), and when she does, she brings the party. But the winters seem longer, colder, and harder every year, and it’s during one of these that Eurydice — young and semi-feral and not entirely trusting of Orpheus’s ability to fill their bellies with only his dreams and his lyre — gives up the ghost. In the economically depressed world of Hadestown, Eurydice doesn’t get bitten by a snake; instead, she makes a deal with the devil. In a jazzy, haunting song of seduction (“Hey, Little Songbird”) Hades offers the hungry girl work and food, scoffing at her lover’s starving artistry. “Let me guess,” the hell-god rumbles, “He’s some kind of poet … Give him your hand, he’ll give you his hand-to-mouth … Hey, why not fly south for the winter?”\n\nMitchell’s lyrics are image-rich and clever, her confident tunes exhilarating as they hop genres and tones. Delivering them, Page and Gray are the twin sensations of the show. Towering and rectangular in double-breasted pinstripes, Page plays Hades as the boss of all bosses, a tycoon with “walls to build” and “riots to quell,” and his subterranean bass is enough to send you into riots of your own every time he opens his mouth. It feels like some kind of natural phenomenon, sending tiny cracks through the theater walls, and as a flask-swigging, teeth-gnashing Persephone — a caged tiger in a green velvet party dress — Gray is more than a match for it. She’s the firestorm to Page’s earthquake, growling into an old-school microphone and cavorting with the dark-eyed wildness of a woman who’s seen the apocalypse. I’d say she was, at times, channeling Eartha Kitt, except that I don’t want to give any of the credit away. Gray is riveting, and her conflicted chemistry with Page — the rekindling of love between two angry gods — is the real emotional heart of the show.\n\nIt’s so good that you can almost forgive the fact that, in terms of character and narrative pathos, Hadestown is more than a bit out of balance. Though they get plenty of beautiful music, Orpheus and Eurydice never grip us they way that the king and queen of the underworld do. It’s a tough row to hoe: Innocence is rarely as compelling as vice. And Carney’s Orpheus in particular is a wide-eyed blank slate. His falsetto is hella impressive — and “Wait for Me,” the soaring love anthem that he gets on his way to rescue Eurydice from hell, is one of the show’s most ravishing sequences, musically and theatrically — but he’s just not much of a character. Noblezada’s Eurydice has more spunk, though it’s of a fairly generic variety, and she reads as so young — and Carney so angelically stiff — that their world-renewing passion doesn’t really spark like it should. The tearful embrace that Hades and Persephone share when Orpheus’s “song to fix what’s wrong” melts their feuding hearts is more moving than anything that goes down between our young heroes. Even the climactic, inevitable “looking back” moment seems strangely empty. But Chavkin and Mitchell know where to go after it, and the way they wrap up the fateful threads of Hadestown — tying them back to the show’s beginning in an eternal loop of hope and fate — resonates thrillingly.\n\nIn the end, Hadestown’s vision of hell itself might leave the most powerful imprint of anything in the production. In a brooding, marchlike number called “Chant,” Persephone hisses and grumbles on returning to her husband’s domain: “In the coldest time of year / Why is it so hot down here? / Hotter than a crucible / It ain’t right and it ain’t natural.” Hades, ever the entrepreneur, replies that she’s “been gone so long” that it his loneliness he “built a foundry” and “laid a power grid”: He’s “made the neon shine / Silver screen and cathode ray / Brighter than the light of day” and has “fashioned things of steel / Oil drums and automobiles / Then I kept the furnace fed / With the fossils of the dead.” Hell is Times Square and Las Vegas and the Rust Belt all rolled into one — America, concentrated. It’s rampant capitalism and overcompensation and irresponsible industry and thoughtless technology and the ever-accelerated murder of the Earth. It’s an awful, awesome vision, and though it feels strange to have the lights of Times Square burning so close by, it also feels exciting. Hadestown has had a long journey to a big stage. May more inventive, uncompromising new songs — even if they’re also old songs — follow in its footsteps.\n\nHadestown is at the Walter Kerr Theatre. Tickets are available here.\n\nShow \n      \n    \n    Comment\n  \n\n\n\n      Hadestown Is a Songwriting and Storytelling Tour de Force\n\n\n\n    \n      \n        \n  \n\n\n      \n      \n      \n        \n  \n\n\n      \n    \n\n  \n  \n\n\n\n  \n\n\n\n        Things you buy through our links may earn Vox Media a commission.",
@@ -88,5 +94,6 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260108043635",
-  "archiveOrgUrl": "http://web.archive.org/web/20260108043635/https://www.vulture.com/2019/04/hadestown-is-a-songwriting-and-storytelling-tour-de-force.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20260108043635/https://www.vulture.com/2019/04/hadestown-is-a-songwriting-and-storytelling-tour-de-force.html",
+  "rescoreCompletedAt": "2026-02-01T20:00:48.309Z"
 }

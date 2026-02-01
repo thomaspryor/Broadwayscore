@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "Joshua Harmon's ambitious family drama spans decades to explore the persistence of antisemitism in France, but the play's sprawling scope sometimes works against its emotional impact.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Joshua Harmon's ambitious family drama spans decades to explore the persistence of antisemitism in France, but the play's sprawling scope sometimes works against its emotional impact."
+  "showScoreExcerpt": "Joshua Harmon's ambitious family drama spans decades to explore the persistence of antisemitism in France, but the play's sprawling scope sometimes works against its emotional impact.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 58,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "ambitious family drama",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "sprawling scope sometimes works against its emotional impact",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The review acknowledges the play's ambition and important subject matter but identifies a significant structural flaw that undermines its effectiveness.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:12:06.524Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2336,
+    "outputTokens": 266,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

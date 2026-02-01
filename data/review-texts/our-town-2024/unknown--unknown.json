@@ -9,14 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 25,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Despite the random contemporary touches, the actors get so mired\"\n\nRead more",
+  "needsScoring": true,
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 25,
+    "confidence": "low",
+    "range": {
+      "low": 15,
+      "high": 45
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 30,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "actors get so mired",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Despite the random contemporary touches",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The fragment suggests actors are struggling with problematic material, indicating a negative assessment, but the incomplete excerpt makes confident scoring difficult.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:09:48.408Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2318,
+    "outputTokens": 269,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
+  }
 }

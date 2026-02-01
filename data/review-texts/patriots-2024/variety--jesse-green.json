@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "Michael Stuhlbarg delivers a powerhouse performance as Boris Berezovsky in this gripping political drama that traces the oligarch's rise and fall in Putin's Russia.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Michael Stuhlbarg delivers a powerhouse performance as Boris Berezovsky in this gripping political drama that traces the oligarch's rise and fall in Putin's Russia."
+  "showScoreExcerpt": "Michael Stuhlbarg delivers a powerhouse performance as Boris Berezovsky in this gripping political drama that traces the oligarch's rise and fall in Putin's Russia.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "low",
+    "range": {
+      "low": 70,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "powerhouse performance",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "gripping political drama",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Strong praise for lead performance and describes the show as 'gripping', but extremely brief excerpt limits confidence in overall assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:10:52.651Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2338,
+    "outputTokens": 242,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

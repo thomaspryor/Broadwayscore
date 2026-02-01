@@ -9,11 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "What makes 'Mother Play' so affecting is not its originality but its specificity — the way Dietz has shaped his family's story into something that feels both deeply personal and surprisingly universal.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "What makes 'Mother Play' so affecting is not its originality but its specificity — the way Dietz has shaped his family's story into something that feels both deeply personal and surprisingly universal."
+  "showScoreExcerpt": "What makes 'Mother Play' so affecting is not its originality but its specificity — the way Dietz has shaped his family's story into something that feels both deeply personal and surprisingly universal.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 70,
+    "confidence": "low",
+    "range": {
+      "low": 60,
+      "high": 80
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What makes 'Mother Play' so affecting",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "not its originality but its specificity",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "feels both deeply personal and surprisingly universal",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic finds the play 'affecting' and praises its emotional resonance and universality, but notes lack of originality and provides only a brief excerpt without clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:06:44.778Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2342,
+    "outputTokens": 318,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

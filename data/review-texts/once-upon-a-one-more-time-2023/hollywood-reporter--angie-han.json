@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical's commitment to its own silliness is both its greatest strength and its most glaring weakness.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "The musical's commitment to its own silliness is both its greatest strength and its most glaring weakness."
+  "showScoreExcerpt": "The musical's commitment to its own silliness is both its greatest strength and its most glaring weakness.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 55,
+    "confidence": "low",
+    "range": {
+      "low": 45,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "commitment to its own silliness is both its greatest strength",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "and its most glaring weakness",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The review presents a perfect contradiction where the show's defining quality is simultaneously praised as its greatest strength and criticized as its most glaring weakness, indicating true ambivalence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:08:32.613Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2323,
+    "outputTokens": 279,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

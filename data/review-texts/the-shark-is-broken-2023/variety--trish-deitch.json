@@ -9,42 +9,37 @@
   "showScoreExcerpt": "“This might have been a fascinating portrait of male ego and insecurity, with real insights into the workings of Hollywood in the 1970s...But written by the son of the late Robert Shaw, the piece feels like artless autobiography or maybe even a son’s revenge.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-shark-is-broken-broadway",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 55,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 35,
-    "confidence": "high",
+    "score": 55,
+    "confidence": "low",
     "range": {
-      "low": 30,
-      "high": 40
+      "low": 50,
+      "high": 65
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 28,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "feels like artless autobiography",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "This might have been a fascinating portrait",
-        "sentiment": "negative",
+        "quote": "Anything that has to do with Steven Spielberg's award-winning 1975 film 'Jaws' should be fun",
+        "sentiment": "positive",
         "strength": 3
       },
       {
-        "quote": "maybe even a son's revenge",
-        "sentiment": "negative",
-        "strength": 4
+        "quote": "It's one part 'Moby Dick,' three parts campy disaster film",
+        "sentiment": "neutral",
+        "strength": 2
       }
     ],
-    "reasoning": "Claude: The review expresses disappointment with unrealized potential, criticizing the script as 'artless autobiography' and suggesting personal vendetta rather than theatrical merit. | GPT-4o-mini: The review expresses significant disappointment in the writing, suggesting it lacks depth and feels personal rather than insightful, leading to a clear negative recommendation.",
+    "reasoning": "This appears to be only an introductory excerpt about the source material rather than an actual review of the theatrical production, making scoring highly uncertain.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,11 +48,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:16:23.930Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:07:54.907Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2437,
+    "outputTokens": 302,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 35,
@@ -68,7 +70,6 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 35,
   "archivePath": "data/archives/reviews/the-shark-is-broken-2023/variety--trish-deitch_2026-01-29.html",
@@ -86,5 +87,6 @@
   "archiveOrgTimestamp": "20251206210629",
   "archiveOrgUrl": "http://web.archive.org/web/20251206210629/https://variety.com/2023/legit/reviews/the-shark-is-broken-review-broadway-play-jaws-1235693491/",
   "contentTier": "complete",
-  "wordCount": 667
+  "wordCount": 667,
+  "rescoreCompletedAt": "2026-02-01T20:07:54.907Z"
 }

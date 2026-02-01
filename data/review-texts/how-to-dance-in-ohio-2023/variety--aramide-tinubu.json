@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of Alexandra Shiva's 2015 documentary is a tender, authentic portrayal of young adults on the autism spectrum preparing for a spring formal dance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "The musical adaptation of Alexandra Shiva's 2015 documentary is a tender, authentic portrayal of young adults on the autism spectrum preparing for a spring formal dance."
+  "showScoreExcerpt": "The musical adaptation of Alexandra Shiva's 2015 documentary is a tender, authentic portrayal of young adults on the autism spectrum preparing for a spring formal dance.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 72,
+    "confidence": "low",
+    "range": {
+      "low": 65,
+      "high": 80
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "tender, authentic portrayal",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "musical adaptation of Alexandra Shiva's 2015 documentary",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "The descriptive language 'tender' and 'authentic' suggests positive sentiment, but this extremely brief excerpt lacks clear recommendation language or substantial critical assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T19:59:31.782Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2336,
+    "outputTokens": 279,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

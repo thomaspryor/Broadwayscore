@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is most effective when it focuses on Jackson's creative process and his perfectionist drive in the recording studio, capturing the meticulous attention to detail that made him the King of Pop.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "The show is most effective when it focuses on Jackson's creative process and his perfectionist drive in the recording studio, capturing the meticulous attention to detail that made him the King of Pop."
+  "showScoreExcerpt": "The show is most effective when it focuses on Jackson's creative process and his perfectionist drive in the recording studio, capturing the meticulous attention to detail that made him the King of Pop.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 60,
+    "confidence": "low",
+    "range": {
+      "low": 55,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "most effective when it focuses on Jackson's creative process",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "capturing the meticulous attention to detail that made him the King of Pop",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "This excerpt only shows what works about the show without revealing overall verdict or what doesn't work, making it impossible to determine full recommendation strength.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:06:16.925Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2340,
+    "outputTokens": 282,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

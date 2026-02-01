@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a show that demands to be seen and heard, even if it doesn't always succeed in making its case as clearly or as compellingly as it might.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "This is a show that demands to be seen and heard, even if it doesn't always succeed in making its case as clearly or as compellingly as it might."
+  "showScoreExcerpt": "This is a show that demands to be seen and heard, even if it doesn't always succeed in making its case as clearly or as compellingly as it might.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 65,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "demands to be seen and heard",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "doesn't always succeed in making its case as clearly or as compellingly as it might",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic gives a qualified recommendation with 'demands to be seen and heard' but immediately undercuts it with significant reservations about execution.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:10:40.015Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2335,
+    "outputTokens": 282,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

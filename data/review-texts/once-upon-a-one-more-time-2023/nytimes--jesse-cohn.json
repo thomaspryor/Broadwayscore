@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "The show's saving grace is its irrepressible spirit and the fact that it knows exactly what it is: a big, silly, glittery spectacle that never takes itself too seriously.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "The show's saving grace is its irrepressible spirit and the fact that it knows exactly what it is: a big, silly, glittery spectacle that never takes itself too seriously."
+  "showScoreExcerpt": "The show's saving grace is its irrepressible spirit and the fact that it knows exactly what it is: a big, silly, glittery spectacle that never takes itself too seriously.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 76
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show's saving grace is its irrepressible spirit",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a big, silly, glittery spectacle that never takes itself too seriously",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic frames the show's qualities as a 'saving grace' and appreciates its self-aware nature, suggesting a qualified positive recommendation for those who enjoy this type of theatrical entertainment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:08:45.770Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2341,
+    "outputTokens": 296,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

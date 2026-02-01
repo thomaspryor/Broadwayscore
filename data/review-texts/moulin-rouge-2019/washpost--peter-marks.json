@@ -9,11 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "It's a feast for the senses but leaves you hungry for more... The musical adaptation of Baz Luhrmann's film is undeniably spectacular, yet it feels oddly hollow at its core.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "It's a feast for the senses but leaves you hungry for more... The musical adaptation of Baz Luhrmann's film is undeniably spectacular, yet it feels oddly hollow at its core."
+  "showScoreExcerpt": "It's a feast for the senses but leaves you hungry for more... The musical adaptation of Baz Luhrmann's film is undeniably spectacular, yet it feels oddly hollow at its core.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 58,
+    "confidence": "medium",
+    "range": {
+      "low": 52,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "undeniably spectacular",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "feels oddly hollow at its core",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "leaves you hungry for more",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The review presents a clear dichotomy between visual spectacle and emotional emptiness, suggesting technical excellence undermined by lack of substance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:07:40.906Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2345,
+    "outputTokens": 299,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

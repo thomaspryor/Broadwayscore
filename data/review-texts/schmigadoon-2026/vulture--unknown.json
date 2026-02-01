@@ -28,5 +28,60 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260105215009",
-  "archiveOrgUrl": "http://web.archive.org/web/20260105215009/https://www.vulture.com/article/schmigadoon-series-review.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20260105215009/https://www.vulture.com/article/schmigadoon-series-review.html",
+  "assignedScore": 72,
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 76
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 65,
+      "music": 75,
+      "performances": 78,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "Frankly, the whole thing is mortifying. I love it.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I'd happily take a second helping.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It is a bowl of corn puddin' — wholesome and familiar and maybe a dash too sweet.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Despite extensive criticism of the show's superficiality and self-awareness, the critic explicitly states their love for it and desire for more, indicating a qualified positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:14:03.235Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3662,
+    "outputTokens": 338,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

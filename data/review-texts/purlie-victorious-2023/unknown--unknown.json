@@ -9,14 +9,69 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“ ‘Purlie Victorious’ was a radical play for Broadway in 1961, when the civil-rights movement was garnering national attention...The play remains radical today, and for the same reason...More important, the production, directed by Kenny Leon, Broadway’s go-to helmer of black-themed plays reinvigorates the jesting that animates the antic action.”\n\nRead more",
+  "needsScoring": true,
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 78,
+    "confidence": "low",
+    "range": {
+      "low": 70,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play remains radical today",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "reinvigorates the jesting that animates the antic action",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Broadway's go-to helmer of black-themed plays",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The excerpt shows clear appreciation for the play's continued relevance and praises Kenny Leon's direction for 'reinvigorating' the production, suggesting a positive recommendation despite the very limited text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:12:42.012Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2387,
+    "outputTokens": 326,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
+  }
 }

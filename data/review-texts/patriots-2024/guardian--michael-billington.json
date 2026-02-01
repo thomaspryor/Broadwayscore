@@ -9,11 +9,56 @@
   "isFullReview": false,
   "dtliExcerpt": "Sarsgaard gives a commanding performance as Boris Berezovsky, the oligarch who helped create Putin only to become his most dangerous enemy.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Sarsgaard gives a commanding performance as Boris Berezovsky, the oligarch who helped create Putin only to become his most dangerous enemy."
+  "showScoreExcerpt": "Sarsgaard gives a commanding performance as Boris Berezovsky, the oligarch who helped create Putin only to become his most dangerous enemy.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 55,
+    "confidence": "low",
+    "range": {
+      "low": 45,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "commanding performance as Boris Berezovsky",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "This excerpt only praises Sarsgaard's performance without any evaluation of the show itself or recommendation language, making it impossible to determine overall recommendation strength.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:10:35.819Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2331,
+    "outputTokens": 239,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

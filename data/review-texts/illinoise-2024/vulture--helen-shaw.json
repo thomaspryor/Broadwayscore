@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "Illinoise is a dance musical that uses Sufjan Stevens's 2005 album Illinois as its score, and it's a gorgeous, melancholy meditation on place, memory, and the stories we tell about ourselves.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Illinoise is a dance musical that uses Sufjan Stevens's 2005 album Illinois as its score, and it's a gorgeous, melancholy meditation on place, memory, and the stories we tell about ourselves."
+  "showScoreExcerpt": "Illinoise is a dance musical that uses Sufjan Stevens's 2005 album Illinois as its score, and it's a gorgeous, melancholy meditation on place, memory, and the stories we tell about ourselves.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 80,
+    "confidence": "low",
+    "range": {
+      "low": 70,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "gorgeous, melancholy meditation",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "uses Sufjan Stevens's 2005 album Illinois as its score",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "The descriptive language 'gorgeous' and 'melancholy meditation' suggests strong appreciation, but this appears to be a very brief excerpt lacking explicit recommendation language.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:01:06.850Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2348,
+    "outputTokens": 284,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

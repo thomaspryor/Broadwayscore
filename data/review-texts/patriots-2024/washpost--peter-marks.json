@@ -9,11 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "Michael Stuhlbarg delivers a commanding performance as the oligarch Boris Berezovsky in this gripping political drama that feels urgently relevant to our current moment.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Michael Stuhlbarg delivers a commanding performance as the oligarch Boris Berezovsky in this gripping political drama that feels urgently relevant to our current moment."
+  "showScoreExcerpt": "Michael Stuhlbarg delivers a commanding performance as the oligarch Boris Berezovsky in this gripping political drama that feels urgently relevant to our current moment.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "low",
+    "range": {
+      "low": 70,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "commanding performance",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "gripping political drama",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "urgently relevant to our current moment",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Strong praise for lead performance and material relevance suggests positive recommendation, but extremely brief excerpt limits confidence in overall assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:10:57.335Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2336,
+    "outputTokens": 292,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

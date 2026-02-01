@@ -26,5 +26,60 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "assignedScore": 68,
+  "llmScore": {
+    "score": 68,
+    "confidence": "medium",
+    "range": {
+      "low": 62,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 55,
+      "music": null,
+      "performances": 78,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "the performances of the nine-member cast do click often enough to reward those of us who are patient",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The Lincoln Center 'Uncle Vanya' doesn't completely solve the central difficulties of staging it",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "There is a nagging feeling this detachment comes at the play's expense",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic acknowledges strong performances and some successful elements but expresses significant reservations about the translation choices and overall production effectiveness, landing in mixed territory with qualified recommendation for patient theatergoers.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:15:20.709Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4336,
+    "outputTokens": 352,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

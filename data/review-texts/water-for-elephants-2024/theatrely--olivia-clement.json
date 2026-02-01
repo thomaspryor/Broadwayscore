@@ -9,11 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "Water for Elephants is a sweeping spectacle that manages to capture both the grandeur and intimacy of Sara Gruen's beloved novel. The production succeeds in creating theatrical magic through stunning puppetry and heartfelt performances.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Water for Elephants is a sweeping spectacle that manages to capture both the grandeur and intimacy of Sara Gruen's beloved novel. The production succeeds in creating theatrical magic through stunning puppetry and heartfelt performances."
+  "showScoreExcerpt": "Water for Elephants is a sweeping spectacle that manages to capture both the grandeur and intimacy of Sara Gruen's beloved novel. The production succeeds in creating theatrical magic through stunning puppetry and heartfelt performances.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 80,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "manages to capture both the grandeur and intimacy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "succeeds in creating theatrical magic",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "stunning puppetry and heartfelt performances",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Consistent positive language praising the production's success in adaptation, visual spectacle, and performances, with no negative caveats mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:15:45.403Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2351,
+    "outputTokens": 310,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

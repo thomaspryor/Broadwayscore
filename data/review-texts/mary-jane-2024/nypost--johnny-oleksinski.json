@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "Rachel McAdams gives a powerhouse performance as a single mother caring for her chronically ill son in this emotionally devastating Broadway drama.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 50,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Rachel McAdams gives a powerhouse performance as a single mother caring for her chronically ill son in this emotionally devastating Broadway drama."
+  "showScoreExcerpt": "Rachel McAdams gives a powerhouse performance as a single mother caring for her chronically ill son in this emotionally devastating Broadway drama.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 50,
+    "confidence": "low",
+    "range": {
+      "low": 40,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "powerhouse performance",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "emotionally devastating",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "This excerpt only praises McAdams' performance without evaluating the show itself or providing any recommendation signal.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:04:08.617Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2329,
+    "outputTokens": 263,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

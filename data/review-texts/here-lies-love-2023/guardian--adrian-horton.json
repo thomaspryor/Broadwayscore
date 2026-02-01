@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "Here Lies Love is an ambitious, immersive musical that transforms the Broadway Theatre into a dancefloor-cum-dictator origin story, though its political complexities sometimes get lost in the spectacle.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Here Lies Love is an ambitious, immersive musical that transforms the Broadway Theatre into a dancefloor-cum-dictator origin story, though its political complexities sometimes get lost in the spectacle."
+  "showScoreExcerpt": "Here Lies Love is an ambitious, immersive musical that transforms the Broadway Theatre into a dancefloor-cum-dictator origin story, though its political complexities sometimes get lost in the spectacle.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "ambitious, immersive musical",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "political complexities sometimes get lost in the spectacle",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The review praises the production's ambition and immersive qualities but criticizes it for prioritizing spectacle over political substance, indicating a mixed recommendation with qualified appreciation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T19:58:44.887Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2345,
+    "outputTokens": 286,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

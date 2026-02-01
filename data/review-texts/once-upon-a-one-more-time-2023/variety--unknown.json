@@ -28,5 +28,60 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251231130110",
-  "archiveOrgUrl": "http://web.archive.org/web/20251231130110/https://variety.com/2023/legit/reviews/once-upon-a-one-more-time-review-britney-spears-musical-1235649922/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251231130110/https://variety.com/2023/legit/reviews/once-upon-a-one-more-time-review-britney-spears-musical-1235649922/",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 82,
+      "performances": null,
+      "direction": 83
+    },
+    "keyPhrases": [
+      {
+        "quote": "giddy, surprisingly caustic script and rapier-fast score",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "built for speed and social awareness",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "pop-musical course correction",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Strong positive language praising the script as 'giddy' and 'caustic', the score as 'rapier-fast', and positioning it as a successful 'course correction' with social awareness, though this appears to be an excerpt rather than a complete review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:09:02.145Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2448,
+    "outputTokens": 342,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

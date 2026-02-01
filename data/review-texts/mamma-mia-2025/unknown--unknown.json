@@ -9,14 +9,69 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Despite being slightly downscaled for the road — most notably in a set that feels a little flimsy — this is a fine iteration of “Mamma Mia!” sprightlier than it was the last time I saw the show.\"\n\nRead more",
+  "needsScoring": true,
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 72,
+    "confidence": "low",
+    "range": {
+      "low": 68,
+      "high": 76
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "this is a fine iteration of \"Mamma Mia!\"",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "sprightlier than it was the last time I saw the show",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "set that feels a little flimsy",
+        "sentiment": "negative",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Brief positive assessment calling it 'fine' and 'sprightlier' with minor production criticism, suggesting qualified recommendation but excerpt is too short for high confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:02:54.206Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2357,
+    "outputTokens": 329,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
+  }
 }

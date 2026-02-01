@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "The production, directed by Kenny Leon, brings a contemporary sensibility to Wilder's meditation on life and death, with Jim Parsons delivering a thoughtful performance as the Stage Manager.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "The production, directed by Kenny Leon, brings a contemporary sensibility to Wilder's meditation on life and death, with Jim Parsons delivering a thoughtful performance as the Stage Manager."
+  "showScoreExcerpt": "The production, directed by Kenny Leon, brings a contemporary sensibility to Wilder's meditation on life and death, with Jim Parsons delivering a thoughtful performance as the Stage Manager.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 65,
+    "confidence": "low",
+    "range": {
+      "low": 55,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 72,
+      "direction": 68
+    },
+    "keyPhrases": [
+      {
+        "quote": "brings a contemporary sensibility to Wilder's meditation on life and death",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Jim Parsons delivering a thoughtful performance",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "This extremely brief excerpt offers only mild positive language about direction and performance with no clear recommendation or critical assessment of the overall production quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:09:53.019Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2340,
+    "outputTokens": 279,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

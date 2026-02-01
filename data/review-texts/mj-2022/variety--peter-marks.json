@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is most successful when it focuses on Jackson's creative process and his perfectionism in the studio, with Myles Frost delivering a magnetic performance that captures the King of Pop's essence.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "The show is most successful when it focuses on Jackson's creative process and his perfectionism in the studio, with Myles Frost delivering a magnetic performance that captures the King of Pop's essence."
+  "showScoreExcerpt": "The show is most successful when it focuses on Jackson's creative process and his perfectionism in the studio, with Myles Frost delivering a magnetic performance that captures the King of Pop's essence.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 45,
+    "confidence": "low",
+    "range": {
+      "low": 35,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 80,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "most successful when it focuses on",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Myles Frost delivering a magnetic performance that captures the King of Pop's essence",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The phrase 'most successful when' implies the show fails in other areas, with only the lead performance and specific studio scenes working well.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:06:21.392Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2341,
+    "outputTokens": 282,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

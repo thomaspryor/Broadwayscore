@@ -26,5 +26,60 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "assignedScore": 68,
+  "llmScore": {
+    "score": 68,
+    "confidence": "high",
+    "range": {
+      "low": 65,
+      "high": 72
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": 55,
+      "performances": 78,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "the production Broadway-level pleasures. The design is flashy, and the choreography is thrilling",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Most of the time, the two shows run parallel, never completely meeting. The songs often feel shoe-horned into the story",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "But the show is probably best appreciated by taking the advice offered in a different context in the musical by a character called the Narrator: 'Don't overthink it.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic acknowledges significant structural problems and awkward concept execution but praises the performances, design, and choreography enough to suggest a qualified, conditional recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:08:40.714Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4416,
+    "outputTokens": 374,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

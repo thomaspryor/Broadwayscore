@@ -9,14 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 35,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Putin is played, largely, for comedy — but jokes are met with silence\"\n\nRead more",
+  "needsScoring": true,
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 35,
+    "confidence": "low",
+    "range": {
+      "low": 25,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 30,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Putin is played, largely, for comedy",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "jokes are met with silence",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The excerpt suggests audience rejection of the comedy, with jokes failing to land, indicating significant problems with the production's effectiveness.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:10:48.403Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2321,
+    "outputTokens": 267,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
+  }
 }

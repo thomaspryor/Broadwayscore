@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "Illinoise is a gorgeous, ambitious work that succeeds in translating Stevens' introspective indie folk into something bigger and more communal – a testament to the power of art to connect us across time and space.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Illinoise is a gorgeous, ambitious work that succeeds in translating Stevens' introspective indie folk into something bigger and more communal – a testament to the power of art to connect us across time and space."
+  "showScoreExcerpt": "Illinoise is a gorgeous, ambitious work that succeeds in translating Stevens' introspective indie folk into something bigger and more communal – a testament to the power of art to connect us across time and space.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "gorgeous, ambitious work that succeeds",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a testament to the power of art to connect us across time and space",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "The review uses strong positive language ('gorgeous', 'succeeds', 'testament to the power of art') with no caveats or criticisms, indicating clear recommendation despite being brief.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:00:30.144Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2346,
+    "outputTokens": 289,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

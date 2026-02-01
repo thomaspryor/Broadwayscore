@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "Bliss's comedy is at its strongest when it examines the ways that well-meaning people can still cause harm, and how good intentions don't absolve us of responsibility for the impact of our words and actions.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Bliss's comedy is at its strongest when it examines the ways that well-meaning people can still cause harm, and how good intentions don't absolve us of responsibility for the impact of our words and actions."
+  "showScoreExcerpt": "Bliss's comedy is at its strongest when it examines the ways that well-meaning people can still cause harm, and how good intentions don't absolve us of responsibility for the impact of our words and actions.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 65,
+    "confidence": "low",
+    "range": {
+      "low": 55,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 65,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "comedy is at its strongest when it examines the ways that well-meaning people can still cause harm",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "good intentions don't absolve us of responsibility for the impact of our words and actions",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "This excerpt discusses thematic strengths but lacks clear recommendation language or overall assessment, making it impossible to determine the critic's full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:01:35.322Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2346,
+    "outputTokens": 292,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

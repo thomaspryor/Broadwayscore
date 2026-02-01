@@ -9,11 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "The production succeeds in creating an immersive disco experience that makes the audience complicit in the glamour and corruption of the Marcos regime.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "The production succeeds in creating an immersive disco experience that makes the audience complicit in the glamour and corruption of the Marcos regime."
+  "showScoreExcerpt": "The production succeeds in creating an immersive disco experience that makes the audience complicit in the glamour and corruption of the Marcos regime.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 75,
+    "confidence": "low",
+    "range": {
+      "low": 60,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production succeeds",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "creating an immersive disco experience",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "makes the audience complicit in the glamour and corruption",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic states the production 'succeeds' in its artistic goals, suggesting positive reception, but this single sentence provides insufficient context for a confident assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T19:58:55.901Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2331,
+    "outputTokens": 282,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

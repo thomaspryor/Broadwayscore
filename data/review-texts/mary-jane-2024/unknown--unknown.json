@@ -9,14 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"...those of us bearing witness may find the undiminishing focus...a lot to take in.\"\n\nRead more",
+  "needsScoring": true,
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 55,
+    "confidence": "low",
+    "range": {
+      "low": 45,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "undiminishing focus...a lot to take in",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "those of us bearing witness",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "The fragment suggests the show is intense or overwhelming ('a lot to take in') with limited context to determine if this is positive intensity or negative excess.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:04:22.531Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2326,
+    "outputTokens": 273,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
+  }
 }

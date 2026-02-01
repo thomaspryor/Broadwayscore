@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "Blumberg's show is a careful, thoughtful exploration of what it means to be Jewish in America today, delivered with the kind of gentle humor that makes difficult conversations possible.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Blumberg's show is a careful, thoughtful exploration of what it means to be Jewish in America today, delivered with the kind of gentle humor that makes difficult conversations possible."
+  "showScoreExcerpt": "Blumberg's show is a careful, thoughtful exploration of what it means to be Jewish in America today, delivered with the kind of gentle humor that makes difficult conversations possible.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": null,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "careful, thoughtful exploration",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "gentle humor that makes difficult conversations possible",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Clear appreciation for the show's thoughtful approach and effective use of humor to address serious themes, indicating a positive recommendation despite measured language.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:01:44.279Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2338,
+    "outputTokens": 268,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

@@ -9,11 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "McAdams brings naturalistic authenticity and emotional intelligence to her stage debut, anchoring Amy Herzog's tender, observant drama about a single mother caring for her disabled son.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "McAdams brings naturalistic authenticity and emotional intelligence to her stage debut, anchoring Amy Herzog's tender, observant drama about a single mother caring for her disabled son."
+  "showScoreExcerpt": "McAdams brings naturalistic authenticity and emotional intelligence to her stage debut, anchoring Amy Herzog's tender, observant drama about a single mother caring for her disabled son.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "naturalistic authenticity and emotional intelligence",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "tender, observant drama",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "anchoring",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Consistent positive language praising both McAdams' performance and Herzog's writing with no caveats, indicating a clear recommendation despite brief format.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:04:04.617Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2337,
+    "outputTokens": 301,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

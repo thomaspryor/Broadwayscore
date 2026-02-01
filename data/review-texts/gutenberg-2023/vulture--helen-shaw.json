@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The show is a love letter to the theater itself, and to the particular kind of madness that drives people to put on shows in the first place.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 72,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,36 +17,58 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is a love letter to the theater itself, and to the particular kind of madness that drives people to put on shows in the first place.",
   "llmScore": {
-    "score": 75,
-    "confidence": "high",
+    "score": 72,
+    "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 68,
+      "high": 76
     },
-    "bucket": "Positive",
+    "bucket": "Mixed",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 70,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 78,
+      "direction": 68
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 'love letter' language suggests affection and recommendation, though the brief excerpt lacks explicit recommendation language or detailed assessment. | GPT-4o: The review uses a positive metaphor, suggesting affection and appreciation for the production. However, without more context, the recommendation is not emphatically strong, leading to a medium confidence level. | Gemini: While not explicitly stating to see the show, the phrase 'love letter to the theater itself' implies a positive experience and recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "at its best it's both outrageously funny and strangely, sweetly sublime",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a question the production dances with but isn't quite able to resolve",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Andrew Rannells and Josh Gad...played to the hilt",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic appreciates the performances and concept but identifies unresolved structural issues with adapting the material to Broadway, suggesting qualified recommendation despite clear affection for the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:31:34.405Z",
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:00:33.152Z",
     "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
+    "inputTokens": 3144,
+    "outputTokens": 343,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 76,
@@ -66,7 +88,6 @@
   "previousUrl": "https://www.vulture.com/2023/10/gutenberg-the-musical-broadway-review.html",
   "urlDiscoveredAt": "2026-02-01T19:00:15.697Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 75,
   "textWordCount": 2010,
@@ -86,5 +107,6 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250225084951",
-  "archiveOrgUrl": "http://web.archive.org/web/20250225084951/https://www.vulture.com/article/theater-review-gutenberg-the-musical-broadway.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250225084951/https://www.vulture.com/article/theater-review-gutenberg-the-musical-broadway.html",
+  "rescoreCompletedAt": "2026-02-01T20:00:33.152Z"
 }

@@ -10,11 +10,58 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 80,
+  "assignedScore": 50,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "llmScore": null,
-  "llmMetadata": null,
+  "llmScore": {
+    "score": 50,
+    "confidence": "low",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "thundering new musical",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Forget the world stage, what about Broadway?",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "This appears to be an introductory paragraph or excerpt that provides context about the show's producers but contains no actual critical evaluation or recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:14:28.888Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2367,
+    "outputTokens": 269,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "bwwExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated BWW excerpt"
+    }
+  },
   "ensembleData": null,
   "archivePath": "data/archives/reviews/suffs-2024/the-times--nancy-durrant_2026-02-01.html",
   "textFetchedAt": "2026-02-01T14:17:21.072Z",

@@ -9,11 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a slick, professionally mounted tribute that will satisfy Jackson's devoted fans, but it doesn't dig deep enough to reveal the complex humanity of its subject.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "The show is a slick, professionally mounted tribute that will satisfy Jackson's devoted fans, but it doesn't dig deep enough to reveal the complex humanity of its subject."
+  "showScoreExcerpt": "The show is a slick, professionally mounted tribute that will satisfy Jackson's devoted fans, but it doesn't dig deep enough to reveal the complex humanity of its subject.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": null,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "slick, professionally mounted tribute",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "will satisfy Jackson's devoted fans",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "doesn't dig deep enough to reveal the complex humanity",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Mixed review that acknowledges professional quality and fan appeal but criticizes lack of depth, suggesting conditional recommendation for specific audiences.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:06:25.907Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2335,
+    "outputTokens": 276,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

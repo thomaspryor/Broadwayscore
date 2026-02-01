@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of Alexandra Shiva's documentary about teens on the autism spectrum preparing for a spring formal is undeniably well-intentioned, but it feels more like an educational experience than compelling theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 48,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "The musical adaptation of Alexandra Shiva's documentary about teens on the autism spectrum preparing for a spring formal is undeniably well-intentioned, but it feels more like an educational experience than compelling theater."
+  "showScoreExcerpt": "The musical adaptation of Alexandra Shiva's documentary about teens on the autism spectrum preparing for a spring formal is undeniably well-intentioned, but it feels more like an educational experience than compelling theater.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 48,
+    "confidence": "medium",
+    "range": {
+      "low": 42,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "undeniably well-intentioned",
+        "sentiment": "neutral",
+        "strength": 2
+      },
+      {
+        "quote": "feels more like an educational experience than compelling theater",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic acknowledges good intentions but fundamentally criticizes the show as educational rather than theatrically compelling, which is a significant negative for theater.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T19:59:22.244Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2343,
+    "outputTokens": 276,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "Water for Elephants is a show that works best when it embraces its circus spectacle and lets the talented ensemble cast shine in moments of pure theatrical magic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Water for Elephants is a show that works best when it embraces its circus spectacle and lets the talented ensemble cast shine in moments of pure theatrical magic."
+  "showScoreExcerpt": "Water for Elephants is a show that works best when it embraces its circus spectacle and lets the talented ensemble cast shine in moments of pure theatrical magic.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 72,
+    "confidence": "low",
+    "range": {
+      "low": 65,
+      "high": 78
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 78,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "works best when it embraces its circus spectacle",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "talented ensemble cast shine in moments of pure theatrical magic",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The review emphasizes positive elements like spectacle and cast performances with strong language ('theatrical magic'), but the conditional phrasing ('works best when') suggests the show doesn't always achieve this level.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:15:39.952Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2334,
+    "outputTokens": 291,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

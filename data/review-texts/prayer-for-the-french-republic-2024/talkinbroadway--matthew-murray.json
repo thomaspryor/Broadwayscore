@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "Prayer for the French Republic is a work of enormous ambition that Joshua Harmon has executed with considerable skill, creating a sprawling family saga that examines how the past never truly releases its grip on the present.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Prayer for the French Republic is a work of enormous ambition that Joshua Harmon has executed with considerable skill, creating a sprawling family saga that examines how the past never truly releases its grip on the present."
+  "showScoreExcerpt": "Prayer for the French Republic is a work of enormous ambition that Joshua Harmon has executed with considerable skill, creating a sprawling family saga that examines how the past never truly releases its grip on the present.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "low",
+    "range": {
+      "low": 70,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "enormous ambition that Joshua Harmon has executed with considerable skill",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "creating a sprawling family saga",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The review praises Harmon's skill and ambition in creating the work, suggesting appreciation for the playwright's achievement, but the excerpt is too brief to determine the full critical verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:11:53.284Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2345,
+    "outputTokens": 286,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

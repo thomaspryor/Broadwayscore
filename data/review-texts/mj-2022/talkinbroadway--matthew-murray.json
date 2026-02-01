@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "MJ succeeds most when it focuses on Jackson's artistry and the creative process, allowing audiences to witness the meticulous craft behind his legendary performances.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "MJ succeeds most when it focuses on Jackson's artistry and the creative process, allowing audiences to witness the meticulous craft behind his legendary performances."
+  "showScoreExcerpt": "MJ succeeds most when it focuses on Jackson's artistry and the creative process, allowing audiences to witness the meticulous craft behind his legendary performances.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 62,
+    "confidence": "low",
+    "range": {
+      "low": 55,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "MJ succeeds most when it focuses on Jackson's artistry and the creative process",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "succeeds most when",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "The phrase 'succeeds most when' implies the show doesn't always succeed, suggesting mixed quality with highlights in specific areas.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:06:06.525Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2333,
+    "outputTokens": 275,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

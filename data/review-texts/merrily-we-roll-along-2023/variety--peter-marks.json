@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "The production, directed by Maria Friedman, is a triumph of casting and conception that makes the case for this Sondheim musical more persuasively than any previous incarnation.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "The production, directed by Maria Friedman, is a triumph of casting and conception that makes the case for this Sondheim musical more persuasively than any previous incarnation."
+  "showScoreExcerpt": "The production, directed by Maria Friedman, is a triumph of casting and conception that makes the case for this Sondheim musical more persuasively than any previous incarnation.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 85,
+      "high": 92
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 90,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "triumph of casting and conception",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "makes the case for this Sondheim musical more persuasively than any previous incarnation",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The review uses strong superlative language ('triumph') and positions this as the definitive production of the musical, indicating clear enthusiasm despite being a brief excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:05:02.652Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2339,
+    "outputTokens": 285,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

@@ -9,14 +9,69 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "CRITIC’S PICK \"‘Moulin Rouge! The Musical’ Offers a Party, and a Playlist, for the Ages. Forbidden pleasures abound in this spectacular musical, starring a dazzling Karen Olivo as a doomed Parisian chanteuse.\"\n\nRead more",
+  "needsScoring": true,
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 90,
+      "performances": 95,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "CRITIC'S PICK",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "spectacular musical",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "dazzling Karen Olivo",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The 'CRITIC'S PICK' designation combined with superlatives like 'spectacular' and 'dazzling' indicates a rave review despite the brief excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:07:31.153Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2365,
+    "outputTokens": 312,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt with verdict"
+    }
+  }
 }

@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "The show succeeds in making the audience complicit in the Marcoses' rise to power, forcing us to reckon with our own susceptibility to charismatic authoritarianism.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "The show succeeds in making the audience complicit in the Marcoses' rise to power, forcing us to reckon with our own susceptibility to charismatic authoritarianism."
+  "showScoreExcerpt": "The show succeeds in making the audience complicit in the Marcoses' rise to power, forcing us to reckon with our own susceptibility to charismatic authoritarianism.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "low",
+    "range": {
+      "low": 70,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show succeeds in making the audience complicit",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "forcing us to reckon with our own susceptibility to charismatic authoritarianism",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic praises the show's intellectual and emotional impact, suggesting it effectively achieves its thematic goals, but this excerpt is too brief to determine full recommendation strength.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T19:58:51.309Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2340,
+    "outputTokens": 290,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

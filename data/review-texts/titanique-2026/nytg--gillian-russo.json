@@ -29,5 +29,60 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": 82,
+      "performances": 85,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "do expect a titanic amount of pure joy",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's best just to grab your friends, grab some drinks (the show sells them in buckets), and just get on board",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "if you just let it wash over you, you'll have a boatload of fun",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Despite cautioning against high art expectations, the critic enthusiastically recommends the show for its infectious joy, strong performances, and pure entertainment value.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:14:54.352Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3218,
+    "outputTokens": 342,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

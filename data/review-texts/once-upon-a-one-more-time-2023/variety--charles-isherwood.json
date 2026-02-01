@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "This jukebox musical built around Britney Spears songs is a colorful, energetic and surprisingly sweet confection that delivers exactly what it promises.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "This jukebox musical built around Britney Spears songs is a colorful, energetic and surprisingly sweet confection that delivers exactly what it promises."
+  "showScoreExcerpt": "This jukebox musical built around Britney Spears songs is a colorful, energetic and surprisingly sweet confection that delivers exactly what it promises.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "delivers exactly what it promises",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "colorful, energetic and surprisingly sweet confection",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The review uses consistently positive descriptors and indicates the show successfully achieves its goals, suggesting a clear but not effusive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:08:56.770Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2334,
+    "outputTokens": 269,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

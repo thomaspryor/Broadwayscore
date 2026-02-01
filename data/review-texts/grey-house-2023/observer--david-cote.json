@@ -10,40 +10,62 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 25,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 60,
-    "confidence": "medium",
+    "score": 25,
+    "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 20,
+      "high": 30
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Pan",
+    "thumb": "Down",
     "components": {
-      "book": null,
+      "book": 15,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 55,
+      "direction": 80
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review is severely truncated at a critical pivot point where the critic appears to be contrasting the playwright's luck with audience experience. The BroadwayWorld 'Down' aggregator context suggests a negative verdict, but the available text only shows setup without the actual assessment. | GPT-4o: The review text focuses on the luck of the playwright and the high-profile production rather than the quality of the play itself. The lack of positive commentary on the performance suggests a negative verdict, supported by the aggregator's 'Down' rating. | Gemini: The review excerpt focuses on the playwright's good fortune and the production's high-profile cast and director, but it doesn't offer a clear recommendation for or against seeing the show. The BroadwayWorld aggregator verdict suggests a slightly negative leaning, but the provided text alone is too neutral for a negative score.",
+    "keyPhrases": [
+      {
+        "quote": "Here, there's only the mounting dread that you're trapped in a pretentious trauma-drama using horror tropes to diminishing effect",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "audiences who pay for his pretentious pulp? Not so much",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the real star is the design team; their work is mysterious and spooky, and altogether ooky",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic delivers a scathing review calling the play 'pretentious pulp' with fundamental flaws in logic and storytelling, praising only the design work while warning audiences away.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T14:54:10.484Z",
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T19:59:41.002Z",
     "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
+    "inputTokens": 3580,
+    "outputTokens": 364,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 60,
@@ -65,8 +87,7 @@
   "contentTier": "excerpt",
   "wordCount": 0,
   "rescoreReason": "fullText added after excerpt-based scoring",
-  "rescoreCompletedAt": "2026-02-01T14:54:10.484Z",
-  "needsRescore": true,
+  "rescoreCompletedAt": "2026-02-01T19:59:41.002Z",
   "previousLlmScore": 60,
   "isFullReview": true,
   "textWordCount": 796,

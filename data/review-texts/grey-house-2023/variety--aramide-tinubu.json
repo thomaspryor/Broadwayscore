@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Though the play boasts an impressive creative team and a committed cast, 'Grey House' ultimately feels like a missed opportunity to deliver genuine scares on Broadway.",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,36 +17,58 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Though the play boasts an impressive creative team and a committed cast, 'Grey House' ultimately feels like a missed opportunity to deliver genuine scares on Broadway.",
   "llmScore": {
-    "score": 45,
+    "score": 42,
     "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 38,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 65,
+      "direction": 60
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: Despite acknowledging positive elements like the creative team and cast, the critic's final verdict is that the show 'ultimately feels like a missed opportunity,' which is a clear negative recommendation. | GPT-4o: The review concludes that the play is a 'missed opportunity', indicating a negative assessment despite the positive mention of the creative team and cast. | Gemini: The review explicitly states the play is a 'missed opportunity,' indicating a negative assessment and a lack of recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "impressive creative team and a committed cast",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "ultimately feels like a missed opportunity",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "deliver genuine scares",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Despite praising the cast and creative team, the critic's verdict is that the production fails to achieve its core purpose, making it a clear mixed-negative review with more problems than strengths.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:30:45.954Z",
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T19:59:46.583Z",
     "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
+    "inputTokens": 2334,
+    "outputTokens": 315,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 45,
@@ -63,7 +85,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Negative"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 45,
   "textWordCount": 776,
@@ -94,5 +115,6 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "rescoreCompletedAt": "2026-02-01T19:59:46.583Z"
 }

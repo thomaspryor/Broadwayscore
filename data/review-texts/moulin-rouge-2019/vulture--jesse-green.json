@@ -9,11 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a masterpiece of maximalism, a sugar rush of spectacle that somehow manages to be both completely overwhelming and oddly touching.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "The show is a masterpiece of maximalism, a sugar rush of spectacle that somehow manages to be both completely overwhelming and oddly touching."
+  "showScoreExcerpt": "The show is a masterpiece of maximalism, a sugar rush of spectacle that somehow manages to be both completely overwhelming and oddly touching.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "masterpiece of maximalism",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "oddly touching",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "completely overwhelming",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "While the critic calls it 'completely overwhelming', the overall framing as a 'masterpiece' that is 'oddly touching' indicates strong appreciation for the production's ambitious spectacle.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:07:36.129Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2330,
+    "outputTokens": 306,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

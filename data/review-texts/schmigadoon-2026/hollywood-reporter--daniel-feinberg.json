@@ -28,5 +28,55 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241225122945",
-  "archiveOrgUrl": "http://web.archive.org/web/20241225122945/https://www.hollywoodreporter.com/tv/tv-reviews/schmigadoon-1234982706/"
+  "archiveOrgUrl": "http://web.archive.org/web/20241225122945/https://www.hollywoodreporter.com/tv/tv-reviews/schmigadoon-1234982706/",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "low",
+    "range": {
+      "low": 35,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": 55,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Some joyful musical moments",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "but very little depth",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The review's bottom line explicitly states limited positive elements ('some joyful musical moments') but emphasizes a significant flaw ('very little depth'), suggesting more problems than strengths.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:13:46.695Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2515,
+    "outputTokens": 278,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

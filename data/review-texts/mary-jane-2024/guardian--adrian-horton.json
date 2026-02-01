@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "McAdams brings a remarkable vulnerability and strength to Alex, a mother caring for her chronically ill son, in this deeply moving production.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "McAdams brings a remarkable vulnerability and strength to Alex, a mother caring for her chronically ill son, in this deeply moving production."
+  "showScoreExcerpt": "McAdams brings a remarkable vulnerability and strength to Alex, a mother caring for her chronically ill son, in this deeply moving production.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 75,
+    "confidence": "low",
+    "range": {
+      "low": 65,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "remarkable vulnerability and strength",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "deeply moving production",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Strong praise for lead performance and emotional impact suggests positive recommendation, but extremely brief excerpt limits confidence in overall assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:03:59.983Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2329,
+    "outputTokens": 239,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

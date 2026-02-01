@@ -9,14 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Groff is simply sensational, charming as himself and astonishing in his revelatory Darin. \n\nRead more",
+  "needsScoring": true,
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 85,
+    "confidence": "low",
+    "range": {
+      "low": 75,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 88,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "simply sensational",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "astonishing in his revelatory Darin",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Extremely enthusiastic language about Groff's performance with superlatives like 'sensational' and 'astonishing', but this appears to be only an excerpt from a longer review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:01:52.693Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2330,
+    "outputTokens": 264,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
+  }
 }

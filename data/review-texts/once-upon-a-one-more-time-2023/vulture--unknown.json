@@ -28,5 +28,60 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251007094145",
-  "archiveOrgUrl": "http://web.archive.org/web/20251007094145/https://www.vulture.com/2023/06/theater-review-once-upon-a-one-more-time.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251007094145/https://www.vulture.com/2023/06/theater-review-once-upon-a-one-more-time.html",
+  "assignedScore": 38,
+  "llmScore": {
+    "score": 38,
+    "confidence": "high",
+    "range": {
+      "low": 32,
+      "high": 42
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": 60,
+      "performances": 45,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's reductive and pandering, hitting all the expected marks without any unique spark",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "not worth sitting through two hours and 30 minutes of a dull musical to get there",
+        "sentiment": "negative",
+        "strength": 5
+      },
+      {
+        "quote": "The advantage that Once Upon a One More Time does have over its competition is its heaps and heaps of Britney",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "The critic systematically criticizes the book as heavy-handed and ponderous, finds the production design monotonous, and explicitly states it's not worth sitting through despite some enjoyable Britney songs.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:09:08.122Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4100,
+    "outputTokens": 366,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

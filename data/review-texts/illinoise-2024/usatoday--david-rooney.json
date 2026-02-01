@@ -9,11 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "This gorgeous dance musical based on Sufjan Stevens' indie-folk song cycle captures the yearning spirit of the original album while expanding it into a deeply moving theatrical experience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "This gorgeous dance musical based on Sufjan Stevens' indie-folk song cycle captures the yearning spirit of the original album while expanding it into a deeply moving theatrical experience."
+  "showScoreExcerpt": "This gorgeous dance musical based on Sufjan Stevens' indie-folk song cycle captures the yearning spirit of the original album while expanding it into a deeply moving theatrical experience.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 88,
+      "performances": null,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "This gorgeous dance musical",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "deeply moving theatrical experience",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "captures the yearning spirit of the original album while expanding it",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Strong positive language throughout with words like 'gorgeous' and 'deeply moving' indicates clear recommendation despite being a brief excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:00:57.374Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2336,
+    "outputTokens": 304,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

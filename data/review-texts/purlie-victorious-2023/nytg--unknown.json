@@ -29,5 +29,60 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": 88,
+      "music": null,
+      "performances": 92,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "Read our five-star review of Purlie Victorious",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Flat-out hilarious and stacked with topflight performances",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Purlie Victorious is also a triumph when it comes to timing",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "A five-star review with unqualified praise using superlatives like 'triumph', 'flat-out hilarious', and 'topflight performances' across all production elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:12:37.203Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3258,
+    "outputTokens": 342,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

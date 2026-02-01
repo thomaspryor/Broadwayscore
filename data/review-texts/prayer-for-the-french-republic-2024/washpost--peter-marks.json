@@ -9,11 +9,66 @@
   "isFullReview": false,
   "dtliExcerpt": "Joshua Harmon's sweeping family drama about French Jews grappling with rising antisemitism is both timely and deeply moving, anchored by powerhouse performances from Nancy Robinette and Richard Masur.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Joshua Harmon's sweeping family drama about French Jews grappling with rising antisemitism is both timely and deeply moving, anchored by powerhouse performances from Nancy Robinette and Richard Masur."
+  "showScoreExcerpt": "Joshua Harmon's sweeping family drama about French Jews grappling with rising antisemitism is both timely and deeply moving, anchored by powerhouse performances from Nancy Robinette and Richard Masur.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "both timely and deeply moving",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "anchored by powerhouse performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "sweeping family drama",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Strong positive language about both the material and performances with no negative caveats suggests clear recommendation, though the brief excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:12:21.749Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2347,
+    "outputTokens": 299,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

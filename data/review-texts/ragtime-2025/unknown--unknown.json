@@ -9,14 +9,69 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"DeBessonet succeeds by getting out of the show's way, providing a clean, clear, visually stunning staging filled with bravura performances. A quarter-century-old piece, set more than a century ago, speaks, directly and eloquently, to the present moment.\"\n\nRead more",
+  "needsScoring": true,
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 88,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "visually stunning staging filled with bravura performances",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "speaks, directly and eloquently, to the present moment",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "DeBessonet succeeds by getting out of the show's way",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Strong praise for direction, performances, and contemporary relevance with no negative caveats indicates clear positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:13:01.111Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2365,
+    "outputTokens": 315,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt with verdict"
+    }
+  }
 }

@@ -9,55 +9,62 @@
   "showScoreExcerpt": "“...the production, directed by the late Adam Brace, is exceptionally tight, the material tweaked and buffed to gleaming perfection, with the 34-year-old comedian bopping around the stage using a trio of stools to conjure up multiple locations and figures”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/alex-edelman-just-for-us-broadway",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 88,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 88,
+    "confidence": "high",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 85,
+      "high": 92
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 90,
       "music": null,
-      "performances": 80,
-      "direction": 88
+      "performances": 88,
+      "direction": 85
     },
     "keyPhrases": [
       {
-        "quote": "exceptionally tight",
+        "quote": "Get your ass—whatever its race and ethnicity—to Edelman's smart, funny, and surprisingly poignant solo",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "the production, directed by the late Adam Brace, is exceptionally tight, the material tweaked and buffed to gleaming perfection",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "tweaked and buffed to gleaming perfection",
+        "quote": "Comedy cognoscenti know how damn good Just for Us is",
         "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the production... is exceptionally tight",
-        "sentiment": "positive",
-        "strength": 5
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Strong praise for direction and production quality with superlative language like 'gleaming perfection' and 'exceptionally tight' suggests clear positive recommendation, though excerpt is too brief for full confidence. | GPT-4o-mini: The review highlights the production's exceptional direction and tight execution, indicating a strong recommendation.",
+    "reasoning": "Strong positive review with explicit recommendation ('Get your ass...to Edelman's'), superlative praise ('gleaming perfection', 'damn good'), and detailed appreciation of the craft and content.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:36.551Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:03:52.470Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3324,
+    "outputTokens": 366,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -70,7 +77,6 @@
   },
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
   "isFullReview": true,
@@ -90,5 +96,6 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "rescoreCompletedAt": "2026-02-01T20:03:52.470Z"
 }

@@ -9,40 +9,62 @@
   "bwwExcerpt": "Scenic designer Scott Pask simulates a disorganized backstage area with tables, technical gear and touches that suggest a Nutley yard sale (I see he bought the Star Wars bedsheets from my childhood on eBay) and costume designer Emily Rebholz gives the boys the perfect level of dweeby élan, down to Rannells’ tucked-in sweater. I don’t know if the bazillion trucker hats are sets, costumes, props or what, but give someone a Tony. Having staged much costlier and busier spectacles, it’s a treat to se",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 76,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 78,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 75,
+      "music": 70,
+      "performances": 88,
+      "direction": 85
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'firmly imprinted on my heart' indicates genuine affection and recommendation, though the caveat about not being a 'gateway musical' suggests some reservations about broader appeal. | GPT-4o: The critic expresses a personal fondness for the show, indicating a positive impression despite acknowledging its limitations as a 'gateway musical'. The language suggests a recommendation, albeit with some reservations about its broader appeal. | Gemini: The phrase \"firmly imprinted on my heart\" suggests a positive experience, but the earlier part of the sentence implies it's not a universally appealing or groundbreaking musical, hence a recommendation with reservations.",
+    "keyPhrases": [
+      {
+        "quote": "Oh my Gad yes",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "it's firmly imprinted on my heart, sans serif",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It takes craft to be this crappy",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic clearly enjoys and recommends this show despite its intentionally bad musical-within-a-musical premise, praising the performances, direction, and clever execution of the concept.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T14:54:17.878Z",
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:00:22.174Z",
     "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
+    "inputTokens": 3872,
+    "outputTokens": 322,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -67,8 +89,7 @@
   "contentTier": "excerpt",
   "wordCount": 0,
   "rescoreReason": "fullText added after excerpt-based scoring",
-  "rescoreCompletedAt": "2026-02-01T14:54:17.878Z",
-  "needsRescore": true,
+  "rescoreCompletedAt": "2026-02-01T20:00:22.174Z",
   "previousLlmScore": 76,
   "isFullReview": true,
   "textWordCount": 972,

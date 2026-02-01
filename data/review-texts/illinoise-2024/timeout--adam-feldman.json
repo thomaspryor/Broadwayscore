@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a show that trusts its audience to follow it into deep emotional waters, and the trust is rewarded. Illinoise is a rare Broadway musical that feels both intimate and epic.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "This is a show that trusts its audience to follow it into deep emotional waters, and the trust is rewarded. Illinoise is a rare Broadway musical that feels both intimate and epic."
+  "showScoreExcerpt": "This is a show that trusts its audience to follow it into deep emotional waters, and the trust is rewarded. Illinoise is a rare Broadway musical that feels both intimate and epic.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a show that trusts its audience to follow it into deep emotional waters, and the trust is rewarded",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Illinoise is a rare Broadway musical that feels both intimate and epic",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Strong positive language calling the show 'rare' with qualities that 'reward' audience trust, suggesting clear recommendation despite brief excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:00:48.094Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2340,
+    "outputTokens": 291,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

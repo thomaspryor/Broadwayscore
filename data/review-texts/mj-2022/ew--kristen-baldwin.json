@@ -9,11 +9,56 @@
   "isFullReview": false,
   "dtliExcerpt": "MJ succeeds as both a celebration of Jackson's artistic genius and a thoughtful examination of the costs of fame.",
   "originalScore": 88,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "MJ succeeds as both a celebration of Jackson's artistic genius and a thoughtful examination of the costs of fame."
+  "showScoreExcerpt": "MJ succeeds as both a celebration of Jackson's artistic genius and a thoughtful examination of the costs of fame.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "low",
+    "range": {
+      "low": 70,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "MJ succeeds as both a celebration of Jackson's artistic genius and a thoughtful examination of the costs of fame",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The review declares the show 'succeeds' in achieving dual objectives, indicating clear positive recommendation, but the brief excerpt limits confidence in the precise score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:05:51.683Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2325,
+    "outputTokens": 253,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

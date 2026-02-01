@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "Edelman's storytelling is masterful, weaving together personal anecdotes with larger societal observations in a way that feels both intimate and universal.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "Edelman's storytelling is masterful, weaving together personal anecdotes with larger societal observations in a way that feels both intimate and universal."
+  "showScoreExcerpt": "Edelman's storytelling is masterful, weaving together personal anecdotes with larger societal observations in a way that feels both intimate and universal.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "low",
+    "range": {
+      "low": 65,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "masterful",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "feels both intimate and universal",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Strong praise for storytelling craft with 'masterful' but this appears to be a very brief excerpt from a larger review, making overall recommendation unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:01:40.044Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2333,
+    "outputTokens": 266,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

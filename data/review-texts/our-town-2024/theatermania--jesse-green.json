@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival, directed by Kenny Leon, brings a fresh perspective to Wilder's masterpiece while honoring its timeless themes of love, loss, and the preciousness of everyday moments.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "This revival, directed by Kenny Leon, brings a fresh perspective to Wilder's masterpiece while honoring its timeless themes of love, loss, and the preciousness of everyday moments."
+  "showScoreExcerpt": "This revival, directed by Kenny Leon, brings a fresh perspective to Wilder's masterpiece while honoring its timeless themes of love, loss, and the preciousness of everyday moments.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 75,
+    "confidence": "low",
+    "range": {
+      "low": 65,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "brings a fresh perspective to Wilder's masterpiece",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "while honoring its timeless themes",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Positive language about 'fresh perspective' and 'honoring' the classic suggests solid direction, but this brief excerpt lacks specific praise or criticism to determine exact recommendation strength.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:09:44.300Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2341,
+    "outputTokens": 289,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

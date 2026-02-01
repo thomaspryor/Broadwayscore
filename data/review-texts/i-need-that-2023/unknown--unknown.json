@@ -9,14 +9,69 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“The view of hoarding as a serious mental health affliction never gets much acknowledgment in this 100-minute, sitcom-adjacent throwback...Rebeck’s desire, for us to empathize with Sam’s grief, manifested as an embrace of any thing that prompts a memory of his wife, is nice enough. It just seems false to suggest such an unhealthy mental condition as somehow romantic.”\n\nRead more",
+  "needsScoring": true,
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 38,
+    "confidence": "medium",
+    "range": {
+      "low": 32,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "sitcom-adjacent throwback",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "It just seems false to suggest such an unhealthy mental condition as somehow romantic",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Rebeck's desire, for us to empathize with Sam's grief... is nice enough",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "The review criticizes the play's treatment of mental health as superficial and false, describing it dismissively as 'sitcom-adjacent' with only faint praise for the playwright's intentions.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T19:59:42.307Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2391,
+    "outputTokens": 340,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
+  }
 }

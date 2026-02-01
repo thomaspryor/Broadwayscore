@@ -9,11 +9,61 @@
   "isFullReview": false,
   "dtliExcerpt": "The production succeeds because it understands that Merrily is fundamentally about grief — grief for lost friendships, lost idealism, lost time.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": "The production succeeds because it understands that Merrily is fundamentally about grief — grief for lost friendships, lost idealism, lost time."
+  "showScoreExcerpt": "The production succeeds because it understands that Merrily is fundamentally about grief — grief for lost friendships, lost idealism, lost time.",
+  "needsScoring": true,
+  "llmScore": {
+    "score": 78,
+    "confidence": "low",
+    "range": {
+      "low": 70,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production succeeds",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "understands that Merrily is fundamentally about grief",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The phrase 'production succeeds' indicates clear approval, and the analytical insight about the show's themes suggests the critic views this as an intelligent, well-conceived production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:05:07.615Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2333,
+    "outputTokens": 279,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

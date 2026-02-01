@@ -9,14 +9,64 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 35,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“…The monumental wilderness conjured by the designers overwhelms the twig of a story”\n\nRead more",
+  "needsScoring": true,
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 35,
+    "confidence": "low",
+    "range": {
+      "low": 25,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": null,
+      "performances": null,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "monumental wilderness conjured by the designers overwhelms",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "twig of a story",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "The critic praises the design work but severely criticizes the story as inadequate ('twig'), with the metaphor suggesting the production values cannot compensate for weak material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T20:13:19.933Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2324,
+    "outputTokens": 282,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
+  }
 }
