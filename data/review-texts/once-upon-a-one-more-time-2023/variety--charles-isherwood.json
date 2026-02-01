@@ -5,7 +5,7 @@
   "criticName": "Charles Isherwood",
   "url": "https://variety.com/2023/legit/reviews/once-upon-a-one-more-time-review-1235645194/",
   "publishDate": "June 23, 2023",
-  "fullText": "This jukebox musical built around Britney Spears songs is a colorful, energetic and surprisingly sweet confection that delivers exactly what it promises.",
+  "fullText": "While it is debatable that the life of the newly emancipated Britney Spears is a fairy tale at present, the singer's catalog of hits surely has the feel of a fable with feminist-forward empowerment. That's what writer Jon Hartmere and director-choreographers Keone and Mari Madrid use as the basis for \"Once Upon a One More Time,\" their Broadway twist on staid, storybook romanticism and tired male-centric tropes. With its giddy, surprisingly caustic script and rapier-fast score, this pop-musical course correction (authorized by Spears, post-conservatorship) is built for speed and social awareness.",
   "isFullReview": false,
   "dtliExcerpt": "This jukebox musical built around Britney Spears songs is a colorful, energetic and surprisingly sweet confection that delivers exactly what it promises.",
   "originalScore": null,
@@ -65,5 +65,43 @@
       "confidence": "high",
       "reasoning": "Complete review text with verdict"
     }
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 78,
+  "textWordCount": 91,
+  "archivePath": "data/archives/reviews/once-upon-a-one-more-time-2023/variety--charles-isherwood_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T22:45:49.020Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Paywall detected - login may have failed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "sourceMethod": "brightdata",
+  "duplicateTextOf": "variety--unknown.json"
 }

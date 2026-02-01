@@ -79,19 +79,13 @@
   },
   "bwwExcerpt": "Though the main characters are played for laughs, each one, amid all the comic chaos, also reveals their own dignity, heart, and humanity. The show also manages to teeter between patriotism and subversiveness: admiring the derring-do of the mission while poking at its shortcomings, too. Having the actors play any gender of any character without camp or winks is a theatrical approach that not only cleverly skirts the sexist and classist ick of that era but coolly comments on it, too.",
   "sourceMethod": "archive",
-  "archivePath": "data/archives/reviews/operation-mincemeat-2025/variety--frank-rizzo_2026-01-26.html",
-  "textFetchedAt": "2026-01-26T18:53:53.432Z",
+  "archivePath": "data/archives/reviews/operation-mincemeat-2025/variety--frank-rizzo_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T22:45:34.113Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
@@ -104,9 +98,17 @@
     "dtli"
   ],
   "showScoreExcerpt": null,
-  "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 82,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 72,
   "rescoreCompletedAt": "2026-02-01T15:48:57.765Z",
   "contentTier": "complete",
-  "wordCount": 910
+  "wordCount": 910,
+  "needsRescore": true,
+  "isFullReview": false,
+  "textWordCount": 70,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "shorter_than_excerpt"
+  ],
+  "textStatus": "truncated"
 }
