@@ -6,7 +6,9 @@
     "cabaret-2024/the-hollywood-reporter-demetrios-matheou--demetrios-matheou.json",
     "grey-house-2023/newyorker--dan-stahl.json",
     "hamilton-2015/hollywood-reporter--david-rooney.json",
-    "here-lies-love-2023/nytimes--ben-brantley.json"
+    "here-lies-love-2023/nytimes--ben-brantley.json",
+    "prayer-for-the-french-republic/nytg--unknown.json",
+    "the-lion-king-1997/vulture--john-simon.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -21,11 +23,21 @@
     "oh-mary/new-york-magazinevulture-sara-holdren--sara-holdren.json",
     "oh-mary-2024/hollywood-reporter--angie-han.json",
     "oh-mary-2024/vulture--helen-shaw.json",
-    "operation-mincemeat/variety-frank-rizzo--frank-rizzo.json"
+    "operation-mincemeat/variety-frank-rizzo--frank-rizzo.json",
+    "queen-of-versailles/new-york-magazine-vulture-sara-holdren--sara-holdren.json",
+    "stereophonic/the-hollywood-reporter-david-rooney--david-rooney.json",
+    "suffs/variety--unknown.json",
+    "suffs/vulture-sara-holdren--sara-holdren.json",
+    "the-lion-king-1997/hollywood-reporter--frank-scheck.json",
+    "the-outsiders-2024/hollywood-reporter--angie-han.json",
+    "the-outsiders-2024/hollywood-reporter--david-rooney.json",
+    "two-strangers-bway-2025/nytimes--laura-collins-hughes.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "prayer-for-the-french-republic/nytg--unknown.json"
+    ],
     "browserbase": [],
     "scrapingbee": [
       "grey-house-2023/newyorker--dan-stahl.json",
@@ -37,9 +49,10 @@
       "an-enemy-of-the-people/vulture--unknown.json",
       "back-to-the-future-2023/hollywood-reporter--frank-scheck.json",
       "cabaret-2024/the-hollywood-reporter-demetrios-matheou--demetrios-matheou.json",
-      "hamilton-2015/hollywood-reporter--david-rooney.json"
+      "hamilton-2015/hollywood-reporter--david-rooney.json",
+      "the-lion-king-1997/vulture--john-simon.json"
     ]
   },
   "startTime": "2026-02-01T15:16:04.782Z",
-  "lastProcessed": "operation-mincemeat/variety-frank-rizzo--frank-rizzo.json"
+  "lastProcessed": "two-strangers-bway-2025/nytimes--laura-collins-hughes.json"
 }
