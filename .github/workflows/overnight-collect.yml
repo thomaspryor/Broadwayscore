@@ -1,0 +1,143 @@
+name: Overnight Review Collection
+
+on:
+  workflow_dispatch:
+    inputs:
+      shows:
+        description: 'Comma-separated show IDs to process (leave empty to auto-detect shows needing work)'
+        required: false
+        default: ''
+      max_per_show:
+        description: 'Max reviews per show'
+        required: false
+        default: '50'
+      browserbase_enabled:
+        description: 'Enable Browserbase CAPTCHA solving'
+        required: false
+        default: 'true'
+
+jobs:
+  collect-batch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300  # 5 hour max
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Install Playwright
+        run: npx playwright install chromium --with-deps
+
+      - name: Determine shows to process
+        id: shows
+        run: |
+          if [ -n "${{ inputs.shows }}" ]; then
+            echo "list=${{ inputs.shows }}" >> $GITHUB_OUTPUT
+          else
+            # Find shows with most reviews needing full text
+            SHOWS=$(node -e "
+              const fs = require('fs'), path = require('path');
+              const dir = 'data/review-texts';
+              const shows = fs.readdirSync(dir).filter(f => fs.statSync(path.join(dir, f)).isDirectory());
+              const scores = [];
+              for (const show of shows) {
+                const files = fs.readdirSync(path.join(dir, show)).filter(f => f.endsWith('.json'));
+                let needs = 0;
+                for (const file of files) {
+                  try {
+                    const d = JSON.parse(fs.readFileSync(path.join(dir, show, file), 'utf8'));
+                    if (d.wrongProduction || d.wrongShow || d.wrongAttribution) continue;
+                    if (!d.fullText || d.textQuality === 'truncated' || d.textQuality === 'missing' || d.textQuality === 'excerpt_only') needs++;
+                  } catch(e) {}
+                }
+                if (needs > 5) scores.push({ show, needs });
+              }
+              scores.sort((a,b) => b.needs - a.needs);
+              console.log(scores.slice(0, 15).map(s => s.show).join(','));
+            ")
+            echo "list=$SHOWS" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run sequential collection
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_ENABLED: ${{ inputs.browserbase_enabled }}
+          BROWSERBASE_MAX_SESSIONS_PER_RUN: '5'
+          NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
+          NYTIMES_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
+          VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
+          VULTURE_PASSWORD: ${{ secrets.VULTURE_PASSWORD }}
+          WAPO_EMAIL: ${{ secrets.WAPO_EMAIL }}
+          WASHPOST_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
+          WSJ_EMAIL: ${{ secrets.WSJ_EMAIL }}
+          WSJ_PASSWORD: ${{ secrets.WSJ_PASSWORD }}
+          BRIGHTDATA_ZONE: mcp_unlocker
+        run: |
+          IFS=',' read -ra SHOWS <<< "${{ steps.shows.outputs.list }}"
+          TOTAL=${#SHOWS[@]}
+          echo "Processing $TOTAL shows: ${SHOWS[*]}"
+
+          PROCESSED=0
+          FAILED=0
+
+          for show in "${SHOWS[@]}"; do
+            show=$(echo "$show" | xargs)  # trim whitespace
+            echo ""
+            echo "============================================"
+            echo "[$((PROCESSED + FAILED + 1))/$TOTAL] Processing: $show"
+            echo "============================================"
+
+            node scripts/collect-review-texts.js \
+              --show="$show" \
+              --max=${{ inputs.max_per_show }} \
+              --batch-size=10 \
+              --priority=all || true
+
+            # Commit after each show
+            git add data/review-texts/ data/archives/ data/collection-state/ data/audit/ || true
+            if git diff --staged --quiet; then
+              echo "No changes for $show"
+            else
+              git commit -m "chore: Collect review texts for $show (overnight batch)" || true
+
+              # Push with retry
+              for attempt in 1 2 3 4 5; do
+                if git push origin main 2>/dev/null; then
+                  echo "Pushed successfully"
+                  break
+                else
+                  echo "Push failed, attempt $attempt - pulling and retrying..."
+                  git pull --rebase origin main || true
+                  sleep $((RANDOM % 10 + 5))
+                fi
+              done
+            fi
+
+            PROCESSED=$((PROCESSED + 1))
+            echo "Completed $PROCESSED/$TOTAL shows"
+          done
+
+          echo ""
+          echo "============================================"
+          echo "OVERNIGHT BATCH COMPLETE"
+          echo "Shows processed: $PROCESSED"
+          echo "============================================"
+
+      - name: Trigger reviews rebuild
+        if: always()
+        run: |
+          gh workflow run "Rebuild Reviews Data" -f reason="Post overnight collection batch" || true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
