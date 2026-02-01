@@ -71,6 +71,42 @@
   "garbageFixedAt": "2026-01-29T22:45:22.884Z",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "rescoreReason": "low-conf: prompt=3.0.0, delta=35, upgrading to V5 + 3 models",
-  "rescoreCompletedAt": "2026-02-01T14:54:44.990Z"
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreCompletedAt": "2026-02-01T14:54:44.990Z",
+  "needsRescore": true,
+  "previousLlmScore": 74,
+  "fullText": "Democracy Dies in DarknessReview by  Peter MarksI’m wondering if the wizarding world could come up with a charm that might give desperate Muggles a leg up on performance availability. Because an incantation may be the only way to scare up tickets to “Harry Potter and the Cursed Child,” now that it has officially opened on Broadway and Potterholics are going to be hitting the ticket-buying website refresh button so often they’ll be in danger of breaking keyboards and fingers.\n\n0 CommentsMost ReadOpinionMichael ShermerI’ve reported on UFO sightings for decades — and come to this conclusionJanuary 29, 2026Brianna TuckerIn Texas, Democrats narrow GOP’s U.S. House majority, land state Senate upset33 minutes agoSalvador RizzoDOJ misconduct complaint against D.C. federal judge dismissedEarlier todayNewsletterDailyToday’s HeadlinesThe most important news stories of the day, curated by Post editors, delivered every morning.Sign up\n\nAs a California consumer, you have the right to opt-out from the sale or sharing of your personal information at any time across business platform, services, businesses and devices. You can opt-out of the sale and sharing of your personal information by using this toggle switch. As a Virginia, Utah, Colorado and Connecticut consumer, you have the right to opt-out from the sale of your personal data and the processing of your personal data for targeted advertising. You can opt-out of the sale of your personal data and targeted advertising by using this toggle switch. For more information on your rights as a United States consumer see our privacy notice.",
+  "isFullReview": true,
+  "textWordCount": 246,
+  "archivePath": "data/archives/reviews/harry-potter-2021/washpost--peter-marks_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T15:14:09.698Z",
+  "designation": "Recommended",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Paywall detected - login may have failed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 246 (min: 300)"
+  ]
 }

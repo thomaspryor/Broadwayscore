@@ -5,12 +5,12 @@
   "criticName": "Bob Goepfert",
   "url": "http://www.troyrecord.com/arts-and-entertainment/20180502/review-harry-potter-stage-show-in-nyc-not-for-the-casual-fan",
   "publishDate": "May 2, 2018",
-  "fullText": null,
+  "fullText": "New York, N.Y. >> What happens inside the Lyric Theatre stays inside the Lyric Theare.\n\nThat’s what the producers of “Harry Potter and the Cursed Child” request from the audience. As you leave the theater they hand you a button that reads “Keep the secrets.”\n\nI have no problem with the request. In fact there are so many reveals and surprises in the two-part zig-zag production that it is difficult to even remember them all. Heck, the show is so sprawling and complicated I have difficulty recalling all the plot points.\n\nThere is no question “Harry Potter” is a special treat for many people. However, the question is, how special? Are two shows running 2 1/2 hours each at a top ticket of $199 for each, worth your time and money?\n\nOnly you can make that decision, but if you loved the books or the films I’d guess the answer would be yes.\n\nThe play, written by Jack Thorne from a story by J.K. Rowling, is like an elixir to Harry Potter zealots. If you are only a fan, it is merely a champagne toast.\n\nRevisiting the core group, you learn that Harry married Ginny, Ron Weasley’s younger sister. Ron married Hermione Granger and they have a daughter Rose, who is headed off to Hogwarts with Harry’s son.\n\nThe first act of the first show takes great pains to establish personal relationships and their history. In a story about the consequences of time-tinkering there are a lot of flashbacks showing how Harry lost his parents, was raised by harshly indifferent relatives and found his identity and purpose as a wizard at Hogwarts. It’s a feast of riches for Harry Potter lovers.\n\nHowever, for me, a person who deserted the novels about halfway and saw but one film, the answer of worth is “not really.”\n\nExcept for the dazzling technical aspects of the production, I was put-off by the long, complicated and exceedingly dark story that has little apparent moral value – except to state the obvious – children need nurturing parents in order to become healthy adults.\n\nThis moral is made through the conflict between the now 38 year old Harry and his son Albus who is heading off for his first year at Hogwarts. Albus is resentful, as he knows at school he will live in his father’s shadow.\n\nAt Hogwarts, either to spite his father or through fate, Albus becomes best friends with Scorpius Malfoy, the son of Draco Malfoy, Harry’s bitter enemy.\n\nThe two team up with Delphi, who reveals herself to be the niece of Amos Diggery, who is now living at St. Oswald’s Home for Old Witches and Wizards.\n\nAmos hates Harry and blames him for the death of his son Cedric, which happened in book five.\n\nThe friends decide to steal a Time-Turner and go back in time to right a wrong. As everyone knows, that’s never a good idea. And true to all prophecies, whatever can go wrong does go wrong. Also true to all bad ideas, if one return to the past is a bad idea, a second one will be terrible.\n\nAn impactful result is a scene reminiscent of “A Wonderful Life” in which we get to see a world that would have been if Harry Potter never existed. To give a hint, and hopefully not to reveal a secret, the first play ends with everyone celebrating Voldemort Day.\n\nThis synopsis of a tiny portion of the show should illustrate a couple of things. The story is complicated and it is really important to have a grasp of what took place in the novels.\n\nMaking appearances are characters like Hagrid, Bane the centaur and Professor Snape. They seem to appear mostly because loyalists might be comforted by their inclusion. There are also a number of references to characters, places and incidents that though unfamiar to me, drew a reaction from segments of the audience.\n\nAs wonderful as were J.K. Rowling’s contributions to contemporary mythology, no one ever denied that her writing could be served by judicious cutting. The same is true to this stage play. It is filled with fat and indulgences. Even some special effects appear to exist simply to elicit awe from the audience.\n\nPadding special effects is unnecessary because there are awes aplenty from effects that serve the play in a fun way. Brooms levitating, flames shooting out from wands, people being uplifted and hurled across the stage and scenery that inspires the imagination are a feast for the eye.\n\nIndeed, technically the entire production is splendid. I was especially in awe of the gorgeous, evocative lighting designed by Neil Austin.\n\nThe acting is so good that it appears easy. However, each actor finds the firm, stoic nature that defines every character.\n\nSadly the overwhelming earnestness of all becomes dulling. Except for a refreshing performance by Anthony Boyle as Scorpius there is little personality on display within the characters.\n\nHarry Potter and The Cursed Child is at the Lyric Theatre in New York City and likely to remain there for a very, very long time. For tickets go to Ticketmaster.com or call 1-877-250-2929.",
   "showScoreExcerpt": "\"The play is like an elixir to 'Harry Potter' zealots...Except for the dazzling technical aspects...I was put-off by the long, complicated and exceedingly dark story that has little apparent moral value...This stage play...Is filled with fat and indulgences....Some special effects appear to exist simply to elicit awe...Technically the production is splendid...The acting is so good that it appears easy...The overwhelming earnestness of all becomes dulling.\"",
   "originalScore": null,
   "assignedScore": 47,
   "source": "show-score",
-  "sourceMethod": "showscore",
+  "sourceMethod": "scrapingbee",
   "scoreSource": "sentiment-mixed-positive",
   "scoreConfidence": "low",
   "llmScore": {
@@ -70,5 +70,36 @@
     "needsReviewReasons": []
   },
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 47,
+  "isFullReview": true,
+  "textWordCount": 855,
+  "archivePath": "data/archives/reviews/harry-potter-2021/troy-record--bob-goepfert_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T15:13:11.819Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Paywall detected - login may have failed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete"
 }
