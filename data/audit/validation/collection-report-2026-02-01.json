@@ -1,45 +1,45 @@
 {
-  "runDate": "2026-02-01T15:05:51.103Z",
+  "runDate": "2026-02-01T15:09:04.019Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "death-becomes-her-2024",
+    "showFilter": "back-to-the-future-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 43,
-    "failed": 163,
+    "processed": 44,
+    "failed": 167,
     "skipped": 0,
     "successRate": "20.9%"
   },
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 6,
     "browserbase": 0,
     "scrapingbee": 4,
     "brightdata": 2,
-    "archive": 37
+    "archive": 38
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 5,
+    "tier1Success": 3,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 0,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 3,
-    "tier4Success": 3,
-    "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 0,
+    "tier4Attempts": 10,
+    "tier4Success": 4,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 2,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -85,7 +85,8 @@
     "the-great-gatsby/variety-christian-lewis--christian-lewis.json",
     "the-lion-king-1997/vulture--john-simon.json",
     "the-outsiders/new-york-magazinevulture-sara-holdren--sara-holdren.json",
-    "the-outsiders/variety-naveen-kumar--naveen-kumar.json"
+    "the-outsiders/variety-naveen-kumar--naveen-kumar.json",
+    "back-to-the-future-2023/nysr--elysa-gardner.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -248,9 +249,13 @@
     "stereophonic/variety-frank-rizzo--frank-rizzo.json",
     "suffs/vulture-sara-holdren--sara-holdren.json",
     "the-great-gatsby/new-york-magazinevulture-sara-holdren--unknown.json",
-    "death-becomes-her-2024/deadline--greg-evans.json",
-    "death-becomes-her-2024/timeout--adam-feldman.json",
-    "death-becomes-her-2024/wsj--charles-isherwood.json"
+    "back-to-the-future-2023/hollywood-reporter--frank-scheck.json",
+    "back-to-the-future-2023/chelsea-community-news--michael-musto.json",
+    "back-to-the-future-2023/observer--david-cote.json",
+    "back-to-the-future-2023/timeout--adam-feldman.json",
+    "back-to-the-future-2023/wsj--charles-isherwood.json",
+    "back-to-the-future-2023/nysr--steven-suskin.json",
+    "back-to-the-future-2023/queerty--matthew-wexler.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -259,8 +264,7 @@
       "appropriate-2023/ew--allison-considine.json",
       "appropriate-2023/observer--david-cote.json",
       "back-to-the-future-2023/ew--dalton-ross.json",
-      "book-of-mormon-2011/timeout--david-cote.json",
-      "i-need-that-2023/observer--david-cote.json"
+      "book-of-mormon-2011/timeout--david-cote.json"
     ],
     "browserbase": [],
     "scrapingbee": [
@@ -310,9 +314,24 @@
       "the-great-gatsby/variety-christian-lewis--christian-lewis.json",
       "the-lion-king-1997/vulture--john-simon.json",
       "the-outsiders/new-york-magazinevulture-sara-holdren--sara-holdren.json",
-      "the-outsiders/variety-naveen-kumar--naveen-kumar.json"
+      "the-outsiders/variety-naveen-kumar--naveen-kumar.json",
+      "back-to-the-future-2023/nysr--elysa-gardner.json"
     ]
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "failuresByOutlet": {
+    "The Hollywood Reporter": {
+      "count": 1,
+      "domain": "hollywoodreporter.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "back-to-the-future-2023/observer--david-cote.json",
+      "oldUrl": "https://observer.com/2023/08/back-to-the-future-the-musical-review-broadway/",
+      "newUrl": "https://observer.com/2023/08/back-to-the-future-the-musical-review-the-delorean-flies-the-songs-sink/"
+    }
+  ]
 }
