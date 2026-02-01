@@ -15,6 +15,8 @@ Detailed descriptions of all automated workflows. See root `CLAUDE.md` for secre
 | `collect-review-texts.yml` | ✅ | ❌ | Parallel-safe, relies on daily rebuild |
 | `fetch-guardian-reviews.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
 | `process-review-submission.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
+| `scrape-nysr.yml` | ✅ | ❌ | Weekly NYSR via WordPress API, relies on daily rebuild |
+| `scrape-new-aggregators.yml` | ✅ | ❌ | Weekly Playbill Verdict + NYC Theatre, relies on daily rebuild |
 
 **For bulk imports (100s of shows):** Run parallel gather-reviews, then trigger manual rebuild via:
 ```bash
@@ -176,6 +178,24 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Optional:** GEMINI_API_KEY (enables 3-model mode)
 - **Pre-flight test:** `npx ts-node scripts/llm-scoring/test-ensemble.ts` (tests ensemble logic with all 3 models)
 - **Ensemble calibration:** `npx ts-node scripts/llm-scoring/index.ts --ensemble-calibrate` (analyzes per-model performance)
+
+## `scrape-nysr.yml`
+- **Runs:** Weekly on Sundays at 10 AM UTC, or manually
+- **Does:** Scrapes New York Stage Review via WordPress REST API, fetches full text + star ratings for all Broadway reviews
+- **Script:** `scripts/scrape-nysr-reviews.js`
+- **No secrets needed** (public WordPress API)
+- **Technical:** Paginates `/wp-json/wp/v2/posts?categories=1`, extracts star ratings from `excerpt.rendered`, strips cross-reference lines to prevent rating contamination, HTML→plain text via cheerio
+- **Parallel-safe:** Only commits `review-texts/` and `aggregator-archive/nysr/`
+
+## `scrape-new-aggregators.yml`
+- **Runs:** Weekly on Sundays at 11 AM UTC (after NYSR), or manually
+- **Does:** Scrapes Playbill Verdict (review URL discovery) and NYC Theatre roundups (excerpt extraction)
+- **Options:** `aggregator` (all/playbill-verdict/nyc-theatre)
+- **Requires:** SCRAPINGBEE_API_KEY (for Google search + page fetching)
+- **Optional:** BRIGHTDATA_TOKEN (fallback for Playbill Verdict)
+- **Scripts:** `scripts/scrape-playbill-verdict.js`, `scripts/scrape-nyc-theatre-roundups.js`
+- **NYC Theatre:** Only processes shows from 2023+, skip-if-exists caching via `data/aggregator-archive/nyc-theatre/`
+- **Parallel-safe:** Only commits `review-texts/` and `aggregator-archive/`
 
 ## `test.yml`
 - **Runs:** On push to `main`, daily at 6 AM UTC, manually

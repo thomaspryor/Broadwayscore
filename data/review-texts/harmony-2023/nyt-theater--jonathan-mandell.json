@@ -10,56 +10,63 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 57,
+  "assignedScore": 58,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 57,
-    "confidence": "high",
+    "score": 58,
+    "confidence": "medium",
     "range": {
-      "low": 50.5,
-      "high": 63.5
+      "low": 52,
+      "high": 64
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 45,
+      "music": 75,
+      "performances": 80,
+      "direction": 65
     },
     "keyPhrases": [
       {
-        "quote": "occasionally enjoyable entertainment",
-        "sentiment": "neutral",
-        "strength": 3
+        "quote": "The stage performances by the singing group are wonderfully entertaining, a showcase for some greatly talented singers",
+        "sentiment": "positive",
+        "strength": 4
       },
       {
-        "quote": "more than something we need to see",
+        "quote": "The offstage drama feels as if it belongs in a different, less polished, play",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "it was exciting",
-        "sentiment": "positive",
+        "quote": "emotions in that scene and others have been pushed to fever pitch on Broadway. And that heightening helped me to see a disjunction – a disharmony — between the two halves of 'Harmony'",
+        "sentiment": "negative",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic describes the show as 'occasionally enjoyable' but explicitly states it's not 'something we need to see,' indicating a lukewarm recommendation that leans slightly below neutral. | GPT-4o-mini: The review expresses a mixed sentiment, indicating that while there are enjoyable aspects, it ultimately does not feel essential to see.",
+    "reasoning": "The critic praises the performances and musical elements but identifies a fundamental structural problem where the entertaining musical numbers don't mesh well with the dramatic storyline, creating an overall mixed experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:22:44.644Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:04:46.835Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3616,
+    "outputTokens": 378,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 58,
@@ -70,7 +77,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 57,
   "archivePath": "data/archives/reviews/harmony-2023/nyt-theater--jonathan-mandell_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:30:26.624Z",
@@ -84,7 +91,7 @@
   ],
   "fetchTier": 1,
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.752Z",
+  "rescoreCompletedAt": "2026-02-01T15:04:46.835Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
   "wordCount": 1277
