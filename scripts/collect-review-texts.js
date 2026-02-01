@@ -176,6 +176,8 @@ const CONFIG = {
     'chicagotribune.com', 'nypost.com', 'nydailynews.com',
     // Sites where Archive.org has proven successful
     'theatrely.com', 'amny.com', 'forward.com',
+    // Sites with CAPTCHA that block Playwright
+    'timeout.com',
   ],
 
   // Minimum word count for valid review
@@ -271,6 +273,11 @@ const OUTLET_WAIT_CONFIGS = {
     waitForSelector: '.article-body, .bsp-article-content',
     waitTimeout: 15000,
     extraWait: 3000,
+  },
+  'timeout.com': {
+    waitForSelector: '[class*="_articleContent_"], [class*="_content_"]',
+    waitTimeout: 15000,
+    extraWait: 2000,
   },
 };
 
@@ -1238,6 +1245,55 @@ async function fetchFromArchive(url) {
 }
 
 // ============================================================================
+// TIMEOUT URL RESOLVER - TimeOut merged reviews into listing pages
+// Their standalone review URLs (e.g., /suffs-review) now 404.
+// Reviews live on listing pages (e.g., /hamilton-1, /aladdin-1).
+// ============================================================================
+
+/**
+ * Try known TimeOut listing URL patterns before falling back to SERP discovery.
+ * No API cost - just direct HEAD requests to candidate URLs.
+ */
+async function resolveTimeoutListingUrl(review) {
+  if (!review.url) return null;
+  let hostname;
+  try { hostname = new URL(review.url).hostname; } catch (e) { return null; }
+  if (!hostname.includes('timeout.com')) return null;
+
+  const showSlug = (review.showId || '').replace(/-\d{4}$/, '');
+  if (!showSlug) return null;
+
+  // Candidate URL patterns (ordered by likelihood)
+  const candidates = [
+    `https://www.timeout.com/newyork/theater/${showSlug}-1`,
+    `https://www.timeout.com/newyork/theater/${showSlug}`,
+    `https://www.timeout.com/newyork/theater/${showSlug}-broadway`,
+    `https://www.timeout.com/newyork/theater/${showSlug}-on-broadway-tickets-and-information`,
+  ];
+
+  // Skip the URL we already tried
+  const tried = review.url.replace(/^http:/, 'https:');
+  const toTry = candidates.filter(c => c !== tried);
+
+  for (const url of toTry) {
+    try {
+      const resp = await axios.head(url, {
+        timeout: 10000,
+        maxRedirects: 3,
+        validateStatus: (s) => s < 400,
+      });
+      if (resp.status < 400) {
+        console.log(`    ✓ TimeOut listing found: ${url}`);
+        return url;
+      }
+    } catch (e) {
+      // 404 or network error - try next candidate
+    }
+  }
+  return null;
+}
+
+// ============================================================================
 // URL DISCOVERY - Find correct URLs for reviews with dead/fabricated links
 // ============================================================================
 
@@ -1381,8 +1437,10 @@ async function discoverCorrectUrl(review) {
 
       // Require: (title mentions show) OR (URL contains show slug)
       // AND at least one signal it's a review (title says "review" or URL contains "review")
+      // Exception: TimeOut embeds reviews in listing pages (no "review" in URL/title)
       if (!titleHasShow && !urlHasShow) continue;
-      if (!titleHasReview && !urlLower.includes('review')) continue;
+      const isTimeoutListing = urlDomain.includes('timeout.com') && urlLower.includes('/theater/');
+      if (!titleHasReview && !urlLower.includes('review') && !isTimeoutListing) continue;
 
       // Looks like a match
       console.log(`    ✓ Found: ${url}`);
@@ -1675,6 +1733,8 @@ async function extractArticleText(page) {
       // Vulture / NY Mag / Condé Nast
       '[class*="ArticlePageChunks"]',
       '[class*="RawHtmlBody"]',
+      // TimeOut (uses hashed class names like _articleContent_3h2iz_20)
+      '[class*="_articleContent_"]',
       // WSJ
       '.article-content .wsj-snippet-body',
       'div.article-content',
@@ -2741,8 +2801,16 @@ async function processReview(review) {
     // URL Discovery: If the failure was a 404 and we haven't retried yet, try to find the correct URL
     if (error.message.includes('404') && !review._discoveryAttempted && review.filePath) {
       review._discoveryAttempted = true;
-      console.log('\n  [URL Discovery] Attempting to find correct URL via Google...');
-      const discoveredUrl = await discoverCorrectUrl(review);
+
+      // Try outlet-specific URL resolution first (no API cost)
+      console.log('\n  [URL Resolution] Trying known URL patterns...');
+      let discoveredUrl = await resolveTimeoutListingUrl(review);
+
+      // Fall back to SERP-based discovery
+      if (!discoveredUrl) {
+        console.log('  [URL Discovery] Attempting to find correct URL via Google...');
+        discoveredUrl = await discoverCorrectUrl(review);
+      }
 
       if (discoveredUrl) {
         const originalUrl = review.url;
