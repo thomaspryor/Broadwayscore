@@ -6,10 +6,9 @@
   "url": "https://www.vulture.com/article/theater-review-maybe-happy-ending.html",
   "publishDate": null,
   "fullText": null,
-  "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": null,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,51 +19,6 @@
   "sources": [
     "show-score-playwright"
   ],
-  "llmScore": {
-    "score": 76,
-    "confidence": "high",
-    "range": {
-      "low": 71,
-      "high": 81
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the lead performances and describes the production as 'slick' and working well, though the truncated nature and lack of explicit recommendation language prevents a higher score. | GPT-4o: The review highlights the performances of Shen and Criss as making the production work, particularly praising Shen's performance. This suggests a positive view, though the lack of full context makes the recommendation less emphatic. | Gemini: The review highlights positive aspects of the production and performances, suggesting it's worth seeing, but the limited text makes it difficult to gauge the overall enthusiasm.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T05:22:15.604Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "scoreDelta": 3,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
-  }
+  "contentTier": "excerpt",
+  "wordCount": 0
 }
