@@ -9,7 +9,7 @@
   "bwwExcerpt": "Harry Potter and the Cursed Child is haunted by death and pain; it is often suspenseful and sometimes downright frightening. Yet amid the cinematic tumult and dazzle of the densely action-packed plot, Thorne and Tiffany carve out quiet scenes of intimacy and tenderness. Great care has gone into creating each moment of this state-of-the-art adventure. It leaves its audience awestruck, spellbound and deeply satisfied.",
   "showScoreExcerpt": "&quot;A triumph of theatrical magic...Combines grand storytelling with stagecraft on a scale heretofore unimagined...It is often suspenseful and sometimes downright frightening. Yet amid the cinematic tumult and dazzle of the densely action-packed plot, Thorne and Tiffany carve out quiet scenes of intimacy and tenderness. Great care has gone into creating each moment of this state-of-the-art adventure. It leaves its audience awestruck, spellbound, and deeply satisfied.&quot;",
   "originalScore": "5/5",
-  "assignedScore": 100,
+  "assignedScore": 95,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "textStatus": "garbage_cleared",
@@ -24,11 +24,13 @@
   "scoreSource": "explicit-after-garbage-invalidation",
   "scoreConfidence": "medium",
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:28:58.181Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T04:05:57.980Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 100,
+    "previousVersion": "3.0.0"
   },
   "designation": "Recommended",
   "sources": [
@@ -98,5 +100,44 @@
     "needsReview": false,
     "needsReviewReasons": [],
     "invalidatedAt": "2026-02-01T04:02:00.810Z"
+  },
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The 5/5 rating combined with superlative language like 'triumph of theatrical magic,' 'state-of-the-art,' and 'awestruck, spellbound, and deeply satisfied' clearly indicates an enthusiastic must-see recommendation. | GPT-4o: The review uses highly enthusiastic language, describing the production as a 'triumph' and 'state-of-the-art adventure' that leaves the audience 'awestruck' and 'deeply satisfied'. The original 5/5 rating further supports a 'Rave' classification. | Gemini: The review uses extremely positive language like \"triumph of theatrical magic\", \"awe-struck, spellbound, and deeply satisfied\", and the original rating was 5/5, indicating a rave review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   }
 }

@@ -8,7 +8,7 @@
   "isFullReview": false,
   "bwwExcerpt": "he curious to make it last and pay off? Only time will tell, just as only time will determine its chances to attract a whole new generation to the joys of live theater. Stranger things have happened. Emlyn Travis, Entertainment Weekly: Immersive, heartfelt, and exhilarating, First Shadow is a must-see spectacle for the Stranger Things obsessive as much as it is for the theater aficionado who wants to see the medium pushed to new heights. Dan Rubins, Slant Magazine: Viewers of the series know that Henry will eventually become the demonic Vecna, ruler of the Upside Down and the monsters within, and how this backstory plays out since The First Shadow is ultimately an evening-long adaptation of a flashback sequence from season four. Most of the plot twists will be retrodden territory for Netflix viewers, and as such, when it comes to the story, the play’s fan service lies mostly in the recreation of iconic images from the series and in the supporting cast laying Easter eggs. Robert Hofler,",
   "originalScore": null,
-  "assignedScore": 49,
+  "assignedScore": 92,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-STRANGER-THINGS-THE-FIRST-SHADOW-Opens-On-Broadway-20241120",
@@ -27,11 +27,13 @@
   "dtliExcerpt": "Immersive, heartfelt, and exhilarating, First Shadow is a must-see spectacle for the Stranger Things obsessive as much as it is for the theater aficionado who wants to see the medium pushed to new heights. It does a phenomenal job of not only fleshing out a complicated character, but also providing context for the extreme lengths that Henry goes to in the TV series.",
   "dtliThumb": "Up",
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:50:53.233Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T04:06:52.638Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 49,
+    "previousVersion": "3.0.0"
   },
   "designation": "Must_See",
   "showScoreExcerpt": null,
@@ -91,6 +93,45 @@
     "needsReviewReasons": [],
     "invalidatedAt": "2026-02-01T04:02:00.822Z"
   },
-  "needsRescore": true,
-  "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available"
+  "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review uses explicit must-see language and calls it 'immersive, heartfelt, and exhilarating' while praising it for pushing the theater medium to new heights. | GPT-4o: The review uses strong, enthusiastic language such as 'must-see spectacle' and 'pushed to new heights,' indicating a highly positive assessment of the production. | Gemini: The review uses extremely positive language and explicitly calls the show a \"must-see spectacle,\" indicating a Rave bucket. The enthusiasm and specific praise justify a high score within that range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  },
+  "rescoreCompletedAt": "2026-02-01T04:06:52.638Z"
 }

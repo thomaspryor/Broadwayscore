@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "4/5",
-  "assignedScore": 80,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
@@ -26,11 +26,13 @@
     "web-search"
   ],
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:37:25.270Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T04:05:41.401Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 80,
+    "previousVersion": "3.0.0"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 82,
@@ -91,5 +93,44 @@
     "needsReview": false,
     "needsReviewReasons": [],
     "invalidatedAt": "2026-02-01T04:02:00.805Z"
+  },
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 rating and phrase about 'leaves you grinning' indicates a positive recommendation, though the qualifier about not changing your brain suggests it's solid entertainment rather than transcendent theater. | GPT-4o: The original rating of 4/5 from the critic suggests a strong positive recommendation. The excerpt highlights the production's ability to deliver on its promises and leave audiences satisfied, indicating a positive experience. | Gemini: The review explicitly states the show delivers on its promise and leaves the audience grinning, indicating a positive experience. The 4/5 rating and aggregator context further support this classification.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   }
 }

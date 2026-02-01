@@ -8,7 +8,7 @@
   "isFullReview": false,
   "bwwExcerpt": "h as Oh, Mary! did—and my reaction was shared by the rest of the audience, which burst into applause at the end of every scene. Fasten your seatbelts: This 80-minute show is a fast and wild joy ride. Christian Holub, Entertainment Weekly: Oh, Mary! is laugh-out-loud funny from the first moments; though much of the humor comes from Escola’s unbelievable delivery and the slapstick combination of actors on stage. But what makes Oh, Mary! such a fulfilling theatrical experience is that it also has a real message about the dangers of repression, both societal and personal. Letting people express themselves and live their truth may not solve every political problem, but it can certainly make life way more fun. Escola’s doing that, and the rest of us should too. Grade: A- Adrian Horton, The Guardian: The real Mary Todd Lincoln was, by most accounts, erratic, often bedridden by sadness and prone to lavish spending. Not exactly a comic figure, though in the hands of the inimitable Cole Escola,",
   "originalScore": "A-",
-  "assignedScore": 92,
+  "assignedScore": 88,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
@@ -27,11 +27,13 @@
   "dtliExcerpt": "Oh, Mary! is laugh-out-loud funny from the first moments; though much of the humor comes from Escola’s unbelievable delivery and the slapstick combination of actors on stage.",
   "dtliThumb": "Up",
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:41:49.000Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T04:06:29.489Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "3.0.0"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240619",
   "bwwThumb": "Up",
@@ -92,5 +94,44 @@
     "needsReview": false,
     "needsReviewReasons": [],
     "invalidatedAt": "2026-02-01T04:02:00.816Z"
+  },
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The A- rating, combined with language like 'wild joy ride', 'laugh-out-loud funny', and 'fulfilling theatrical experience' clearly indicates strong enthusiasm and recommendation. | GPT-4o: The review is highly positive, describing the show as 'laugh-out-loud funny' and a 'fulfilling theatrical experience' with a real message. The A- rating and audience reaction further support a strong recommendation. | Gemini: The review uses phrases like \"laugh-out-loud funny\" and \"fulfilling theatrical experience,\" and the critic gave it an A-. This indicates a strong positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 88,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   }
 }

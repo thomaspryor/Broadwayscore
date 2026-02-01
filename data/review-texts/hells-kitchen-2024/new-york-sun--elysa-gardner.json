@@ -25,11 +25,13 @@
   "scoreSource": "sentiment-positive",
   "scoreConfidence": "medium",
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:30:14.707Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T04:06:00.629Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "3.0.0"
   },
   "dtliThumb": "Up",
   "dtliExcerpt": "The show has nonetheless arrived at the Shubert Theatre, with its excellent principal cast (lovingly directed by Michael Greif) and its buoyant book and score intact — and, for the most part, the transition feels seamless.",
@@ -90,6 +92,45 @@
     "needsReviewReasons": [],
     "invalidatedAt": "2026-02-01T04:02:00.810Z"
   },
-  "needsRescore": true,
-  "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available"
+  "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges story flaws but emphasizes that strong performances and choreography overcome these weaknesses, indicating a positive recommendation despite reservations. | GPT-4o: The review highlights strong choreography and vocal performances as overcoming the weaker story, suggesting a recommendation despite some reservations about the plot. | Gemini: The review highlights strong aspects that 'overcome' a weaker story, suggesting a positive but not rave recommendation. The aggregator context also points towards a positive reception.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
+  "rescoreCompletedAt": "2026-02-01T04:06:00.629Z"
 }

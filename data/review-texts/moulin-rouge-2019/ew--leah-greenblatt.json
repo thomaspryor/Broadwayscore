@@ -8,7 +8,7 @@
   "isFullReview": false,
   "bwwExcerpt": "The spectacular spectacular, the ring-ding razzle dazzle, the gitchie gitchie ya-ya da-da: It's all in Moulin Rouge!, a Broadway musical so stuffed with songs and sequins and sheer outrageous excess that it's hard to catch a breath for most of its two-hour-and-45-minute runtime (at least not without inhaling an errant feather or a spangled scrap of confetti).",
   "originalScore": "B+",
-  "assignedScore": 87,
+  "assignedScore": 79,
   "source": "reviews-json-stub",
   "textStatus": "garbage_cleared",
   "textWordCount": 59,
@@ -22,11 +22,13 @@
   "sourceMethod": "stub",
   "showScoreExcerpt": "\"A Millennial Reboot of Chekhov, and 'Moulin Rouge!' on Broadway. Halley Feiffer translates 'Three Sisters' into Internet-speak, and Baz Luhrmannâs glitzy movie comes into its own onstage.\"",
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:39:46.845Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T04:06:17.272Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 87,
+    "previousVersion": "3.0.0"
   },
   "garbageFullText": "​ Page Not Found This is not the page you are looking for. We hope you can go about your business by using our menu or search option. By clicking “Accept All Cookies”, you agree to the storing of cookies on your device to enhance site navigation, analyze site usage, and assist in our marketing efforts. Accept All Cookies",
   "garbageReason": "/page not found/i",
@@ -83,6 +85,45 @@
     "needsReviewReasons": [],
     "invalidatedAt": "2026-02-01T04:02:00.813Z"
   },
-  "needsRescore": true,
-  "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available"
+  "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B+ rating indicates positive recommendation, and 'comes into its own onstage' suggests the adaptation works well theatrically, though limited excerpt makes full assessment challenging. | GPT-4o: The original rating of B+ suggests a positive review. The excerpt highlights the successful adaptation of 'Moulin Rouge!' on stage, indicating a recommendation with some reservations. | Gemini: The B+ rating from Entertainment Weekly indicates a positive review. The quote suggests the reviewer found the stage adaptation successful.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 79,
+    "geminiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
+  "rescoreCompletedAt": "2026-02-01T04:06:17.272Z"
 }

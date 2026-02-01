@@ -7,7 +7,7 @@
   "publishDate": "2025-11-20",
   "isFullReview": false,
   "bwwExcerpt": "nvincing, and it’s more effective in its comic than emotional beats. But no matter. This is a show so charming, so adorable, that you can easily overlook its flaws. A little bit like falling in love. David Finkle, New York Stage Review: Then there’s the acting, singing and brief dancing. Pitts’s performance, especially svelte and stylish in Gilmour’s night-at-the-Plaza gown, is mercurial throughout, making Robin’s initial annoyance and then intelligent concern thoroughly penetrating. As to newcomer Tutty, who took home last year’s Olivier Award for Best Actor in a Musical for his take on the imported Dear Evan Hansen: His “New York” introduction makes it dazzlingly clear that a London musical leading-man hasn’t been carried in on the local theater tide since Tommy Steele in Half a Sixpence and Anthony Newley in The Roar of the Greasepaint-The Smell of the Crowd. Tutty’s appealing looks, pure voice, comic instincts, and obvious acting skills, and somehow resemblance to a living Teletubb",
-  "assignedScore": 80,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-Opens-On-Broadway-20250109",
@@ -22,11 +22,13 @@
   "textQuality": "excerpt_only",
   "sourceMethod": "bww-roundup",
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T15:55:14.903Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T04:07:07.566Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 80,
+    "previousVersion": "3.0.0"
   },
   "dtliThumb": "Up",
   "dtliExcerpt": "As to newcomer Tutty, who took home last year’s Olivier Award for Best Actor in a Musical for his take on the imported Dear Evan Hansen: His “New York” introduction makes it dazzlingly clear that a London musical leading-man hasn’t been carried in on the local theater tide since Tommy Steele in Half a Sixpence and Anthony Newley in The Roar of the Greasepaint-The Smell of the Crowd. Tutty’s appealing looks, pure voice, comic instincts, and obvious acting skills, and somehow resemblance to a living Teletubby make him the huge plus for a vital Two Strangers (Carry a Cake Across New York) run.",
@@ -91,5 +93,44 @@
     "needsReview": false,
     "needsReviewReasons": [],
     "invalidatedAt": "2026-02-01T04:02:00.824Z"
+  },
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and glowing praise for the lead actor's performance, calling him 'the huge plus for a vital...run' indicates a positive recommendation despite limited excerpt text. | GPT-4o: The review highlights the standout performance of the lead actor, describing it as a 'huge plus' for the production, which aligns with a strong positive recommendation. The original 4/5 stars rating supports this classification. | Gemini: The review is overwhelmingly positive about the lead actor, calling him a \"huge plus\" and comparing him to major talents. The 4/5 star rating also indicates a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   }
 }

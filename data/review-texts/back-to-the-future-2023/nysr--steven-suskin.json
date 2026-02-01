@@ -8,7 +8,7 @@
   "isFullReview": false,
   "showScoreExcerpt": null,
   "bwwExcerpt": "The new musical import from London is built around the spectacle of that flying DeLorean; or at least, I imagine the show would be just another mediocre effort without the spectacular flying machine. The prop car, built by a company called",
-  "assignedScore": 80,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "textStatus": "garbage_cleared",
   "textWordCount": 215,
@@ -20,11 +20,13 @@
   "textQuality": "excerpt_only",
   "sourceMethod": "bww-roundup",
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:32:07.743Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T04:05:38.480Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 80,
+    "previousVersion": "3.0.0"
   },
   "bwwThumb": "Up",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
@@ -88,5 +90,44 @@
     "needsReview": false,
     "needsReviewReasons": [],
     "invalidatedAt": "2026-02-01T04:02:00.804Z"
+  },
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt describes the show as 'mediocre' but acknowledges spectacular elements. However, the text is heavily truncated and the 4/5 star rating suggests a more positive verdict than this excerpt indicates. | GPT-4o: The 4/5 star rating suggests a positive review, and the mention of the spectacle implies an entertaining element. However, the text hints at mediocrity without the flying machine, indicating some reservations. | Gemini: The critic's 4/5 star rating and the BroadwayWorld aggregator verdict suggest a positive leaning. However, the excerpt indicates the show is heavily reliant on spectacle, implying reservations about its overall quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 79,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 19,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   }
 }

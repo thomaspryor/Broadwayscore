@@ -9,16 +9,18 @@
   "showScoreExcerpt": "\"Ickeâs Oedipus is continuously engaging and smart... but where it runs up against a wall... is in trying to make the story function without gods and fates... I have never seen an Oedipus that truly wrecks.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/oedipus-broadway",
   "originalScore": "4/5",
-  "assignedScore": 80,
+  "assignedScore": 75,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:16:13.736Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T04:06:26.926Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 80,
+    "previousVersion": "3.0.0"
   },
   "dtliExcerpt": "And above all there is his wife, Jocasta, who—as played by the great Lesley Manville—is a creature of effortless fascination: confident, worldly, intelligent, practical passionate, sexually frank and a touch narcissistic, with a hint of Sphinxlike inscrutability to shroud the trauma behind her drive.",
   "bwwExcerpt": "Icke’s Oedipus is continuously engaging and smart, and it is exceedingly well performed by a cast that also includes Teagle F. Bougere, Bhasker Patel and Ani Mesa-Perez as aides and employees. Where it runs up against a wall—as many modern adaptations of ancient texts do—is in trying to make the sto...",
@@ -89,5 +91,44 @@
     "needsReview": false,
     "needsReviewReasons": [],
     "invalidatedAt": "2026-02-01T04:02:00.815Z"
+  },
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic's 4/5 rating aligns with positive reception, praising it as 'continuously engaging and smart,' though structural criticisms prevent it from being a stronger recommendation. | GPT-4o: The critic's original rating of 4/5 and the phrase 'continuously engaging and smart' suggest a positive recommendation, despite some reservations about the production's approach to the story. | Gemini: The critic's rating of 4/5 indicates a positive recommendation. While the review mentions limitations, the overall tone suggests a worthwhile experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 79,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   }
 }

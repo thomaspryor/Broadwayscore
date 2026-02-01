@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250121",
   "bwwThumb": "Meh",
   "originalScore": "3/5",
-  "assignedScore": 60,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "needsScoring": true,
@@ -25,11 +25,13 @@
     "dtli"
   ],
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:19:14.956Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T04:06:32.603Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 60,
+    "previousVersion": "3.0.0"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 55,
@@ -92,5 +94,44 @@
       "Models disagree by 20 points (Claude: 45, OpenAI: 65)"
     ],
     "invalidatedAt": "2026-02-01T04:02:00.817Z"
+  },
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The 3/5 rating and positive language about the ensemble and humor indicate a recommendation, though 'their style may not be for everyone' suggests some reservations. | GPT-4o: The review suggests that while the show has its strengths, it may not appeal to all audiences. The 3/5 rating and 'flat' aggregator verdicts support a mixed classification. | Gemini: The critic's 3/5 rating and the statement that you'd have to be very stoic not to laugh indicate a positive, but not rave, review. The phrase 'may not be for everyone' suggests reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   }
 }

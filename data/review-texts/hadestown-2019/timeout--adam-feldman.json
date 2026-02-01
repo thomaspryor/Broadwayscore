@@ -34,11 +34,13 @@
   "textQuality": "excerpt_only",
   "sourceMethod": "scrapingbee",
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:55:12.531Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T04:05:55.247Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 80,
+    "previousVersion": "3.0.0"
   },
   "designation": "Critics_Choice",
   "bwwExcerpt": "Here's my advice: Go to hell. And by hell, of course, I mean Hadestown, Anaïs Mitchell's fizzy, moody, thrilling new Broadway musical. Ostensibly, at least, the show is a modern retelling of the ancient Greek myth of Orpheus and Eurydice: Boy meets girl, boy loses girl, boy goes to the land of the dead in hopes of retrieving girl, boy loses girl again. \"It's an old song,\" sings our narrator, the messenger god Hermes (André",
@@ -108,5 +110,44 @@
     "needsReview": false,
     "needsReviewReasons": [],
     "invalidatedAt": "2026-02-01T04:02:00.809Z"
+  },
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 rating and final assessment calling it 'something special' clearly recommend the show, despite acknowledging one performer's weakness. The language is appreciative and encouraging. | GPT-4o: The review highlights the stellar ensemble and the match between Mitchell’s music and the cast, despite noting a weak spot. The overall tone is highly positive, supported by the 4/5 rating and aggregator context. | Gemini: The review is overwhelmingly positive, highlighting the stellar ensemble and Mitchell's music. Despite a noted weakness in one performer, the overall impression is of a special and worthwhile experience, aligning with a 'Positive' bucket and a score reflecting the high praise.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   }
 }

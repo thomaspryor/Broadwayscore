@@ -8,18 +8,20 @@
   "dtliExcerpt": "Twenty years later, all reasonable doubt has been removed from Shanley’s parable. This taut drama, back in a gripping new Broadway production from the Roundabout Theatre Company and director Scott Ellis, plays like a cautionary tale, an ode to those who found the courage to stand up to abusers and side with the young and the vulnerable.",
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 75,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": "\"...a timely and now seemingly timeless piece of art that shed light\"",
   "bwwExcerpt": "Ryan, whose performance is tart, vulnerable, and unstinting, shows us a character slowly realizing that her unswerving belief in the hierarchy she serves — heck, the way she has ordered her entire life — is incompatible with her moral and practical quest. The similarly excellent Kazan, whose teaching nun has the assets and drawbacks of youth, can only stare horrified at a future that she now understands is coming for her, too. It’s just a matter of time.     Melissa",
   "bwwThumb": "Up",
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:13:37.799Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T04:05:49.816Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "3.0.0"
   },
   "sources": [
     "dtli",
@@ -98,6 +100,45 @@
     "needsReviewReasons": [],
     "invalidatedAt": "2026-02-01T04:02:00.808Z"
   },
-  "needsRescore": true,
-  "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available"
+  "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The fragment suggests appreciation for the work's artistic merit and relevance, and aggregator consensus indicates positive reception, but the severely truncated text makes definitive classification difficult. | GPT-4o: The phrase 'timely and now seemingly timeless piece of art' suggests a strong positive impression, indicating the critic views the production as significant and impactful. The aggregator context supports a positive verdict. | Gemini: The phrase \"timeless piece of art that shed light\" suggests a positive recommendation, though the lack of full context makes it difficult to assess the strength of the recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 87,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  },
+  "rescoreCompletedAt": "2026-02-01T04:05:49.816Z"
 }

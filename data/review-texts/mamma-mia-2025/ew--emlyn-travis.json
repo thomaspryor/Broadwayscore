@@ -6,7 +6,7 @@
   "url": "https://ew.com/mamma-mia-broadway-revival-review/",
   "publishDate": "2025-08-14",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 63,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "textStatus": "garbage_cleared",
@@ -26,11 +26,13 @@
   "dtliExcerpt": "It's been over 25 years since Mamma! Mia first took to the stage, and it's abundantly clear that the fervor surrounding it isn't going anywhere anytime soon. And it's easy to see why: The show is pure sunshine baked into a musical and dressed in disco balls, sequins, and feathered boas. My, my, how could we resist this?",
   "dtliThumb": "Up",
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:35:19.742Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T04:06:09.289Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 64,
+    "previousVersion": "3.0.0"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MAMMA-MIA-Returns-To-Broadway-20250814",
   "bwwThumb": "Meh",
@@ -92,6 +94,45 @@
     ],
     "invalidatedAt": "2026-02-01T04:02:00.812Z"
   },
-  "needsRescore": true,
-  "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available"
+  "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review explicitly recommends the show to ABBA fans but advises others to 'think twice,' creating a clear conditional recommendation that places it in mixed territory. | GPT-4o: The review suggests that ABBA fans will enjoy the show, but those without a strong attachment to ABBA may not find it as appealing. This indicates a mixed recommendation, appealing strongly to a specific audience. | Gemini: The review explicitly states that enjoyment is heavily dependent on pre-existing ABBA fandom, making it a mixed recommendation. The reviewer suggests fans will love it, while others might want to reconsider.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  },
+  "rescoreCompletedAt": "2026-02-01T04:06:09.289Z"
 }

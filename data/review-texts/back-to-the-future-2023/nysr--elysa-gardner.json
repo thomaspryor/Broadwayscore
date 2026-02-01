@@ -8,7 +8,7 @@
   "isFullReview": false,
   "showScoreExcerpt": null,
   "bwwExcerpt": "theme park ride with songs causing sensory overload and auditory assault",
-  "assignedScore": 40,
+  "assignedScore": 39,
   "source": "bww-roundup",
   "textStatus": "garbage_cleared",
   "textWordCount": 215,
@@ -25,11 +25,13 @@
     "invalidatedAt": "2026-02-01T00:00:00.000Z"
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:31:58.329Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T04:05:35.691Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 40,
+    "previousVersion": "3.0.0"
   },
   "bwwThumb": "Down",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
@@ -85,5 +87,44 @@
       "Score (75 → Up) conflicts with aggregator thumbs (Down)"
     ],
     "invalidatedAt": "2026-02-01T04:02:00.804Z"
+  },
+  "llmScore": {
+    "score": 39,
+    "confidence": "medium",
+    "range": {
+      "low": 34,
+      "high": 44
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The 2/5 star rating combined with harsh language describing the show as an 'auditory assault' and 'sensory overload' clearly indicates a negative recommendation. | GPT-4o: The critic's original rating of 2/5 stars and the harsh language used in the key quote indicate a strongly negative review. The description suggests a highly unpleasant experience, aligning with a 'Pan' classification. | Gemini: The review excerpt uses strongly negative language, describing the show as a sensory overload and auditory assault. Given the 2/5 star rating and the negative excerpt, it's classified as negative.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   }
 }

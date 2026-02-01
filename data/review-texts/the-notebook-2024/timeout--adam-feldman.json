@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": "3/5",
-  "assignedScore": 60,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
@@ -26,11 +26,13 @@
     "web-search"
   ],
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:35:30.421Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T04:06:58.473Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 60,
+    "previousVersion": "3.0.0"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 62,
@@ -91,5 +93,44 @@
     "needsReview": false,
     "needsReviewReasons": [],
     "invalidatedAt": "2026-02-01T04:02:00.823Z"
+  },
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The quote shows simultaneous criticism ('rolled my eyes') and emotional engagement ('welled up'), suggesting mixed feelings. However, with only one excerpt available and a 3/5 rating, the full verdict remains unclear. | GPT-4o: The critic's original rating of 3/5 suggests a mixed response. The quote indicates both skepticism and emotional engagement, supporting a mixed verdict with some positive moments. | Gemini: The phrase \"rolled my eyes\" suggests a negative reaction, but the admission of tears indicates some emotional impact. The 3/5 rating also points to a mixed assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   }
 }

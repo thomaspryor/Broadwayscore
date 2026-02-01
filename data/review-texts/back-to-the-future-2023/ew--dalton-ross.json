@@ -9,7 +9,7 @@
   "showScoreExcerpt": "“Frenetically paced, relentlessly comedic and visually chaotic, “Back to the Future: The Musical” is aimed squarely at middle America...But the show still misses opportunity after opportunity to make people actually feel.”",
   "bwwExcerpt": "Unfortunately, unlike the DeLorean, Back to the Future: The Musical itself never quite hits 88 miles an hour. But while the rest of the production is content to play it safe and steady, give Bart credit for always putting the pedal to the metal. After all, if you're going to throw a time machine onto a Broadway stage, why not do it with some style? Grade: B",
   "originalScore": "B",
-  "assignedScore": 65,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "textStatus": "garbage_cleared",
   "textWordCount": 59,
@@ -22,11 +22,13 @@
   "textQuality": "excerpt_only",
   "sourceMethod": "bww-roundup",
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:02:01.152Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T04:05:33.524Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "3.0.0"
   },
   "bwwThumb": "Up",
   "garbageFullText": "​ Page Not Found This is not the page you are looking for. We hope you can go about your business by using our menu or search option. By clicking “Accept All Cookies”, you agree to the storing of cookies on your device to enhance site navigation, analyze site usage, and assist in our marketing efforts. Accept All Cookies",
@@ -84,6 +86,45 @@
     "needsReviewReasons": [],
     "invalidatedAt": "2026-02-01T04:02:00.803Z"
   },
-  "needsRescore": true,
-  "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available"
+  "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic gives a B grade and ends on an appreciative note about the production's style, indicating a positive recommendation despite acknowledging the show doesn't reach its full potential. | GPT-4o: The review acknowledges some shortcomings but ultimately credits the production for its style and effort, aligning with the original 'B' rating, which suggests a positive but not enthusiastic recommendation. | Gemini: The critic gives the show a B grade, indicating a positive but not rave review. The phrase 'play it safe and steady' suggests reservations, but the overall tone is positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
+  "rescoreCompletedAt": "2026-02-01T04:05:33.524Z"
 }

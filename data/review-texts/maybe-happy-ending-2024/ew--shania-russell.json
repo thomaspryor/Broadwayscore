@@ -6,7 +6,7 @@
   "url": "https://ew.com/maybe-happy-ending-broadway-review-2024/",
   "publishDate": "2024-11-12",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 81,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "Alas, charm goes a long way. Criss is often his most compelling when given a character with edge (his stint as the titular East German rocker in Hedwig and the Angry Inch or his Emmy-winning turn in The Assassination of Gianni Versace: American Crime Story) but here he is charming, spirited and wond...",
@@ -26,11 +26,13 @@
   "dtliExcerpt": "Maybe Happy Ending dazzles with its love story and astounds with its visual accomplishments. There’s nothing robotic about this production: it wears its heart on its sleeve and on charm alone, succeeds.",
   "dtliThumb": "Up",
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:36:43.122Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T04:06:11.823Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 77,
+    "previousVersion": "3.0.0"
   },
   "showScoreExcerpt": null,
   "bwwThumb": null,
@@ -89,6 +91,45 @@
     "needsReviewReasons": [],
     "invalidatedAt": "2026-02-01T04:02:00.813Z"
   },
-  "needsRescore": true,
-  "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available"
+  "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong positive language including 'dazzles' and 'astounds' with clear praise for both story and production values, concluding it 'succeeds' based on charm. | GPT-4o: The review uses strong positive language such as 'dazzles', 'astounds', and 'succeeds', indicating an enthusiastic recommendation. The mention of charm and emotional impact further supports a rave classification. | Gemini: The review uses strong positive language like \"dazzles\" and \"astounds,\" and concludes that the production \"succeeds\" on charm alone, indicating a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  },
+  "rescoreCompletedAt": "2026-02-01T04:06:11.823Z"
 }

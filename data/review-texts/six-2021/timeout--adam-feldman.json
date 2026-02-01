@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": "4/5",
-  "assignedScore": 80,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "needsScoring": true,
@@ -26,11 +26,13 @@
     "web-search"
   ],
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:44:02.818Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T04:06:47.048Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 80,
+    "previousVersion": "3.0.0"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 79,
@@ -91,5 +93,44 @@
     "needsReview": false,
     "needsReviewReasons": [],
     "invalidatedAt": "2026-02-01T04:02:00.820Z"
+  },
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite acknowledging lack of depth, the critic clearly recommends the show as enjoyable entertainment, supported by the 4/5 rating and positive aggregator verdict. | GPT-4o: The review describes the show as fun and encourages the audience to enjoy it, despite noting its lack of depth. The original 4/5 rating and aggregator context support a positive classification. | Gemini: The critic explicitly states the show is 'fun' and encourages the reader to 'let yourself go and enjoy the finery.' While acknowledging its lack of depth, the overall tone is positive and recommends seeing it for entertainment value. The 4/5 rating also supports a positive classification.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   }
 }

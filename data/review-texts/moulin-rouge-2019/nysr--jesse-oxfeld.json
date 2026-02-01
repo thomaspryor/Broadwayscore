@@ -7,7 +7,7 @@
   "publishDate": "2019-07-25",
   "isFullReview": false,
   "bwwExcerpt": "has a show that has it all: it's not just 70 songs that are rolled into one show, but also a canvas of spectacle and emotion that isn't just a floorshow but left me floored with its sublime artistry. Jesse Oxfeld, New York Stage Review : That's not to diminish any other parts of the staging or performance. Timbers, always an endlessly visually inventive director, has always had material that lived up to his specialties. ( Rocky comes to mind.) But Luhrmann's fantasia gives Timbers license to do his best work-while creating something that is a definitively theatrical experience, not just a pale imitation of the film. Melissa Rose Bernardo, New York Stage Review : No disrespect to headliners Karen Olivo (a Tony winner as Anita in 2009's West Side Story), who plays the tuberculosis-plagued performer/courtesan Satine, and Aaron Tveit (Catch Me If You Can, Next to Normal), as the lovestruck aspiring composer Christian but the real stars of this Moulin Rouge! are the artists who don't appear",
-  "assignedScore": 80,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOULIN-ROUGE-Opens-On-Broadway-See-What-The-Critics-Think-20190725",
@@ -24,11 +24,13 @@
   "scoreSource": "explicit-after-garbage-invalidation",
   "scoreConfidence": "medium",
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:38:43.496Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T04:06:19.834Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 80,
+    "previousVersion": "3.0.0"
   },
   "scoreExtractedFrom": "archive",
   "garbageFullText": "The page you are looking for no longer exists. Perhaps you can return back to the homepage and see if you can find what you are looking for. Or, you can try finding it by using the search form below. ★★★★☆ Playwright Simon Stephens and tech wizards concoct the world’s first mixed reality play ★★★☆☆ Ian McKellen is among the performers appearing virtually in this one-act play by Simon Stephens ★★★☆☆ Erica Schmidt’s world premiere dramedy skewers a self-absorbed filmmaker and the people who love him ★★★☆☆ Hamish Linklater, Miriam Silverman, and Dylan Baker are among the stars of Erica Schmidt's world premiere play riffing on show business and marriage ★★★★☆ A new production of the Tony-nominated musical comedy goes to the head of the class ★★★★☆ Lesley Manville and Mark Strong have disturbingly good chemistry as theater’s most famous twice-related couple ★★★★★ Laurie Metcalf and Micah Stock star in Samuel D. Hunter's acclaimed drama, previously seen at Steppenwolf Theatre Company ★★★★★ Bess Wohl takes inspiration from her mother’s life for her clever, decade-jumping memory play ★★★★★ Joshua Henry gives what’s destined to be a Tony-winning performance in this much-needed revival ★★★★☆ Jonathan Groff gives a once-in-a-lifetime performance as the Grammy-winning “Beyond the Sea” singer Copyright © 2026 • New York Stage Review • .",
@@ -88,5 +90,44 @@
     "needsReview": false,
     "needsReviewReasons": [],
     "invalidatedAt": "2026-02-01T04:02:00.814Z"
+  },
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The 4/5 star rating combined with language like 'sublime artistry,' 'left me floored,' and 'definitively theatrical experience' indicates strong enthusiasm and recommendation. | GPT-4o: The review highlights the show's spectacle, emotion, and artistry, with a strong emphasis on the director's inventive work and the theatrical experience. The original rating of 4/5 stars supports a strong positive recommendation. | Gemini: The review excerpt highlights the show as a \"definitively theatrical experience\" and praises the director's work, suggesting a positive recommendation. The 4/5 star rating further supports this classification.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   }
 }

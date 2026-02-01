@@ -7,7 +7,7 @@
   "publishDate": "2024-04-25",
   "isFullReview": false,
   "bwwExcerpt": "uction team’s penchant for bells and whistles. If all you’re seeking is a spectacle, you will get one. For some real resonance and depth, though, you may just have to wait a while—or reread the book. David Finkle, New York Stage Review: This musical take on The Great Gatsby presents Jay Gatsby and Daisy Fay Buchanan as a sympathetic couple caught in unfortunate Jazz Age circumstances. In other words, the transfiguration of F. Scott Fitzgerald’s The Great Gatsby is, sorry to report, a travesty. Caroline Cao, New York Theatre Guide: All in all, this Great Gatsby shies away from making us think hard of the blood spilled due to Gatsby’s dealings, which are relegated to lines of dialogue and the campy song “Shady.” Something about the production feels too spic and span by the time it ends: Missing is a mess left behind by the Roaring Twenties excess. I felt the warmth in The Great Gatsby, but it was begging to bring on the heat. Gloria Oladipo, The Guardian: The production splashes in exces",
-  "assignedScore": 40,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
@@ -29,11 +29,13 @@
     "invalidatedAt": "2026-02-01T00:00:00.000Z"
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:52:57.484Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T04:06:55.437Z",
+    "promptVersion": "5.0.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 40,
+    "previousVersion": "3.0.0"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
   "bwwThumb": "Down",
@@ -85,5 +87,44 @@
     "needsReview": false,
     "needsReviewReasons": [],
     "invalidatedAt": "2026-02-01T04:02:00.822Z"
+  },
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic's 2/5 star rating and calling the adaptation 'a travesty' clearly indicates a negative recommendation, despite acknowledging spectacle value. | GPT-4o: The critic's original rating of 2/5 stars and the use of the word 'travesty' indicate a clear negative verdict. The review suggests that the production lacks depth and fails to effectively adapt the source material. | Gemini: The critic explicitly states the adaptation is a \"travesty\" and that it lacks depth and resonance. The review also mentions missing elements and a lack of heat, indicating a negative overall assessment. The 2/5 star rating further supports this classification.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   }
 }
