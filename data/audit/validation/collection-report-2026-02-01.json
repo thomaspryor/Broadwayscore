@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-02-01T14:08:44.772Z",
+  "runDate": "2026-02-01T14:11:53.867Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "prayer-for-the-french-republic-2024",
+    "showFilter": "hells-kitchen-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,33 +12,33 @@
   },
   "summary": {
     "processed": 18,
-    "failed": 121,
+    "failed": 123,
     "skipped": 0,
-    "successRate": "12.9%"
+    "successRate": "12.8%"
   },
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 6,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 2,
-    "archive": 8
+    "archive": 10
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
-    "tier1_5Attempts": 0,
+    "tier1Attempts": 8,
+    "tier1Success": 2,
+    "tier1_5Attempts": 2,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 6,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier4Attempts": 3,
-    "tier4Success": 3,
-    "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "tier4Attempts": 14,
+    "tier4Success": 4,
+    "totalFailed": 8,
+    "scrapingBeeCreditsUsed": 3,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.2,
+    "urlDiscoveryAttempts": 4,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -57,10 +57,10 @@
     "stereophonic-2024/ew--allison-considine.json",
     "stereophonic-2024/guardian--gloria-oladipo.json",
     "stereophonic-2024/ap--mark-kennedy.json",
-    "mother-play-2024/broadwaynews--brittani-samuel.json",
-    "mother-play-2024/ew--allison-considine.json",
-    "mother-play-2024/guardian--benjamin-lee.json",
-    "prayer-for-the-french-republic-2024/observer--david-cote.json"
+    "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
+    "hells-kitchen-2024/ap--mark-kennedy.json",
+    "hells-kitchen-2024/culturesauce--thom-geier.json",
+    "hells-kitchen-2024/unknown--unknown.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -178,12 +178,14 @@
     "stereophonic-2024/deadline--greg-evans.json",
     "stereophonic-2024/observer--david-cote.json",
     "stereophonic-2024/timeout--adam-feldman.json",
-    "mother-play-2024/timeout--adam-feldman.json",
-    "mother-play-2024/wsj--charles-isherwood.json",
-    "mother-play-2024/wsj--charles.json",
-    "prayer-for-the-french-republic-2024/deadline--greg-evans.json",
-    "prayer-for-the-french-republic-2024/timeout--adam-feldman.json",
-    "prayer-for-the-french-republic-2024/wsj--charles-isherwood.json"
+    "hells-kitchen-2024/hollywood-reporter--david-rooney.json",
+    "hells-kitchen-2024/nytimes--jesse-green.json",
+    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
+    "hells-kitchen-2024/deadline--pete-hammond.json",
+    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
+    "hells-kitchen-2024/timeout--adam-feldman.json",
+    "hells-kitchen-2024/wsj--charles-isherwood.json",
+    "hells-kitchen-2024/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -191,9 +193,8 @@
       "stereophonic-2024/ew--allison-considine.json",
       "stereophonic-2024/guardian--gloria-oladipo.json",
       "stereophonic-2024/ap--mark-kennedy.json",
-      "mother-play-2024/ew--allison-considine.json",
-      "mother-play-2024/guardian--benjamin-lee.json",
-      "prayer-for-the-french-republic-2024/observer--david-cote.json"
+      "hells-kitchen-2024/ap--mark-kennedy.json",
+      "hells-kitchen-2024/culturesauce--thom-geier.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
@@ -210,9 +211,53 @@
       "harry-potter-2021/village-voice--michael-feingold.json",
       "mj-2022/nytg--ayanna-prescod.json",
       "stereophonic-2024/nytimes--jesse-green.json",
-      "mother-play-2024/broadwaynews--brittani-samuel.json"
+      "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
+      "hells-kitchen-2024/unknown--unknown.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Hollywood Reporter": {
+      "count": 1,
+      "domain": "hollywoodreporter.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The New York Times": {
+      "count": 1,
+      "domain": "nytimes.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "Deadline": {
+      "count": 1,
+      "domain": "deadline.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The New York Sun": {
+      "count": 1,
+      "domain": "nysun.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
