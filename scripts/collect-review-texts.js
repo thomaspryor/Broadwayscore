@@ -1216,6 +1216,7 @@ async function fetchFromArchive(url) {
  * @returns {string|null} - Discovered URL, or null if not found
  */
 const URL_DISCOVERY_MAX_PER_RUN = 50; // Cap SERP API calls to control costs
+let _showsJsonCache = null; // Cached shows.json data (static within a run)
 
 async function discoverCorrectUrl(review) {
   if (!CONFIG.scrapingBeeKey || !axios) {
@@ -1236,8 +1237,10 @@ async function discoverCorrectUrl(review) {
   let showTitle;
   let showYear = '';
   try {
-    const showsData = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
-    const showEntry = showsData.shows.find(s => s.id === review.showId);
+    if (!_showsJsonCache) {
+      _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+    }
+    const showEntry = _showsJsonCache.shows.find(s => s.id === review.showId);
     if (showEntry) {
       showTitle = showEntry.title;
       showYear = (showEntry.openingDate || '').substring(0, 4);
@@ -1284,6 +1287,7 @@ async function discoverCorrectUrl(review) {
       },
       timeout: 30000,
     });
+    stats.scrapingBeeCreditsUsed += 1; // SERP API uses ~1 credit per search
 
     // ScrapingBee SERP API returns JSON with organic_results
     const data = response.data;
@@ -1303,15 +1307,23 @@ async function discoverCorrectUrl(review) {
     // Find best matching result
     const targetDomain = domain || oldDomain;
     const showTitleLower = showTitle.toLowerCase();
+    // Also derive a short title from the showId slug for matching shows with subtitles
+    // e.g., "Cabaret at the Kit Kat Club" (shows.json) → "cabaret" (from cabaret-2024)
+    const shortTitle = (review.showId || '')
+      .replace(/-\d{4}$/, '')
+      .replace(/-/g, ' ')
+      .toLowerCase();
+    const shortSlug = shortTitle.replace(/\s+/g, '-');
 
     for (const result of results.slice(0, 5)) {
       const url = result.url || result.link;
       if (!url) continue;
 
-      // Skip non-article URLs (homepage, category pages, search results)
+      // Skip non-article URLs (homepage, category pages, search results, image attachments)
       const urlLower = url.toLowerCase();
-      if (urlLower.endsWith('.com/') || urlLower.endsWith('.com')) continue;
+      try { if (new URL(url).pathname === '/') continue; } catch (e) {} // homepage
       if (urlLower.includes('/search?') || urlLower.includes('/tag/') || urlLower.includes('/category/')) continue;
+      if (urlLower.includes('/attachment/') || urlLower.match(/\.(jpg|jpeg|png|gif|webp)$/)) continue;
 
       // Skip if same as the dead URL
       if (url === review.url) continue;
@@ -1324,12 +1336,14 @@ async function discoverCorrectUrl(review) {
 
       if (targetDomain && !urlDomain.includes(targetDomain.replace(/^www\./, ''))) continue;
 
-      // Check relevance - title must mention the show (snippets have too many false positives)
+      // Check relevance — use both full title and short title (from showId slug)
+      // Full title handles exact matches; short title handles subtitles like
+      // "Cabaret at the Kit Kat Club" where results just say "Cabaret"
       const title = (result.title || '').toLowerCase();
       const showSlugCheck = showTitleLower.replace(/\s+/g, '-');
 
-      const titleHasShow = title.includes(showTitleLower);
-      const urlHasShow = urlLower.includes(showSlugCheck);
+      const titleHasShow = title.includes(showTitleLower) || title.includes(shortTitle);
+      const urlHasShow = urlLower.includes(showSlugCheck) || urlLower.includes(shortSlug);
       const titleHasReview = title.includes('review');
 
       // Require: (title mentions show) OR (URL contains show slug)
@@ -1346,32 +1360,6 @@ async function discoverCorrectUrl(review) {
         newUrl: url,
       });
       return url;
-    }
-
-    // Fallback: if we have domain match but no title match, take first domain-matching result
-    if (targetDomain) {
-      for (const result of results.slice(0, 3)) {
-        const url = result.url || result.link;
-        if (!url || url === review.url) continue;
-        let urlDomain = '';
-        try { urlDomain = new URL(url).hostname.replace(/^www\./, ''); } catch (e) { continue; }
-        if (urlDomain.includes(targetDomain.replace(/^www\./, ''))) {
-          const urlLower = url.toLowerCase();
-          if (urlLower.endsWith('.com/') || urlLower.endsWith('.com')) continue;
-          // Accept only if URL path contains show-related slug (not just "review" — too permissive)
-          const showSlug = showTitleLower.replace(/\s+/g, '-');
-          if (urlLower.includes(showSlug)) {
-            console.log(`    ✓ Found (fallback): ${url}`);
-            stats.urlDiscoverySuccess++;
-            stats.urlDiscoveryDetails.push({
-              reviewId: review.reviewId || `${review.showId}/${review.file}`,
-              oldUrl: review.url,
-              newUrl: url,
-            });
-            return url;
-          }
-        }
-      }
     }
 
     console.log('    ✗ No matching URL found in search results');
@@ -2687,9 +2675,21 @@ async function processReview(review) {
 
         try {
           const retryResult = await fetchReviewText(review);
-          console.log(`  ✓ SUCCESS via ${retryResult.method} with discovered URL (${retryResult.text.length} chars)`);
+          console.log(`  ✓ SUCCESS via ${retryResult.method} with discovered URL (${retryResult.text?.length || 0} chars)`);
 
-          // Update the review file's URL atomically (write to .tmp, then rename)
+          // Check for garbage content BEFORE writing URL to file
+          // (prevents cost leak: if we write the URL first and content is garbage,
+          // future runs would re-discover the same URL and waste SERP credits)
+          const showTitle = review.showId ? review.showId.replace(/-\d{4}$/, '').replace(/-/g, ' ') : '';
+          const qualityCheck = assessTextQuality(retryResult.text, showTitle);
+          if (qualityCheck.quality === 'garbage' && qualityCheck.confidence === 'high') {
+            console.log(`  ✗ GARBAGE CONTENT from discovered URL: ${qualityCheck.issues[0]}`);
+            review.url = originalUrl; // restore before failing
+            stats.totalFailed++;
+            return { success: false, error: 'garbage_content_from_discovered_url' };
+          }
+
+          // Content is good — update the review file's URL atomically (write to .tmp, then rename)
           try {
             const reviewData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
             reviewData.url = discoveredUrl;
@@ -2702,15 +2702,6 @@ async function processReview(review) {
             console.log(`    → Updated review URL: ${originalUrl} → ${discoveredUrl}`);
           } catch (writeErr) {
             console.log(`    ⚠ Could not update URL in file: ${writeErr.message}`);
-          }
-
-          // Continue with normal success processing (quality check, validation, etc.)
-          const showTitle = review.showId ? review.showId.replace(/-\d{4}$/, '').replace(/-/g, ' ') : '';
-          const qualityCheck = assessTextQuality(retryResult.text, showTitle);
-          if (qualityCheck.quality === 'garbage' && qualityCheck.confidence === 'high') {
-            console.log(`  ✗ GARBAGE CONTENT from discovered URL: ${qualityCheck.issues[0]}`);
-            stats.totalFailed++;
-            return { success: false, error: 'garbage_content_from_discovered_url' };
           }
 
           const archivePath = retryResult.html ? archiveHtml(retryResult.html, review, retryResult.method) : null;
@@ -2870,6 +2861,7 @@ function generateReport() {
       browserbaseMinutesUsed: Math.round(stats.browserbaseMinutesUsed * 10) / 10,
       urlDiscoveryAttempts: stats.urlDiscoveryAttempts,
       urlDiscoverySuccess: stats.urlDiscoverySuccess,
+      urlDiscoveryCapped: stats.urlDiscoveryCapped,
     },
     processed: state.processed,
     failed: state.failed,
@@ -2905,6 +2897,9 @@ function generateReport() {
     console.log(`║ URL DISCOVERY                                            ║`);
     console.log(`║ ├─ Attempted: ${String(stats.urlDiscoveryAttempts).padStart(42)} ║`);
     console.log(`║ ├─ Found: ${String(stats.urlDiscoverySuccess).padStart(46)} ║`);
+    if (stats.urlDiscoveryCapped > 0) {
+      console.log(`║ ├─ Skipped (cap reached): ${String(stats.urlDiscoveryCapped).padStart(30)} ║`);
+    }
     const rate = stats.urlDiscoveryAttempts > 0
       ? ((stats.urlDiscoverySuccess / stats.urlDiscoveryAttempts) * 100).toFixed(0) + '%'
       : 'N/A';
