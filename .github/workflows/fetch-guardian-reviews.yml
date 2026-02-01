@@ -82,10 +82,28 @@ jobs:
 
             Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>"
 
-            # Push with retry logic
-            for i in 1 2 3 4 5; do
-              git pull --rebase origin main && git push origin main && break
-              echo "Push attempt $i failed, retrying..."
-              sleep $((i * 2))
+            # Push with robust retry logic
+            MAX_RETRIES=5
+            RETRY_COUNT=0
+            while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+              echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+              git checkout -- . 2>/dev/null || true
+              git clean -fd 2>/dev/null || true
+              if git pull --rebase -X theirs origin main; then
+                if git push origin main; then
+                  echo "Successfully pushed changes"
+                  break
+                fi
+              else
+                echo "Rebase failed, aborting and retrying..."
+                git rebase --abort 2>/dev/null || true
+              fi
+              RETRY_COUNT=$((RETRY_COUNT + 1))
+              if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+                WAIT_TIME=$((10 + RANDOM % 20))
+                echo "Waiting $WAIT_TIME seconds before retry..."
+                sleep $WAIT_TIME
+                git fetch origin main
+              fi
             done
           fi
