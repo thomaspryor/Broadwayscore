@@ -13,14 +13,15 @@
  * @type {RegExp[]}
  */
 const AD_BLOCKER_PATTERNS = [
-  /ad\s*block(er)?/i,
-  /we\s+(noticed|detected|see)\s+(you('re|r)?|that\s+you('re|r)?)\s+(using|have)/i,
+  // Require full ad-blocker message context, not just the word "adblock"
+  // The bare /ad\s*block(er)?/i was causing false positives on reviews
   /turn\s+off\s+(your\s+)?ad\s*block/i,
   /whitelist\s+(this\s+)?(site|domain|our)/i,
   /disable\s+(your\s+)?ad\s*block/i,
   /advertising\s+revenue\s+helps/i,
   /please\s+(consider\s+)?disabling\s+(your\s+)?ad/i,
   /adblock\s+(plus\s+)?button/i,
+  /we\s+(noticed|detected|see)\s+(you('re|r)?|that\s+you('re|r)?)\s+(using|have)\s+an?\s+ad/i,
 ];
 
 /**
@@ -176,8 +177,18 @@ function detectPaywall(text) {
  * @returns {{ detected: boolean, match: string | null }}
  */
 function detectLegalPage(text) {
+  // For texts over 500 chars, only flag if the legal pattern appears in the
+  // first 200 chars (indicating it's the primary content, not a footer/copyright notice).
+  // Short texts are always checked anywhere.
+  const isLongText = text.length > 500;
+  const checkRegion = isLongText ? text.substring(0, 200) : text;
+
   for (const pattern of LEGAL_PAGE_PATTERNS) {
-    const match = text.match(pattern);
+    // "All Rights Reserved" at the END of text is almost always a footer, not garbage
+    if (isLongText && pattern.source.includes('all\\s+rights\\s+reserved')) {
+      continue; // Skip this pattern for long texts — it's always a footer
+    }
+    const match = checkRegion.match(pattern);
     if (match) {
       return { detected: true, match: match[0] };
     }
@@ -191,8 +202,14 @@ function detectLegalPage(text) {
  * @returns {{ detected: boolean, match: string | null }}
  */
 function detectErrorPage(text) {
+  // For texts over 500 chars, only check the first 300 chars.
+  // A legitimate review might mention "has been removed" in theatrical context,
+  // but a real 404 page is short and leads with the error message.
+  const isLongText = text.length > 500;
+  const checkRegion = isLongText ? text.substring(0, 300) : text;
+
   for (const pattern of ERROR_PAGE_PATTERNS) {
-    const match = text.match(pattern);
+    const match = checkRegion.match(pattern);
     if (match) {
       return { detected: true, match: match[0] };
     }

@@ -91,7 +91,7 @@ const OUTLET_ALIASES = {
   ],
   'vulture': [
     'vulture', 'new york magazine / vulture', 'new york magazine/vulture',
-    'ny mag', 'nymag', 'new york magazine', 'vult'
+    'ny mag', 'nymag', 'new york magazine', 'vult', 'vu'
   ],
   'variety': [
     'variety', 'variety magazine'
@@ -394,8 +394,29 @@ function normalizeOutlet(outletName) {
     }
   }
 
+  // Check for concatenated outlet-critic patterns (e.g., "variety-frank-rizzo", "new-york-magazinevulture-sara-holdren")
+  // These come from upstream data sources that merge outlet and critic names
+  const slug = slugify(outletName);
+  for (const [canonical, aliases] of Object.entries(OUTLET_ALIASES)) {
+    // Check if the slug starts with the canonical outlet ID followed by a critic name
+    if (slug.startsWith(canonical + '-') && slug.length > canonical.length + 3) {
+      return canonical;
+    }
+    // Check if the slug starts with any alias (slugified) followed by a critic name
+    for (const alias of aliases) {
+      const aliasSlug = slugify(alias);
+      if (aliasSlug && slug.startsWith(aliasSlug + '-') && slug.length > aliasSlug.length + 3) {
+        return canonical;
+      }
+      // Also check without separator (e.g., "newyorkmagazinevulture")
+      if (aliasSlug && aliasSlug.length > 5 && slug.startsWith(aliasSlug) && slug.length > aliasSlug.length + 3) {
+        return canonical;
+      }
+    }
+  }
+
   // Not found in aliases - create a slug from the name
-  return slugify(outletName);
+  return slug;
 }
 
 /**
