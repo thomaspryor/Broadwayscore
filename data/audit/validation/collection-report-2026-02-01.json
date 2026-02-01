@@ -1,45 +1,46 @@
 {
-  "runDate": "2026-02-01T04:27:15.925Z",
+  "runDate": "2026-02-01T13:54:33.215Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 2,
+    "maxReviews": 50,
     "priority": "all",
-    "showFilter": "cabaret-2024",
+    "showFilter": "stereophonic-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 11,
-    "failed": 112,
+    "processed": 14,
+    "failed": 115,
     "skipped": 0,
-    "successRate": "8.9%"
+    "successRate": "10.9%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 4,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 2,
     "archive": 8
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 1,
+    "tier1Attempts": 3,
+    "tier1Success": 3,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 0,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 1,
-    "tier4Success": 0,
-    "totalFailed": 2,
+    "tier4Attempts": 5,
+    "tier4Success": 3,
+    "totalFailed": 3,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 0
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
   },
   "processed": [
     "harry-potter-2021/hollywood-reporter--david-rooney.json",
@@ -52,7 +53,10 @@
     "harry-potter-2021/village-voice--michael-feingold.json",
     "mj-2022/nytg--ayanna-prescod.json",
     "mj-2022/usatoday--david-rooney.json",
-    "stereophonic-2024/nytimes--jesse-green.json"
+    "stereophonic-2024/nytimes--jesse-green.json",
+    "stereophonic-2024/ew--allison-considine.json",
+    "stereophonic-2024/guardian--gloria-oladipo.json",
+    "stereophonic-2024/ap--mark-kennedy.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -166,11 +170,17 @@
     "moulin-rouge-2019/observer--david-cote.json",
     "stereophonic-2024/hollywood-reporter--angie-han.json",
     "cabaret-2024/nyt-theater--jonathan-mandell.json",
-    "cabaret-2024/variety--aramide-tinubu.json"
+    "cabaret-2024/variety--aramide-tinubu.json",
+    "stereophonic-2024/deadline--greg-evans.json",
+    "stereophonic-2024/observer--david-cote.json",
+    "stereophonic-2024/timeout--adam-feldman.json"
   ],
   "tierDetails": {
     "playwright": [
-      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
+      "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+      "stereophonic-2024/ew--allison-considine.json",
+      "stereophonic-2024/guardian--gloria-oladipo.json",
+      "stereophonic-2024/ap--mark-kennedy.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
@@ -189,14 +199,6 @@
       "stereophonic-2024/nytimes--jesse-green.json"
     ]
   },
-  "failuresByOutlet": {
-    "Variety": {
-      "count": 1,
-      "domain": "variety.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
