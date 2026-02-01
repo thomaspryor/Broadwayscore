@@ -150,10 +150,11 @@ const CONFIG = {
 
   // Sites known to block aggressively (skip Playwright, start with ScrapingBee)
   knownBlockedSites: [
-    'variety.com', 'hollywoodreporter.com', 'deadline.com', 'thewrap.com',
+    'thewrap.com',
     'theatermania.com', 'observer.com', 'chicagotribune.com',
     'dailybeast.com', 'thedailybeast.com', 'amny.com', 'newsday.com',
     'nypost.com', 'nydailynews.com', 'indiewire.com',
+    // Note: variety.com, hollywoodreporter.com, deadline.com are FREE - Playwright works fine
     // Note: wsj.com removed - now using login
   ],
 
@@ -170,8 +171,8 @@ const CONFIG = {
     // Major paywalled publications
     'nytimes.com', 'vulture.com', 'nymag.com', 'washingtonpost.com',
     'wsj.com', 'newyorker.com', 'ew.com', 'latimes.com',
-    // Entertainment/trade publications with soft paywalls
-    'deadline.com', 'variety.com', 'hollywoodreporter.com', 'rollingstone.com',
+    // Entertainment/trade publications (free content, but archive useful for old/deleted URLs)
+    'rollingstone.com',
     // Regional papers with paywalls
     'chicagotribune.com', 'nypost.com', 'nydailynews.com',
     // Sites where Archive.org has proven successful
@@ -276,6 +277,22 @@ const OUTLET_WAIT_CONFIGS = {
   },
   'timeout.com': {
     waitForSelector: '[class*="_articleContent_"], [class*="_content_"]',
+    waitTimeout: 15000,
+    extraWait: 2000,
+  },
+  // PMC sites (Variety, THR, Deadline) - free content, standard WordPress rendering
+  'variety.com': {
+    waitForSelector: '.c-content, .entry-content, article',
+    waitTimeout: 15000,
+    extraWait: 2000,
+  },
+  'hollywoodreporter.com': {
+    waitForSelector: '.c-content, .entry-content, article',
+    waitTimeout: 15000,
+    extraWait: 2000,
+  },
+  'deadline.com': {
+    waitForSelector: '.entry-content, article',
     waitTimeout: 15000,
     extraWait: 2000,
   },
@@ -1812,13 +1829,16 @@ function isBlocked(html) {
 function isPaywalled(html) {
   if (!html || typeof html !== 'string') return false;
   const lower = html.toLowerCase();
+  // Note: Do NOT check for bare 'paywall' - ad scripts (Piano/tinypass) include the word
+  // on free sites like Variety, THR, Deadline causing false positives
   return (
     lower.includes('subscribe to continue') ||
     lower.includes('subscription required') ||
     lower.includes('create a free account') ||
     lower.includes('sign in to read') ||
     lower.includes('already a subscriber') ||
-    (lower.includes('paywall') && !lower.includes('no paywall'))
+    lower.includes('this article is for subscribers') ||
+    lower.includes('to read the full story')
   );
 }
 
@@ -1834,6 +1854,8 @@ async function extractArticleText(page) {
       '[class*="RawHtmlBody"]',
       // TimeOut (uses hashed class names like _articleContent_3h2iz_20)
       '[class*="_articleContent_"]',
+      // Variety / THR / Deadline (PMC sites - free content)
+      '.c-content',
       // WSJ
       '.article-content .wsj-snippet-body',
       'div.article-content',
