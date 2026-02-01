@@ -10,7 +10,28 @@
     "prayer-for-the-french-republic/nytg--unknown.json",
     "the-lion-king-1997/vulture--john-simon.json",
     "aladdin-2014/newsday--linda-winer.json",
-    "an-enemy-of-the-people/ew--unknown.json"
+    "an-enemy-of-the-people/ew--unknown.json",
+    "chess/hollywood-reporter--richard-lawson.json",
+    "chess/nytimes--elisabeth-vincentelli.json",
+    "chess/variety--christian-lewis.json",
+    "chess/vulture--sara-holdren.json",
+    "days-of-wine-and-roses/nyt-theater--jonathan-mandell.json",
+    "days-of-wine-and-roses/nytg--gillian-russo.json",
+    "days-of-wine-and-roses/nytimes--unknown.json",
+    "days-of-wine-and-roses/vulture--sara-holdren.json",
+    "giant/nytimes--houman-barekat.json",
+    "grey-house/nytimes--jesse-green.json",
+    "grey-house/variety--unknown.json",
+    "grey-house/vulture--unknown.json",
+    "gutenberg/nyt-theater--jonathan-mandell.json",
+    "gutenberg/nytimes--jesse-green.json",
+    "gutenberg/variety--frank-rizzo.json",
+    "gutenberg/vulture--sara-holdren.json",
+    "hadestown-2019/vulture--sara-holdren.json",
+    "illinoise/hollywood-reporter--unknown.json",
+    "illinoise/variety--unknown.json",
+    "marjorie-prime/nyt-theater--jonathan-mandell.json",
+    "marjorie-prime/nytg--joe-dziemianowicz.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -51,12 +72,36 @@
     "appropriate-2023/deadline--greg-evans.json",
     "appropriate-2023/wsj--charles-isherwood.json",
     "back-to-the-future-2023/chelsea-community-news--michael-musto.json",
-    "back-to-the-future-2023/observer--david-cote.json"
+    "back-to-the-future-2023/observer--david-cote.json",
+    "chess/nytg--unknown.json",
+    "grey-house/nytg--joe-dziemianowicz.json",
+    "here-lies-love/hollywood-reporter--unknown.json",
+    "here-lies-love/nytimes--unknown.json",
+    "here-lies-love/variety--unknown.json",
+    "here-lies-love/vulture--unknown.json",
+    "marjorie-prime/nytimes--unknown.json",
+    "marjorie-prime/vulture--unknown.json",
+    "once-upon-a-one-more-time/nyt-theater--jonathan-mandell.json",
+    "once-upon-a-one-more-time/nytg--gillian-russo.json",
+    "once-upon-a-one-more-time/nytimes--unknown.json",
+    "once-upon-a-one-more-time/variety--unknown.json",
+    "once-upon-a-one-more-time/vulture--unknown.json",
+    "real-women-have-curves/nytg--kyle-turner.json",
+    "real-women-have-curves/nytimes--unknown.json",
+    "real-women-have-curves/variety--unknown.json",
+    "real-women-have-curves/vulture--unknown.json",
+    "redwood/nyt-theater--jonathan-mandell.json",
+    "redwood/nytg--gillian-russo.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "prayer-for-the-french-republic/nytg--unknown.json"
+      "prayer-for-the-french-republic/nytg--unknown.json",
+      "days-of-wine-and-roses/nyt-theater--jonathan-mandell.json",
+      "days-of-wine-and-roses/nytg--gillian-russo.json",
+      "gutenberg/nyt-theater--jonathan-mandell.json",
+      "marjorie-prime/nyt-theater--jonathan-mandell.json",
+      "marjorie-prime/nytg--joe-dziemianowicz.json"
     ],
     "browserbase": [],
     "scrapingbee": [
@@ -64,7 +109,9 @@
       "here-lies-love-2023/nytimes--ben-brantley.json",
       "aladdin-2014/newsday--linda-winer.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "chess/nytimes--elisabeth-vincentelli.json"
+    ],
     "archive": [
       "an-enemy-of-the-people/hollywood-reporter--unknown.json",
       "an-enemy-of-the-people/vulture--unknown.json",
@@ -73,9 +120,24 @@
       "hamilton-2015/hollywood-reporter--david-rooney.json",
       "the-lion-king-1997/vulture--john-simon.json",
       "an-enemy-of-the-people/ew--unknown.json",
-      "and-juliet-2022/thewrap--robert-hofler.json"
+      "and-juliet-2022/thewrap--robert-hofler.json",
+      "chess/hollywood-reporter--richard-lawson.json",
+      "chess/variety--christian-lewis.json",
+      "chess/vulture--sara-holdren.json",
+      "days-of-wine-and-roses/nytimes--unknown.json",
+      "days-of-wine-and-roses/vulture--sara-holdren.json",
+      "giant/nytimes--houman-barekat.json",
+      "grey-house/nytimes--jesse-green.json",
+      "grey-house/variety--unknown.json",
+      "grey-house/vulture--unknown.json",
+      "gutenberg/nytimes--jesse-green.json",
+      "gutenberg/variety--frank-rizzo.json",
+      "gutenberg/vulture--sara-holdren.json",
+      "hadestown-2019/vulture--sara-holdren.json",
+      "illinoise/hollywood-reporter--unknown.json",
+      "illinoise/variety--unknown.json"
     ]
   },
   "startTime": "2026-02-01T15:16:04.782Z",
-  "lastProcessed": "back-to-the-future-2023/observer--david-cote.json"
+  "lastProcessed": "redwood/nytg--gillian-russo.json"
 }
