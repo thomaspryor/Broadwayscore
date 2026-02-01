@@ -46,6 +46,7 @@ const {
   validateCriticOutlet,
 } = require('./lib/review-normalization');
 const { verifyProduction, quickDateCheck } = require('./lib/production-verifier');
+const { cleanText } = require('./lib/text-cleaning');
 let chromium, playwright;
 try {
   playwright = require('playwright');
@@ -1167,6 +1168,7 @@ function createReviewFile(showId, reviewData) {
   }
 
   // Create new review file with normalized data
+  // Clean all text fields to decode HTML entities and strip junk
   const review = {
     showId,
     outletId: normalizedOutletId,
@@ -1174,17 +1176,17 @@ function createReviewFile(showId, reviewData) {
     criticName: reviewData.criticName || 'Unknown',
     url: reviewData.url || null,
     publishDate: normalizePublishDate(reviewData.publishDate) || null,
-    fullText: reviewData.excerpt || null,
+    fullText: cleanText(reviewData.excerpt) || null,
     isFullReview: false,
-    dtliExcerpt: reviewData.dtliExcerpt || reviewData.excerpt || null,
+    dtliExcerpt: cleanText(reviewData.dtliExcerpt || reviewData.excerpt) || null,
     originalScore: reviewData.originalRating ? parseRating(reviewData.originalRating) : null,
     assignedScore: null,
     source: reviewData.source || 'gather-reviews',
     dtliThumb: reviewData.dtliThumb || null,
     dtliUrl: reviewData.dtliUrl || null,
-    bwwExcerpt: reviewData.bwwExcerpt || null,
+    bwwExcerpt: cleanText(reviewData.bwwExcerpt) || null,
     bwwRoundupUrl: reviewData.bwwRoundupUrl || null,
-    showScoreExcerpt: reviewData.showScoreExcerpt || reviewData.excerpt || null
+    showScoreExcerpt: cleanText(reviewData.showScoreExcerpt || reviewData.excerpt) || null
   };
 
   fs.writeFileSync(filepath, JSON.stringify(review, null, 2));

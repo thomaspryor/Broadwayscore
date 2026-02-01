@@ -47,6 +47,9 @@ const https = require('https');
 // Score extraction for original scores
 const { extractScore, extractDesignation } = require('./lib/score-extractors');
 
+// Text cleaning (entity decoding, junk stripping)
+const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS } = require('./lib/text-cleaning');
+
 // LLM-based content verification
 const { verifyContent, quickValidityCheck } = require('./lib/content-verifier');
 
@@ -1823,51 +1826,7 @@ function archiveHtml(html, review, method) {
   return archivePath;
 }
 
-// Junk patterns to strip from end of reviews (newsletter promos, login prompts, site footers)
-const TRAILING_JUNK_PATTERNS = [
-  // TheaterMania newsletter promos
-  /\s*Get the latest news, discounts and updates on theater and shows by signing up for TheaterMania.*$/is,
-  /\s*TheaterMania&#039;s newsletter today!.*$/is,
-  // BroadwayNews login prompts
-  /\s*Already have an account\?\s*(Sign in|Log in).*$/is,
-  // amNY "Read more" promos
-  /\s*Read more:\s*[^\n]+$/i,
-  // Vulture/NY Mag signup junk
-  /\s*This email will be used to sign into all New York sites.*$/is,
-  /\s*By submitting your email, you agree to our Terms and Privacy Policy.*$/is,
-  /\s*Password must be at least 8 characters.*$/is,
-  /\s*You're in!\s*As part of your account.*$/is,
-  /\s*which you can opt out of anytime\.\s*$/i,
-  /\s*occasional updates and offers from New York.*$/is,
-  // Generic newsletter/promo junk
-  /\s*Sign up for our newsletter.*$/is,
-  /\s*Subscribe to our newsletter.*$/is,
-  // Site footers
-  /\s*About Us\s*\|\s*Editorial Guidelines\s*\|\s*Contact Us.*$/is,
-  /\s*Share full article\d*Related Content.*$/is,
-  /\s*Copyright\s*©?\s*\d{4}.*$/is,
-  /\s*All rights reserved\.?\s*$/i,
-  /\s*Excerpts and links to the content may be used.*$/is,
-  // NYT bio junk
-  /\s*is the chief theater critic for The Times\..*$/is,
-  /\s*is a theater critic for The Times\..*$/is,
-];
-
-// Strip trailing junk (newsletter promos, login prompts) from review text
-function stripTrailingJunk(text) {
-  if (!text) return text;
-  let cleaned = text;
-  let changed = true;
-  while (changed) {
-    changed = false;
-    for (const pattern of TRAILING_JUNK_PATTERNS) {
-      const before = cleaned;
-      cleaned = cleaned.replace(pattern, '').trim();
-      if (cleaned !== before) changed = true;
-    }
-  }
-  return cleaned;
-}
+// TRAILING_JUNK_PATTERNS and stripTrailingJunk imported from ./lib/text-cleaning
 
 // Patterns that indicate a legitimate review ending (not truncation)
 const LEGITIMATE_ENDING_PATTERNS = [
@@ -2043,11 +2002,14 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
     console.log(`    → Flagged for rescore: was scored at ${data.llmScore.score} on excerpt, now has ${text.length} char fullText`);
   }
 
-  // Text quality classification with truncation detection (also cleans trailing junk)
-  const qualityResult = classifyTextQuality(text, review.showId || data.showId, validation.wordCount, excerptLength);
+  // Clean text (decode entities, strip control chars, collapse whitespace, strip junk) before classification
+  const preCleanedText = cleanText(text) || text;
 
-  // Use cleaned text (junk stripped) if available, otherwise original
-  const cleanedText = qualityResult.cleanedText || text;
+  // Text quality classification with truncation detection (also strips trailing junk)
+  const qualityResult = classifyTextQuality(preCleanedText, review.showId || data.showId, validation.wordCount, excerptLength);
+
+  // Use cleaned text (junk stripped) if available, otherwise pre-cleaned
+  const cleanedText = qualityResult.cleanedText || preCleanedText;
   data.fullText = cleanedText;
   data.isFullReview = cleanedText.length > 1500;
   data.textWordCount = cleanedText.split(/\s+/).filter(w => w.length > 0).length;
