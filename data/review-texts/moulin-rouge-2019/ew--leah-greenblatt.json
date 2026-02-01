@@ -21,7 +21,17 @@
   "textQuality": "excerpt_only",
   "sourceMethod": "stub",
   "showScoreExcerpt": "\"A Millennial Reboot of Chekhov, and 'Moulin Rouge!' on Broadway. Halley Feiffer translates 'Three Sisters' into Internet-speak, and Baz Luhrmannâs glitzy movie comes into its own onstage.\"",
-  "llmScore": {
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:39:46.845Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "garbageFullText": "​ Page Not Found This is not the page you are looking for. We hope you can go about your business by using our menu or search option. By clicking “Accept All Cookies”, you agree to the storing of cookies on your device to enhance site navigation, analyze site usage, and assist in our marketing efforts. Accept All Cookies",
+  "garbageReason": "/page not found/i",
+  "garbageFixedAt": "2026-01-29T22:45:23.033Z",
+  "_invalidatedLlmScore": {
     "score": 87,
     "confidence": "medium",
     "range": {
@@ -59,25 +69,20 @@
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
-    }
+    },
+    "invalidatedReason": "/page not found/i",
+    "invalidatedAt": "2026-02-01T04:02:00.813Z"
   },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:39:46.845Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
+  "_invalidatedEnsembleData": {
     "claudeScore": 83,
     "openaiScore": 90,
     "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "invalidatedAt": "2026-02-01T04:02:00.813Z"
   },
-  "garbageFullText": "​ Page Not Found This is not the page you are looking for. We hope you can go about your business by using our menu or search option. By clicking “Accept All Cookies”, you agree to the storing of cookies on your device to enhance site navigation, analyze site usage, and assist in our marketing efforts. Accept All Cookies",
-  "garbageReason": "/page not found/i",
-  "garbageFixedAt": "2026-01-29T22:45:23.033Z"
+  "needsRescore": true,
+  "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available"
 }

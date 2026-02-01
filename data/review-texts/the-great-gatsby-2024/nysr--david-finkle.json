@@ -21,9 +21,30 @@
   ],
   "textQuality": "excerpt_only",
   "sourceMethod": "bww-roundup",
-  "scoreSource": "live-fetch",
+  "scoreSource": "explicit-after-garbage-invalidation",
   "scoreConfidence": "medium",
-  "llmScore": {
+  "_previousInvalidLlmScore": {
+    "score": 75,
+    "reason": "LLM was fed garbage 404 page text with reviews of OTHER shows",
+    "invalidatedAt": "2026-02-01T00:00:00.000Z"
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:52:57.484Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
+  "bwwThumb": "Down",
+  "scoreExtractedFrom": "archive",
+  "garbageFullText": "The page you are looking for no longer exists. Perhaps you can return back to the homepage and see if you can find what you are looking for. Or, you can try finding it by using the search form below. ★★★★☆ Playwright Simon Stephens and tech wizards concoct the world’s first mixed reality play ★★★☆☆ Ian McKellen is among the performers appearing virtually in this one-act play by Simon Stephens ★★★☆☆ Erica Schmidt’s world premiere dramedy skewers a self-absorbed filmmaker and the people who love him ★★★☆☆ Hamish Linklater, Miriam Silverman, and Dylan Baker are among the stars of Erica Schmidt's world premiere play riffing on show business and marriage ★★★★☆ A new production of the Tony-nominated musical comedy goes to the head of the class ★★★★☆ Lesley Manville and Mark Strong have disturbingly good chemistry as theater’s most famous twice-related couple ★★★★★ Laurie Metcalf and Micah Stock star in Samuel D. Hunter's acclaimed drama, previously seen at Steppenwolf Theatre Company ★★★★★ Bess Wohl takes inspiration from her mother’s life for her clever, decade-jumping memory play ★★★★★ Joshua Henry gives what’s destined to be a Tony-winning performance in this much-needed revival ★★★★☆ Jonathan Groff gives a once-in-a-lifetime performance as the Grammy-winning “Beyond the Sea” singer Copyright © 2026 • New York Stage Review • .",
+  "garbageReason": "Error/404 page: \"The page you are looking for\"",
+  "garbageFixedAt": "2026-01-29T22:45:23.253Z",
+  "originalScore": "2/5 stars",
+  "originalScoreNormalized": 40,
+  "_scoreFetchedAt": "2026-01-31T23:21:53.167Z",
+  "_invalidatedLlmScore": {
     "score": 40,
     "confidence": "high",
     "range": {
@@ -51,36 +72,18 @@
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
-    }
+    },
+    "invalidatedReason": "Error/404 page: \"The page you are looking for\"",
+    "invalidatedAt": "2026-02-01T04:02:00.822Z"
   },
-  "_previousInvalidLlmScore": {
-    "score": 75,
-    "reason": "LLM was fed garbage 404 page text with reviews of OTHER shows",
-    "invalidatedAt": "2026-02-01T00:00:00.000Z"
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:52:57.484Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
+  "_invalidatedEnsembleData": {
     "claudeScore": null,
     "openaiScore": 75,
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
-  },
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
-  "bwwThumb": "Down",
-  "scoreExtractedFrom": "archive",
-  "garbageFullText": "The page you are looking for no longer exists. Perhaps you can return back to the homepage and see if you can find what you are looking for. Or, you can try finding it by using the search form below. ★★★★☆ Playwright Simon Stephens and tech wizards concoct the world’s first mixed reality play ★★★☆☆ Ian McKellen is among the performers appearing virtually in this one-act play by Simon Stephens ★★★☆☆ Erica Schmidt’s world premiere dramedy skewers a self-absorbed filmmaker and the people who love him ★★★☆☆ Hamish Linklater, Miriam Silverman, and Dylan Baker are among the stars of Erica Schmidt's world premiere play riffing on show business and marriage ★★★★☆ A new production of the Tony-nominated musical comedy goes to the head of the class ★★★★☆ Lesley Manville and Mark Strong have disturbingly good chemistry as theater’s most famous twice-related couple ★★★★★ Laurie Metcalf and Micah Stock star in Samuel D. Hunter's acclaimed drama, previously seen at Steppenwolf Theatre Company ★★★★★ Bess Wohl takes inspiration from her mother’s life for her clever, decade-jumping memory play ★★★★★ Joshua Henry gives what’s destined to be a Tony-winning performance in this much-needed revival ★★★★☆ Jonathan Groff gives a once-in-a-lifetime performance as the Grammy-winning “Beyond the Sea” singer Copyright © 2026 • New York Stage Review • .",
-  "garbageReason": "Error/404 page: \"The page you are looking for\"",
-  "garbageFixedAt": "2026-01-29T22:45:23.253Z",
-  "originalScore": "2/5 stars",
-  "originalScoreNormalized": 40,
-  "_scoreFetchedAt": "2026-01-31T23:21:53.167Z"
+    "needsReviewReasons": [],
+    "invalidatedAt": "2026-02-01T04:02:00.822Z"
+  }
 }

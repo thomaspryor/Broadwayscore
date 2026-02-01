@@ -26,7 +26,20 @@
   "scoreConfidence": "medium",
   "dtliExcerpt": "Immersive, heartfelt, and exhilarating, First Shadow is a must-see spectacle for the Stranger Things obsessive as much as it is for the theater aficionado who wants to see the medium pushed to new heights. It does a phenomenal job of not only fleshing out a complicated character, but also providing context for the extreme lengths that Henry goes to in the TV series.",
   "dtliThumb": "Up",
-  "llmScore": {
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:50:53.233Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "designation": "Must_See",
+  "showScoreExcerpt": null,
+  "bwwThumb": null,
+  "garbageFullText": "​ Page Not Found This is not the page you are looking for. We hope you can go about your business by using our menu or search option. By clicking “Accept All Cookies”, you agree to the storing of cookies on your device to enhance site navigation, analyze site usage, and assist in our marketing efforts. Accept All Cookies",
+  "garbageReason": "/page not found/i",
+  "garbageFixedAt": "2026-01-29T22:45:23.228Z",
+  "_invalidatedLlmScore": {
     "score": 49,
     "confidence": "medium",
     "range": {
@@ -64,28 +77,20 @@
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
-    }
+    },
+    "invalidatedReason": "/page not found/i",
+    "invalidatedAt": "2026-02-01T04:02:00.822Z"
   },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:50:53.233Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
+  "_invalidatedEnsembleData": {
     "claudeScore": 52,
     "openaiScore": 45,
     "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "invalidatedAt": "2026-02-01T04:02:00.822Z"
   },
-  "designation": "Must_See",
-  "showScoreExcerpt": null,
-  "bwwThumb": null,
-  "garbageFullText": "​ Page Not Found This is not the page you are looking for. We hope you can go about your business by using our menu or search option. By clicking “Accept All Cookies”, you agree to the storing of cookies on your device to enhance site navigation, analyze site usage, and assist in our marketing efforts. Accept All Cookies",
-  "garbageReason": "/page not found/i",
-  "garbageFixedAt": "2026-01-29T22:45:23.228Z"
+  "needsRescore": true,
+  "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available"
 }

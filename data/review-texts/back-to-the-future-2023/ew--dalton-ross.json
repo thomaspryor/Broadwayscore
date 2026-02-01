@@ -21,7 +21,18 @@
   ],
   "textQuality": "excerpt_only",
   "sourceMethod": "bww-roundup",
-  "llmScore": {
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:02:01.152Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "bwwThumb": "Up",
+  "garbageFullText": "​ Page Not Found This is not the page you are looking for. We hope you can go about your business by using our menu or search option. By clicking “Accept All Cookies”, you agree to the storing of cookies on your device to enhance site navigation, analyze site usage, and assist in our marketing efforts. Accept All Cookies",
+  "garbageReason": "/page not found/i",
+  "garbageFixedAt": "2026-01-29T22:45:22.681Z",
+  "_invalidatedLlmScore": {
     "score": 65,
     "confidence": "high",
     "range": {
@@ -59,26 +70,20 @@
       "focusedOnPerformances": true,
       "comparesToPrevious": false,
       "mixedSignals": false
-    }
+    },
+    "invalidatedReason": "/page not found/i",
+    "invalidatedAt": "2026-02-01T04:02:00.803Z"
   },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:02:01.152Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
+  "_invalidatedEnsembleData": {
     "claudeScore": 65,
     "openaiScore": 65,
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "invalidatedAt": "2026-02-01T04:02:00.803Z"
   },
-  "bwwThumb": "Up",
-  "garbageFullText": "​ Page Not Found This is not the page you are looking for. We hope you can go about your business by using our menu or search option. By clicking “Accept All Cookies”, you agree to the storing of cookies on your device to enhance site navigation, analyze site usage, and assist in our marketing efforts. Accept All Cookies",
-  "garbageReason": "/page not found/i",
-  "garbageFixedAt": "2026-01-29T22:45:22.681Z"
+  "needsRescore": true,
+  "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available"
 }

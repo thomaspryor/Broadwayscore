@@ -27,7 +27,17 @@
   "dtliExcerpt": "So let the cares of this world roll away. Heck, let the cares of 16th-century England dissolve. This is one liberation in which you don’t have to lift a finger. Queens are doing it for themselves.",
   "dtliThumb": "Up",
   "showScoreExcerpt": "\"not what you might call a traditional musical, nor what formerly would have been considered a well-crafted one. But it has mass appeal, immediacy, enthusiasm, and an incredibly high sense of style; and it revels in what used to be called “girl power” but can now more properly be described as simply, or not-so-simply, power.\"",
-  "llmScore": {
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:49:07.345Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "garbageFullText": "​ Page Not Found This is not the page you are looking for. We hope you can go about your business by using our menu or search option. By clicking “Accept All Cookies”, you agree to the storing of cookies on your device to enhance site navigation, analyze site usage, and assist in our marketing efforts. Accept All Cookies",
+  "garbageReason": "/page not found/i",
+  "garbageFixedAt": "2026-01-29T22:45:23.178Z",
+  "_invalidatedLlmScore": {
     "score": 84,
     "confidence": "high",
     "range": {
@@ -65,25 +75,20 @@
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
-    }
+    },
+    "invalidatedReason": "/page not found/i",
+    "invalidatedAt": "2026-02-01T04:02:00.820Z"
   },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:49:07.345Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
+  "_invalidatedEnsembleData": {
     "claudeScore": 83,
     "openaiScore": 85,
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "invalidatedAt": "2026-02-01T04:02:00.820Z"
   },
-  "garbageFullText": "​ Page Not Found This is not the page you are looking for. We hope you can go about your business by using our menu or search option. By clicking “Accept All Cookies”, you agree to the storing of cookies on your device to enhance site navigation, analyze site usage, and assist in our marketing efforts. Accept All Cookies",
-  "garbageReason": "/page not found/i",
-  "garbageFixedAt": "2026-01-29T22:45:23.178Z"
+  "needsRescore": true,
+  "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available"
 }

@@ -8,7 +8,7 @@
   "isFullReview": false,
   "showScoreExcerpt": null,
   "bwwExcerpt": "The new musical import from London is built around the spectacle of that flying DeLorean; or at least, I imagine the show would be just another mediocre effort without the spectacular flying machine. The prop car, built by a company called",
-  "assignedScore": 75,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "textStatus": "garbage_cleared",
   "textWordCount": 215,
@@ -19,7 +19,25 @@
   ],
   "textQuality": "excerpt_only",
   "sourceMethod": "bww-roundup",
-  "llmScore": {
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-28T23:32:07.743Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "bwwThumb": "Up",
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 75,
+  "rescoreCompletedAt": "2026-01-28T23:32:07.743Z",
+  "garbageFullText": "The page you are looking for no longer exists. Perhaps you can return back to the homepage and see if you can find what you are looking for. Or, you can try finding it by using the search form below. ★★★★☆ Playwright Simon Stephens and tech wizards concoct the world’s first mixed reality play ★★★☆☆ Ian McKellen is among the performers appearing virtually in this one-act play by Simon Stephens ★★★☆☆ Erica Schmidt’s world premiere dramedy skewers a self-absorbed filmmaker and the people who love him ★★★☆☆ Hamish Linklater, Miriam Silverman, and Dylan Baker are among the stars of Erica Schmidt's world premiere play riffing on show business and marriage ★★★★☆ A new production of the Tony-nominated musical comedy goes to the head of the class ★★★★☆ Lesley Manville and Mark Strong have disturbingly good chemistry as theater’s most famous twice-related couple ★★★★★ Laurie Metcalf and Micah Stock star in Samuel D. Hunter's acclaimed drama, previously seen at Steppenwolf Theatre Company ★★★★★ Bess Wohl takes inspiration from her mother’s life for her clever, decade-jumping memory play ★★★★★ Joshua Henry gives what’s destined to be a Tony-winning performance in this much-needed revival ★★★★☆ Jonathan Groff gives a once-in-a-lifetime performance as the Grammy-winning “Beyond the Sea” singer Copyright © 2026 • New York Stage Review • .",
+  "garbageReason": "Error/404 page: \"The page you are looking for\"",
+  "garbageFixedAt": "2026-01-29T22:45:22.682Z",
+  "originalScore": "4/5 stars",
+  "originalScoreNormalized": 80,
+  "scoreSource": "explicit-after-garbage-invalidation",
+  "_scoreFetchedAt": "2026-01-31T23:21:50.742Z",
+  "_invalidatedLlmScore": {
     "score": 75,
     "confidence": "medium",
     "range": {
@@ -57,33 +75,18 @@
       "focusedOnPerformances": true,
       "comparesToPrevious": false,
       "mixedSignals": false
-    }
+    },
+    "invalidatedReason": "Error/404 page: \"The page you are looking for\"",
+    "invalidatedAt": "2026-02-01T04:02:00.804Z"
   },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:32:07.743Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
+  "_invalidatedEnsembleData": {
     "claudeScore": null,
     "openaiScore": 75,
     "scoreDelta": 0,
     "thumbsMatch": true,
     "expectedThumb": "Up",
     "needsReview": false,
-    "needsReviewReasons": []
-  },
-  "bwwThumb": "Up",
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 75,
-  "rescoreCompletedAt": "2026-01-28T23:32:07.743Z",
-  "garbageFullText": "The page you are looking for no longer exists. Perhaps you can return back to the homepage and see if you can find what you are looking for. Or, you can try finding it by using the search form below. ★★★★☆ Playwright Simon Stephens and tech wizards concoct the world’s first mixed reality play ★★★☆☆ Ian McKellen is among the performers appearing virtually in this one-act play by Simon Stephens ★★★☆☆ Erica Schmidt’s world premiere dramedy skewers a self-absorbed filmmaker and the people who love him ★★★☆☆ Hamish Linklater, Miriam Silverman, and Dylan Baker are among the stars of Erica Schmidt's world premiere play riffing on show business and marriage ★★★★☆ A new production of the Tony-nominated musical comedy goes to the head of the class ★★★★☆ Lesley Manville and Mark Strong have disturbingly good chemistry as theater’s most famous twice-related couple ★★★★★ Laurie Metcalf and Micah Stock star in Samuel D. Hunter's acclaimed drama, previously seen at Steppenwolf Theatre Company ★★★★★ Bess Wohl takes inspiration from her mother’s life for her clever, decade-jumping memory play ★★★★★ Joshua Henry gives what’s destined to be a Tony-winning performance in this much-needed revival ★★★★☆ Jonathan Groff gives a once-in-a-lifetime performance as the Grammy-winning “Beyond the Sea” singer Copyright © 2026 • New York Stage Review • .",
-  "garbageReason": "Error/404 page: \"The page you are looking for\"",
-  "garbageFixedAt": "2026-01-29T22:45:22.682Z",
-  "originalScore": "4/5 stars",
-  "originalScoreNormalized": 80,
-  "scoreSource": "live-fetch",
-  "_scoreFetchedAt": "2026-01-31T23:21:50.742Z"
+    "needsReviewReasons": [],
+    "invalidatedAt": "2026-02-01T04:02:00.804Z"
+  }
 }

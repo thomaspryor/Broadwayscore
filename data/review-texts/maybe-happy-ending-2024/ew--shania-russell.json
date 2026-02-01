@@ -25,7 +25,19 @@
   "scoreConfidence": "medium",
   "dtliExcerpt": "Maybe Happy Ending dazzles with its love story and astounds with its visual accomplishments. There’s nothing robotic about this production: it wears its heart on its sleeve and on charm alone, succeeds.",
   "dtliThumb": "Up",
-  "llmScore": {
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:36:43.122Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "showScoreExcerpt": null,
+  "bwwThumb": null,
+  "garbageFullText": "​ Page Not Found This is not the page you are looking for. We hope you can go about your business by using our menu or search option. By clicking “Accept All Cookies”, you agree to the storing of cookies on your device to enhance site navigation, analyze site usage, and assist in our marketing efforts. Accept All Cookies",
+  "garbageReason": "/page not found/i",
+  "garbageFixedAt": "2026-01-29T22:45:22.997Z",
+  "_invalidatedLlmScore": {
     "score": 77,
     "confidence": "high",
     "range": {
@@ -63,27 +75,20 @@
       "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
-    }
+    },
+    "invalidatedReason": "/page not found/i",
+    "invalidatedAt": "2026-02-01T04:02:00.813Z"
   },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:36:43.122Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
+  "_invalidatedEnsembleData": {
     "claudeScore": 78,
     "openaiScore": 75,
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "invalidatedAt": "2026-02-01T04:02:00.813Z"
   },
-  "showScoreExcerpt": null,
-  "bwwThumb": null,
-  "garbageFullText": "​ Page Not Found This is not the page you are looking for. We hope you can go about your business by using our menu or search option. By clicking “Accept All Cookies”, you agree to the storing of cookies on your device to enhance site navigation, analyze site usage, and assist in our marketing efforts. Accept All Cookies",
-  "garbageReason": "/page not found/i",
-  "garbageFixedAt": "2026-01-29T22:45:22.997Z"
+  "needsRescore": true,
+  "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available"
 }

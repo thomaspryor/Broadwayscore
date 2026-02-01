@@ -23,7 +23,23 @@
   "sourceMethod": "stub",
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
-  "llmScore": {
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-01-31T18:16:14.630Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 58,
+    "previousVersion": "3.0.0"
+  },
+  "dtliThumb": "Up",
+  "dtliExcerpt": "There's something a little relentless about & Juliet's dogged eagerness to entertain, but nakedly joyful too: a violent delight, flipped for the TikTok era.",
+  "showScoreExcerpt": null,
+  "bwwThumb": null,
+  "garbageFullText": "​ Page Not Found This is not the page you are looking for. We hope you can go about your business by using our menu or search option. By clicking “Accept All Cookies”, you agree to the storing of cookies on your device to enhance site navigation, analyze site usage, and assist in our marketing efforts. Accept All Cookies",
+  "garbageReason": "/page not found/i",
+  "garbageFixedAt": "2026-01-29T22:45:22.665Z",
+  "_invalidatedLlmScore": {
     "score": 79,
     "confidence": "high",
     "range": {
@@ -45,18 +61,11 @@
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
-    }
+    },
+    "invalidatedReason": "/page not found/i",
+    "invalidatedAt": "2026-02-01T04:02:00.801Z"
   },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:16:14.630Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": 58,
-    "previousVersion": "3.0.0"
-  },
-  "ensembleData": {
+  "_invalidatedEnsembleData": {
     "claudeScore": 78,
     "openaiScore": 82,
     "geminiScore": 78,
@@ -69,13 +78,9 @@
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 3 models agree: Positive",
+    "invalidatedAt": "2026-02-01T04:02:00.802Z"
   },
-  "dtliThumb": "Up",
-  "dtliExcerpt": "There's something a little relentless about & Juliet's dogged eagerness to entertain, but nakedly joyful too: a violent delight, flipped for the TikTok era.",
-  "showScoreExcerpt": null,
-  "bwwThumb": null,
-  "garbageFullText": "​ Page Not Found This is not the page you are looking for. We hope you can go about your business by using our menu or search option. By clicking “Accept All Cookies”, you agree to the storing of cookies on your device to enhance site navigation, analyze site usage, and assist in our marketing efforts. Accept All Cookies",
-  "garbageReason": "/page not found/i",
-  "garbageFixedAt": "2026-01-29T22:45:22.665Z"
+  "needsRescore": true,
+  "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available"
 }

@@ -7,7 +7,7 @@
   "publishDate": "2019-07-25",
   "isFullReview": false,
   "bwwExcerpt": "has a show that has it all: it's not just 70 songs that are rolled into one show, but also a canvas of spectacle and emotion that isn't just a floorshow but left me floored with its sublime artistry. Jesse Oxfeld, New York Stage Review : That's not to diminish any other parts of the staging or performance. Timbers, always an endlessly visually inventive director, has always had material that lived up to his specialties. ( Rocky comes to mind.) But Luhrmann's fantasia gives Timbers license to do his best work-while creating something that is a definitively theatrical experience, not just a pale imitation of the film. Melissa Rose Bernardo, New York Stage Review : No disrespect to headliners Karen Olivo (a Tony winner as Anita in 2009's West Side Story), who plays the tuberculosis-plagued performer/courtesan Satine, and Aaron Tveit (Catch Me If You Can, Next to Normal), as the lovestruck aspiring composer Christian but the real stars of this Moulin Rouge! are the artists who don't appear",
-  "assignedScore": 75,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOULIN-ROUGE-Opens-On-Broadway-See-What-The-Critics-Think-20190725",
@@ -21,9 +21,23 @@
   ],
   "textQuality": "excerpt_only",
   "sourceMethod": "bww-roundup",
-  "scoreSource": "live-fetch",
+  "scoreSource": "explicit-after-garbage-invalidation",
   "scoreConfidence": "medium",
-  "llmScore": {
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:38:43.496Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "scoreExtractedFrom": "archive",
+  "garbageFullText": "The page you are looking for no longer exists. Perhaps you can return back to the homepage and see if you can find what you are looking for. Or, you can try finding it by using the search form below. ★★★★☆ Playwright Simon Stephens and tech wizards concoct the world’s first mixed reality play ★★★☆☆ Ian McKellen is among the performers appearing virtually in this one-act play by Simon Stephens ★★★☆☆ Erica Schmidt’s world premiere dramedy skewers a self-absorbed filmmaker and the people who love him ★★★☆☆ Hamish Linklater, Miriam Silverman, and Dylan Baker are among the stars of Erica Schmidt's world premiere play riffing on show business and marriage ★★★★☆ A new production of the Tony-nominated musical comedy goes to the head of the class ★★★★☆ Lesley Manville and Mark Strong have disturbingly good chemistry as theater’s most famous twice-related couple ★★★★★ Laurie Metcalf and Micah Stock star in Samuel D. Hunter's acclaimed drama, previously seen at Steppenwolf Theatre Company ★★★★★ Bess Wohl takes inspiration from her mother’s life for her clever, decade-jumping memory play ★★★★★ Joshua Henry gives what’s destined to be a Tony-winning performance in this much-needed revival ★★★★☆ Jonathan Groff gives a once-in-a-lifetime performance as the Grammy-winning “Beyond the Sea” singer Copyright © 2026 • New York Stage Review • .",
+  "garbageReason": "Error/404 page: \"The page you are looking for\"",
+  "garbageFixedAt": "2026-01-29T22:45:23.035Z",
+  "originalScore": "4/5 stars",
+  "originalScoreNormalized": 80,
+  "_scoreFetchedAt": "2026-01-31T23:21:51.966Z",
+  "_invalidatedLlmScore": {
     "score": 75,
     "confidence": "medium",
     "range": {
@@ -61,29 +75,18 @@
       "focusedOnPerformances": true,
       "comparesToPrevious": false,
       "mixedSignals": false
-    }
+    },
+    "invalidatedReason": "Error/404 page: \"The page you are looking for\"",
+    "invalidatedAt": "2026-02-01T04:02:00.814Z"
   },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:38:43.496Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
+  "_invalidatedEnsembleData": {
     "claudeScore": null,
     "openaiScore": 75,
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
-  },
-  "scoreExtractedFrom": "archive",
-  "garbageFullText": "The page you are looking for no longer exists. Perhaps you can return back to the homepage and see if you can find what you are looking for. Or, you can try finding it by using the search form below. ★★★★☆ Playwright Simon Stephens and tech wizards concoct the world’s first mixed reality play ★★★☆☆ Ian McKellen is among the performers appearing virtually in this one-act play by Simon Stephens ★★★☆☆ Erica Schmidt’s world premiere dramedy skewers a self-absorbed filmmaker and the people who love him ★★★☆☆ Hamish Linklater, Miriam Silverman, and Dylan Baker are among the stars of Erica Schmidt's world premiere play riffing on show business and marriage ★★★★☆ A new production of the Tony-nominated musical comedy goes to the head of the class ★★★★☆ Lesley Manville and Mark Strong have disturbingly good chemistry as theater’s most famous twice-related couple ★★★★★ Laurie Metcalf and Micah Stock star in Samuel D. Hunter's acclaimed drama, previously seen at Steppenwolf Theatre Company ★★★★★ Bess Wohl takes inspiration from her mother’s life for her clever, decade-jumping memory play ★★★★★ Joshua Henry gives what’s destined to be a Tony-winning performance in this much-needed revival ★★★★☆ Jonathan Groff gives a once-in-a-lifetime performance as the Grammy-winning “Beyond the Sea” singer Copyright © 2026 • New York Stage Review • .",
-  "garbageReason": "Error/404 page: \"The page you are looking for\"",
-  "garbageFixedAt": "2026-01-29T22:45:23.035Z",
-  "originalScore": "4/5 stars",
-  "originalScoreNormalized": 80,
-  "_scoreFetchedAt": "2026-01-31T23:21:51.966Z"
+    "needsReviewReasons": [],
+    "invalidatedAt": "2026-02-01T04:02:00.814Z"
+  }
 }

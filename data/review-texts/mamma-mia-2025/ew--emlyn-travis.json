@@ -25,7 +25,20 @@
   "scoreConfidence": "low",
   "dtliExcerpt": "It's been over 25 years since Mamma! Mia first took to the stage, and it's abundantly clear that the fervor surrounding it isn't going anywhere anytime soon. And it's easy to see why: The show is pure sunshine baked into a musical and dressed in disco balls, sequins, and feathered boas. My, my, how could we resist this?",
   "dtliThumb": "Up",
-  "llmScore": {
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:35:19.742Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MAMMA-MIA-Returns-To-Broadway-20250814",
+  "bwwThumb": "Meh",
+  "showScoreExcerpt": "\"If you're an ABBA fan, read no further. Just line up at the box office for \"Mamma Mia!\" Immediately. Since you're already bonded to the material, you will undoubtedly have a wonderful time. If, however, your attachment to ABBA is only tangential or, as in my case, nonexistent, you might want to think twice about it.\"",
+  "garbageFullText": "​ Page Not Found This is not the page you are looking for. We hope you can go about your business by using our menu or search option. By clicking “Accept All Cookies”, you agree to the storing of cookies on your device to enhance site navigation, analyze site usage, and assist in our marketing efforts. Accept All Cookies",
+  "garbageReason": "/page not found/i",
+  "garbageFixedAt": "2026-01-29T22:45:22.979Z",
+  "_invalidatedLlmScore": {
     "score": 64,
     "confidence": "low",
     "range": {
@@ -63,16 +76,11 @@
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": true
-    }
+    },
+    "invalidatedReason": "/page not found/i",
+    "invalidatedAt": "2026-02-01T04:02:00.812Z"
   },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:35:19.742Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
+  "_invalidatedEnsembleData": {
     "claudeScore": 72,
     "openaiScore": 55,
     "scoreDelta": 17,
@@ -81,12 +89,9 @@
     "needsReview": true,
     "needsReviewReasons": [
       "Models disagree by 17 points (Claude: 72, OpenAI: 55)"
-    ]
+    ],
+    "invalidatedAt": "2026-02-01T04:02:00.812Z"
   },
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MAMMA-MIA-Returns-To-Broadway-20250814",
-  "bwwThumb": "Meh",
-  "showScoreExcerpt": "\"If you're an ABBA fan, read no further. Just line up at the box office for \"Mamma Mia!\" Immediately. Since you're already bonded to the material, you will undoubtedly have a wonderful time. If, however, your attachment to ABBA is only tangential or, as in my case, nonexistent, you might want to think twice about it.\"",
-  "garbageFullText": "​ Page Not Found This is not the page you are looking for. We hope you can go about your business by using our menu or search option. By clicking “Accept All Cookies”, you agree to the storing of cookies on your device to enhance site navigation, analyze site usage, and assist in our marketing efforts. Accept All Cookies",
-  "garbageReason": "/page not found/i",
-  "garbageFixedAt": "2026-01-29T22:45:22.979Z"
+  "needsRescore": true,
+  "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available"
 }

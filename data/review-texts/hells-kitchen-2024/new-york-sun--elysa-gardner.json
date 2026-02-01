@@ -24,7 +24,21 @@
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-positive",
   "scoreConfidence": "medium",
-  "llmScore": {
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:30:14.707Z",
+    "promptVersion": "3.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "dtliThumb": "Up",
+  "dtliExcerpt": "The show has nonetheless arrived at the Shubert Theatre, with its excellent principal cast (lovingly directed by Michael Greif) and its buoyant book and score intact — and, for the most part, the transition feels seamless.",
+  "showScoreExcerpt": "\"Lively choreography and powerhouse vocal performances...overcome a so-so story.\"",
+  "bwwThumb": null,
+  "garbageFullText": "Page Not FoundWe're sorry. The Sun may have set on this page, but we have plenty more to illuminate your world!SearchGo to HomepageMeanwhile read our popular articlesPopular articlesWBZWhite CBS Anchorwoman Forced Out for ‘Implicit Bias’ Fires Back at Paramount’s Move To Get Her Discrimination Lawsuit TossedBy BRADLEY CORTRIGHT|Jan 19, 2026|NationalKenta Harada/Getty ImagesSki Jumping Officials Tackle ‘Penis-Gate’ Scandal Ahead of Winter OlympicsBy JOSEPH CURL|Jan 19, 2026|ForeignVia XTop Justice Department Official Floats Ku Klux Klan Act as Possible Prosecution Vehicle for Fired CNN Journalist Don LemonBy MATTHEW RICE|Jan 19, 2026|NationalAPTrump’s Plan for Iran Strike Was Halted After Urgent Calls From Netanyahu and Gulf LeadersBy HOLLIE McKAY|Jan 19, 2026|ForeignLatest articlesWill Newton/Getty ImagesHistoric Winter Storm Blankets the South, Targets Midwest and NortheastBy JOSEPH CURL|Jan 24, 2026|NationalPhoto by Robert TrachtenbergIn Print, as in His Music, Marc Shaiman’s Storytelling Skills Stand OutBy WILL FRIEDWALD|Jan 24, 2026|CultureAbbie Parr/APFederal Officers Fatally Shoot Man at Minneapolis Amid Immigration CrackdownBy JOSEPH CURL|Jan 24, 2026|NationalAlex Wong/Getty ImagesVirginia House Probe Threatens Historic Military School’s Funding, Angering RepublicansBy JOSEPH CURL|Jan 24, 2026|Politics",
+  "garbageReason": "/page not found/i",
+  "garbageFixedAt": "2026-01-29T22:45:22.893Z",
+  "_invalidatedLlmScore": {
     "score": 74,
     "confidence": "high",
     "range": {
@@ -62,29 +76,20 @@
       "focusedOnPerformances": true,
       "comparesToPrevious": true,
       "mixedSignals": false
-    }
+    },
+    "invalidatedReason": "/page not found/i",
+    "invalidatedAt": "2026-02-01T04:02:00.810Z"
   },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:30:14.707Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
+  "_invalidatedEnsembleData": {
     "claudeScore": 72,
     "openaiScore": 75,
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "invalidatedAt": "2026-02-01T04:02:00.810Z"
   },
-  "dtliThumb": "Up",
-  "dtliExcerpt": "The show has nonetheless arrived at the Shubert Theatre, with its excellent principal cast (lovingly directed by Michael Greif) and its buoyant book and score intact — and, for the most part, the transition feels seamless.",
-  "showScoreExcerpt": "\"Lively choreography and powerhouse vocal performances...overcome a so-so story.\"",
-  "bwwThumb": null,
-  "garbageFullText": "Page Not FoundWe're sorry. The Sun may have set on this page, but we have plenty more to illuminate your world!SearchGo to HomepageMeanwhile read our popular articlesPopular articlesWBZWhite CBS Anchorwoman Forced Out for ‘Implicit Bias’ Fires Back at Paramount’s Move To Get Her Discrimination Lawsuit TossedBy BRADLEY CORTRIGHT|Jan 19, 2026|NationalKenta Harada/Getty ImagesSki Jumping Officials Tackle ‘Penis-Gate’ Scandal Ahead of Winter OlympicsBy JOSEPH CURL|Jan 19, 2026|ForeignVia XTop Justice Department Official Floats Ku Klux Klan Act as Possible Prosecution Vehicle for Fired CNN Journalist Don LemonBy MATTHEW RICE|Jan 19, 2026|NationalAPTrump’s Plan for Iran Strike Was Halted After Urgent Calls From Netanyahu and Gulf LeadersBy HOLLIE McKAY|Jan 19, 2026|ForeignLatest articlesWill Newton/Getty ImagesHistoric Winter Storm Blankets the South, Targets Midwest and NortheastBy JOSEPH CURL|Jan 24, 2026|NationalPhoto by Robert TrachtenbergIn Print, as in His Music, Marc Shaiman’s Storytelling Skills Stand OutBy WILL FRIEDWALD|Jan 24, 2026|CultureAbbie Parr/APFederal Officers Fatally Shoot Man at Minneapolis Amid Immigration CrackdownBy JOSEPH CURL|Jan 24, 2026|NationalAlex Wong/Getty ImagesVirginia House Probe Threatens Historic Military School’s Funding, Angering RepublicansBy JOSEPH CURL|Jan 24, 2026|Politics",
-  "garbageReason": "/page not found/i",
-  "garbageFixedAt": "2026-01-29T22:45:22.893Z"
+  "needsRescore": true,
+  "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available"
 }
