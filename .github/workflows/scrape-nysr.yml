@@ -1,0 +1,53 @@
+# Scrape NYSR reviews via WordPress REST API
+name: Scrape NYSR Reviews
+
+on:
+  schedule:
+    - cron: '0 10 * * 0'  # Weekly on Sundays at 10 AM UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  scrape-nysr:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Scrape NYSR reviews
+        run: |
+          echo "Scraping NYSR reviews via WordPress API..."
+          node scripts/scrape-nysr-reviews.js
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git diff --staged --quiet || git commit -m "chore: Update NYSR review data"
+
+          for i in 1 2 3 4 5; do
+            if git push origin main; then
+              echo "Push succeeded on attempt $i"
+              break
+            fi
+            echo "Push failed (attempt $i), pulling and rebasing..."
+            git pull --rebase origin main
+            sleep $((RANDOM % 5 + 2))
+          done
