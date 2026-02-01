@@ -188,7 +188,13 @@ function isNotBroadway(title) {
     lower.includes('filmed version') ||
     // Specific venue mentions that indicate non-Broadway
     lower.includes('playhouse theatre') ||
-    lower.includes('chicago shakespeare')
+    lower.includes('chicago shakespeare') ||
+    // Off-Broadway / regional venues
+    lower.includes('public theater') || lower.includes('at the public') ||
+    lower.includes('old globe') || lower.includes('la jolla') ||
+    lower.includes('hollywood bowl') || lower.includes('at the ahmanson') ||
+    // TV specials
+    (lower.includes(' live') && (lower.includes('nbc') || lower.includes('tv')))
   );
 }
 
@@ -551,7 +557,7 @@ async function scrapePlaybillVerdict() {
 
   console.log(`Shows needing Google search: ${showsNeedingSearch.length}`);
 
-  for (const show of showsNeedingSearch.slice(0, 20)) { // Limit to 20 searches
+  for (const show of showsNeedingSearch) {
     const showId = show.slug || show.id;
     const query = `site:playbill.com/article "what are the reviews" OR "the verdict" OR "critics think" "${show.title}" broadway`;
 
