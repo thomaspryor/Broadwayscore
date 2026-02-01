@@ -3784,18 +3784,6 @@
     "timestamp": "2026-01-29T18:50:09.542Z"
   },
   {
-    "reviewId": "oh-mary-2024/wsj--charles-isherwood.json",
-    "showId": "oh-mary-2024",
-    "outlet": "The Wall Street Journal",
-    "critic": "Charles Isherwood",
-    "url": "https://www.wsj.com/articles/oh-mary-review-cole-escola-mary-todd-lincoln-broadway-9a0803c1",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
-    "textLength": 928,
-    "timestamp": "2026-01-29T18:50:45.234Z"
-  },
-  {
     "reviewId": "back-to-the-future-2023/observer--david-cote.json",
     "showId": "back-to-the-future-2023",
     "outlet": "Observer",
@@ -4322,18 +4310,6 @@
     "garbageReason": "Legal/privacy page: \"©2026 Dow Jones & Company, Inc. All Rights Reserved\"",
     "textLength": 636,
     "timestamp": "2026-02-01T14:11:41.833Z"
-  },
-  {
-    "reviewId": "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
-    "showId": "once-upon-a-one-more-time-2023",
-    "outlet": "Deadline",
-    "critic": "Greg Evans",
-    "url": "https://deadline.com/2023/06/britney-spears-broadway-review-once-upon-a-one-more-time-deadline-1235421229/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
-    "textLength": 9220,
-    "timestamp": "2026-02-01T14:19:54.261Z"
   },
   {
     "reviewId": "boop-2025/ew--bob-verini.json",
@@ -5714,5 +5690,77 @@
     "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
     "textLength": 6183,
     "timestamp": "2026-02-01T23:42:25.812Z"
+  },
+  {
+    "reviewId": "oh-mary-2024/wsj--charles-isherwood.json",
+    "showId": "oh-mary-2024",
+    "outlet": "The Wall Street Journal",
+    "critic": "Charles Isherwood",
+    "url": "https://www.wsj.com/articles/oh-mary-review-cole-escola-mary-todd-lincoln-broadway-9a0803c1",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
+    "textLength": 928,
+    "timestamp": "2026-02-01T23:42:30.265Z"
+  },
+  {
+    "reviewId": "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
+    "showId": "once-upon-a-one-more-time-2023",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/2023/06/britney-spears-broadway-review-once-upon-a-one-more-time-deadline-1235421229/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
+    "textLength": 9156,
+    "timestamp": "2026-02-01T23:43:08.741Z"
+  },
+  {
+    "reviewId": "once-upon-a-one-more-time-2023/timeout--adam-feldman.json",
+    "showId": "once-upon-a-one-more-time-2023",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/once-upon-a-one-more-time-broadway-musical-review-britney-spears",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 6225,
+    "timestamp": "2026-02-01T23:43:20.051Z"
+  },
+  {
+    "reviewId": "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
+    "showId": "once-upon-a-one-more-time-2023",
+    "outlet": "Wall Street Journal",
+    "critic": "Charles Isherwood",
+    "url": "https://www.wsj.com/articles/once-upon-a-one-more-time-review-princesses-with-britney-spears-e1e61468",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
+    "textLength": 1845,
+    "timestamp": "2026-02-01T23:43:23.757Z"
+  },
+  {
+    "reviewId": "operation-mincemeat-2025/timeout--adam-feldman.json",
+    "showId": "operation-mincemeat-2025",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review#google_vignette",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 9412,
+    "timestamp": "2026-02-01T23:43:48.650Z"
+  },
+  {
+    "reviewId": "operation-mincemeat-2025/timeout--adam.json",
+    "showId": "operation-mincemeat-2025",
+    "outlet": "Time Out New York",
+    "critic": "Adam",
+    "url": "https://www.timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 9724,
+    "timestamp": "2026-02-01T23:43:52.132Z"
   }
 ]

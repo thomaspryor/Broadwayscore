@@ -59,5 +59,30 @@
     "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "stub",
-  "contentTierReason": "No text content"
+  "contentTierReason": "No text content",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 80,
+  "fullText": "The musical of Britney Spears songs hits all the right notes of zaniness, creativity and unbridled joy. Liberation sits at the foundation of our favorite pop songs, and few superstars have more to say about freedom than Britney Spears. The Mississippi-born singer held on to juggernaut status in the pop arena for over a decade with an ample discography of hits she now lends to the new Broadway musical “Once Upon a One More Time.” But the music is where all direct connections to my namesake end. The plot instead centers on a group of old-school princesses, including Cinderella (Briga Heelan), Snow White (Aisha Jackson), Little Mermaid (Lauren Zakrin) — the gals — whose lives change when the Original Fairy Godmother (Brooke Dillman) introduces “The Feminine Mystique” to their book, err sorry, scroll club. Friedan’s words tug at Cinderella’s already hankering suspicion that there is more to “happy ever after.” But the princess posse has to deal with obstacles in the form of their omnipotent male Narrator (Adam Godley) and Cinderella's Stepmother (Jennifer Simard, already gunning for her third Tony nomination with this deliciously vampy performance), who swiped the manifesto.",
+  "isFullReview": false,
+  "textWordCount": 190,
+  "archivePath": "data/archives/reviews/once-upon-a-one-more-time-2023/broadwaynews--unknown_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T23:43:05.113Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 202 (min: 300)"
+  ],
+  "duplicateTextOf": "broadwaynews--brittani-samuel.json"
 }
