@@ -5,7 +5,7 @@
   "criticName": "Jesse Green",
   "url": "https://www.theatermania.com/broadway/reviews/gutenberg-the-musical_96847.html",
   "publishDate": "October 13, 2023",
-  "fullText": "The show is a loving parody of terrible musicals, but it's also genuinely touching in its portrayal of two dreamers who refuse to give up on their vision.",
+  "fullText": "It seems we can't find what you're looking for. Perhaps searching can help.\n\n Search for:\n \n \n \n \n\n \n\n \n\n \n \n\n \n\n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n Latest Videos\n \n \n \n \n \n \n\n \n \n \n \n \n \n \n Watch Jessica Vosk and Kelli Barrett Sing a Song From the Upcoming Broadway Musical Beaches \n \n \n Broadway performances start on March 27 at the Majestic Theatre.",
   "isFullReview": false,
   "dtliExcerpt": "The show is a loving parody of terrible musicals, but it's also genuinely touching in its portrayal of two dreamers who refuse to give up on their vision.",
   "originalScore": null,
@@ -64,5 +64,43 @@
     "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "textWordCount": 42,
+  "archivePath": "data/archives/reviews/gutenberg-2023/theatermania--jesse-green_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T23:55:39.805Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 468 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 42 (min: 300)",
+    "Show title not found in text"
+  ]
 }
