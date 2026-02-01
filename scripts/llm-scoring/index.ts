@@ -176,9 +176,12 @@ function getAllReviewFiles(showId?: string): Array<{ path: string; data: ReviewT
 
   const shows = showId
     ? [showId]
-    : fs.readdirSync(REVIEW_TEXTS_DIR).filter(f =>
-        fs.statSync(path.join(REVIEW_TEXTS_DIR, f)).isDirectory()
-      );
+    : fs.readdirSync(REVIEW_TEXTS_DIR).filter(f => {
+        const fullPath = path.join(REVIEW_TEXTS_DIR, f);
+        // Skip symlinks to avoid processing the same directory twice
+        if (fs.lstatSync(fullPath).isSymbolicLink()) return false;
+        return fs.statSync(fullPath).isDirectory();
+      });
 
   for (const show of shows) {
     const showDir = path.join(REVIEW_TEXTS_DIR, show);
