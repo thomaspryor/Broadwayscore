@@ -10,7 +10,7 @@
   "assignedScore": 85,
   "source": "show-score",
   "needsFullText": true,
-  "sourceMethod": "archive",
+  "sourceMethod": "playwright",
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -69,43 +69,38 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "archivePath": "data/archives/reviews/wicked-2003/front-row-center--stanford-friedman_2026-01-26.html",
-  "textFetchedAt": "2026-01-26T23:26:51.978Z",
-  "fetchMethod": "archive",
+  "archivePath": "data/archives/reviews/wicked-2003/front-row-center--stanford-friedman_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T14:06:19.830Z",
+  "fetchMethod": "playwright",
   "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
     {
       "tier": 1,
       "method": "playwright",
-      "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "Access blocked in Bright Data response"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 1,
   "archiveOrgTimestamp": "20240525042753",
   "archiveOrgUrl": "http://web.archive.org/web/20240525042753/https://thefrontrowcenter.com/2015/09/wicked/",
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 85,
   "rescoreCompletedAt": "2026-01-29T14:31:52.153Z",
   "garbageFullText": "Posted by Stanford Friedman | Sep 21, 2015 | Reviews\n\nMichelle Lee. Photo by Joan Marcus.\n\nThere have been moments in the history of musical theater when, like a twister, the sheer talent and whirling spectacle of a production have flattened any negative criticism that stood to get in its way. Take October, 2003 for example. That was the month that Wicked opened in New York to generally dour reviews. But since then, more than 8.8 million people have found the heart, nerve and wisdom to pay a visit, resulting in the happy scene of a Broadway house filled with as many teens as adults, and making a tale, born from a 115-year-old children’s novel, one of the top five highest grossing shows of all time.\n\nThe latest incarnation of this impeccably oiled entertainment machine finds a new gear courtesy of a British import. Reprising the role she played on the West End for three years, Rachel Tucker steps in as the green-skinned Elphaba, a.k.a. the Wicked Witch of the West, and nearly blows the roof off the massive Gershwin Theatre with her opening number, “The Wizard and I.” As the song reaches its climax, Tucker raises her arms, not especially high, but in a crooked witchly fashion, showing off the kind of smart physicality she brings throughout the evening. Opposite her, as Glinda the Good, Kara Lindsay aces the delicate assignment of being both ditzy blonde and sensitive friend while showing off her clear soprano and great comic chops.\n\nAmong the show’s many happy surprises, Michele Lee turns up, in fine form, as the scheming Madame Morrible, and Arielle Jacobs charms us from a wheelchair as Nessarose, until that unfortunate incident with a falling house. Wayne Cilento’s best moment of choreography comes not from any of the numerous, raucous ensemble pieces, but from a beautifully rendered bit of quiet ballet that arrives unexpectedly during the energetic “Dancing Through Life.” And Stephen Schwartz’s classic score provides a wonderful playground for the cast to swing upon, while reminding us of this composer’s important history. Close your eyes and hear strains of Pippin in “As Long as You’re Mine.”  Find the hint of Godspell playfulness in the staccato beats of “What is this Feeling.”\n\nThe Wikipedia plot summary for Wicked is over 2100 words long, which speaks not only to the show’s dedicated fan base, but to the fact that this is a musical with a lot going on. It’s a romantic comedy with strong political undertones, an animal rights treatise with a talking goat and flying monkeys, a parable on the pitfalls of getting what you want, a warning on the limits of friendship, and an homage to a classic film. In the realm of mythology, green-hued creatures have never had a simple time of it (see Shrek, Hulk, et al.), and rare is the story, let alone the musical, that is centered on two women who are unrelated, yet have a complex emotional attachment, while still remaining starkly unique individuals. But Eugene Lee’s epic scenic design provides the framework  to tie everything together. The show is completely set within the machinations of a huge clock, the Clock of the Time Dragon to be precise. And whether or not you are up on your Oz lore, this seems, at first, incongruous with the magical proceedings on stage. Why is Glinda’s bubble-mobile so pendulum like? But then the metaphor becomes clearer. “I would do anything to turn back the clock,” laments Elphaba, and later she demands, &#8220;Wait just a clock tick!&#8221; Once a spell is cast, it cannot be undone. Life moves forward, and Wicked reveals itself to be, more than anything else, a cautionary tale about learning to live with one’s choices.\n\nWicked &#8211; Music & lyrics by Stephen Schwartz, book by Winnie Holzman, based on the novel by Gregory Maguire; Directed by Joe Mantello.\n\nWITH:  Rachel Tucker (Elphaba), Kara Lindsay (Glinda), Jonah Platt (Fiyero), Arielle Jacobs (Nessarose), Robin De Jesus (Boq), Fred Applegate (The Wizard), Michele Lee (Madame Morrible), and Timothy Britten Parker (Doctor Dillamond).\n\nChoreography by Wayne Cilento; Scene design by Eugene Lee; Costume design by Susan Hilferty; Lighting design by Kenneth Posner; Sound design by Tony Meola; Marybeth Abel, production stage manager. Produced on Broadway by Universal Stage Productions, Marc Platt, The Araca Group, Jon B. Platt, and David Stone. George Gershwin Theatre, 222 West 51st Street, (212) 586-6510, http://www.wickedthemusical.com Running Time: 2 hours, 45 minutes.\n\nWith an MLS in Library Science from Rutgers and an MFA in Creative Writing from Columbia, Stan’s published works range from the technical to the abstract. He has written cover stories and reportage for Library Journal, obituaries for The Times of London, over 200 cookbook reviews for Publishers Weekly, and dozens of TV and theater reviews for New York Press. Prior to his current career, he worked a variety of theatrical odd jobs ranging from clerk at the Drama Book Shop to a roving Renaissance festival bloodletter to Special Effects Technician for the original Off-Broadway production of Little Shop of Horrors. Follow him on Twitter: @BroadwayCrit and Show-Score.\n\nOpening Night Our Criteria Get our reviews by email\n\nJoin our mailing list to receive the latest news and updates from our reviewers.\n\nJoin our mailing list to receive the latest reviews from the Front Row Center. We will email you all of the reviews twice weekly.",
   "garbageReason": "Newsletter form: \"Join our mailing list\"",
   "garbageFixedAt": "2026-01-29T22:45:23.490Z",
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true,
+  "fullText": "Posted by Stanford Friedman | Sep 21, 2015 | Reviews Michelle Lee. Photo by Joan Marcus. There have been moments in the history of musical theater when, like a twister, the sheer talent and whirling spectacle of a production have flattened any negative criticism that stood to get in its way. Take October, 2003 for example. That was the month that Wicked opened in New York to generally dour reviews. But since then, more than 8.8 million people have found the heart, nerve and wisdom to pay a visit, resulting in the happy scene of a Broadway house filled with as many teens as adults, and making a tale, born from a 115-year-old children’s novel, one of the top five highest grossing shows of all time. The latest incarnation of this impeccably oiled entertainment machine finds a new gear courtesy of a British import. Reprising the role she played on the West End for three years, Rachel Tucker steps in as the green-skinned Elphaba, a.k.a. the Wicked Witch of the West, and nearly blows the roof off the massive Gershwin Theatre with her opening number, “The Wizard and I.” As the song reaches its climax, Tucker raises her arms, not especially high, but in a crooked witchly fashion, showing off the kind of smart physicality she brings throughout the evening. Opposite her, as Glinda the Good, Kara Lindsay aces the delicate assignment of being both ditzy blonde and sensitive friend while showing off her clear soprano and great comic chops. Among the show’s many happy surprises, Michele Lee turns up, in fine form, as the scheming Madame Morrible, and Arielle Jacobs charms us from a wheelchair as Nessarose, until that unfortunate incident with a falling house. Wayne Cilento’s best moment of choreography comes not from any of the numerous, raucous ensemble pieces, but from a beautifully rendered bit of quiet ballet that arrives unexpectedly during the energetic “Dancing Through Life.” And Stephen Schwartz’s classic score provides a wonderful playground for the cast to swing upon, while reminding us of this composer’s important history. Close your eyes and hear strains of Pippin in “As Long as You’re Mine.” Find the hint of Godspell playfulness in the staccato beats of “What is this Feeling.” The Wikipedia plot summary for Wicked is over 2100 words long, which speaks not only to the show’s dedicated fan base, but to the fact that this is a musical with a lot going on. It’s a romantic comedy with strong political undertones, an animal rights treatise with a talking goat and flying monkeys, a parable on the pitfalls of getting what you want, a warning on the limits of friendship, and an homage to a classic film. In the realm of mythology, green-hued creatures have never had a simple time of it (see Shrek, Hulk, et al.), and rare is the story, let alone the musical, that is centered on two women who are unrelated, yet have a complex emotional attachment, while still remaining starkly unique individuals. But Eugene Lee’s epic scenic design provides the framework to tie everything together. The show is completely set within the machinations of a huge clock, the Clock of the Time Dragon to be precise. And whether or not you are up on your Oz lore, this seems, at first, incongruous with the magical proceedings on stage. Why is Glinda’s bubble-mobile so pendulum like? But then the metaphor becomes clearer. “I would do anything to turn back the clock,” laments Elphaba, and later she demands, “Wait just a clock tick!” Once a spell is cast, it cannot be undone. Life moves forward, and Wicked reveals itself to be, more than anything else, a cautionary tale about learning to live with one’s choices. Wicked – Music & lyrics by Stephen Schwartz, book by Winnie Holzman, based on the novel by Gregory Maguire; Directed by Joe Mantello. WITH: Rachel Tucker (Elphaba), Kara Lindsay (Glinda), Jonah Platt (Fiyero), Arielle Jacobs (Nessarose), Robin De Jesus (Boq), Fred Applegate (The Wizard), Michele Lee (Madame Morrible), and Timothy Britten Parker (Doctor Dillamond). Choreography by Wayne Cilento; Scene design by Eugene Lee; Costume design by Susan Hilferty; Lighting design by Kenneth Posner; Sound design by Tony Meola; Marybeth Abel, production stage manager. Produced on Broadway by Universal Stage Productions, Marc Platt, The Araca Group, Jon B. Platt, and David Stone. George Gershwin Theatre, 222 West 51st Street, (212) 586-6510, http://www.wickedthemusical.com Running Time: 2 hours, 45 minutes.",
+  "isFullReview": true,
+  "textWordCount": 738,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete"
 }
