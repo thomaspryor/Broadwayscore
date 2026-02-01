@@ -1,45 +1,45 @@
 {
-  "runDate": "2026-02-01T14:10:25.466Z",
+  "runDate": "2026-02-01T14:13:27.537Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "six-2021",
+    "showFilter": "bug-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 18,
-    "failed": 123,
+    "processed": 21,
+    "failed": 121,
     "skipped": 0,
-    "successRate": "12.8%"
+    "successRate": "14.8%"
   },
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 8,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 2,
     "brightdata": 2,
     "archive": 9
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 1,
-    "tier1_5Attempts": 1,
+    "tier1Attempts": 6,
+    "tier1Success": 3,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
+    "tier2Attempts": 3,
+    "tier2Success": 2,
     "tier3Attempts": 1,
-    "tier3Success": 0,
-    "tier4Attempts": 10,
-    "tier4Success": 3,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 12,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.4,
-    "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 1,
+    "tier3Success": 1,
+    "tier4Attempts": 4,
+    "tier4Success": 1,
+    "totalFailed": 3,
+    "scrapingBeeCreditsUsed": 20,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -60,7 +60,10 @@
     "mother-play-2024/broadwaynews--brittani-samuel.json",
     "mother-play-2024/ew--allison-considine.json",
     "mother-play-2024/guardian--benjamin-lee.json",
-    "six-2021/ew--ruth-kinane.json"
+    "bug-2026/nytimes--jason-zinoman.json",
+    "bug-2026/guardian--jesse-hassenger.json",
+    "bug-2026/unknown--unknown.json",
+    "bug-2026/washpost--naveen-kumar.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -181,11 +184,9 @@
     "mother-play-2024/timeout--adam-feldman.json",
     "mother-play-2024/wsj--charles-isherwood.json",
     "mother-play-2024/wsj--charles.json",
-    "six-2021/deadline--greg-evans.json",
-    "six-2021/observer--david-cote.json",
-    "six-2021/timeout--adam-feldman.json",
-    "six-2021/amny--matt-windman.json",
-    "six-2021/front-row-center--tulis-mccall.json"
+    "bug-2026/deadline--greg-evans.json",
+    "bug-2026/timeout--adam-feldman.json",
+    "bug-2026/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -195,10 +196,14 @@
       "stereophonic-2024/ap--mark-kennedy.json",
       "mother-play-2024/ew--allison-considine.json",
       "mother-play-2024/guardian--benjamin-lee.json",
-      "six-2021/ew--ruth-kinane.json"
+      "bug-2026/guardian--jesse-hassenger.json",
+      "bug-2026/unknown--unknown.json"
     ],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "bug-2026/nytimes--jason-zinoman.json",
+      "bug-2026/washpost--naveen-kumar.json"
+    ],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
       "mj-2022/usatoday--david-rooney.json"
@@ -215,27 +220,6 @@
       "mother-play-2024/broadwaynews--brittani-samuel.json"
     ]
   },
-  "failuresByOutlet": {
-    "Observer": {
-      "count": 1,
-      "domain": "observer.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "amNewYork": {
-      "count": 1,
-      "domain": "amny.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    }
-  },
-  "urlDiscoveries": [
-    {
-      "reviewId": "six-2021/ew--ruth-kinane.json",
-      "oldUrl": "https://ew.com/theater/six-broadway-review/",
-      "newUrl": "https://ew.com/theater/theater-reviews/six-review/?srsltid=AfmBOopi0EwEBrE0elGbxEnV8hhY-8lxlz7yXFazC52W_v-S38CdruWi"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }
