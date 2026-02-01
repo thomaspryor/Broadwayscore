@@ -3844,18 +3844,6 @@
     "timestamp": "2026-01-30T16:04:09.670Z"
   },
   {
-    "reviewId": "back-to-the-future-2023/timeout--adam-feldman.json",
-    "showId": "back-to-the-future-2023",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/back-to-the-future-the-musical",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 5726,
-    "timestamp": "2026-01-30T16:05:17.556Z"
-  },
-  {
     "reviewId": "back-to-the-future-2023/wsj--charles-isherwood.json",
     "showId": "back-to-the-future-2023",
     "outlet": "The Wall Street Journal",
@@ -4682,5 +4670,65 @@
     "garbageReason": "Paywall/subscription prompt: \"paywall\"",
     "textLength": 4891,
     "timestamp": "2026-02-01T14:43:40.542Z"
+  },
+  {
+    "reviewId": "back-to-the-future-2023/timeout--adam-feldman.json",
+    "showId": "back-to-the-future-2023",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/back-to-the-future-the-musical",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 5479,
+    "timestamp": "2026-02-01T14:44:24.557Z"
+  },
+  {
+    "reviewId": "boop-2025/ew--bob-verini.json",
+    "showId": "boop-2025",
+    "outlet": "Entertainment Weekly",
+    "critic": "Bob Verini",
+    "url": "https://www.broadwaynews.com/the-broadway-review-boop-the-musical-is-a-big-broadway-joy-bomb/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (28): maybe happy ending, death becomes her, stereophonic, cabaret, sunset boulevard...",
+    "textLength": 35010,
+    "timestamp": "2026-02-01T14:48:44.291Z"
+  },
+  {
+    "reviewId": "boop-2025/timeout--adam-feldman.json",
+    "showId": "boop-2025",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/boop-the-musical-broadway-review-betty-boop-jasmine-amy-rogers",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 8158,
+    "timestamp": "2026-02-01T14:48:53.211Z"
+  },
+  {
+    "reviewId": "buena-vista-social-club-2025/timeout--adam-feldman.json",
+    "showId": "buena-vista-social-club-2025",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/buena-vista-social-club-broadway-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 6321,
+    "timestamp": "2026-02-01T14:49:02.980Z"
+  },
+  {
+    "reviewId": "bug-2026/deadline--greg-evans.json",
+    "showId": "bug-2026",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/2026/01/bug-broadway-review-carrie-coon-tracy-letts-1236680796/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
+    "textLength": 7468,
+    "timestamp": "2026-02-01T14:49:06.595Z"
   }
 ]
