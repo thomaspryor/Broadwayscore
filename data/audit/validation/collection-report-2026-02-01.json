@@ -38,8 +38,8 @@
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -198,7 +198,8 @@
     "scrapingbee": [],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "mj-2022/usatoday--david-rooney.json"
+      "mj-2022/usatoday--david-rooney.json",
+      "purlie-victorious-2023/washpost--peter-marks.json"
     ],
     "archive": [
       "harry-potter-2021/hollywood-reporter--david-rooney.json",
@@ -213,5 +214,16 @@
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "and-juliet-2022/ew--leah-greenblatt.json",
+      "oldUrl": "https://ew.com/theater/theater-reviews/and-juliet-broadway-musical-review/",
+      "newUrl": "https://ew.com/theater/theater-reviews/and-juliet-broadway-review-max-martin-musical/?srsltid=AfmBOopVqJeB93p7GBPbr1-3vPXhgQmAnWfXspdkhWRlNRlUBxdBlGhq"
+    },
+    {
+      "reviewId": "and-juliet-2022/thewrap--robert-hofler.json",
+      "oldUrl": "https://www.thewrap.com/and-juliet-broadway-review/",
+      "newUrl": "https://www.thewrap.com/juliet-broadway-review-max-martin-jukebox-musical/"
+    }
+  ]
 }
