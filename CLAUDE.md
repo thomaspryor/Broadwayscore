@@ -515,7 +515,7 @@ Documented from the Jan-Feb 2026 review corpus audit (1,825→2,022 reviews). Th
 
 ### Scoring Issues
 
-**Explicit ratings not auto-converted:** Reviews with `originalScore` values like "4/5 stars", "B+", "★★★★☆" should convert directly to numeric scores without LLM scoring. Currently, the LLM may override with a wrong score (Suffs: 4/5 stars → LLM scored 50 from paywall text).
+**Explicit ratings auto-converted (FIXED Feb 2026):** `rebuild-all-reviews.js` extracts explicit ratings (stars, letter grades, X/5, "X out of Y") from review text and `originalScore` field, overriding LLM scores. Priority 0 in the scoring hierarchy. As of Feb 2026: 217 text-extracted + 110 originalScore-parsed = 327 reviews (16.3%) using explicit ratings. The `scoreSource` field in reviews.json tracks which method produced each score.
 
 **LLM low-confidence as garbage detector:** When LLM reasoning says "website navigation content", "plot summary rather than review", or "headline and byline only", this is a reliable signal that the fullText is garbage. This signal should auto-flag reviews for re-scrape, closing the feedback loop without manual intervention.
 

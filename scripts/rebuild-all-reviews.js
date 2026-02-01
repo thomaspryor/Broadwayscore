@@ -802,6 +802,7 @@ showDirs.forEach(showId => {
         outletId: data.outletId || outletKey.toUpperCase(),
         outlet: getOutletDisplayName(data.outletId) || data.outlet || data.outletId || 'Unknown',
         assignedScore: score,
+        scoreSource: source,
         bucket: scoreToBucket(score),
         thumb: scoreToThumb(score),
         criticName: data.criticName || null,
