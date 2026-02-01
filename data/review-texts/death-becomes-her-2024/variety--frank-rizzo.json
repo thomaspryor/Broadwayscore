@@ -71,18 +71,36 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "sourceMethod": "archive",
+  "sourceMethod": "brightdata",
   "archivePath": "data/archives/reviews/death-becomes-her-2024/variety--frank-rizzo_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T21:40:35.756Z",
-  "fetchMethod": "archive",
+  "textFetchedAt": "2026-02-01T23:35:45.939Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 33 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 3,
   "archiveOrgTimestamp": "20250420231506",
   "archiveOrgUrl": "http://web.archive.org/web/20250420231506/https://variety.com/2024/legit/reviews/death-becomes-her-review-broadway-musical-1236216493/",
   "bwwExcerpt": "Everything in the musical is fantastically bigger and bolder, from Derek McLane’s goth-meets-Hollywood-excess design to Paul Tazewell’s fabulous costumes to Doug Besterman’s lush orchestrations. Charles LaPointe’s wigs are terrific, too. The tuneful score and witty lyrics are by Julia Mattison and",

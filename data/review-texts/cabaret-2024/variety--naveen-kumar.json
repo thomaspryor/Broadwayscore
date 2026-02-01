@@ -12,20 +12,38 @@
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-AT-THE-KIT-KAT-CLUB-Opens-on-Broadway-Updating-Live-20240421",
   "urlUpdated": "2026-01-23T05:33:23.043Z",
-  "sourceMethod": "archive",
+  "sourceMethod": "brightdata",
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
   "archivePath": "data/archives/reviews/cabaret-2024/variety--naveen-kumar_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T21:36:31.712Z",
-  "fetchMethod": "archive",
+  "textFetchedAt": "2026-02-01T23:33:30.219Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 33 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 3,
   "archiveOrgTimestamp": "20251028201520",
   "archiveOrgUrl": "http://web.archive.org/web/20251028201520/https://variety.com/2024/legit/reviews/cabaret-review-broadway-eddie-redmayne-1235977702/",
   "llmScore": {

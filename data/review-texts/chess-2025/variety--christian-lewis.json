@@ -70,18 +70,30 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "sourceMethod": "archive",
+  "sourceMethod": "brightdata",
   "archivePath": "data/archives/reviews/chess-2025/variety--christian-lewis_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T21:36:51.300Z",
-  "fetchMethod": "archive",
+  "textFetchedAt": "2026-02-01T23:34:16.390Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
-      "tier": 0,
-      "method": "archive-first",
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 33 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 3,
   "archiveOrgTimestamp": "20251228123339",
   "archiveOrgUrl": "http://web.archive.org/web/20251228123339/https://variety.com/2025/legit/reviews/chess-review-musical-broadway-lea-michele-1236583104/",
   "bwwExcerpt": null,

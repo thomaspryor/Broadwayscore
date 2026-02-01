@@ -74,20 +74,14 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 64,
   "archivePath": "data/archives/reviews/i-need-that-2023/variety--trish-deitch_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T22:07:39.170Z",
+  "textFetchedAt": "2026-02-01T23:37:49.360Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
-    {
-      "tier": 0,
-      "method": "archive-first",
-      "success": false,
-      "error": "No archive snapshot available"
-    },
     {
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+      "error": "Insufficient text extracted: 33 chars"
     },
     {
       "tier": 2,

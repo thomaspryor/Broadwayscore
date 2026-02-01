@@ -4204,18 +4204,6 @@
     "timestamp": "2026-02-01T04:01:44.104Z"
   },
   {
-    "reviewId": "cabaret-2024/nyt-theater--jonathan-mandell.json",
-    "showId": "cabaret-2024",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2024/04/21/cabaret-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (4): stereophonic, chicago, suffs, the wiz",
-    "textLength": 9025,
-    "timestamp": "2026-02-01T04:26:16.354Z"
-  },
-  {
     "reviewId": "stereophonic-2024/deadline--greg-evans.json",
     "showId": "stereophonic-2024",
     "outlet": "Deadline",
@@ -5632,6 +5620,18 @@
     "timestamp": "2026-02-01T20:27:32.567Z"
   },
   {
+    "reviewId": "illinoise-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "illinoise-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/04/24/illinoise-opens-on-broadway/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"members only\"",
+    "textLength": 8798,
+    "timestamp": "2026-02-01T22:07:47.275Z"
+  },
+  {
     "reviewId": "aladdin-2014/hollywood-reporter--david-rooney.json",
     "showId": "aladdin-2014",
     "outlet": "The Hollywood Reporter",
@@ -5641,7 +5641,19 @@
     "failureReason": "garbage_content",
     "garbageReason": "Legal/privacy page: \"Terms of Use\"",
     "textLength": 10047,
-    "timestamp": "2026-02-01T21:18:55.418Z"
+    "timestamp": "2026-02-01T23:32:45.487Z"
+  },
+  {
+    "reviewId": "cabaret-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "cabaret-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/04/21/cabaret-broadway-review/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): maybe happy ending, oh, mary!, wicked, hamilton, chicago...",
+    "textLength": 17410,
+    "timestamp": "2026-02-01T23:32:49.117Z"
   },
   {
     "reviewId": "chess-2025/nytg--unknown.json",
@@ -5653,18 +5665,6 @@
     "failureReason": "garbage_content",
     "garbageReason": "Multiple article boundaries detected (3)",
     "textLength": 5987,
-    "timestamp": "2026-02-01T21:36:39.078Z"
-  },
-  {
-    "reviewId": "illinoise-2024/nyt-theater--jonathan-mandell.json",
-    "showId": "illinoise-2024",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2024/04/24/illinoise-opens-on-broadway/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Paywall/subscription prompt: \"members only\"",
-    "textLength": 8798,
-    "timestamp": "2026-02-01T22:07:47.275Z"
+    "timestamp": "2026-02-01T23:33:38.346Z"
   }
 ]
