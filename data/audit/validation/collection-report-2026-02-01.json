@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-02-01T15:09:27.019Z",
+  "runDate": "2026-02-01T15:12:27.159Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "prayer-for-the-french-republic-2024",
+    "showFilter": "aladdin-2014",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,33 +12,33 @@
   },
   "summary": {
     "processed": 44,
-    "failed": 162,
+    "failed": 170,
     "skipped": 0,
-    "successRate": "21.4%"
+    "successRate": "20.6%"
   },
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 7,
     "browserbase": 0,
-    "scrapingbee": 5,
+    "scrapingbee": 4,
     "brightdata": 2,
-    "archive": 38
+    "archive": 37
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 1,
-    "tier1_5Attempts": 0,
+    "tier1Attempts": 8,
+    "tier1Success": 2,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 5,
     "tier2Success": 1,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier4Attempts": 2,
-    "tier4Success": 1,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 10,
-    "browserbaseSessionsUsed": 0,
+    "tier3Attempts": 4,
+    "tier3Success": 1,
+    "tier4Attempts": 16,
+    "tier4Success": 4,
+    "totalFailed": 10,
+    "scrapingBeeCreditsUsed": 21,
+    "browserbaseSessionsUsed": 1,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
@@ -86,7 +86,7 @@
     "the-lion-king-1997/vulture--john-simon.json",
     "the-outsiders/new-york-magazinevulture-sara-holdren--sara-holdren.json",
     "the-outsiders/variety-naveen-kumar--naveen-kumar.json",
-    "oedipus-2025/washpost--naveen-kumar.json"
+    "aladdin-2014/ap--mark-kennedy.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -249,9 +249,16 @@
     "stereophonic/variety-frank-rizzo--frank-rizzo.json",
     "suffs/vulture-sara-holdren--sara-holdren.json",
     "the-great-gatsby/new-york-magazinevulture-sara-holdren--unknown.json",
-    "prayer-for-the-french-republic-2024/deadline--greg-evans.json",
-    "prayer-for-the-french-republic-2024/timeout--adam-feldman.json",
-    "prayer-for-the-french-republic-2024/wsj--charles-isherwood.json"
+    "aladdin-2014/hollywood-reporter--david-rooney.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "aladdin-2014/newsday--linda-winer.json",
+    "aladdin-2014/timeout--adam-feldman.json",
+    "aladdin-2014/wsj--terry-teachout.json",
+    "aladdin-2014/broadway-voice--kristen-balzano.json",
+    "aladdin-2014/catholic-transcript--bernard-carragher.json",
+    "aladdin-2014/theater-pizzazz--sandi-durell.json",
+    "aladdin-2014/thestage--mark-shenton.json",
+    "aladdin-2014/thisbroadsway--sandra-mcfarland.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -260,15 +267,15 @@
       "appropriate-2023/ew--allison-considine.json",
       "appropriate-2023/observer--david-cote.json",
       "back-to-the-future-2023/ew--dalton-ross.json",
-      "book-of-mormon-2011/timeout--david-cote.json"
+      "book-of-mormon-2011/timeout--david-cote.json",
+      "aladdin-2014/ap--mark-kennedy.json"
     ],
     "browserbase": [],
     "scrapingbee": [
       "grey-house-2023/newyorker--dan-stahl.json",
       "here-lies-love-2023/nytimes--ben-brantley.json",
       "book-of-mormon-2011/newsday--linda-winer.json",
-      "stereophonic/variety-frank-rizzo--frank-rizzo.json",
-      "oedipus-2025/washpost--naveen-kumar.json"
+      "stereophonic/variety-frank-rizzo--frank-rizzo.json"
     ],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
@@ -311,10 +318,37 @@
       "the-great-gatsby/variety-christian-lewis--christian-lewis.json",
       "the-lion-king-1997/vulture--john-simon.json",
       "the-outsiders/new-york-magazinevulture-sara-holdren--sara-holdren.json",
-      "the-outsiders/variety-naveen-kumar--naveen-kumar.json",
-      "back-to-the-future-2023/nysr--elysa-gardner.json"
+      "the-outsiders/variety-naveen-kumar--naveen-kumar.json"
     ]
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "failuresByOutlet": {
+    "New Jersey Newsroom": {
+      "count": 1,
+      "domain": "newjerseynewsroom.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Newsday": {
+      "count": 1,
+      "domain": "newsday.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Broadway Voice": {
+      "count": 1,
+      "domain": "bwayvoice.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "aladdin-2014/thestage--mark-shenton.json",
+      "oldUrl": "http://www.thestage.co.uk/opinion/shenton/2014/04/live-broadway-disneys-20-year-run-encore-happy-fella/",
+      "newUrl": "https://www.thestage.co.uk/reviews/aladdin"
+    }
+  ]
 }
