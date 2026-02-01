@@ -1,10 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-02-01T20:16:01.054Z",
-    "totalFlagged": 60,
+    "generatedAt": "2026-02-01T20:37:47.053Z",
+    "totalFlagged": 46,
     "reasons": {
-      "thumb-override-large-delta": 36,
-      "both-thumbs-disagree-with-llm": 24
+      "single-thumb-override-low-conf": 7,
+      "both-thumbs-disagree-with-llm": 24,
+      "both-thumbs-override-llm": 15
     }
   },
   "reviews": [
@@ -12,66 +13,14 @@
       "showId": "aladdin-2014",
       "outletId": "newsday",
       "criticName": "Linda Winer",
-      "reason": "thumb-override-large-delta",
+      "reason": "single-thumb-override-low-conf",
       "detail": "LLM=50 (low), thumb=80, delta=30",
       "llmScore": 50,
       "llmBucket": "Mixed",
       "llmConfidence": "low",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "flaggedAt": "2026-02-01T20:16:00.852Z"
-    },
-    {
-      "showId": "back-to-the-future-2023",
-      "outletId": "nypost",
-      "criticName": "Johnny Oleksinki",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=35 (low), thumb=60, delta=25",
-      "llmScore": 35,
-      "llmBucket": "Negative",
-      "llmConfidence": "low",
-      "dtliThumb": null,
-      "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.864Z"
-    },
-    {
-      "showId": "back-to-the-future-2023",
-      "outletId": "thewrap",
-      "criticName": "Robert Hofler",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=25 (high), thumb=60, delta=35",
-      "llmScore": 25,
-      "llmBucket": "Pan",
-      "llmConfidence": "high",
-      "dtliThumb": null,
-      "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.865Z"
-    },
-    {
-      "showId": "boop-2025",
-      "outletId": "nytimes",
-      "criticName": "Jesse Green",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=38 (high), thumb=60, delta=22",
-      "llmScore": 38,
-      "llmBucket": "Negative",
-      "llmConfidence": "high",
-      "dtliThumb": "Meh",
-      "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.870Z"
-    },
-    {
-      "showId": "boop-2025",
-      "outletId": "variety",
-      "criticName": "Frank Rizzo",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=38 (high), thumb=60, delta=22",
-      "llmScore": 38,
-      "llmBucket": "Negative",
-      "llmConfidence": "high",
-      "dtliThumb": "Meh",
-      "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.871Z"
+      "flaggedAt": "2026-02-01T20:37:46.864Z"
     },
     {
       "showId": "cabaret-2024",
@@ -84,20 +33,33 @@
       "llmConfidence": "medium",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.879Z"
+      "flaggedAt": "2026-02-01T20:37:46.890Z"
     },
     {
-      "showId": "chicago-1996",
-      "outletId": "nytimes",
-      "criticName": "Ben Brantley",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=50 (medium), thumb=80, delta=30",
+      "showId": "days-of-wine-and-roses-2024",
+      "outletId": "amny",
+      "criticName": "Matt Windman",
+      "reason": "both-thumbs-override-llm",
+      "detail": "LLM=62 (Mixed), both thumbs=Up (Positive), delta=18",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-01T20:37:46.895Z"
+    },
+    {
+      "showId": "doubt-2024",
+      "outletId": "nydailynews",
+      "criticName": "Chris",
+      "reason": "single-thumb-override-low-conf",
+      "detail": "LLM=50 (low), thumb=80, delta=30",
       "llmScore": 50,
       "llmBucket": "Mixed",
-      "llmConfidence": "medium",
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "flaggedAt": "2026-02-01T20:16:00.883Z"
+      "llmConfidence": "low",
+      "dtliThumb": "UP",
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-01T20:37:46.899Z"
     },
     {
       "showId": "grey-house-2023",
@@ -110,7 +72,7 @@
       "llmConfidence": "medium",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.890Z"
+      "flaggedAt": "2026-02-01T20:37:46.901Z"
     },
     {
       "showId": "gutenberg-2023",
@@ -123,7 +85,20 @@
       "llmConfidence": "high",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.894Z"
+      "flaggedAt": "2026-02-01T20:37:46.904Z"
+    },
+    {
+      "showId": "harmony-2023",
+      "outletId": "amny",
+      "criticName": "Matt Windman",
+      "reason": "both-thumbs-override-llm",
+      "detail": "LLM=62 (Mixed), both thumbs=Up (Positive), delta=18",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-01T20:37:46.914Z"
     },
     {
       "showId": "harmony-2023",
@@ -136,20 +111,7 @@
       "llmConfidence": "high",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.906Z"
-    },
-    {
-      "showId": "harmony-2023",
-      "outletId": "nytimes",
-      "criticName": "Jesse Green",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=58 (medium), thumb=35, delta=23",
-      "llmScore": 58,
-      "llmBucket": "Mixed",
-      "llmConfidence": "medium",
-      "dtliThumb": "Down",
-      "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.906Z"
+      "flaggedAt": "2026-02-01T20:37:46.915Z"
     },
     {
       "showId": "harmony-2023",
@@ -162,33 +124,20 @@
       "llmConfidence": "high",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.907Z"
+      "flaggedAt": "2026-02-01T20:37:46.915Z"
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
       "outletId": "nytg",
       "criticName": "Gillian Russo",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=50 (low), thumb=80, delta=30",
+      "reason": "both-thumbs-override-llm",
+      "detail": "LLM=50 (Negative), both thumbs=Up (Positive), delta=30",
       "llmScore": 50,
       "llmBucket": "Mixed",
       "llmConfidence": "low",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "flaggedAt": "2026-02-01T20:16:00.915Z"
-    },
-    {
-      "showId": "heart-of-rock-and-roll-2024",
-      "outletId": "theatrely",
-      "criticName": "Joey Sims",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=25 (low), thumb=60, delta=35",
-      "llmScore": 25,
-      "llmBucket": "Pan",
-      "llmConfidence": "low",
-      "dtliThumb": "Meh",
-      "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.916Z"
+      "flaggedAt": "2026-02-01T20:37:46.923Z"
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
@@ -201,7 +150,7 @@
       "llmConfidence": "medium",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.916Z"
+      "flaggedAt": "2026-02-01T20:37:46.924Z"
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
@@ -214,20 +163,20 @@
       "llmConfidence": "medium",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.916Z"
+      "flaggedAt": "2026-02-01T20:37:46.924Z"
     },
     {
       "showId": "hells-kitchen-2024",
       "outletId": "broadwaynews",
       "criticName": "Brittani Samuel",
-      "reason": "thumb-override-large-delta",
+      "reason": "single-thumb-override-low-conf",
       "detail": "LLM=40 (low), thumb=80, delta=40",
       "llmScore": 40,
       "llmBucket": "Negative",
       "llmConfidence": "low",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "flaggedAt": "2026-02-01T20:16:00.917Z"
+      "flaggedAt": "2026-02-01T20:37:46.925Z"
     },
     {
       "showId": "hells-kitchen-2024",
@@ -240,33 +189,20 @@
       "llmConfidence": "high",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.920Z"
+      "flaggedAt": "2026-02-01T20:37:46.928Z"
     },
     {
       "showId": "how-to-dance-in-ohio-2023",
-      "outletId": "nypost",
-      "criticName": "Johnny Oleksinski",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=25 (low), thumb=60, delta=35",
-      "llmScore": 25,
-      "llmBucket": "Pan",
+      "outletId": "nytg",
+      "criticName": "Joe Dziemianowicz",
+      "reason": "both-thumbs-override-llm",
+      "detail": "LLM=63 (Mixed), both thumbs=Up (Positive), delta=17",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
       "llmConfidence": "low",
-      "dtliThumb": "Meh",
-      "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.923Z"
-    },
-    {
-      "showId": "i-need-that-2023",
-      "outletId": "dailybeast",
-      "criticName": "Tim Teeman",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=30 (low), thumb=60, delta=30",
-      "llmScore": 30,
-      "llmBucket": "Pan",
-      "llmConfidence": "low",
-      "dtliThumb": "Meh",
-      "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.925Z"
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-01T20:37:46.931Z"
     },
     {
       "showId": "i-need-that-2023",
@@ -279,46 +215,33 @@
       "llmConfidence": "medium",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.925Z"
+      "flaggedAt": "2026-02-01T20:37:46.932Z"
     },
     {
-      "showId": "i-need-that-2023",
-      "outletId": "theatrely",
-      "criticName": "Juan A. Ramirez",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=25 (low), thumb=60, delta=35",
-      "llmScore": 25,
-      "llmBucket": "Pan",
+      "showId": "illinoise-2024",
+      "outletId": "chicagotribune",
+      "criticName": "Chris Jones",
+      "reason": "both-thumbs-override-llm",
+      "detail": "LLM=69 (Mixed), both thumbs=Up (Positive), delta=11",
+      "llmScore": 69,
+      "llmBucket": "Mixed",
       "llmConfidence": "low",
-      "dtliThumb": "Meh",
-      "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.926Z"
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-01T20:37:46.934Z"
     },
     {
-      "showId": "just-in-time-2025",
-      "outletId": "broadwaynews",
-      "criticName": "Brittani Samuel",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=25 (low), thumb=60, delta=35",
-      "llmScore": 25,
-      "llmBucket": "Pan",
+      "showId": "jajas-african-hair-braiding-2023",
+      "outletId": "variety",
+      "criticName": "Aramide Timubu",
+      "reason": "both-thumbs-override-llm",
+      "detail": "LLM=60 (Mixed), both thumbs=Up (Positive), delta=20",
+      "llmScore": 60,
+      "llmBucket": "Mixed",
       "llmConfidence": "low",
-      "dtliThumb": "Meh",
-      "bwwThumb": null,
-      "flaggedAt": "2026-02-01T20:16:00.933Z"
-    },
-    {
-      "showId": "lempicka-2024",
-      "outletId": "nytimes",
-      "criticName": "Jesse Green",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=35 (low), thumb=60, delta=25",
-      "llmScore": 35,
-      "llmBucket": "Negative",
-      "llmConfidence": "low",
-      "dtliThumb": "Meh",
-      "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.938Z"
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-01T20:37:46.939Z"
     },
     {
       "showId": "lempicka-2024",
@@ -331,7 +254,7 @@
       "llmConfidence": "high",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.938Z"
+      "flaggedAt": "2026-02-01T20:37:46.945Z"
     },
     {
       "showId": "lempicka-2024",
@@ -344,59 +267,72 @@
       "llmConfidence": "medium",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.939Z"
+      "flaggedAt": "2026-02-01T20:37:46.945Z"
     },
     {
       "showId": "mamma-mia-2025",
       "outletId": "timeout",
       "criticName": "Adam Feldman",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=58 (medium), thumb=80, delta=22",
+      "reason": "both-thumbs-override-llm",
+      "detail": "LLM=58 (Mixed), both thumbs=Up (Positive), delta=22",
       "llmScore": 58,
       "llmBucket": "Mixed",
       "llmConfidence": "medium",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "flaggedAt": "2026-02-01T20:16:00.944Z"
+      "flaggedAt": "2026-02-01T20:37:46.949Z"
+    },
+    {
+      "showId": "marjorie-prime-2025",
+      "outletId": "nydailynews",
+      "criticName": "Chris Jones",
+      "reason": "both-thumbs-override-llm",
+      "detail": "LLM=68 (Mixed), both thumbs=Up (Positive), delta=12",
+      "llmScore": 68,
+      "llmBucket": "Mixed",
+      "llmConfidence": "low",
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-01T20:37:46.951Z"
     },
     {
       "showId": "mj-2022",
       "outletId": "hollywood-reporter",
       "criticName": "Lovia Gyarkye",
-      "reason": "thumb-override-large-delta",
+      "reason": "single-thumb-override-low-conf",
       "detail": "LLM=25 (low), thumb=80, delta=55",
       "llmScore": 25,
       "llmBucket": "Pan",
       "llmConfidence": "low",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "flaggedAt": "2026-02-01T20:16:00.955Z"
+      "flaggedAt": "2026-02-01T20:37:46.961Z"
     },
     {
       "showId": "mother-play-2024",
       "outletId": "theatermania",
       "criticName": "Rachel Graham",
-      "reason": "thumb-override-large-delta",
+      "reason": "single-thumb-override-low-conf",
       "detail": "LLM=50 (low), thumb=80, delta=30",
       "llmScore": 50,
       "llmBucket": "Mixed",
       "llmConfidence": "low",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "flaggedAt": "2026-02-01T20:16:00.958Z"
+      "flaggedAt": "2026-02-01T20:37:46.964Z"
     },
     {
       "showId": "mother-play-2024",
       "outletId": "variety",
       "criticName": "Aramide Timubu",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=45 (low), thumb=80, delta=35",
+      "reason": "both-thumbs-override-llm",
+      "detail": "LLM=45 (Negative), both thumbs=Up (Positive), delta=35",
       "llmScore": 45,
       "llmBucket": "Negative",
       "llmConfidence": "low",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "flaggedAt": "2026-02-01T20:16:00.958Z"
+      "flaggedAt": "2026-02-01T20:37:46.964Z"
     },
     {
       "showId": "oedipus-2025",
@@ -409,7 +345,7 @@
       "llmConfidence": "high",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.963Z"
+      "flaggedAt": "2026-02-01T20:37:46.967Z"
     },
     {
       "showId": "operation-mincemeat-2025",
@@ -422,46 +358,33 @@
       "llmConfidence": "medium",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.972Z"
+      "flaggedAt": "2026-02-01T20:37:46.976Z"
     },
     {
-      "showId": "our-town-2024",
-      "outletId": "deadline",
-      "criticName": "Greg Evans",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=57 (high), thumb=80, delta=23",
-      "llmScore": 57,
+      "showId": "prayer-for-the-french-republic-2024",
+      "outletId": "amny",
+      "criticName": "Matt Windman",
+      "reason": "both-thumbs-override-llm",
+      "detail": "LLM=62 (Mixed), both thumbs=Up (Positive), delta=18",
+      "llmScore": 62,
       "llmBucket": "Mixed",
-      "llmConfidence": "high",
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "flaggedAt": "2026-02-01T20:16:00.973Z"
-    },
-    {
-      "showId": "patriots-2024",
-      "outletId": "thewrap",
-      "criticName": "Robert Hofler",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=25 (low), thumb=60, delta=35",
-      "llmScore": 25,
-      "llmBucket": "Pan",
       "llmConfidence": "low",
-      "dtliThumb": "Meh",
-      "bwwThumb": null,
-      "flaggedAt": "2026-02-01T20:16:00.977Z"
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-01T20:37:46.981Z"
     },
     {
       "showId": "purlie-victorious-2023",
       "outletId": "variety",
       "criticName": "Aramide Timubu",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=50 (low), thumb=80, delta=30",
+      "reason": "both-thumbs-override-llm",
+      "detail": "LLM=50 (Negative), both thumbs=Up (Positive), delta=30",
       "llmScore": 50,
       "llmBucket": "Mixed",
       "llmConfidence": "low",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "flaggedAt": "2026-02-01T20:16:00.983Z"
+      "flaggedAt": "2026-02-01T20:37:46.985Z"
     },
     {
       "showId": "queen-versailles-2025",
@@ -474,7 +397,7 @@
       "llmConfidence": "high",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.983Z"
+      "flaggedAt": "2026-02-01T20:37:46.985Z"
     },
     {
       "showId": "queen-versailles-2025",
@@ -487,20 +410,7 @@
       "llmConfidence": "high",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.985Z"
-    },
-    {
-      "showId": "queen-versailles-2025",
-      "outletId": "one-minute-critic",
-      "criticName": "Matthew Wexler",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=25 (low), thumb=60, delta=35",
-      "llmScore": 25,
-      "llmBucket": "Pan",
-      "llmConfidence": "low",
-      "dtliThumb": null,
-      "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.985Z"
+      "flaggedAt": "2026-02-01T20:37:46.987Z"
     },
     {
       "showId": "queen-versailles-2025",
@@ -513,7 +423,7 @@
       "llmConfidence": "high",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.985Z"
+      "flaggedAt": "2026-02-01T20:37:46.987Z"
     },
     {
       "showId": "queen-versailles-2025",
@@ -526,33 +436,20 @@
       "llmConfidence": "medium",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.986Z"
-    },
-    {
-      "showId": "queen-versailles-2025",
-      "outletId": "vulture",
-      "criticName": "Sara Holdren and Jesse David Fox",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=25 (high), thumb=60, delta=35",
-      "llmScore": 25,
-      "llmBucket": "Pan",
-      "llmConfidence": "high",
-      "dtliThumb": null,
-      "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.986Z"
+      "flaggedAt": "2026-02-01T20:37:46.988Z"
     },
     {
       "showId": "real-women-have-curves-2025",
-      "outletId": "deadline",
-      "criticName": "Greg Evans",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=37 (high), thumb=60, delta=23",
-      "llmScore": 37,
-      "llmBucket": "Negative",
+      "outletId": "thewrap",
+      "criticName": "Robert Hofler",
+      "reason": "both-thumbs-override-llm",
+      "detail": "LLM=68 (Mixed), both thumbs=Up (Positive), delta=12",
+      "llmScore": 68,
+      "llmBucket": "Mixed",
       "llmConfidence": "high",
-      "dtliThumb": "Meh",
-      "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:00.990Z"
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-01T20:37:46.993Z"
     },
     {
       "showId": "the-cottage-2023",
@@ -565,46 +462,7 @@
       "llmConfidence": "high",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:01.011Z"
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "outletId": "ew",
-      "criticName": "Emlyn Travis",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=28 (low), thumb=60, delta=32",
-      "llmScore": 28,
-      "llmBucket": "Pan",
-      "llmConfidence": "low",
-      "dtliThumb": "Meh",
-      "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:01.013Z"
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "outletId": "vulture",
-      "criticName": "John Simon",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=85 (low), thumb=60, delta=25",
-      "llmScore": 85,
-      "llmBucket": "Positive",
-      "llmConfidence": "low",
-      "dtliThumb": "Meh",
-      "bwwThumb": null,
-      "flaggedAt": "2026-02-01T20:16:01.017Z"
-    },
-    {
-      "showId": "the-notebook-2024",
-      "outletId": "deadline",
-      "criticName": "Greg Evans",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=32 (medium), thumb=60, delta=28",
-      "llmScore": 32,
-      "llmBucket": "Pan",
-      "llmConfidence": "medium",
-      "dtliThumb": "Meh",
-      "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:01.017Z"
+      "flaggedAt": "2026-02-01T20:37:47.009Z"
     },
     {
       "showId": "the-notebook-2024",
@@ -617,20 +475,7 @@
       "llmConfidence": "medium",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:01.019Z"
-    },
-    {
-      "showId": "the-notebook-2024",
-      "outletId": "variety",
-      "criticName": "Frank Rizzo",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=38 (high), thumb=60, delta=22",
-      "llmScore": 38,
-      "llmBucket": "Negative",
-      "llmConfidence": "high",
-      "dtliThumb": null,
-      "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:01.020Z"
+      "flaggedAt": "2026-02-01T20:37:47.015Z"
     },
     {
       "showId": "the-notebook-2024",
@@ -643,7 +488,7 @@
       "llmConfidence": "medium",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:01.020Z"
+      "flaggedAt": "2026-02-01T20:37:47.016Z"
     },
     {
       "showId": "the-roommate-2024",
@@ -656,20 +501,7 @@
       "llmConfidence": "high",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:01.024Z"
-    },
-    {
-      "showId": "the-roommate-2024",
-      "outletId": "nyt-theater",
-      "criticName": "Jonathan Mandell",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=55 (low), thumb=80, delta=25",
-      "llmScore": 55,
-      "llmBucket": "Mixed",
-      "llmConfidence": "low",
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "flaggedAt": "2026-02-01T20:16:01.025Z"
+      "flaggedAt": "2026-02-01T20:37:47.020Z"
     },
     {
       "showId": "the-shark-is-broken-2023",
@@ -682,7 +514,7 @@
       "llmConfidence": "high",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:01.027Z"
+      "flaggedAt": "2026-02-01T20:37:47.023Z"
     },
     {
       "showId": "the-shark-is-broken-2023",
@@ -695,7 +527,7 @@
       "llmConfidence": "high",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:01.029Z"
+      "flaggedAt": "2026-02-01T20:37:47.024Z"
     },
     {
       "showId": "the-shark-is-broken-2023",
@@ -708,85 +540,72 @@
       "llmConfidence": "high",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:01.029Z"
-    },
-    {
-      "showId": "the-whos-tommy-2024",
-      "outletId": "nyt-theater",
-      "criticName": "Jonathan Mandell",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=58 (medium), thumb=80, delta=22",
-      "llmScore": 58,
-      "llmBucket": "Mixed",
-      "llmConfidence": "medium",
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "flaggedAt": "2026-02-01T20:16:01.030Z"
+      "flaggedAt": "2026-02-01T20:37:47.024Z"
     },
     {
       "showId": "the-whos-tommy-2024",
       "outletId": "timeout",
       "criticName": "Adam Feldman",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=59 (low), thumb=80, delta=21",
+      "reason": "both-thumbs-override-llm",
+      "detail": "LLM=59 (Mixed), both thumbs=Up (Positive), delta=21",
       "llmScore": 59,
       "llmBucket": "Mixed",
       "llmConfidence": "low",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "flaggedAt": "2026-02-01T20:16:01.031Z"
+      "flaggedAt": "2026-02-01T20:37:47.026Z"
     },
     {
       "showId": "the-whos-tommy-2024",
       "outletId": "washpost",
       "criticName": "Elisabeth Vincentelli",
-      "reason": "thumb-override-large-delta",
+      "reason": "single-thumb-override-low-conf",
       "detail": "LLM=50 (low), thumb=80, delta=30",
       "llmScore": 50,
       "llmBucket": "Mixed",
       "llmConfidence": "low",
       "dtliThumb": null,
       "bwwThumb": "Up",
-      "flaggedAt": "2026-02-01T20:16:01.032Z"
-    },
-    {
-      "showId": "the-wiz-2024",
-      "outletId": "cititour",
-      "criticName": "Brian Scott Lipton",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=38 (medium), thumb=60, delta=22",
-      "llmScore": 38,
-      "llmBucket": "Negative",
-      "llmConfidence": "medium",
-      "dtliThumb": null,
-      "bwwThumb": "Meh",
-      "flaggedAt": "2026-02-01T20:16:01.033Z"
+      "flaggedAt": "2026-02-01T20:37:47.027Z"
     },
     {
       "showId": "the-wiz-2024",
       "outletId": "ew",
       "criticName": "Lester Fabian Brathwaite",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=42 (low), thumb=80, delta=38",
+      "reason": "both-thumbs-override-llm",
+      "detail": "LLM=42 (Negative), both thumbs=Up (Positive), delta=38",
       "llmScore": 42,
       "llmBucket": "Negative",
       "llmConfidence": "low",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "flaggedAt": "2026-02-01T20:16:01.033Z"
+      "flaggedAt": "2026-02-01T20:37:47.028Z"
     },
     {
-      "showId": "water-for-elephants-2024",
-      "outletId": "wsj",
-      "criticName": "Charles Isherwood",
-      "reason": "thumb-override-large-delta",
-      "detail": "LLM=38 (medium), thumb=60, delta=22",
-      "llmScore": 38,
-      "llmBucket": "Negative",
-      "llmConfidence": "medium",
+      "showId": "the-wiz-2024",
+      "outletId": "thewrap",
+      "criticName": "Robert Hofler",
+      "reason": "both-thumbs-override-llm",
+      "detail": "LLM=85 (Rave), both thumbs=Up (Positive), delta=5",
+      "llmScore": 85,
+      "llmBucket": "Positive",
+      "llmConfidence": "low",
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "flaggedAt": "2026-02-01T20:37:47.029Z"
+    },
+    {
+      "showId": "the-wiz-2024",
+      "outletId": "variety",
+      "criticName": "Naveen Kumar",
+      "reason": "single-thumb-override-low-conf",
+      "detail": "LLM=65 (low), thumb=35, delta=30",
+      "llmScore": 65,
+      "llmBucket": "Mixed",
+      "llmConfidence": "low",
       "dtliThumb": "Meh",
       "bwwThumb": "Down",
-      "flaggedAt": "2026-02-01T20:16:01.042Z"
+      "flaggedAt": "2026-02-01T20:37:47.030Z"
     }
   ]
 }

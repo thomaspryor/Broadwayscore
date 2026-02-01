@@ -4444,18 +4444,6 @@
     "timestamp": "2026-02-01T15:17:15.860Z"
   },
   {
-    "reviewId": "illinoise-2024/nyt-theater--jonathan-mandell.json",
-    "showId": "illinoise-2024",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2024/04/24/illinoise-opens-on-broadway/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Paywall/subscription prompt: \"members only\"",
-    "textLength": 8837,
-    "timestamp": "2026-02-01T15:26:51.986Z"
-  },
-  {
     "reviewId": "oh-mary/hollywood-reporter-david-rooney--david-rooney.json",
     "showId": "oh-mary",
     "outlet": "Hollywood Reporter (David Rooney)",
@@ -5654,5 +5642,29 @@
     "garbageReason": "Multiple article boundaries detected (3)",
     "textLength": 5987,
     "timestamp": "2026-02-01T19:55:17.421Z"
+  },
+  {
+    "reviewId": "illinoise/nyt-theater--jonathan-mandell.json",
+    "showId": "illinoise",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/04/24/illinoise-opens-on-broadway/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"members only\"",
+    "textLength": 8837,
+    "timestamp": "2026-02-01T20:27:32.567Z"
+  },
+  {
+    "reviewId": "illinoise-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "illinoise-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/04/24/illinoise-opens-on-broadway/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"members only\"",
+    "textLength": 8837,
+    "timestamp": "2026-02-01T20:33:55.044Z"
   }
 ]
