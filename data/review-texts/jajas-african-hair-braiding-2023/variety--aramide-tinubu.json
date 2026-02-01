@@ -75,35 +75,17 @@
   "rescoreReason": "low-conf: prompt=3.0.0, delta=35, upgrading to V5 + 3 models",
   "previousLlmScore": 63,
   "archivePath": "data/archives/reviews/jajas-african-hair-braiding-2023/variety--aramide-timubu_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T22:15:14.500Z",
-  "fetchMethod": "brightdata",
+  "textFetchedAt": "2026-02-01T23:37:55.211Z",
+  "fetchMethod": "archive",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
-      "success": false,
-      "error": "No archive snapshot available"
-    },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "page.waitForTimeout: Target page, context or browser has been closed"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 3,
-  "sourceMethod": "brightdata",
+  "fetchTier": 4,
+  "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251022120243",
   "archiveOrgUrl": "http://web.archive.org/web/20251022120243/https://variety.com/2023/legit/reviews/jajas-african-hair-braiding-review-broadway-1235740710/",
   "rescoreCompletedAt": "2026-02-01T14:55:33.735Z",

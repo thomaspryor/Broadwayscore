@@ -67,7 +67,7 @@
     }
   },
   "ensembleData": null,
-  "sourceMethod": "archive",
+  "sourceMethod": "brightdata",
   "scoreSource": "sentiment-positive",
   "scoreConfidence": "medium",
   "bwwExcerpt": "It can be challenging to deliver something fresh and unique to the memory play genre. However, in writer Bess Wohl‘s new Broadway show, “Liberation,” she manages to do just that.",
@@ -87,16 +87,28 @@
   "isFullReview": false,
   "textWordCount": 94,
   "archivePath": "data/archives/reviews/liberation-2025/variety--aramide-tinubu_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T22:20:35.281Z",
-  "fetchMethod": "archive",
+  "textFetchedAt": "2026-02-01T23:41:32.378Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
-      "tier": 0,
-      "method": "archive-first",
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 33 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 3,
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "partial",
