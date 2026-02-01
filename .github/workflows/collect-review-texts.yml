@@ -86,6 +86,12 @@ jobs:
           mkdir -p data/audit/validation
           mkdir -p data/collection-state
 
+      - name: Clear progress state for parallel runs
+        if: ${{ inputs.show_filter != '' }}
+        run: |
+          echo "Filtered run (show_filter set) - clearing progress state for independent parallel execution"
+          rm -f data/collection-state/progress.json
+
       - name: Configure git for incremental commits
         run: |
           git config --local user.email "action@github.com"
@@ -188,6 +194,11 @@ jobs:
           mkdir -p data/archives/reviews
           mkdir -p data/audit/validation
           mkdir -p data/collection-state
+
+      - name: Clear progress state for parallel runs
+        run: |
+          echo "Parallel matrix run - clearing progress state for independent execution"
+          rm -f data/collection-state/progress.json
 
       - name: Configure git for incremental commits
         run: |
