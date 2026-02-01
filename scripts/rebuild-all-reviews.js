@@ -689,6 +689,8 @@ console.log('NOTE: Reviews without valid scores are EXCLUDED (no default of 50)\
 const showDirs = fs.readdirSync(reviewTextsDir)
   .filter(f => {
     const fullPath = path.join(reviewTextsDir, f);
+    // Skip symlinks to avoid processing the same directory twice
+    if (fs.lstatSync(fullPath).isSymbolicLink()) return false;
     return fs.statSync(fullPath).isDirectory();
   });
 
