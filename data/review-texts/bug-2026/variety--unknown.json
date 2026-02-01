@@ -8,5 +8,52 @@
   "source": "nyc-theatre",
   "sources": [
     "nyc-theatre"
-  ]
+  ],
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises multiple technical elements and finds the story 'convincing' and 'heartbreaking,' but suggests it 'may have worked even better in a smaller theater,' indicating minor reservations alongside overall appreciation. | GPT-4o: The review highlights the production's strengths in design and emotional depth, suggesting a positive experience. However, it notes that the play might have been better suited for a smaller theater, indicating some reservations. | Gemini: The review highlights positive aspects like the set design, lighting, and sound, and notes the convincing portrayal of the characters' relationship. However, the suggestion that it might have worked better in a smaller theater indicates a reservation, placing it in the 'Positive' bucket with a mid-range score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T18:45:33.251Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

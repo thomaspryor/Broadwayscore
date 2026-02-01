@@ -28,6 +28,7 @@ export interface ReviewInputData {
   bwwExcerpt?: string | null;
   dtliExcerpt?: string | null;
   showScoreExcerpt?: string | null;
+  nycTheatreExcerpt?: string | null;
 
   // Aggregator thumbs
   bwwThumb?: string | null;
@@ -165,7 +166,7 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
 
   // 4. Aggregator context (ONLY for non-complete texts)
   const includesAggregatorContext = textQualityStatus !== 'complete' &&
-    !!(review.bwwThumb || review.dtliThumb || review.bwwExcerpt || review.dtliExcerpt || review.showScoreExcerpt);
+    !!(review.bwwThumb || review.dtliThumb || review.bwwExcerpt || review.dtliExcerpt || review.showScoreExcerpt || review.nycTheatreExcerpt);
 
   if (includesAggregatorContext) {
     contextParts.push(`\n## Aggregator Context (for reference only)`);
@@ -235,6 +236,10 @@ export function combineExcerpts(review: ReviewInputData): string {
   }
   if (review.bwwExcerpt && review.bwwExcerpt !== review.showScoreExcerpt && review.bwwExcerpt !== review.dtliExcerpt) {
     excerpts.push(review.bwwExcerpt);
+  }
+  if (review.nycTheatreExcerpt && review.nycTheatreExcerpt !== review.showScoreExcerpt &&
+      review.nycTheatreExcerpt !== review.dtliExcerpt && review.nycTheatreExcerpt !== review.bwwExcerpt) {
+    excerpts.push(review.nycTheatreExcerpt);
   }
 
   return excerpts.join('\n\n');

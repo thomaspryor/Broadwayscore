@@ -171,7 +171,8 @@ function extractExplicitRating(data) {
     data.fullText || '',
     data.dtliExcerpt || '',
     data.bwwExcerpt || '',
-    data.showScoreExcerpt || ''
+    data.showScoreExcerpt || '',
+    data.nycTheatreExcerpt || ''
   ].join(' ');
 
   if (!allText.trim()) return null;
@@ -418,7 +419,15 @@ function selectBestExcerpt(data) {
     }
   }
 
-  // 5. Last resort: dtliExcerpt with aggressive cleaning
+  // 5. Try nycTheatreExcerpt (similar quality to dtli/bww)
+  if (data.nycTheatreExcerpt) {
+    const cleaned = cleanExcerpt(data.nycTheatreExcerpt);
+    if (cleaned && cleaned.length > 40) {
+      return cleaned;
+    }
+  }
+
+  // 6. Last resort: dtliExcerpt with aggressive cleaning
   if (data.dtliExcerpt) {
     const cleaned = cleanExcerpt(data.dtliExcerpt, true);
     if (cleaned && cleaned.length > 40) {
@@ -426,7 +435,7 @@ function selectBestExcerpt(data) {
     }
   }
 
-  // 6. Try existing pullQuote if nothing else works
+  // 7. Try existing pullQuote if nothing else works
   if (data.pullQuote) {
     const cleaned = cleanExcerpt(data.pullQuote);
     if (cleaned && cleaned.length > 40) {
@@ -734,7 +743,7 @@ showDirs.forEach(showId => {
 
       // CHECK: Flag reviews that SHOULD have LLM scores but don't
       // These have scorable text but were never run through LLM scoring
-      const scorableText = data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || '';
+      const scorableText = data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || '';
       const hasScorableText = scorableText.length >= 100;
       const hasLlmScore = data.llmScore && data.llmScore.score;
 

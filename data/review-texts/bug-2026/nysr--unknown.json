@@ -8,5 +8,52 @@
   "source": "nyc-theatre",
   "sources": [
     "nyc-theatre"
-  ]
+  ],
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite opening with context about the play feeling dated, the review pivots to praise it as 'grippingly unnerving' and 'like a waking nightmare,' indicating a positive recommendation for the current production. | GPT-4o: The review describes the play as 'a grippingly unnerving thriller,' indicating a positive recommendation despite the context of its themes feeling 'quaint.' The language suggests it is worth seeing for its thrilling nature. | Gemini: The review states that the play \"remains a grippingly unnerving thriller,\" which indicates a positive recommendation, despite the initial setup discussing how the play's impact has changed over time.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T18:45:07.076Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

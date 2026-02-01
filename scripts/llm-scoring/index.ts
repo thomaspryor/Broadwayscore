@@ -384,6 +384,12 @@ async function main(): Promise<void> {
         data.showScoreExcerpt !== data.dtliExcerpt) {
       excerpts.push(data.showScoreExcerpt);
     }
+    if ((data as any).nycTheatreExcerpt &&
+        (data as any).nycTheatreExcerpt !== data.bwwExcerpt &&
+        (data as any).nycTheatreExcerpt !== data.dtliExcerpt &&
+        (data as any).nycTheatreExcerpt !== data.showScoreExcerpt) {
+      excerpts.push((data as any).nycTheatreExcerpt);
+    }
 
     if (excerpts.length > 0) {
       const combined = excerpts.join('\n\n');
@@ -458,7 +464,8 @@ async function main(): Promise<void> {
         // Check if we have good excerpts to fall back to
         const hasGoodExcerpts = (reviewFile.bwwExcerpt && reviewFile.bwwExcerpt.length >= 50) ||
                                 (reviewFile.dtliExcerpt && reviewFile.dtliExcerpt.length >= 50) ||
-                                (reviewFile.showScoreExcerpt && reviewFile.showScoreExcerpt.length >= 50);
+                                (reviewFile.showScoreExcerpt && reviewFile.showScoreExcerpt.length >= 50) ||
+                                ((reviewFile as any).nycTheatreExcerpt && (reviewFile as any).nycTheatreExcerpt.length >= 50);
 
         if (!hasGoodExcerpts) {
           // Skip scoring - content is garbage AND no excerpts to fall back to

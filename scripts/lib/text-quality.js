@@ -312,7 +312,8 @@ function getBestTextForScoring(review) {
   const excerptFields = [
     { field: 'showScoreExcerpt', name: 'Show Score' },
     { field: 'dtliExcerpt', name: 'DTLI' },
-    { field: 'bwwExcerpt', name: 'BWW' }
+    { field: 'bwwExcerpt', name: 'BWW' },
+    { field: 'nycTheatreExcerpt', name: 'NYC Theatre' }
   ];
 
   for (const { field, name } of excerptFields) {
