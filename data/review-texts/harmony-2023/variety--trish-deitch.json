@@ -9,56 +9,58 @@
   "showScoreExcerpt": "“Most of characters come off as fairly hackneyed — the rabbi, the doctor, the whorehouse piano player — but all the voices are beautiful. Manilow can write a good love song, and there are a few.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/harmony-broadway",
   "originalScore": null,
-  "assignedScore": 57,
+  "assignedScore": 50,
   "source": "show-score",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 57,
-    "confidence": "high",
+    "score": 50,
+    "confidence": "low",
     "range": {
-      "low": 50.5,
-      "high": 63.5
+      "low": 40,
+      "high": 60
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 38,
-      "music": 70,
-      "performances": 75,
+      "book": null,
+      "music": null,
+      "performances": 65,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "Most of characters come off as fairly hackneyed",
-        "sentiment": "negative",
-        "strength": 4
+        "quote": "played ably by Chip Zien",
+        "sentiment": "positive",
+        "strength": 2
       },
       {
-        "quote": "all the voices are beautiful",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Manilow can write a good love song, and there are a few",
-        "sentiment": "positive",
-        "strength": 3
+        "quote": "tells the true story of six young men in Berlin who formed a comedic singing group",
+        "sentiment": "neutral",
+        "strength": 1
       }
     ],
-    "reasoning": "Claude: Mixed review that criticizes the characters as hackneyed but praises the vocal performances and some of Manilow's songs, creating a balanced but lukewarm assessment. | GPT-4o-mini: The review highlights significant issues with character development while acknowledging the quality of the music, leading to a mixed recommendation.",
+    "reasoning": "This appears to be only a plot summary excerpt with minimal critical evaluation, offering only mild praise for one performance with 'ably' - insufficient content to determine the critic's actual recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:23:15.695Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:05:37.079Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2423,
+    "outputTokens": 292,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 58,
@@ -69,7 +71,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 57,
   "archivePath": "data/archives/reviews/harmony-2023/variety--trish-deitch_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:32:55.712Z",
@@ -85,7 +87,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251205000834",
   "archiveOrgUrl": "http://web.archive.org/web/20251205000834/https://variety.com/2023/legit/reviews/harmony-review-barry-manilow-broadway-1235790164/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.756Z",
+  "rescoreCompletedAt": "2026-02-01T15:05:37.079Z",
   "contentTier": "complete",
   "wordCount": 483
 }

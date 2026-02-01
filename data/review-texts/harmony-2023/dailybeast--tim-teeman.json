@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 31,
+  "assignedScore": 38,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "needsScoring": true,
@@ -20,51 +20,58 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 31,
+    "score": 38,
     "confidence": "high",
     "range": {
-      "low": 25,
-      "high": 37
+      "low": 32,
+      "high": 45
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": 25,
-      "music": null,
-      "performances": null,
-      "direction": 30
+      "music": 45,
+      "performances": 65,
+      "direction": 35
     },
     "keyPhrases": [
       {
-        "quote": "unevenly staged Harmony is a shakily constructed set of misfiring elements",
+        "quote": "The unevenly staged Harmony is a shakily constructed set of misfiring elements",
         "sentiment": "negative",
         "strength": 5
       },
       {
-        "quote": "feel imposed and didactic rather than flowing naturally from the source material",
+        "quote": "it makes for a strangely hollow, hero- and bravery-free musical",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "most compelling beats around Nazism, Antisemitism, and bigotry—all points resoundingly and rightly made",
-        "sentiment": "positive",
-        "strength": 3
+        "quote": "only makes an occasionally compelling case that the Harmonists should be better remembered by history",
+        "sentiment": "negative",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: The review is overwhelmingly critical of the production's construction, staging, and integration of themes, with only minor acknowledgment of the importance of its subject matter. | GPT-4o-mini: The review expresses strong criticism of the production's structure and execution, indicating a clear rejection of the show.",
+    "reasoning": "The critic finds fundamental structural and storytelling problems with the musical, describing it as 'shakily constructed' and 'hollow,' with only occasional praise for individual performances, particularly the female leads.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:09:59.349Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:04:04.694Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3621,
+    "outputTokens": 355,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 32,
@@ -77,7 +84,7 @@
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 31,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.749Z",
+  "rescoreCompletedAt": "2026-02-01T15:04:04.694Z",
   "contentTier": "complete",
   "wordCount": 2064
 }

@@ -9,56 +9,63 @@
   "showScoreExcerpt": "“Lines in ‘Harmony’ about the recurrence of hate against Jews and state oppression in general, fashioned as generalities, are suddenly much more charged. The show — basically a fable — doesn’t meet the moment as much as the moment crashes over it.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/harmony-broadway",
   "originalScore": null,
-  "assignedScore": 46,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "Meh",
   "needsScoring": true,
   "llmScore": {
-    "score": 46,
-    "confidence": "medium",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 35,
-      "high": 57
+      "low": 58,
+      "high": 66
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 45,
+      "music": 68,
+      "performances": 75,
+      "direction": 70
     },
     "keyPhrases": [
       {
-        "quote": "suddenly much more charged",
-        "sentiment": "positive",
+        "quote": "The humor may remind you of college a cappella groups, clever and twee and earnest and pleasant enough in small doses",
+        "sentiment": "neutral",
         "strength": 3
       },
       {
-        "quote": "doesn't meet the moment as much as the moment crashes over it",
+        "quote": "rote as that second act is, it arrives at the story's most compelling tension",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "the moment crashes over it",
-        "sentiment": "negative",
-        "strength": 4
+        "quote": "the musical is good at pulling off the goofy, even if it comes at the expense of its other elements",
+        "sentiment": "neutral",
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review acknowledges the show's newfound relevance but criticizes it for failing to rise to the importance of its themes, suggesting a work that's timely but inadequate. | GPT-4o-mini: The review expresses significant disappointment in the show's relevance and impact, indicating a clear negative sentiment. | Note: Models differed by 12 points.",
+    "reasoning": "The critic finds merit in the performances and musical numbers but identifies significant structural and tonal problems, particularly in Act Two, resulting in a qualified, lukewarm assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:22:13.818Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:05:44.156Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3813,
+    "outputTokens": 364,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 52,
@@ -79,7 +86,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 46,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.756Z",
+  "rescoreCompletedAt": "2026-02-01T15:05:44.156Z",
   "archivePath": "data/archives/reviews/harmony-2023/vulture--jackson-mchenry_2026-02-01.html",
   "textFetchedAt": "2026-02-01T03:15:34.253Z",
   "fetchMethod": "archive",

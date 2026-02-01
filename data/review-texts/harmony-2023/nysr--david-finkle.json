@@ -10,43 +10,43 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Up",
   "originalScore": "5/5 stars",
-  "assignedScore": 93,
+  "assignedScore": 92,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 93,
+    "score": 92,
     "confidence": "high",
     "range": {
-      "low": 85.5,
-      "high": 100
+      "low": 90,
+      "high": 95
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": 88,
       "music": 90,
-      "performances": null,
-      "direction": null
+      "performances": 95,
+      "direction": 92
     },
     "keyPhrases": [
       {
-        "quote": "Run, don't walk",
+        "quote": "Be advised not even to run but to race to this tale",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "Be advised not even to run but to race",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the superb new musical",
+        "quote": "There's not a clinker in the score",
         "sentiment": "positive",
         "strength": 4
+      },
+      {
+        "quote": "Sustained bravos for him and the entire memorable enterprise",
+        "sentiment": "positive",
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic revives the classic 'run don't walk' recommendation and escalates it to 'race,' combined with calling it 'superb,' indicating unqualified enthusiasm despite the excerpt being incomplete. | GPT-4o-mini: The review expresses unqualified enthusiasm and a strong recommendation to see the show, indicating a 'must-see' status.",
+    "reasoning": "Five-star review with explicit 'run don't walk' recommendation, unqualified praise for all elements, and enthusiastic endorsement throughout.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
@@ -55,11 +55,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:22:25.339Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:04:35.640Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3894,
+    "outputTokens": 324,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 95,
@@ -70,7 +77,7 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 93,
   "archivePath": "data/archives/reviews/harmony-2023/nysr--david-finkle_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:49:38.222Z",
@@ -92,7 +99,7 @@
   ],
   "fetchTier": 1,
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.751Z",
+  "rescoreCompletedAt": "2026-02-01T15:04:35.640Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
   "wordCount": 1034

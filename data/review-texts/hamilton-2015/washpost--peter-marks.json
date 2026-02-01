@@ -18,48 +18,55 @@
     "score": 95,
     "confidence": "high",
     "range": {
-      "low": 90,
-      "high": 100
+      "low": 92,
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": 92
+      "book": 92,
+      "music": 95,
+      "performances": 90,
+      "direction": 88
     },
     "keyPhrases": [
       {
-        "quote": "blazingly original, restlessly innovative, magnetic from start to finish",
+        "quote": "A great musical. 'Hamilton,' which had its official opening Thursday night at Broadway's Richard Rodgers Theatre, is a captivating mirror of the man whose life it surveys: blazingly original, restlessly innovative, magnetic from start to finish.",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "There's a magnitude of joy summoned here",
+        "quote": "The intense pride you feel on an evening such as this, when America's story is retold with such style, verve and imagination, is not of a sort that's come by easily on Broadway. There's a magnitude of joy summoned here",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "You most certainly will want to be back",
+        "quote": "You most certainly will want to be back.",
         "sentiment": "positive",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: This is unqualified praise using superlatives like 'blazingly original' and 'magnitude of joy,' with an explicit recommendation that audiences will want to return. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong emotional impact, indicating a must-see experience.",
+    "reasoning": "This is an unqualified rave review with superlative language throughout ('great musical,' 'blazingly original,' 'magnificent,' 'magnitude of joy') and an explicit recommendation to return, representing the highest level of critical enthusiasm.",
     "flags": {
       "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:22:54.460Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:03:25.908Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3767,
+    "outputTokens": 420,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 95,
@@ -90,7 +97,7 @@
   ],
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 95,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.747Z",
+  "rescoreCompletedAt": "2026-02-01T15:03:25.908Z",
   "contentTier": "complete",
   "wordCount": 924
 }
