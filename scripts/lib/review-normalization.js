@@ -576,6 +576,9 @@ function mergeReviews(existing, incoming) {
   if (incoming.showScoreExcerpt && !existing.showScoreExcerpt) {
     merged.showScoreExcerpt = incoming.showScoreExcerpt;
   }
+  if (incoming.nycTheatreExcerpt && !existing.nycTheatreExcerpt) {
+    merged.nycTheatreExcerpt = incoming.nycTheatreExcerpt;
+  }
 
   // Keep thumb data
   if (incoming.dtliThumb && !existing.dtliThumb) {
