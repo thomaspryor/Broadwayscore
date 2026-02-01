@@ -741,8 +741,8 @@ async function loginToSite(domain, email, password) {
       await page.waitForTimeout(3000); // Allow redirect to sso.accounts.dowjones.com
 
       // Step 1: Enter email/username
-      // The field may not have standard name attributes - use role-based or generic selectors
-      const emailInput = await page.$('input[type="email"], input[name="username"], input[name="email"], [role="textbox"]');
+      // WSJ uses name="emailOrUsername" and id="emailOrUsername-form-item"
+      const emailInput = await page.$('input[name="emailOrUsername"], input#emailOrUsername-form-item, input[type="email"], input[name="username"], input[name="email"]');
       if (!emailInput) {
         console.log('    ✗ WSJ login FAILED (no email/username field found)');
         return false;
