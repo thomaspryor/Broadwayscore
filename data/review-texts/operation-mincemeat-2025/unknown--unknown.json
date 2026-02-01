@@ -8,7 +8,7 @@
   "fullText": null,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,52 @@
     "show-score-playwright"
   ],
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review excerpt shows lukewarm praise - acknowledging the score isn't great but finding some merit in the staging and rhymes. However, with only a fragment available and 'Read more' suggesting truncation, the full verdict could lean more positive or negative. | GPT-4o: The review acknowledges some positive aspects like clever rhymes and comic staging but stops short of a strong recommendation, indicating a mixed impression. | Gemini: The review excerpt highlights both positive and negative aspects, suggesting a mixed experience. The phrase \"clever rhyme here and there\" and \"rigorously silly comic staging\" indicate some enjoyable elements, but the lack of destined greatness keeps it from being a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T13:59:15.589Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

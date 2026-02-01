@@ -8,7 +8,7 @@
   "fullText": "This is a show that knows exactly what it wants to be and achieves it with remarkable consistency and style, powered by Keys's songs and a cast that treats every moment as though their lives depend on it.",
   "dtliExcerpt": "This is a show that knows exactly what it wants to be and achieves it with remarkable consistency and style, powered by Keys's songs and a cast that treats every moment as though their lives depend on it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,52 @@
   "showScoreExcerpt": "This is a show that knows exactly what it wants to be and achieves it with remarkable consistency and style, powered by Keys's songs and a cast that treats every moment as though their lives depend on it.",
   "needsScoring": true,
   "contentTier": "truncated",
-  "wordCount": 38
+  "wordCount": 38,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the show's clarity of vision, consistency, style, and passionate performances, indicating a clear positive recommendation without reaching enthusiastic/rave territory. | GPT-4o: The review praises the show for its consistency and style, indicating a strong recommendation. | Gemini: The review praises the show's consistency and style, indicating a positive experience and a recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T13:58:29.820Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

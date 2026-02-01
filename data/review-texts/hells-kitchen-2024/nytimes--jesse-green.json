@@ -8,7 +8,7 @@
   "fullText": "The musical, featuring songs by Alicia Keys, is a coming-of-age story that captures the grit and poetry of Manhattan's Hell's Kitchen neighborhood with genuine warmth and authenticity.",
   "dtliExcerpt": "The musical, featuring songs by Alicia Keys, is a coming-of-age story that captures the grit and poetry of Manhattan's Hell's Kitchen neighborhood with genuine warmth and authenticity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,52 @@
   "showScoreExcerpt": "The musical, featuring songs by Alicia Keys, is a coming-of-age story that captures the grit and poetry of Manhattan's Hell's Kitchen neighborhood with genuine warmth and authenticity.",
   "needsScoring": true,
   "contentTier": "truncated",
-  "wordCount": 27
+  "wordCount": 27,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review emphasizes positive qualities like 'genuine warmth and authenticity' but lacks stronger superlatives that would push it to Rave territory. | GPT-4o: The review highlights the musical's ability to capture the essence of its setting with warmth and authenticity, indicating a positive recommendation. | Gemini: The review uses positive language such as \"genuine warmth and authenticity\" indicating a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T13:58:27.122Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 81,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

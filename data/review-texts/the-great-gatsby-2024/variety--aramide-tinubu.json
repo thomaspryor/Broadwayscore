@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "While the show boasts stunning visuals and impressive performances, particularly from Jeremy Jordan as Jay Gatsby and Eva Noblezada as Daisy Buchanan, the musical struggles to capture the tragic essence of Fitzgerald's masterpiece.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "While the show boasts stunning visuals and impressive performances, particularly from Jeremy Jordan as Jay Gatsby and Eva Noblezada as Daisy Buchanan, the musical struggles to capture the tragic essence of Fitzgerald's masterpiece.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Despite praising visuals and lead performances, the review concludes the show fundamentally fails to capture the essence of the source material, indicating neither recommendation nor strong discouragement. | GPT-4o: The review highlights impressive performances and visuals but notes a significant shortcoming in capturing the essence of the original work, indicating a mixed reception. | Gemini: The review highlights both positive aspects (stunning visuals, impressive performances) and a significant flaw (failing to capture the essence of the source material), indicating a mixed assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T13:59:23.005Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

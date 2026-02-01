@@ -8,7 +8,7 @@
   "fullText": "Maybe Happy Ending is a small, sweet musical about two obsolete helper robots who find love while searching for meaning in their programmed lives.",
   "dtliExcerpt": "Maybe Happy Ending is a small, sweet musical about two obsolete helper robots who find love while searching for meaning in their programmed lives.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,52 @@
   "showScoreExcerpt": "Maybe Happy Ending is a small, sweet musical about two obsolete helper robots who find love while searching for meaning in their programmed lives.",
   "needsScoring": true,
   "contentTier": "truncated",
-  "wordCount": 24
+  "wordCount": 24,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The description 'small, sweet' and the romantic storyline suggests a positive, if modest, recommendation, though the brevity and 'maybe' qualifier create some uncertainty. | GPT-4o: The review describes the musical as 'small' and 'sweet', which suggests a positive but not overwhelmingly enthusiastic recommendation. The tone is gentle and appreciative, indicating it's worth seeing. | Gemini: The description \"small, sweet musical\" suggests a positive, albeit perhaps not overwhelmingly enthusiastic, recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T13:58:48.299Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

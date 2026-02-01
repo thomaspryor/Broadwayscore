@@ -8,7 +8,7 @@
   "fullText": "The Outsiders succeeds in translating S.E. Hinton's beloved novel into a musical that feels both faithful to the source material and genuinely theatrical.",
   "dtliExcerpt": "The Outsiders succeeds in translating S.E. Hinton's beloved novel into a musical that feels both faithful to the source material and genuinely theatrical.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,52 @@
   "showScoreExcerpt": "The Outsiders succeeds in translating S.E. Hinton's beloved novel into a musical that feels both faithful to the source material and genuinely theatrical.",
   "needsScoring": true,
   "contentTier": "truncated",
-  "wordCount": 23
+  "wordCount": 23,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear positive language with 'succeeds' and praise for being both faithful and theatrical, indicating a solid recommendation. | GPT-4o: The review highlights the success of the adaptation and its theatrical quality, indicating a strong positive recommendation. | Gemini: The review states that the musical 'succeeds' in its adaptation, indicating a positive assessment and recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T13:59:47.723Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

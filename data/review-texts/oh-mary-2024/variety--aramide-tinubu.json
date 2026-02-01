@@ -8,7 +8,7 @@
   "fullText": "Cole Escola's deliriously funny and deeply unhinged comedy 'Oh, Mary!' is a raucous reimagining of Mary Todd Lincoln as a boozy, foul-mouthed aspiring cabaret star.",
   "dtliExcerpt": "Cole Escola's deliriously funny and deeply unhinged comedy 'Oh, Mary!' is a raucous reimagining of Mary Todd Lincoln as a boozy, foul-mouthed aspiring cabaret star.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,52 @@
   "showScoreExcerpt": "Cole Escola's deliriously funny and deeply unhinged comedy 'Oh, Mary!' is a raucous reimagining of Mary Todd Lincoln as a boozy, foul-mouthed aspiring cabaret star.",
   "needsScoring": true,
   "contentTier": "truncated",
-  "wordCount": 25
+  "wordCount": 25,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The reviewer uses very positive language about the comedy ('deliriously funny') but this appears to be just the opening description rather than a full critical assessment, making the final recommendation unclear. | GPT-4o: The review uses highly positive language like 'deliriously funny' and 'deeply unhinged,' suggesting a strong recommendation. | Gemini: The review describes the show as 'deliriously funny', indicating a positive experience and recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T13:59:05.139Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

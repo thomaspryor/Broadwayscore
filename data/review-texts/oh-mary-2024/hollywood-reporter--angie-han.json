@@ -8,7 +8,7 @@
   "fullText": "Cole Escola's irreverent comedy about Mary Todd Lincoln is a raucous, ridiculous romp that never takes itself too seriously — and that's exactly what makes it work.",
   "dtliExcerpt": "Cole Escola's irreverent comedy about Mary Todd Lincoln is a raucous, ridiculous romp that never takes itself too seriously — and that's exactly what makes it work.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,52 @@
   "showScoreExcerpt": "Cole Escola's irreverent comedy about Mary Todd Lincoln is a raucous, ridiculous romp that never takes itself too seriously — and that's exactly what makes it work.",
   "needsScoring": true,
   "contentTier": "truncated",
-  "wordCount": 27
+  "wordCount": 27,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses positive descriptors like 'raucous, ridiculous romp' and explicitly states the show 'works,' indicating a clear recommendation despite the irreverent tone. | GPT-4o: The review highlights the show's irreverent comedy and successful execution, indicating a strong positive recommendation. | Gemini: The review uses positive language like \"raucous,\" \"ridiculous,\" and states that the show \"works,\" indicating a recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T13:58:56.632Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

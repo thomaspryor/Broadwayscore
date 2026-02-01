@@ -8,7 +8,7 @@
   "fullText": null,
   "dtliExcerpt": "If this looks to you like actors having fun, there’s a good chance you’ll dig what Operation Mincemeat is grinding. To me, it looks like actors pushing too hard. They don’t stop nudging you with their elbows, and while moments of that can tickle—I misled more than once at Hodgson’s bluff obliviousness—two and a half hours of it gets a little exhausting.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/operation-mincemeat/",
@@ -17,5 +17,52 @@
   "showScoreExcerpt": null,
   "needsScoring": true,
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges some enjoyable moments but criticizes the overall execution as exhausting and overly forced, suggesting a lukewarm recommendation at best. | GPT-4o: The review suggests that while there are enjoyable moments, the overall experience is tiring and the actors' performances feel forced. This indicates a mixed reception with some positive aspects. | Gemini: The review acknowledges potential enjoyment for some viewers but ultimately finds the performance exhausting, indicating a mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T13:59:11.143Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

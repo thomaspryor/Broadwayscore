@@ -8,7 +8,7 @@
   "fullText": "The Outsiders is a deeply felt, beautifully staged musical that honors its source material while finding its own theatrical voice.",
   "dtliExcerpt": "The Outsiders is a deeply felt, beautifully staged musical that honors its source material while finding its own theatrical voice.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,52 @@
   "showScoreExcerpt": "The Outsiders is a deeply felt, beautifully staged musical that honors its source material while finding its own theatrical voice.",
   "needsScoring": true,
   "contentTier": "truncated",
-  "wordCount": 20
+  "wordCount": 20,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review uses clear positive language praising both the emotional depth and production quality, indicating a solid recommendation without reaching rave territory. | GPT-4o: The review uses strong positive language such as 'deeply felt' and 'beautifully staged', indicating a high level of enthusiasm and a strong recommendation. | Gemini: The review uses positive language like \"deeply felt\" and \"beautifully staged\" and states that the musical \"honors its source material while finding its own theatrical voice.\" This indicates a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T13:59:38.395Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

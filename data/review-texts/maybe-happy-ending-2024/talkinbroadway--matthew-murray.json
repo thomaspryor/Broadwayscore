@@ -8,7 +8,7 @@
   "fullText": "Maybe Happy Ending is a small miracle of a musical that manages to be both intimate and epic, exploring what it means to be human through the lens of two obsolete robots finding connection.",
   "dtliExcerpt": "Maybe Happy Ending is a small miracle of a musical that manages to be both intimate and epic, exploring what it means to be human through the lens of two obsolete robots finding connection.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,52 @@
   "showScoreExcerpt": "Maybe Happy Ending is a small miracle of a musical that manages to be both intimate and epic, exploring what it means to be human through the lens of two obsolete robots finding connection.",
   "needsScoring": true,
   "contentTier": "truncated",
-  "wordCount": 34
+  "wordCount": 34,
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Calling a show a 'small miracle' is exceptionally high praise that indicates a must-see recommendation, with the critic highlighting both technical achievement and emotional depth. | GPT-4o: The review uses highly enthusiastic language, describing the musical as 'a small miracle' and highlighting its successful exploration of profound themes, which indicates a strong recommendation. | Gemini: The review uses very positive language such as \"miracle\" and \"epic\", indicating a recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T13:58:39.190Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

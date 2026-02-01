@@ -8,7 +8,7 @@
   "fullText": "The musical, which premiered at Atlanta's Alliance Theatre in 2016, is a sweet, occasionally affecting meditation on loneliness and connection in a world increasingly dominated by technology.",
   "dtliExcerpt": "The musical, which premiered at Atlanta's Alliance Theatre in 2016, is a sweet, occasionally affecting meditation on loneliness and connection in a world increasingly dominated by technology.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,52 @@
   "showScoreExcerpt": "The musical, which premiered at Atlanta's Alliance Theatre in 2016, is a sweet, occasionally affecting meditation on loneliness and connection in a world increasingly dominated by technology.",
   "needsScoring": true,
   "contentTier": "truncated",
-  "wordCount": 27
+  "wordCount": 27,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The descriptors 'sweet' and 'occasionally affecting' suggest a gentle recommendation, though the qualifier 'occasionally' prevents this from being strongly positive. | GPT-4o: The review describes the musical as 'sweet' and 'occasionally affecting', suggesting some positive elements but lacking a strong recommendation. The tone is more neutral, indicating a mixed impression. | Gemini: The review uses positive language like 'sweet' and 'affecting,' suggesting a generally favorable impression, but the 'occasionally' implies some reservations, placing it in the positive but not rave category.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T13:58:44.684Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

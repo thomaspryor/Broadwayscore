@@ -9,12 +9,59 @@
   "isFullReview": false,
   "dtliExcerpt": "There are indeed wonders to behold in 'Wicked,' the new musical that opened last night at the Gershwin Theater. There are also enough saggy stretches, moral miscalculations and awkward plot convolutions to kill a lesser species of musical entertainment.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "There are indeed wonders to behold in 'Wicked,' the new musical that opened last night at the Gershwin Theater. There are also enough saggy stretches, moral miscalculations and awkward plot convolutions to kill a lesser species of musical entertainment.",
-  "needsScoring": true
+  "needsScoring": true,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review explicitly balances praise ('wonders to behold') with significant criticism ('saggy stretches, moral miscalculations'), presenting a genuinely mixed assessment without a clear recommendation either way. | GPT-4o: The review acknowledges impressive elements but also highlights significant flaws, leading to a mixed recommendation. | Gemini: The review acknowledges positive aspects ('wonders to behold') but also highlights significant flaws, resulting in a mixed assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T13:59:54.013Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

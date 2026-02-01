@@ -8,7 +8,7 @@
   "fullText": "This tender musical about obsolescent robots finding love and purpose manages to be both whimsical and deeply moving, with a score that lingers in memory long after the final bow.",
   "dtliExcerpt": "This tender musical about obsolescent robots finding love and purpose manages to be both whimsical and deeply moving, with a score that lingers in memory long after the final bow.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,52 @@
   "showScoreExcerpt": "This tender musical about obsolescent robots finding love and purpose manages to be both whimsical and deeply moving, with a score that lingers in memory long after the final bow.",
   "needsScoring": true,
   "contentTier": "truncated",
-  "wordCount": 30
+  "wordCount": 30,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review uses consistently positive language praising the musical's emotional impact and memorable score, indicating a clear recommendation without strong superlatives. | GPT-4o: The review uses highly positive language, describing the musical as 'whimsical and deeply moving' and highlighting the memorable score, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the musical's emotional depth and memorable score, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T13:58:53.816Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

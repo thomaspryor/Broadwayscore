@@ -8,7 +8,7 @@
   "fullText": "The new musical adaptation of S.E. Hinton's beloved novel captures the story's raw emotion and youthful energy, though it sometimes struggles under the weight of its own ambitions.",
   "dtliExcerpt": "The new musical adaptation of S.E. Hinton's beloved novel captures the story's raw emotion and youthful energy, though it sometimes struggles under the weight of its own ambitions.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,52 @@
   "showScoreExcerpt": "The new musical adaptation of S.E. Hinton's beloved novel captures the story's raw emotion and youthful energy, though it sometimes struggles under the weight of its own ambitions.",
   "needsScoring": true,
   "contentTier": "truncated",
-  "wordCount": 28
+  "wordCount": 28,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review acknowledges positive elements (raw emotion, youthful energy) but immediately follows with a significant caveat about struggling with ambitions, suggesting neither clear recommendation nor discouragement. | GPT-4o: The review acknowledges the musical's success in capturing emotion and energy, indicating a positive view, but notes struggles with ambition, suggesting some reservations. | Gemini: The review highlights positive aspects but also points out struggles, indicating a recommendation with reservations. The overall tone leans towards positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T13:59:32.951Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

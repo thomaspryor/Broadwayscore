@@ -8,7 +8,7 @@
   "fullText": "This gorgeous musical about two obsolete household robots who fall in love is one of the most charming shows to open on Broadway in years.",
   "dtliExcerpt": "This gorgeous musical about two obsolete household robots who fall in love is one of the most charming shows to open on Broadway in years.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,52 @@
   "showScoreExcerpt": "This gorgeous musical about two obsolete household robots who fall in love is one of the most charming shows to open on Broadway in years.",
   "needsScoring": true,
   "contentTier": "truncated",
-  "wordCount": 25
+  "wordCount": 25,
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language calling it 'gorgeous' and 'one of the most charming shows to open on Broadway in years,' indicating strong enthusiasm and a clear must-see recommendation. | GPT-4o: The review uses strong positive language, describing the show as 'gorgeous' and 'one of the most charming shows to open on Broadway in years,' indicating a highly enthusiastic recommendation. | Gemini: The review uses very positive language, calling the musical 'gorgeous' and 'charming,' indicating a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T13:58:35.539Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

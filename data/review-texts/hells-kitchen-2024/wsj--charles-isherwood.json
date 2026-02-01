@@ -8,7 +8,7 @@
   "fullText": "The show is at its best when it focuses on the mother-daughter relationship at its core, powered by two exceptional performances from Maleah Joi Moon and Shoshana Bean.",
   "dtliExcerpt": "The show is at its best when it focuses on the mother-daughter relationship at its core, powered by two exceptional performances from Maleah Joi Moon and Shoshana Bean.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,52 @@
   "showScoreExcerpt": "The show is at its best when it focuses on the mother-daughter relationship at its core, powered by two exceptional performances from Maleah Joi Moon and Shoshana Bean.",
   "needsScoring": true,
   "contentTier": "truncated",
-  "wordCount": 28
+  "wordCount": 28,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'at its best' implies the show has weaker moments, but the emphasis on 'exceptional performances' and the core relationship suggests overall positive assessment, though with some reservations. | GPT-4o: The review highlights strong performances and a compelling central relationship, suggesting a positive experience despite potential limitations in other aspects of the show. | Gemini: The review highlights strong performances and a compelling relationship, suggesting a positive experience, but the phrase 'at its best when' implies that other aspects of the show may be less successful, leading to a 'Positive' bucket with a mid-range score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T13:58:32.579Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }
