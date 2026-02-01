@@ -1,44 +1,44 @@
 {
-  "runDate": "2026-02-01T13:54:33.215Z",
+  "runDate": "2026-02-01T14:05:35.839Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "stereophonic-2024",
+    "showFilter": "here-lies-love-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 14,
-    "failed": 115,
+    "processed": 16,
+    "failed": 120,
     "skipped": 0,
-    "successRate": "10.9%"
+    "successRate": "11.8%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 5,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 2,
     "archive": 8
   },
   "statistics": {
     "tier1Attempts": 3,
-    "tier1Success": 3,
+    "tier1Success": 1,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 5,
-    "tier4Success": 3,
-    "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 0,
+    "tier4Attempts": 7,
+    "tier4Success": 4,
+    "totalFailed": 5,
+    "scrapingBeeCreditsUsed": 11,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -56,7 +56,9 @@
     "stereophonic-2024/nytimes--jesse-green.json",
     "stereophonic-2024/ew--allison-considine.json",
     "stereophonic-2024/guardian--gloria-oladipo.json",
-    "stereophonic-2024/ap--mark-kennedy.json"
+    "stereophonic-2024/ap--mark-kennedy.json",
+    "here-lies-love-2023/nytimes--ben-brantley.json",
+    "here-lies-love-2023/nypost--johnny-oleksinski.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -173,17 +175,25 @@
     "cabaret-2024/variety--aramide-tinubu.json",
     "stereophonic-2024/deadline--greg-evans.json",
     "stereophonic-2024/observer--david-cote.json",
-    "stereophonic-2024/timeout--adam-feldman.json"
+    "stereophonic-2024/timeout--adam-feldman.json",
+    "here-lies-love-2023/deadline--greg-evans.json",
+    "here-lies-love-2023/timeout--adam-feldman.json",
+    "here-lies-love-2023/wsj--charles-isherwood.json",
+    "here-lies-love-2023/wsj--charles.json",
+    "here-lies-love-2023/bergen-record--robert-feldberg.json"
   ],
   "tierDetails": {
     "playwright": [
       "harry-potter-2021/melindas-malarky--melinda-pressler.json",
       "stereophonic-2024/ew--allison-considine.json",
       "stereophonic-2024/guardian--gloria-oladipo.json",
-      "stereophonic-2024/ap--mark-kennedy.json"
+      "stereophonic-2024/ap--mark-kennedy.json",
+      "here-lies-love-2023/nypost--johnny-oleksinski.json"
     ],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "here-lies-love-2023/nytimes--ben-brantley.json"
+    ],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
       "mj-2022/usatoday--david-rooney.json"
@@ -199,6 +209,14 @@
       "stereophonic-2024/nytimes--jesse-green.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Record (Bergen)": {
+      "count": 1,
+      "domain": "northjersey.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
