@@ -8,58 +8,65 @@
   "fullText": "“Hamilton” was a sensation in a 299-seat house at the Public Theater, where the blazing inventiveness of Lin-Manuel Miranda‘s hip-hop musical tribute to one of our illustrious Founding Fathers played right into the downtown vibe. But this innovative show is shaping up to be just as much of a phenomenon uptown, playing in a Broadway house with four times the seating capacity, and to a more traditional but no less enthusiastic audience. That universal appeal to crossover audiences is one unmistakable sign of a groundbreaking show. Whatever technical adjustments might have been necessary to move the production into a larger space are not evident from an audience’s perspective. The wonderful dancing chorus seems to have more room to perform its leaps and bounds, and the individual characters have always been larger than life in the first place. In fact, Leslie Odom Jr. seems even more invested in the difficult character of Aaron Burr, really sinking his teeth into the frustration and yearning that this troubled character reveals in “The Room Where It Happens.” And Christopher Jackson’s manly General Washington is even more moving when he acknowledges, in “One Last Time,” that his days as the nation’s leader are indeed over. The only new actor in the cast is Jonathan Groff, who assumed the regal role of King George when Brian D’Arcy James decamped to play the lead in “Something Rotten!” Although his predecessor can still out-sneer his replacement, Groff comes by his own laughs honestly by allowing himself to become swallowed up in the monarch’s elaborate robes and oversized crown. Like any true landmark, “Hamilton” stands up to repeated viewings. After six months, the show’s initial impact hasn’t dulled a bit; in fact, the qualities that made it so extraordinary the first time around are all the more striking. Miranda’s fundamental insight — that Alexander Hamilton, like other early American patriots, landed on these foreign shores like any other homeless, clueless immigrant in search of a new life — seems all the more electrifying on reflection. As Lafayette, that heroic Frenchman, reminds Hamilton, they are cut from the same rough cloth — “Immigrants! We get the job done!” — not the aristocrats who served in government, but the people who fought the wars and built the country. With actors of color playing most of the roles in this show, those past truths reassert themselves by surviving into the present day. The other thrilling contribution that “Hamilton” has made to the American musical is the amazing score — and what it says about the future of the Broadway musical. Contrary to the shorthand use of “hip-hop musical,” that isn’t quite accurate; the score is far more revolutionary than that. The show does open with a great hip-hop number — a five-minute, fact-packed musical narrative that sums up the first 100 pages or so of Ron Chernow’s biography of Hamilton and tells you all you need to know about the man, his history and his future. That rapper style, with its interlocking interior rhymes and pounding cadences, perfectly captures Hamilton’s feverish intelligence and hyperarticulate manner. But instead of keeping to a single uniform musical style (hip-hop or otherwise), as traditional shows often have, Miranda continues to draw from all available styles and musical sources, from nursery lullaby to rock ‘n’ roll and operetta, in order to capture the soul of a character and the spirit of the moment. If this sort of thing catches on, the old, reliable Broadway showtune may be a thing of the past. A Variety and iHeartRadio Podcast",
   "showScoreExcerpt": "\"This innovative show is shaping up to be just as much of a phenomenon uptown, playing in a Broadway house with four times the seating capacity, and to a more traditional but no less enthusiastic audience. That universal appeal to crossover audiences is one unmistakable sign of a groundbreaking show...Like any true landmark, 'Hamilton' stands up to repeated viewings. After six months, the show’s initial impact hasn’t dulled a bit; in fact, the qualities that made it so extraordinary the first time around are all the more striking.\"",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 95,
   "source": "reviews-json-stub",
   "needsFullText": false,
   "urlUpdated": "2026-01-23T05:30:06.055Z",
   "fetchedAt": "2026-01-23T05:41:38.466Z",
   "bwwExcerpt": "The wonderful dancing chorus seems to have more room to perform its leaps and bounds, and the individual characters have always been larger than life in the first place. In fact, Leslie Odom Jr. seems even more invested in the difficult character of Aaron Burr, really sinking his teeth into the frus...",
   "llmScore": {
-    "score": 89,
+    "score": 95,
     "confidence": "high",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 90,
+      "high": 98
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 90,
-      "performances": 89,
-      "direction": 85
+      "music": null,
+      "performances": null,
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "blazing inventiveness of Lin-Manuel Miranda's hip-hop musical tribute",
+        "quote": "groundbreaking show",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "universal appeal to crossover audiences is one unmistakable sign of a groundbreaking show",
+        "quote": "the show's initial impact hasn't dulled a bit; in fact, the qualities that made it so extraordinary the first time around are all the more striking",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "shaping up to be just as much of a phenomenon uptown",
+        "quote": "Like any true landmark, 'Hamilton' stands up to repeated viewings",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       }
     ],
-    "reasoning": "Claude: The critic uses superlative language like 'blazing inventiveness', 'phenomenon', and 'groundbreaking show' with no significant reservations, indicating strong recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the production's innovative qualities and performances, indicating it as a must-see.",
+    "reasoning": "Review uses superlative language like 'groundbreaking,' 'extraordinary,' and 'true landmark' while emphasizing the show's enduring impact and universal appeal without any reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:03:34.155Z",
-    "promptVersion": "2.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:03:13.597Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2418,
+    "outputTokens": 346,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 88,
@@ -83,7 +90,7 @@
   ],
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 89,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.747Z",
+  "rescoreCompletedAt": "2026-02-01T15:03:13.597Z",
   "contentTier": "complete",
   "wordCount": 590,
   "truncationSignals": [

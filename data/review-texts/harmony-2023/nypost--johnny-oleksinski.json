@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 65,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "needsScoring": true,
@@ -59,51 +59,58 @@
   "archiveOrgTimestamp": "20251002230850",
   "archiveOrgUrl": "http://web.archive.org/web/20251002230850/https://nypost.com/2023/11/13/entertainment/harmony-review-barry-manilows-musical-is-moving-but-isnt-in-sync/",
   "llmScore": {
-    "score": 64,
+    "score": 65,
     "confidence": "high",
     "range": {
-      "low": 57.5,
-      "high": 70.5
+      "low": 62,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 50,
+      "book": 45,
       "music": 75,
-      "performances": 81,
-      "direction": 55
+      "performances": 85,
+      "direction": 50
     },
     "keyPhrases": [
       {
-        "quote": "Take apart Barry Manilow's new musical 'Harmony,' which opened Monday night on Broadway, and you'll find a lot to admire.",
+        "quote": "Take apart Barry Manilow's new musical 'Harmony,' which opened Monday night on Broadway, and you'll find a lot to admire",
         "sentiment": "positive",
         "strength": 3
       },
       {
-        "quote": "The problem is that while 'Harmony' is about a sextet of singers whose voices blend like milk and coffee, its elements do not similarly fuse into a cohesive and satisfying musical.",
+        "quote": "The problem is that while 'Harmony' is about a sextet of singers whose voices blend like milk and coffee, its elements do not similarly fuse into a cohesive and satisfying musical",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "That's the central takeaway of 'Harmony': not everything is harmonious, but nonetheless there is much that's worth listening to.",
+        "quote": "That's the central takeaway of 'Harmony': not everything is harmonious, but nonetheless there is much that's worth listening to",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The review acknowledges significant admirable elements (performances, music, themes) but identifies fundamental structural problems that prevent it from being a cohesive, satisfying musical experience. | GPT-4o-mini: While the review highlights strong performances and a catchy score, it also points out significant structural flaws and pacing issues that detract from the overall experience, leading to a mixed recommendation.",
+    "reasoning": "The critic finds significant elements to admire (music, performances, themes) but identifies fundamental structural problems that prevent the show from being cohesive or satisfying as a whole.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T02:35:15.857Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:04:23.416Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3587,
+    "outputTokens": 395,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 62,
@@ -115,5 +122,8 @@
     "needsReviewReasons": []
   },
   "contentTier": "complete",
-  "wordCount": 816
+  "wordCount": 816,
+  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "previousLlmScore": 64,
+  "rescoreCompletedAt": "2026-02-01T15:04:23.416Z"
 }

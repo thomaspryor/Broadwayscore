@@ -10,56 +10,63 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": null,
   "needsScoring": true,
   "llmScore": {
-    "score": 45,
+    "score": 42,
     "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 38,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": 40
+      "book": 35,
+      "music": 55,
+      "performances": 60,
+      "direction": 45
     },
     "keyPhrases": [
       {
-        "quote": "Perhaps the confusion is understandable",
-        "sentiment": "negative",
-        "strength": 3
+        "quote": "Harmony isn't without its pleasures or its insights",
+        "sentiment": "positive",
+        "strength": 2
       },
       {
-        "quote": "feels like it's had plenty of time to marinate in its own importance",
+        "quote": "much of the show has all the signs of a would-be magnum opus allowed, over the course of so many years, to spin itself into a overworked tizzy",
         "sentiment": "negative",
         "strength": 4
       },
       {
-        "quote": "the production that’s finally arrived feels like it’s had plenty of time to marinate in its own importance.",
+        "quote": "Mostly, though, the show is a maudlin affair",
         "sentiment": "negative",
         "strength": 4
       }
     ],
-    "reasoning": "Claude: The excerpt suggests a production that has become overwrought and self-important through its lengthy development process, with the critic expressing mild confusion about the show's identity. | GPT-4o-mini: The review suggests a lack of excitement and indicates that the production feels overcooked, leading to a negative recommendation.",
+    "reasoning": "The critic acknowledges some positive elements like production design and vocal performances but finds the show fundamentally flawed with weak comedy, poor dramatic structure, and overwrought execution that has suffered from its long development process.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": true,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:22:09.718Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:04:15.800Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 4001,
+    "outputTokens": 372,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 45,
@@ -74,7 +81,6 @@
   "dateSource": "historical-review",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 45,
   "isFullReview": true,
@@ -94,5 +100,6 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "rescoreCompletedAt": "2026-02-01T15:04:15.800Z"
 }

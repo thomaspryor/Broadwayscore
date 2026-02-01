@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"A second look suggests that something even more significant is going on. The breakthrough isn’t so much the incorporation of those contemporary genres; after all, Miranda already did that, throwing in Latin music to boot, in the charming 'In the Heights.' But 'Hamilton' not only incorporates newish-to-Broadway song forms; it requires and advances them, in the process opening up new territory for exploitation. It’s the musical theater, not just American history, that gets refurbished. And perhaps popular music, too. Call it Miranda’s manifest destiny, though one dreads the caravans of poor imitators that will surely trail behind.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "originalScore": null,
-  "assignedScore": 90,
+  "assignedScore": 92,
   "source": "dtli",
   "dtliThumb": "Up",
   "needsScoring": true,
@@ -58,51 +58,58 @@
   "scoreConfidence": "medium",
   "extractedPhrase": "avoid",
   "llmScore": {
-    "score": 90,
+    "score": 92,
     "confidence": "high",
     "range": {
-      "low": 83,
-      "high": 97
+      "low": 88,
+      "high": 95
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 88,
-      "music": 93,
-      "performances": 89,
-      "direction": 85
+      "book": 90,
+      "music": 88,
+      "performances": 85,
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "Let's call it, with hope for the future, historic.",
+        "quote": "It's just great",
         "sentiment": "positive",
         "strength": 5
       },
       {
-        "quote": "everything that's great, and anyway might be an advantage",
+        "quote": "Lin-Manuel Miranda's sensational new hip-hop biomusical",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "It's the musical theater, not just American history, that gets refurbished.",
+        "quote": "in order to dislike it you'd pretty much have to dislike the American experiment",
         "sentiment": "positive",
         "strength": 5
       }
     ],
-    "reasoning": "Claude: The review concludes by calling Hamilton 'historic' and emphasizes how it revolutionizes musical theater itself, with minor quibbles far outweighed by extensive praise for its innovation and craft. | GPT-4o-mini: The review expresses strong praise for the musical's innovative qualities and performances while acknowledging some minor issues, leading to a clear recommendation to see it.",
+    "reasoning": "The critic uses unqualified superlatives like 'sensational' and 'great', suggests only unpatriotic people would dislike it, and praises the complexity and joy of the show with minimal reservations.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:42:17.452Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:03:18.925Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3090,
+    "outputTokens": 348,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 92,
@@ -123,7 +130,7 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 90,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.747Z",
+  "rescoreCompletedAt": "2026-02-01T15:03:18.925Z",
   "contentTier": "complete",
   "wordCount": 1566
 }
