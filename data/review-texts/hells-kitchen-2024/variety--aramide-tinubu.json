@@ -74,31 +74,13 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "archivePath": "data/archives/reviews/hells-kitchen-2024/variety--aramide-timubu_2026-01-26.html",
-  "textFetchedAt": "2026-01-26T15:41:47.233Z",
+  "archivePath": "data/archives/reviews/hells-kitchen-2024/variety--aramide-tinubu_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T23:42:25.079Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Insufficient text extracted: 0 chars"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "Access blocked in Bright Data response"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
@@ -117,5 +99,10 @@
   "rescoreCompletedAt": "2026-01-29T14:31:51.790Z",
   "contentTier": "complete",
   "wordCount": 757,
-  "showNotMentioned": true
+  "showNotMentioned": true,
+  "isFullReview": false,
+  "textWordCount": 156,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial"
 }
