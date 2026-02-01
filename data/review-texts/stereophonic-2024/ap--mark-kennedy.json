@@ -5,13 +5,13 @@
   "criticName": "Mark Kennedy",
   "url": "https://apnews.com/article/stereophonic-broadway-review",
   "publishDate": "2024-04-20",
-  "fullText": null,
+  "fullText": "Jude Bellingham leaves Real Madrid game early with apparent hamstring issue 5 mins ago Sudan’s war-torn capital sees second commercial flight land since conflict began 18 mins ago Swiss Alpine bar fire claims 41st victim, an 18-year-old Swiss national 17 mins ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); Demond Wilson, who played Lamont on ‘Sanford and Son,’ dies at 79 24 mins ago Collar cams offer a bear’s eye view into the lives of grizzlies on Alaska’s desolate North Slope 51 mins ago Trump’s failed bid to elevate an Arab American ally shows cracks in his political coalition 57 mins ago What a swing House district in Colorado shows about Republicans’ immigration fallout in the midterms 1 hour ago The ranks of US rabbis grow more diverse, with rising numbers of women and LGBTQ people 1 hour ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); Werder Bremen fires Horst Steffen as coach after 10 games without a win in the Bundesliga 1 hour ago Von Allmen hands Crans-Montana 2nd Swiss victory in 2 days in last World Cup race before Olympics 39 mins ago Novak Djokovic in Grand Slam finals 1 hour ago Novak Djokovic’s record at Australian Open 1 hour ago Australian Open men’s champions 1 hour ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); Men’s career Grand Slam 1 hour ago Further Russia-Ukraine talks scheduled for next week, says Zelenskyy 53 mins ago Freeskier Eileen Gu takes another wild ride to the Olympics, invites the world to tag along 3 hours ago Idaho State visits Kensie and Portland State 4 hours ago Incarnate Word visits Texas A&M-CC after Pyke’s 33-point outing 4 hours ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); Coppin State hosts Harris and Howard 4 hours ago Lee and Lamar host SE Louisiana 4 hours ago Charleston Southern faces Gardner-Webb after Sumler’s 26-point showing 4 hours ago Boston University visits Holy Cross after Gladden’s 34-point performance 4 hours ago Cotton leads UT Rio Grande Valley against Houston Christian after 21-point showing 4 hours ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); Lancaster leads Alcorn State against Grambling after 22-point game 4 hours ago Saine leads Weber State against Sacramento State after 28-point game 4 hours ago Alabama State and Florida A&M meet for conference showdown 4 hours ago SFA hosts Johnson and McNeese 4 hours ago Syracuse visits No. 16 North Carolina after Wilson’s 22-point performance 4 hours ago New Orleans visits Harrison and East Texas A&M 4 hours ago Nicholls State visits Northwestern State after Dunkley’s 20-point game 4 hours ago Load More",
   "originalScore": null,
   "assignedScore": 64,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "The play, which opened Friday at the Golden Theatre, is a hypernaturalistic meditation on the thrill, and also the danger, of collaborating on art — the compromises, the egos and the joys. It’s an ode not just to the music business but perhaps to the theater world, too.",
-  "sourceMethod": "stub",
+  "sourceMethod": "playwright",
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -76,5 +76,36 @@
   "dtliExcerpt": "Adjmi captures that claustrophobia and inability to communicate, making his “Stereophonic” one of the very best plays to open last year Off Broadway and now this season on Broadway.",
   "dtliThumb": "Up",
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 64,
+  "isFullReview": true,
+  "textWordCount": 640,
+  "archivePath": "data/archives/reviews/stereophonic-2024/ap--mark-kennedy_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T13:54:31.571Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated",
+  "textIssues": [
+    "Show title not found in text"
+  ]
 }
