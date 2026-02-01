@@ -1,45 +1,45 @@
 {
-  "runDate": "2026-02-01T14:05:18.807Z",
+  "runDate": "2026-02-01T14:07:35.605Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "water-for-elephants-2024",
+    "showFilter": "the-notebook-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 14,
-    "failed": 122,
+    "processed": 15,
+    "failed": 121,
     "skipped": 0,
-    "successRate": "10.3%"
+    "successRate": "11.0%"
   },
   "tierBreakdown": {
     "playwright": 5,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 2,
-    "archive": 10
+    "archive": 8
   },
   "statistics": {
     "tier1Attempts": 4,
-    "tier1Success": 3,
-    "tier1_5Attempts": 0,
+    "tier1Success": 2,
+    "tier1_5Attempts": 2,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 1,
-    "tier3Attempts": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 0,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier4Attempts": 5,
+    "tier4Attempts": 8,
     "tier4Success": 3,
-    "totalFailed": 7,
-    "scrapingBeeCreditsUsed": 10,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 1,
+    "totalFailed": 6,
+    "scrapingBeeCreditsUsed": 20,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.6,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -57,9 +57,7 @@
     "stereophonic-2024/ew--allison-considine.json",
     "stereophonic-2024/guardian--gloria-oladipo.json",
     "stereophonic-2024/ap--mark-kennedy.json",
-    "the-roommate-2024/broadwaynews--brittani-samuel.json",
-    "the-roommate-2024/guardian--adrian-horton.json",
-    "the-roommate-2024/nydailynews--chris-jones.json"
+    "the-notebook-2024/guardian--gloria-oladipo.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -177,13 +175,12 @@
     "stereophonic-2024/deadline--greg-evans.json",
     "stereophonic-2024/observer--david-cote.json",
     "stereophonic-2024/timeout--adam-feldman.json",
-    "water-for-elephants-2024/nypost--elisabeth-vincentelli.json",
-    "water-for-elephants-2024/nypost--johnny-oleksinski.json",
-    "water-for-elephants-2024/observer--rex-reed.json",
-    "water-for-elephants-2024/timeout--adam-feldman.json",
-    "water-for-elephants-2024/wsj--charles-isherwood.json",
-    "water-for-elephants-2024/wsj--charles.json",
-    "water-for-elephants-2024/thestage--lane-williamson.json"
+    "the-notebook-2024/deadline--greg-evans.json",
+    "the-notebook-2024/nydailynews--chris-jones.json",
+    "the-notebook-2024/nydailynews--chris.json",
+    "the-notebook-2024/timeout--adam-feldman.json",
+    "the-notebook-2024/wsj--charles-isherwood.json",
+    "the-notebook-2024/wsj--charles.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -191,7 +188,7 @@
       "stereophonic-2024/ew--allison-considine.json",
       "stereophonic-2024/guardian--gloria-oladipo.json",
       "stereophonic-2024/ap--mark-kennedy.json",
-      "the-roommate-2024/guardian--adrian-horton.json"
+      "the-notebook-2024/guardian--gloria-oladipo.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
@@ -207,17 +204,17 @@
       "harry-potter-2021/vanityfair--richard-lawson.json",
       "harry-potter-2021/village-voice--michael-feingold.json",
       "mj-2022/nytg--ayanna-prescod.json",
-      "stereophonic-2024/nytimes--jesse-green.json",
-      "the-roommate-2024/broadwaynews--brittani-samuel.json",
-      "the-roommate-2024/nydailynews--chris-jones.json"
+      "stereophonic-2024/nytimes--jesse-green.json"
     ]
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "operation-mincemeat-2025/observer--david-cote.json",
-      "oldUrl": "https://observer.com/2025/03/operation-mincemeat-broadway-review/",
-      "newUrl": "https://observer.com/2025/03/review-british-musical-farce-operation-mincemeat-is-anything-but-dead-on-arrival/"
+  "failuresByOutlet": {
+    "New York Daily News": {
+      "count": 2,
+      "domain": "nydailynews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
     }
-  ]
+  },
+  "urlDiscoveries": []
 }
