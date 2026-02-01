@@ -87,16 +87,16 @@ jobs:
 
           git commit -m "feat: Add review data for ${{ inputs.shows }}"
 
-          # Discard local changes to reviews.json (it will be rebuilt later)
-          # This prevents conflicts during rebase since we're not committing it anyway
-          git checkout -- data/reviews.json 2>/dev/null || true
-
           # Retry loop for push with rebase (handles parallel workflow conflicts)
           MAX_RETRIES=5
           RETRY_COUNT=0
 
           while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
             echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+
+            # Clean up any unstaged changes (reviews.json, etc.) before rebasing
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
 
             # Pull and rebase
             if git pull --rebase origin main; then
@@ -108,8 +108,6 @@ jobs:
             else
               echo "Rebase failed, aborting and retrying..."
               git rebase --abort 2>/dev/null || true
-              # Reset to our commit and discard any conflicting files
-              git checkout -- data/reviews.json 2>/dev/null || true
             fi
 
             RETRY_COUNT=$((RETRY_COUNT + 1))
