@@ -1,43 +1,43 @@
 {
-  "runDate": "2026-02-01T15:08:31.001Z",
+  "runDate": "2026-02-01T15:10:19.271Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "doubt-2024",
+    "showFilter": "the-notebook-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 45,
-    "failed": 167,
+    "processed": 43,
+    "failed": 166,
     "skipped": 0,
-    "successRate": "20.8%"
+    "successRate": "20.6%"
   },
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 6,
     "browserbase": 0,
     "scrapingbee": 4,
     "brightdata": 2,
     "archive": 37
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 2,
-    "tier1_5Attempts": 2,
+    "tier1Attempts": 3,
+    "tier1Success": 0,
+    "tier1_5Attempts": 3,
     "tier1_5Success": 0,
     "tier2Attempts": 3,
     "tier2Success": 1,
     "tier3Attempts": 2,
     "tier3Success": 0,
     "tier4Attempts": 8,
-    "tier4Success": 4,
-    "totalFailed": 7,
+    "tier4Success": 3,
+    "totalFailed": 6,
     "scrapingBeeCreditsUsed": 30,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.7,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 0.9,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -85,9 +85,7 @@
     "the-great-gatsby/variety-christian-lewis--christian-lewis.json",
     "the-lion-king-1997/vulture--john-simon.json",
     "the-outsiders/new-york-magazinevulture-sara-holdren--sara-holdren.json",
-    "the-outsiders/variety-naveen-kumar--naveen-kumar.json",
-    "doubt-2024/guardian--adrian-horton.json",
-    "doubt-2024/observer--david-cote.json"
+    "the-outsiders/variety-naveen-kumar--naveen-kumar.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -250,13 +248,12 @@
     "stereophonic/variety-frank-rizzo--frank-rizzo.json",
     "suffs/vulture-sara-holdren--sara-holdren.json",
     "the-great-gatsby/new-york-magazinevulture-sara-holdren--unknown.json",
-    "doubt-2024/deadline--greg-evans.json",
-    "doubt-2024/nydailynews--chris-jones.json",
-    "doubt-2024/nydailynews--chris.json",
-    "doubt-2024/timeout--adam-feldman.json",
-    "doubt-2024/wsj--charles-isherwood.json",
-    "doubt-2024/wsj--charles.json",
-    "doubt-2024/thestage--lane-williamson.json"
+    "the-notebook-2024/deadline--greg-evans.json",
+    "the-notebook-2024/nydailynews--chris-jones.json",
+    "the-notebook-2024/nydailynews--chris.json",
+    "the-notebook-2024/timeout--adam-feldman.json",
+    "the-notebook-2024/wsj--charles-isherwood.json",
+    "the-notebook-2024/wsj--charles.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -265,9 +262,7 @@
       "appropriate-2023/ew--allison-considine.json",
       "appropriate-2023/observer--david-cote.json",
       "back-to-the-future-2023/ew--dalton-ross.json",
-      "book-of-mormon-2011/timeout--david-cote.json",
-      "doubt-2024/guardian--adrian-horton.json",
-      "doubt-2024/observer--david-cote.json"
+      "book-of-mormon-2011/timeout--david-cote.json"
     ],
     "browserbase": [],
     "scrapingbee": [
