@@ -110,8 +110,8 @@ export function generateShowSchema(show: ComputedShow) {
     },
   };
 
-  // Add aggregate rating if we have scores
-  if (show.criticScore?.score) {
+  // Add aggregate rating if we have scores and reviewCount
+  if (show.criticScore?.score && show.criticScore?.reviewCount) {
     schema.aggregateRating = {
       '@type': 'AggregateRating',
       ratingValue: Math.round(show.criticScore.score),
