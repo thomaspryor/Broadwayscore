@@ -31,11 +31,11 @@ interface ShowBuzzData {
   buzz: AudienceBuzzData | null | undefined;
 }
 
-const designationConfig: Record<string, { emoji: string; color: string }> = {
-  'Loving': { emoji: '❤️', color: 'text-red-400' },
-  'Liking': { emoji: '👍', color: 'text-emerald-400' },
-  'Shrugging': { emoji: '🤷', color: 'text-yellow-400' },
-  'Loathing': { emoji: '💩', color: 'text-gray-400' },
+const designationConfig: Record<string, { emoji: string; color: string; displayLabel: string }> = {
+  'Loving': { emoji: '❤️', color: 'text-red-400', displayLabel: 'Loving It' },
+  'Liking': { emoji: '👍', color: 'text-emerald-400', displayLabel: 'Liking It' },
+  'Shrugging': { emoji: '🤷', color: 'text-yellow-400', displayLabel: 'Shrugging' },
+  'Loathing': { emoji: '💩', color: 'text-gray-400', displayLabel: 'Loathing It' },
 };
 
 function SortIcon({ direction, active }: { direction: SortDirection | null; active: boolean }) {
@@ -215,7 +215,7 @@ export function AudienceBuzzTable({ data }: AudienceBuzzTableProps) {
                   </td>
                   <td className="py-3 px-4 text-center hidden sm:table-cell">
                     <span className={config.color}>
-                      {config.emoji} {buzz?.designation || '—'}
+                      {config.emoji} {config.displayLabel || buzz?.designation || '—'}
                     </span>
                   </td>
                 </tr>
