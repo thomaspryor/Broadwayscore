@@ -47,6 +47,7 @@ const {
 } = require('./lib/review-normalization');
 const { verifyProduction, quickDateCheck } = require('./lib/production-verifier');
 const { cleanText } = require('./lib/text-cleaning');
+const { classifyContentTier } = require('./lib/content-quality');
 let chromium, playwright;
 try {
   playwright = require('playwright');
@@ -1188,6 +1189,11 @@ function createReviewFile(showId, reviewData) {
     bwwRoundupUrl: reviewData.bwwRoundupUrl || null,
     showScoreExcerpt: cleanText(reviewData.showScoreExcerpt || reviewData.excerpt) || null
   };
+
+  // Classify content quality so downstream scoring knows what it's working with
+  const tier = classifyContentTier(review);
+  review.contentTier = tier.contentTier;
+  review.contentTierReason = tier.tierReason;
 
   fs.writeFileSync(filepath, JSON.stringify(review, null, 2));
   console.log(`    ✓ Created ${filename}`);
