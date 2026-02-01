@@ -73,23 +73,48 @@
   "showScoreUrl": "https://www.show-score.com/broadway-shows/i-need-that-broadway",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 64,
-  "archivePath": "data/archives/reviews/i-need-that-2023/variety--trish-deitch_2026-01-29.html",
-  "textFetchedAt": "2026-01-29T02:28:16.593Z",
-  "fetchMethod": "archive",
+  "archivePath": "data/archives/reviews/i-need-that-2023/variety--trish-deitch_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T22:07:39.170Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 4,
-  "sourceMethod": "archive",
+  "fetchTier": 3,
+  "sourceMethod": "brightdata",
   "archiveOrgTimestamp": "20251122021959",
   "archiveOrgUrl": "http://web.archive.org/web/20251122021959/https://variety.com/2023/legit/reviews/i-need-that-review-danny-devito-broadway-1235778734/",
   "rescoreCompletedAt": "2026-01-29T14:31:51.814Z",
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",
-  "wordCount": 391
+  "wordCount": 391,
+  "isFullReview": false,
+  "textWordCount": 113,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "shorter_than_excerpt"
+  ],
+  "textStatus": "truncated"
 }
