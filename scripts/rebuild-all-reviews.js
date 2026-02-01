@@ -6,14 +6,16 @@
  * We NEVER use a default score of 50 - that skews results
  *
  * Score priority:
- * 0. EXPLICIT RATING IN TEXT (★★★★☆, "4 out of 5", letter grades, X/5)
+ * 0a. EXPLICIT RATING IN TEXT (★★★★☆, "4 out of 5", letter grades, X/5)
  *    - These are MOST reliable - override LLM scores which had 33% error rate
+ * 0b. originalScore field (aggregator-provided: "4/5 stars", "B+")
+ *    - Parsed before LLM to prevent paywall/garbage text from overriding
  * 1. llmScore.score (HIGH/MEDIUM confidence only)
  * 2. THUMB (when LLM is low-conf/needs-review AND thumb exists)
  *    - Aggregator editors saw full review, more reliable than incomplete text
  * 3. llmScore.score (low confidence or needs review - fallback when no thumb)
  * 4. assignedScore (if already set and valid, with known source)
- * 5. originalScore parsed (stars, letter grades)
+ * 5. originalScore parsed (safety net, redundant with 0b)
  * 6. bucket mapping (Rave=90, Positive=82, Mixed=65, Negative=48, Pan=30)
  * 7. dtliThumb or bwwThumb (Up=80, Flat=60, Down=35) - final fallback
  * 8. SKIP - do not include in reviews.json
@@ -429,6 +431,7 @@ const stats = {
     'explicit-outOf': 0,
     'explicit-slash': 0,
     'explicit-letterGrade': 0,
+    'originalScore-priority0': 0,
     llmScore: 0,
     'thumb-override-llm': 0,  // Thumb used instead of low-conf/needs-review LLM
     'llmScore-lowconf': 0,
@@ -527,6 +530,16 @@ function getBestScore(data) {
       source: sourceType,
       explicitRaw: explicitRating.raw
     };
+  }
+
+  // Priority 0b: Parse originalScore field BEFORE LLM
+  // Aggregator-provided ratings like "4/5 stars", "B+", "★★★★☆" are more reliable
+  // than LLM scores, which can be confused by garbage/paywall text
+  if (data.originalScore) {
+    const parsed = parseOriginalScore(data.originalScore);
+    if (parsed !== null) {
+      return { score: parsed, source: 'originalScore-priority0' };
+    }
   }
 
   // Priority 1: LLM score (HIGH/MEDIUM confidence only)
