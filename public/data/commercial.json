@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway commercial/investment data export",
-    "generatedAt": "2026-01-31T23:33:17.853Z",
+    "generatedAt": "2026-02-01T04:27:01.971Z",
     "source": "Broadway Scorecard (broadwayscorecard.com)",
     "dataLastUpdated": "2026-01-29",
     "notes": "Capitalization and running costs marked with isEstimate may be approximations from trade press"
@@ -499,17 +499,17 @@
       "venue": "Shubert Theatre",
       "designation": "Fizzle",
       "capitalization": 22000000,
-      "capitalizationSource": "NY Times",
+      "capitalizationSource": "NY Times / Broadway Journal",
       "isCapitalizationEstimate": false,
-      "weeklyRunningCost": 775000,
+      "weeklyRunningCost": 750000,
       "isRunningCostEstimate": true,
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "estimatedRecoupmentPctLow": null,
-      "estimatedRecoupmentPctHigh": null,
-      "notes": "Closing Feb 2026 without recouping. Won 2 Tonys + Grammy. Grossed $100M+ but high running costs prevented recoupment. International productions planned."
+      "estimatedRecoupmentPctLow": 55,
+      "estimatedRecoupmentPctHigh": 65,
+      "notes": "Closed Feb 22, 2026 without recouping. Returned ~60% of $22M to investors. Won 2 Tonys + Grammy. Alicia Keys had outsized insider profit participation: sole lead producer + underlying rights holder, earning 10% of net profits at recoupment (12.5% at 150%, 35% insider split at 200%). Similar structure to Harry Potter's Cursed Child. Had the show recouped, investors would have seen diluted returns. Weekly nut ~$750K. International productions planned may improve overall investor returns."
     },
     {
       "slug": "stereophonic",
@@ -616,10 +616,10 @@
       "recouped": true,
       "recoupedDate": "2025-12",
       "recoupedWeeks": 89,
-      "recoupedSource": "Reddit Grosses Analysis / Broadway Journal",
+      "recoupedSource": "Broadway News (announced Jan 27, 2026)",
       "estimatedRecoupmentPctLow": null,
       "estimatedRecoupmentPctHigh": null,
-      "notes": "Won Best Musical Tony 2024. Recouped $22M investment week ending December 28, 2025 after 744 performances (~89 weeks) and $121M total grosses. First new musical to recoup since 2022. Post-Tony grosses hit $1.4M/week record at Bernard B. Jacobs Theatre."
+      "notes": "Won Best Musical Tony 2024. Recouped $22M investment week ending December 28, 2025 after 744 performances (~89 weeks) and $121M total grosses. First new musical to recoup since 2022. Post-Tony grosses hit $1.4M/week record at Bernard B. Jacobs Theatre. West End production and tour announced."
     },
     {
       "slug": "water-for-elephants",
@@ -751,7 +751,7 @@
       "recoupedSource": "Broadway News / Playbill",
       "estimatedRecoupmentPctLow": null,
       "estimatedRecoupmentPctHigh": null,
-      "notes": "First musical of 2018-2019 season to recoup. Won 8 Tony Awards including Best Musical. Grosses have softened recently but remains profitable."
+      "notes": "First musical of 2018-2019 season to recoup. Won 8 Tony Awards including Best Musical. Recouped in ~30 weeks (6 months). Received $10M SVOG grant during COVID shutdown — one of at least 15 Broadway shows to receive the maximum grant. Grosses have softened recently but remains profitable."
     },
     {
       "slug": "harry-potter",

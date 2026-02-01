@@ -308,11 +308,12 @@ function detectWrongArticle(text, showTitle) {
 }
 
 /**
- * Current Broadway shows for multi-show detection
- * Used to detect 404/index pages that list multiple shows
+ * Current and recent Broadway shows for multi-show detection
+ * Used to detect 404/index pages and concatenated articles
  * @type {string[]}
  */
 const CURRENT_BROADWAY_SHOWS = [
+  // Currently running
   'purlie', 'ghosts', 'maybe happy ending', 'death becomes her',
   'stereophonic', 'cabaret', 'sunset boulevard', 'the outsiders',
   'hamilton', 'wicked', 'the lion king', 'chicago', 'phantom',
@@ -322,6 +323,27 @@ const CURRENT_BROADWAY_SHOWS = [
   'oh mary', 'appropriate', 'prayer for the french republic', 'mother play',
   'enemy of the people', 'mary jane', 'our town', 'mcneal', 'romeo juliet',
   'yellowjackets', 'queen versailles', 'once upon a mattress', 'left on tenth',
+  // Recent/closed (for detecting concatenated articles)
+  'into the woods', 'funny girl', 'six', 'beetlejuice', 'aladdin',
+  'dear evan hansen', 'come from away', 'the music man', 'company',
+  'a beautiful noise', 'some like it hot', 'kimberly akimbo', 'parade',
+  'shucked', 'new york new york', 'camelot', 'lempicka', 'the notebook',
+  'days of wine and roses', 'pictures from home', 'the outsiders',
+  'norma desmond', 'nicole scherzinger',  // Key cast names that indicate different shows
+];
+
+/**
+ * Patterns that indicate article boundaries (multiple articles concatenated)
+ * @type {RegExp[]}
+ */
+const ARTICLE_BOUNDARY_PATTERNS = [
+  /now playing at the [A-Z][a-z]+ Theatre/gi,
+  /currently running at the [A-Z][a-z]+ Theatre/gi,
+  /playing at the [A-Z][a-z]+ Theatre/gi,
+  /at the (Belasco|St\. James|Winter Garden|Booth|Lyceum|Shubert|Imperial|Majestic|Broadhurst|Barrymore|Palace|Lunt-Fontanne|Gershwin|Marquis|Nederlander|Neil Simon|Rodgers|Schoenfeld|Brooks Atkinson|Circle in the Square|Helen Hayes|Jacobs|Eugene O'Neill|Longacre|Ambassador|Cort|Gerald Schoenfeld|Stephen Sondheim|Vivian Beaumont|August Wilson|Music Box|Lyric|Al Hirschfeld|American Airlines)/gi,
+  /The (?:charming|brilliant|stunning|captivating|delightful|exciting|thrilling) new (?:musical|play|revival)/gi,
+  /The most recent revival of/gi,
+  /Director [A-Z][a-z]+ [A-Z][a-z]+…$/gm,  // EW article teasers end with director name + ellipsis
 ];
 
 /**
@@ -425,6 +447,74 @@ function detectMultiShowContent(text, expectedShowId) {
   }
 
   return { detected: false, showsFound: foundShows, reason: null };
+}
+
+/**
+ * Detect if text has multiple articles concatenated together
+ * This happens when scrapers include "related articles" or "more reviews" sections
+ *
+ * @param {string} text - Text to check
+ * @param {string} [expectedShowId] - The show this review should be about
+ * @returns {{ detected: boolean, reason: string | null, truncateAt: number | null }}
+ */
+function detectConcatenatedArticles(text, expectedShowId) {
+  if (!text || text.length < 500) {
+    return { detected: false, reason: null, truncateAt: null };
+  }
+
+  // Count article boundary patterns
+  let boundaryMatches = [];
+  for (const pattern of ARTICLE_BOUNDARY_PATTERNS) {
+    // Reset regex lastIndex for global patterns
+    pattern.lastIndex = 0;
+    let match;
+    while ((match = pattern.exec(text)) !== null) {
+      boundaryMatches.push({ index: match.index, match: match[0] });
+    }
+  }
+
+  // If we have 2+ article boundary patterns, likely concatenated
+  if (boundaryMatches.length >= 2) {
+    // Sort by position
+    boundaryMatches.sort((a, b) => a.index - b.index);
+    // The first boundary after position 500 is likely where concatenation starts
+    const firstBoundary = boundaryMatches.find(m => m.index > 500);
+    if (firstBoundary) {
+      return {
+        detected: true,
+        reason: `Multiple article boundaries detected (${boundaryMatches.length})`,
+        truncateAt: firstBoundary.index
+      };
+    }
+  }
+
+  // Also check for multiple different shows combined with short article teasers
+  const multiShow = detectMultiShowContent(text, expectedShowId);
+  if (multiShow.detected && multiShow.showsFound.length >= 2) {
+    // Find where the first "other show" is mentioned
+    const lower = text.toLowerCase();
+    let earliestOtherShow = text.length;
+    for (const show of multiShow.showsFound) {
+      const idx = lower.indexOf(show);
+      if (idx > 500 && idx < earliestOtherShow) {
+        earliestOtherShow = idx;
+      }
+    }
+    if (earliestOtherShow < text.length) {
+      // Look for sentence boundary before the other show mention
+      const beforeOther = text.substring(0, earliestOtherShow);
+      const lastPeriod = beforeOther.lastIndexOf('. ');
+      const truncateAt = lastPeriod > 500 ? lastPeriod + 1 : earliestOtherShow;
+
+      return {
+        detected: true,
+        reason: `Other shows detected in text: ${multiShow.showsFound.join(', ')}`,
+        truncateAt
+      };
+    }
+  }
+
+  return { detected: false, reason: null, truncateAt: null };
 }
 
 /**
@@ -598,6 +688,17 @@ function assessTextQuality(text, showId, showTitle) {
     };
   }
 
+  // Check for concatenated articles (other reviews appended)
+  const concatenatedCheck = detectConcatenatedArticles(text, showId);
+  if (concatenatedCheck.detected) {
+    return {
+      quality: 'garbage',
+      confidence: 'high',
+      issues: [concatenatedCheck.reason],
+      truncateAt: concatenatedCheck.truncateAt
+    };
+  }
+
   // Check for review content
   const reviewCheck = hasReviewContent(text);
   if (!reviewCheck.hasReviewContent) {
@@ -667,6 +768,7 @@ module.exports = {
   // New enhanced validation functions
   validateShowMentioned,
   detectMultiShowContent,
+  detectConcatenatedArticles,
   // Export individual detectors for testing/debugging
   detectAdBlocker,
   detectPaywall,
@@ -680,4 +782,5 @@ module.exports = {
   // Export constants for reference
   THEATER_KEYWORDS,
   CURRENT_BROADWAY_SHOWS,
+  ARTICLE_BOUNDARY_PATTERNS,
 };
