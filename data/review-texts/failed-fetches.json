@@ -4826,5 +4826,65 @@
     "garbageReason": "Multiple article boundaries detected (2)",
     "textLength": 15199,
     "timestamp": "2026-02-01T14:59:54.874Z"
+  },
+  {
+    "reviewId": "gutenberg-2023/deadline--greg-evans.json",
+    "showId": "gutenberg-2023",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/2023/10/gutenberg-musical-broadway-review-1235570178/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
+    "textLength": 5880,
+    "timestamp": "2026-02-01T15:04:30.762Z"
+  },
+  {
+    "reviewId": "gutenberg-2023/observer--david-cote.json",
+    "showId": "gutenberg-2023",
+    "outlet": "Observer",
+    "critic": "David Cote",
+    "url": "https://observer.com/2023/10/review-of-gutenberg-the-musical-print-is-hilariously-not-dead/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (3): hamilton, moulin rouge, six",
+    "textLength": 5958,
+    "timestamp": "2026-02-01T15:04:38.174Z"
+  },
+  {
+    "reviewId": "gutenberg-2023/timeout--adam-feldman.json",
+    "showId": "gutenberg-2023",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/gutenberg-the-musical-broadway-review-josh-gad-andrew-rannells",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 6760,
+    "timestamp": "2026-02-01T15:04:42.291Z"
+  },
+  {
+    "reviewId": "gutenberg-2023/wsj--charles-isherwood.json",
+    "showId": "gutenberg-2023",
+    "outlet": "The Wall Street Journal",
+    "critic": "Charles Isherwood",
+    "url": "https://www.wsj.com/articles/gutenberg-the-musical-review-broadway-andrew-rannells-josh-gad-420d906c",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
+    "textLength": 585,
+    "timestamp": "2026-02-01T15:04:45.775Z"
+  },
+  {
+    "reviewId": "gutenberg-2023/wsj--charles.json",
+    "showId": "gutenberg-2023",
+    "outlet": "The Wall Street Journal",
+    "critic": "Charles",
+    "url": "https://www.wsj.com/articles/gutenberg-the-musical-review-broadway-andrew-rannells-josh-gad-420d906c",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
+    "textLength": 585,
+    "timestamp": "2026-02-01T15:04:48.170Z"
   }
 ]
