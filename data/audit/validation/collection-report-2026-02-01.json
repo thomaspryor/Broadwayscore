@@ -1,43 +1,43 @@
 {
-  "runDate": "2026-02-01T14:09:38.625Z",
+  "runDate": "2026-02-01T14:12:57.750Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "the-shark-is-broken-2023",
+    "showFilter": "the-whos-tommy-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 19,
+    "processed": 18,
     "failed": 122,
     "skipped": 0,
-    "successRate": "13.5%"
+    "successRate": "12.9%"
   },
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 6,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 2,
-    "archive": 10
+    "archive": 9
   },
   "statistics": {
     "tier1Attempts": 2,
-    "tier1Success": 2,
-    "tier1_5Attempts": 0,
+    "tier1Success": 0,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 1,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
     "tier4Attempts": 5,
-    "tier4Success": 4,
+    "tier4Success": 3,
     "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
+    "scrapingBeeCreditsUsed": 20,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -60,8 +60,7 @@
     "mother-play-2024/broadwaynews--brittani-samuel.json",
     "mother-play-2024/ew--allison-considine.json",
     "mother-play-2024/guardian--benjamin-lee.json",
-    "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json",
-    "the-shark-is-broken-2023/observer--david-cote.json"
+    "the-whos-tommy-2024/washpost--elisabeth-vincentelli.json"
   ],
   "failed": [
     "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -182,10 +181,10 @@
     "mother-play-2024/timeout--adam-feldman.json",
     "mother-play-2024/wsj--charles-isherwood.json",
     "mother-play-2024/wsj--charles.json",
-    "the-shark-is-broken-2023/deadline--greg-evans.json",
-    "the-shark-is-broken-2023/timeout--adam-feldman.json",
-    "the-shark-is-broken-2023/wsj--charles-isherwood.json",
-    "the-shark-is-broken-2023/wsj--charles.json"
+    "the-whos-tommy-2024/deadline--greg-evans.json",
+    "the-whos-tommy-2024/timeout--adam-feldman.json",
+    "the-whos-tommy-2024/wsj--charles-isherwood.json",
+    "the-whos-tommy-2024/wsj--charles.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -194,11 +193,12 @@
       "stereophonic-2024/guardian--gloria-oladipo.json",
       "stereophonic-2024/ap--mark-kennedy.json",
       "mother-play-2024/ew--allison-considine.json",
-      "mother-play-2024/guardian--benjamin-lee.json",
-      "the-shark-is-broken-2023/observer--david-cote.json"
+      "mother-play-2024/guardian--benjamin-lee.json"
     ],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "the-whos-tommy-2024/washpost--elisabeth-vincentelli.json"
+    ],
     "brightdata": [
       "harry-potter-2021/cititour--brian-scott-lipton.json",
       "mj-2022/usatoday--david-rooney.json"
@@ -212,8 +212,7 @@
       "harry-potter-2021/village-voice--michael-feingold.json",
       "mj-2022/nytg--ayanna-prescod.json",
       "stereophonic-2024/nytimes--jesse-green.json",
-      "mother-play-2024/broadwaynews--brittani-samuel.json",
-      "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json"
+      "mother-play-2024/broadwaynews--brittani-samuel.json"
     ]
   },
   "failuresByOutlet": {},
