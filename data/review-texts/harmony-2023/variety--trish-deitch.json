@@ -70,10 +70,10 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 57,
-  "archivePath": "data/archives/reviews/harmony-2023/variety--trish-deitch_2026-01-28.html",
-  "textFetchedAt": "2026-01-28T23:32:55.712Z",
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 50,
+  "archivePath": "data/archives/reviews/harmony-2023/variety--trish-deitch_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T23:35:32.085Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -88,5 +88,11 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251205000834/https://variety.com/2023/legit/reviews/harmony-review-barry-manilow-broadway-1235790164/",
   "rescoreCompletedAt": "2026-02-01T15:05:37.079Z",
   "contentTier": "complete",
-  "wordCount": 483
+  "wordCount": 483,
+  "needsRescore": true,
+  "isFullReview": false,
+  "textWordCount": 86,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "partial"
 }

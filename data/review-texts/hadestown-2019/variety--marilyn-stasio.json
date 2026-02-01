@@ -71,31 +71,13 @@
     "needsReviewReasons": []
   },
   "sourceMethod": "archive",
-  "archivePath": "data/archives/reviews/hadestown-2019/variety--marilyn-stasio_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T05:02:42.395Z",
+  "archivePath": "data/archives/reviews/hadestown-2019/variety--marilyn-stasio_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T23:32:36.038Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "Access blocked in Bright Data response"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
@@ -112,5 +94,12 @@
   "previousLlmScore": 84,
   "rescoreCompletedAt": "2026-01-29T01:55:25.769Z",
   "contentTier": "complete",
-  "wordCount": 552
+  "wordCount": 552,
+  "isFullReview": false,
+  "textWordCount": 156,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "shorter_than_excerpt"
+  ],
+  "textStatus": "truncated"
 }
