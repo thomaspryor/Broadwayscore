@@ -834,10 +834,10 @@ function HomePageInner() {
         </div>
       </div>
 
-      {/* Column Header */}
-      <div className="flex justify-end px-4 mb-1">
-        <span className="w-20 sm:w-24 text-center text-[10px] font-semibold uppercase tracking-wider text-gray-500">
-          {scoreMode === 'audience' ? 'Audience' : 'Critics'}
+      {/* Score Column Header */}
+      <div className="flex justify-end items-center pr-4 sm:pr-5 mb-2">
+        <span className="text-xs sm:text-sm font-semibold text-gray-400 tracking-wide">
+          {scoreMode === 'audience' ? 'Audience Buzz' : "Critics\u2019 Score"}
         </span>
       </div>
 
