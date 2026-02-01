@@ -193,11 +193,6 @@ async function main() {
         data.textStatus = 'garbage_cleared';
         data.isFullReview = false;
 
-        // Flag for LLM scoring if not already scored
-        if (!data.llmScore) {
-          data.needsScoring = true;
-        }
-
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
         stats.fixed++;
         fixed.push({ showId, file: outletCritic, reason });

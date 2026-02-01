@@ -14,9 +14,12 @@ const fs = require('fs');
 const path = require('path');
 
 const reviewDir = 'data/review-texts';
-const shows = fs.readdirSync(reviewDir).filter(f =>
-  fs.statSync(path.join(reviewDir, f)).isDirectory()
-);
+const shows = fs.readdirSync(reviewDir).filter(f => {
+  const fullPath = path.join(reviewDir, f);
+  // Skip symlinks to avoid processing the same directory twice
+  if (fs.lstatSync(fullPath).isSymbolicLink()) return false;
+  return fs.statSync(fullPath).isDirectory();
+});
 
 let flagged = 0;
 let skipped = 0;

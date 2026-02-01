@@ -794,7 +794,6 @@ function saveReview(review) {
     assignedScore: null,
     source: 'bww-roundup',
     dtliThumb: null,
-    needsScoring: true,
   };
 
   fs.writeFileSync(filepath, JSON.stringify(reviewData, null, 2));
