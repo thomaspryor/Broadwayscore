@@ -240,6 +240,10 @@ data/
 - `scripts/generate-critic-consensus.js` - LLM editorial summaries
 - `scripts/fetch-show-images-auto.js` - Image fetcher: TodayTix API (open shows) → page scrape → Playbill fallback
 - `scripts/archive-show-images.js` - Downloads CDN images to local WebP files
+- `scripts/scrape-nysr-reviews.js` - NYSR full text + star ratings via WordPress API
+- `scripts/scrape-playbill-verdict.js` - Playbill Verdict review URL discovery
+- `scripts/scrape-nyc-theatre-roundups.js` - NYC Theatre excerpt extraction (2023+ shows)
+- `scripts/lib/show-matching.js` - Shared title→show matching utility
 
 **Tests:**
 - `tests/unit/` - Unit tests (parse-grosses, commercial filtering, source-validator, etc.)
@@ -389,15 +393,27 @@ Show pages display box office data: THIS WEEK row (Gross with WoW/YoY arrows, Ca
 
 Scripts use `scripts/lib/scraper.js` with automatic fallback: Bright Data (primary) → ScrapingBee → Playwright. Credentials stored as GitHub Secrets (never in code). MCP servers (Bright Data, ScrapingBee, Playwright) configured in `.mcp.json` for local Claude Code use.
 
-### Three Aggregator Sources
+### Five Aggregator Sources
 
-Use ALL THREE for comprehensive review coverage - each has different historical coverage:
+Use ALL FIVE for comprehensive review coverage - each has different historical coverage:
 
 1. **Show Score** (show-score.com) - Best for recent shows (2015+). URL: `{slug}-broadway` (always try `-broadway` suffix first to avoid off-broadway redirects)
 2. **DTLI** (didtheylikeit.com) - Excellent historical coverage back to ~2000s. URL: `didtheylikeit.com/shows/{show-name}/`
 3. **BWW Review Roundups** - Reviews from smaller outlets not on other aggregators. URL: search BroadwayWorld.
+4. **Playbill Verdict** (playbill.com/category/the-verdict) - Discovers review URLs from many outlets. Script: `scripts/scrape-playbill-verdict.js`. Google fallback for shows not on category page.
+5. **NYC Theatre Roundups** (newyorkcitytheatre.com) - Excerpts for paywalled reviews from 2023+ shows. Script: `scripts/scrape-nyc-theatre-roundups.js`. Google discovery for roundup page URLs.
 
 Archives stored in `data/aggregator-archive/`. Extraction scripts: `scripts/extract-show-score-reviews.js`, `scripts/extract-bww-reviews.js`.
+
+### Outlet-Specific Scrapers
+
+Unlike aggregators (which collect reviews from many outlets), outlet-specific scrapers target a single publication to fill coverage gaps:
+
+- **NYSR** (nystagereview.com) - WordPress REST API (`/wp-json/wp/v2/posts?categories=1`). Script: `scripts/scrape-nysr-reviews.js`. Fetches full text + star ratings for all Broadway reviews. Star ratings are in `excerpt.rendered`, not content body. Cross-reference lines (`[Read X's ★★★★☆ review here.]`) are stripped to prevent rating cross-contamination.
+
+### Shared Title Matching
+
+`scripts/lib/show-matching.js` provides `matchTitleToShow(externalTitle, showsData)` for matching external show titles (from aggregators, APIs) to shows.json entries. Used by NYSR, Playbill Verdict, and NYC Theatre scrapers. Handles aliases, slug matching, normalized titles, title variants (stripping subtitles after colons/dashes), and partial containment. Returns match with confidence level (high/medium/low).
 
 ## Review Data Schema
 
@@ -408,9 +424,9 @@ Each review file in `data/review-texts/{showId}/{outletId}--{criticName}.json`:
   "showId", "outletId", "outlet", "criticName", "url", "publishDate",
   "fullText": "..." or null,
   "isFullReview": true/false,
-  "dtliExcerpt", "bwwExcerpt", "showScoreExcerpt",
+  "dtliExcerpt", "bwwExcerpt", "showScoreExcerpt", "nycTheatreExcerpt",
   "assignedScore": 78,
-  "source": "dtli|bww-roundup|playwright-scraped|webfetch-scraped|manual",
+  "source": "dtli|bww-roundup|playbill-verdict|nyc-theatre|nysr|playwright-scraped|webfetch-scraped|manual",
   "dtliThumb": "Up/Down/Meh",
   "bwwThumb": "Up/Down/Meh"
 }

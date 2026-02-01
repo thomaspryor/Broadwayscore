@@ -12,50 +12,57 @@
   "source": "dtli",
   "llmScore": {
     "score": 72,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
-      "low": 67,
-      "high": 77
+      "low": 68,
+      "high": 76
     },
     "bucket": "Mixed",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 60,
+      "music": 75,
+      "performances": 82,
+      "direction": 78
     },
     "keyPhrases": [
       {
-        "quote": "undeniably moving and extremely powerful, the pros of Harmony generally outweigh the cons",
+        "quote": "the pros of Harmony generally outweigh the cons",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "It's not as profound as everyone involved clearly thinks it is",
-        "sentiment": "negative",
+        "quote": "undeniably moving and extremely powerful",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's not as profound as everyone involved clearly thinks it is, but it'll give you the good cathartic cry you've been waiting for",
+        "sentiment": "neutral",
         "strength": 3
-      },
-      {
-        "quote": "it'll give you the good cathartic cry you've been waiting for",
-        "sentiment": "positive",
-        "strength": 4
       }
     ],
-    "reasoning": "Claude: The critic acknowledges significant emotional impact and states pros outweigh cons, but tempers enthusiasm with criticism about the show's pretensions, landing in qualified recommendation territory.",
+    "reasoning": "The critic acknowledges significant flaws in the book and tone but ultimately concludes the pros outweigh the cons, praising performances and calling it 'undeniably moving and extremely powerful' with a qualified recommendation.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:14:20.447Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:05:08.661Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 3732,
+    "outputTokens": 354,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 72,
@@ -76,7 +83,7 @@
   "bwwThumb": null,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 72,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.754Z",
+  "rescoreCompletedAt": "2026-02-01T15:05:08.661Z",
   "textQualityOverride": "batch-fix-2026-01-30",
   "contentTier": "complete",
   "wordCount": 1001
