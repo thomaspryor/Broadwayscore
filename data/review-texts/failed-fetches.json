@@ -5020,54 +5020,6 @@
     "timestamp": "2026-02-01T19:17:13.072Z"
   },
   {
-    "reviewId": "hamilton-2015/timeout--david-cote.json",
-    "showId": "hamilton-2015",
-    "outlet": "Time Out New York",
-    "critic": "David Cote",
-    "url": "http://www.timeout.com/newyork/theater/hamilton-1",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 10706,
-    "timestamp": "2026-02-01T19:17:57.334Z"
-  },
-  {
-    "reviewId": "hamilton-2015/wsj--terry-teachout.json",
-    "showId": "hamilton-2015",
-    "outlet": "The Wall Street Journal",
-    "critic": "Terry Teachout",
-    "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-1438907400",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
-    "textLength": 1016,
-    "timestamp": "2026-02-01T19:18:01.970Z"
-  },
-  {
-    "reviewId": "harmony-2023/deadline--greg-evans.json",
-    "showId": "harmony-2023",
-    "outlet": "Deadline",
-    "critic": "Greg Evans",
-    "url": "https://deadline.com/2023/11/harmony-danny-and-the-deep-blue-sea-reviews-1235600743/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
-    "textLength": 8002,
-    "timestamp": "2026-02-01T19:18:05.366Z"
-  },
-  {
-    "reviewId": "harmony-2023/the-new-york-sun--elysa-gardner.json",
-    "showId": "harmony-2023",
-    "outlet": "The New York Sun",
-    "critic": "Elysa Gardner",
-    "url": "https://www.nysun.com/article/with-harmony-barry-manilow-and-bruce-sussman-offer-a-musical-that-is-almost-defiantly-life-affirming-and-joyous",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
-    "textLength": 628,
-    "timestamp": "2026-02-01T19:18:18.230Z"
-  },
-  {
     "reviewId": "harmony-2023/timeout--adam-feldman.json",
     "showId": "harmony-2023",
     "outlet": "Time Out New York",
@@ -6110,5 +6062,65 @@
     "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
     "textLength": 4324,
     "timestamp": "2026-02-01T23:57:19.565Z"
+  },
+  {
+    "reviewId": "hamilton-2015/theatermania--adam-feldman.json",
+    "showId": "hamilton-2015",
+    "outlet": "TheaterMania",
+    "critic": "Adam Feldman",
+    "url": "https://www.theatermania.com/new-york-city-theater/reviews/hamilton_72618.html",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©1999-2026 TheaterMania.com, Inc. All Rights Reserved\"",
+    "textLength": 1556,
+    "timestamp": "2026-02-01T23:58:14.716Z"
+  },
+  {
+    "reviewId": "hamilton-2015/timeout--david-cote.json",
+    "showId": "hamilton-2015",
+    "outlet": "Time Out New York",
+    "critic": "David Cote",
+    "url": "http://www.timeout.com/newyork/theater/hamilton-1",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 11230,
+    "timestamp": "2026-02-01T23:58:18.651Z"
+  },
+  {
+    "reviewId": "hamilton-2015/wsj--terry-teachout.json",
+    "showId": "hamilton-2015",
+    "outlet": "The Wall Street Journal",
+    "critic": "Terry Teachout",
+    "url": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-1438907400",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
+    "textLength": 1016,
+    "timestamp": "2026-02-01T23:58:21.891Z"
+  },
+  {
+    "reviewId": "harmony-2023/deadline--greg-evans.json",
+    "showId": "harmony-2023",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/2023/11/harmony-danny-and-the-deep-blue-sea-reviews-1235600743/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
+    "textLength": 8002,
+    "timestamp": "2026-02-01T23:58:24.997Z"
+  },
+  {
+    "reviewId": "harmony-2023/the-new-york-sun--elysa-gardner.json",
+    "showId": "harmony-2023",
+    "outlet": "The New York Sun",
+    "critic": "Elysa Gardner",
+    "url": "https://www.nysun.com/article/with-harmony-barry-manilow-and-bruce-sussman-offer-a-musical-that-is-almost-defiantly-life-affirming-and-joyous",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
+    "textLength": 628,
+    "timestamp": "2026-02-01T23:58:38.228Z"
   }
 ]

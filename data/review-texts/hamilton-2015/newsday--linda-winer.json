@@ -12,7 +12,7 @@
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAMILTON-Opens-on-Broadway-20150806",
-  "sourceMethod": "brightdata",
+  "sourceMethod": "archive",
   "scoreSource": "sentiment-positive",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -82,28 +82,16 @@
   "isFullReview": true,
   "textWordCount": 492,
   "archivePath": "data/archives/reviews/hamilton-2015/newsday--linda-winer_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T19:17:42.137Z",
-  "fetchMethod": "brightdata",
+  "textFetchedAt": "2026-02-01T23:57:48.705Z",
+  "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Paywall detected - login may have failed"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
-  "fetchTier": 3,
+  "fetchTier": 4,
   "textQuality": "truncated",
   "truncationSignals": [
     "no_ending_punctuation",
