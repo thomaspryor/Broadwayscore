@@ -1,113 +1,239 @@
 {
-  "runDate": "2026-02-02T05:16:30.782Z",
+  "runDate": "2026-02-02T06:01:00.437Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 10,
+    "maxReviews": 50,
     "priority": "all",
-    "showFilter": "oh-mary-2024",
+    "showFilter": "",
     "aggressive": false,
     "scrapingBeeEnabled": true,
-    "brightDataEnabled": true,
+    "brightDataEnabled": false,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 7,
+    "processed": 9,
+    "failed": 44,
     "skipped": 0,
-    "successRate": "30.0%"
+    "successRate": "17.0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
-    "browserbase": 2,
-    "scrapingbee": 0,
-    "brightdata": 2,
-    "archive": 1
+    "playwright": 4,
+    "browserbase": 4,
+    "scrapingbee": 6,
+    "brightdata": 1,
+    "archive": 16
   },
   "statistics": {
-    "tier1Attempts": 13,
-    "tier1Success": 3,
-    "tier1_5Attempts": 5,
-    "tier1_5Success": 1,
-    "tier2Attempts": 7,
-    "tier2Success": 1,
-    "tier3Attempts": 4,
-    "tier3Success": 3,
-    "tier4Attempts": 12,
-    "tier4Success": 1,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 55,
-    "browserbaseSessionsUsed": 5,
-    "browserbaseMinutesUsed": 3.1,
-    "urlDiscoveryAttempts": 5,
-    "urlDiscoverySuccess": 5,
+    "tier1Attempts": 58,
+    "tier1Success": 6,
+    "tier1_5Attempts": 4,
+    "tier1_5Success": 2,
+    "tier2Attempts": 26,
+    "tier2Success": 6,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier4Attempts": 55,
+    "tier4Success": 15,
+    "totalFailed": 22,
+    "scrapingBeeCreditsUsed": 175,
+    "browserbaseSessionsUsed": 4,
+    "browserbaseMinutesUsed": 0.8,
+    "urlDiscoveryAttempts": 22,
+    "urlDiscoverySuccess": 11,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "oh-mary-2024/nytimes--jesse-green.json",
-    "oh-mary-2024/deadline--greg-evans.json",
-    "oh-mary-2024/ew--christian-holub.json"
+    "chess-2025/nytimes--elisabeth-vincentelli.json",
+    "chess-2025/timeout--adam-feldman.json",
+    "and-juliet-2022/nytg--unknown.json",
+    "grey-house-2023/newyorker--dan-stahl.json",
+    "harmony-2023/variety--trish-deitch.json",
+    "harmony-2023/vulture--jesse-green.json",
+    "heart-of-rock-and-roll-2024/nytg--gillian-russo.json",
+    "heart-of-rock-and-roll-2024/nytimes--jesse-green.json",
+    "hells-kitchen-2024/nytimes--jesse-green.json"
   ],
   "failed": [
-    "oh-mary-2024/hollywood-reporter--angie-han.json",
-    "oh-mary-2024/hollywood-reporter--david-rooney.json",
-    "oh-mary-2024/variety--aramide-tinubu.json",
-    "oh-mary-2024/vulture--helen-shaw.json",
-    "oh-mary-2024/broadwaynews--brittani-samuel.json",
-    "oh-mary-2024/guardian--adrian-horton.json",
-    "oh-mary-2024/nydailynews--chris-jones.json"
+    "chess-2025/wsj--charles-isherwood.json",
+    "aladdin-2014/hollywood-reporter--david-rooney.json",
+    "an-enemy-of-the-people-2024/hollywood-reporter--david-rooney.json",
+    "an-enemy-of-the-people-2024/variety--aramide-tinubu.json",
+    "an-enemy-of-the-people-2024/variety--daniel-dand8217addario.json",
+    "an-enemy-of-the-people-2024/vulture--jesse-green.json",
+    "and-juliet-2022/variety--peter-marks.json",
+    "appropriate-2023/hollywood-reporter--lovia-gyarkye.json",
+    "appropriate-2023/variety--aramide-tinubu.json",
+    "appropriate-2023/vulture--jesse-green.json",
+    "back-to-the-future-2023/hollywood-reporter--frank-scheck.json",
+    "back-to-the-future-2023/nyt-theater--david-nounou.json",
+    "back-to-the-future-2023/variety--aramide-tinubu.json",
+    "book-of-mormon-2011/variety--marilyn-stasio.json",
+    "boop-2025/variety--frank-rizzo.json",
+    "buena-vista-social-club-2025/variety--aramide-tinubu.json",
+    "bug-2026/nytimes--jason-zinoman.json",
+    "cabaret-2024/variety--naveen-kumar.json",
+    "days-of-wine-and-roses-2024/hollywood-reporter--anita-gates.json",
+    "days-of-wine-and-roses-2024/variety--aramide-tinubu.json",
+    "death-becomes-her-2024/variety--frank-rizzo.json",
+    "grey-house-2023/hollywood-reporter--david-rooney.json",
+    "hadestown-2019/variety--marilyn-stasio.json",
+    "hadestown-2019/vulture--jesse-green.json",
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/variety--charles-isherwood.json",
+    "harmony-2023/hollywood-reporter--david-rooney.json",
+    "harmony-2023/variety--aramide-tinubu.json",
+    "harry-potter-2021/variety--marilyn-stasio.json",
+    "heart-of-rock-and-roll-2024/variety--frank-rizzo.json",
+    "heart-of-rock-and-roll-2024/variety--peter-marks.json",
+    "hells-kitchen-2024/hollywood-reporter--david-rooney.json",
+    "hells-kitchen-2024/variety--aramide-tinubu.json",
+    "here-lies-love-2023/hollywood-reporter--angie-han.json",
+    "how-to-dance-in-ohio-2023/variety--aramide-tinubu.json",
+    "i-need-that-2023/variety--trish-deitch.json",
+    "illinoise-2024/hollywood-reporter--david-rooney.json",
+    "illinoise-2024/nyt-theater--jonathan-mandell.json",
+    "illinoise-2024/variety--christian-lewis.json",
+    "illinoise-2024/vulture--helen-shaw.json",
+    "jajas-african-hair-braiding-2023/variety--aramide-tinubu.json",
+    "just-for-us-2023/nytimes--jesse-green.json",
+    "just-for-us-2023/variety--aramide-tinubu.json",
+    "just-for-us-2023/variety--naveen-kumar.json"
   ],
   "tierDetails": {
     "playwright": [
-      "oh-mary-2024/deadline--greg-evans.json",
-      "oh-mary-2024/ew--christian-holub.json"
+      "and-juliet-2022/nytg--unknown.json",
+      "harmony-2023/variety--aramide-tinubu.json",
+      "harry-potter-2021/variety--marilyn-stasio.json",
+      "heart-of-rock-and-roll-2024/nytg--gillian-russo.json"
     ],
     "browserbase": [
-      "data/review-texts/oh-mary-2024/nytimes--jesse-green.json",
-      "oh-mary-2024/nytimes--jesse-green.json"
+      "data/review-texts/appropriate-2023/hollywood-reporter--lovia-gyarkye.json",
+      "appropriate-2023/hollywood-reporter--lovia-gyarkye.json",
+      "data/review-texts/days-of-wine-and-roses-2024/variety--aramide-tinubu.json",
+      "days-of-wine-and-roses-2024/variety--aramide-tinubu.json"
     ],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "buena-vista-social-club-2025/variety--aramide-tinubu.json",
+      "bug-2026/nytimes--jason-zinoman.json",
+      "death-becomes-her-2024/variety--frank-rizzo.json",
+      "grey-house-2023/newyorker--dan-stahl.json",
+      "heart-of-rock-and-roll-2024/variety--peter-marks.json",
+      "i-need-that-2023/variety--trish-deitch.json"
+    ],
     "brightdata": [
-      "oh-mary-2024/hollywood-reporter--angie-han.json",
-      "oh-mary-2024/hollywood-reporter--david-rooney.json"
+      "chess-2025/nytimes--elisabeth-vincentelli.json"
     ],
     "archive": [
-      "oh-mary-2024/variety--aramide-tinubu.json"
+      "chess-2025/timeout--adam-feldman.json",
+      "aladdin-2014/hollywood-reporter--david-rooney.json",
+      "an-enemy-of-the-people-2024/variety--daniel-dand8217addario.json",
+      "back-to-the-future-2023/hollywood-reporter--frank-scheck.json",
+      "boop-2025/variety--frank-rizzo.json",
+      "cabaret-2024/variety--naveen-kumar.json",
+      "hadestown-2019/variety--marilyn-stasio.json",
+      "hamilton-2015/hollywood-reporter--david-rooney.json",
+      "harmony-2023/variety--trish-deitch.json",
+      "harmony-2023/hollywood-reporter--david-rooney.json",
+      "harmony-2023/vulture--jesse-green.json",
+      "heart-of-rock-and-roll-2024/nytimes--jesse-green.json",
+      "hells-kitchen-2024/nytimes--jesse-green.json",
+      "hells-kitchen-2024/variety--aramide-tinubu.json",
+      "illinoise-2024/variety--christian-lewis.json",
+      "jajas-african-hair-braiding-2023/variety--aramide-tinubu.json"
     ]
   },
   "failuresByOutlet": {
-    "New York Daily News": {
-      "count": 1,
-      "domain": "nydailynews.com",
+    "Variety": {
+      "count": 9,
+      "domain": "variety.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": true
+      "isKnownBlocked": false
+    },
+    "The Hollywood Reporter": {
+      "count": 5,
+      "domain": "hollywoodreporter.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Vulture": {
+      "count": 4,
+      "domain": "vulture.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "New York Theater": {
+      "count": 1,
+      "domain": "newyorktheater.me",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The New York Times": {
+      "count": 1,
+      "domain": "nytimes.com",
+      "hasCredentials": false,
+      "isPaywalled": true,
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "oh-mary-2024/hollywood-reporter--angie-han.json",
-      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-broadway-review-1235943706/",
-      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/"
+      "reviewId": "days-of-wine-and-roses-2024/variety--aramide-tinubu.json",
+      "oldUrl": "https://variety.com/2024/legit/reviews/days-of-wine-and-roses-review-broadway-1235884441/",
+      "newUrl": "https://variety.com/2005/legit/reviews/days-of-wine-and-roses-2-1200527616/"
     },
     {
-      "reviewId": "oh-mary-2024/vulture--helen-shaw.json",
-      "oldUrl": "https://www.vulture.com/article/oh-mary-broadway-review.html",
-      "newUrl": "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-transfer.html"
+      "reviewId": "hamilton-2015/hollywood-reporter--david-rooney.json",
+      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/hamilton-broadway-review/",
+      "newUrl": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton-theater-813145/"
     },
     {
-      "reviewId": "oh-mary-2024/ew--christian-holub.json",
-      "oldUrl": "https://ew.com/oh-mary-broadway-review-cole-escola/",
-      "newUrl": "https://ew.com/oh-mary-review-cole-escola-american-farce-is-funniest-play-on-broadway-8676908?srsltid=AfmBOoqowr6i0HwFgvZ_qZKr-djjulpYw8RB1rZvnpV8xAd5K5aM3n1j"
+      "reviewId": "harmony-2023/hollywood-reporter--david-rooney.json",
+      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/harmony-broadway-review-1235608959/",
+      "newUrl": "https://www.hollywoodreporter.com/movies/movie-reviews/aggro-dr1ft-review-travis-scott-harmony-korine-1235578140/"
     },
     {
-      "reviewId": "oh-mary-2024/guardian--adrian-horton.json",
-      "oldUrl": "https://www.theguardian.com/stage/2024/jul/11/oh-mary-broadway-review",
-      "newUrl": "https://www.theguardian.com/stage/article/2024/jul/11/oh-mary-review-cole-escola-broadway"
+      "reviewId": "harmony-2023/variety--aramide-tinubu.json",
+      "oldUrl": "https://variety.com/2023/legit/reviews/harmony-review-broadway-barry-manilow-musical-1235801158/",
+      "newUrl": "https://variety.com/2023/legit/reviews/harmony-review-barry-manilow-broadway-1235790164/"
     },
     {
-      "reviewId": "oh-mary-2024/nydailynews--chris-jones.json",
-      "oldUrl": "https://www.nydailynews.com/2024/07/11/oh-mary-broadway-review/",
-      "newUrl": "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-oh-mary-is-hilarious-take-on-controversial-first-lady/"
+      "reviewId": "harmony-2023/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2023/11/theater-review-harmony-barry-manilow-bruce-sussman.html",
+      "newUrl": "https://www.vulture.com/2023/11/theater-review-harmony-broadway-barry-manilow.html"
+    },
+    {
+      "reviewId": "heart-of-rock-and-roll-2024/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2024/04/16/theater/heart-of-rock-and-roll-review.html",
+      "newUrl": "https://www.nytimes.com/2024/04/22/theater/heart-of-rock-and-roll-review.html"
+    },
+    {
+      "reviewId": "heart-of-rock-and-roll-2024/variety--peter-marks.json",
+      "oldUrl": "https://variety.com/2024/legit/reviews/the-heart-of-rock-and-roll-review-broadway-1236051843/",
+      "newUrl": "https://variety.com/2024/legit/reviews/the-heart-of-rock-and-roll-review-huey-lewis-musical-broadway-1235976855/"
+    },
+    {
+      "reviewId": "hells-kitchen-2024/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2024/04/21/theater/hells-kitchen-review.html",
+      "newUrl": "https://www.nytimes.com/2024/04/20/theater/hells-kitchen-review-alicia-keys.html"
+    },
+    {
+      "reviewId": "how-to-dance-in-ohio-2023/variety--aramide-tinubu.json",
+      "oldUrl": "https://variety.com/2023/legit/reviews/how-to-dance-in-ohio-review-broadway-1235825159/",
+      "newUrl": "https://variety.com/2023/legit/reviews/how-to-dance-in-ohio-review-broadway-musical-1235832602/"
+    },
+    {
+      "reviewId": "illinoise-2024/vulture--helen-shaw.json",
+      "oldUrl": "https://www.vulture.com/article/illinoise-broadway-review.html",
+      "newUrl": "https://www.vulture.com/article/theater-review-sufjan-stevens-illinoise-armory.html"
+    },
+    {
+      "reviewId": "just-for-us-2023/variety--aramide-tinubu.json",
+      "oldUrl": "https://variety.com/2023/legit/reviews/just-for-us-review-alex-edelman-broadway-1235651563/",
+      "newUrl": "https://variety.com/2023/legit/reviews/just-for-us-review-alex-edelman-1235655007/"
     }
   ]
 }
