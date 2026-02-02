@@ -17,11 +17,11 @@
   "bwwThumb": null,
   "contentTier": "needs-rescrape",
   "wordCount": 0,
-  "rescoreReason": "LLM score invalidated (scored from garbage/wrong-show text): AP news feed (lottery/sports headlines) instead of review",
-  "previousLlmScore": 35,
-  "isFullReview": false,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 59,
+  "isFullReview": true,
   "archivePath": "data/archives/reviews/mj-2022/ap--mark-kennedy_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T00:22:21.119Z",
+  "textFetchedAt": "2026-02-02T16:38:14.067Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -130,5 +130,18 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
-  }
+  },
+  "needsRescore": true,
+  "fullText": "Catholic Church and Italy investigate sacred and profane cherub seemingly modeled on Meloni 3 mins ago Planned Parenthood drops lawsuit against Trump administration’s Medicaid cuts 13 mins ago Nine arraigned for deadly attack in Nigeria that killed over 150 3 mins ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); Former Prince Andrew has faced questions on Epstein before. Don’t bet he’ll do it again 20 mins ago Fela Kuti’s Grammy lifetime achievement award is a major win for African music 20 mins ago San Francisco Bay Area rattled by series of early morning earthquakes 16 mins ago 2-month-olds see the world in a more complex way than scientists thought, study suggests 33 mins ago Misconduct complaint dismissed against judge who handled El Salvador prison deportation case 35 mins ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); US Attorney General Pam Bondi announces 2 more arrests in the St. Paul church protest 37 mins ago 10 years of NFL Next Gen Stats has changed how the game is watched and played 38 mins ago What recent polls show about the challenges facing Trump this year 13 mins ago How the Super Bowl halftime show evolved from pageantry to pop culture’s biggest stage 50 mins ago What to expect as Trump and Petro meet at White House after months of tension and insults 52 mins ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); Italian biathlete Passler provisionally suspended ahead of Winter Olympics for positive doping test 1 hour ago Today in Sports - Giants end Patriot’s unbeaten season, pull off one of the great Super Bowl upsets 1 hour ago Sports on TV for Tuesday, Feb. 3 1 hour ago Olympic Sports on TV for Tuesday, Feb. 3 1 hour ago Barry Trotz is retiring as Predators GM once a successor is found, AP source says 1 hour ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); Argentina fires ravage pristine Patagonia forests, fueling criticism of Milei’s austerity 1 hour ago Takeaways from investigation into the toxic forever chemical legacy of the South’s carpet industry 1 hour ago Trump administration to create a strategic reserve for rare earths elements 1 hour ago Florida State’s Gus Malzahn, who previously led Auburn and UCF, retires from coaching at age 60 2 hours ago Israeli police detain local officials suspected of pocketing aid sent after Oct 7 attack 2 hours ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); Celebrity birthdays for the week of Feb. 8-14 includes Michael B. Jordan and Laura Dern 2 hours ago UK expels a Russian diplomat in tit-for-tat move 2 hours ago What to know after a deadly landslide in eastern Congo kills at least 200 miners 2 hours ago Do you need to control your cortisol? Probably not, doctors say 2 hours ago Mexico’s push for US natural gas sparks community opposition and threatens its climate pledges 2 hours ago England rugby captain Maro Itoje to start the Six Nations on the bench 58 mins ago Is it chili? Is it mac and cheese? This slow cooker recipe combines the best of both 2 hours ago Load More",
+  "textWordCount": 728,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true
 }
