@@ -9,7 +9,7 @@
   "showScoreExcerpt": "A big, splashy effort, slickly professional in nearly every aspect, that has no idea what to make of its heroine. It's a star vehicle with a giant question mark at its center, and its nonjudgmental gaze ultimately leaves one feeling surprisingly neutral.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-queen-of-versailles-broadway",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/queen-versailles-2025/lighting-sound-america--david-barbour_2026-01-27.html",
@@ -28,11 +28,11 @@
   ],
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 62,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -43,7 +43,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges professional quality but identifies a fundamental flaw in the show's characterization, concluding with explicit neutrality rather than a recommendation. | GPT-4o: The review describes the production as professional and visually impressive but ultimately lacking clear direction or impact, leading to a neutral feeling. This suggests a mixed verdict, with both positive and negative elements. | Gemini: The review describes the production as \"slickly professional\" but ultimately \"neutral,\" indicating a mixed assessment that neither strongly recommends nor discourages seeing the show.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges professional quality but criticizes the central conception and explicitly states it leaves audiences feeling 'neutral,' indicating a mixed recommendation. | GPT-4o: The review describes the production as 'slickly professional' but notes a lack of direction regarding the heroine, leading to a neutral feeling. This suggests a mixed impression, neither strongly positive nor negative. | Gemini: The review describes the production as \"slickly professional\" but ultimately \"neutral,\" indicating a mixed assessment that neither strongly recommends nor discourages seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,21 +53,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:27:55.416Z",
+    "scoredAt": "2026-02-02T18:56:31.776Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 58,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 62,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

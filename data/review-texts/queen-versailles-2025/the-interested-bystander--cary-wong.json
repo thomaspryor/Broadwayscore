@@ -9,15 +9,15 @@
   "showScoreExcerpt": "Chenoweth is, of course, the draw, and she tries her hardest to make the material work.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-queen-of-versailles-broadway",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 61,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 60,
-    "confidence": "high",
+    "score": 61,
+    "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The phrase 'tries her hardest to make the material work' suggests the material itself is problematic and even a star performer is struggling with it. However, with only this excerpt available, the full verdict is unclear. | GPT-4o: The quote suggests that while Chenoweth's performance is a highlight, the material itself may not be strong. This indicates a mixed review, as the critic acknowledges effort but implies limitations in the production. | Gemini: The review excerpt suggests that the show relies heavily on Chenoweth's performance and that she is struggling to elevate the material, indicating a mixed assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The phrase 'tries her hardest to make the material work' suggests the material itself is problematic and even the star's efforts may not be enough to overcome it. However, with only this excerpt available, the full verdict remains unclear. | GPT-4o: The review suggests that while Chenoweth's performance is a highlight, the material itself may not be strong. This indicates a mixed reception, with some positive elements but overall reservations. | Gemini: The review excerpt suggests that Chenoweth is the main attraction but has to work hard to make the material succeed, indicating the material itself might be lacking. This points to a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:29:48.667Z",
+    "scoredAt": "2026-02-02T18:57:15.277Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 45,
-    "previousVersion": "5.0.0"
+    "previousScore": 60,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 60,
+    "claudeScore": 58,
+    "openaiScore": 65,
     "geminiScore": 60,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

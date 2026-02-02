@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic gives 2/5 stars and describes the show as 'bloated' with a first act that's 'padding' leading to 'boredom.' While praising Chenoweth's final performance and some technical elements, the overall assessment is clearly negative. | GPT-4o: The review gives a 2/5 star rating, indicating a negative assessment. The critic describes the musical as bloated and only exciting for Chenoweth fans, suggesting it is not worth seeing for a general audience. | Gemini: The review is mixed, praising Chenoweth's performance and some aspects of the second act, but criticizing the score and pacing. The critic's rating of 2/5 stars also indicates a lukewarm reception.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic gives 2/5 stars and describes the show as bloated, boring, and padded, with only Chenoweth's final 10 minutes being worthwhile. Despite some positive elements, the overall assessment is clearly negative. | GPT-4o: The review is largely critical, highlighting issues with the musical's pacing, size, and score, only finding brief merit in a ten-minute segment. The original 2/5 star rating aligns with a negative assessment. | Gemini: The review is mixed, highlighting flaws in the writing and score but praising Chenoweth's performance and some aspects of the second act. The 2/5 star rating confirms this mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,12 +45,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:28:33.222Z",
+    "scoredAt": "2026-02-02T18:56:48.025Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 42,
-    "previousVersion": "5.0.0"
+    "previousScore": 41,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,

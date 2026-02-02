@@ -10,18 +10,18 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 41,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 41,
-    "confidence": "high",
+    "score": 42,
+    "confidence": "medium",
     "range": {
-      "low": 36,
-      "high": 46
+      "low": 37,
+      "high": 47
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The review is consistently critical throughout, calling it a 'house of cards,' criticizing the storytelling as 'baffling,' and ending with the clear recommendation that audiences would be better served by leaving the theater. | Gemini: The review is overwhelmingly negative, criticizing the storytelling, tone, score, and direction. The final sentence explicitly states that even Chenoweth's charm cannot save the musical.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The review is consistently critical throughout, calling it a 'house of cards,' criticizing the storytelling as 'baffling,' saying the director 'fails,' and concluding that even the star's charm 'can't salvage' this 'cringy musical.' The metaphor of a construction site that 'never finds its foundation' clearly indicates strong disapproval. | GPT-4o: The review is overwhelmingly negative, highlighting the production's failure in storytelling, direction, and musical composition. The critic suggests the show is a 'cringy musical' and implies it is not worth seeing. | Gemini: The review is overwhelmingly negative, criticizing the storytelling, tone, score, and direction. The final sentence explicitly states that even Chenoweth's charm cannot save the musical.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,26 +42,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:29:19.130Z",
+    "scoredAt": "2026-02-02T18:57:03.304Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 25,
-    "previousVersion": "5.0.0"
+    "previousScore": 41,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": null,
-    "geminiScore": 40,
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
     "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
     "geminiBucket": "Negative",
-    "scoreDelta": 2,
+    "scoreDelta": 25,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 23,

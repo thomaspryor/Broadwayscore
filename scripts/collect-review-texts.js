@@ -1779,10 +1779,12 @@ async function fetchReviewText(review) {
   }
 
   // Use archive-first approach if:
-  // 1. ARCHIVE_FIRST env var is set to true, OR
-  // 2. Site is in archiveFirstSites list, OR
-  // 3. Review is older than 6 months (when ARCHIVE_FIRST is enabled)
-  const isArchiveFirst = isArchiveFirstSite || (CONFIG.archiveFirst && isOldReview);
+  // 1. Site is in archiveFirstSites list (unless ARCHIVE_FIRST explicitly set to false), OR
+  // 2. ARCHIVE_FIRST env var is set to true AND review is older than 6 months
+  // When ARCHIVE_FIRST=false is explicitly set, skip archive-first even for paywalled sites
+  // so that Playwright/Browserbase login paths are tested
+  const archiveFirstExplicitlyDisabled = process.env.ARCHIVE_FIRST === 'false';
+  const isArchiveFirst = (!archiveFirstExplicitlyDisabled && isArchiveFirstSite) || (CONFIG.archiveFirst && isOldReview);
 
   // Force specific tier if requested
   if (CLI.forceTier) {

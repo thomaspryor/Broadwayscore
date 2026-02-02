@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 77,
   "humanReviewScore": 55,
   "humanReviewNote": "Both thumbs Meh not Down; LLM 44 slightly too harsh; performances praised despite negative verdict",
   "source": "bww-roundup",
@@ -21,14 +21,14 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 44,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: Despite praising Chenoweth's performance and the ensemble, the critic explicitly states the show's 'positive components do not make up for its faults' and that 'Broadway is the wrong medium for this story,' delivering a clear negative recommendation. | GPT-4o: The review highlights significant issues with the production, stating that Broadway is the wrong medium and that musicalizing the story detracts from its impact. Despite strong performances, the overall recommendation is negative. | Gemini: The review acknowledges excellent performances, especially Chenoweth's, but ultimately concludes that the musical adaptation doesn't work and the story is better suited for film. This suggests a mixed experience with redeeming qualities but significant flaws.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review offers substantial criticism of the musical's American values embodiment and operatic implausibilities, but concludes with clear enjoyment and praise for the performances, particularly highlighting Joshua Henry's 'shattering' delivery. | GPT-4o: The review acknowledges the production's epic feel and the strong performances, particularly praising the principal cast. However, it also points out some reservations about the musical's execution and thematic elements. The overall tone suggests a positive recommendation, albeit with noted flaws. | Gemini: Despite some criticisms about the show's length and score, the critic states that these issues did not detract from their enjoyment, particularly praising the lead performers. The truncated text makes it difficult to assess the overall strength of the recommendation, but the positive sentiment is clear.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,27 +46,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:30:23.120Z",
+    "scoredAt": "2026-02-02T18:57:36.660Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 38,
-    "previousVersion": "5.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 45,
-    "geminiScore": 62,
-    "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 20,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 44,

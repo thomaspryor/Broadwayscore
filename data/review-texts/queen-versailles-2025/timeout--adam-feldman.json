@@ -9,7 +9,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 41,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "Like the 90,000–square-foot, $100-million palace that the Siegels are determined to build for themselves in Orlando, The Queen of Versailles is nothing if not ambitious. But like that same palace, it also feels misguided and very much still under construction.",
@@ -18,11 +18,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 41,
-    "confidence": "medium",
+    "score": 44,
+    "confidence": "high",
     "range": {
-      "low": 36,
-      "high": 46
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic uses the failed palace as a metaphor for the show itself, calling it 'misguided' and 'under construction' - clear negative assessment despite acknowledging ambition. | GPT-4o: The critic describes the production as 'misguided' and 'still under construction', suggesting a lack of coherence and polish. This aligns with the negative aggregator verdicts, indicating a clear recommendation to skip the show. | Gemini: The review draws a direct comparison to an unfinished and misguided project, suggesting the musical has ambition but falls short in execution. This indicates a mixed assessment rather than a clear recommendation or condemnation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic uses the extended metaphor of an unfinished, misguided palace to describe the show, clearly indicating disappointment despite acknowledging its ambition. | GPT-4o: The critic compares the production to an ambitious but misguided and incomplete project, suggesting significant flaws. The tone is clearly negative, aligning with the aggregator's 'Down' verdicts. | Gemini: The review uses a negative analogy to describe the show, comparing it to an unfinished and misguided project. The aggregator verdicts also point to a negative reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,27 +43,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:30:12.276Z",
+    "scoredAt": "2026-02-02T18:57:32.582Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 44,
-    "previousVersion": "3.0.0"
+    "previousScore": 41,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 40,
-    "geminiScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 45,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 22,
+    "geminiBucket": "Negative",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 44,

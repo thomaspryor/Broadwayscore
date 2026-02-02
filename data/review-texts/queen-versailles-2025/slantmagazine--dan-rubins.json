@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges structural problems and lack of cohesion while praising Chenoweth's performance and finding the show 'compellingly ambitious.' The critic sees merit but significant flaws. | GPT-4o: The review acknowledges the show's ambition and Chenoweth's strong performance but criticizes its lack of cohesion and stylistic inconsistency. The tone suggests appreciation for certain elements but overall reservations about the production's execution. | Gemini: The review acknowledges flaws and lack of cohesion in the show's elements, but ultimately finds it \"compellingly ambitious\" and praises Chenoweth's performance, suggesting a worthwhile experience despite its shortcomings.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges the show's ambitions and praises Chenoweth's performance, but extensively critiques its lack of cohesion, inconsistent style, and structural problems, suggesting it's a work-in-progress that doesn't fully succeed. | GPT-4o: The review acknowledges the show's ambition and Chenoweth's strong performance, but criticizes its lack of cohesion and inconsistent style. The positive elements are noted, but the overall tone suggests a mixed experience. | Gemini: The review acknowledges flaws and lack of cohesion, but ultimately finds the show compelling and ambitious, with a strong performance by Chenoweth. The reviewer highlights the show's strengths and recommends it despite its issues.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,21 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:29:44.849Z",
+    "scoredAt": "2026-02-02T18:57:11.840Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 68,
-    "previousVersion": "5.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 75,
+    "openaiScore": 66,
+    "geminiScore": 78,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 16,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

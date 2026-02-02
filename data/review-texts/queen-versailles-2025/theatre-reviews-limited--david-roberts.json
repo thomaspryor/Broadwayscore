@@ -9,7 +9,7 @@
   "showScoreExcerpt": "âIn a year when Broadway has given us genuinely ambitious work grappling with what it means to be American, \"The Queen of Versailles\" offers only spectacle without insight, a palace with no one home. What were they thinking?â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-queen-of-versailles-broadway",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 41,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/queen-versailles-2025/theatre-reviews-limited--david-roberts_2026-01-27.html",
@@ -29,11 +29,11 @@
   ],
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 42,
+    "score": 41,
     "confidence": "high",
     "range": {
-      "low": 37,
-      "high": 47
+      "low": 36,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -44,7 +44,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic explicitly criticizes the show as lacking insight and substance, using the metaphor 'palace with no one home' to suggest emptiness despite spectacle. However, given this is a single excerpt with potential for cherry-picking, scoring conservatively within negative range. | GPT-4o: The critic describes the show as lacking substance and insight, suggesting it is not worth seeing. However, due to the single excerpt warning, the score is placed conservatively in the middle of the negative range. | Gemini: The review excerpt is strongly negative, criticizing the show for lacking insight and substance. The question \"What were they thinking?\" further emphasizes the reviewer's disappointment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic explicitly criticizes the show for being all surface with no depth, contrasting it unfavorably with other Broadway shows this year and ending with the dismissive 'What were they thinking?' | GPT-4o: The excerpt criticizes the show for lacking substance and insight, suggesting it is not worth seeing compared to other ambitious works. The rhetorical question 'What were they thinking?' further emphasizes the negative sentiment. | Gemini: The review excerpt is strongly negative, criticizing the show for lacking insight and substance. The question \"What were they thinking?\" further emphasizes the reviewer's disapproval.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,21 +54,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:30:04.690Z",
+    "scoredAt": "2026-02-02T18:57:25.736Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 25,
-    "previousVersion": "5.0.0"
+    "previousScore": 42,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 45,
+    "openaiScore": 40,
     "geminiScore": 40,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "scoreDelta": 5,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges some strong elements (Chenoweth's performance, design) but consistently criticizes the show's lack of cohesion, tonal confusion, and dramatic shortcomings. The truncated text warning is noted, but the aggregator context confirms a 'flat' verdict. | GPT-4o: The review acknowledges some positive elements, such as the performances and certain musical numbers, but overall it criticizes the show for its lack of coherence and excessive production. The truncated text suggests caution, but the tone leans towards mixed with some redeeming qualities. | Gemini: The review highlights both positive and negative aspects of the show, but the overall tone suggests a recommendation with reservations. The truncated text makes it difficult to assess the final verdict with high confidence, but the aggregator excerpt supports a 'flat' but not outright negative assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges some strong moments and performances (especially praising Chenoweth) but consistently criticizes the show's fundamental problems - tonal incoherence, sprawling unfocused book, and excessive production design that compensates for weak material rather than enhancing it. | GPT-4o: The review acknowledges some positive elements, such as arresting moments and strong performances, but overall suggests the show is unfocused and excessive. The truncated text warning and flat aggregator verdict suggest a mixed reception. | Gemini: The review highlights some positive aspects like Chenoweth's performance and certain musical numbers, but also points out flaws in the book and score. The aggregator excerpt also suggests a 'flat' verdict, indicating a mixed-to-positive leaning.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,12 +38,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:30:00.473Z",
+    "scoredAt": "2026-02-02T18:57:22.293Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 42,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 58,

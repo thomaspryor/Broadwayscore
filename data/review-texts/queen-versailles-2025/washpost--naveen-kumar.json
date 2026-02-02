@@ -9,7 +9,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 41,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "But the new show from “Wicked” composer Stephen Schwartz and playwright Lindsey Ferrentino is both overdone and undercooked: Rather than decide whether to romanticize or satirize its subjects, the musical ventures a gaudy and confused mix of both without a coherent point of view.",
@@ -19,11 +19,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 41,
-    "confidence": "medium",
+    "score": 44,
+    "confidence": "high",
     "range": {
-      "low": 36,
-      "high": 46
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic finds the show 'both overdone and undercooked' with 'no coherent point of view' and compares it to a 'hollow' display of excess, ending with advice that ticket buyers have 'the option to escape' these 'horrors.' | GPT-4o: The review criticizes the musical for being both overdone and undercooked, lacking a coherent point of view, and ultimately being hollow. The language used suggests a negative assessment, recommending potential ticket buyers to escape these 'horrors of capitalism.' | Gemini: The review is mixed, describing the show as \"overdone and undercooked\" and lacking a coherent point of view. The final sentence suggests that it's escapable, implying it's not a must-see, but not a complete disaster either.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The vivid metaphor criticizes the musical for being ineffective and lacking the bold impact it should have, indicating clear disappointment with the production's execution. | GPT-4o: The review suggests that the musical lacks impact and fails to deliver a strong message, implying a disappointing experience. The tone is dismissive, aligning with the aggregator's negative verdicts. | Gemini: The review uses a metaphor to suggest the musical lacks bite and impact, indicating a negative assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,41 +44,41 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:30:40.300Z",
+    "scoredAt": "2026-02-02T18:57:50.195Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 30,
-    "previousVersion": "3.0.0"
+    "previousScore": 41,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 40,
-    "geminiScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 45,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 22,
+    "geminiBucket": "Negative",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "garbageFullText": "But the new show from “Wicked” composer Stephen Schwartz and playwright Lindsey Ferrentino is both overdone and undercooked: Rather than decide whether to romanticize or satirize its subjects, the musical ventures a gaudy and confused mix of both without a coherent point of view.",
   "garbageReason": "Show title \"queen versailles\" not mentioned",
   "garbageFixedAt": "2026-01-29T22:45:23.140Z",
-  "contentTier": "truncated",
-  "wordCount": 227,
+  "contentTier": "excerpt",
+  "wordCount": 0,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 30,
-  "fullText": "Democracy Dies in DarknessReview by Naveen KumarNEW YORK — There is a moment in the new musical “The Queen of Versailles” when the 2012 documentary that it’s based on gets released at the Sundance Film Festival. Kristin Chenoweth’s Jackie Siegel, an unduly naive “Real Housewives” type, waves off whether the crowd is laughing with her or at her. “Doesn’t matter!” she chirps. “We’re a hit.”\n\n24 CommentsMost ReadOpinionMichael ShermerI’ve reported on UFO sightings for decades — and come to this conclusionJanuary 29, 2026Salvador RizzoDOJ misconduct complaint against D.C. federal judge dismissedEarlier todayOpinionEditorial BoardTrump’s tariffs can’t cover a bill this staggeringJanuary 26, 2026NewsletterFridaysBook ClubOur weekly selection of book reviews and recommendations from Book World editor Ron Charles.Sign up\n\nAs a California consumer, you have the right to opt-out from the sale or sharing of your personal information at any time across business platform, services, businesses and devices. You can opt-out of the sale and sharing of your personal information by using this toggle switch. As a Virginia, Utah, Colorado and Connecticut consumer, you have the right to opt-out from the sale of your personal data and the processing of your personal data for targeted advertising. You can opt-out of the sale of your personal data and targeted advertising by using this toggle switch. For more information on your rights as a United States consumer see our privacy notice.",
-  "isFullReview": false,
-  "textWordCount": 227,
-  "archivePath": "data/archives/reviews/queen-versailles-2025/washpost--naveen-kumar_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T14:17:10.214Z",
-  "fetchMethod": "scrapingbee",
+  "fullText": "Based on the 2012 documentary, the new musical by “Wicked” composer Stephen Schwartz exemplifies the excess it’s too sheepish to satirize. NEW YORK — There is a moment in the new musical “The Queen of Versailles” when the 2012 documentary that it’s based on gets released at the Sundance Film Festival. Kristin Chenoweth’s Jackie Siegel, an unduly naive “Real Housewives” type, waves off whether the crowd is laughing with her or at her. “Doesn’t matter!” she chirps. “We’re a hit.” Clearly, the creators are hoping the same will hold true of their stage adaptation, lavishly directed by Michael Arden, which follows Jackie’s Sisyphean quest to build the biggest house in America. But the new show from “Wicked” composer Stephen Schwartz and playwright Lindsey Ferrentino is both overdone and undercooked: Rather than decide whether to romanticize or satirize its subjects, the musical ventures a gaudy and confused mix of both without a coherent point of view. Mounting a Broadway show about the obscenely wealthy, in this economy, is a bold choice — and the creators didn’t make many others. Developed with Siegel’s involvement, the musical hews closely to the doc — lyrics and dialogue often quote it verbatim — and to events in Siegel’s life after it came out. (A television series, “Queen of Versailles Reigns Again,” followed in 2022.) Rather than eat the rich, the musical settles for nipping them on the nose with all the ferocity of Jackie’s cuddly white Pomeranian. Those not already familiar with Siegel’s story will recognize it as a quintessential fable of contemporary America: Jackie starts out with little means but lots of grit, marries a billionaire and becomes famous for being ridiculously rich and somewhat shameless. We’ve all watched Bravo. The catch is that Jackie’s much-older husband David Siegel (F. Murray Abraham) amassed his fortune in the wrong way at the wrong time — by hawking timeshares with subprime mortgages on the precipice of the 2008 financial crisis. In ogling the couple’s fluctuating fortunes, the musical banks on the morbid-fascination factor of reality TV to drive the narrative. Jackie and David are not Dickensian or Gatsbyesque, conceived with any legible insight about the nature of self-determination or abject greed. They’re cartoonish avatars for the obvious pitfalls of consumerism. There can be no schadenfreude when the disgraced might as well be plastic. Chenoweth, appearing in her first Broadway musical in 10 years, is as polished and plucky as fans would expect. Narrating her life for the onstage cameras, her Jackie is sunny and matter-of-fact, recounting the “champagne wishes and caviar dreams” of her 1980s childhood, a nod to the aspiration exemplified for her on TV by “Lifestyles of the Rich and Famous,” and in the living room, where her father would play the lotto. “I’ve got brains, and I’ve got guts,” she sings, vowing to use them until she’s “finally the one they’re all looking at.” Though she goes on to win a Florida beauty pageant, Jackie’s proclaimed desire for adoration goes unexplored — even as she tries to leverage her 15 minutes of fame to finish the half-erected house (the impressive set and video design are by Dane Laffrey). We are to assume, it seems, that of course everyone wants attention and money, which often go hand in hand. But a desire for assets is not a personality: Why are they building a faux Versailles? An early song answers simply, “Because we can.” In the absence of a complex protagonist on the page, the production leans heavily on Chenoweth’s presumed likability. (As liberal and LGBTQ+ fans have decried Chenoweth’s expression of “heartbreak” over the killing of Charlie Kirk, and appreciation of “some perspectives” of his, that may prove a riskier gamble than it was to begin with.) The Siegels’ relationship is likewise amorphous: Jackie’s marriage to David is framed simply as a step to becoming “American royalty,” the score’s through line refrain. Her husband is a leering villain with dollar signs for eyes, leaving Abraham woefully underutilized. If there is a love story, it’s between Jackie and her daughter Victoria (Nina White), one of the few characters who seem to have any kind of inner life. A quartet of the two, the family’s adopted cousin Jonquil (Tatum Grace Hopkins) and longtime nanny Sofia (Melody Butiu) approaches emotional depth, rhapsodizing about the intimacy of little houses. (That Sofia lives in the kids’ old playhouse, while sending money back to her own children in the Philippines, points to a disparity that the show presents, like most other half-indictments of the Siegels, without comment.) Schwartz’s score is otherwise unremarkable, a proficient mix of Broadway pop that’s neither especially dynamic nor distinctive. Many of the songs are lyrically dense — think more “Popular,” less “Defying Gravity” — in service of conveying details the show hasn’t otherwise persuaded the audience to care about. Though Chenoweth hardly leaves the stage, she has few opportunities to sing out amid all the overexplaining. It’s a tireless gig because the musical is more of an apology tour for Jackie than an investigation of what her story says about our culture. (At least the documentarians in “MJ: The Musical,” a redemptive portrait of the King of Pop, editorialize on their subject; the crew here might as well be mannequins.) Another framing device attempts a thematic link between the Siegels and the executed royals of 18th-century France, which at least provides a canvas for beautifully detailed costumes (by Christian Cowan) and intricate hair and wig design (by Cookie Jordan). But the comparison only emphasizes the musical’s bloodless censure of its subjects. Rather than drop the guillotine, it sheepishly blows dog whistles, including brief references to the Siegels’ politics — a glimpse of Tucker Carlson on TV, a quip about their home’s east wing — that quickly come and go. In a way, “The Queen of Versailles” suitably mirrors Jackie’s extravagant unfinished estate: It, too, is an ostentatious token of excess that ultimately proves hollow. At least these particular horrors of capitalism potential ticket buyers have the option to escape. The Queen of Versailles, ongoing at the St. James Theatre in New York. 2 hours and 40 minutes with an intermission. queenofversaillesmusical.com",
+  "isFullReview": true,
+  "textWordCount": 1026,
+  "archivePath": "data/archives/reviews/queen-versailles-2025/washpost--naveen-kumar_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T17:29:37.435Z",
+  "fetchMethod": "playwright",
   "fetchAttempts": [
     {
       "tier": 0,
@@ -89,22 +89,17 @@
     {
       "tier": 1,
       "method": "playwright",
-      "success": false,
-      "error": "Paywall detected - login may have failed"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
       "success": true
     }
   ],
-  "fetchTier": 2,
+  "fetchTier": 1,
   "textQuality": "partial",
-  "textStatus": "incomplete",
-  "sourceMethod": "scrapingbee",
-  "textIssues": [
-    "Word count too low: 227 (min: 300)"
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "possible_mid_word_cutoff"
   ],
+  "textStatus": "partial",
+  "sourceMethod": "playwright",
   "rescoreCompletedAt": "2026-02-02T00:30:40.301Z",
   "_removedDesignation": {
     "designation": "Recommended",
@@ -113,6 +108,5 @@
     "hadPositiveThumb": false,
     "dtliThumb": "Down",
     "bwwThumb": "Meh"
-  },
-  "tierReason": "Short text (227 words)"
+  }
 }
