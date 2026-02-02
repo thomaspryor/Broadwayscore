@@ -11,13 +11,13 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 5,
+    "processed": 7,
+    "failed": 6,
     "skipped": 0,
-    "successRate": "28.6%"
+    "successRate": "53.8%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 1,
     "brightdata": 0,
@@ -38,7 +38,7 @@
     "scrapingBeeCreditsUsed": 30,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -54,7 +54,9 @@
     "water-for-elephants-2024/thestage--lane-williamson.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "the-outsiders-2024/culturesauce--thom-geier.json"
+    ],
     "browserbase": [],
     "scrapingbee": [
       "water-for-elephants-2024/theatermania--david-gordon.json"

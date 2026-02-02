@@ -1,27 +1,34 @@
 {
   "processed": [
-    "redwood-2025/broadwaynews--brittani-samuel.json",
-    "redwood-2025/washpost--naveen-kumar.json"
+    "the-notebook-2024/nytimes--jesse-green.json",
+    "the-notebook-2024/nytimes--unknown.json",
+    "the-notebook-2024/broadwaynews--brittani-samuel.json",
+    "the-notebook-2024/theatermania--jesse-green.json"
   ],
   "failed": [
-    "redwood-2025/deadline--greg-evans.json",
-    "redwood-2025/new-york-sun--elysa-gardner.json",
-    "redwood-2025/observer--david-cote.json",
-    "redwood-2025/timeout--adam-feldman.json",
-    "redwood-2025/wsj--charles-isherwood.json"
+    "the-notebook-2024/hollywood-reporter--david-rooney.json",
+    "the-notebook-2024/vulture--helen-shaw.json",
+    "the-notebook-2024/deadline--greg-evans.json",
+    "the-notebook-2024/nydailynews--chris-jones.json",
+    "the-notebook-2024/timeout--adam-feldman.json",
+    "the-notebook-2024/wsj--charles-isherwood.json",
+    "the-notebook-2024/rollingstone--brittany-spanos.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "the-notebook-2024/theatermania--jesse-green.json"
+    ],
     "brightdata": [],
     "archive": [
-      "redwood-2025/broadwaynews--brittani-samuel.json",
-      "redwood-2025/washpost--naveen-kumar.json"
+      "the-notebook-2024/nytimes--jesse-green.json",
+      "the-notebook-2024/nytimes--unknown.json",
+      "the-notebook-2024/broadwaynews--brittani-samuel.json"
     ]
   },
-  "startTime": "2026-02-02T15:05:32.570Z",
-  "lastProcessed": "redwood-2025/washpost--naveen-kumar.json",
+  "startTime": "2026-02-02T15:06:06.892Z",
+  "lastProcessed": "the-notebook-2024/rollingstone--brittany-spanos.json",
   "log": []
 }
