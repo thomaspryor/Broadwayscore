@@ -5,20 +5,21 @@
  * IMPORTANT: Reviews WITHOUT a valid score source are EXCLUDED
  * We NEVER use a default score of 50 - that skews results
  *
- * Score priority:
- * 0a. EXPLICIT RATING IN TEXT (★★★★☆, "4 out of 5", letter grades, X/5)
- *    - These are MOST reliable - override LLM scores which had 33% error rate
- * 0b. originalScore field (aggregator-provided: "4/5 stars", "B+")
- *    - Parsed before LLM to prevent paywall/garbage text from overriding
- * 1. llmScore.score (HIGH/MEDIUM confidence only)
- * 2. THUMB (when LLM is low-conf/needs-review AND thumb exists)
- *    - Aggregator editors saw full review, more reliable than incomplete text
- * 3. llmScore.score (low confidence or needs review - fallback when no thumb)
- * 4. assignedScore (if already set and valid, with known source)
- * 5. originalScore parsed (safety net, redundant with 0b)
- * 6. bucket mapping (Rave=90, Positive=82, Mixed=65, Negative=48, Pan=30)
- * 7. dtliThumb or bwwThumb (Up=80, Flat=60, Down=35) - final fallback
- * 8. SKIP - do not include in reviews.json
+ * Score priority (in order):
+ * P0a. EXPLICIT RATING IN TEXT (★★★★☆, "4 out of 5", letter grades, X/5)
+ *      - Most reliable - override LLM scores which had 33% error rate
+ * P0b. humanReviewScore (manual override from audit queue, 1-100)
+ * P0c. originalScore field (aggregator-provided: "4/5 stars", "B+")
+ *      - Parsed before LLM to prevent paywall/garbage text from overriding
+ * P1.  llmScore.score (HIGH/MEDIUM confidence, with original fullText only)
+ *      - Excerpt-only and garbage-recovered reviews are downgraded to low confidence
+ * P2.  THUMB override (when LLM is low-conf/excerpt-only AND thumb exists)
+ *      - Aggregator editors saw full review, more reliable than incomplete text
+ * P3.  llmScore.score (low confidence, needs review, or excerpt-only - fallback when no thumb)
+ * P4.  assignedScore (if already set and valid, with known source)
+ * P5.  bucket mapping (Rave=90, Positive=82, Mixed=65, Negative=48, Pan=30)
+ * P6.  dtliThumb or bwwThumb (Up=80, Flat=60, Down=35) - final fallback
+ * P7.  SKIP - do not include in reviews.json
  */
 
 const fs = require('fs');
@@ -80,6 +81,12 @@ function extractStarRatingFromText(text) {
 
   // Only trust 4-star or 5-star scales
   if (total >= 4 && total <= 5) {
+    // When there are no empty stars (☆), we can't determine the scale.
+    // ★★★★ could be 4/4 (100%) or 4/5 (80%) — ambiguous without ☆ markers.
+    // Exception: ★★★★★ is always 100% regardless of scale.
+    // Skip ambiguous cases and let slash/outOf extractors or originalScore handle it.
+    if (empty === 0 && filled < 5) return null;
+
     return {
       type: 'stars',
       raw: match[0],
@@ -567,8 +574,9 @@ function getBestScore(data) {
 
     // Downgrade confidence when scoring from excerpt-only text
     // Audit showed ~50% error rate on excerpt-only high/medium confidence scores
-    const hasFullText = data.fullText && data.fullText.trim().length > 100;
-    const effectiveConfidence = (!hasFullText && confidence !== 'low') ? 'low' : confidence;
+    // Also downgrade when fullText was recovered from garbage — the LLM scored the excerpt, not the recovered text
+    const hasOriginalFullText = data.fullText && data.fullText.trim().length > 100 && !data.fullTextRecoveredFrom;
+    const effectiveConfidence = (!hasOriginalFullText && confidence !== 'low') ? 'low' : confidence;
 
     // High/medium confidence: use directly
     if (effectiveConfidence !== 'low' && !needsReview) {
@@ -584,11 +592,10 @@ function getBestScore(data) {
     }
   }
 
-  // Priority 2: Nuanced thumb override of low-confidence/needs-review LLM scores (3A)
-  // Also applies when confidence was downgraded due to excerpt-only text
+  // P2: Thumb override of low-confidence/needs-review/excerpt-only LLM scores
   const hasLowConfLlm = data.llmScore?.score &&
     (data.llmScore.confidence === 'low' || data.ensembleData?.needsReview ||
-     !(data.fullText && data.fullText.trim().length > 100));
+     !(data.fullText && data.fullText.trim().length > 100 && !data.fullTextRecoveredFrom));
 
   if (hasLowConfLlm) {
     const dtliThumbNorm = data.dtliThumb ? normalizeThumb(data.dtliThumb) : null;
@@ -643,11 +650,11 @@ function getBestScore(data) {
     }
   }
 
-  // Priority 3: LLM score (low confidence, needs review, or excerpt-only downgrade - fallback when no thumb)
+  // P3: LLM score fallback (low confidence, needs review, or excerpt-only - when no thumb available)
   if (data.llmScore && data.llmScore.score) {
     const confidence = data.llmScore.confidence;
     const needsReview = data.ensembleData?.needsReview;
-    const isExcerptOnly = !(data.fullText && data.fullText.trim().length > 100);
+    const isExcerptOnly = !(data.fullText && data.fullText.trim().length > 100 && !data.fullTextRecoveredFrom);
 
     if (confidence === 'low' || isExcerptOnly) {
       return { score: data.llmScore.score, source: 'llmScore-lowconf' };
@@ -657,8 +664,7 @@ function getBestScore(data) {
     }
   }
 
-  // Priority 2: Existing assignedScore (if valid AND has a known source)
-  // We accept sentiment-based scores from our fix script
+  // P4: Existing assignedScore (if valid AND has a known source)
   if (data.assignedScore && data.assignedScore >= 1 && data.assignedScore <= 100) {
     // Check if this has a legitimate source
     const validSources = ['llmScore', 'originalScore', 'bucket', 'thumb',
@@ -678,20 +684,12 @@ function getBestScore(data) {
     }
   }
 
-  // Priority 3: Parse original score
-  if (data.originalScore) {
-    const parsed = parseOriginalScore(data.originalScore);
-    if (parsed !== null) {
-      return { score: parsed, source: 'originalScore' };
-    }
-  }
-
-  // Priority 4: Bucket mapping
+  // P5: Bucket mapping
   if (data.bucket && BUCKET_TO_SCORE[data.bucket]) {
     return { score: BUCKET_TO_SCORE[data.bucket], source: 'bucket' };
   }
 
-  // Priority 5: Thumb mappings (dtli first, then bww)
+  // P6: Thumb mappings (dtli first, then bww)
   if (data.dtliThumb && THUMB_TO_SCORE[data.dtliThumb]) {
     return { score: THUMB_TO_SCORE[data.dtliThumb], source: 'thumb' };
   }
@@ -762,7 +760,11 @@ showDirs.forEach(showId => {
       // Recover review text from garbageFullText when fullText is missing
       // Some reviews were flagged as garbage only due to trailing junk (newsletters, copyright)
       // but contain valid review text that can be cleaned and promoted
-      if (!data.fullText && data.garbageFullText && data.garbageFullText.length > 200) {
+      // NEVER recover from 404/error pages — they contain content from other reviews
+      // (e.g., NYSR 404 pages include star ratings for unrelated reviews)
+      const isErrorPage = data.garbageReason &&
+        (/^Error\/404/i.test(data.garbageReason) || /page not found/i.test(data.garbageReason));
+      if (!data.fullText && data.garbageFullText && data.garbageFullText.length > 200 && !isErrorPage) {
         const cleaned = cleanText(data.garbageFullText);
         if (cleaned && cleaned.length > 200) {
           data.fullText = cleaned;
