@@ -1,89 +1,80 @@
 {
-  "runDate": "2026-02-02T05:05:13.656Z",
+  "runDate": "2026-02-02T05:07:24.585Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 10,
     "priority": "all",
-    "showFilter": "once-upon-a-one-more-time-2023",
+    "showFilter": "the-shark-is-broken-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
+    "processed": 3,
     "failed": 5,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "37.5%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 2
+    "brightdata": 3,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 7,
-    "tier1Success": 3,
-    "tier1_5Attempts": 1,
+    "tier1Attempts": 5,
+    "tier1Success": 1,
+    "tier1_5Attempts": 2,
     "tier1_5Success": 0,
-    "tier2Attempts": 3,
+    "tier2Attempts": 5,
     "tier2Success": 1,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
-    "tier4Attempts": 6,
-    "tier4Success": 4,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 22,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.7,
-    "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 1,
+    "tier3Attempts": 4,
+    "tier3Success": 4,
+    "tier4Attempts": 3,
+    "tier4Success": 1,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 31,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 1.5,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
-    "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
-    "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json",
-    "once-upon-a-one-more-time-2023/associated-press-mark-kennedy--mark-kennedy.json",
-    "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
+    "the-shark-is-broken-2023/deadline--greg-evans.json",
+    "the-shark-is-broken-2023/theatermania--jesse-green.json",
+    "the-shark-is-broken-2023/talkinbroadway--howard-miller.json"
   ],
   "failed": [
-    "once-upon-a-one-more-time-2023/hollywood-reporter--angie-han.json",
-    "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
-    "once-upon-a-one-more-time-2023/timeout--adam-feldman.json",
-    "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
-    "once-upon-a-one-more-time-2023/thestage--lane-williamson.json"
+    "the-shark-is-broken-2023/variety--trish-deitch.json",
+    "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json",
+    "the-shark-is-broken-2023/guardian--adrian-horton.json",
+    "the-shark-is-broken-2023/timeout--adam-feldman.json",
+    "the-shark-is-broken-2023/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
-      "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
-      "once-upon-a-one-more-time-2023/associated-press-mark-kennedy--mark-kennedy.json",
-      "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
+      "the-shark-is-broken-2023/deadline--greg-evans.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
-    "archive": [
-      "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
-      "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json"
-    ]
+    "brightdata": [
+      "the-shark-is-broken-2023/variety--trish-deitch.json",
+      "the-shark-is-broken-2023/theatermania--jesse-green.json",
+      "the-shark-is-broken-2023/talkinbroadway--howard-miller.json"
+    ],
+    "archive": []
   },
   "failuresByOutlet": {
-    "The Hollywood Reporter": {
+    "The Guardian": {
       "count": 1,
-      "domain": "hollywoodreporter.com",
+      "domain": "theguardian.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
-      "oldUrl": "https://www.nytimes.com/2023/06/14/theater/once-upon-a-one-more-time-review.html",
-      "newUrl": "https://www.nytimes.com/2023/06/22/theater/once-upon-a-one-more-time-review.html"
-    }
-  ]
+  "urlDiscoveries": []
 }
