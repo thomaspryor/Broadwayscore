@@ -1,64 +1,45 @@
 {
   "processed": [
-    "aladdin-2014/hollywood-reporter--david-rooney.json",
-    "aladdin-2014/ew--thom-geier.json",
-    "aladdin-2014/newsday--linda-winer.json",
-    "aladdin-2014/uinterview--danny-graugnard.json",
-    "aladdin-2014/wsj--terry-teachout.json",
-    "aladdin-2014/ap--mark-kennedy.json",
-    "aladdin-2014/thisbroadsway--sandra-mcfarland.json"
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "mj-2022/variety--peter-marks.json",
+    "mj-2022/guardian--adrian-horton.json",
+    "mj-2022/ap--mark-kennedy.json",
+    "mj-2022/usatoday--david-rooney.json"
   ],
   "failed": [
-    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
-    "aladdin-2014/nypost--elisabeth-vincentelli.json",
-    "aladdin-2014/theatermania--charles-isherwood.json",
-    "aladdin-2014/timeout--adam-feldman.json",
-    "aladdin-2014/broadway-voice--kristen-balzano.json",
-    "aladdin-2014/catholic-transcript--bernard-carragher.json",
-    "aladdin-2014/theater-pizzazz--sandi-durell.json",
-    "aladdin-2014/thestage--mark-shenton.json"
+    "mj-2022/hollywood-reporter--david-rooney.json",
+    "mj-2022/ew--kristen-baldwin.json",
+    "mj-2022/timeout--adam-feldman.json",
+    "mj-2022/wsj--charles-isherwood.json",
+    "mj-2022/talkinbroadway--matthew-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "aladdin-2014/ap--mark-kennedy.json"
+      "mj-2022/guardian--adrian-horton.json",
+      "mj-2022/ap--mark-kennedy.json"
     ],
     "browserbase": [],
-    "scrapingbee": [],
-    "brightdata": [
-      "aladdin-2014/wsj--terry-teachout.json"
+    "scrapingbee": [
+      "mj-2022/usatoday--david-rooney.json"
     ],
+    "brightdata": [],
     "archive": [
-      "aladdin-2014/hollywood-reporter--david-rooney.json",
-      "aladdin-2014/ew--thom-geier.json",
-      "aladdin-2014/newsday--linda-winer.json",
-      "aladdin-2014/uinterview--danny-graugnard.json",
-      "aladdin-2014/thisbroadsway--sandra-mcfarland.json"
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "mj-2022/variety--peter-marks.json"
     ]
   },
-  "startTime": "2026-02-02T23:11:27.475Z",
-  "lastProcessed": "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
+  "startTime": "2026-02-02T23:11:29.086Z",
+  "lastProcessed": "mj-2022/usatoday--david-rooney.json",
   "log": [
     {
-      "t": "2026-02-02T23:12:50.786Z",
+      "t": "2026-02-02T23:14:59.435Z",
       "event": "bb-session",
-      "session": "70cb97df",
-      "url": "https://nypost.com/2014/03/21/aladdin-review-a-whole-new-wonderful-world/"
+      "session": "c0070fb2",
+      "url": "https://www.wsj.com/articles/mj-the-musical-review-broadway-michael-jackson-1164"
     },
     {
-      "t": "2026-02-02T23:13:44.246Z",
-      "event": "bb-session",
-      "session": "1d607ad8",
-      "url": "https://www.theatermania.com/new-york-city-theater/reviews/aladdin_70661.html"
-    },
-    {
-      "t": "2026-02-02T23:14:22.160Z",
-      "event": "bb-session",
-      "session": "96536796",
-      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
-    },
-    {
-      "t": "2026-02-02T23:15:09.383Z",
+      "t": "2026-02-02T23:15:46.562Z",
       "event": "bb-login-ok",
       "domain": "wsj.com"
     }
