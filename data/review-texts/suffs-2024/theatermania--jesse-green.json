@@ -71,8 +71,8 @@
   "previousLlmScore": 60,
   "textWordCount": 288,
   "archivePath": "data/archives/reviews/suffs-2024/theatermania--jesse-green_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T15:07:51.321Z",
-  "fetchMethod": "brightdata",
+  "textFetchedAt": "2026-02-02T16:34:43.231Z",
+  "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
       "tier": 0,
@@ -87,24 +87,24 @@
       "error": "Skipped - known blocked site"
     },
     {
-      "tier": 2,
-      "method": "scrapingbee",
+      "tier": 1.5,
+      "method": "browserbase",
       "success": false,
-      "error": "timeout of 60000ms exceeded"
+      "error": "Insufficient text: 0 chars"
     },
     {
-      "tier": 3,
-      "method": "brightdata",
+      "tier": 2,
+      "method": "scrapingbee",
       "success": true
     }
   ],
-  "fetchTier": 3,
+  "fetchTier": 2,
   "textQuality": "truncated",
   "truncationSignals": [
     "has_paywall_text"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "brightdata",
+  "sourceMethod": "scrapingbee",
   "textIssues": [
     "Word count too low: 288 (min: 300)",
     "Show title not found in text"
