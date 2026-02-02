@@ -1,15 +1,31 @@
 {
-  "timestamp": "2026-02-02T14:55:06.061Z",
-  "totalDrifted": 1,
+  "timestamp": "2026-02-02T15:58:18.402Z",
+  "totalDrifted": 3,
   "threshold": 20,
   "reviews": [
     {
-      "showId": "wicked-2003",
-      "outlet": "The New Yorker",
-      "critic": null,
-      "oldScore": 35,
-      "newScore": 88,
-      "delta": 53
+      "showId": "appropriate-2023",
+      "outlet": "Entertainment Weekly",
+      "critic": "Unknown",
+      "oldScore": 73,
+      "newScore": 93,
+      "delta": 20
+    },
+    {
+      "showId": "illinoise-2024",
+      "outlet": "New York Stage Review",
+      "critic": "Roma Torre",
+      "oldScore": 78,
+      "newScore": 60,
+      "delta": 18
+    },
+    {
+      "showId": "grey-house-2023",
+      "outlet": "New York Stage Review",
+      "critic": "David NouNou",
+      "oldScore": 75,
+      "newScore": 60,
+      "delta": 15
     }
   ]
 }
