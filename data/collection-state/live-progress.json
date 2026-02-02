@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-02-02T03:51:34.516Z",
-  "processed": 2,
-  "failed": 1,
-  "successRate": "66.7%",
+  "updatedAt": "2026-02-02T04:20:25.861Z",
+  "processed": 3,
+  "failed": 10,
+  "successRate": "23.1%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
+    "playwright": 1,
+    "browserbase": 2,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archive": 1
+    "archive": 3
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-02-02T03:49:40.892Z",
@@ -34,6 +34,12 @@
       "t": "2026-02-02T03:51:11.911Z",
       "event": "bb-login-uncertain",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-02T04:15:50.584Z",
+      "event": "bb-session",
+      "session": "0efd7f49",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/appropriate-theater-review-sara"
     }
   ]
 }
