@@ -16,7 +16,7 @@
   "bwwThumb": "Up",
   "llmScore": {
     "score": 79,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 74,
       "high": 84
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges cultural barriers ('not for every American') but ultimately recommends the show for its strong performances, direction, and 'audacity,' supported by high audience ratings. | GPT-4o: The review praises the direction, choreography, and performances, highlighting the show's comedic and dramatic elements. Despite noting that the humor may not appeal to everyone, the overall tone is strongly positive, recommending the show for its audacity and execution. | Gemini: The review is generally positive, highlighting the cast, direction, and choreography. However, it notes that the British humor might not be for everyone, indicating a reservation. The audience approval rating of 89% further supports a positive classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges the show may not appeal to all American audiences but ultimately recommends it, praising the cast, direction, and the production's audacity while noting some humor may be drawn-out. | GPT-4o: The review praises the direction, choreography, and performances, highlighting the cast's ability to balance comedy and drama. The critic acknowledges some humor may not appeal to everyone but emphasizes the show's overall audacity and effectiveness, indicating a strong recommendation. | Gemini: The review is generally positive, highlighting the cast, direction, and comedic audacity. However, it also notes that the British humor might not appeal to everyone, indicating a reservation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:30:00.826Z",
+    "scoredAt": "2026-02-02T18:49:28.335Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
+    "claudeScore": 78,
     "openaiScore": 82,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
