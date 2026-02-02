@@ -20,8 +20,8 @@
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 1
+    "brightdata": 1,
+    "archive": 2
   },
   "statistics": {
     "tier1Attempts": 0,
@@ -51,10 +51,15 @@
     "and-juliet-2022/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "merrily-we-roll-along-2023/the-times--will-pavia.json",
+      "merrily-we-roll-along-2023/the-village-voice--michael-musto.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "merrily-we-roll-along-2023/vulture--helen-shaw.json"
+    ],
     "archive": [
       "and-juliet-2022/thewrap--robert-hofler.json"
     ]
