@@ -2586,6 +2586,29 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
     data.tierReason = tierResult.tierReason;
   }
 
+  // Post-scrape date check: flag if URL year is far from show opening year
+  // Catches wrong-production content (e.g., 2005 off-Broadway review for 2024 Broadway show)
+  if (data.fullText && data.url && !data.wrongProduction && !data.wrongShow) {
+    const urlYearMatch = data.url.match(/\/((?:19|20)\d{2})\//);
+    if (urlYearMatch) {
+      const urlYear = parseInt(urlYearMatch[1]);
+      try {
+        if (!_showsJsonCache) {
+          _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+        }
+        const showEntry = _showsJsonCache.shows.find(s => s.id === (review.showId || data.showId));
+        if (showEntry && showEntry.openingDate) {
+          const showYear = new Date(showEntry.openingDate).getFullYear();
+          if (urlYear < showYear - 3 || urlYear > showYear + 2) {
+            data.wrongProduction = true;
+            data.wrongProductionNote = `Auto-flagged: URL year ${urlYear} differs from show opening ${showYear} by ${Math.abs(urlYear - showYear)} years`;
+            console.log(`    ⚠ Wrong production? URL year ${urlYear} vs show ${showYear} — flagged for review`);
+          }
+        }
+      } catch (e) { /* shows.json load failure — skip check */ }
+    }
+  }
+
   fs.writeFileSync(review.filePath, JSON.stringify(data, null, 2));
 }
 
