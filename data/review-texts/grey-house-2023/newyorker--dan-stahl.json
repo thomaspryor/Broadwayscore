@@ -67,7 +67,7 @@
   "isFullReview": false,
   "textWordCount": 203,
   "archivePath": "data/archives/reviews/grey-house-2023/newyorker--dan-stahl_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T20:13:08.255Z",
+  "textFetchedAt": "2026-02-02T23:13:39.067Z",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
@@ -81,6 +81,12 @@
       "method": "playwright",
       "success": false,
       "error": "Paywall detected - login may have failed"
+    },
+    {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Paywall detected"
     },
     {
       "tier": 2,
