@@ -109,6 +109,8 @@ A website aggregating Broadway show reviews into composite scores (independent B
 
 ## Data Structure
 
+> **For querying data**, use the SQLite query layer instead of writing one-off scripts. See [SQLite Query Layer](#sqlite-query-layer) below.
+
 ```
 data/
   shows.json                      # Show metadata
@@ -258,10 +260,49 @@ data/
 - `scripts/scrape-nyc-theatre-roundups.js` - NYC Theatre excerpt extraction (2023+ shows)
 - `scripts/lib/show-matching.js` - Shared title→show matching utility
 - `scripts/audit-content-quality.js` - Deep content audit: fabricated URLs, wrong-production content, critic mismatches, domain mismatches, cross-show duplicate URLs, excerpt-as-fullText, generic URLs. Run manually after bulk data changes.
+- `scripts/build-sqlite.js` - Builds SQLite query database from JSON files (`npm run db:build`)
+- `scripts/query.js` - Ad-hoc SQL queries against SQLite database (`npm run db:query`)
+- `scripts/schema.sql` - SQLite schema definition (tables, indexes, views)
 
 **Tests:**
 - `tests/unit/` - Unit tests (parse-grosses, commercial filtering, source-validator, etc.)
 - `tests/e2e/` - Playwright E2E tests (homepage, show pages, biz-buzz)
+
+### SQLite Query Layer
+
+A read-only SQLite database (`data/broadway.db`) built from the JSON source files. Use it for data analysis, auditing, and ad-hoc queries instead of writing one-off scripts or scanning thousands of files.
+
+**The database is ephemeral** — gitignored, never committed, rebuilt from JSON on demand. JSON files remain the source of truth. The website does not use SQLite.
+
+```
+JSON source files ──build-sqlite.js──► broadway.db (ephemeral, read-only)
+                                            │
+     ┌──────────────────────────────────────┤
+     ▼                    ▼                 ▼
+ audit scripts      validate-data.js   ad-hoc queries (Claude Code)
+```
+
+**Setup:** `npm run db:build` (rebuilds in ~0.1s, creates ~2.3MB file)
+
+**Querying:**
+```bash
+node scripts/query.js "SELECT COUNT(*) FROM reviews"
+node scripts/query.js "SELECT critic_name, COUNT(*) c FROM reviews GROUP BY critic_name ORDER BY c DESC LIMIT 10"
+node scripts/query.js "SELECT * FROM content_quality_summary ORDER BY total DESC LIMIT 10"
+node scripts/query.js "SELECT * FROM duplicate_urls"
+node scripts/query.js "SELECT content_tier, COUNT(*) FROM review_texts GROUP BY content_tier"
+```
+
+**Tables:** `shows`, `reviews`, `review_texts`, `commercial`, `grosses`, `audience_buzz`, `critic_registry`
+
+**Built-in views:** `duplicate_urls`, `content_quality_summary`, `critic_outlet_activity`, `scoring_stats`, `duplicate_outlet_critic`
+
+**When to rebuild:** Run `npm run db:build` after any JSON data changes (new reviews, show updates, bulk imports) and before running any queries. Claude Code sessions should do this automatically — rebuild the DB after data modifications and before any analytical queries. Use `npm run db:build:full` to include fullText fields (~23MB).
+
+**Key files:**
+- `scripts/schema.sql` - Schema definition (tracked in git)
+- `scripts/build-sqlite.js` - Build script (atomic writes, integrity check)
+- `scripts/query.js` - CLI query wrapper (read-only, integrity check on open)
 
 ### IBDB Date Enrichment
 
