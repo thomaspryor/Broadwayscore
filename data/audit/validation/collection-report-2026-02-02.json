@@ -1,96 +1,103 @@
 {
-  "runDate": "2026-02-02T15:11:00.821Z",
+  "runDate": "2026-02-02T15:11:22.963Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-outsiders-2024",
+    "showFilter": "the-notebook-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 6,
+    "processed": 4,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "53.8%"
+    "successRate": "36.4%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archive": 4
+    "archive": 3
   },
   "statistics": {
     "tier1Attempts": 4,
     "tier1Success": 1,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 3,
-    "tier2Success": 2,
-    "tier3Attempts": 1,
-    "tier3Success": 0,
-    "tier4Attempts": 16,
-    "tier4Success": 7,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 22,
+    "tier2Attempts": 4,
+    "tier2Success": 1,
+    "tier3Attempts": 2,
+    "tier3Success": 1,
+    "tier4Attempts": 15,
+    "tier4Success": 5,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 23,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 3,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-outsiders-2024/variety--maya-phillips.json",
-    "the-outsiders-2024/vulture--jackson-mchenry.json",
-    "the-outsiders-2024/vulture--sara-holdren.json",
-    "the-outsiders-2024/broadwaynews--brittani-samuel.json",
-    "the-outsiders-2024/theatermania--adam-feldman.json",
-    "the-outsiders-2024/thewrap--robert-hofler.json",
-    "the-outsiders-2024/culturesauce--thom-geier.json"
+    "the-notebook-2024/nytimes--jesse-green.json",
+    "the-notebook-2024/nytimes--unknown.json",
+    "the-notebook-2024/broadwaynews--brittani-samuel.json",
+    "the-notebook-2024/theatermania--jesse-green.json"
   ],
   "failed": [
-    "the-outsiders-2024/hollywood-reporter--angie-han.json",
-    "the-outsiders-2024/hollywood-reporter--david-rooney.json",
-    "the-outsiders-2024/deadline--greg-evans.json",
-    "the-outsiders-2024/timeout--adam-feldman.json",
-    "the-outsiders-2024/wsj--charles-isherwood.json",
-    "the-outsiders-2024/talkinbroadway--matthew-murray.json"
+    "the-notebook-2024/hollywood-reporter--david-rooney.json",
+    "the-notebook-2024/vulture--helen-shaw.json",
+    "the-notebook-2024/deadline--greg-evans.json",
+    "the-notebook-2024/nydailynews--chris-jones.json",
+    "the-notebook-2024/timeout--adam-feldman.json",
+    "the-notebook-2024/wsj--charles-isherwood.json",
+    "the-notebook-2024/rollingstone--brittany-spanos.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "the-outsiders-2024/culturesauce--thom-geier.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [
-      "the-outsiders-2024/theatermania--adam-feldman.json",
-      "the-outsiders-2024/thewrap--robert-hofler.json"
+      "the-notebook-2024/theatermania--jesse-green.json"
     ],
     "brightdata": [],
     "archive": [
-      "the-outsiders-2024/variety--maya-phillips.json",
-      "the-outsiders-2024/vulture--jackson-mchenry.json",
-      "the-outsiders-2024/vulture--sara-holdren.json",
-      "the-outsiders-2024/broadwaynews--brittani-samuel.json"
+      "the-notebook-2024/nytimes--jesse-green.json",
+      "the-notebook-2024/nytimes--unknown.json",
+      "the-notebook-2024/broadwaynews--brittani-samuel.json"
     ]
   },
   "failuresByOutlet": {
     "The Hollywood Reporter": {
-      "count": 2,
+      "count": 1,
       "domain": "hollywoodreporter.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "Talkin' Broadway": {
+    "New York Daily News": {
       "count": 1,
-      "domain": "talkinbroadway.com",
+      "domain": "nydailynews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Rolling Stone": {
+      "count": 1,
+      "domain": "rollingstone.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "the-notebook-2024/vulture--helen-shaw.json",
+      "oldUrl": "https://www.vulture.com/article/the-notebook-broadway-review.html",
+      "newUrl": "https://www.vulture.com/article/theater-reviews-the-notebook-the-effect.html"
+    }
+  ]
 }
