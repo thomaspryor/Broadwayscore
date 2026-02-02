@@ -1,39 +1,59 @@
 {
   "processed": [
-    "wicked-2003/nytimes--charles-isherwood.json",
-    "wicked-2003/variety--charles-isherwood.json",
-    "wicked-2003/ew--alice-king.json",
-    "wicked-2003/the-journal-news-lohud--jacques-le-sourd.json",
-    "wicked-2003/village-voice--michael-feingold.json",
-    "wicked-2003/washpost--peter-marks.json"
+    "stereophonic-2024/hollywood-reporter--david-rooney.json",
+    "stereophonic-2024/nytg--allison-considine.json",
+    "stereophonic-2024/broadwaynews--brittani-samuel.json",
+    "stereophonic-2024/theatermania--jesse-green.json",
+    "stereophonic-2024/usatoday--charles-isherwood.json"
   ],
   "failed": [
-    "wicked-2003/newyorker--.json",
-    "wicked-2003/ew--lisa-schwarzbaum.json",
-    "wicked-2003/observer--rex-reed.json",
-    "wicked-2003/timeout--david-cote.json",
-    "wicked-2003/wsj--terry-teachout.json",
-    "wicked-2003/curtainup--elyse-sommer.json",
-    "wicked-2003/frontmezzjunkies--unknown.json",
-    "wicked-2003/njcom-star-ledger--michael-sommers.json"
+    "stereophonic-2024/deadline--greg-evans.json",
+    "stereophonic-2024/observer--jesse-green.json",
+    "stereophonic-2024/timeout--adam-feldman.json",
+    "stereophonic-2024/wsj--charles-isherwood.json",
+    "stereophonic-2024/theatrely--juan-a-ramirez.json",
+    "stereophonic-2024/talkinbroadway--matthew-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "wicked-2003/the-journal-news-lohud--jacques-le-sourd.json",
-      "wicked-2003/washpost--peter-marks.json"
-    ],
+    "playwright": [],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "stereophonic-2024/theatermania--jesse-green.json",
+      "stereophonic-2024/usatoday--charles-isherwood.json"
+    ],
     "brightdata": [],
     "archive": [
-      "wicked-2003/nytimes--charles-isherwood.json",
-      "wicked-2003/variety--charles-isherwood.json",
-      "wicked-2003/ew--alice-king.json",
-      "wicked-2003/village-voice--michael-feingold.json"
+      "stereophonic-2024/hollywood-reporter--david-rooney.json",
+      "stereophonic-2024/nytg--allison-considine.json",
+      "stereophonic-2024/broadwaynews--brittani-samuel.json"
     ]
   },
-  "startTime": "2026-02-02T23:31:50.213Z",
-  "lastProcessed": "wicked-2003/washpost--peter-marks.json",
-  "log": []
+  "startTime": "2026-02-02T23:27:30.575Z",
+  "lastProcessed": "stereophonic-2024/usatoday--charles-isherwood.json",
+  "log": [
+    {
+      "t": "2026-02-02T23:30:45.042Z",
+      "event": "bb-session",
+      "session": "141396f4",
+      "url": "https://observer.com/2024/04/stereophonic-broadway-review/"
+    },
+    {
+      "t": "2026-02-02T23:31:11.358Z",
+      "event": "bb-session",
+      "session": "8c655a51",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/stereophonic-playwrig"
+    },
+    {
+      "t": "2026-02-02T23:32:38.593Z",
+      "event": "bb-session",
+      "session": "f447e32d",
+      "url": "https://www.wsj.com/articles/stereophonic-review-david-adjmi-will-butler-broadwa"
+    },
+    {
+      "t": "2026-02-02T23:33:24.020Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    }
+  ]
 }
