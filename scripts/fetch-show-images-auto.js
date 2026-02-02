@@ -311,6 +311,23 @@ async function discoverTodayTixId(showTitle) {
   return null;
 }
 
+// Detect if a thumbnail URL points to a native square asset vs a portrait poster crop
+function isNativeSquareUrl(url) {
+  if (!url) return false;
+  const filename = url.split('/').pop().split('?')[0].toLowerCase();
+  // Native square: filename has square dimensions or "square" keyword
+  if (filename.match(/1080x1080|1024x1024|1000x1000|900x900|500x500/)) return true;
+  if (filename.includes('square') || filename.includes('_sq') || filename.includes('-sq')) return true;
+  if (filename.includes('1x1')) return true;
+  // Portrait poster crop: filename has portrait dimensions
+  if (filename.match(/480x720|600x900|400x600/)) return false;
+  if (filename.includes('poster')) return false;
+  // Check URL params - if it has fit=fill with square dimensions on a non-square source, it's a crop
+  if (url.includes('fit=fill') && url.includes('h=1080') && filename.match(/480x720|poster/)) return false;
+  // Unknown - assume it could be okay
+  return true;
+}
+
 // Contentful URL transformation parameters - ONLY used as fallback
 // Contentful's Image API allows requesting any size/crop on the fly
 const CONTENTFUL_TRANSFORMS = {
@@ -593,7 +610,8 @@ async function fetchShowImages(show, todayTixInfo, apiData) {
         return url + '?fm=webp&q=90';
       };
 
-      console.log(`     - Square (thumbnail): ${thumbnail ? 'native square from API' : 'not available'}`);
+      const thumbIsNative = isNativeSquareUrl(thumbnail);
+      console.log(`     - Square (thumbnail): ${thumbnail ? (thumbIsNative ? '✓ native square from API' : '⚠ poster crop from API') : 'not available'}`);
       console.log(`     - Portrait (poster): ${poster ? 'from API' : 'not available'}`);
       console.log(`     - Landscape (hero): ${hero ? 'from API' : 'not available'}`);
 
@@ -746,6 +764,18 @@ async function main() {
     const images = await fetchShowImages(show, todayTixInfo, apiData);
 
     if (images) {
+      // Protect existing local thumbnails from being overwritten by poster crops.
+      // If the show already has a local thumbnail and the new source is a poster crop
+      // (not a native square), keep the existing thumbnail.
+      const existingThumb = show.images?.thumbnail;
+      const hasLocalThumb = existingThumb && existingThumb.startsWith('/images/');
+      const newThumbIsNative = isNativeSquareUrl(images.thumbnail);
+
+      if (hasLocalThumb && !newThumbIsNative) {
+        console.log(`   ⚠ Keeping existing local thumbnail (new source is poster crop, not native square)`);
+        images.thumbnail = existingThumb;
+      }
+
       show.images = images;
       results.success.push(show.title);
     } else {
