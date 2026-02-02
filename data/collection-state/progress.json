@@ -1,51 +1,35 @@
 {
   "processed": [
-    "an-enemy-of-the-people-2024/variety--aramide-tinubu.json",
-    "an-enemy-of-the-people-2024/vulture--jesse-green.json",
-    "an-enemy-of-the-people-2024/deadline--greg-evans.json"
+    "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
+    "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
+    "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
+    "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
+    "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json",
+    "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
   ],
   "failed": [
-    "an-enemy-of-the-people-2024/guardian--adrian-horton.json",
-    "an-enemy-of-the-people-2024/nydailynews--chris-jones.json",
-    "an-enemy-of-the-people-2024/timeout--adam-feldman.json",
-    "an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
-    "an-enemy-of-the-people-2024/wsj--unknown.json",
-    "an-enemy-of-the-people-2024/talkinbroadway--matthew-murray.json",
-    "an-enemy-of-the-people-2024/washpost--peter-marks.json"
+    "once-upon-a-one-more-time-2023/hollywood-reporter--angie-han.json",
+    "once-upon-a-one-more-time-2023/timeout--adam-feldman.json",
+    "once-upon-a-one-more-time-2023/associated-press-mark-kennedy--mark-kennedy.json",
+    "once-upon-a-one-more-time-2023/thestage--lane-williamson.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
-    "browserbase": [
-      "data/review-texts/an-enemy-of-the-people-2024/nydailynews--chris-jones.json"
+    "playwright": [
+      "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
     ],
+    "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "an-enemy-of-the-people-2024/variety--aramide-tinubu.json",
-      "an-enemy-of-the-people-2024/vulture--jesse-green.json",
-      "an-enemy-of-the-people-2024/deadline--greg-evans.json"
+      "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
+      "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
+      "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
+      "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
+      "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json"
     ]
   },
-  "startTime": "2026-02-02T16:33:38.381Z",
-  "lastProcessed": "an-enemy-of-the-people-2024/washpost--peter-marks.json",
-  "log": [
-    {
-      "t": "2026-02-02T16:34:06.601Z",
-      "event": "bb-session",
-      "session": "a22e2911",
-      "url": "https://www.nydailynews.com/2024/03/18/broadway-review-enemy-of-the-people-is-li"
-    },
-    {
-      "t": "2026-02-02T16:36:59.038Z",
-      "event": "bb-session",
-      "session": "21a86339",
-      "url": "https://www.washingtonpost.com/theater-dance/2024/03/18/enemy-people-broadway-re"
-    },
-    {
-      "t": "2026-02-02T16:37:00.678Z",
-      "event": "bb-login-uncertain",
-      "domain": "washingtonpost.com"
-    }
-  ]
+  "startTime": "2026-02-02T16:32:51.847Z",
+  "lastProcessed": "once-upon-a-one-more-time-2023/thestage--lane-williamson.json",
+  "log": []
 }
