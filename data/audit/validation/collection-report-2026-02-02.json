@@ -1,74 +1,96 @@
 {
-  "runDate": "2026-02-02T23:29:00.553Z",
+  "runDate": "2026-02-02T23:31:42.696Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "ragtime-2025",
+    "showFilter": "our-town-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 4,
+    "processed": 6,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "42.9%"
+    "successRate": "54.5%"
   },
   "tierBreakdown": {
-    "playwright": 3,
-    "browserbase": 2,
-    "scrapingbee": 1,
-    "brightdata": 0,
-    "archive": 0
+    "playwright": 1,
+    "browserbase": 3,
+    "scrapingbee": 0,
+    "brightdata": 3,
+    "archive": 2
   },
   "statistics": {
     "tier1Attempts": 5,
-    "tier1Success": 3,
-    "tier1_5Attempts": 2,
-    "tier1_5Success": 1,
-    "tier2Attempts": 2,
-    "tier2Success": 1,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
-    "tier4Attempts": 3,
-    "tier4Success": 1,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 10,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 2.2,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "tier1Success": 2,
+    "tier1_5Attempts": 5,
+    "tier1_5Success": 2,
+    "tier2Attempts": 4,
+    "tier2Success": 0,
+    "tier3Attempts": 3,
+    "tier3Success": 3,
+    "tier4Attempts": 10,
+    "tier4Success": 3,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 12,
+    "browserbaseSessionsUsed": 5,
+    "browserbaseMinutesUsed": 1.6,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "ragtime-2025/nyt-theater--jonathan-mandell.json",
-    "ragtime-2025/one-minute-critic--matthew-wexler.json",
-    "ragtime-2025/washpost--naveen-kumar.json"
+    "our-town-2024/ew--shania-russell.json",
+    "our-town-2024/nypost--johnny-oleksinski.json",
+    "our-town-2024/theatermania--jesse-green.json",
+    "our-town-2024/thewrap--robert-hofler.json",
+    "our-town-2024/wsj--charles-isherwood.json",
+    "our-town-2024/washpost--peter-marks.json"
   ],
   "failed": [
-    "ragtime-2025/variety--frank-rizzo.json",
-    "ragtime-2025/deadline--greg-evans.json",
-    "ragtime-2025/timeout--adam-feldman.json",
-    "ragtime-2025/wsj--charles-isherwood.json"
+    "our-town-2024/hollywood-reporter--angie-han.json",
+    "our-town-2024/deadline--greg-evans.json",
+    "our-town-2024/ny-sun--elysa-gardner.json",
+    "our-town-2024/nydailynews--chris-jones.json",
+    "our-town-2024/timeout--adam-feldman.json"
   ],
   "tierDetails": {
     "playwright": [
-      "ragtime-2025/nyt-theater--jonathan-mandell.json",
-      "ragtime-2025/one-minute-critic--matthew-wexler.json",
-      "ragtime-2025/washpost--naveen-kumar.json"
+      "our-town-2024/washpost--peter-marks.json"
     ],
     "browserbase": [
-      "data/review-texts/ragtime-2025/variety--frank-rizzo.json",
-      "ragtime-2025/variety--frank-rizzo.json"
+      "data/review-texts/our-town-2024/nydailynews--chris-jones.json",
+      "data/review-texts/our-town-2024/nypost--johnny-oleksinski.json",
+      "our-town-2024/nypost--johnny-oleksinski.json"
     ],
-    "scrapingbee": [
-      "ragtime-2025/deadline--greg-evans.json"
+    "scrapingbee": [],
+    "brightdata": [
+      "our-town-2024/deadline--greg-evans.json",
+      "our-town-2024/theatermania--jesse-green.json",
+      "our-town-2024/thewrap--robert-hofler.json"
     ],
-    "brightdata": [],
-    "archive": []
+    "archive": [
+      "our-town-2024/ew--shania-russell.json",
+      "our-town-2024/wsj--charles-isherwood.json"
+    ]
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "failuresByOutlet": {
+    "The Hollywood Reporter": {
+      "count": 1,
+      "domain": "hollywoodreporter.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "our-town-2024/washpost--peter-marks.json",
+      "oldUrl": "https://www.washingtonpost.com/theater-dance/2024/10/11/our-town-broadway-review/",
+      "newUrl": "https://www.washingtonpost.com/entertainment/theater_dance/theater-review-our-town-at-fords-theatre/2013/01/31/3f0ad3cc-6be4-11e2-8f4f-2abd96162ba8_story.html"
+    }
+  ]
 }
