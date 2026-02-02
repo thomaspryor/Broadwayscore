@@ -1817,7 +1817,11 @@ async function fetchReviewText(review) {
   if (shouldTryBrowserbase && canUseBrowserbase()) {
     console.log('  [Tier 1.5] Browserbase (managed browser + CAPTCHA solving)...');
     try {
-      const result = await fetchWithBrowserbase(url, review);
+      // Hard timeout to prevent Browserbase CDP hangs from blocking the entire run
+      const bbTimeout = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Browserbase overall timeout (120s)')), 120000)
+      );
+      const result = await Promise.race([fetchWithBrowserbase(url, review), bbTimeout]);
       html = result.html;
       text = result.text;
       method = 'browserbase';
