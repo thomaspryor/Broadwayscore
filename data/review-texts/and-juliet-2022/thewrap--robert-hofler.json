@@ -74,25 +74,13 @@
   "previousLlmScore": 59,
   "isFullReview": true,
   "textWordCount": 711,
-  "archivePath": "data/archives/reviews/and-juliet-2022/thewrap--robert-hofler_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T15:53:46.682Z",
+  "archivePath": "data/archives/reviews/and-juliet-2022/thewrap--robert-hofler_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T02:41:48.104Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "Parse Error: Header overflow"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
