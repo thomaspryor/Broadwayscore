@@ -5,7 +5,7 @@
   "criticName": "Trish Deitch",
   "url": "https://variety.com/2023/legit/reviews/i-need-that-review-danny-devito-broadway-1235778734/",
   "publishDate": null,
-  "fullText": "Let's face it: No one's going to hire Danny DeVito to play Lear. Or Willy Loman. Or even George to Albee's Martha. In the eyes of the world, DeVito is a clown, just short of having a Bozo nose. If he stood onstage reading the obituary page, people would die laughing.\n\nSo it doesn't really matter that playwright Theresa Rebeck's \"I Need That\" — written for DeVito and his daughter, Lucy DeVito, and playing at the Roundabout Theatre Company's American Airlines Theatre on Broadway — is basically a 90-minute sitcom episode, full of sentimentality. TV is what DeVito does best, and he's good at this. He's easy, relaxed and sparking with grumpy mirth.",
+  "fullText": "Nov 2, 2023 7:00pm PT \n\n \n\n \n \n \n\n \n\n \n ‘I Need That’ Review: Danny DeVito Earns Broadway Laughs in Theresa Rebeck’s New Play\n\nLet’s face it: No one’s going to hire Danny DeVito to play Lear. Or Willy Loman. Or even George to Albee’s Martha. In the eyes of the world, DeVito is a clown, just short of having a Bozo nose. If he stood onstage reading the obituary page, people would die laughing.\n\nSo it doesn’t really matter that playwright Theresa Rebeck’s “I Need That” — written for DeVito and his daughter, Lucy DeVito, and playing at the Roundabout Theatre Company’s American Airlines Theatre on Broadway — is basically a 90-minute sitcom episode, full of sentimentality. TV is what DeVito does best, and he’s good at this. He’s easy, relaxed and sparking with grumpy mirth.\n\nDirected by Maritz von Stuelpnagel, “I Need That” centers around a stubborn old hoarder threatened with eviction because his decades worth of memorabilia is spilling out onto the front lawn. And though there are moments of tension — as when the old man’s daughter (played charmingly by Lucy DeVito) and best friend (in a heartfelt performance by Ray Anthony Thomas) are haranguing him about cleaning up, or, later, admitting to him that they must move on — DeVito spends most of the play up there in his bathrobe, hair all mussed, interacting with a sea of fun props: boardgames, a television set with rabbit ears, old poker chips, a beat-up electric guitar. The best moment in the play is watching DeVito, alone in the house, beat himself at the boardgame Sorry!\n\nThere is an attempt, near the end of the show, to add meaning and depth to the story’s otherwise surface-level emotions. Eventually we’re told that the things we’re attached to from the past keep us from living in the present, but the notion isn’t woven into the text or explored throughout the play. It arrives way too late, with the impact of a Hallmark card.\n\nStill, “I Need That” will prove satisfying for those looking to be entertained by DeVito and his daughter. He brings real joy and laughter, and there’s real value in that.\n\nAs a California consumer, you have the right to opt-out from the sale or sharing of your personal information at any time across business platform, services, businesses and devices. You can opt-out of the sale and sharing of your personal information by using this toggle switch. As a Virginia, Utah, Colorado and Connecticut consumer, you have the right to opt-out from the sale of your personal data and the processing of your personal data for targeted advertising. You can opt-out of the sale of your personal data and targeted advertising by using this toggle switch. For more information on your rights as a United States consumer see our privacy notice.",
   "bwwExcerpt": "There is an attempt, near the end of the show, to add meaning and depth to the story’s otherwise surface-level emotions. Eventually we’re told that the things we’re attached to from the past keep us from living in the present, but the notion isn’t woven into the text or explored throughout the play. It arrives way too late, with the impact of a Hallmark card. Still, “I Need That” will prove satisfying for those looking to be entertained by DeVito and his daughter. He brings real joy and laughter",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
@@ -73,18 +73,24 @@
   "showScoreUrl": "https://www.show-score.com/broadway-shows/i-need-that-broadway",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 64,
-  "archivePath": "data/archives/reviews/i-need-that-2023/variety--trish-deitch_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T21:18:47.384Z",
-  "fetchMethod": "archive",
+  "archivePath": "data/archives/reviews/i-need-that-2023/variety--trish-deitch_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T05:39:36.483Z",
+  "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
-      "tier": 0,
-      "method": "archive-first",
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
       "success": true
     }
   ],
-  "fetchTier": 4,
-  "sourceMethod": "archive",
+  "fetchTier": 2,
+  "sourceMethod": "scrapingbee",
   "archiveOrgTimestamp": "20251122021959",
   "archiveOrgUrl": "http://web.archive.org/web/20251122021959/https://variety.com/2023/legit/reviews/i-need-that-review-danny-devito-broadway-1235778734/",
   "rescoreCompletedAt": "2026-01-29T14:31:51.814Z",
@@ -92,11 +98,10 @@
   "dateSource": "historical-review",
   "contentTier": "complete",
   "wordCount": 391,
-  "isFullReview": false,
-  "textWordCount": 113,
-  "textQuality": "truncated",
-  "truncationSignals": [
-    "shorter_than_excerpt"
-  ],
-  "textStatus": "truncated"
+  "isFullReview": true,
+  "textWordCount": 468,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "designation": "Recommended"
 }

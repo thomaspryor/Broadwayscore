@@ -6364,18 +6364,6 @@
     "timestamp": "2026-02-02T02:22:35.517Z"
   },
   {
-    "reviewId": "illinoise-2024/nyt-theater--jonathan-mandell.json",
-    "showId": "illinoise-2024",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2024/04/24/illinoise-opens-on-broadway/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Paywall/subscription prompt: \"members only\"",
-    "textLength": 17513,
-    "timestamp": "2026-02-02T02:35:25.247Z"
-  },
-  {
     "reviewId": "and-juliet-2022/theatermania--jesse-green.json",
     "showId": "and-juliet-2022",
     "outlet": "TheaterMania",
@@ -6794,5 +6782,29 @@
     "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
     "textLength": 10037,
     "timestamp": "2026-02-02T05:00:28.426Z"
+  },
+  {
+    "reviewId": "illinoise-2024/hollywood-reporter--david-rooney.json",
+    "showId": "illinoise-2024",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/lifestyle/arts/illinoise-review-sufjan-stevens-justin-peck-broadway-theater-1235882171/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"members only\"",
+    "textLength": 8798,
+    "timestamp": "2026-02-02T05:42:39.084Z"
+  },
+  {
+    "reviewId": "illinoise-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "illinoise-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/04/24/illinoise-opens-on-broadway/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"members only\"",
+    "textLength": 8798,
+    "timestamp": "2026-02-02T05:42:43.815Z"
   }
 ]
