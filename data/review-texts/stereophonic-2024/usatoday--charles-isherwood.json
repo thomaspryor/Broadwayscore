@@ -5,7 +5,7 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.usatoday.com/story/entertainment/theater/2024/04/18/stereophonic-broadway-review/73362737007/",
   "publishDate": "April 18, 2024",
-  "isFullReview": false,
+  "isFullReview": true,
   "dtliExcerpt": "This ambitious musical about a rock band recording an album in the 1970s is a triumph of theatrical storytelling that captures the creative process in all its messy, exhilarating glory.",
   "originalScore": null,
   "assignedScore": 89,
@@ -18,11 +18,11 @@
   "needsScoring": true,
   "contentTier": "needs-rescrape",
   "contentTierReason": "DEA healthcare/prescription drug article instead of review",
-  "rescoreReason": "LLM score invalidated (scored from garbage/wrong-show text): DEA healthcare/prescription drug article instead of review",
-  "previousLlmScore": 92,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 89,
   "archivePath": "data/archives/reviews/stereophonic-2024/usatoday--charles-isherwood_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T00:44:52.840Z",
-  "fetchMethod": "brightdata",
+  "textFetchedAt": "2026-02-02T15:14:03.739Z",
+  "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
       "tier": 0,
@@ -39,17 +39,11 @@
     {
       "tier": 2,
       "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 3,
-  "sourceMethod": "brightdata",
+  "fetchTier": 2,
+  "sourceMethod": "scrapingbee",
   "rescoreCompletedAt": "2026-02-02T14:25:00.217Z",
   "_invalidatedFullText": "HEALTHCAREDrug Enforcement AdministrationAdd TopicWhere you can safely dispose unused prescription medication in Lane County Sydney WyattSalem Statesman JournalUpdated April 23, 2024, 1:36 p.m. ETThe Oregon Health Authority encourages anyone with unused or expired prescription medications to seek safe disposal options, such as returning them to permanent collection sites, at Drug Take Back Day events, or to authorized pharmacies or hospitals.\n\nSafe disposal of unused drugs regardless of type is important to prevent others from using them intentionally or unintentionally.\n\nImproperly disposed medications also can pose significant risks to water quality because they can get into water systems. You should never flush unused medications down the toilet or drain.\n\nDrug collection sites do not accept herbal remedies, vitamins, supplements, medical devices, batteries, mercury-containing thermometers, sharps or illicit drugs.\n\nThese are the options for safe medication disposal prescription medications in Lane County:\n\nThe Drug Enforcement Administration (DEA) holds a National Prescription Drug Take Back Day in April and October.\n\nDuring the 25th Drug Take Back Day in October, 2,995 pounds of unused medications were collected at 17 sites across Oregon, according to the DEA.\n\nThe first national event in 2024 will be held April 27. Pharmacy and police department staff will be on-site to assist in safe disposal of unused prescription medications at the following locations\n\nThese are year-round collection sites in Lane County. Some allow drop-off of unused medication. Others offer free mail-back services.\n\nVisit medtakebackoregon.org and enter your ZIP code for a full list of prescription drug collection sites, their location and hours. For more information or to order mail-back supples, call (844) 482-5322.\n\nThis is a partial list of collection sites in Lane County:\n\nSydney Wyatt covers healthcare inequities in the Mid-Willamette Valley. Send comments, questions, and tips to her atSWyatt@gannett.com or (503) 399-6613\n\nWyatt's coverage of healthcare inequities is funded in part by theM.J. Murdock Charitable Trust, which seeks to strengthen the cultural, social, educational, and spiritual base of the Pacific Northwest through capacity-building investments in the nonprofit sector.",
   "_invalidatedFullTextReason": "DEA healthcare/prescription drug article instead of review",
@@ -145,5 +139,18 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Rave"
-  }
+  },
+  "needsRescore": true,
+  "fullText": "HEALTHCAREDrug Enforcement AdministrationAdd TopicWhere you can safely dispose unused prescription medication in Lane County Sydney WyattSalem Statesman JournalUpdated April 23, 2024, 1:36 p.m. ETThe Oregon Health Authority encourages anyone with unused or expired prescription medications to seek safe disposal options, such as returning them to permanent collection sites, at Drug Take Back Day events, or to authorized pharmacies or hospitals.\n\nSafe disposal of unused drugs regardless of type is important to prevent others from using them intentionally or unintentionally.\n\nImproperly disposed medications also can pose significant risks to water quality because they can get into water systems. You should never flush unused medications down the toilet or drain.\n\nDrug collection sites do not accept herbal remedies, vitamins, supplements, medical devices, batteries, mercury-containing thermometers, sharps or illicit drugs.\n\nThese are the options for safe medication disposal prescription medications in Lane County:\n\nThe Drug Enforcement Administration (DEA) holds a National Prescription Drug Take Back Day in April and October.\n\nDuring the 25th Drug Take Back Day in October, 2,995 pounds of unused medications were collected at 17 sites across Oregon, according to the DEA.\n\nThe first national event in 2024 will be held April 27. Pharmacy and police department staff will be on-site to assist in safe disposal of unused prescription medications at the following locations\n\nThese are year-round collection sites in Lane County. Some allow drop-off of unused medication. Others offer free mail-back services.\n\nVisit medtakebackoregon.org and enter your ZIP code for a full list of prescription drug collection sites, their location and hours. For more information or to order mail-back supples, call (844) 482-5322.\n\nThis is a partial list of collection sites in Lane County:\n\nSydney Wyatt covers healthcare inequities in the Mid-Willamette Valley. Send comments, questions, and tips to her atSWyatt@gannett.com or (503) 399-6613\n\nWyatt's coverage of healthcare inequities is funded in part by theM.J. Murdock Charitable Trust, which seeks to strengthen the cultural, social, educational, and spiritual base of the Pacific Northwest through capacity-building investments in the nonprofit sector.\n\nKeep on reading'Shameless': 'Melania' movie reviews, Rotten Tomatoes score are hereThe first slate of movie reviews for \"Melania\" are less than favorable, with most critics unimpressed with the Brett Ratner documentary.USA TODAYUndoTrump's bizarre, sad press conference was not normalDonald Trump met with the White House press corps to celebrate his first year back in office. He rambled about Renee Good, ICE, Joe Biden and more.USA TODAYUndoNurse who made comments about press secretary can't work in FloridaFlorida labor and delivery nurse can't work in Florida anymore following comments she made about Trump's press secretary.USA TODAYUndoBoca nurse who made comments about Trump's press secretary can't work in FloridaBoca Raton nurse, Lexie Lawler, is no longer allowed to work as a nurse in the state, Florida Attorney General James Uthmeier announced on social media.USA TODAYUndo\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n \n '\n '\n '\n\n \n \n \n \n \n '\n '\n '\n\nMissing Indiana teen Hailey Buzbee is dead, police sayBuzbee has not yet been found, police said, though evidence has led them to believe she is deceased.USA TODAYUndoAfter 60, Leg Strength Comes From One Simple Daily MovePrime Nutrition Secrets | SponsoredSponsoredUndoStrange Investment Secret Discovered Just Before The Great Depression Just Made A New PredictionWeiss | SponsoredSponsoredUndoSarah Jessica Parker and the aging side effect she didn't see comingSarah Jessica Parker, 60, wants to speak about reading and aging. And how, for her, those two things have become intertwined.USA TODAYUndoMelania Trump documentary shocks at the box officeCritics hated it, but director Brett Ratner's first lady documentary \"Melania\" Trump outperformed box-office expectations with a $7 million opening.USA TODAYUndoSean Grayson receives 20-year sentence. Here's why he didn't get lifeSean Grayson was sentenced to 20 years in prison for the murder of Sonya Massey. Here's why he didn't receive a life sentence.USA TODAYUndoBill O'Reilly reveals illness: 'We'll fight the good fight'USA TODAYUndoMost Put Parents in Assisted Living, But This Son Knew BetterUS Medicine Today | SponsoredSponsoredLearn MoreUndoRetirees Are Ditching $600 Prescriptions for These $39 German-Engineered GlassesGekkoGifts | SponsoredSponsoredLearn MoreUndo'Melania' is a boring train wreck of a documentary\"Melania,\" Brett Ratner's documentary about first lady Melania Trump, is a terrible movie. Donald Trump loves it. So, then, will his MAGA followers.USA TODAYUndoCatherine O'Hara revealed rare genetic condition: What is situs inversus?Catherine O'Hara, who died Jan. 30, previously opened up about a rare congenital condition called dextrocardia with situs inversus.USA TODAYUndo\n\n \n \n\n \n \n \n \n\n \n \n \n \n \n \n s.amazon-adsystem.com is blocked\n \n \n This page has been blocked by an extension",
+  "textWordCount": 722,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true
 }
