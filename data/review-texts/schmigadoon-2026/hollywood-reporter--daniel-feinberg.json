@@ -9,9 +9,9 @@
   "sources": [
     "playbill-verdict"
   ],
-  "fullText": "Logo text\n \n\nMy grandmother loved musicals. She loved seeing them and singing along with them, and she loved announcing, when a song came on the radio or came up in conversation, “I wrote that one!”\n\nSee, my grandmother also loved writing musical parodies. Whether she was reconceiving the classics for friends and family at the Wapaska Lodge on Muskoka Bay, or as part of talent shows or fundraisers for the New Mount Sinai Hospital Women's Auxiliary, it was the rare musical classic that she hadn’t already given her own spin — like the indelible “Fanny Get Your BB Gun,” with “BB” standing, of course, for “B’nai B’rith.”\n\nSchmigadoon! \n \n\n \n \n The Bottom Line\n \n \n Some joyful musical moments, but very little depth.\n \n \n \n \n \n Airdate: Friday, July 16 (Apple TV+)\nCast: Cecily Strong, Keegan-Michael Key, Alan Cumming, Fred Armisen, Kristin Chenoweth, Aaron Tveit, Dove Cameron, Ariana DeBose, Jaime Camil, Ann Harada\nCreators: Cinco Paul and Ken Daurio\n\nAt its best, the new Apple TV+ comedy Schmigadoon! felt like sitting in the backseat on a long car ride with my grandmother, sharing excitement for musicals of the ’40s, ’50s and ’60s. More frequently, however, Schmigadoon! felt like a two-hour musical parody originally intended for Off-Off-Off Broadway performances in front of an enthusiastically drunk crowd of former theater kids, perplexingly expanded to three hours without sufficient commentary to justify the running time. One thing that’s for sure is that Schmigadoon! never feels like a half-hour comedy, and it definitely doesn’t feel like an ongoing TV series after these six episodes.",
-  "isFullReview": true,
-  "textWordCount": 253,
+  "fullText": null,
+  "isFullReview": false,
+  "textWordCount": 0,
   "archivePath": "data/archives/reviews/schmigadoon-2026/hollywood-reporter--daniel-feinberg_2026-02-02.html",
   "textFetchedAt": "2026-02-02T02:54:18.537Z",
   "fetchMethod": "brightdata",
@@ -75,8 +75,8 @@
     "previousScore": 62,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (253 words)",
+  "contentTier": "invalid",
+  "contentTierReason": "TV show review, not Broadway review",
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 58,
@@ -95,5 +95,8 @@
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "rescoreCompletedAt": "2026-02-02T03:38:48.727Z",
   "wrongShow": true,
-  "wrongShowNote": "This is a review of the Apple TV+ series Schmigadoon! (2021), not the Broadway musical (previews April 2026)."
+  "wrongShowNote": "Review is for the 2021 Apple TV+ series Schmigadoon!, not the 2026 Broadway musical",
+  "garbageFullText": "Logo text\n \n\nMy grandmother loved musicals. She loved seeing them and singing along with them, and she loved announcing, when a song came on the radio or came up in conversation, “I wrote that one!”\n\nSee, my grandmother also loved writing musical parodies. Whether she was reconceiving the classics for friends and family at the Wapaska Lodge on Muskoka Bay, or as part of talent shows or fundraisers for the New Mount Sinai Hospital Women's Auxiliary, it was the rare musical classic that she hadn’t already given her own spin — like the indelible “Fanny Get Your BB Gun,” with “BB” standing, of course, for “B’nai B’rith.”\n\nSchmigadoon! \n \n\n \n \n The Bottom Line\n \n \n Some joyful musical moments, but very little depth.\n \n \n \n \n \n Airdate: Friday, July 16 (Apple TV+)\nCast: Cecily Strong, Keegan-Michael Key, Alan Cumming, Fred Armisen, Kristin Chenoweth, Aaron Tveit, Dove Cameron, Ariana DeBose, Jaime Camil, Ann Harada\nCreators: Cinco Paul and Ken Daurio\n\nAt its best, the new Apple TV+ comedy Schmigadoon! felt like sitting in the backseat on a long car ride with my grandmother, sharing excitement for musicals of the ’40s, ’50s and ’60s. More frequently, however, Schmigadoon! felt like a two-hour musical parody originally intended for Off-Off-Off Broadway performances in front of an enthusiastically drunk crowd of former theater kids, perplexingly expanded to three hours without sufficient commentary to justify the running time. One thing that’s for sure is that Schmigadoon! never feels like a half-hour comedy, and it definitely doesn’t feel like an ongoing TV series after these six episodes.",
+  "garbageReason": "Wrong show: review of 2021 Apple TV+ series, not 2026 Broadway musical",
+  "garbageFixedAt": "2026-02-02T20:03:12.883Z"
 }

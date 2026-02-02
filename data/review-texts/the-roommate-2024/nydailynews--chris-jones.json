@@ -89,7 +89,9 @@
   "textQuality": "truncated",
   "truncationSignals": [
     "no_ending_punctuation",
-    "shorter_than_excerpt"
+    "shorter_than_excerpt",
+    "matches_excerpt"
   ],
-  "textStatus": "truncated"
+  "textStatus": "truncated",
+  "contentTierReason": "fullText (595 chars) appears to be partial scrape matching bwwExcerpt"
 }

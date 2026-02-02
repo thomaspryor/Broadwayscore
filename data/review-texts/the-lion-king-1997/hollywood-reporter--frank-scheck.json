@@ -3,9 +3,9 @@
   "outletId": "hollywood-reporter",
   "outlet": "The Hollywood Reporter",
   "criticName": "Frank Scheck",
-  "url": "http://www.jasonraize.net/pr_tlk_spt112197.html",
+  "url": null,
   "publishDate": "November 21, 1997",
-  "fullText": "Read More About: Eva Noblezada, Jeremy Jordan, The Great Gatsby Jump to Comments ‘The Great Gatsby’ Review: Broadway Musical Has Glamour but Little Grit Broadway Theatre; 1761 seat; $268 top. Opened April 25, 2024. Reviewed April 20. Running time: 2 hours, 30 minutes. Production: A presentation by Chunsoo Shin, OD Company, The Nederlander Organization, The Shubert Organization, Joe Quenqua, Candy Spelling, Mark Shacket in association with Paper Mill Playhouse of a musical in 2 acts with book by Kait Kerrigan, music by Jason Howland, and lyrics by Nathan Tysen. Crew: Directed by Marc Bruni. Choreographed by Dominique Kelley. Sets and projections, Paul Tate dePoo III; costumes, Linda Cho; lights, Cory Pattak; sound, Brian Ronan; hair, Charles G LaPointe and Rachel Geier; makeup, Ashley Ryan; orchestrations, Jason Howland and Kim Scharnberg; production stage manager, Brian Bogin. Cast: Jeremy Jordan, Eva Noblezada, Noah J. Ricketts, Samantha Pauly, Sara Chase, John Zdrojeski, Paul Whitty, Eric Anderson, Raymond Edward Baynard, Austin Colby, Curtis Holland, Traci Elaine Lee, Dariana Mullen, Ryah Nixon, Pascal Pastrana, Kayla Pecchioni, Mariah Resheg Reives, Dan Rosales, Dave Schoonover, Derek Jordan Taylor, Tanairi Sade Vazquez, Katie Webber, Kurt Csolak, Carissa Gaughran, Samantha Pollino, Alex Prakken, Jake Trammel, and Jasmine Pearl Villaroel.",
+  "fullText": null,
   "showScoreExcerpt": "\"The Lion King is a spectacular rendition of the animated film, a brilliant theatrical adaptation that stands on its own...Taymor has risen to the challenge, translating the physically complex tale to the stage with an endlessly clever, visually stunning use of masks, puppetry, costumes and scenic effects; the stage show has the delighted audience firmly in its grip.\"",
   "originalScore": null,
   "assignedScore": 59,
@@ -70,12 +70,12 @@
       "mergedAt": "2026-01-28T21:15:21.937Z"
     }
   ],
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "wordCount": 200,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 89,
   "isFullReview": false,
-  "textWordCount": 200,
+  "textWordCount": 0,
   "archivePath": "data/archives/reviews/the-lion-king-1997/hollywood-reporter--frank-scheck_2026-02-02.html",
   "textFetchedAt": "2026-02-02T07:47:01.978Z",
   "fetchMethod": "playwright",
@@ -95,5 +95,13 @@
   ],
   "showNotMentioned": true,
   "rescoreCompletedAt": "2026-02-02T14:25:36.089Z",
-  "tierReason": "Short text (200 words)"
+  "tierReason": "Short text (200 words)",
+  "garbageFullText": "Read More About: Eva Noblezada, Jeremy Jordan, The Great Gatsby Jump to Comments ‘The Great Gatsby’ Review: Broadway Musical Has Glamour but Little Grit Broadway Theatre; 1761 seat; $268 top. Opened April 25, 2024. Reviewed April 20. Running time: 2 hours, 30 minutes. Production: A presentation by Chunsoo Shin, OD Company, The Nederlander Organization, The Shubert Organization, Joe Quenqua, Candy Spelling, Mark Shacket in association with Paper Mill Playhouse of a musical in 2 acts with book by Kait Kerrigan, music by Jason Howland, and lyrics by Nathan Tysen. Crew: Directed by Marc Bruni. Choreographed by Dominique Kelley. Sets and projections, Paul Tate dePoo III; costumes, Linda Cho; lights, Cory Pattak; sound, Brian Ronan; hair, Charles G LaPointe and Rachel Geier; makeup, Ashley Ryan; orchestrations, Jason Howland and Kim Scharnberg; production stage manager, Brian Bogin. Cast: Jeremy Jordan, Eva Noblezada, Noah J. Ricketts, Samantha Pauly, Sara Chase, John Zdrojeski, Paul Whitty, Eric Anderson, Raymond Edward Baynard, Austin Colby, Curtis Holland, Traci Elaine Lee, Dariana Mullen, Ryah Nixon, Pascal Pastrana, Kayla Pecchioni, Mariah Resheg Reives, Dan Rosales, Dave Schoonover, Derek Jordan Taylor, Tanairi Sade Vazquez, Katie Webber, Kurt Csolak, Carissa Gaughran, Samantha Pollino, Alex Prakken, Jake Trammel, and Jasmine Pearl Villaroel.",
+  "garbageReason": "Wrong show: fullText is Great Gatsby production info, not Lion King review. URL is jasonraize.net fan site.",
+  "garbageFixedAt": "2026-02-02T20:04:13.280Z",
+  "contentTierReason": "fullText was from wrong show (Great Gatsby)",
+  "wrongShow": true,
+  "wrongShowNote": "fullText contained Great Gatsby production credits, not Lion King review. URL is jasonraize.net fan site, not hollywoodreporter.com.",
+  "previousUrl": "http://www.jasonraize.net/pr_tlk_spt112197.html",
+  "urlNote": "Was jasonraize.net fan site URL, not hollywoodreporter.com"
 }
