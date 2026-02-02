@@ -6592,30 +6592,6 @@
     "timestamp": "2026-02-02T15:32:51.141Z"
   },
   {
-    "reviewId": "and-juliet-2022/theatermania--jesse-green.json",
-    "showId": "and-juliet-2022",
-    "outlet": "TheaterMania",
-    "critic": "Jesse Green",
-    "url": "https://www.theatermania.com/broadway/reviews/juliet-broadway-review_92586.html",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple article boundaries detected (3)",
-    "textLength": 5326,
-    "timestamp": "2026-02-02T15:33:35.740Z"
-  },
-  {
-    "reviewId": "and-juliet-2022/timeout--adam-feldman.json",
-    "showId": "and-juliet-2022",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/and-juliet-broadway-musical-review-max-martin",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 7799,
-    "timestamp": "2026-02-02T15:33:51.775Z"
-  },
-  {
     "reviewId": "back-to-the-future/chelsea-community-news--michael-musto.json",
     "showId": "back-to-the-future",
     "outlet": "Chelsea Community News",
@@ -7370,5 +7346,29 @@
     "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
     "textLength": 585,
     "timestamp": "2026-02-02T15:59:56.248Z"
+  },
+  {
+    "reviewId": "and-juliet-2022/theatermania--jesse-green.json",
+    "showId": "and-juliet-2022",
+    "outlet": "TheaterMania",
+    "critic": "Jesse Green",
+    "url": "https://www.theatermania.com/broadway/reviews/juliet-broadway-review_92586.html",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple article boundaries detected (3)",
+    "textLength": 5321,
+    "timestamp": "2026-02-02T16:33:10.441Z"
+  },
+  {
+    "reviewId": "and-juliet-2022/timeout--adam-feldman.json",
+    "showId": "and-juliet-2022",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/and-juliet-broadway-musical-review-max-martin",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 7799,
+    "timestamp": "2026-02-02T16:33:19.925Z"
   }
 ]
