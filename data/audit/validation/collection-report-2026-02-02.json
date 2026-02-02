@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-02-02T15:19:28.317Z",
+  "runDate": "2026-02-02T15:24:22.312Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 5,
     "priority": "all",
-    "showFilter": "the-great-gatsby-2024",
+    "showFilter": "stereophonic-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -18,60 +18,54 @@
   },
   "tierBreakdown": {
     "playwright": 3,
-    "browserbase": 1,
+    "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 0
+    "brightdata": 1,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 4,
     "tier1Success": 3,
-    "tier1_5Attempts": 2,
-    "tier1_5Success": 1,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier4Attempts": 2,
-    "tier4Success": 0,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 1,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 1.1,
-    "urlDiscoveryAttempts": 1,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier4Attempts": 1,
+    "tier4Success": 1,
+    "totalFailed": 0,
+    "scrapingBeeCreditsUsed": 10,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
-    "the-great-gatsby-2024/guardian--adrian-horton.json",
-    "the-great-gatsby-2024/guardian--gloria-oladipo.json"
+    "stereophonic-2024/nytg--allison-considine.json",
+    "stereophonic-2024/vulture--helen-shaw.json",
+    "stereophonic-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
-    "the-great-gatsby-2024/nydailynews--chris-jones.json",
-    "the-great-gatsby-2024/nypost--johnny-oleksinski.json"
+    "stereophonic-2024/hollywood-reporter--david-rooney.json",
+    "stereophonic-2024/variety--aramide-tinubu.json"
   ],
   "tierDetails": {
     "playwright": [
-      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
-      "the-great-gatsby-2024/guardian--adrian-horton.json",
-      "the-great-gatsby-2024/guardian--gloria-oladipo.json"
+      "stereophonic-2024/hollywood-reporter--david-rooney.json",
+      "stereophonic-2024/nytg--allison-considine.json",
+      "stereophonic-2024/broadwaynews--brittani-samuel.json"
     ],
-    "browserbase": [
-      "data/review-texts/the-great-gatsby-2024/nydailynews--chris-jones.json"
-    ],
+    "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
-    "archive": []
+    "brightdata": [
+      "stereophonic-2024/variety--aramide-tinubu.json"
+    ],
+    "archive": [
+      "stereophonic-2024/vulture--helen-shaw.json"
+    ]
   },
-  "failuresByOutlet": {
-    "New York Post": {
-      "count": 1,
-      "domain": "nypost.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
