@@ -1,57 +1,25 @@
 {
   "processed": [
-    "hells-kitchen-2024/nytimes--jesse-green.json",
-    "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
-    "hells-kitchen-2024/ap--mark-kennedy.json"
+    "and-juliet-2022/variety--peter-marks.json",
+    "and-juliet-2022/thewrap--robert-hofler.json"
   ],
   "failed": [
-    "hells-kitchen-2024/hollywood-reporter--david-rooney.json",
-    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
-    "hells-kitchen-2024/deadline--pete-hammond.json",
-    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
-    "hells-kitchen-2024/timeout--adam-feldman.json",
-    "hells-kitchen-2024/wsj--charles-isherwood.json",
-    "hells-kitchen-2024/talkinbroadway--matthew-murray.json"
+    "and-juliet-2022/theatermania--jesse-green.json",
+    "and-juliet-2022/timeout--adam-feldman.json",
+    "and-juliet-2022/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "hells-kitchen-2024/ap--mark-kennedy.json"
-    ],
+    "playwright": [],
     "browserbase": [],
-    "scrapingbee": [
-      "hells-kitchen-2024/nytimes--jesse-green.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "hells-kitchen-2024/broadwaynews--brittani-samuel.json"
+      "and-juliet-2022/variety--peter-marks.json",
+      "and-juliet-2022/thewrap--robert-hofler.json"
     ]
   },
-  "startTime": "2026-02-02T16:32:13.554Z",
-  "lastProcessed": "hells-kitchen-2024/talkinbroadway--matthew-murray.json",
-  "log": [
-    {
-      "t": "2026-02-02T16:34:11.381Z",
-      "event": "bb-session",
-      "session": "28db2536",
-      "url": "https://www.nytimes.com/2024/04/20/theater/hells-kitchen-review-alicia-keys.html"
-    },
-    {
-      "t": "2026-02-02T16:35:00.348Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770050066786\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAJ6AjgztYTJcANA1qtA==&cid=t3G2NkaVeNw7CX42g7hRnxw5Q_vQUjkuW~SI_LJTF52oVWEFIq8pW8mzbJpGl5~GBb7YR9ItUOHBU_YTpAc6Ote~QRknkwc2bblLDsh7DpJpgzV7sC4QzXm9mY_vMb~R&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770050066786\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770050066786\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAJ6AjgztYTJcANA1qtA==&cid=t3G2NkaVeNw7CX42g7hRnxw5Q_vQUjkuW~SI_LJTF52oVWEFIq8pW8mzbJpGl5~GBb7YR9ItUOHBU_YTpAc6Ote~QRknkwc2bblLDsh7DpJpgzV7sC4QzXm9mY_vMb~R&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770050066786\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    14 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770050066786\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAJ6AjgztYTJcANA1qtA==&cid=t3G2NkaVeNw7CX42g7hRnxw5Q_vQUjkuW~SI_LJTF52oVWEFIq8pW8mzbJpGl5~GBb7YR9ItUOHBU_YTpAc6Ote~QRknkwc2bblLDsh7DpJpgzV7sC4QzXm9mY_vMb~R&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770050066786\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n    - element is visible, enabled and stable\n    - scrolling into view if needed\n"
-    },
-    {
-      "t": "2026-02-02T16:36:53.398Z",
-      "event": "bb-session",
-      "session": "17c4aa0a",
-      "url": "https://www.wsj.com/arts-culture/theater/hells-kitchen-review-alicia-keys-musica"
-    },
-    {
-      "t": "2026-02-02T16:37:45.772Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    }
-  ]
+  "startTime": "2026-02-02T17:33:18.815Z",
+  "lastProcessed": "and-juliet-2022/wsj--charles-isherwood.json",
+  "log": []
 }
