@@ -10,7 +10,7 @@
   "bwwExcerpt": null,
   "showScoreExcerpt": "\"In a way, this production of Our Town is a triumph over that feeling of hopelessness — live theatre returned and continues to thrive — but it also has an important message, asking us to experience every day of our lives to the fullest.\"",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 77,
   "source": "show-score",
   "archivePath": "data/archives/reviews/our-town-2024/new-york-theatre-guide--austin-fimmano_2026-01-25.html",
   "textFetchedAt": "2026-01-25T04:16:19.683Z",
@@ -18,11 +18,11 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises Jim Parsons' performance and the universal message while noting the lack of chemistry between leads. The overall tone is positive with clear recommendation language at the end. | GPT-4o: The review highlights the production as evocative and triumphant, with strong performances, particularly by Jim Parsons, and a universal message. Despite noting a lack of chemistry between two main characters, the overall tone is positive and recommends the show. | Gemini: The review is generally positive, highlighting the strengths of Jim Parsons' performance and the overall message of the play. However, it also notes a lack of chemistry between the leads, preventing it from being a rave. The final recommendation is positive, suggesting it has something for all audiences.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review clearly recommends the production despite noting flaws like lack of chemistry between leads. The concluding statement explicitly says it 'has something for all audiences to enjoy' and uses positive language throughout while acknowledging specific weaknesses. | GPT-4o: The review praises the production's emotional impact and the performances, particularly Jim Parsons, while noting some lack of chemistry between other main characters. Overall, it recommends the show for its universal message and successful revival, despite minor reservations. | Gemini: The review is generally positive, praising Jim Parsons and the overall message. However, it notes a lack of chemistry between the leads, which prevents it from being a rave. The final recommendation is positive, but with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,21 +43,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:37:13.014Z",
+    "scoredAt": "2026-02-02T18:50:41.633Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 82,
-    "geminiScore": 78,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 7,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

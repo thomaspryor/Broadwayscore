@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the production as 'effective' with strong performances, particularly highlighting Parsons' 'terrifically calibrated' lead performance, though notes the staging 'could use a few more beats.' | GPT-4o: The review praises the production's effective direction, the strong lead performance by Jim Parsons, and the overall impact of the staging. The critic highlights the emotional depth and thematic resonance, indicating a strong recommendation. | Gemini: The review praises the production's effectiveness and the lead performance, while noting that the staging 'could use a few more beats.' The overall tone suggests a positive experience with minor reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review consistently praises the production as 'effective' with 'terrifically calibrated' performances and thoughtful direction. While noting the staging 'could use a few more beats,' the overall assessment is clearly positive and recommending. | GPT-4o: The review praises the production's effective staging and Jim Parsons' performance, highlighting its emotional depth and thematic resonance. The overall tone is positive with specific commendations for the direction and performances. | Gemini: The review praises the production's effectiveness and Jim Parsons' performance, while noting that the staging 'could use a few more beats.' The overall tone is positive, suggesting the production is worth seeing despite minor reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,12 +39,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:37:59.464Z",
+    "scoredAt": "2026-02-02T18:50:55.891Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,

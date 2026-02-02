@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 90,
   "source": "bww-roundup",
   "dtliThumb": null,
   "designation": "Critics_Pick",
@@ -29,11 +29,11 @@
   "archiveOrgTimestamp": "20250720154224",
   "archiveOrgUrl": "http://web.archive.org/web/20250720154224/https://www.nytimes.com/2024/10/10/theater/our-town-review-jim-parsons.html",
   "llmScore": {
-    "score": 94,
+    "score": 90,
     "confidence": "medium",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 85,
+      "high": 95
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -44,7 +44,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Jesse Green delivers rapturous praise, calling the revival 'more than good enough' and 'unbearable' in its beauty, with admiration for both the production and Wilder's timeless play. The language is reverential and the recommendation is unequivocal. | GPT-4o: The review is highly enthusiastic, describing the production as 'more than good enough' and 'unbearable' in a positive sense, indicating a strong recommendation to see the show. | Gemini: The critic states the revival is 'more than good enough,' indicating a positive recommendation. While the review discusses the play's inherent qualities, the assessment of the current production is positive.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Green calls it 'titanic', 'more than good enough', and 'unbearable' in its beauty, with praise for Leon's direction and Parsons' performance. The tone is one of awe and admiration for both the play and this production. | GPT-4o: The review praises the production as 'more than good enough' and describes it as 'unbearable' in its beauty, indicating a strong recommendation. The critic highlights the effectiveness of the direction and the cast, suggesting a must-see production. | Gemini: The review is overwhelmingly positive, calling the production \"more than good enough\" and praising the direction and cast. The critic clearly recommends seeing it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,21 +54,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:37:25.431Z",
+    "scoredAt": "2026-02-02T18:50:45.284Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 95,
-    "geminiScore": 80,
+    "claudeScore": 89,
+    "openaiScore": 90,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
