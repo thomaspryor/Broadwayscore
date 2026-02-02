@@ -1,77 +1,73 @@
 {
-  "runDate": "2026-02-02T15:09:34.775Z",
+  "runDate": "2026-02-02T15:11:50.888Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 5,
     "priority": "all",
-    "showFilter": "water-for-elephants-2024",
+    "showFilter": "uncle-vanya-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 6,
+    "processed": 1,
+    "failed": 4,
     "skipped": 0,
-    "successRate": "53.8%"
+    "successRate": "20.0%"
   },
   "tierBreakdown": {
     "playwright": 1,
     "browserbase": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 0,
-    "tier1_5Attempts": 0,
+    "tier1Attempts": 5,
+    "tier1Success": 2,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 0,
-    "tier2Attempts": 5,
-    "tier2Success": 3,
-    "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier4Attempts": 6,
-    "tier4Success": 2,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 30,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
+    "tier2Attempts": 2,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier4Attempts": 2,
+    "tier4Success": 1,
+    "totalFailed": 2,
+    "scrapingBeeCreditsUsed": 1,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.6,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "water-for-elephants-2024/broadwaynews--brittani-samuel.json",
-    "water-for-elephants-2024/theatermania--david-gordon.json"
+    "uncle-vanya-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
-    "water-for-elephants-2024/observer--rex-reed.json",
-    "water-for-elephants-2024/timeout--adam-feldman.json",
-    "water-for-elephants-2024/wsj--charles-isherwood.json",
-    "water-for-elephants-2024/theatrely--olivia-clement.json",
-    "water-for-elephants-2024/thestage--lane-williamson.json"
+    "uncle-vanya-2024/variety--bob-verini.json",
+    "uncle-vanya-2024/vulture--helen-shaw.json",
+    "uncle-vanya-2024/deadline--greg-evans.json",
+    "uncle-vanya-2024/new-york-sun--elysa-gardner.json"
   ],
   "tierDetails": {
     "playwright": [
-      "the-outsiders-2024/culturesauce--thom-geier.json"
+      "uncle-vanya-2024/broadwaynews--brittani-samuel.json"
     ],
     "browserbase": [],
-    "scrapingbee": [
-      "water-for-elephants-2024/theatermania--david-gordon.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "water-for-elephants-2024/broadwaynews--brittani-samuel.json"
+      "uncle-vanya-2024/variety--bob-verini.json"
     ]
   },
   "failuresByOutlet": {
-    "Theatrely": {
+    "Vulture": {
       "count": 1,
-      "domain": "theatrely.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
+      "domain": "vulture.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
       "isKnownBlocked": false
     }
   },
