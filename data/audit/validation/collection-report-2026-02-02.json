@@ -1,73 +1,74 @@
 {
-  "runDate": "2026-02-02T05:01:49.785Z",
+  "runDate": "2026-02-02T05:05:50.353Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 10,
     "priority": "all",
-    "showFilter": "the-cottage-2023",
+    "showFilter": "the-whos-tommy-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 4,
+    "processed": 4,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "42.9%"
+    "successRate": "44.4%"
   },
   "tierBreakdown": {
-    "playwright": 1,
-    "browserbase": 2,
-    "scrapingbee": 1,
-    "brightdata": 0,
-    "archive": 1
+    "playwright": 3,
+    "browserbase": 0,
+    "scrapingbee": 0,
+    "brightdata": 2,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 1,
-    "tier1_5Attempts": 2,
-    "tier1_5Success": 1,
-    "tier2Attempts": 2,
+    "tier1Attempts": 7,
+    "tier1Success": 4,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 3,
     "tier2Success": 1,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
-    "tier4Attempts": 4,
-    "tier4Success": 3,
-    "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 10,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 1.5,
+    "tier3Attempts": 2,
+    "tier3Success": 2,
+    "tier4Attempts": 3,
+    "tier4Success": 2,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 20,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-cottage-2023/new-york-sun--elysa-gardner.json",
-    "the-cottage-2023/observer--rex-reed.json",
-    "the-cottage-2023/amny--unknown.json"
+    "the-whos-tommy-2024/variety--charles-isherwood.json",
+    "the-whos-tommy-2024/deadline--greg-evans.json",
+    "the-whos-tommy-2024/exeunt-nyc--unknown.json",
+    "the-whos-tommy-2024/washpost--elisabeth-vincentelli.json"
   ],
   "failed": [
-    "the-cottage-2023/variety--naveen-kumar.json",
-    "the-cottage-2023/timeout--adam-feldman.json",
-    "the-cottage-2023/wsj--charles-isherwood.json",
-    "the-cottage-2023/theater-pizzazz--carole-di-tosti.json"
+    "the-whos-tommy-2024/variety--trish-deitch.json",
+    "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
+    "the-whos-tommy-2024/new-york-sun--elysa-gardner.json",
+    "the-whos-tommy-2024/timeout--adam-feldman.json",
+    "the-whos-tommy-2024/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
-      "the-cottage-2023/new-york-sun--elysa-gardner.json"
+      "the-whos-tommy-2024/deadline--greg-evans.json",
+      "the-whos-tommy-2024/exeunt-nyc--unknown.json",
+      "the-whos-tommy-2024/washpost--elisabeth-vincentelli.json"
     ],
-    "browserbase": [
-      "data/review-texts/the-cottage-2023/observer--rex-reed.json",
-      "the-cottage-2023/observer--rex-reed.json"
+    "browserbase": [],
+    "scrapingbee": [],
+    "brightdata": [
+      "the-whos-tommy-2024/variety--charles-isherwood.json",
+      "the-whos-tommy-2024/variety--trish-deitch.json"
     ],
-    "scrapingbee": [
-      "the-cottage-2023/variety--naveen-kumar.json"
-    ],
-    "brightdata": [],
-    "archive": [
-      "the-cottage-2023/amny--unknown.json"
-    ]
+    "archive": []
   },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
