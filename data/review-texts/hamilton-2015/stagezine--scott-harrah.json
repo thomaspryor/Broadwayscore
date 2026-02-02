@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The review is overwhelmingly positive, calling Hamilton a 'theatrical masterpiece' and 'game-changing musical' with language like 'completely justified' hype and declaring it has 'started a Broadway revolution.' The critic praises virtually every element from performances to direction with superlative language throughout. | Gemini: The review uses extremely strong language, calling the show a \"game-changing musical\" and a \"theatrical masterpiece.\" It praises nearly every aspect of the production and concludes that \"Hamilton has truly started a Broadway revolution.\"",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review uses superlative language throughout, calling it a 'theatrical masterpiece,' 'game-changing,' and declaring it will 'influence American musical theater for years to come.' The critic explicitly states the hype is 'all justified' and praises virtually every aspect of the production. | GPT-4o: The review is overwhelmingly positive, describing the show as a 'theatrical masterpiece' and 'game-changing musical' with justified hype. The critic praises the innovative storytelling, performances, and overall impact, clearly recommending it as essential viewing. | Gemini: The review is overwhelmingly positive, using phrases like \"game-changing musical\", \"theatrical masterpiece\", and stating that the \"hoopla is all justified\". The critic praises nearly every aspect of the production, from the music and lyrics to the direction and choreography, indicating a very strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,26 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:02:00.175Z",
+    "scoredAt": "2026-02-02T18:03:42.374Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 97,
-    "previousVersion": "3.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": null,
+    "openaiScore": 95,
     "geminiScore": 95,
     "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Rave",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/hamilton-2015/stagezine--scott-harrah_2026-01-26.html",
   "textFetchedAt": "2026-01-26T22:32:34.899Z",

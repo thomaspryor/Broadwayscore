@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic calls it the best musical of the decade, urges audiences to do whatever necessary to get tickets, and says it will make you want to 'yell with delight' - this is an unqualified rave recommendation. | GPT-4o: The review is overwhelmingly positive, describing 'Hamilton' as the best and most important musical of the past decade and urging readers to go to great lengths to see it, indicating a strong recommendation. | Gemini: The critic states it is the \"best and most important Broadway musical of the past decade\" and urges readers to do whatever it takes to get a ticket, indicating a rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic calls it 'the best and most important Broadway musical of the past decade' and urges readers to do 'whatever you have to do' to get tickets, with language indicating pure excitement and essential viewing. | GPT-4o: The review is overwhelmingly positive, calling 'Hamilton' the best and most important Broadway musical of the past decade. The critic strongly urges readers to see it, using enthusiastic language that indicates a must-see recommendation. | Gemini: The review is overwhelmingly positive, calling it the best and most important Broadway musical of the past decade and urging readers to do whatever it takes to see it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,15 +42,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:49:36.401Z",
+    "scoredAt": "2026-02-02T18:04:56.192Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 95,
+    "previousScore": 96,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 96,
+    "claudeScore": 95,
     "openaiScore": 98,
     "geminiScore": 95,
     "claudeBucket": "Rave",
@@ -65,7 +65,7 @@
     "modelAgreement": "All 3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/hamilton-2015/wsj--terry-teachout_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:36:10.199Z",
+  "textFetchedAt": "2026-02-02T16:10:58.509Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -87,17 +87,15 @@
   "garbageFullText": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-1438907400\n\nShareResizeWatch excerpts from several numbers of \"Hamilton,\" the Broadway show by Lin-Manuel Miranda about Alexander Hamilton and the making of America. Photo: Radical MediaNew York\n\nLin-Manuel Miranda’s “Hamilton,” the multiracial rap musical about Alexander Hamilton and the making of America that sold out the Public Theater this spring, has now moved to Broadway, just in time to profit from the ruckus over the possible removal of its namesake from the $10 bill. Not that the show needed any more publicity: It was already a plutonium-hot ticket, stoked by ecstatic reviews of the premiere and acres of near-lascivious advance coverage. No matter what the critics say this time around, “Hamilton” seems a safe bet to occupy the Richard Rodgers Theatre forevermore.\n\nCopyright ©2025 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nNew York Film Festival 2025 Review: Full of Daring and Delights",
   "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
   "garbageFixedAt": "2026-01-29T22:45:22.848Z",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "truncated",
+  "wordCount": 121,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 95,
   "fullText": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-1438907400\n\nShareResizeWatch excerpts from several numbers of \"Hamilton,\" the Broadway show by Lin-Manuel Miranda about Alexander Hamilton and the making of America. Photo: Radical MediaNew York\n\nLin-Manuel Miranda’s “Hamilton,” the multiracial rap musical about Alexander Hamilton and the making of America that sold out the Public Theater this spring, has now moved to Broadway, just in time to profit from the ruckus over the possible removal of its namesake from the $10 bill. Not that the show needed any more publicity: It was already a plutonium-hot ticket, stoked by ecstatic reviews of the premiere and acres of near-lascivious advance coverage. No matter what the critics say this time around, “Hamilton” seems a safe bet to occupy the Richard Rodgers Theatre forevermore.",
   "isFullReview": false,
   "textWordCount": 121,
   "textQuality": "truncated",
-  "truncationSignals": [
-    "shorter_than_excerpt"
-  ],
   "textStatus": "truncated",
-  "rescoreCompletedAt": "2026-02-02T03:49:36.401Z"
+  "rescoreCompletedAt": "2026-02-02T03:49:36.401Z",
+  "tierReason": "Short text (121 words)"
 }

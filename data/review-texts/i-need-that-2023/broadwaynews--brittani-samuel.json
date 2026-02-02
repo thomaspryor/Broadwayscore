@@ -7,15 +7,15 @@
   "publishDate": "November 3, 2023",
   "fullText": "Theresa Rebeck’s latest theatrical venture is one of her limpest — a frustratingly monotone, predictable and seasonless dose of comfort theater.\n\nGood morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “I Need That.”\n\nWhat does it say when a man cannot remember his siblings, but can recite with excruciating detail the history of a 67-year-old bottle cap buried in a pile of random junk? It might suggest that the memory of a simple piece of metal (a keepsake from selling soda on Friday nights at church bingo) provides more comfort than family. In veteran playwright Theresa Rebeck’s new dud of a play “I Need That,” aluminum is thicker than blood. The show follows a stubborn older man named Sam (78-year-old Danny DeVito) who amasses domestic junk — magazines, board games, records — much to the chagrin of both the health department and his only child Amelia (Lucy DeVito, the screen favorite’s actual daughter). Rebeck plops each character on opposite ends of the play’s sole conflict — to keep or not to keep, that’s their only question. The two repeat the same argument for the vast majority of the play; each scene resembles the previous one. Rebeck lazily shoots darts at dramatic stakes — the threat of home seizure from the aforementioned government agency; Sam’s best friend Foster’s (Ray Anthony Thomas) habit of pilfering and pawning treasures found in Sam’s trash — but neither stick. Sam hardly cares and since the ever-watchable, ever-hammy Danny DeVito is the singular lifeblood of this play, neither do we. It’s not that the production is terrible by any means. It remains humorous and heartwarming at the right times, but with all the thrill of TV dinner meatloaf: low effort, over quickly and indistinguishable on the inside.",
   "originalScore": null,
-  "assignedScore": 41,
+  "assignedScore": 44,
   "dtliThumb": "Meh",
   "source": "dtli",
   "llmScore": {
-    "score": 41,
+    "score": 44,
     "confidence": "medium",
     "range": {
-      "low": 36,
-      "high": 46
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic calls it a 'dud' and 'limp,' criticizing it as predictable and repetitive, though acknowledges it's 'not terrible by any means' and has some humor and heart, keeping it in the negative rather than pan range. | GPT-4o: The review describes the play as 'one of her limpest' and a 'dud,' indicating a negative assessment. While acknowledging some humor and heartwarming moments, it ultimately suggests the production is low effort and not worth seeing. | Gemini: The review acknowledges humorous and heartwarming moments, but ultimately describes the play as \"limpest\" and \"low effort,\" indicating a mixed recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic calls it a 'dud' and 'limp,' criticizing it as predictable and monotone, though acknowledges it's 'not terrible' and has some humor - landing it in negative territory but not a complete pan. | GPT-4o: The review describes the play as a 'dud' with repetitive scenes and low dramatic stakes. While it acknowledges some humor and heartwarming moments, the overall tone is negative, suggesting the production is not worth seeing. | Gemini: The review is mixed, highlighting both humorous and heartwarming moments while also criticizing the play's predictability and lack of depth. The comparison to TV dinner meatloaf suggests a lack of excitement and originality, placing it in the 'Mixed' category.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,21 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:48:43.216Z",
+    "scoredAt": "2026-02-02T18:21:24.344Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 45,
-    "previousVersion": "3.0.0"
+    "previousScore": 41,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 40,
+    "openaiScore": 45,
     "geminiScore": 62,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "scoreDelta": 22,
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -68,13 +68,12 @@
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 45,
   "rescoreCompletedAt": "2026-01-29T14:31:51.808Z",
-  "truncationSignals": [],
-  "contentTier": "truncated",
-  "wordCount": 321,
+  "contentTier": "complete",
+  "wordCount": 309,
   "isFullReview": true,
   "textWordCount": 309,
   "archivePath": "data/archives/reviews/i-need-that-2023/broadwaynews--brittani-samuel_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:39:38.631Z",
+  "textFetchedAt": "2026-02-02T16:23:41.170Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -88,5 +87,6 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251208015314",
-  "archiveOrgUrl": "http://web.archive.org/web/20251208015314/https://www.broadwaynews.com/the-broadway-review-in-i-need-that-a-home-cluttered-with-rubbish-and-a-play-void-of-resonance/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251208015314/https://www.broadwaynews.com/the-broadway-review-in-i-need-that-a-home-cluttered-with-rubbish-and-a-play-void-of-resonance/",
+  "tierReason": "Full review text"
 }

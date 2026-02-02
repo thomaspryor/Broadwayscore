@@ -9,18 +9,18 @@
   "dtliExcerpt": "The spotlighting of small things amid the noise and chaos of one of the biggest, loudest, flashiest cities in the world is what makes Hell’s Kitchen such a delight.",
   "showScoreExcerpt": "\"It’s not happily ever after, but a promising beginning.\"",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 92,
   "source": "dtli",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T21:59:47.002Z",
   "llmScore": {
-    "score": 81,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 87,
+      "high": 97
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is overwhelmingly positive, praising the performances, direction, design, and storytelling with enthusiastic language like 'delight,' 'must-see,' and 'star.' The critic highlights exceptional elements across all aspects of the production. | GPT-4o: The review is overwhelmingly positive, highlighting the performances, direction, and production quality as exceptional. The critic uses enthusiastic language throughout, indicating a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, praising the performances, choreography, and overall production. While not a rave, it strongly recommends seeing the show, highlighting its delightful aspects and the emotional impact of the story.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses enthusiastic language throughout, calling the show 'a delight,' praising Moon as 'a star' in a 'must-see Broadway debut,' and describing multiple standout performances and production elements with superlative praise. | GPT-4o: The review is filled with enthusiastic praise for the performances, music, and production elements, describing the show as a 'delight' and highlighting its emotional impact and storytelling. The critic's tone is overwhelmingly positive, suggesting a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the performances, music, choreography, and overall production. The critic highlights the emotional impact and storytelling, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,27 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:53:27.165Z",
+    "scoredAt": "2026-02-02T18:18:07.970Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 86,
+    "previousScore": 81,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 88,
     "openaiScore": 95,
-    "geminiScore": 80,
-    "claudeBucket": "Positive",
+    "geminiScore": 81,
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "sourceMethod": "archive",
   "archivePath": "data/archives/reviews/hells-kitchen-2024/theatermania--zachary-stewart_2026-01-27.html",

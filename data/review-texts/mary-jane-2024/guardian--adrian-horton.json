@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "McAdams brings a remarkable vulnerability and strength to Alex, a mother caring for her chronically ill son, in this deeply moving production.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "McAdams brings a remarkable vulnerability and strength to Alex, a mother caring for her chronically ill son, in this deeply moving production.",
   "needsScoring": true,
   "llmScore": {
-    "score": 76,
+    "score": 81,
     "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises McAdams' performance as 'remarkable' and calls the production 'deeply moving,' indicating a positive recommendation, though the brief excerpt limits confidence in the full scope of the critic's assessment. | GPT-4o: The review highlights a 'deeply moving production' and praises McAdams' performance, suggesting a strong recommendation. | Gemini: The review uses positive language like \"remarkable\" and \"deeply moving,\" indicating a positive experience and recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises Herzog's 'excellent play,' McAdams's 'magnetic' performance, and describes being moved to tears for hours after. Despite minor early reservations about McAdams's start, the overall assessment is highly positive with strong emotional impact. | GPT-4o: The review is highly positive, praising the performances, particularly Rachel McAdams, and the emotional impact of the play. The critic describes the play as 'excellent' and expresses a strong emotional reaction, indicating a must-see recommendation. | Gemini: The review praises McAdams' performance and the play's ability to capture the human capacity for care, ultimately leaving the reviewer moved. While not a rave, it's a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,23 +43,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:17:02.328Z",
+    "scoredAt": "2026-02-02T18:33:59.589Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (22 words)",
   "ensembleData": {
-    "claudeScore": 76,
+    "claudeScore": 82,
     "openaiScore": 90,
-    "geminiScore": 75,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -70,7 +70,6 @@
   "previousUrl": "https://www.theguardian.com/stage/2024/apr/24/mary-jane-review-rachel-mcadams-broadway-debut",
   "urlDiscoveredAt": "2026-02-02T15:07:39.432Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
   "textWordCount": 1200,
@@ -92,7 +91,9 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "rescoreCompletedAt": "2026-02-02T18:33:59.589Z",
+  "wordCount": 1200,
+  "tierReason": "Full review text"
 }

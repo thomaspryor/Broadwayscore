@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"A few instances of more heavy-handed literalism are sprinkled through the piece\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/illinoise",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 78,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 79,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review criticizes some heavy-handed literal elements but praises the choreography as leaving 'a lasting impression' and calls it 'gorgeously crafted.' The positive elements (strong performances, memorable choreography, creative staging) outweigh the criticisms, supported by the 84% audience approval rating mentioned. | GPT-4o: The review highlights the impressive choreography and standout performances, despite some criticism of heavy-handed literalism. The overall tone is positive, with the show being well-received by audiences. | Gemini: The review is mostly positive, highlighting the choreography and performances, but notes some heavy-handed literalism. The overall tone suggests a recommendation with reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the choreography, performances, and overall craftsmanship while noting some heavy-handed directorial choices. The positive elements (lasting impression of choreography, strong ensemble, memorable songs) outweigh the criticisms, resulting in a solid recommendation despite reservations. | GPT-4o: The review praises the choreography and performances, highlighting the show's strengths, while noting some reservations about the literalism in the direction. The overall tone is positive, recommending the show despite some minor critiques. | Gemini: The review is mostly positive, highlighting the choreography, performances, and music. However, it also mentions some heavy-handed literalism that detracts from the overall experience, leading to a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:15:46.737Z",
+    "scoredAt": "2026-02-02T18:23:27.873Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 82,
+    "claudeScore": 77,
+    "openaiScore": 79,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -91,13 +91,10 @@
     }
   ],
   "fetchTier": 4,
-  "truncationSignals": [
-    "no_ending_punctuation"
-  ],
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250709005058",
   "archiveOrgUrl": "http://web.archive.org/web/20250709005058/https://www.newyorktheatreguide.com/reviews/illinoise-off-broadway-review-sufjan-stevens",
-  "contentTier": "complete",
+  "contentTier": "invalid",
   "wordCount": 618,
   "rescoreCompletedAt": "2026-02-01T15:19:22.542Z",
   "wrongProduction": true,
@@ -109,5 +106,6 @@
     "hadPositiveThumb": false,
     "dtliThumb": "none",
     "bwwThumb": "none"
-  }
+  },
+  "tierReason": "Wrong production"
 }

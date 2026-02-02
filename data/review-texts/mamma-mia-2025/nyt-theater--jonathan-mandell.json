@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges strong performances and entertaining moments (especially the curtain call and standout cast members) but criticizes the unchanged production, weak plot, and questions whether current audiences will embrace this nostalgia-dependent show. The review is neither a recommendation nor a discouragement. | GPT-4o: The review acknowledges the production's high-energy performances and standout moments, particularly during the curtain call, but also highlights its lack of innovation and the plot's weaknesses. The critic seems to appreciate the nostalgia and some performances but is not fully convinced by the overall production. | Gemini: The review acknowledges the show's silliness and lack of originality, but ultimately praises the performances and the fun, feel-good atmosphere, especially during the curtain call. It's a recommendation with reservations due to the dated aspects and plot issues.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges strong performances and crowd-pleasing elements but finds the production largely unchanged and questions its contemporary relevance, ultimately neither recommending nor discouraging attendance. | GPT-4o: The review acknowledges the energy and nostalgia of the production but criticizes its lack of innovation and the plot's lightness. The excitement is noted at the curtain call, suggesting the overall experience is mixed with standout moments. | Gemini: The review acknowledges the show's silliness and lack of significant changes, but praises the performances, especially during the curtain call. It's a recommendation with reservations due to the dated aspects and plot issues.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,7 +42,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:32:32.284Z",
+    "scoredAt": "2026-02-02T18:32:01.664Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -50,13 +50,13 @@
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
+    "claudeScore": 63,
     "openaiScore": 65,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review praises DeVito's performance as 'shining' but criticizes the play as 'wispy,' 'all too expected,' and not quite getting to significance. The final assessment 'pleasant but leaves you wanting' clearly places this in mixed territory. | GPT-4o: The review praises Danny DeVito's performance but criticizes the play for being expected and not reaching its intended significance. The overall tone suggests a mixed reception, acknowledging some highlights but ultimately finding the play lacking. | Gemini: The review praises Danny DeVito's performance and the cast's skill, but ultimately finds the play itself to be somewhat lacking and predictable. It's a positive review with reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic praises DeVito's performance as a 'theatrical highlight' and acknowledges the cast's skill, but concludes the play 'doesn't quite get there' and is 'all too expected' with an obvious message. | GPT-4o: The review praises Danny DeVito's performance but criticizes the play for being expected and not memorable. The final verdict suggests the play is pleasant but ultimately unsatisfying, indicating a mixed recommendation. | Gemini: The review praises Danny DeVito's performance and the cast's skill, but ultimately finds the play itself \"pleasant but leaves you wanting,\" indicating a positive but not overwhelmingly enthusiastic recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,12 +38,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:49:52.101Z",
+    "scoredAt": "2026-02-02T18:21:56.753Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 56,
-    "previousVersion": "3.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,

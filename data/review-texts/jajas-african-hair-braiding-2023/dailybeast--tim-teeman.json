@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "What lands, over and over again (going by the gasps and responses of the audience), is Bioh’s dialog as expertly, relishingly delivered by her actors. Bioh is not just adept at writing the wit and vim of the conflicts and rivalries at the store, but also the deep friendships and loyalties within it too.",
@@ -19,11 +19,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 79,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review is consistently positive throughout, praising the set design, performances, dialogue, and overall production quality. The critic highlights multiple strong elements and concludes with clear approval, though stops short of superlative language that would indicate a rave. | Gemini: The review is overwhelmingly positive, praising the set design, writing, and performances. The final line indicates a strong recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review is consistently positive throughout, praising the set design, performances, dialogue, and overall production. The critic appreciates the authenticity and heart of the play, with specific praise for multiple actors and the playwright's skill. | GPT-4o: The review is filled with praise for the play's vibrant set, rich character interplay, and the expert delivery of Bioh’s dialogue. The critic highlights the play's themes and the strong performances, concluding with a clear endorsement of the production. | Gemini: The review is overwhelmingly positive, praising the set design, the writing, the acting, and the overall themes of community and friendship. The final line indicates a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,26 +44,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:51:45.773Z",
+    "scoredAt": "2026-02-02T18:24:36.747Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 86,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": null,
+    "claudeScore": 81,
+    "openaiScore": 82,
     "geminiScore": 80,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 82,

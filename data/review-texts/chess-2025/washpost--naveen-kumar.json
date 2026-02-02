@@ -60,8 +60,8 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Mixed"
   },
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 901,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "rescoreCompletedAt": "2026-02-02T03:24:56.855Z",
   "previousLlmScore": 64,
@@ -85,7 +85,7 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "tierReason": "Full review text"
 }

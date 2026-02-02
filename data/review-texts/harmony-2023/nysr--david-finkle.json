@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives 5/5 stars, revives the classic 'run don't walk' recommendation escalating it to 'race', and delivers sustained praise throughout with no meaningful reservations. | GPT-4o: The review is overwhelmingly positive, with the critic reviving the 'Run, don’t walk' recommendation for the show, indicating a strong endorsement. The praise for the production elements and performances further supports a 'Rave' classification. | Gemini: The critic uses extremely enthusiastic language like \"superb new musical\", and explicitly says to \"race\" to see it. The 5/5 star rating also indicates a rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives 5/5 stars and uses the highest praise language ('superb', 'race to see it', 'sustained bravos'), calling it a 'memorable enterprise' with outstanding performances across the board. | GPT-4o: The review is overwhelmingly positive, with the critic using strong language such as 'superb' and urging readers to 'race' to see the show. The 5/5 star rating further supports a Rave classification. | Gemini: The critic uses extremely enthusiastic language, including reviving the \"Run, don't walk...\" plug and calling the musical \"superb.\" The 5/5 star rating further reinforces the rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,12 +39,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:09:59.252Z",
+    "scoredAt": "2026-02-02T18:05:43.314Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,

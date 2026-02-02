@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The musical adaptation of Alexandra Shiva's documentary about teens on the autism spectrum preparing for a spring formal is undeniably well-intentioned, but it feels more like an educational experience than compelling theater.",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 58,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "The musical adaptation of Alexandra Shiva's documentary about teens on the autism spectrum preparing for a spring formal is undeniably well-intentioned, but it feels more like an educational experience than compelling theater.",
   "needsScoring": true,
   "llmScore": {
-    "score": 60,
-    "confidence": "medium",
+    "score": 58,
+    "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 53,
+      "high": 63
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This appears to be a season announcement or press release rather than an actual review of performances, providing only plot descriptions without any critical assessment of the productions' quality or merit. | GPT-4o: The text is primarily informational about upcoming productions and the theater's mission, without clear evaluative content or a verdict on the quality of the shows. The lack of explicit recommendation or criticism leads to a mixed classification. | Gemini: The review describes the plays and the mission of The Flea, highlighting its commitment to supporting diverse artists and experimental art. While it doesn't explicitly rave about the plays, the positive framing and focus on the theater's mission suggest a recommendation to support their work.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This is a season announcement/press release, not a review of actual productions. Contains no critical evaluation or recommendation about seeing these shows. | GPT-4o: The review primarily provides information about upcoming productions and the theater's mission without offering evaluative content or a clear recommendation about the shows themselves. | Gemini: This is a press release announcing upcoming productions, not a review of a current show. Therefore, it neither recommends nor discourages seeing anything.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,35 +43,35 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:30:43.126Z",
+    "scoredAt": "2026-02-02T18:20:56.830Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 60,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (32 words)",
   "ensembleData": {
     "claudeScore": 60,
     "openaiScore": 60,
-    "geminiScore": 75,
+    "geminiScore": 55,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 60,
   "textWordCount": 419,
   "archivePath": "data/archives/reviews/how-to-dance-in-ohio-2023/theatermania--david-finkle_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:39:22.734Z",
+  "textFetchedAt": "2026-02-02T16:22:33.299Z",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
@@ -94,11 +94,10 @@
   ],
   "fetchTier": 2,
   "textQuality": "truncated",
-  "truncationSignals": [
-    "has_paywall_text"
-  ],
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "showNotMentioned": true,
-  "rescoreCompletedAt": "2026-02-02T03:30:43.126Z"
+  "rescoreCompletedAt": "2026-02-02T03:30:43.126Z",
+  "wordCount": 419,
+  "tierReason": "Full review text"
 }

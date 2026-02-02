@@ -12,13 +12,13 @@
     "nysr-api"
   ],
   "originalScore": "4/5 stars",
-  "assignedScore": 81,
+  "assignedScore": 82,
   "llmScore": {
-    "score": 81,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating combined with language like 'consistently uproarious,' 'extremely well crafted,' 'triumphant conclusion,' and 'steady stream of belly laughs' indicates strong positive recommendation despite being truncated. | GPT-4o: The review describes the show as 'consistently uproarious' and 'extremely well crafted,' with a 'triumphant conclusion,' indicating a strong positive recommendation. The original 4/5 star rating supports this classification. | Gemini: The review is overwhelmingly positive, highlighting the show's humor and relevance. The 4/5 star rating also indicates a strong recommendation. However, the truncated text and a slight reservation about the delivery being \"a bit too manic for some\" keeps it from being a rave.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and language like 'consistently uproarious,' 'extremely well crafted,' 'triumphant conclusion,' and 'expertly staged' indicate strong praise with enthusiastic recommendation. | GPT-4o: The review is overwhelmingly positive, highlighting the show's humor, relevance, and expert staging. The critic's 4/5 star rating and the enthusiastic tone suggest a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the show's humor, relevance, and well-crafted nature. The critic praises Edelman's performance and the show's insightful commentary on bigotry, indicating a strong recommendation despite the truncated text.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:31:17.678Z",
+    "scoredAt": "2026-02-02T18:25:39.933Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 80,
+    "previousScore": 81,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
     "openaiScore": 82,
-    "geminiScore": 80,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

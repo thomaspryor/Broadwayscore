@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong praise throughout with phrases like 'pure magic,' 'triumph of stagecraft,' and 'well-worth it.' Despite acknowledging it's not 'high art,' the critic clearly recommends it as 'spectacularly thrilling entertainment expertly executed like no other.' | GPT-4o: The review is overwhelmingly positive, praising the production's stagecraft, storytelling, and ability to capture the essence of the Harry Potter series. The critic describes the experience as special and unforgettable, indicating a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, praising the stagecraft, performances, and overall experience. The critic explicitly states the show is \"well-worth it.\"",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic delivers strong praise throughout, calling it 'pure magic,' a 'triumph of stagecraft,' and concluding that 'the experience is well-worth it' despite high ticket prices. The enthusiasm and superlative language indicate a strong positive recommendation. | GPT-4o: The review is overwhelmingly positive, praising the production as a triumph of stagecraft and storytelling. The critic describes it as a must-see experience, highlighting its sophisticated craft and thrilling entertainment, which aligns with a 'Rave' classification. | Gemini: The review is overwhelmingly positive, highlighting the impressive stagecraft, thrilling entertainment, and overall worthiness of the experience despite some minor flaws. The final statement explicitly recommends the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,7 +39,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:30:05.128Z",
+    "scoredAt": "2026-02-02T18:09:51.197Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,

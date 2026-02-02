@@ -10,18 +10,18 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 52,
-    "confidence": "low",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 47,
-      "high": 57
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Negative, gemini=Mixed | Claude: The critic finds fundamental flaws in the production, calling it 'chaotically conflicted' with 'overwrought and uncentered performances' and a 'clunky bio-musical' that fails to justify its existence as a Broadway show. | Gemini: The review highlights both positive and negative aspects of the show. While praising Iman's performance and some of Gould's score, it criticizes the overwrought performances, clunky book, and the show's attempt to shove de Lempicka through modern filters. The overall tone suggests a mixed experience with some redeeming qualities.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: Jones finds the show 'chaotically conflicted' with 'overwrought and uncentered performances' and a 'clunky bio-musical' that would have been better as a non-musical drama, clearly not recommending it. | GPT-4o: The review highlights several significant issues with the production, including chaotic performances, a lack of wit in the book, and an overblown set. The critic suggests the show would be better suited as a non-musical drama, indicating a lack of recommendation for this musical format. | Gemini: The review highlights both positive and negative aspects. While praising Iman's performance and some of Gould's score, it criticizes the overwrought performances, clunky book, and the show's attempt to aggressively filter the subject through modern ideologies. The overall impression is mixed, not strongly recommending or discouraging.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,26 +42,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:24:43.677Z",
+    "scoredAt": "2026-02-02T18:28:16.045Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 38,
-    "previousVersion": "5.0.0"
+    "previousScore": 52,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": null,
+    "openaiScore": 45,
     "geminiScore": 62,
     "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
     "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 42,

@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic clearly recommends the show despite acknowledging flaws like length and plot holes, calling it 'a courageous work of art' and praising its emotional depth and spectacular production values. | GPT-4o: The review is overwhelmingly positive, highlighting the production's uniqueness, spectacle, and emotional depth. The critic describes it as a bar-raising experience, comparable to transformative Broadway shows like 'Cats' and 'The Lion King', and praises its courage and artistry. | Gemini: The review is overwhelmingly positive, highlighting the play's spectacle, emotional depth, and exploration of complex themes. Despite mentioning some flaws like length and plot holes, the critic ultimately praises the production as a courageous work of art and describes a very positive personal experience.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic acknowledges significant flaws ('far too long and meandering', 'plot holes', 'hokey dancing') but ultimately recommends it as both spectacular entertainment and meaningful art, praising the production's ambition and emotional depth. | GPT-4o: The review is filled with enthusiastic praise for the production's spectacle, emotional depth, and innovative staging. Despite some minor criticisms about length and plot holes, the overall tone is highly positive, emphasizing the play's impact and artistry. | Gemini: The review is overwhelmingly positive, highlighting the play's spectacle, emotional depth, and exploration of complex themes. Despite mentioning some flaws like length and plot holes, the critic ultimately praises the production as a 'courageous work of art,' indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:28:22.533Z",
+    "scoredAt": "2026-02-02T18:08:10.949Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
+    "previousScore": 80,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 95,
+    "openaiScore": 90,
     "geminiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 17,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "McAdams brings naturalistic authenticity and emotional intelligence to her stage debut, anchoring Amy Herzog's tender, observant drama about a single mother caring for her disabled son.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "McAdams brings naturalistic authenticity and emotional intelligence to her stage debut, anchoring Amy Herzog's tender, observant drama about a single mother caring for her disabled son.",
   "needsScoring": true,
   "llmScore": {
-    "score": 79,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite truncation concerns, the review consistently praises McAdams' performance as 'searching and poignant' and highlights strong production elements, indicating a positive recommendation though not quite reaching rave territory. | GPT-4o: The review highlights Rachel McAdams' strong performance and the play's emotional depth, suggesting a positive reception. However, the text is truncated, and the final verdict may be missing, which introduces some uncertainty. | Gemini: The review highlights McAdams' performance and the play's poignant themes. While the text is truncated, the overall tone suggests a positive, though not overwhelmingly enthusiastic, recommendation. The phrase \"searching and poignant turn\" indicates a positive assessment, but the lack of a clear concluding statement necessitates a slightly lower score within the 'Positive' bucket.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises McAdams' performance as 'searching and poignant' and calls Herzog's play 'compassionate' and 'tender,' though notes she 'occasionally falls into the dramatic traps of Hollywood stars taking the stage.' The truncated text and positive aggregator excerpt suggest a solid recommendation. | GPT-4o: The review praises Rachel McAdams' performance and the play's emotional depth, highlighting its poignant and searching nature. However, the text is truncated, and the final verdict may be missing, leading to a medium confidence level. | Gemini: The review praises McAdams' performance and the play's exploration of community and resilience, but the truncated text makes it difficult to ascertain the overall strength of the recommendation. The phrase 'occasionally falls into the dramatic traps of Hollywood stars taking the stage' suggests some reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,23 +43,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:23:17.356Z",
+    "scoredAt": "2026-02-02T18:34:04.564Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
+    "previousScore": 79,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (26 words)",
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 80,
-    "geminiScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -86,12 +86,13 @@
   "fetchTier": 4,
   "textQuality": "truncated",
   "truncationSignals": [
-    "no_ending_punctuation",
-    "possible_mid_word_cutoff"
+    "no_ending_punctuation"
   ],
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240625023816",
   "archiveOrgUrl": "http://web.archive.org/web/20240625023816/https://www.hollywoodreporter.com/lifestyle/arts/mary-jane-review-rachel-mcadams-broadway-debut-1235879665/",
-  "rescoreCompletedAt": "2026-02-02T14:23:17.356Z"
+  "rescoreCompletedAt": "2026-02-02T14:23:17.356Z",
+  "wordCount": 806,
+  "tierReason": "Full review text"
 }

@@ -9,15 +9,15 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 81,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 74,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt uses positive language ('earned plaudits', 'confident', 'superb cast') but with only one cherry-picked quote available, I'm scoring conservatively in the lower positive range. | GPT-4o: The review excerpt highlights the director's confident debut and the superb cast, suggesting a positive reception. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Positive range. | Gemini: The review mentions the production has 'earned plaudits' and highlights the confident debut and superb cast, suggesting a positive but not overwhelmingly enthusiastic recommendation. The single excerpt and aggregator context suggest a positive leaning.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt contains clear positive language ('earned plaudits', 'confident Broadway debut', 'superb cast') indicating a strong recommendation, though limited to one excerpt requires some caution. | GPT-4o: The excerpt praises the director's confident debut and the superb cast, indicating a strong positive reception. The use of 'plaudits' and 'superb' suggests a high level of enthusiasm. | Gemini: The review excerpt indicates that the production has earned plaudits and the director is making a confident Broadway debut, suggesting a positive assessment. The aggregator also indicates an overall positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,25 +38,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:53:27.178Z",
+    "scoredAt": "2026-02-02T18:21:15.034Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 76,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
-  }
+  },
+  "contentTier": "excerpt",
+  "wordCount": 0,
+  "tierReason": "Only aggregator excerpts available"
 }

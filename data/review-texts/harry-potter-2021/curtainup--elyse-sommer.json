@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses strong positive language like 'astonishing' and 'breathtaking' for key production elements, and explicitly states it's never boring despite length, indicating strong enthusiasm. | GPT-4o: The excerpt highlights the impressive stagecraft and engaging nature of the play, suggesting a strong recommendation. However, due to the single excerpt warning, the confidence is medium. | Gemini: The excerpt contains strong positive language about the stagecraft and illusions, and states the play is 'never boring,' suggesting a positive experience overall. Given it's a single excerpt, I'm placing it in the upper range of 'Positive.'",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for technical elements and explicit statement that it's 'never boring' despite length indicates solid recommendation, though limited excerpt prevents full assessment. | GPT-4o: The excerpt highlights impressive stagecraft and captivating illusions, suggesting a strong recommendation. The mention of the play being long but never boring further supports a positive verdict. However, due to the single excerpt warning, the confidence is medium. | Gemini: The excerpt uses very positive language like \"astonishing\" and \"breathtaking\" and states the play is \"never boring\", indicating a strong recommendation despite the limited text.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:27:36.506Z",
+    "scoredAt": "2026-02-02T18:07:26.425Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 82,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 82,
+    "openaiScore": 83,
     "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

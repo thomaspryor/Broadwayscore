@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly recommends the show, praising the lead performances as 'ideal' and calling it 'endearing' and 'entertaining.' While noting it's more suited to cabaret than Broadway, the overall assessment is positive with enthusiasm for the chemistry between the leads. | GPT-4o: The review highlights the strong performances of Rannells and Gad, the clever direction by Alex Timbers, and the show's humorous and entertaining nature. Despite noting some clunkiness, the overall tone is positive, emphasizing the enjoyment and laughter the production provides. | Gemini: The review is generally positive, highlighting the performances of the two leads and the humor of the show. While it acknowledges the show's potential limitations and clunkiness, it ultimately recommends seeing it, especially for fans of the performers.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly enjoys the show and recommends it, praising the leads' chemistry and the humor, though notes it might be better suited for cabaret than Broadway and calls it a 'funny little double act.' | GPT-4o: The review highlights the strong chemistry and comedic talent of the lead actors, the cleverness of the production, and its ability to provide humor and entertainment, making it a highly recommended show. | Gemini: The review is generally positive, highlighting the chemistry of the leads and the humor of the show. However, it also notes that the show might be better suited for a cabaret than a Broadway theater, indicating some reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,21 +43,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:38:22.998Z",
+    "scoredAt": "2026-02-02T17:58:25.383Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 80,
+    "openaiScore": 82,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

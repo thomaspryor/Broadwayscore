@@ -9,15 +9,15 @@
   "bwwExcerpt": "“Gutenberg! The Musical!” is deliberately bad – that’s the central joke of it – but much of what’s bad about it isn’t deliberate. The score is largely unmemorable. The premise makes little sense. There are some funny lines, but no more than an hour’s worth of laughs in a show that’s a two-hour, two-person vaudeville routine that becomes tedious. There is also one joke that is almost shockingly unfunny.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": 41,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 41,
-    "confidence": "medium",
+    "score": 42,
+    "confidence": "high",
     "range": {
-      "low": 36,
-      "high": 46
+      "low": 37,
+      "high": 47
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic acknowledges some funny moments but ultimately finds the show tedious with unmemorable music and insufficient laughs to sustain its length. Single excerpt warning prevents a lower score. | GPT-4o: The review highlights several negative aspects of the show, including an unmemorable score and a nonsensical premise, which suggests a recommendation to skip it. However, the single excerpt warning suggests caution, so the score is placed conservatively in the middle of the Negative range. | Gemini: The review highlights both positive and negative aspects, describing the show as deliberately bad but also unintentionally flawed, with some funny lines but ultimately tedious. This suggests a mixed experience, not strongly recommending or discouraging it.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic finds the show deliberately and unintentionally bad, with an unmemorable score, nonsensical premise, and insufficient laughs to sustain its length, clearly indicating they do not recommend it. | GPT-4o: The review highlights several negative aspects, including an unmemorable score, a nonsensical premise, and a tedious runtime, with only occasional humor. The tone suggests a clear recommendation to skip the show. | Gemini: The review explicitly states that the show is 'deliberately bad' but also unintentionally bad, citing issues with the score, premise, and overall tedium. This indicates a negative assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:36:47.985Z",
+    "scoredAt": "2026-02-02T17:57:35.642Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 31,
-    "previousVersion": "3.0.0"
+    "previousScore": 41,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
     "openaiScore": 40,
-    "geminiScore": 62,
+    "geminiScore": 45,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 22,
+    "geminiBucket": "Negative",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "bwwThumb": "Down",
   "rescoreReason": "fullText added after excerpt-based scoring",

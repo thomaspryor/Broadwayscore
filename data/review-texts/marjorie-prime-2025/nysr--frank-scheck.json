@@ -14,7 +14,7 @@
   "sourceMethod": "playwright",
   "llmScore": {
     "score": 92,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 87,
       "high": 97
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic gives 5/5 stars and uses consistently superlative language throughout - calling it 'sharper, more resonant, and more deeply poignant,' praising the 'first-rate cast,' and describing performances as 'superlative' and 'devastating.' The review concludes by definitively stating it's 'very much a play for our times.' | Gemini: The critic gives the play 5/5 stars and uses overwhelmingly positive language, calling the cast 'first-rate' and the performances 'superlative.' The conclusion that it is 'very much a play for our times' indicates a strong recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The 5-star rating combined with superlative language like 'national treasure,' 'superlative,' and 'emotionally devastating' indicates this is a strong rave review that finds the production deeply resonant and expertly performed. | GPT-4o: The review is overwhelmingly positive, highlighting the play's sharpness, resonance, and emotional depth. The critic praises the cast's performances and the play's relevance, aligning with the 5/5 star rating, indicating a strong recommendation. | Gemini: The critic gives the play 5/5 stars and uses overwhelmingly positive language, calling it sharper, more resonant, and deeply poignant. The review praises the cast, writing, and overall impact of the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:34:32.337Z",
+    "scoredAt": "2026-02-02T18:32:58.045Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 92,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": null,
+    "claudeScore": 89,
+    "openaiScore": 95,
     "geminiScore": 92,
     "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 0,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "bwwThumb": "Up",
   "sources": [

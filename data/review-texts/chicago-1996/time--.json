@@ -76,10 +76,8 @@
   "fetchTier": 4,
   "textQuality": "truncated",
   "truncationSignals": [
-    "no_ending_punctuation",
-    "has_paywall_text",
-    "has_read_more_prompt",
-    "possible_mid_word_cutoff"
+    "paywall_or_login_prompt",
+    "no_ending_punctuation"
   ],
   "textStatus": "truncated",
   "sourceMethod": "archive",
@@ -87,5 +85,8 @@
   "archiveOrgUrl": "http://web.archive.org/web/20130825005452/http://www.time.com/time/magazine/article/0,9171,985604,00.html",
   "textIssues": [
     "Word count too low: 180 (min: 300)"
-  ]
+  ],
+  "contentTier": "truncated",
+  "wordCount": 116,
+  "tierReason": "Truncation detected: paywall_or_login_prompt, no_ending_punctuation"
 }

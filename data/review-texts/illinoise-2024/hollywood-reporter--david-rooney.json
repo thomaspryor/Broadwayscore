@@ -16,35 +16,19 @@
     "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 80
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "pulls us into late adolescence, a time when love, anguish and everything in between are felt perhaps with the greatest intensity",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "skillfully shaped yet invisible in the best sense of undiluted physical, sensorial and elemental storytelling",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Without a word of spoken dialogue, the show pulls us into",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review uses sophisticated praise like 'skillfully shaped' and 'undiluted physical, sensorial and elemental storytelling' with no negative elements, indicating strong appreciation for the craft and emotional impact.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt uses highly positive language praising the book as 'skillfully shaped' and describing the storytelling as achieving 'the best sense' of its artistic goals. The aggregator context confirms an upward verdict, supporting a strong positive score. | GPT-4o: The review excerpt praises the show for its intense emotional impact and skillful storytelling, indicating a strong recommendation. The language used suggests a high level of admiration, aligning with a 'Rave' classification. | Gemini: The review excerpt praises the show's storytelling and direction, suggesting a positive experience. Given the single excerpt warning and aggregator context, a score on the higher end of the positive range is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,27 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-02T16:25:37.375Z",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T18:23:02.716Z",
     "promptVersion": "5.1.0",
-    "inputTokens": 2405,
-    "outputTokens": 333,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "dtliExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated DTLI excerpt with verdict"
-    }
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 85,
-    "scoreDelta": 3,
+    "openaiScore": 88,
+    "geminiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "dtliExcerpt": "Without a word of spoken dialogue, the show pulls us into late adolescence, a time when love, anguish and everything in between are felt perhaps with the greatest intensity. The book co-written by director-choreographer Peck and Drury (who won the 2019 Pulitzer Prize for Drama with her brilliant meta-theatrical race inquiry, Fairview) is skillfully shaped yet invisible in the best sense of undiluted physical, sensorial and elemental storytelling.",
   "sources": [

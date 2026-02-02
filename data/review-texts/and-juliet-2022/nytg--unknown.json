@@ -68,7 +68,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 74,
@@ -91,5 +91,7 @@
   ],
   "textStatus": "partial",
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-02-02T14:21:50.950Z"
+  "rescoreCompletedAt": "2026-02-02T14:21:50.950Z",
+  "wordCount": 1039,
+  "tierReason": "Full review text"
 }

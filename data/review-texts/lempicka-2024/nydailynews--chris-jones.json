@@ -8,18 +8,18 @@
   "dtliExcerpt": "Frankly, the show would have been far better if it had simply evoked a savvy and brilliant artist in this richest of European eras. Shoving de Lempicka so aggressively through today’s ideological and aesthetic filters, unconscious as the act may be, has the effect of nullifying her singular ambivalence and complexity.",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 44,
   "dtliThumb": "Down",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
   "llmScore": {
-    "score": 45,
+    "score": 44,
     "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic argues the show would have been 'far better' with a different approach and criticizes it for 'nullifying' the complexity of its subject, indicating clear disappointment with the production choices, though the single excerpt limits confidence in the overall verdict. | GPT-4o: The review criticizes the production for failing to capture the complexity of its subject, suggesting it is disappointing. The aggregator context supports a negative interpretation, but the single excerpt warning suggests a conservative score within the negative range. | Gemini: The review states the show would have been 'far better' if it had taken a different approach, indicating disappointment with the current production. The aggregator verdict also suggests a negative reception.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic explicitly states the show would have been 'far better' with different creative choices and criticizes how the production 'nullifies' the subject's complexity, indicating clear disappointment with the execution. | GPT-4o: The critic expresses dissatisfaction with the production's approach, suggesting it undermines the subject's complexity. The tone is clearly negative, indicating a recommendation to skip the show. | Gemini: The review excerpt expresses a strong negative sentiment, indicating that the show's attempt to filter the artist through modern ideologies detracts from her complexity, suggesting the reviewer does not recommend the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:25:26.801Z",
+    "scoredAt": "2026-02-02T18:28:36.368Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 37,
-    "previousVersion": "3.0.0"
+    "previousScore": 45,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
+    "claudeScore": 42,
     "openaiScore": 45,
     "geminiScore": 45,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "scoreDelta": 0,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

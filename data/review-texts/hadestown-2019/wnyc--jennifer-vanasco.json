@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the direction as 'exquisite,' calls the staging and design 'haunting,' and describes the songs as 'richly textured.' While noting one performance weakness, the overall assessment is clearly positive and recommending. | GPT-4o: The review praises the production as stylish, resonant, and high-energy, highlighting the exquisite staging and the richness of the music. The overall tone is enthusiastic and strongly recommends the show. | Gemini: The review highlights the show's strengths (stylish, resonant, high-energy, exquisite staging) and ultimately suggests a hopeful message, indicating a positive but not overwhelmingly enthusiastic recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the staging as 'exquisite,' calls it 'stylish, resonant, high-energy,' and highlights the show's provocative themes and uplifting message, with only minor criticism of one performance. | GPT-4o: The review is highly positive, praising the music, staging, and thematic resonance of 'Hadestown'. The critic describes the production as 'stylish, resonant, high-energy' and highlights its exquisite staging and relevant themes, indicating a strong recommendation. | Gemini: The review is generally positive, highlighting the stylish staging and resonant music. However, it also notes some reservations, such as Reeve Carney's performance as Orpheus being a \"blank slate.\"",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:27:34.522Z",
+    "scoredAt": "2026-02-02T18:01:35.901Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 78,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 90,
+    "openaiScore": 92,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -60,8 +60,8 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 457,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
   "isFullReview": true,
@@ -84,7 +84,7 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
-  "rescoreCompletedAt": "2026-02-02T03:27:34.522Z"
+  "rescoreCompletedAt": "2026-02-02T03:27:34.522Z",
+  "tierReason": "Full review text"
 }

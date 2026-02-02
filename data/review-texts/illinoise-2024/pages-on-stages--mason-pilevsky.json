@@ -9,15 +9,15 @@
   "showScoreExcerpt": "Truly in awe of the duality and interconnectedness of the pulse of Illinoise.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/illinoise",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 82,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 84,
-    "confidence": "low",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 79,
-      "high": 89
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The critic uses language like 'beautiful,' 'breathtaking,' 'phenomenal theatre,' and 'true magic' while emphasizing the show's uniqueness and collaborative excellence. Despite minor critiques about the ending and vocals, the overall tone is deeply appreciative and the review concludes with lasting emotional impact. | Gemini: The review is overwhelmingly positive, praising the show's unique qualities and collaborative spirit, but it does mention some minor issues (vocals hard to understand, ending slightly rushed) which keeps it from being a rave.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic delivers strong praise throughout, calling it 'beautiful,' 'breathtaking,' and 'phenomenal theatre' while highlighting the exceptional collaboration and unique artistry. Despite minor critiques about vocals and ending, the overall tone is enthusiastic recommendation. | GPT-4o: The review is overwhelmingly positive, highlighting the show's unique and seamless collaboration, brilliant design, and emotional impact. The critic's enthusiastic tone and strong praise for the production's elements and overall experience justify a Rave classification. | Gemini: The review is overwhelmingly positive, praising the show's unique qualities, collaboration, and emotional impact. While it mentions some minor issues (vocals hard to understand, ending slightly rushed), the overall tone is enthusiastic and recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:16:21.075Z",
+    "scoredAt": "2026-02-02T18:23:40.664Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "5.0.0"
+    "previousScore": 84,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": null,
-    "geminiScore": 80,
-    "claudeBucket": "Rave",
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 85,

@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209",
   "bwwThumb": "Meh",
   "originalScore": "3/5 stars",
-  "assignedScore": 61,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 61,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic gives 3/5 stars and explicitly calls it 'moderate entertainment,' praising the authentic casting and some performances while criticizing the score as 'functional' and the book as 'flimsy musical comedy style.' | Gemini: The review highlights both positive and negative aspects. While praising the performers and the message, it criticizes the score and book, ultimately concluding that the show offers only \"moderate entertainment.\" The 3/5 star rating also indicates a mixed assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic gives 3/5 stars and explicitly states the show offers 'only moderate entertainment.' While praising the authentic casting and some performances, he finds the score functional at best and the book flimsy, concluding audiences will leave uplifted by the performers' talent rather than the actual material. | GPT-4o: The review acknowledges several strengths, such as authentic casting and standout performances, but ultimately finds the musical only moderately entertaining with a pedestrian score and an uncompelling book. The original rating of 3/5 stars aligns with a mixed assessment. | Gemini: The review highlights both positive and negative aspects. While praising the performances and intentions, it criticizes the score and book, ultimately deeming the show only 'moderate entertainment'. The 3/5 star rating also indicates a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:55:00.318Z",
+    "scoredAt": "2026-02-02T18:20:33.013Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 50,
-    "previousVersion": "3.0.0"
+    "previousScore": 61,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": null,
+    "claudeScore": 62,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 2,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 50,

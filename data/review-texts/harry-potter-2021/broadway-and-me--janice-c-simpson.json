@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The reviewer expresses clear enthusiasm throughout, calls it 'money well spent,' and has already bought tickets to see it again, indicating a strong positive recommendation despite acknowledging some plot convolution. | GPT-4o: The critic expresses strong enthusiasm and delight for the production, highlighting the impressive stagecraft, emotional depth, and top-notch performances. The critic's decision to see the show again further underscores the strong recommendation. | Gemini: The review is overwhelmingly positive, with the critic expressing delight and stating that the money spent on tickets is \"well spent.\" The critic also mentions having tickets to see it again.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening with fangirl context, the critic delivers enthusiastic praise throughout, calling it 'money well spent' and revealing she's already bought tickets to see it again, indicating strong recommendation. | GPT-4o: The critic expresses strong enthusiasm and delight for the production, highlighting the impressive stagecraft, emotional depth, and top-notch performances. The critic's decision to see the show again further underscores the rave recommendation. | Gemini: The review is overwhelmingly positive, with the critic expressing delight and emphasizing the magical stagecraft and strong performances. The explicit statement that the money is \"well spent\" and the fact that the critic has tickets to see it again further support a strong positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:27:05.047Z",
+    "scoredAt": "2026-02-02T18:06:57.823Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 80,
+    "previousScore": 82,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
     "openaiScore": 90,
-    "geminiScore": 82,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -62,14 +62,14 @@
     "modelAgreement": "2/3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/broadway-and-me--janice-c--simpson_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:34:36.829Z",
+  "textFetchedAt": "2026-02-02T16:17:44.277Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
       "success": false,
-      "error": "Insufficient text in archive: 0 chars"
+      "error": "No archive snapshot available"
     },
     {
       "tier": 1,

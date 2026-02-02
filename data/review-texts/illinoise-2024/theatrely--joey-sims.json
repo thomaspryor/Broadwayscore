@@ -9,17 +9,17 @@
   "bwwExcerpt": "At the Armory, those same stories felt monumental — a revolt of mighty compassion against a cruel, suffocating world. And now, as Ilinoise settles in on Broadway, Peck has found a harmony between those two modes, hitting on a beautiful alchemy of personal warmth and epic scale. Average Rating: 80.0% { \"@context\":\"https://schema.org\", \"@type\":\"LiveBlogPosting\", \"@id\":\"/article/Review-Roundup-ILLINOISE-Arrives-on-Broadway-20240426\", \"about\":{ \"@type\":\"Event\", \"startDate\":\"2",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ILLINOISE-2024",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 92,
   "humanReviewScore": 88,
   "humanReviewNote": "Genuine rave; 'miracle of a show', 'magical work of fierce heart'; minor 'too-much moments'; override to 80 was wrong",
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 85,
-    "confidence": "low",
+    "score": 92,
+    "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The critic uses superlative language throughout ('miracle of a show,' 'magical work,' 'beautiful alchemy') and describes the production's evolution across venues with consistent praise, indicating this is a must-see recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"miracle of a show\" and praising the \"beautiful alchemy of personal warmth and epic scale.\" While acknowledging some minor flaws, the overall tone is enthusiastic and recommends seeing the show.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses rapturous language throughout, calling it 'this miracle of a show,' 'a magical work of fierce heart,' and praising Peck's 'beautiful alchemy of personal warmth and epic scale.' Despite minor reservations about occasional excess, the overall tone is one of deep admiration and strong recommendation. | GPT-4o: The review is overwhelmingly positive, describing the show as a 'miracle' and 'magical work of fierce heart.' The critic praises the production's emotional impact and the successful adaptation of Sufjan Stevens' album, indicating a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, describing the show as a \"miracle\" and praising its emotional depth and the harmony between personal warmth and epic scale. While acknowledging some minor flaws, the overall tone is enthusiastic and strongly recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,26 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:17:06.905Z",
+    "scoredAt": "2026-02-02T18:23:55.600Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 85,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": null,
+    "openaiScore": 95,
     "geminiScore": 82,
     "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "bwwThumb": "Up",
   "dtliExcerpt": "Now on Broadway at the St. James Theater, this miracle of a show has traded the grandeur of Park Avenue Armory’s monumental Drill Hall for a gentler intimacy. (“Intimate” would not be a typical descriptor for the St. James, but that’s just how massive the Drill Hall is.) It remains, above all else, a magical work of fierce heart that bursts with indescribable wells of emotion.",

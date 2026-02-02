@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"...one of the most sensational musical theatre performances I've ever seen.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/just-in-time-broadway",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 95,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 94,
+    "score": 95,
     "confidence": "high",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 90,
+      "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The superlative language 'most sensational...I've ever seen' indicates an exceptionally strong positive recommendation despite the limited excerpt. | GPT-4o: The critic describes the performance as 'one of the most sensational' they have ever seen, indicating a highly enthusiastic and positive reaction, suggesting a must-see recommendation. | Gemini: The quote indicates extremely high praise, placing it firmly in the Rave category.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The phrase 'one of the most sensational musical theatre performances I've ever seen' represents extraordinarily high praise from a professional critic, indicating a must-see recommendation despite the limited excerpt. | GPT-4o: The critic describes the performance as one of the most sensational they have ever seen, indicating a strong, enthusiastic recommendation. | Gemini: The quote provided is extremely positive, indicating a rave review and a must-see recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:31:34.455Z",
+    "scoredAt": "2026-02-02T18:26:59.201Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
+    "previousScore": 94,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 95,
     "openaiScore": 95,
     "geminiScore": 95,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -75,11 +75,10 @@
   "previousLlmScore": 95,
   "rescoreCompletedAt": "2026-02-02T03:31:34.455Z",
   "truncationSignals": [
-    "no_ending_punctuation",
-    "possible_mid_word_cutoff"
+    "no_ending_punctuation"
   ],
   "textQualityOverride": "batch-fix-2026-01-30",
-  "contentTier": "needs-rescrape",
+  "contentTier": "complete",
   "wordCount": 1199,
   "garbageReasoningDetected": "no-evaluative-content",
   "garbageReasoningFlaggedAt": "2026-02-02T00:01:17.091Z",
@@ -102,5 +101,6 @@
   "fetchTier": 1,
   "textQuality": "full",
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "tierReason": "Full review text"
 }

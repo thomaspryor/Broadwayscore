@@ -7,7 +7,7 @@
   "publishDate": "December 8, 2025",
   "dtliExcerpt": "Nixon’s Tess is vulnerable enough for you to sense the fear in her eyes, but this is an actress with a steely core and, indeed, Nixon turns on a dime when her character realizes, as I think many of us have or will, that this brave new world is short on both guardrails and moral principles. Burstein is equally effective as husband Jon, his warm eyes dancing with empathy, although we are not always so sure about that, given his programming skills. “Am I supposed not to notice she is being nicer to that thing than me?” Tess snaps at one point, bringing up another salient A.I. issue. Squibb, 96, whose Broadway career stretches back to her role as Electra in the original 1960 production of “Gypsy,” is implacably excellent. For the record, she is the oldest actress ever to open a Broadway show.",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 76,
   "humanReviewScore": 78,
   "humanReviewNote": "Both thumbs Up; truncated text led to LLM Mixed (64); DTLI excerpt strongly positive",
   "source": "dtli",
@@ -16,19 +16,19 @@
   "urlSource": "show-score",
   "urlUpdatedAt": "2026-01-25T14:20:46.978Z",
   "showScoreExcerpt": "\"Under the direction of Anne Kauffman, the acting is seamless. And this carefully calibrated 70-minute meditation on morality and memories exerts a gentle but insistent tug. But it doesn’t doesn’t dive deep enough to make a lasting impact.\"",
-  "textFetchedAt": "2026-02-02T17:43:10.204Z",
+  "textFetchedAt": "2026-02-02T16:45:19.677Z",
   "textFetchMethod": "playwright-stealth",
   "archivePath": "data/archives/reviews/marjorie-prime-2025/nydailynews--chris-jones_2026-02-02.html",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 64,
+    "score": 76,
     "confidence": "medium",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review praises the seamless acting and acknowledges the show's gentle pull, but the clear verdict is that it falls short of making a lasting impact, placing it in mixed territory. | GPT-4o: The review praises the acting and direction as seamless and effective, but criticizes the production for not diving deep enough to make a lasting impact. This suggests a mixed recommendation, highlighting strengths but noting significant shortcomings. | Gemini: The review praises the acting and direction, calling it a 'carefully calibrated' meditation. However, it also notes that the play 'doesn't dive deep enough to make a lasting impact,' indicating a recommendation with reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises the seamless acting and acknowledges the show's appeal, but ultimately concludes it 'doesn't dive deep enough to make a lasting impact,' indicating neither a recommendation nor discouragement. | GPT-4o: The review praises the acting and direction, describing the production as a 'carefully calibrated meditation' that is worth seeing, though it notes the show doesn't dive deep enough for a lasting impact. This indicates a positive recommendation with some reservations. | Gemini: The review praises the acting and direction, calling it a 'carefully calibrated meditation'. However, it also notes that the play 'doesn't dive deep enough to make a lasting impact', indicating a positive but not rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,27 +46,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:34:01.320Z",
+    "scoredAt": "2026-02-02T18:32:50.844Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 68,
-    "previousVersion": "5.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 75,
+    "openaiScore": 75,
+    "geminiScore": 76,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "sources": [

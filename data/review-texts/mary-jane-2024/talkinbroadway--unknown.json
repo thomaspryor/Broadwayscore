@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 61,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Single excerpt suggests the show is emotionally demanding or intense but doesn't clearly recommend or discourage attendance. The phrase 'a lot to take in' could indicate either overwhelming power or excessive difficulty. | GPT-4o: The excerpt suggests the production may be overwhelming or challenging for some audiences, indicating a mixed reception. The lack of a full review and single excerpt warning necessitates a conservative score within the mixed range. | Gemini: The phrase \"a lot to take in\" suggests a mixed reaction, implying that while there may be something worthwhile, it could also be overwhelming or challenging. Given the single excerpt warning, I'm scoring conservatively within the Mixed range.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt suggests the show is intense or demanding rather than entertaining, with 'a lot to take in' implying difficulty rather than clear recommendation or discouragement. | GPT-4o: The excerpt suggests that the production may be overwhelming or intense, which implies a mixed experience. Without a clear positive or negative verdict, it falls into the mixed category. | Gemini: The single excerpt suggests the reviewer found the show intense and potentially overwhelming, indicating a mixed reaction rather than a clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,23 +46,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:32:55.323Z",
+    "scoredAt": "2026-02-02T18:34:37.858Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 61,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 62,
+    "claudeScore": 62,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 2,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -71,5 +71,10 @@
     "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
-  "rescoreCompletedAt": "2026-02-02T03:32:55.323Z"
+  "rescoreCompletedAt": "2026-02-02T03:32:55.323Z",
+  "wordCount": 755,
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "tierReason": "Full review text"
 }

@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review opens with strong praise calling it 'a hell of a musical' and consistently highlights positives like the 'delightful score' and 'extraordinary' performances, though notes some changes from the original production and mixed feelings about casting replacements. | GPT-4o: The review is overwhelmingly positive, highlighting the thrilling score, impressive performances, and successful transition to Broadway. The critic uses enthusiastic language and praises the production's improvements and standout elements, indicating a strong recommendation. | Gemini: The review highlights the delightful score and improvements made to the Broadway production, while also acknowledging changes from the Off-Broadway version. This indicates a positive but not overwhelmingly enthusiastic recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic clearly recommends the show with opening praise calling it 'a hell of a musical' and highlighting improvements like André De Shields' performance and the 'delightful score.' However, there are some reservations about casting changes and the transformation from the original Off-Broadway production. | GPT-4o: The review is filled with praise for the production, highlighting its thrilling score, improved clarity, and extraordinary performances. The critic's enthusiasm and use of superlatives indicate a strong recommendation. | Gemini: The review is generally positive, highlighting the score and some improvements. However, it also notes changes from the Off-Broadway production and some reservations about casting, leading to a 'Positive' classification with a score in the middle of the range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:58:53.754Z",
+    "scoredAt": "2026-02-02T17:59:03.669Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 86,
-    "previousVersion": "3.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 95,
+    "openaiScore": 90,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 17,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

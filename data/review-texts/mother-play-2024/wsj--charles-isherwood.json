@@ -62,8 +62,8 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Mixed"
   },
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "truncated",
+  "wordCount": 58,
   "isFullReview": false,
   "textWordCount": 58,
   "archivePath": "data/archives/reviews/mother-play-2024/wsj--charles-isherwood_2026-02-02.html",
@@ -78,9 +78,6 @@
   ],
   "fetchTier": 4,
   "textQuality": "truncated",
-  "truncationSignals": [
-    "shorter_than_excerpt"
-  ],
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240430055355",
@@ -95,5 +92,6 @@
     "hadPositiveThumb": false,
     "dtliThumb": "Meh",
     "bwwThumb": "none"
-  }
+  },
+  "tierReason": "Short text (58 words)"
 }

@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review opens by stating it's a 'five-star review' and explicitly declares the show 'exceeds the hype.' The critic uses superlative language throughout, calling Edelman's gift 'irresistible' and describing themselves as an 'instant admirer.' | GPT-4o: The review is overwhelmingly positive, describing the show as exceeding the hype and highlighting Edelman's storytelling and comedic talents. The critic's admiration is clear, making it a strong recommendation. | Gemini: The review is overwhelmingly positive, praising Edelman's storytelling and humor. The critic explicitly states the show exceeds the hype and counts themselves as an \"instant admirer.\"",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review opens with a five-star rating and contains overwhelmingly enthusiastic praise throughout, calling it a 'rare theatrical production' that exceeds expectations with 'irresistible' storytelling that deserves must-see status. | GPT-4o: The review is overwhelmingly positive, praising the show as exceeding expectations and highlighting Edelman's storytelling and comedic talent. The critic's tone is enthusiastic and full of admiration, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"laugh-out-loud,\" \"irresistible gift for storytelling,\" and \"instant admirer.\" The critic clearly recommends the show, stating it exceeds expectations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,12 +38,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:59:41.196Z",
+    "scoredAt": "2026-02-02T18:25:44.036Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,

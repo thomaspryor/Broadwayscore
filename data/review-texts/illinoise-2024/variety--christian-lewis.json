@@ -9,71 +9,56 @@
   "bwwExcerpt": "Peck’s choreography is as marvelous as it is moving. Several dance motifs repeat, a nod to the theme of memory and haunting. Often these are tied to characters, like Carl and Henry’s balance-beam swaggering and swaying, or the side-by-side swing-inspired dance and handshake of Henry, Carl, and Shelby. Peck’s choreography is decidedly modern, but his ballet background informs the work, with long-line leg extensions at classic angles and a flurry of precisely-spotted spins and turns.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ILLINOISE-2024",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 85,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 82,
-      "high": 88
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 78,
-      "music": 88,
-      "performances": 87,
-      "direction": 83
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "will indelibly be remembered as one of the most singular productions in recent Broadway history",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Nothing about this is typical Broadway fare, but that's exactly what makes it so worth seeing",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Despite some qualms with the occasional literalness of the choreography, Peck's work here is undeniably gorgeous and flawlessly executed",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic calls it 'one of the most singular productions in recent Broadway history' and explicitly states 'that's exactly what makes it so worth seeing,' despite acknowledging some choreographic literalness issues.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises this as a singular, groundbreaking Broadway production that expands what can be featured on Broadway, calling it 'so worth seeing' despite some reservations about literal choreography moments. | GPT-4o: The review is overwhelmingly positive, praising the production's originality, choreography, and emotional impact, and describing it as a genre-defying work that is 'so worth seeing.' | Gemini: The review is overwhelmingly positive, calling the show \"one of the most singular productions in recent Broadway history\" and praising various aspects like the choreography, music, and performances. While there are some minor criticisms about literal choreography, the overall recommendation is strong.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-02T16:25:42.679Z",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T18:24:09.996Z",
     "promptVersion": "5.1.0",
-    "inputTokens": 4732,
-    "outputTokens": 370,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 85,
-    "scoreDelta": 3,
+    "claudeScore": 82,
+    "openaiScore": 95,
+    "geminiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "dtliExcerpt": "This multifaceted mix, often stirring and fascinating to listen to, is not an inherently logical choice for a narrative work of art — and yet, Justin Peck has devised, directed, and choreographed a 90-minute dance theater piece based on it, one that will indelibly be remembered as one of the most singular productions in recent Broadway history.",

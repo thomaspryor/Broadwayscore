@@ -9,15 +9,15 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 64,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic praises the artistic choices but expresses concerns about audience comprehension and accessibility. With only one excerpt available and an 'Up' aggregator verdict, this suggests a conflicted review that neither fully recommends nor discourages. | GPT-4o: The review highlights the unconventional nature of the play and suggests that it may not be easily understood by all audiences, but also praises the writer and director for their bold choices. This indicates a mixed reception with appreciation for certain aspects. | Gemini: The review excerpt expresses uncertainty and suggests the play might not resonate with everyone. While praising the writer and director's commitment, it also anticipates audience confusion, indicating a mixed reception.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic praises the artistic choices and backing of the young writer, but expresses significant concerns about audience comprehension and expectations, suggesting a genuinely mixed assessment with both positive and negative elements. | GPT-4o: The excerpt suggests a mixed reception with appreciation for the writer's boldness, but also notes potential audience confusion and question marks, indicating a mixed but interesting experience. | Gemini: The reviewer seems to appreciate the play's unconventional nature and the director's support, but also anticipates audience confusion, suggesting a mildly positive recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,25 +38,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:53:05.242Z",
+    "scoredAt": "2026-02-02T17:55:32.572Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 62,
+    "geminiScore": 72,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
-  }
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  },
+  "contentTier": "excerpt",
+  "wordCount": 0,
+  "tierReason": "Only aggregator excerpts available"
 }

@@ -61,8 +61,8 @@
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Mixed"
   },
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 1242,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 23,
   "isFullReview": true,
@@ -85,7 +85,6 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "rescoreCompletedAt": "2026-02-02T00:48:36.541Z",
@@ -96,5 +95,6 @@
     "hadPositiveThumb": false,
     "dtliThumb": "Down",
     "bwwThumb": "none"
-  }
+  },
+  "tierReason": "Full review text"
 }

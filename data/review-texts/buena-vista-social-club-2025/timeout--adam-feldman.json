@@ -62,8 +62,8 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "contentTier": "truncated",
-  "wordCount": 21,
+  "contentTier": "invalid",
+  "wordCount": 1018,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "isFullReview": true,
@@ -82,11 +82,6 @@
   ],
   "fetchTier": 4,
   "textQuality": "truncated",
-  "truncationSignals": [
-    "no_ending_punctuation",
-    "has_footer_text",
-    "possible_mid_word_cutoff"
-  ],
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251230210807",
@@ -99,5 +94,6 @@
     "hadPositiveThumb": true,
     "dtliThumb": "Up",
     "bwwThumb": "none"
-  }
+  },
+  "tierReason": "Garbage content: Newsletter form: \"Thanks for subscribing\""
 }

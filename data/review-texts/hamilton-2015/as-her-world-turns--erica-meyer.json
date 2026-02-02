@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: This is a comprehensive review roundup where the critic enthusiastically recommends multiple shows including calling Hamilton 'brilliant' and 'revolutionary,' Steve 'a total treat,' and Marjorie Prime 'among the best plays I saw this year.' The overwhelmingly positive tone and multiple strong recommendations indicate clear endorsement. | GPT-4o: The critic expresses strong enthusiasm for several shows, particularly 'Steve' and 'Hamilton', indicating they were delightful and lived up to the hype. The overall tone is positive with clear recommendations to see these productions. | Gemini: The reviewer uses extremely strong positive language, calling it perhaps the best in decades and saying it lives up to the hype. This clearly indicates a Rave recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic describes the show as 'a hysterical journey from beginning to end' that 'induces belly laughs and chortles in frequent intervals' and praises the director's pacing, indicating a solid positive recommendation despite being part of a larger review roundup. | GPT-4o: The review describes 'Important Hats of the Twentieth Century' as a 'hysterical journey' with frequent laughter, praising the direction and performances. The positive tone and strong recommendation indicate a high positive score. | Gemini: The review is overwhelmingly positive, using phrases like \"total treat\" and describing numerous laugh-out-loud moments. The critic's immediate recommendation to a friend indicates a strong endorsement.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,27 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:27:40.092Z",
+    "scoredAt": "2026-02-02T18:01:57.398Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
+    "previousScore": 80,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 75,
     "openaiScore": 82,
-    "geminiScore": 92,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
-    "geminiBucket": "Rave",
-    "scoreDelta": 14,
+    "geminiBucket": "Positive",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/hamilton-2015/as-her-world-turns--erica-meyer_2026-01-26.html",
   "textFetchedAt": "2026-01-26T22:25:11.731Z",

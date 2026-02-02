@@ -9,15 +9,15 @@
   "fullText": "Skip to content\n Skip to content\n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n\n \n\n \n \n \n \n \n \n \n\n \n \n \n \n\n \n \n\n \n \n\n \n\n \n \n \n \n\n When Bess Wohl’s “Liberation” opened Off Broadway all the way back in February, it would have been ridiculous to grace it with best-of superlatives. Now that “Liberation” has opened on Broadway this Tuesday at the James Earl Jones Theatre, it’s entirely apt to write that it’s the year’s best play.",
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": 90,
+  "assignedScore": 94,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 90,
+    "score": 94,
     "confidence": "high",
     "range": {
-      "low": 85,
-      "high": 95
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic explicitly calls it 'the year's best play' and confidently predicts it will remain so, which is clear rave-level endorsement despite the single excerpt warning. | GPT-4o: The critic enthusiastically praises the play as the best of the year, indicating a strong recommendation and placing it in the Rave category. | Gemini: The review explicitly states the play is the \"year's best play\" and encourages readers to \"bank on it,\" indicating a strong positive recommendation and placing it firmly in the Rave category.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Critic explicitly calls it 'the year's best play' and confidently predicts it will remain so, indicating the strongest possible recommendation. | GPT-4o: The critic explicitly calls 'Liberation' the year's best play, indicating a strong, enthusiastic recommendation. | Gemini: The critic explicitly states that the play is the \"year's best play,\" indicating a rave review and a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,20 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:53:38.445Z",
+    "scoredAt": "2026-02-02T18:30:55.273Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 90,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "geminiScore": 92,
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 95,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 4,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -61,7 +62,7 @@
   },
   "textWordCount": 56,
   "archivePath": "data/archives/reviews/liberation-2025/thewrap--robert-hofler_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:40:53.828Z",
+  "textFetchedAt": "2026-02-02T16:38:02.153Z",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
@@ -78,12 +79,12 @@
   ],
   "fetchTier": 2,
   "textQuality": "truncated",
-  "truncationSignals": [
-    "shorter_than_excerpt"
-  ],
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "textIssues": [
     "Word count too low: 56 (min: 300)"
-  ]
+  ],
+  "contentTier": "truncated",
+  "wordCount": 56,
+  "tierReason": "Short text (56 words)"
 }

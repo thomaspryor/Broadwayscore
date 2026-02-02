@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite noting thin character development and bland dialogue, the critic clearly positions these as secondary to the show's spectacular entertainment value, calling it a 'marvel' and 'unprecedented extravaganza' that will 'surely captivate' audiences. | GPT-4o: Despite noting thin character development and bland dialogue, the review praises the production as a 'marvel' and 'gargantuan entertainment extravaganza,' indicating a strong positive recommendation. | Gemini: The review calls the play a \"marvel\" and an \"entertainment extravaganza,\" but notes thin character development and bland dialogue, suggesting a positive but not rave recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite acknowledging flaws in character development and dialogue, the critic repeatedly uses strong positive language ('marvel', 'gargantuan entertainment extravaganza', 'surely captivate') and positions these as secondary to the show's spectacular entertainment value. | GPT-4o: The review describes the play as a 'marvel' and 'gargantuan entertainment extravaganza', indicating strong positive sentiment despite noting some flaws in character development and dialogue. The emphasis on spectacle and entertainment suggests a strong recommendation. | Gemini: The review praises the show as a \"marvel\" and \"gargantuan entertainment extravaganza,\" but also notes weaknesses in character development and dialogue, indicating a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,11 +38,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:29:13.327Z",
+    "scoredAt": "2026-02-02T18:08:58.023Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
+    "previousScore": 81,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {

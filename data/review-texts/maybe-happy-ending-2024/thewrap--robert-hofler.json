@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic calls the show 'brilliant,' describes it as 'charming and beautiful and poignant,' praises it as 'unlike anything I've ever seen,' and explicitly states hope that it will be recognized as a hit across all levels, suggesting this is a must-see production of exceptional quality. | GPT-4o: The review is overwhelmingly positive, highlighting the show's originality, charm, and the director's intelligence. The critic compares the experience to iconic films and praises the production's unique qualities, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using words like \"charming,\" \"beautiful,\" and \"poignant.\" The critic praises the originality and intelligence of the production, making it a strong recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'brilliant,' 'charming and beautiful and poignant,' and comparing it favorably to classic works while declaring it 'unlike anything I've ever seen.' The recommendation is unequivocal and enthusiastic. | GPT-4o: The review is filled with superlatives and comparisons to iconic works, highlighting the show's originality, charm, and emotional impact. The critic expresses a strong admiration for the production, describing it as a unique and beautiful experience that stands out in the Broadway landscape. | Gemini: The review is overwhelmingly positive, using words like 'charming,' 'beautiful,' and 'poignant.' The critic praises the originality of the book and the direction, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,12 +40,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:17:40.513Z",
+    "scoredAt": "2026-02-02T18:36:11.132Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,

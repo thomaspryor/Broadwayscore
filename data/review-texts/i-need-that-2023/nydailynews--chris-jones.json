@@ -16,7 +16,7 @@
   "bwwThumb": null,
   "llmScore": {
     "score": 74,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 69,
       "high": 79
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic acknowledges significant structural problems with the play but finds value in its relatable themes and DeVito's performance, ultimately recommending it despite reservations. | Gemini: The review acknowledges flaws and predictability, but ultimately leans positive due to DeVito's performance and the relatable themes. The critic finds it enjoyable despite its shortcomings.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic acknowledges significant structural problems with the play but clearly recommends it for DeVito's compelling performance and the universal themes it explores. | GPT-4o: The review acknowledges the charm and humor brought by Danny DeVito but highlights issues with the play's stakes and repetitiveness. The critic appreciates the universal themes but notes the production's unevenness and forced elements. | Gemini: The review acknowledges flaws in the play but ultimately leans towards a positive recommendation due to DeVito's performance and the relatable themes. The phrase \"But I’m partial to plays that deal with experiences almost everyone shares\" further supports this.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,26 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:49:23.747Z",
+    "scoredAt": "2026-02-02T18:21:39.001Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 67,
-    "previousVersion": "3.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 72,
-    "openaiScore": null,
-    "geminiScore": 75,
+    "openaiScore": 65,
+    "geminiScore": 76,
     "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/i-need-that-2023/nydailynews--chris-jones_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:28:53.634Z",

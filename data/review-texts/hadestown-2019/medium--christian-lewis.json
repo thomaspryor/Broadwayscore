@@ -7,16 +7,16 @@
   "publishDate": "2019-04-17",
   "showScoreExcerpt": "Practically every single thing about 'Hadestown' is perfect...She has created a god among musicals.",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 95,
   "source": "show-score",
   "sourceMethod": "archive",
   "scoreSource": null,
   "llmScore": {
-    "score": 94,
+    "score": 95,
     "confidence": "high",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 90,
+      "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Despite being a single excerpt, the language is unambiguously superlative - calling something 'practically perfect' and 'a god among musicals' represents the highest level of critical praise possible. | GPT-4o: The excerpt uses extremely positive language, describing the show as 'perfect' and 'a god among musicals', indicating a strong recommendation. However, due to the single excerpt warning, the confidence is medium. | Gemini: The review excerpt uses extremely strong, positive language, calling the musical 'perfect' and a 'god among musicals,' indicating a rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The language is unequivocally superlative - 'practically every single thing is perfect' and 'god among musicals' represents the highest tier of critical praise possible. | GPT-4o: The excerpt uses extremely strong language, describing the show as 'perfect' and 'a god among musicals,' indicating a highly enthusiastic recommendation. | Gemini: The review excerpt uses extremely strong positive language, calling the musical 'perfect' and a 'god among musicals,' indicating a rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,21 +37,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:59:31.575Z",
+    "scoredAt": "2026-02-02T17:59:32.523Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 97,
-    "previousVersion": "3.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 95,
-    "openaiScore": 92,
+    "openaiScore": 95,
     "geminiScore": 95,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

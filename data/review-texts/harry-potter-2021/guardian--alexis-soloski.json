@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite criticisms of the plot and script ('leans on its metaphors...heavily', 'very much a Boy's Own Story'), Soloski clearly recommends the production for its 'dazzling' theatricality, 'you-won't-believe-your-eyes stunners' magic, and strong performances, calling it a 'triumphal entry onto Broadway'. | GPT-4o: The review highlights the audacious production design, crowd-pleasing elements, and exceptional theatrical presentation. Despite some criticisms of the plot and gender representation, the overall tone is highly positive, emphasizing the show's theatrical magic and appeal to fans. | Gemini: The review praises the production design and theatricality, but notes plot weaknesses and gender imbalances. Given the truncated text warning, it's safer to assume a 'Positive' rather than 'Mixed' score.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite criticizing the plot as heavy-handed and noting gender representation issues, the critic praises the theatrical spectacle, direction, performances, and staging as exceptional, clearly recommending the show for its theatrical merits. | GPT-4o: Despite some criticisms about the plot and gender representation, the review is overwhelmingly positive about the production's theatricality, staging, and performances. The truncated nature of the text suggests caution, but the provided excerpts and key quotes indicate a strong recommendation. | Gemini: The review praises the production design and theatricality, but notes flaws in the script and character development. The truncated text makes the final verdict unclear, but the overall tone leans positive despite reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:28:41.550Z",
+    "scoredAt": "2026-02-02T18:08:26.774Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 79,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 77,
-    "openaiScore": 82,
+    "claudeScore": 78,
+    "openaiScore": 81,
     "geminiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -63,8 +63,8 @@
   },
   "dateUnknown": true,
   "dateSource": "historical-review",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 1188,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 59,
   "isFullReview": true,
@@ -81,7 +81,6 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "rescoreCompletedAt": "2026-02-01T17:36:46.820Z",
@@ -92,5 +91,6 @@
     "hadPositiveThumb": false,
     "dtliThumb": "none",
     "bwwThumb": "none"
-  }
+  },
+  "tierReason": "Full review text"
 }

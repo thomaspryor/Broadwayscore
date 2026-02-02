@@ -9,16 +9,16 @@
   "bwwExcerpt": "Harrison’s story is topical, that’s for sure. Frighteningly so. What elevates it above the ripped-from-the-headlines hackery of, say, so many political dramas co-written by Wikipedia is that it’s also profoundly human and lump-in-the-throat relatable without ever toppling over into boo-hoo sentimentality. The play exposes its audience’s emotional weaknesses like few others do. I reckon that most ticket-buyers will silently ask themselves if they would buy a Prime if they had the chance. And they",
   "bwwRoundupUrl": null,
   "originalScore": "A",
-  "assignedScore": 94,
+  "assignedScore": 92,
   "source": "dtli",
   "dtliThumb": "Up",
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 94,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic gives an A rating and uses superlative language throughout: 'astonishing,' 'superb revival,' 'one of Broadway's best and most natural ensembles,' and praises every aspect from performances to direction to the play itself. | GPT-4o: The review is overwhelmingly positive, highlighting the superb revival, astonishing performances, and clever direction. The critic's original rating of 'A' further supports a strong recommendation. | Gemini: The critic gives the play a positive review, praising the performances and direction, while also noting the play's complexities and potential harm. The critic's own rating of 'A' further supports this classification.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic gives an 'A' rating and uses superlative language throughout ('astonishing', 'superb revival', 'one of Broadway's best and most natural ensembles'), with detailed praise for all performances and production elements. | GPT-4o: The review is overwhelmingly positive, praising the performances, direction, and the play itself as a superb revival. The original rating of 'A' strongly supports a Rave classification. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and the play itself. The critic uses strong language like \"astonishing\" and \"superb revival,\" indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,15 +39,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:34:09.559Z",
+    "scoredAt": "2026-02-02T18:32:54.389Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 88,
     "openaiScore": 95,
     "geminiScore": 82,
     "claudeBucket": "Rave",

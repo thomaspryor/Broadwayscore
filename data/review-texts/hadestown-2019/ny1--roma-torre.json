@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is overwhelmingly positive, praising the creative team for delivering 'in spades' and calling it a 'collaborative tour de force' and 'exquisitely original production.' While acknowledging it 'may not appeal to everyone,' the critic celebrates every aspect from direction to performances. | GPT-4o: The review is overwhelmingly positive, praising the production as a 'collaborative tour de force' and highlighting the 'exquisitely original production' with a 'dream company'. The language used indicates a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, praising the creative team, direction, score, and cast. The phrase \"Love it or not, the theatre gods should be smiling\" indicates a strong recommendation, despite the caveat that it may not appeal to everyone.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic delivers strong praise calling it a 'collaborative tour de force' and 'exquisitely original production' with a 'dream company,' despite noting it 'may not appeal to everyone.' The positive verdict is clear with praise for all creative elements. | GPT-4o: The review is overwhelmingly positive, highlighting the production as a 'collaborative tour de force' and praising the direction, music, and performances. The critic's language is enthusiastic and suggests that the show is a standout success. | Gemini: The review is overwhelmingly positive, praising the creative team, direction, score, and cast. The phrase \"may not appeal to everyone\" indicates a slight reservation, but the overall tone is enthusiastic, meriting a positive score in the upper range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:59:54.790Z",
+    "scoredAt": "2026-02-02T17:59:49.049Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "3.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
     "openaiScore": 95,
-    "geminiScore": 80,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 16,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -18,7 +18,7 @@
   "showScoreExcerpt": "Harmony is a show that wants to be loved, and it's hard not to love it back, even when it stumbles over its own good intentions.",
   "llmScore": {
     "score": 76,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 71,
       "high": 81
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic expresses genuine affection for the show while acknowledging its imperfections, indicating a warm recommendation despite reservations. | GPT-4o: The review expresses an overall positive sentiment, indicating that the show is lovable despite some flaws, aligning with a positive recommendation with reservations. | Gemini: The review indicates a positive sentiment, stating it's 'hard not to love it back,' but acknowledges flaws with the phrase 'even when it stumbles over its own good intentions,' suggesting a recommendation with reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic expresses clear affection for the show and finds it loveable despite acknowledging its flaws, indicating a positive recommendation with reservations. | GPT-4o: The critic expresses affection for the show despite acknowledging some flaws, indicating a positive recommendation with reservations. | Gemini: The review indicates that the show is likeable despite its flaws, suggesting a positive but not overwhelmingly enthusiastic recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,21 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:11:00.114Z",
+    "scoredAt": "2026-02-02T18:06:05.163Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 80,
+    "claudeScore": 76,
+    "openaiScore": 78,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 7,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

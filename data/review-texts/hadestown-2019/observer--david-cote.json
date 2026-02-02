@@ -7,7 +7,7 @@
   "publishDate": "2019-04-17",
   "bwwExcerpt": "by Broadway standards. Many of the songs are reflective in nature, which leads to some slow points, especially in Act Two. But, more often than not, \"Hadestown\" is exciting, compelling and beautiful. David Cote, The Observer : Silver fox André De Shields lends his funky-grandpa vibe to the narration-heavy role of Hermes. Big-voiced Eva Noblezada is pluck personified as a waifish Eurydice. Fitting for the god of the underworld, Patrick Page's basso profundo seems to issue from the lower basement. And, as Persephone, Amber Grey dials her devil-may-care hootchie-mama routine to 11, ensuring her eventual transfiguration as Eartha Kitt on Broadway one day. Less fruitful is Reeve Carney's Orpheus, conceived as a socially awkward art savant. Laying on the Dear Evan Hansen too thick, Carney's neurodiverse Orpheus (lots of gaping, arms hanging limply, fingers twitching) is a misfire. The survivor of Spider-Man: Turn Off the Dark remains a bit generic, despite sweet looks and a pretty pop",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417",
@@ -15,11 +15,11 @@
   "scoreSource": "sentiment-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 75,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic finds the show 'exciting, compelling and beautiful' overall despite noting slow points and one casting misfire. The positive assessment outweighs the criticisms. | GPT-4o: The review acknowledges some slow points and a misfire in casting, but overall describes the show as exciting, compelling, and beautiful, suggesting a positive recommendation with some reservations. | Gemini: The review highlights several positive aspects of the show, including the performances of most of the cast and the overall excitement and beauty of the production. However, it also notes some slow points and a miscast actor, suggesting a recommendation with reservations. Given the single excerpt warning, I'm scoring conservatively.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite noting slow points and criticizing one lead performance, the critic's overall assessment is positive, praising most of the cast and finding the show 'exciting, compelling and beautiful' more often than not. | GPT-4o: The review highlights both strengths and weaknesses, noting slow points but ultimately describing the show as exciting, compelling, and beautiful. The positive aspects are emphasized, suggesting a recommendation despite some reservations. | Gemini: The review has both positive and negative elements, but the overall tone leans towards positive due to phrases like \"exciting, compelling and beautiful.\" However, there are criticisms of Reeve Carney's performance, suggesting reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:00:59.479Z",
+    "scoredAt": "2026-02-02T18:00:15.848Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
-    "previousVersion": "3.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 74,
-    "geminiScore": 75,
+    "openaiScore": 80,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

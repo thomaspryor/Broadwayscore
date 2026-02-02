@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "Even more surprising is that one of those shows, “The Heart of Rock and Roll,” which opened Monday night at the James Earl Jones Theatre, has turned out to be an underdog highlight of the season.",
@@ -20,11 +20,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 79,
-    "confidence": "high",
+    "score": 81,
+    "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,7 +35,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic clearly recommends the show, calling it 'an underdog highlight of the season' and 'a lot more fun' than other Broadway offerings, while acknowledging it's lightweight entertainment. | Gemini: The critic expresses surprise and enjoyment, calling it an \"underdog highlight\" and \"hilarious.\" While not a rave, the review is clearly positive and recommends seeing the show.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises the show as 'an underdog highlight of the season' and 'a lot more fun' than other Broadway shows, with consistent positive language throughout about performances, direction, and entertainment value. | GPT-4o: The review is filled with enthusiastic praise, describing the show as a highlight of the season, hilarious, fun, and a must-see. The critic's tone is overwhelmingly positive, with no significant reservations mentioned. | Gemini: The review is overwhelmingly positive, calling the show an \"underdog highlight\" and \"hilarious\". The critic clearly enjoyed the production and its comedic elements, making it a strong positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,26 +45,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:40:35.897Z",
+    "scoredAt": "2026-02-02T18:11:32.547Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 83,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,

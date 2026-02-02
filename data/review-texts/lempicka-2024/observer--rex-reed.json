@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a visual feast with stunning costumes and sets that capture the Art Deco period beautifully, but the musical itself lacks the emotional depth needed to match its gorgeous surface.",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "The show is a visual feast with stunning costumes and sets that capture the Art Deco period beautifully, but the musical itself lacks the emotional depth needed to match its gorgeous surface.",
   "needsScoring": true,
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges significant visual strengths but identifies a fundamental flaw in emotional depth, creating a balanced but ultimately lukewarm assessment. | GPT-4o: The review praises the visual elements but criticizes the lack of emotional depth, indicating a mixed reception. | Gemini: The review acknowledges the visual strengths but criticizes the lack of emotional depth, indicating a mixed opinion. It neither strongly recommends nor discourages seeing the show.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges strong visual elements but criticizes the fundamental emotional core, resulting in a balanced but ultimately lukewarm assessment. | GPT-4o: The review praises the visual elements but criticizes the lack of emotional depth, indicating a mixed assessment with strong production values but shortcomings in the musical's emotional impact. | Gemini: The review praises the visual aspects but notes a lack of emotional depth, indicating a recommendation with reservations. The positive aspects outweigh the negative, placing it in the Positive bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,28 +43,28 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:26:40.194Z",
+    "scoredAt": "2026-02-02T18:29:05.045Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 48,
-    "previousVersion": "5.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 62,
+    "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   }
 }

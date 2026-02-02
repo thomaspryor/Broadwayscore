@@ -9,16 +9,16 @@
   "bwwExcerpt": "June Squibb and a superb company turn Marjorie Prime into an acting masterclass about mortality, memory, and why we love. Brian",
   "bwwRoundupUrl": null,
   "originalScore": "5/5",
-  "assignedScore": 92,
+  "assignedScore": 93,
   "source": "bww-roundup",
   "dtliThumb": null,
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 92,
+    "score": 93,
     "confidence": "medium",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 88,
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic gives 5/5 stars and uses highly positive language like 'divine acting company,' 'stellar performances,' and 'impeccable timing.' Despite the truncated text, the consistent praise and perfect rating clearly indicate a rave review. | GPT-4o: The review is highly positive, highlighting the superb performances and the profound impact of the play. The original 5/5 rating and the phrase 'acting masterclass' indicate a strong recommendation, justifying a Rave classification. | Gemini: The review praises the performances, especially June Squibb's, and the play's writing. The 5/5 rating from the critic strongly suggests a positive recommendation, despite the truncated text.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic gives 5/5 stars and uses superlative language like 'divine acting company,' 'stellar performances,' and praises the lead's 'impeccable timing.' Despite the truncated text, the overwhelmingly positive tone and perfect rating clearly indicate a rave review. | GPT-4o: The critic's original rating of 5/5 and the excerpt describing the production as an 'acting masterclass' strongly indicate a rave review. Despite the truncation, the available text and context suggest an enthusiastic recommendation. | Gemini: Despite the truncated text, the critic's 5/5 rating and the BroadwayWorld excerpt strongly suggest a positive recommendation. The review praises the performances and the play's themes.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:32:48.409Z",
+    "scoredAt": "2026-02-02T18:33:21.446Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 95,
+    "previousScore": 92,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 90,
     "openaiScore": 95,
-    "geminiScore": 80,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

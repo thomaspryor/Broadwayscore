@@ -13,8 +13,8 @@
   "source": "show-score",
   "dtliThumb": null,
   "scoreSource": "manual-excerpt-positive",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "invalid",
+  "wordCount": 120,
   "isFullReview": false,
   "textWordCount": 120,
   "archivePath": "data/archives/reviews/illinoise-2024/washpost--gloria-oladipo_2026-02-01.html",
@@ -41,10 +41,6 @@
   ],
   "fetchTier": 2,
   "textQuality": "truncated",
-  "truncationSignals": [
-    "no_ending_punctuation",
-    "possible_mid_word_cutoff"
-  ],
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "textIssues": [
@@ -97,5 +93,6 @@
       "reasoning": "Skipped fullText (wrongProduction flag). Curated Show Score excerpt"
     }
   },
-  "showNotMentioned": true
+  "showNotMentioned": true,
+  "tierReason": "Wrong production"
 }

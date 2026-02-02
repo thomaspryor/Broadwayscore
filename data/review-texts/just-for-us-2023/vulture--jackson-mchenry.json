@@ -9,15 +9,15 @@
   "showScoreExcerpt": "“Like the stools, Edelman’s sometimes shaggy material is laid out intentionally. He’s a people-pleaser as a comedian, and he admits in the show that he’s holding back potentially alienating aspects of himself in order to win us over. To a much more extreme degree, he was also performing to ingratiate himself among the white nationalists.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/alex-edelman-just-for-us-broadway",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 80,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 78,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic finds the show 'crowd-pleasing' and 'often hilarious' while praising Edelman's 'cannily constructed' performance and 'nifty, thorny trick' of making audiences suspicious of easy comforts. However, the critic expresses reservations about pacing ('I wanted him to get there sooner and stay there longer') and some material being 'past its sell-by date.' | Gemini: The review is generally positive, highlighting the show's humor and thought-provoking nature, but also points out areas where it could be stronger. The 'time bomb' comment indicates a reservation, but overall the show is recommended.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the show as 'crowd-pleasing, often hilarious' and appreciates its sophisticated structure and themes, but notes some material gets 'broader' in digressions and expresses wanting certain sections to be longer, indicating solid recommendation with some reservations. | GPT-4o: The review praises the show as crowd-pleasing and hilarious, highlighting its clever construction and engaging performance. The critic appreciates the show's thematic depth and Edelman's performance, making it a strong positive recommendation. | Gemini: The review is largely positive, highlighting Edelman's humor and the show's intriguing premise. However, it also notes some areas for improvement, such as wanting the self-critical portion to be explored more deeply, indicating a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T01:00:24.962Z",
+    "scoredAt": "2026-02-02T18:26:26.525Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 53,

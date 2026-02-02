@@ -62,7 +62,7 @@
     "modelAgreement": "2/3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/suffs-2024/the-times--nancy-durrant_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:51:30.248Z",
+  "textFetchedAt": "2026-02-02T17:57:49.469Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -77,14 +77,13 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240514222533/https://www.thetimes.co.uk/article/suffs-review-a-thundering-suffrage-musical-produced-by-hillary-clinton-2gwk2qjgx",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
-  "contentTier": "full",
-  "wordCount": 123,
+  "contentTier": "truncated",
+  "wordCount": 140,
   "isFullReview": false,
   "textWordCount": 140,
   "originalScoreNormalized": 80,
   "scoreSource": "original-rating",
   "textQuality": "partial",
-  "truncationSignals": [],
   "textStatus": "incomplete",
   "rescoreReason": "cleaned-text: stripped paywall/navigation prefix, has 4-star review",
   "previousLlmScore": 65,
@@ -94,5 +93,6 @@
   "scoreNote": "Converted from originalScore \"4/5 stars\" (4/5 = 80)",
   "textIssues": [
     "Word count too low: 140 (min: 300)"
-  ]
+  ],
+  "tierReason": "Short text (140 words)"
 }

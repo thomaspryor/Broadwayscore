@@ -9,15 +9,15 @@
   "showScoreExcerpt": "“...the crowd itself is ‘Here Lies Love’s’ main character, this mass of people looking to be appeased by a good performance, no matter who’s singing the political karaoke. The show ends with democracy, but it has a wary relationship with the masses. The thought may be that, lured by a beat good enough, they’ll dance along to anything.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/here-lies-love-broadway",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 80,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 78,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic clearly states it's 'a great, unsettling time' and praises the music as 'irresistible,' the performances, and the innovative staging, while acknowledging the show's moral ambiguity as intentional and effective rather than as flaws. | Gemini: The review uses the phrase \"great, unsettling time\" which indicates a positive recommendation, despite the unsettling nature of the show's themes. The critic also praises the music and direction.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly recommends the show calling it 'a great, unsettling time' and praising its immersive concept, music, and performances, while noting some ambivalence about tone and character development that prevents it from being a stronger recommendation. | GPT-4o: The review praises the production's immersive experience, innovative staging, and strong performances, despite some thematic ambivalence. The critic describes it as a 'great, unsettling time,' indicating a strong recommendation. | Gemini: The review is overall positive, describing the show as a \"great, unsettling time.\" While it points out some flaws and ambivalence in the portrayal of Imelda, the final assessment leans towards a recommendation, albeit with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:24:30.839Z",
+    "scoredAt": "2026-02-02T18:19:53.569Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 56,
-    "previousVersion": "3.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "The point, as elsewhere in the show, is to get the audience grooving with the synthy messaging of dictatorship, with enough moral dissonance to make your stomach churn as your feet keep moving—a that’s how they get you parable.",
   "sources": [

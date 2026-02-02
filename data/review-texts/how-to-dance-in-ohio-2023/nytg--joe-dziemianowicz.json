@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic calls it 'wonderfully performed but uneven' and 'worthwhile,' praising the cast performances while noting narrative issues, ultimately concluding positively that it 'finds the steps to an upbeat last dance.' | GPT-4o: The review acknowledges the musical's unevenness and some narrative issues, but ultimately describes it as 'worthwhile' and highlights the strong performances and music, indicating a positive recommendation despite some flaws. | Gemini: The review is generally positive, highlighting the strong performances and touching story, but also points out some unevenness and miscalibrated elements. The final verdict is that it's a 'worthwhile musical,' placing it in the positive bucket.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic calls it 'worthwhile' and 'wonderfully performed' with an 'upbeat' conclusion, but notes it's 'uneven,' indicating a solid recommendation with reservations. | GPT-4o: The review acknowledges the musical as 'wonderfully performed' and 'worthwhile' despite being 'uneven', indicating a positive recommendation with some reservations. | Gemini: The review uses the phrase \"worthwhile musical\" indicating a positive recommendation, but also notes the show is \"uneven\", suggesting reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,12 +38,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:55:08.094Z",
+    "scoredAt": "2026-02-02T18:20:41.130Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 63,
-    "previousVersion": "3.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 43,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "Danny DeVito on Broadway: some welcome razzle-dazzle for the New York fall and winter, perhaps? Bluntly, sadly, no. In Theresa Rebeck’s play, I Need That (Roundabout Theatre Company/American Airlines Theatre, to Dec. 30), DeVito plays Sam, a widower who lives surrounded by clutter—his living room more a submarine of tottering piles of objects. Furniture is hidden, blanketed, and camouflaged under bric-a-brac.",
@@ -19,14 +19,14 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 60,
+    "score": 43,
     "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 38,
+      "high": 48
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic clearly states the show is disappointing ('sadly, no' to expectations) and calls it 'a deflating mess,' but acknowledges DeVito's magnetic performance and some beautiful writing, landing in mixed territory with negative lean. | GPT-4o: The review consistently criticizes the play's lack of coherence, muddled execution, and failure to deliver anything original or surprising. Despite some praise for Danny DeVito's performance, the overall production is deemed disappointing and not worth seeing. | Gemini: The review is mixed. While it praises DeVito's performance and some sharp lines, it ultimately finds the play muddled and lacking originality. The reviewer acknowledges moments of brilliance but feels they are fleeting and overshadowed by the play's overall weaknesses.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The review is clearly negative about the main show 'I Need That', calling it 'a deflating mess' and criticizing the muddled writing and staging, though acknowledging DeVito's magnetic performance. The mixed rating comes from brief positive mentions of other shows. | GPT-4o: The review consistently criticizes the play's lack of coherence, muddled execution, and failure to find its thematic purpose, despite some praise for Danny DeVito's performance. The overall tone is negative, advising against seeing the show. | Gemini: The review is largely negative, describing the play as a \"deflating mess\" and criticizing the performances, staging, and overall purpose. While DeVito has some good moments, they are not enough to redeem the play's flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,27 +44,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:48:51.083Z",
+    "scoredAt": "2026-02-02T18:21:28.415Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 40,
-    "previousVersion": "3.0.0"
+    "previousScore": 60,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
+    "claudeScore": 60,
     "openaiScore": 40,
-    "geminiScore": 62,
+    "geminiScore": 45,
     "claudeBucket": "Mixed",
     "openaiBucket": "Negative",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 22,
+    "geminiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 30,

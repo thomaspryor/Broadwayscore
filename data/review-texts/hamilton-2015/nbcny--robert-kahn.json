@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This appears to be a collection of news briefs rather than a coherent Broadway review, making it impossible to extract a clear critical assessment or recommendation about any specific show. | GPT-4o: The text provided is a collection of unrelated news snippets and does not contain a coherent review of a Broadway production. Without a specific assessment of a show, it's impossible to accurately classify the review, leading to a low confidence mixed score. | Gemini: This appears to be a transcript of a news segment, not a review of a theatrical production. There is no critical assessment of any play or musical.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This appears to be fragmented news content rather than a coherent Broadway review, making it impossible to determine any critical assessment or recommendation. | GPT-4o: The text appears to be a mix of unrelated news snippets and promotional content rather than a coherent review of a Broadway show. It lacks any evaluative content or clear verdict about a production, making it impossible to determine a recommendation. | Gemini: The provided text does not contain any review or critical assessment of a theatrical production. It's a series of unrelated news items, so it cannot be considered a positive or even mixed review. It's effectively a non-review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,12 +41,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:00:45.897Z",
+    "scoredAt": "2026-02-02T18:03:02.184Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
-    "previousVersion": "3.0.0"
+    "previousScore": 58,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,

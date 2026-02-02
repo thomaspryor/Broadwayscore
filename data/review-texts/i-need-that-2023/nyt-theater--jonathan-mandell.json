@@ -9,15 +9,15 @@
   "bwwExcerpt": "Theresa Rebeck’s play about a hoarder is the slightest of comedies. Its plot is paltry. Its insights are pat. It promises more laughs than it delivers. It even promises more junk than it delivers: Before the curtain rises, there’s a tantalizing pile-up of old papers and boxes resting on the lip of the stage. But “I Need That” does deliver Danny DeVito, and for some, that will be enough.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 58,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 61,
-    "confidence": "high",
+    "score": 58,
+    "confidence": "low",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 53,
+      "high": 63
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,37 +28,39 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review criticizes the play's plot, insights, and comedy delivery but suggests DeVito's star power might justify attendance for his fans. This represents a classic 'for fans only' mixed verdict. | GPT-4o: The review highlights several shortcomings of the play, such as a weak plot and lack of insights, but suggests that Danny DeVito's presence might be a redeeming factor for some audiences. This indicates a mixed reception, acknowledging both negatives and a potential positive draw. | Gemini: The review highlights the play's shortcomings but suggests Danny DeVito's performance might be enough for some viewers, indicating a mixed recommendation. Given the single excerpt warning, the score is conservatively placed in the middle of the Mixed bucket.",
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: The review systematically criticizes the play's plot, insights, and comedy while acknowledging only DeVito's presence as a potential draw, indicating clear disappointment and lack of recommendation. | GPT-4o: The review criticizes the play's plot and comedic delivery but suggests that Danny DeVito's presence may be a redeeming factor for some audience members. This indicates a mixed reception, with some appeal for fans of the actor. | Gemini: The review lists several negatives, but the final statement suggests that Danny DeVito's performance is enough to make it worthwhile for some viewers, indicating a mild positive recommendation. | Buckets: claude=Negative, openai=Mixed, gemini=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:30:56.606Z",
+    "scoredAt": "2026-02-02T18:21:53.009Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 42,
+    "previousScore": 61,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 60,
-    "geminiScore": 62,
-    "claudeBucket": "Mixed",
+    "claudeScore": 42,
+    "openaiScore": 58,
+    "geminiScore": 72,
+    "claudeBucket": "Negative",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 2,
+    "geminiBucket": "Positive",
+    "scoreDelta": 30,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "needsReview": true,
+    "needsReviewReasons": [
+      "3-way bucket disagreement"
+    ],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "No bucket consensus - using median score"
   },
   "bwwThumb": "Meh",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",

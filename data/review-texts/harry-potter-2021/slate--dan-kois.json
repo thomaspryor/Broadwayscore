@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic explicitly recommends skipping Part 1 entirely and only seeing Part 2, calling the show 'well-meaning, often silly, sometimes flat-out bad' while acknowledging its theatrical magic and appeal to fans. | GPT-4o: The review acknowledges both the strengths and weaknesses of the production, highlighting impressive special effects and the communal theater experience, while also noting clunky exposition and mundane storytelling. The recommendation to skip Part 1 suggests a mixed overall impression. | Gemini: The review recommends seeing Part 2, despite acknowledging flaws and suggesting skipping Part 1. The overall tone is positive, highlighting the special effects and the experience of seeing it with other fans.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic explicitly recommends skipping half the show and calls it 'well-meaning, often silly, sometimes flat-out bad extravaganza' while praising specific technical elements and moments. This clear mixed verdict with qualified enjoyment falls in the mixed range. | GPT-4o: The review acknowledges both the strengths and weaknesses of the production, highlighting impressive special effects and moments of theatrical magic, but also notes clunky exposition and mundane storytelling. The recommendation to skip Part 1 suggests a mixed view overall. | Gemini: The review ultimately recommends seeing Part 2, despite acknowledging flaws and suggesting skipping Part 1 to save money. The reviewer highlights the special effects and the communal experience with other fans as positive aspects.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,16 +39,16 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:30:01.260Z",
+    "scoredAt": "2026-02-02T18:09:47.099Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 64,
+    "previousScore": 65,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 68,
+    "openaiScore": 67,
     "geminiScore": 77,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",

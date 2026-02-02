@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Mitchell's folk-opera retelling of the Orpheus and Eurydice myth is a gorgeous, fully realized work of art that manages to be both timeless and urgently contemporary.",
   "originalScore": null,
-  "assignedScore": 93,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,13 +17,13 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mitchell's folk-opera retelling of the Orpheus and Eurydice myth is a gorgeous, fully realized work of art that manages to be both timeless and urgently contemporary.",
   "llmScore": {
-    "score": 93,
-    "confidence": "medium",
+    "score": 80,
+    "confidence": "high",
     "range": {
-      "low": 88,
-      "high": 98
+      "low": 75,
+      "high": 85
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses extremely positive language calling it a 'gorgeous, fully realized work of art' with additional praise for being both 'timeless and urgently contemporary', indicating strong enthusiasm. | GPT-4o: The review uses highly positive language, describing the production as 'gorgeous' and 'fully realized,' indicating a strong recommendation. | Gemini: The review uses extremely positive language, calling the show a \"gorgeous, fully realized work of art,\" indicating a rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly recommends the show, praising the 'exhilarating songs', 'beguiling melodies', and strong performances, while acknowledging it has 'dramatic shortcomings'. The positive verdict is reinforced by the aggregator excerpt calling it 'a gorgeous, fully realized work of art'. | GPT-4o: The review praises the music, production, and performances, highlighting the show's charm and the impact of its songs. Despite some dramatic shortcomings, the overall tone is positive and enthusiastic, suggesting a strong recommendation. | Gemini: The review highlights the show's musical strengths and overall charm, but also notes some dramatic shortcomings and puzzles over the final intention. The aggregator excerpt also indicates a positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,39 +42,38 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:59:14.126Z",
+    "scoredAt": "2026-02-02T17:59:25.554Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 93,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 89,
-    "openaiScore": 95,
-    "geminiScore": 95,
-    "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 6,
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "modelAgreement": "All 3 models agree: Positive"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (26 words)",
   "previousUrl": "https://www.theguardian.com/stage/2019/apr/18/hadestown-review-broadway-musical-anais-mitchell",
   "urlDiscoveredAt": "2026-02-02T16:35:54.053Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 93,
   "textWordCount": 1041,
   "archivePath": "data/archives/reviews/hadestown-2019/guardian--jesse-green_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:34:18.980Z",
+  "textFetchedAt": "2026-02-02T16:35:54.059Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -95,5 +94,8 @@
     "ends_with_ellipsis"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "rescoreCompletedAt": "2026-02-02T17:59:25.554Z",
+  "wordCount": 1041,
+  "tierReason": "Full review text"
 }

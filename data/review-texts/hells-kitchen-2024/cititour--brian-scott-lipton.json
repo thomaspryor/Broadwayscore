@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic delivers a strong recommendation with phrases like 'vibrantly exciting,' 'extremely accomplished,' and predicts Tony nominations. Despite noting the show 'loses a little steam in the second act,' the overall tone is enthusiastic praise. | GPT-4o: The review is overwhelmingly positive, highlighting the show's achievements, the strong performances, and the emotional impact of Alicia Keys' music. The critic's expectation of Tony nominations and the overall enthusiastic tone strongly suggest a rave review. | Gemini: The review is overwhelmingly positive, praising the performances, music, and overall production. While it mentions a slight dip in the second act, the overall tone is enthusiastic and recommends seeing the show.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is overwhelmingly positive with strong praise for performances, direction, and music arrangements, calling it 'vibrantly exciting' and 'extremely accomplished' while predicting Tony nominations. | GPT-4o: The review is overwhelmingly positive, highlighting the show's achievements, the extraordinary performances, and the powerful music. The critic predicts awards and describes the production as vibrant and exciting, indicating a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, highlighting the achievements of the musical and predicting Tony Award nominations. While it mentions a slight loss of steam in the second act, the overall tone is enthusiastic and recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,7 +40,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:52:17.352Z",
+    "scoredAt": "2026-02-02T18:16:55.020Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -49,12 +49,12 @@
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 95,
+    "openaiScore": 92,
     "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

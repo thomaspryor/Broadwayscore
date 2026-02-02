@@ -75,15 +75,10 @@
     }
   ],
   "fetchTier": 4,
-  "truncationSignals": [
-    "no_ending_punctuation",
-    "has_footer_text",
-    "possible_mid_word_cutoff"
-  ],
   "archiveOrgTimestamp": "20120121005747",
   "archiveOrgUrl": "http://web.archive.org/web/20120121005747/http://www.backstage.com/bso/content_display/reviews/ny-theatre-reviews/e3i5369f68f9c4d1e2f03b5f235adbbccc8",
   "rescoreCompletedAt": "2026-02-02T03:23:12.192Z",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "wordCount": 138,
   "isFullReview": false,
   "textWordCount": 138,
@@ -93,5 +88,6 @@
     "Word count too low: 138 (min: 300)",
     "Show title not found in text"
   ],
-  "showNotMentioned": true
+  "showNotMentioned": true,
+  "tierReason": "Garbage content: Legal/privacy page: \"© 2012 Back Stage. All rights reserved\""
 }

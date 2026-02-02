@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This gorgeous dance musical based on Sufjan Stevens' indie-folk song cycle captures the yearning spirit of the original album while expanding it into a deeply moving theatrical experience.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "This gorgeous dance musical based on Sufjan Stevens' indie-folk song cycle captures the yearning spirit of the original album while expanding it into a deeply moving theatrical experience.",
   "needsScoring": true,
   "llmScore": {
-    "score": 79,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Clear positive language with 'gorgeous' and 'deeply moving theatrical experience' indicates strong recommendation, though brief review suggests solid positive rather than rave territory. | GPT-4o: The review uses highly positive language, describing the show as 'gorgeous' and 'deeply moving,' indicating a strong recommendation. | Gemini: The review uses positive language like 'gorgeous' and 'deeply moving' indicating a positive recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses strongly positive language like 'gorgeous' and 'deeply moving theatrical experience,' indicating clear enthusiasm for the production despite this being only a single excerpt. | GPT-4o: The excerpt uses highly positive language such as 'gorgeous', 'yearning spirit', and 'deeply moving theatrical experience', indicating a strong recommendation. Despite the single excerpt warning, the language suggests a rave review. | Gemini: The excerpt uses strong positive language like \"gorgeous,\" \"deeply moving,\" and \"captures the yearning spirit,\" indicating a strong recommendation. Given that it's a single excerpt, I'm placing it on the higher end of the Positive bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,23 +43,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:17:40.299Z",
+    "scoredAt": "2026-02-02T18:24:06.153Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (28 words)",
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 92,
-    "geminiScore": 80,
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -94,12 +94,13 @@
   "fetchTier": 2,
   "textQuality": "truncated",
   "truncationSignals": [
-    "no_ending_punctuation",
-    "possible_mid_word_cutoff"
+    "no_ending_punctuation"
   ],
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "wordCount": 619,
+  "tierReason": "Full review text"
 }

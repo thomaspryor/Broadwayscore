@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives 5/5 stars and uses superlative language throughout ('brilliant', 'perfection', 'absolute marvel'), with clear enthusiasm for the production and performances. | GPT-4o: The review is overwhelmingly positive, highlighted by a 5/5 star rating and language that praises the production as brilliant and emotionally impactful. The critic's enthusiasm for the performances and direction further supports a 'Rave' classification. | Gemini: The critic gave the show 5/5 stars and uses highly enthusiastic language like \"brilliant Broadway revival\" and describes the audience's palpable excitement. The review is overwhelmingly positive, indicating a strong recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic awards 5/5 stars and uses superlative language throughout ('brilliant', 'perfection', 'absolute marvel'), enthusiastically recommending the show with phrases like 'If you can, see this revival with an old friend.' | GPT-4o: The review opens with a 5/5 star rating and describes the production as 'brilliant,' highlighting the emotional impact and exceptional performances. The critic's language is enthusiastic and strongly recommends the show, indicating a 'Rave' classification. | Gemini: The review uses extremely positive language, including calling the revival \"brilliant\" and describing the audience's palpable excitement. The critic's 5/5 star rating further supports a \"Rave\" classification and a high score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,12 +40,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:32:42.533Z",
+    "scoredAt": "2026-02-02T18:37:09.354Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,

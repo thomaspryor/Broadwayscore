@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly recommends the show as entertainment worth seeing, praising the lead performances and comedy, but notes significant flaws like length and diminishing returns that prevent a stronger endorsement. | GPT-4o: The review highlights the comedic talents of the lead actors and the cleverness of the show, despite noting that it feels overstuffed and too long. The overall tone is positive, emphasizing the enjoyable performances and clever moments. | Gemini: The review highlights the talents of the leads and finds the show clever and filled with laughs, but also notes that it's too long and overstuffed. This indicates a positive but not rave recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic finds the show entertaining and praises the performances, but notes significant flaws like excessive length and diminishing returns, indicating a qualified recommendation. | GPT-4o: The review highlights the comedic talents of the lead actors and the cleverness of the show, while noting its overstuffed nature and diminishing returns. Despite these reservations, the overall tone is positive, recommending the show for its humor and performances. | Gemini: The review is generally positive, highlighting the talents of the leads and the cleverness of the show. However, it also notes that the show is too long and overstuffed, indicating reservations. Therefore, it's a positive review with some caveats.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:36:56.362Z",
+    "scoredAt": "2026-02-02T17:57:38.562Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 68,
-    "previousVersion": "3.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 74,
+    "claudeScore": 75,
     "openaiScore": 78,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

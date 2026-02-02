@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening criticisms about accessibility and some production elements, the critic calls it 'great children's theater' and praises the low-tech approach, performances, and theater redesign, indicating a clear recommendation for its intended audience. | GPT-4o: The review strongly suggests that the show is not worth seeing unless you are already a fan of the Harry Potter series, and even then, it criticizes the production for being confusing and overly long. The critic's recommendation to skip the show is clear and unambiguous. | Gemini: The review ultimately recommends the show as \"great children's theater\" despite some reservations about the writing and set design. The critic praises the performances and redesign of the theater.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening concerns about accessibility and criticizing some elements, the critic ultimately calls it 'great children's theater' and praises the low-tech staging approach, performances, and theater renovation, though with notable reservations about length and plot issues. | GPT-4o: The critic suggests that those unfamiliar with Harry Potter can skip the show, implying it's not worth seeing unless you're already a fan. Despite some praise for the production's design choices, the overall tone is negative, focusing on the show's inaccessibility and lack of standout performances. | Gemini: The review ultimately recommends the show as \"great children's theater,\" but with reservations about the price and some plot issues. The critic praises the acting and redesign of the theater.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:05:40.579Z",
+    "scoredAt": "2026-02-02T18:10:30.782Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 73,
-    "openaiScore": 40,
+    "openaiScore": 50,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Negative",
     "geminiBucket": "Positive",
-    "scoreDelta": 35,
+    "scoreDelta": 25,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": true,

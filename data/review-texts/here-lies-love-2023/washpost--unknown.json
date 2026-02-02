@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 77,
-    "confidence": "high",
+    "score": 80,
+    "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows clear enthusiasm with positive language about the show being a 'stimulant' that energizes audiences, though limited to one quote requires conservative scoring within positive range. | GPT-4o: The excerpt highlights the show's energetic and enjoyable nature, suggesting it leaves audiences wanting more. The phrase 'stimulant that makes you believe you could dance all night' indicates a positive experience, though the lack of full context suggests scoring conservatively within the positive range. | Gemini: The review excerpt suggests an enjoyable and stimulating experience, indicating a positive recommendation, but the limited text and the phrase 'more party than parable' suggests some reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the immersive staging, performances, and technical elements while noting the show is 'kinetically crowd-pleasing' and comparing it favorably to major musicals, though it critiques the 'reductive politics' as a weakness. | GPT-4o: The review is filled with enthusiastic praise for the production's immersive experience, energetic performances, and innovative staging. The critic's tone is overwhelmingly positive, highlighting the show's ability to captivate and entertain, making it a must-see. | Gemini: The review is overwhelmingly positive, highlighting the energetic music, immersive staging, and strong performances. While it mentions reductive politics, the overall tone is enthusiastic and recommends the show, especially for those on the floor level.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,28 +46,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:24:07.561Z",
+    "scoredAt": "2026-02-02T18:19:57.137Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 79,
-    "geminiScore": 75,
+    "claudeScore": 78,
+    "openaiScore": 92,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
-  }
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  },
+  "wordCount": 907,
+  "tierReason": "Full review text"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Hadestown is a musical that knows exactly what it wants to be: a folk opera about love, loss, and the power of art to transform despair into hope.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,14 +17,14 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Hadestown is a musical that knows exactly what it wants to be: a folk opera about love, loss, and the power of art to transform despair into hope.",
   "llmScore": {
-    "score": 75,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 59,
+      "high": 69
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review describes the show positively as having clear artistic vision and purpose, though the brief excerpt limits confidence in the full critical assessment. | GPT-4o: The review suggests a clear vision and purpose for the musical, indicating a positive reception, though it lacks explicit enthusiastic language. | Gemini: The review describes the musical as knowing what it wants to be, which is a positive assessment, suggesting a clear vision and execution. While not a rave, it's a positive endorsement.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges the show's appeal and strong elements (excellent singing, vivid performances) but criticizes fundamental structural issues, ultimately suggesting it works only if you accept it as a 'pop concert' rather than traditional musical theater. | GPT-4o: The review highlights both strengths and weaknesses, noting the excellent singing and unique staging but criticizing the lack of dramatic tension and storytelling. It suggests that enjoyment depends on specific expectations, indicating a mixed verdict. | Gemini: The review acknowledges flaws in the storytelling and staging but ultimately suggests that if the audience goes in with the right expectations, they will enjoy the show. This indicates a positive but qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,39 +42,38 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:03:34.620Z",
+    "scoredAt": "2026-02-02T18:01:27.344Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
-    "previousVersion": "5.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 74,
+    "claudeScore": 62,
+    "openaiScore": 65,
     "geminiScore": 75,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (28 words)",
   "previousUrl": "https://www.vulture.com/2019/04/theater-review-hadestown-on-broadway.html",
   "urlDiscoveredAt": "2026-02-02T16:17:05.523Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 75,
   "textWordCount": 899,
-  "archivePath": "data/archives/reviews/hadestown-2019/vulture--jesse-green_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:56:45.218Z",
+  "archivePath": "data/archives/reviews/hadestown/vulture--jesse-green_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T16:17:05.528Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -85,9 +84,11 @@
   ],
   "fetchTier": 4,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250613161952",
-  "archiveOrgUrl": "http://web.archive.org/web/20250613161952/https://www.vulture.com/2016/05/theater-review-hadestown.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250613161952/https://www.vulture.com/2016/05/theater-review-hadestown.html",
+  "rescoreCompletedAt": "2026-02-02T18:01:27.344Z",
+  "wordCount": 899,
+  "tierReason": "Full review text"
 }

@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic calls it \"wonderfully collaborative\" and says it \"raises the barre\" for future musicals, indicating clear recommendation. However, with only one excerpt available, I'm scoring conservatively within the positive range. | GPT-4o: The excerpt praises the show as a 'wonderfully collaborative effort' and suggests it sets a new standard for Broadway musicals, indicating a positive recommendation. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The review excerpt is positive, calling the show a \"wonderfully collaborative effort\" and stating that it \"raises the 'barre' for Broadway musicals moving forward.\" This suggests a positive recommendation, although the single excerpt warrants a score in the middle of the positive range.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 3/5 star rating and concluding praise indicate a solid recommendation, though the critic notes it's 'somewhat esoteric and likely not everyone's cup of tea,' suggesting qualified enthusiasm rather than unrestrained praise. | GPT-4o: The review praises the production's creativity, performances, and music, while acknowledging it may not appeal to everyone due to its esoteric nature. The original 3/5 star rating suggests a solid recommendation with some reservations. | Gemini: The critic gives the show 3/5 stars and states that there is 'much to appreciate' even if it is 'not everyone's cup of tea'. This indicates a positive but not rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,20 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:53:30.919Z",
+    "scoredAt": "2026-02-02T18:23:20.515Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 79,
-    "geminiScore": 78,
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -59,7 +60,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "textWordCount": 953,
@@ -77,9 +77,12 @@
   ],
   "fetchTier": 4,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250722233258",
-  "archiveOrgUrl": "http://web.archive.org/web/20250722233258/https://nystagereview.com/2024/04/26/illinoise-good-noise-to-dance-to/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250722233258/https://nystagereview.com/2024/04/26/illinoise-good-noise-to-dance-to/",
+  "rescoreCompletedAt": "2026-02-02T18:23:20.515Z",
+  "contentTier": "complete",
+  "wordCount": 953,
+  "tierReason": "Full review text"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Barry Manilow and Bruce Sussman's musical about the Comedian Harmonists, a German sextet that was torn apart by the Nazi regime, is a well-intentioned but dramatically inert production that feels more like a history lesson than compelling theater.",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,14 +17,14 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Barry Manilow and Bruce Sussman's musical about the Comedian Harmonists, a German sextet that was torn apart by the Nazi regime, is a well-intentioned but dramatically inert production that feels more like a history lesson than compelling theater.",
   "llmScore": {
-    "score": 42,
-    "confidence": "high",
+    "score": 62,
+    "confidence": "medium",
     "range": {
-      "low": 37,
-      "high": 47
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic acknowledges good intentions but clearly finds the production lacking in dramatic impact and theatrical effectiveness, describing it as 'dramatically inert' - a clear negative assessment. | GPT-4o: The review describes the production as 'dramatically inert' and more like a 'history lesson' than theater, indicating a lack of engagement and recommending against seeing it. | Gemini: The review explicitly states the production is not compelling and feels like a history lesson, indicating a negative assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges positive elements like beautiful voices and good love songs, but criticizes the show as 'glitzy and superficial' with major structural problems including excessive length and lack of emotional depth. | GPT-4o: The review acknowledges the musical's strengths in music and performances but criticizes its lack of emotional depth and narrative coherence. The tone is mixed, highlighting both positive and negative aspects without a clear recommendation. | Gemini: The review notes beautiful voices and good love songs, but criticizes the lack of emotional depth, length, and repetitive musical numbers, placing it in the Mixed category.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,36 +42,36 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:11:51.735Z",
+    "scoredAt": "2026-02-02T18:06:32.061Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 44,
-    "previousVersion": "5.0.0"
+    "previousScore": 42,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 40,
-    "geminiScore": 45,
-    "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "scoreDelta": 5,
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "modelAgreement": "All 3 models agree: Mixed"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (38 words)",
   "previousUrl": "https://variety.com/2023/legit/reviews/harmony-review-broadway-barry-manilow-musical-1235801158/",
   "urlDiscoveredAt": "2026-02-02T05:12:33.751Z",
   "urlDiscoveryMethod": "google-serp",
   "textWordCount": 483,
   "archivePath": "data/archives/reviews/harmony-2023/variety--aramide-tinubu_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:34:03.707Z",
+  "textFetchedAt": "2026-02-02T16:32:53.607Z",
   "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
@@ -83,9 +83,10 @@
   ],
   "fetchTier": 4,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251205000834",
-  "archiveOrgUrl": "http://web.archive.org/web/20251205000834/https://variety.com/2023/legit/reviews/harmony-review-barry-manilow-broadway-1235790164/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251205000834/https://variety.com/2023/legit/reviews/harmony-review-barry-manilow-broadway-1235790164/",
+  "wordCount": 483,
+  "tierReason": "Full review text"
 }

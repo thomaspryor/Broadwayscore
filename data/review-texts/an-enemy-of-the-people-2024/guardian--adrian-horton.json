@@ -64,7 +64,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Mixed"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (29 words)",
   "previousUrl": "https://www.theguardian.com/stage/2024/mar/19/an-enemy-of-the-people-review-jeremy-strong-michael-imperioli-broadway",
   "urlDiscoveredAt": "2026-02-02T15:10:57.876Z",
@@ -98,9 +98,10 @@
   "fetchTier": 2,
   "textQuality": "truncated",
   "truncationSignals": [
-    "no_ending_punctuation",
-    "possible_mid_word_cutoff"
+    "no_ending_punctuation"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "wordCount": 781,
+  "tierReason": "Full review text"
 }

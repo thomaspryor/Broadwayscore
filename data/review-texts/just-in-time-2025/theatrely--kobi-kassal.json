@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic declares this THE musical to see this season, calls Groff's performance 'career-defining' and 'astonishing,' praises every element from cast to direction to design, and ends with an unequivocal recommendation. | GPT-4o: The review is overwhelmingly positive, highlighting Jonathan Groff's performance as career-defining and the production as a standout of the season. The critic uses strong language indicating a must-see recommendation. | Gemini: The review is overwhelmingly positive, highlighting Groff's performance as a 'career-defining highlight' and recommending the show as one to see this season. While acknowledging the bio-jukebox musical trope, the critic emphasizes the unique elements and overall enjoyment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic delivers an unequivocal rave with superlatives throughout, calling it a 'career-defining highlight' and explicitly stating 'If there is one musical to see this season' - this is a must-see recommendation with enthusiastic praise for every element. | GPT-4o: The review is overwhelmingly positive, praising Jonathan Groff's performance as career-defining and highlighting the show's innovative approach. The critic's enthusiastic recommendation and the phrase 'you won't be disappointed' indicate a strong endorsement. | Gemini: The review is overwhelmingly positive, highlighting Jonathan Groff's performance and the overall production quality. The final sentence explicitly recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,12 +40,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:15:36.348Z",
+    "scoredAt": "2026-02-02T18:27:43.118Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 93,
-    "previousVersion": "5.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,

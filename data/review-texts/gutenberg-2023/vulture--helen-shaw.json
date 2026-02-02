@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The show is a love letter to the theater itself, and to the particular kind of madness that drives people to put on shows in the first place.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is a love letter to the theater itself, and to the particular kind of madness that drives people to put on shows in the first place.",
   "llmScore": {
-    "score": 76,
+    "score": 77,
     "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite noting the show feels padded and runs too long, the critic praises the lead performances as 'wonderful' with 'indisputable chemistry' and calls it 'very often funny.' The aggregator excerpt confirms this is ultimately a love letter to theater. | GPT-4o: The review highlights strong performances and comedic elements, but also notes issues with pacing and some jokes falling flat. The truncated text suggests a potentially more positive conclusion that isn't visible, leading to a mixed but cautiously optimistic score. | Gemini: The review praises the performances of Rannells and Gad and their chemistry, but notes that the show feels padded and that some of the humor falls flat. The truncated nature of the review makes it difficult to determine the overall recommendation, but the positive comments outweigh the negative ones.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite criticisms about length and some problematic elements, the review praises the leads' performances extensively, calls it 'very often funny,' and the aggregator excerpt frames it as a 'love letter to theater,' indicating overall positive recommendation with clear reservations. | GPT-4o: The review acknowledges the comedic talent and chemistry of the leads, but also highlights issues with pacing and certain comedic elements that fall flat. The truncated nature of the text suggests caution, but the overall tone indicates a mixed reception with some positive highlights. | Gemini: Despite some reservations about the show's length and a specific joke, the review praises the performances and chemistry of the leads, suggesting it's worth seeing for their performance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,7 +42,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:26:52.199Z",
+    "scoredAt": "2026-02-02T17:58:17.489Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -51,8 +51,8 @@
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 65,
-    "geminiScore": 75,
+    "openaiScore": 66,
+    "geminiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",

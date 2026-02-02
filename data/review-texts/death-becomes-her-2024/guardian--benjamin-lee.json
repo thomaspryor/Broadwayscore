@@ -62,8 +62,8 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": "But, after a buzzy initial run in Chicago, Death Becomes Her has been reborn on Broadway as a rousing, raucously entertaining hit, the kind of big, box-ticking blockbuster that one can see sticking around for a long time (pre-opening, ticket sales were such that it already received an extension to the end of next summer).",
   "bwwThumb": null,
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 1234,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 85,
   "isFullReview": true,
@@ -86,7 +86,6 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "rescoreCompletedAt": "2026-02-01T17:34:45.182Z",
   "_removedDesignation": {
@@ -96,5 +95,6 @@
     "hadPositiveThumb": true,
     "dtliThumb": "Up",
     "bwwThumb": "none"
-  }
+  },
+  "tierReason": "Full review text"
 }

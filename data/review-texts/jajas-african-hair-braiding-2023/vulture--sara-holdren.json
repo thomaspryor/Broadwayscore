@@ -9,15 +9,15 @@
   "showScoreExcerpt": "“Bioh has written a colorful, tactile, and caring work, letting us in on both the beauty of the braiding process...and the intense labor of it”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/jaja-s-african-hair-braiding-broadway",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 81,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 78,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises the writing, performances, and audience engagement throughout, noting only minor issues with some formulaic moments. The overall tone is enthusiastic and recommending. | Gemini: The review is largely positive, highlighting the humor, specificity, and celebratory atmosphere of the play. While it notes some formulaic moments, the overall impression is that it's a worthwhile and enjoyable experience.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the show's humor, specificity, and joyful audience response, with only minor reservations about some formulaic moments. The enthusiastic tone and detailed appreciation of performances, writing, and technical elements indicate a strong positive recommendation. | GPT-4o: The review is filled with enthusiastic praise for the writing, performances, and production elements, highlighting the joy and recognition the show brings to its audience. The critic's tone is overwhelmingly positive, with only minor reservations about some presentational choices. | Gemini: The review is largely positive, highlighting the humor, specificity, and celebratory atmosphere of the play. While it notes some formulaic elements, the overall assessment is that the play is \"bright, generous, and forceful,\" leading to a recommendation with some reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:53:40.241Z",
+    "scoredAt": "2026-02-02T18:25:20.776Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 78,
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwExcerpt": "Jaja’s can sometimes veer a little formulaic or presentational: In the single-scene appearance of Jaja herself, Kakoma spends most of her time standing directly downstage center (in, not to spoil anything, an absolute battleship of a wedding gown), facing out and delivering a rousing monologue about her right to call America “my country.” It rings clear and true, though I wonder how the same speech would have felt had White oriented Jaja as much toward her fellow characters as toward us, or what",
   "bwwThumb": "Up",

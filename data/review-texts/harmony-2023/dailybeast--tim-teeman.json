@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review identifies compelling source material but finds the execution fundamentally flawed with 'misfiring elements,' structural problems, and underdeveloped characters, making no clear recommendation to see it. | GPT-4o: The review highlights numerous issues with the production, including its uneven staging, lack of compelling character development, and ineffective comedic elements. The critic expresses disappointment with the execution and suggests that the show fails to make a strong case for its historical subjects. | Gemini: The review highlights both positive and negative aspects of the show, indicating a mixed recommendation. While it acknowledges the importance of the themes and some compelling moments, it also criticizes the staging, construction, and character development.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic identifies the fascinating source material but finds the execution deeply flawed, calling it 'shakily constructed' with 'misfiring elements' and characters that 'seem insubstantial.' While acknowledging some effective moments and performances, the overall assessment emphasizes structural problems and missed opportunities rather than recommending the show. | GPT-4o: The review criticizes the musical for its lack of compelling storytelling, insubstantial characters, and ineffective comedic elements. Despite some strong performances, the production fails to make a convincing case for its historical subjects, leading to a recommendation to skip it. | Gemini: The review highlights several flaws in the musical's construction, character development, and comedic elements, while acknowledging the importance of the story and the impact of certain moments. The overall assessment is that the show is uneven and doesn't fully succeed in its aims.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,7 +44,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:28:31.813Z",
+    "scoredAt": "2026-02-02T18:05:20.011Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -53,12 +53,12 @@
   },
   "ensembleData": {
     "claudeScore": 58,
-    "openaiScore": 46,
+    "openaiScore": 40,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "scoreDelta": 16,
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

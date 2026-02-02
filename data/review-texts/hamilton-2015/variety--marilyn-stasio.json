@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic calls it a 'phenomenon', 'groundbreaking show', and 'true landmark' with qualities that are 'extraordinary' and 'striking', indicating the highest level of recommendation. | GPT-4o: The review uses highly positive language, describing the show as a 'phenomenon', 'groundbreaking', and a 'landmark'. The critic emphasizes its universal appeal and enduring impact, indicating a strong recommendation. | Gemini: The review uses strong positive language like \"groundbreaking show\" and \"true landmark\" and states the show's impact hasn't dulled. This indicates a rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language calling it a 'phenomenon', 'groundbreaking show', and 'true landmark' while emphasizing its extraordinary and striking qualities remain undiminished over time. | GPT-4o: The review describes the show as a 'groundbreaking' and 'extraordinary' production with universal appeal, indicating a strong, enthusiastic recommendation. | Gemini: The review uses phrases like \"groundbreaking show\" and \"true landmark\" and states that the show's impact hasn't dulled, indicating a very strong positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,12 +40,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:03:49.001Z",
+    "scoredAt": "2026-02-02T18:04:44.461Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 95,
-    "previousVersion": "5.0.0"
+    "previousScore": 93,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,

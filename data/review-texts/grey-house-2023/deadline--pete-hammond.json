@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This is a haunted house thriller that works on Broadway, thanks to a committed cast led by Laurie Metcalf and a production that knows how to deliver genuine scares.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is a haunted house thriller that works on Broadway, thanks to a committed cast led by Laurie Metcalf and a production that knows how to deliver genuine scares.",
   "llmScore": {
-    "score": 79,
-    "confidence": "medium",
+    "score": 80,
+    "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly states the show 'works' and praises both the lead performance and the production's effectiveness at delivering scares, indicating a solid recommendation. | GPT-4o: The review highlights the effectiveness of the production and the strong performance by the cast, particularly Laurie Metcalf, indicating a positive recommendation. | Gemini: The review explicitly states that the play \"works on Broadway\" and praises the cast and production, indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the bold effort, excellent cast performances, and top-notch creative elements, while acknowledging some stretches feel dull or repetitive. Overall tone is appreciative of the theatrical achievement despite minor flaws. | GPT-4o: The review praises the production's boldness, acting, and creative choices, describing it as 'fantastic' and highlighting its impact on the audience. Despite noting some dull stretches, the overall tone is highly positive and recommends the play enthusiastically. | Gemini: The review acknowledges some flaws (dull stretches, confusion) but ultimately leans positive, praising the performances, direction, and overall experience. The final paragraph explicitly states it was \"fantastic\" and well-acted, recommending it despite its disturbing nature.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,21 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:24:25.621Z",
+    "scoredAt": "2026-02-02T17:55:12.308Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
+    "claudeScore": 78,
     "openaiScore": 82,
-    "geminiScore": 78,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -64,17 +64,16 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (29 words)",
   "previousUrl": "https://deadline.com/2023/05/grey-house-broadway-review-1235371852/",
   "urlDiscoveredAt": "2026-02-02T15:55:50.128Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
   "textWordCount": 1564,
   "archivePath": "data/archives/reviews/grey-house-2023/deadline--pete-hammond_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:37:33.052Z",
+  "textFetchedAt": "2026-02-02T16:37:53.348Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -86,11 +85,14 @@
   "fetchTier": 4,
   "textQuality": "partial",
   "truncationSignals": [
-    "has_footer_text"
+    "has_footer_junk"
   ],
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251113170300",
   "archiveOrgUrl": "http://web.archive.org/web/20251113170300/https://deadline.com/2023/06/grey-house-broadway-review-laurie-metcalf-tatiana-maslany-1235375962/",
-  "duplicateTextOf": "deadline--greg-evans.json"
+  "duplicateTextOf": "deadline--greg-evans.json",
+  "rescoreCompletedAt": "2026-02-02T17:55:12.308Z",
+  "wordCount": 1564,
+  "tierReason": "Full review text"
 }

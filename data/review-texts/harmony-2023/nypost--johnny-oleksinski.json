@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "The problem is that while “Harmony” is about a sextet of singers whose voices blend like milk and coffee, its elements do not similarly fuse into a cohesive and satisfying musical.",
@@ -58,11 +58,11 @@
   "archiveOrgTimestamp": "20251002230850",
   "archiveOrgUrl": "http://web.archive.org/web/20251002230850/https://nypost.com/2023/11/13/entertainment/harmony-review-barry-manilows-musical-is-moving-but-isnt-in-sync/",
   "llmScore": {
-    "score": 62,
+    "score": 64,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -73,7 +73,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The review finds significant elements to admire (performances, music, relevance) but concludes the show 'still doesn't quite work' with major structural flaws and pacing issues that prevent it from being cohesive. | Gemini: The review highlights both strengths (Manilow's score, Zien's performance, relevant themes) and weaknesses (structural flaws, pacing issues, underdeveloped characters). The final takeaway suggests a mixed experience, leaning towards having worthwhile elements despite its problems.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review explicitly states the show 'still doesn't quite work' and has 'structural flaws' while acknowledging admirable elements like performances and music. The critic's final line encapsulates the mixed assessment. | GPT-4o: The review acknowledges strong performances and a moving score, but criticizes the show's lack of cohesion and pacing issues. While there are elements to admire, the overall production is described as flawed, leading to a mixed recommendation. | Gemini: The review highlights both strengths (catchy score, strong performances, relevant themes) and weaknesses (structural flaws, pacing issues, underdeveloped characters). The final takeaway suggests a mixed experience with redeeming qualities.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -83,26 +83,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:09:45.995Z",
+    "scoredAt": "2026-02-02T18:05:39.108Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
+    "openaiScore": 67,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "contentTier": "complete",
   "wordCount": 816,

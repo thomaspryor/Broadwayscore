@@ -59,8 +59,8 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 1054,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "rescoreCompletedAt": "2026-02-02T03:34:24.007Z",
   "previousLlmScore": 55,
@@ -84,7 +84,6 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "_removedDesignation": {
     "designation": "Recommended",
@@ -93,5 +92,6 @@
     "hadPositiveThumb": false,
     "dtliThumb": "none",
     "bwwThumb": "none"
-  }
+  },
+  "tierReason": "Full review text"
 }

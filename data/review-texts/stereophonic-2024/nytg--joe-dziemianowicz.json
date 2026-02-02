@@ -23,9 +23,6 @@
     }
   ],
   "fetchTier": 1,
-  "truncationSignals": [
-    "no_ending_punctuation"
-  ],
   "sourceMethod": "playwright",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
@@ -81,7 +78,7 @@
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 68,
   "rescoreCompletedAt": "2026-02-01T16:11:44.484Z",
-  "contentTier": "complete",
+  "contentTier": "invalid",
   "wordCount": 527,
   "_removedDesignation": {
     "designation": "Recommended",
@@ -92,5 +89,6 @@
     "bwwThumb": "none"
   },
   "wrongProduction": true,
-  "wrongProductionNote": "Off-Broadway run at Playwrights Horizons (Oct 2023), not Broadway transfer (Apr 2024)"
+  "wrongProductionNote": "Off-Broadway run at Playwrights Horizons (Oct 2023), not Broadway transfer (Apr 2024)",
+  "tierReason": "Wrong production"
 }

@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic explicitly calls it a 'must see' and states that other shows don't compare to it, indicating strong enthusiasm despite limited excerpt. | GPT-4o: The critic describes 'Liberation' as a 'must see' and compares it favorably to other shows, indicating a strong recommendation. However, due to the single excerpt warning, the score is placed conservatively in the middle of the 'Rave' range. | Gemini: The review explicitly states \"Liberation is a must see,\" indicating a very strong positive recommendation and placing it firmly in the Rave bucket.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The explicit 'must see' recommendation combined with the critic comparing all other shows to this one indicates exceptional enthusiasm and a rave review. | GPT-4o: The critic describes 'Liberation' as a benchmark for other shows, calling it a 'must see', which indicates a strong, enthusiastic recommendation. | Gemini: The review excerpt explicitly states \"Liberation is a must see,\" indicating a very strong, enthusiastic recommendation and placing it firmly in the Rave bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:32:19.735Z",
+    "scoredAt": "2026-02-02T18:30:47.808Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 93,
+    "previousScore": 91,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 92,
-    "geminiScore": 92,
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 90,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 4,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

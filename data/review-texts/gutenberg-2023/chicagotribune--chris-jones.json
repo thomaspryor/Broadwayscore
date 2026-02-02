@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": "MEH",
   "dtliExcerpt": "But the reality here is that this is a show relying on two skilled comic actors and their contrasting relationship. These two stars could do this kind of thing in their sleep, should they so choose, and I suspect their challenge will come from messing with each other and keeping everything fresh.",
@@ -18,11 +18,11 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 69,
-    "confidence": "low",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 64,
-      "high": 74
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic acknowledges the stars' skills and some effective moments but finds the show derivative, overly crude in spots, and notes humor that will likely divide audiences. The lukewarm conclusion suggests it's mainly for existing fans. | Gemini: The review acknowledges flaws (crude humor, derivative nature) but ultimately suggests it's enjoyable, especially for fans of the stars. The final sentence indicates a positive, albeit qualified, recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges the stars' talents and some effective moments but finds the show derivative, overly crude in spots, and reliant mainly on the actors' rapport rather than strong material. | GPT-4o: The review highlights the strong performances of Rannells and Gad but notes the show relies heavily on their rapport and has humor that may divide audiences. The critic expresses reservations about the writing and some of the humor, indicating a mixed reception. | Gemini: The review acknowledges flaws like crude humor and lack of originality, but ultimately suggests it's worth seeing for fans of the two leads and their comedic rapport. The final sentence indicates a qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,26 +43,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:35:56.618Z",
+    "scoredAt": "2026-02-02T17:56:59.281Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 64,
-    "previousVersion": "3.0.0"
+    "previousScore": 69,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
+    "openaiScore": 65,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
     "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 64,

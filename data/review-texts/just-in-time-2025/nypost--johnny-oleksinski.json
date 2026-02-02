@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'one of the most wondrous of the season,' 'a wallop of joy,' and 'one of its most enjoyable shows,' with clear enthusiasm for both the production and Groff's performance. | GPT-4o: The review is overwhelmingly positive, praising the production as 'one of the most wondrous of the season' and highlighting the 'magic' created by the director and star. The critic describes the show as a 'wallop of joy' and 'a fantastic party,' with strong performances and innovative staging, leading to a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the direction, performances, and overall experience. The critic uses strong language like \"wondrous,\" \"magic,\" and \"wallop of joy,\" indicating a strong recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'one of the most wondrous of the season' and 'a wallop of joy,' with enthusiastic praise for performances, direction, and overall experience. | GPT-4o: The review is overwhelmingly positive, praising the production as 'one of the most wondrous of the season' and highlighting the 'magic' created by the director and star. The critic describes the show as a 'wallop of joy' and a 'fantastic party,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the direction, performances, and overall experience. The critic uses strong language like \"wondrous,\" \"magic,\" and \"wallop of joy,\" indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,12 +41,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:14:28.891Z",
+    "scoredAt": "2026-02-02T18:27:11.078Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 92,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,

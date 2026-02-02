@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses clearly positive language like 'captivating portrait,' 'voluptuous,' and 'delicious, delirious portrait' to describe the musical, indicating a strong recommendation despite noting it's a more nuanced form than typical Broadway fare. | GPT-4o: The review praises the musical's ability to create a captivating and nuanced portrayal, describing it as 'delicious' and 'delirious,' which indicates a strong recommendation. | Gemini: The review uses positive language like \"captivating portrait\" and \"delicious, delirious portrait,\" indicating a recommendation, although it also acknowledges the nuanced and potentially challenging nature of the subject matter.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses enthusiastic language like 'captivating portrait,' 'voluptuous,' and 'delicious, delirious' to describe the musical, clearly recommending it despite acknowledging its more nuanced approach. | GPT-4o: The review describes the musical as captivating and praises its nuanced form and grandiose ideals, concluding with a strong positive statement about the production's portrayal of its subject. | Gemini: The review states that the writers are backed by enough talent to render a captivating portrait, which indicates a positive recommendation. The phrase \"delicious, delirious portrait\" further supports this.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,15 +36,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:24:29.232Z",
+    "scoredAt": "2026-02-02T18:28:12.364Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 77,
     "openaiScore": 82,
     "geminiScore": 75,
     "claudeBucket": "Positive",
@@ -68,7 +68,7 @@
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 84,
   "archivePath": "data/archives/reviews/lempicka-2024/broadwaynews--brittani-samuel_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:39:25.481Z",
+  "textFetchedAt": "2026-02-02T16:36:37.213Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Harmony is a musical that feels both timely and timeless, offering audiences a deeply moving exploration of art, friendship, and resilience in the face of unimaginable darkness.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Harmony is a musical that feels both timely and timeless, offering audiences a deeply moving exploration of art, friendship, and resilience in the face of unimaginable darkness.",
   "llmScore": {
-    "score": 78,
+    "score": 77,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The language is clearly appreciative with 'deeply moving' and positive descriptors, but this appears to be a brief excerpt that may not capture the full critical assessment. | GPT-4o: The review uses strong positive language, indicating a deeply moving and impactful experience, suggesting a must-see recommendation. | Gemini: The review uses positive language like \"deeply moving exploration\" suggesting a positive recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review uses strong positive language like 'deeply moving' and describes the show as both 'timely and timeless', indicating a solid recommendation without reaching rave territory. | GPT-4o: The review describes the musical as 'deeply moving' and highlights its timeless and timely qualities, suggesting a strong recommendation. | Gemini: The review uses positive language like \"deeply moving exploration,\" suggesting a recommendation, but lacks the strong enthusiasm of a rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,21 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:11:32.177Z",
+    "scoredAt": "2026-02-02T18:06:20.138Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
     "openaiScore": 90,
-    "geminiScore": 78,
+    "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

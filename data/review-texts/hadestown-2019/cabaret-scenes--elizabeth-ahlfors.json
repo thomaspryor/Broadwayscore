@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review concludes with an explicit 'must-see' recommendation and consistently praises all elements including performances, direction, music, and production values throughout. | GPT-4o: The review is overwhelmingly positive, highlighting the show's vibrant production, creative score, and strong performances. The critic explicitly calls it a 'must-see,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the music, direction, performances, and production values. The explicit recommendation at the end seals the deal.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review ends with an explicit 'must-see' recommendation and consistently praises all elements including performances, direction, music, and production values throughout. | GPT-4o: The review is overwhelmingly positive, highlighting the imaginative book, vibrant production, and strong performances. The critic explicitly states that Hadestown is a 'must-see,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the music, book, direction, choreography, and performances. The concluding sentence explicitly calls it a 'must-see,' placing it firmly in the Positive bucket, leaning towards Rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:58:39.641Z",
+    "scoredAt": "2026-02-02T17:58:44.312Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 92,
-    "previousVersion": "3.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 95,
-    "geminiScore": 80,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

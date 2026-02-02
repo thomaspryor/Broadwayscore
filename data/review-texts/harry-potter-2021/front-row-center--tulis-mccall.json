@@ -8,19 +8,19 @@
   "fullText": null,
   "showScoreExcerpt": "\"A theatrical tour de force...The production values are extraordinary.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 83,
   "source": "show-score",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 88,
+    "score": 83,
     "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 93
+      "low": 78,
+      "high": 88
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The phrase 'theatrical tour de force' is extremely strong praise language that typically indicates a must-see recommendation, though confidence is medium due to single excerpt warning. | GPT-4o: The excerpt uses strong, positive language indicating a highly favorable view of the production, suggesting it is a must-see. However, due to the single excerpt warning, the confidence is medium. | Gemini: The excerpt uses very positive language like \"tour de force\" and \"extraordinary,\" indicating a strong recommendation. Given that it's a single excerpt, I'm placing it at the higher end of the Positive bucket.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The phrase 'tour de force' indicates strong praise and excellence, while 'extraordinary production values' reinforces high quality, but single excerpt warning requires caution about full verdict. | GPT-4o: The phrase 'theatrical tour de force' and 'extraordinary production values' suggest a highly enthusiastic recommendation. Despite the single excerpt warning, the language indicates a strong positive sentiment. | Gemini: The excerpt uses strong positive language like \"tour de force\" and \"extraordinary,\" indicating a positive recommendation. Given the single excerpt warning, the score is placed at the higher end of the Positive bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,18 +39,18 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:28:26.293Z",
+    "scoredAt": "2026-02-02T18:08:14.297Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
+    "previousScore": 88,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 87,
+    "claudeScore": 83,
     "openaiScore": 88,
     "geminiScore": 82,
-    "claudeBucket": "Rave",
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "scoreDelta": 6,
@@ -59,7 +59,7 @@
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

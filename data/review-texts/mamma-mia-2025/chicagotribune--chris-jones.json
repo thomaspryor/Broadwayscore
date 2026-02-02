@@ -16,7 +16,7 @@
   "scoreConfidence": "medium",
   "llmScore": {
     "score": 81,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 76,
       "high": 86
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite opening with historical context about ABBA and the production's journey, Jones delivers a strongly positive verdict, calling it 'a masterpiece of its populist kind' and praising the lead performance as 'the best Donna of all time.' The review concludes with confidence that audiences will 'come and have fun.' | GPT-4o: The review praises the production's enduring popularity and the quality of the performances, particularly highlighting Christine Sherrill's portrayal of Donna. Despite the truncated text, the overall tone is positive, suggesting a strong recommendation. | Gemini: Despite some minor criticisms (set, chronology), the critic expresses strong positive sentiment, calling it a \"masterpiece of its populist kind\" and highlighting the audience's enjoyment. The aggregator excerpts also suggest a positive recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening with context about ABBA's US reception, the critic delivers strong praise calling it 'a masterpiece of its populist kind' and predicts audiences will 'come and have fun,' showing clear enthusiasm for the production. | GPT-4o: Despite the truncated text warning, the review contains strong praise for the production, calling it a 'masterpiece' and highlighting the enjoyment and fun it provides to audiences. The critic's respect for the show and its unique appeal suggests a highly positive recommendation. | Gemini: Despite some criticisms about the set and lack of updates, the review praises the cast, especially Christine Sherrill as Donna, and acknowledges the show's enduring appeal and unique status. The truncated text and aggregator excerpts suggest a positive overall assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,35 +40,35 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:25:45.549Z",
+    "scoredAt": "2026-02-02T18:31:20.611Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 82,
-    "geminiScore": 80,
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "sources": [
     "reviews-json-stub",
     "bww-roundup"
   ],
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 812,
   "previousUrl": "https://www.chicagotribune.com/2025/08/14/mamma-mia-broadway-review/",
   "urlDiscoveredAt": "2026-02-01T14:10:16.562Z",
   "urlDiscoveryMethod": "google-serp",
@@ -89,11 +89,11 @@
   "fetchTier": 4,
   "textQuality": "full",
   "truncationSignals": [
-    "no_ending_punctuation",
-    "possible_mid_word_cutoff"
+    "no_ending_punctuation"
   ],
   "textStatus": "complete",
   "archiveOrgTimestamp": "20250905005113",
   "archiveOrgUrl": "http://web.archive.org/web/20250905005113/https://www.chicagotribune.com/2025/08/14/review-mamma-mia-broadway/",
-  "rescoreCompletedAt": "2026-02-01T15:28:53.049Z"
+  "rescoreCompletedAt": "2026-02-01T15:28:53.049Z",
+  "tierReason": "Full review text"
 }

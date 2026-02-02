@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review highlights a 'powerhouse performance' and describes the drama as 'emotionally devastating' in what appears to be a positive context, but the brief excerpt limits confidence in the overall assessment. | GPT-4o: The review highlights a 'powerhouse performance' and describes the play as 'emotionally devastating,' indicating a strong positive recommendation. | Gemini: The review highlights a strong performance and describes the drama as emotionally devastating, suggesting a positive but potentially difficult viewing experience. The lack of further details or reservations keeps it from being a rave.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises McAdams' performance extensively and finds the play 'affecting' and 'devastating' in its impact, though notes some middle pacing issues that prevent a stronger recommendation. | GPT-4o: The review praises Rachel McAdams' performance and the emotional impact of the play, while noting some reservations about the production's pacing and quietness. Overall, it recommends the show for its emotional depth and performances, despite some minor criticisms. | Gemini: The review praises McAdams' performance and Herzog's writing, but notes that the production is too quiet and static at times. The overall tone is positive, but with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,23 +43,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:17:30.483Z",
+    "scoredAt": "2026-02-02T18:34:16.492Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 50,
-    "previousVersion": "5.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (22 words)",
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 80,
-    "geminiScore": 75,
+    "openaiScore": 78,
+    "geminiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -70,7 +70,6 @@
   "previousUrl": "https://nypost.com/2024/05/03/entertainment/mary-jane-review-rachel-mcadams-shines-in-grim-broadway-drama/",
   "urlDiscoveredAt": "2026-02-02T15:08:16.031Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "textWordCount": 561,
@@ -86,9 +85,11 @@
   ],
   "fetchTier": 4,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241213155056",
-  "archiveOrgUrl": "http://web.archive.org/web/20241213155056/https://nypost.com/2024/04/24/entertainment/mary-jane-review-rachel-mcadams-is-a-strong-mom-in-teary-broadway-play/"
+  "archiveOrgUrl": "http://web.archive.org/web/20241213155056/https://nypost.com/2024/04/24/entertainment/mary-jane-review-rachel-mcadams-is-a-strong-mom-in-teary-broadway-play/",
+  "rescoreCompletedAt": "2026-02-02T18:34:16.492Z",
+  "wordCount": 561,
+  "tierReason": "Full review text"
 }

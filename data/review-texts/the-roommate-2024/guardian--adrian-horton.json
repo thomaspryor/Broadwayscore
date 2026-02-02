@@ -70,8 +70,8 @@
     "dtli"
   ],
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 1085,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 69,
   "isFullReview": true,
@@ -94,7 +94,6 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "rescoreCompletedAt": "2026-02-01T16:24:26.538Z",
@@ -105,5 +104,6 @@
     "hadPositiveThumb": false,
     "dtliThumb": "Meh",
     "bwwThumb": "Meh"
-  }
+  },
+  "tierReason": "Full review text"
 }

@@ -65,7 +65,7 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (27 words)",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 80,
@@ -88,12 +88,13 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "duplicateTextOf": "guardian--gloria-oladipo.json",
   "rescoreCompletedAt": "2026-02-02T03:40:02.300Z",
   "previousUrl": "https://www.theguardian.com/stage/2024/oct/16/stereophonic-review-broadway-david-adjmi",
   "urlDiscoveredAt": "2026-02-02T15:09:52.038Z",
-  "urlDiscoveryMethod": "google-serp"
+  "urlDiscoveryMethod": "google-serp",
+  "wordCount": 1211,
+  "tierReason": "Full review text"
 }

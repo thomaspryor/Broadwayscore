@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises this as 'a theatrical accomplishment of a very rare order' and emphasizes that the condensed version retains all the magic and emotional depth of the original, with strong performances and spectacular effects. | GPT-4o: The review is overwhelmingly positive, praising the production's imaginative and technical achievements, emotional depth, and successful adaptation into a shorter format. The critic's language is enthusiastic and indicates a strong recommendation. | Gemini: The review explicitly states the new version is \"every bit as rewarding as the original,\" indicating a strong positive recommendation. The critic also praises the theatrical expertise and emotional depth of the production.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening concerns about the shortened format, the critic delivers strong praise calling it 'every bit as rewarding as the original version' and 'a theatrical accomplishment of a very rare order' with enthusiastic commendation of performances, effects, and storytelling. | GPT-4o: The review is overwhelmingly positive, praising the production's ability to retain its magic and emotional depth despite being condensed. The critic highlights the show's theatrical expertise and emotional impact, indicating a strong recommendation. | Gemini: Despite some initial discussion of the changes made to the show, the review is overwhelmingly positive, stating that the new version is \"every bit as rewarding as the original version.\" The critic praises the theatrical expertise and the moving father-son relationship, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,11 +37,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:27:13.649Z",
+    "scoredAt": "2026-02-02T18:07:04.791Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 80,
+    "previousScore": 82,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {

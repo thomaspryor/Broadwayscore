@@ -62,8 +62,8 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
   },
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "truncated",
+  "wordCount": 59,
   "isFullReview": false,
   "textWordCount": 59,
   "archivePath": "data/archives/reviews/cabaret-2024/wsj--charles-isherwood_2026-02-02.html",
@@ -97,8 +97,7 @@
   "fetchTier": 3,
   "textQuality": "truncated",
   "truncationSignals": [
-    "no_ending_punctuation",
-    "shorter_than_excerpt"
+    "no_ending_punctuation"
   ],
   "textStatus": "truncated",
   "sourceMethod": "brightdata",
@@ -112,5 +111,6 @@
     "hadPositiveThumb": false,
     "dtliThumb": "Meh",
     "bwwThumb": "Meh"
-  }
+  },
+  "tierReason": "Short text (59 words)"
 }

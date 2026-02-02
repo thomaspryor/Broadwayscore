@@ -10,18 +10,18 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 86,
+  "assignedScore": 92,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 86,
-    "confidence": "low",
+    "score": 92,
+    "confidence": "medium",
     "range": {
-      "low": 81,
-      "high": 91
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: Despite opening with buildup concerns, the critic delivers an unequivocal positive verdict calling it 'that good' and comparing Miranda to legendary composers, with extensive praise for songs, performances, and choreography throughout. | Gemini: The review is overwhelmingly positive, praising the music, choreography, and energy of the show. While there are minor criticisms, the overall tone is enthusiastic and recommends seeing the production.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic gives an unequivocal positive answer to whether Hamilton lives up to the hype, comparing Miranda to legendary composers, calling multiple songs 'infectious showstoppers,' and praising the production elements as 'dazzling' and a 'real breakthrough.' | GPT-4o: The review is overwhelmingly positive, comparing Lin-Manuel Miranda to legendary composers and praising the show's music, choreography, and innovation. The few minor critiques do not detract from the overall enthusiastic recommendation. | Gemini: The review is overwhelmingly positive, praising the music, choreography, and performances. Despite a minor critique of Miranda's stage presence, the overall recommendation is strong.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,26 +42,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:03:09.104Z",
+    "scoredAt": "2026-02-02T18:04:21.607Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 95,
-    "previousVersion": "3.0.0"
+    "previousScore": 86,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "claudeScore": 89,
+    "openaiScore": 95,
+    "geminiScore": 81,
     "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 95,

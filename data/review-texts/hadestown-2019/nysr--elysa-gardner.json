@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The 4/5 star rating aligns with a positive recommendation. Despite opening skepticism about the director's previous work, the critic ultimately praises the production's storytelling, performances, and design elements, calling it 'soulful entertainment' that will 'lift mortal spirits.' | Gemini: Despite initial reservations and comparisons to a previous production the critic disliked, the review ultimately praises the music, story, performances, and design elements, leading to a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and concluding praise for the performances and songs indicate a solid recommendation, though the critic acknowledges some reservations about stylistic choices and length. | GPT-4o: Despite initial skepticism, the review praises the production's music, performances, and design, ultimately recommending it as a strong and soulful entertainment experience. | Gemini: Despite initial reservations and comparisons to a previous production the critic disliked, the review expresses strong positive sentiment towards Hadestown, praising the music, lyrics, story, and performances. The critic explicitly states their skepticism was unwarranted, indicating a positive shift in opinion.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:00:21.771Z",
+    "scoredAt": "2026-02-02T18:00:00.182Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 81,
-    "previousVersion": "3.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "sources": [
     "playwright-scraped",

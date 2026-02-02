@@ -9,15 +9,15 @@
   "bwwExcerpt": "The production, which has received a few significant visual and musical upgrades since its Off-Broadway debut, is probably the most convincing, coherent, and compelling rendition of “Merrily” to date, making it the best candidate for its Broadway return. For the show’s many devoted fans (of which I am certainly one), this production is not just a triumph but a homecoming and a vindication.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "originalScore": null,
-  "assignedScore": 91,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 91,
+    "score": 89,
     "confidence": "medium",
     "range": {
-      "low": 86,
-      "high": 96
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite opening with concerns about revivals and past criticism, the critic delivers an unqualified rave, calling the production 'exquisite' and praising every element from direction to performances to ensemble work. | GPT-4o: The review is highly positive, praising the production's cast, direction, and emotional impact. The critic describes the show as 'exquisite' and highlights the performances as 'superb,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the direction, performances, and overall impact of the production. The critic highlights the actors' chemistry and the show's ability to evoke emotion, indicating a strong recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite opening with context about the show's troubled history, the critic delivers an unequivocally glowing review, calling the production 'exquisite' and praising every aspect from direction to performances to casting, concluding that this cast is 'reviving the play, by revealing and jump-starting its heart.' | GPT-4o: The review is filled with praise for the production, particularly highlighting the performances of the lead actors and the direction. The critic describes the show as 'exquisite' and emphasizes the emotional impact and chemistry of the cast, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the direction, performances, and overall impact of the production. The critic highlights the actors' chemistry and emotional depth, ultimately concluding that they \"revive the play, by revealing and jump-starting its heart.\"",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,7 +38,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:33:11.120Z",
+    "scoredAt": "2026-02-02T18:36:36.510Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -46,13 +46,13 @@
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 88,
     "openaiScore": 90,
     "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The show is a transcendent experience that uses dance as its primary language to tell stories both personal and universal, with Sufjan Stevens' intricate compositions providing the emotional backbone.",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,13 +18,13 @@
   "showScoreExcerpt": "The show is a transcendent experience that uses dance as its primary language to tell stories both personal and universal, with Sufjan Stevens' intricate compositions providing the emotional backbone.",
   "needsScoring": true,
   "llmScore": {
-    "score": 92,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The word 'transcendent' indicates an extraordinary, must-see recommendation, suggesting the show rises above ordinary theatrical experiences. | GPT-4o: The review uses highly enthusiastic language, describing the show as 'transcendent' and highlighting its universal storytelling and emotional impact, indicating a strong recommendation. | Gemini: The review uses very strong positive language like \"transcendent experience\" indicating a rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges it's 'hardly a mainstream attraction' and 'not a show for all tastes' but concludes it definitively belongs on Broadway, praising Peck's choreography as 'sensual, clearly personal and very cool' with 'spectacular' ensemble work. | GPT-4o: The review acknowledges that 'Illinoise' is not a mainstream attraction and may not appeal to everyone, but it praises the choreography and the unique sensorial experience, ultimately recommending it for those interested in its artistic merits. | Gemini: The review acknowledges the show's niche appeal but ultimately concludes that it belongs on Broadway, highlighting Peck's choreography and the sensorial experience. The phrase \"not a show for all tastes\" indicates a reservation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,34 +43,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:15:03.518Z",
+    "scoredAt": "2026-02-02T18:23:09.577Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "5.0.0"
+    "previousScore": 92,
+    "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (29 words)",
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 95,
-    "geminiScore": 92,
-    "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 7,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "previousUrl": "https://www.nydailynews.com/2024/04/25/illinoise-review-sufjan-stevens-songs-soar-in-transcendent-broadway-dance-musical/",
   "urlDiscoveredAt": "2026-02-02T15:10:01.993Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 92,
   "textWordCount": 615,
@@ -110,9 +109,11 @@
   ],
   "fetchTier": 4,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240510202601",
-  "archiveOrgUrl": "http://web.archive.org/web/20240510202601/https://www.nydailynews.com/2024/04/26/broadway-review-illinoise-based-on-sufjan-stevens-album-is-atypical-esoteric-and-intense/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240510202601/https://www.nydailynews.com/2024/04/26/broadway-review-illinoise-based-on-sufjan-stevens-album-is-atypical-esoteric-and-intense/",
+  "rescoreCompletedAt": "2026-02-02T18:23:09.577Z",
+  "wordCount": 615,
+  "tierReason": "Full review text"
 }

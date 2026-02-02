@@ -61,8 +61,8 @@
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Both models agree: Positive"
   },
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "truncated",
+  "wordCount": 101,
   "isFullReview": false,
   "textWordCount": 101,
   "archivePath": "data/archives/reviews/aladdin/new-jersey-newsroom--michael-sommers_2026-02-02.html",
@@ -83,13 +83,11 @@
   ],
   "fetchTier": 1,
   "textQuality": "truncated",
-  "truncationSignals": [
-    "shorter_than_excerpt"
-  ],
   "textStatus": "truncated",
   "textIssues": [
     "Word count too low: 101 (min: 300)",
     "Show title not found in text"
   ],
-  "showNotMentioned": true
+  "showNotMentioned": true,
+  "tierReason": "Short text (101 words)"
 }

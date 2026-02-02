@@ -9,15 +9,15 @@
   "bwwExcerpt": "The most fatal issue, though, is the show’s central focus on Tamara’s dueling loves: stiff husband Tadeusz and free-wheeling Rafaela. This dilemma takes up most of the narrative real estate, but proves deathly dull. Despite the heavenly-voiced Samonsky’s best efforts, Tadeusz is a wet blanket whose constant moaning sucks the energy out of every scene. And while Iman could never be anything but riveting on stage, Rafaela is thinly-sketched and never takes on compelling internal life.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 63,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 60,
-    "confidence": "high",
+    "score": 63,
+    "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The review acknowledges strong elements (Chavkin's direction, some musical numbers, design work) but consistently returns to fundamental flaws in the book, character development, and tonal confusion. The critic finds it lacking specificity and focus despite its potential. | Gemini: The review points out both strengths (energetic score, Espinosa's performance) and weaknesses (hurried book, tonal confusion, dull love story). The overall impression is that the show has potential but doesn't quite deliver, placing it in the Mixed category.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges strong elements (Chavkin's direction, some musical numbers, Espinosa's performance) but criticizes fundamental flaws in the book, character development, and tonal consistency. The critic finds moments of success but overall sees a show that fails to achieve its potential. | GPT-4o: The review highlights both the potential and the shortcomings of the musical, noting its energetic moments and strong performances but ultimately finding it lacking in coherence and depth. The critic appreciates certain aspects but is critical of the overall execution, leading to a mixed recommendation. | Gemini: The review acknowledges flaws and generic elements but also praises aspects like the score, direction, and some performances, indicating a qualified recommendation. The phrase \"only sparingly succeeds\" suggests it's not a rave, but the positive aspects keep it out of the mixed category.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:27:35.861Z",
+    "scoredAt": "2026-02-02T18:29:25.938Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 48,
-    "previousVersion": "5.0.0"
+    "previousScore": 60,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 58,
-    "openaiScore": null,
-    "geminiScore": 62,
+    "openaiScore": 67,
+    "geminiScore": 75,
     "claudeBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 4,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "dtliExcerpt": "Messy and maddening, new musical Lempicka has all the pedigree for something groundbreaking but never finds its own distinctive form.",

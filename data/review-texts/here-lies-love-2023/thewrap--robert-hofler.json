@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review explicitly states the show is 'worth seeing' due to Timbers' direction and praises the radical theater transformation, strong performances, and vocal work, despite criticizing the repetitive score and thin character development. | GPT-4o: The review highlights the inventive direction and the impressive staging as reasons to see the show, despite some criticisms of the score's repetitiveness and the handling of the story. The overall tone is positive, recommending the production primarily for its creative direction. | Gemini: The review explicitly states the musical is \"worth seeing\" due to the direction, despite criticisms of the score and handling of the story. The review focuses on the staging and performances positively.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly states the show is 'worth seeing' due to Timbers' direction and explicitly says 'the overhaul warrants a trip to the Broadway Theatre,' despite criticisms of the repetitive score and thin storytelling. | GPT-4o: The review praises the inventive direction and the performances, recommending the show for its stagecraft and vocal performances, despite some reservations about the repetitiveness of the score and the handling of the story. | Gemini: The review explicitly states the musical is \"worth seeing\" due to the direction, but also notes the score becomes tiresome and the life story is handled without much finesse. This indicates a positive but not rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:23:36.060Z",
+    "scoredAt": "2026-02-02T18:19:42.427Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
-    "previousVersion": "3.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 74,
-    "openaiScore": 78,
-    "geminiScore": 78,
+    "claudeScore": 76,
+    "openaiScore": 79,
+    "geminiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

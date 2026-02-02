@@ -9,15 +9,15 @@
   "showScoreExcerpt": "“Byrne and Fatboy Slim’s sung-through score is the star of the 90-minute production, a hypnotic churn of synth beats, funky rhythms and pop momentum that aims squarely for the pelvis.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/here-lies-love-broadway",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 64,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges the show's innovative staging and musical strengths but expresses significant concern about its problematic treatment of historical figures and lack of critical perspective on the Marcos regime's crimes. | GPT-4o: The review highlights the show's innovative staging and musical energy but criticizes its lack of depth and coherent perspective on its historical subject. While it acknowledges the production's sensory appeal and cultural significance, it also notes significant shortcomings in its narrative and character development. | Gemini: The review acknowledges the show's innovative staging and infectious music but criticizes its lack of critical perspective on the Marcos' legacy and its superficial character development. It neither strongly recommends nor discourages seeing the show, highlighting both its strengths and weaknesses.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges the show's formal innovation and cultural significance while criticizing its shallow treatment of serious historical subject matter. The critic finds merit in individual performances and the musical elements but questions the production's moral framework, resulting in a genuinely mixed assessment. | GPT-4o: The review highlights both the innovative and immersive aspects of the production, but also criticizes the lack of depth in character development and the absence of a coherent critical perspective on the historical figures. The review acknowledges the show's sensory and musical appeal but notes significant shortcomings in its narrative and thematic execution. | Gemini: The review acknowledges the show's innovative staging and engaging music but criticizes its lack of depth, historical context, and coherent point of view regarding the Marcos' legacy. The reviewer finds the glorification of Imelda Marcos problematic, leading to a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:24:13.116Z",
+    "scoredAt": "2026-02-02T18:19:49.807Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "3.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
+    "openaiScore": 68,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

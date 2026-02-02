@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic opens with clear love for the production and praises the writing, performances, direction, and design elements extensively. While noting some pacing issues, the overall assessment is strongly positive with genuine enthusiasm. | GPT-4o: The critic expresses a strong personal connection and admiration for the play, describing it as 'terrific' and 'authentic,' with a 'breath of fresh air' theme. Despite noting a minor pacing issue, the overall tone is overwhelmingly positive and enthusiastic. | Gemini: The critic states they \"loved it\" and enjoyed spending time with the characters, despite some flaws in the play's structure. This indicates a strong positive recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic opens with 'I loved it' and consistently praises the writing, performances, and direction throughout, acknowledging minor pacing issues but concluding with a desire to spend more time with these characters. | GPT-4o: The critic expresses a strong personal admiration for the play, calling it 'terrific' and 'authentic,' and praises the production, performances, and writing. Despite noting a minor pacing issue, the overall tone is highly enthusiastic. | Gemini: The critic states they \"loved it\" and enjoyed spending time with the characters, indicating a strong positive recommendation despite noting a flaw in the play's pacing and ending.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,21 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:52:57.545Z",
+    "scoredAt": "2026-02-02T18:25:04.628Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 82,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
     "openaiScore": 92,
-    "geminiScore": 82,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

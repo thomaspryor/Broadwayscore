@@ -9,15 +9,15 @@
   "bwwExcerpt": "Lempicka offers a theatrical manifestation of the revival of interest in a woman artist who embraced the avant-garde style of Art Deco, along with a privileged lifestyle and free sexuality, as stated in her own bombastic and defiant words: “I live life in the margins of society, and the rules of normal society don’t apply to those who live on the fringe.” If only the sexualization of women and their nudity in art were not so standard. As questioned in the famous poster by the feminist/activist g",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 62,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The review provides detailed analysis with praise for individual performances (especially Beth Leavel's 'emotionally compelling performance') and production elements, but uses qualifying language like 'overly affected' choreography and notes the show's 'generally booming' nature as potentially problematic. The truncated ending and feminist critique suggest reservations about the show's approach to its subject matter. | Gemini: The review is largely descriptive, but the final line suggests a critique of the show's portrayal of women. Given the truncated nature of the review, it's difficult to ascertain a definitive recommendation, leading to a 'Mixed' classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review provides detailed production analysis with praise for individual performances (especially Beth Leavel's 'emotionally compelling' turn) and technical elements, but the truncated ending and lack of clear recommendation suggests mixed reception. The critic describes it as offering a 'theatrical manifestation' rather than enthusiastically endorsing it. | GPT-4o: The review provides a detailed description of the production's elements and performances, highlighting both strengths and weaknesses. While it acknowledges the show's ambition and some standout performances, it also notes issues such as the sexualization of women and some flat musical notes. The text is truncated, which suggests caution in assuming a negative verdict, leading to a mixed classification. | Gemini: The review is descriptive, highlighting both positive and negative aspects of the production. The truncated text and the critic's final question about sexualization in art suggest a mixed or slightly negative overall impression, but not strongly enough to be classified as negative.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:25:12.507Z",
+    "scoredAt": "2026-02-02T18:28:24.532Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 62,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "rescoreReason": "scored on brief excerpt, now has fullText",

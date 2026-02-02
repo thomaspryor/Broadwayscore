@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 76,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt emphasizes spectacular moments and uses enthusiastic language like 'sight to behold' and 'What a time to be alive,' but the conditional phrasing ('when...') suggests these moments are intermittent rather than consistent, indicating positive recommendation with some reservations. | GPT-4o: The excerpt highlights moments of the show that are impressive and engaging, suggesting a positive experience. However, the lack of full context and the warning about a single excerpt necessitate a conservative score within the Positive range. | Gemini: The review highlights positive aspects of the show, suggesting it's enjoyable when certain elements align, but the limited excerpt and the phrase \"when...firing on all cylinders\" suggests it's not consistently excellent. Therefore, it's a positive but not rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review gives the show a B+ grade and concludes with enthusiastic praise, calling it 'truly a sight to behold' despite acknowledging some flaws. The critic praises the stellar performances and overall success of the revival. | GPT-4o: Despite some plot hiccups and moments where the production drags, the review praises the performances, direction, and overall impact of the show, indicating a strong positive recommendation. The truncated nature of the text suggests caution, but the provided excerpts and the B+ grade support a high positive score. | Gemini: The review acknowledges some issues but ultimately praises the production and performances, calling it a \"powerful hit.\" The truncated text makes it difficult to assess the final verdict with complete certainty, but the overall tone is positive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,19 +46,19 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:34:24.613Z",
+    "scoredAt": "2026-02-02T18:36:56.295Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
@@ -70,7 +70,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
   "textWordCount": 1329,
@@ -92,5 +91,8 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250609225913",
-  "archiveOrgUrl": "http://web.archive.org/web/20250609225913/https://ew.com/theater/theater-reviews/merrily-we-roll-along-review-jonathan-groff-daniel-radcliffe-lindsay-mendez/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250609225913/https://ew.com/theater/theater-reviews/merrily-we-roll-along-review-jonathan-groff-daniel-radcliffe-lindsay-mendez/",
+  "rescoreCompletedAt": "2026-02-02T18:36:56.295Z",
+  "wordCount": 1329,
+  "tierReason": "Full review text"
 }

@@ -16,7 +16,7 @@
   "bwwThumb": "Up",
   "llmScore": {
     "score": 80,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 75,
       "high": 85
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite acknowledging flaws like an 'uneven, exposition-heavy book' and mechanical elements, the critic clearly recommends the show, calling it 'ravishing' and 'one of the best new musicals this season' while praising the performances, score, and emotional impact. | Gemini: Despite mentioning some flaws, the review ultimately strongly recommends the show, calling it 'ravishing' and 'one of the best new musicals this season.'",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic acknowledges flaws like an 'uneven, exposition-heavy book' but concludes with strong praise, calling it 'ravishing' and 'one of the best new musicals this season,' clearly recommending it. | GPT-4o: The review praises the musical as one of the best new musicals of the season, highlighting its captivating performances, eclectic score, and superb lighting design. Despite noting some flaws, the overall tone is highly enthusiastic and recommends it as a must-see. | Gemini: Despite mentioning some flaws, the review ultimately praises the show as \"ravishing\" and one of the best new musicals of the season, indicating a strong positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,26 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:26:34.070Z",
+    "scoredAt": "2026-02-02T18:28:57.095Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
+    "openaiScore": 90,
     "geminiScore": 82,
     "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "rescoreReason": "fullText added after excerpt-based scoring",

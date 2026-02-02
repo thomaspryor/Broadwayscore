@@ -9,15 +9,15 @@
   "bwwExcerpt": "In the end, it’s not “Gutenberg” the show but rather this odd coupling of comedic pals, both on stage and off, that delights. Hats off to them.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 65,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 64,
+    "score": 65,
     "confidence": "medium",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 60,
+      "high": 70
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic clearly enjoys Gad and Rannells' performances but finds the show itself increasingly tiresome with weak material that doesn't sustain interest through two acts. | GPT-4o: The review highlights the performances of Gad and Rannells as the main source of enjoyment, while criticizing the show's songs, lyrics, and overall engagement. The critic appreciates the comedic duo but finds the show itself lacking, resulting in a mixed recommendation. | Gemini: The review highlights the strong comedic pairing of Gad and Rannells as the primary draw, while noting that the show itself has shortcomings. The recommendation is positive but qualified, focusing on the actors' performances rather than the overall quality of the musical.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic finds the show's material increasingly tiresome and uninspired, but celebrates the lead performances as genuinely delightful, creating a mixed recommendation focused on the stars rather than the show itself. | GPT-4o: The review acknowledges the entertainment value of the performances by Gad and Rannells, but criticizes the show's concept, songs, and overall engagement. The praise for the actors is counterbalanced by the critique of the show's content, leading to a mixed verdict. | Gemini: The review is mixed on the show itself, but strongly praises the performances of Gad and Rannells, making it ultimately a positive experience worth seeing for their chemistry.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:38:03.987Z",
+    "scoredAt": "2026-02-02T17:58:13.041Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 67,
-    "previousVersion": "3.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 75,
+    "openaiScore": 68,
+    "geminiScore": 77,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

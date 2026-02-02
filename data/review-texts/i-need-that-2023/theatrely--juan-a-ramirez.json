@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The critic finds the play lacking in substance and direction, calling it 'dramatically inert' and criticizing its weak comedy, cheap sentimentality, and meandering dialogue that becomes 'grating.' | Gemini: The review is overwhelmingly negative, criticizing the play's inertness, weak comedy, and cheap sentimentality. The performances are described as adequate but not particularly compelling, and the direction is criticized.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic consistently criticizes the play as lacking movement, substance, and meaningful development, calling it 'dramatically inert' with 'weak comedy' and describing the direction as 'hands-thrown-up,' indicating clear non-recommendation. | GPT-4o: The review criticizes the play's lack of dramatic engagement, uninspired direction, and weak dialogue, suggesting it is not worth seeing. | Gemini: The review is largely negative, criticizing the play's lack of movement, weak comedy, cheap sentimentality, and meandering dialogue. The reviewer does not recommend seeing it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,26 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:50:38.916Z",
+    "scoredAt": "2026-02-02T18:22:11.762Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 25,
-    "previousVersion": "3.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": null,
+    "openaiScore": 45,
     "geminiScore": 45,
     "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
     "geminiBucket": "Negative",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Negative"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "bwwThumb": "Meh",
   "dtliExcerpt": "But after that initial bait-and-switch, not much in Rebeck’s dramatically inert play, or Moritz von Stuelpnagel hands-thrown-up direction, inspired a need to lean in for closer inspection.",

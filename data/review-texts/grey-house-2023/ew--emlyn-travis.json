@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Up",
   "originalScore": "B",
-  "assignedScore": 75,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 75,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review highlights genuine successes (subverting expectations, haunting story) but concludes with a significant flaw that the mystery doesn't provide enough clues for full comprehension. The B rating and mixed aggregator verdicts support this classification. | GPT-4o: The review acknowledges the play's success in subverting genre expectations and creating a compelling story, indicating a positive impression despite some reservations about the clarity of the narrative. | Gemini: The review highlights the show's success in subverting genre expectations and creating a haunting story, but notes that the mystery doesn't provide all the necessary clues, suggesting a positive but not overwhelmingly enthusiastic recommendation. The B rating also points to a positive assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the show's success in subverting expectations and creating compelling horror/heart elements, but notes the mystery doesn't provide sufficient clarity. The B rating supports a positive but qualified recommendation. | GPT-4o: The critic's B rating and the positive note about subverting expectations suggest a positive review. However, the mention of incomplete clues indicates some reservations, aligning with a solid recommendation with some caveats. | Gemini: The review highlights the show's success in subverting genre expectations and creating a haunting story, but also notes that the mystery doesn't provide all the necessary clues, suggesting a positive but not overwhelmingly enthusiastic recommendation. The B rating also supports this.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,7 +39,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:26:27.757Z",
+    "scoredAt": "2026-02-02T17:55:15.791Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -47,19 +47,19 @@
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
+    "claudeScore": 73,
     "openaiScore": 75,
     "geminiScore": 75,
-    "claudeBucket": "Mixed",
+    "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "While the eerie beginning may draw inspiration from tried-and-true horror tropes, Grey House, which recently opened at the Lyceum Theatre on Broadway, succeeds in subverting both the genre and audience expectations by weaving together a haunting story of horror and heart. Unfortunately, Holloway's puzzle-box mystery doesn't give viewers all the clues they need to fully comprehend the tragic tale it's trying to tell.",
   "sources": [

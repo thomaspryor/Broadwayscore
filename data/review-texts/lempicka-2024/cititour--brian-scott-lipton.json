@@ -9,15 +9,15 @@
   "bwwExcerpt": "Yet, under Rachel Chavkin’s surprisingly frazzled direction, the show, now at the Longacre Theatre, often feels like you’re watching someone put together a misguided collage – one that often incorporates elements of other stronger musicals, most notably “Cabaret” -- as it struggles to decide what story it wants to tell us and what message we’re supposed to take ith us as we leave the theatre. Women can do anything? Women never get the same credit as men? Women are brilliant? Art isn’t easy? You",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 45,
-    "confidence": "medium",
+    "score": 42,
+    "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 37,
+      "high": 47
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic finds the musical 'muddled' with 'shortcomings,' criticizes the unmemorable score, and concludes with a clear dismissal using a paint pun that suggests audiences should avoid it. | GPT-4o: The review highlights several shortcomings, such as the muddled direction, lack of a memorable score, and unnecessary characters, culminating in a clear personal verdict to 'brush the whole experience off.' | Gemini: The critic clearly states he would rather \"brush the whole experience off,\" indicating a negative recommendation. He cites issues with the direction, score, and overall narrative.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic delivers a clear negative verdict with the closing dismissive quip, criticizing the muddled direction, unmemorable score, and unnecessary characters despite acknowledging some visual strengths. | GPT-4o: The review highlights several issues with the production, including a muddled story, lack of a memorable score, and unnecessary characters, leading to a clear recommendation to skip the show. | Gemini: The review is largely negative, criticizing the direction, the score, and the overall storytelling. The final line explicitly states the reviewer would rather \"brush the whole experience off,\" indicating a negative recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:31:49.995Z",
+    "scoredAt": "2026-02-02T18:28:19.559Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 44,
+    "previousScore": 45,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 48,
+    "openaiScore": 40,
     "geminiScore": 45,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "scoreDelta": 6,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

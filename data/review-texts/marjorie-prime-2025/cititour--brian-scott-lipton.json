@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the acting as 'exquisitely acted' and 'truly outstanding,' calls it 'thought-provoking,' and describes strong individual performances. While noting some predictability in later scenes, the overall assessment is appreciative and recommending. | GPT-4o: The review praises the acting, direction, and the play's thought-provoking nature, indicating a strong recommendation to see the show. | Gemini: The review is generally positive, highlighting the acting and thought-provoking nature of the play. While it mentions some predictability in later scenes, the overall tone suggests a recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review consistently praises the performances as 'exquisitely acted,' 'perfectly-calibrated,' 'truly outstanding,' and 'superb,' while describing the play as 'thought-provoking' and 'decidedly human.' Despite noting some predictable elements in the final scenes, the overall assessment is clearly positive and recommending. | GPT-4o: The review praises the acting and direction, describing the production as 'exquisitely acted' and highlighting the performances of the cast. The tone is positive and recommends seeing the play for its thought-provoking nature and strong performances. | Gemini: The review highlights the play's thought-provoking nature and the excellent performances, but also notes that some scenes may be predictable or unconvincing, leading to a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:33:17.650Z",
+    "scoredAt": "2026-02-02T18:32:31.259Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 81,
-    "geminiScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

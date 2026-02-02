@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic dismisses the entire biographical jukebox musical trend, calls this production ill-conceived, questions its relevance and necessity, and provides no positive endorsement despite mentioning the star's talent. | GPT-4o: The review is overwhelmingly negative, criticizing the musical's concept, relevance, and execution. The critic questions the necessity of the production and its failure to provide a meaningful portrait of Bobby Darin. | Gemini: The review expresses disappointment with the musical, questioning its relevance and failing to provide a clear portrait of Bobby Darin. The critic implies that the musical is not worth the audience's time.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic systematically dismantles the show across all elements - book, performances, direction, and concept - while explicitly advising audiences to skip it and listen to records instead. | GPT-4o: The review is overwhelmingly negative, criticizing the show for its lack of depth, poor execution, and failure to justify its existence. The critic suggests audiences are better off avoiding the show and listening to Bobby Darin's original records instead. | Gemini: The review is overwhelmingly negative, criticizing the book, the use of Darin's music, and the overall portrayal of Darin. The critic explicitly suggests that audiences would be better off listening to Darin's records at home.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,21 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:16:10.859Z",
+    "scoredAt": "2026-02-02T18:27:55.083Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 25,
-    "previousVersion": "5.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 20,
+    "openaiScore": 15,
     "geminiScore": 45,
     "claudeBucket": "Negative",
     "openaiBucket": "Pan",
     "geminiBucket": "Negative",
-    "scoreDelta": 25,
+    "scoreDelta": 30,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

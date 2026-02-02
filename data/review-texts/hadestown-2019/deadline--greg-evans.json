@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language like 'most thrilling new original musical of the season' and 'remarkable myth-making,' positioning this as essential theater alongside other standout productions. | GPT-4o: The review uses highly enthusiastic language, calling Hadestown 'the most thrilling new original musical of the season' and praising its direction and cast. This indicates a strong recommendation, classifying it as a must-see. | Gemini: The review uses highly positive language like \"thrilling\" and praises the direction and cast, indicating a strong recommendation despite being a curated excerpt.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language like 'most thrilling' and 'remarkable' multiple times, placing it among exceptional Broadway productions and praising all creative elements without reservation. | GPT-4o: The review describes Hadestown as 'the most thrilling new original musical of the season' and praises the direction and writing, indicating a strong, enthusiastic recommendation. | Gemini: The review uses highly positive language like \"most thrilling\" and \"irresistible rhythms\" to describe the musical, indicating a strong recommendation despite the truncated text.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,12 +40,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:58:56.470Z",
+    "scoredAt": "2026-02-02T17:59:07.665Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
-    "previousVersion": "3.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,

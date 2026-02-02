@@ -7,7 +7,7 @@
   "publishDate": "March 7, 2024",
   "dtliExcerpt": "The excellent Broadway revival, directed by Scott Ellis for the Roundabout Theatre Company, starring Amy Ryan and Liev Schreiber, presents the play without any intentional new slant on its ideas, but it gives audiences a chance to consider them in an altered context.",
   "originalScore": null,
-  "assignedScore": 59,
+  "assignedScore": 61,
   "humanReviewScore": 77,
   "humanReviewNote": "Excerpt says 'the excellent Broadway revival' — LLM misread 'without new slant' as criticism. Designation: Recommended. Both thumbs Up.",
   "dtliThumb": "Up",
@@ -16,11 +16,11 @@
   "bwwExcerpt": "In the two decades since John Patrick Shanley’s “Doubt” premiered—winning a best play Tony and a Pulitzer Prize—the mystery at its core, whether a priest has molested a child, has hardly grown less grave. But cultural changes now cast their own shadows over Mr. Shanley’s taut, gripping drama. The excellent Broadway revival, directed by Scott Ellis for the Roundabout Theatre Company, starring Amy Ryan and Liev Schreiber, presents the play without any intentional new slant on its ideas, but it giv",
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 59,
+    "score": 61,
     "confidence": "medium",
     "range": {
-      "low": 54,
-      "high": 64
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The excerpt suggests a production that lacks artistic vision or fresh perspective, but the fragmentary nature of the text and contradictory aggregator signals make it difficult to determine the full verdict. | GPT-4o: The review excerpt suggests a straightforward presentation without innovation, which might imply a lack of excitement but not necessarily a negative experience. The aggregator context indicates a positive reception, supporting a positive score with some reservations. | Gemini: The review excerpt suggests a lack of innovation or strong opinion, implying a neutral or mixed assessment. The aggregator context suggests a slightly positive leaning, but the limited text makes it difficult to be certain.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt suggests a lack of fresh perspective but doesn't clearly recommend or discourage. With truncated text and aggregator verdicts showing 'Up', the full review likely contains more positive elements not captured in this neutral excerpt. | GPT-4o: The quote suggests a lack of innovation or fresh perspective, which implies a neutral stance. The absence of strong positive or negative language indicates a mixed review. | Gemini: The review excerpt suggests a lack of innovation or fresh perspective, indicating a neutral or lukewarm assessment. The aggregator verdicts suggest a slightly positive leaning, but the single quote is not strong enough to push it into the 'Positive' bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,27 +41,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:32:21.793Z",
+    "scoredAt": "2026-02-02T17:54:48.792Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "3.0.0"
+    "previousScore": 59,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,
-    "openaiScore": 74,
+    "openaiScore": 65,
     "geminiScore": 58,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 16,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "archivePath": "data/archives/reviews/doubt-2024/wsj--charles-isherwood_2026-02-02.html",
@@ -82,17 +82,12 @@
     "Word count too low: 85 (min: 300)"
   ],
   "rescoreCompletedAt": "2026-01-29T14:31:51.707Z",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "invalid",
+  "wordCount": 9,
   "fullText": "https://www.wsj.com/articles/doubt-review-broadway-revivial-roundabout-amy-ryan-liev-schreiber-zoe-kazan-quincy-tyler-bernstine-ae927a88\n\nAmy Ryan and Zoe Kazan Photo: Joan Marcus",
   "isFullReview": false,
   "textWordCount": 9,
   "textQuality": "truncated",
-  "truncationSignals": [
-    "no_ending_punctuation",
-    "shorter_than_excerpt",
-    "possible_mid_word_cutoff"
-  ],
   "textStatus": "truncated",
   "_removedDesignation": {
     "designation": "Recommended",
@@ -101,5 +96,6 @@
     "hadPositiveThumb": true,
     "dtliThumb": "Up",
     "bwwThumb": "Up"
-  }
+  },
+  "tierReason": "Garbage content: Content is mostly URL"
 }

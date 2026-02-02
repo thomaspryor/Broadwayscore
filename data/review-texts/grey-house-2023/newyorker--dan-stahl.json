@@ -5,19 +5,19 @@
   "criticName": "Dan Stahl",
   "url": "https://www.newyorker.com/goings-on-about-town/theatre/grey-house-07-10-23",
   "publishDate": "June 30, 2023",
-  "fullText": "Privacy CenterCurrently, only residents from GDPR countries and certain US states can opt out of Tracking Technologies through our Consent Management Platform. Additional options regarding these technologies may be available on your device, browser, or through industry options like AdChoices. Please see our Privacy Policy for more information.\n\nenPrivacy PolicyPowered bySkip to main contentA married couple, wandering through the woods after getting in a car accident, come across a cabin. Nobody answers the door, so they let themselves in. “I’ve seen this movie,” the husband says, surveying the cluttered interior. “We don’t make it.” He has the right idea, but in this case it’s a play: Levi Holloway’s “Grey House,” as smart as it is scary. The cabin turns out to be inhabited by the foulmouthed Raleigh (an unnervingly crotchety Laurie Metcalf), plus four oddball girls and a silent boy who might be her children. There’s also a basement door that keeps opening by itself (the creepy, creaky set is by Scott Pask) and a fridge filled with “the nectar of dead men,” if you believe the girls. They’re frighteningly convincing, as are most of the ghoulish effects and all the performers. Joe Mantello directs one hell of a show.(Lyceum; through Sept. 3.)",
+  "fullText": "Skip to main contentA married couple, wandering through the woods after getting in a car accident, come across a cabin. Nobody answers the door, so they let themselves in. “I’ve seen this movie,” the husband says, surveying the cluttered interior. “We don’t make it.” He has the right idea, but in this case it’s a play: Levi Holloway’s “Grey House,” as smart as it is scary. The cabin turns out to be inhabited by the foulmouthed Raleigh (an unnervingly crotchety Laurie Metcalf), plus four oddball girls and a silent boy who might be her children. There’s also a basement door that keeps opening by itself (the creepy, creaky set is by Scott Pask) and a fridge filled with “the nectar of dead men,” if you believe the girls. They’re frighteningly convincing, as are most of the ghoulish effects and all the performers. Joe Mantello directs one hell of a show.(Lyceum; through Sept. 3.)",
   "showScoreExcerpt": "\"They’re frighteningly convincing, as are most of the ghoulish effects and all the performers. Joe Mantello directs one hell of a show.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/grey-house-broadway",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 79,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 77,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt shows clear praise for performances, effects, and direction with 'frighteningly convincing' and 'one hell of a show,' but as a single curated quote, I'm scoring conservatively within the positive range. | GPT-4o: The excerpt uses strong, positive language indicating a high level of enthusiasm for the production, particularly highlighting the direction and performances. Despite the single excerpt warning, the language suggests a strong recommendation. | Gemini: The phrase \"one hell of a show\" suggests a positive recommendation, although the limited excerpt makes it difficult to gauge the full extent of the critic's enthusiasm.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite truncation warning, the review's tone is clearly positive with phrases like 'as smart as it is scary' and the emphatic closing 'one hell of a show.' The critic praises performances, effects, and direction consistently. | GPT-4o: The review describes the show as 'smart' and 'scary' with 'frighteningly convincing' effects and performances. The phrase 'one hell of a show' indicates a strong, enthusiastic recommendation. | Gemini: Despite the truncated text, the phrase \"Joe Mantello directs one hell of a show\" indicates a positive recommendation. The additional context provided by the aggregator excerpt reinforces this assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:24:36.681Z",
+    "scoredAt": "2026-02-02T17:55:29.209Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "5.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
+    "claudeScore": 78,
     "openaiScore": 90,
-    "geminiScore": 78,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -60,14 +60,14 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "truncated",
+  "wordCount": 153,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
   "isFullReview": false,
-  "textWordCount": 203,
+  "textWordCount": 153,
   "archivePath": "data/archives/reviews/grey-house-2023/newyorker--dan-stahl_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:37:26.253Z",
+  "textFetchedAt": "2026-02-02T16:37:46.979Z",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
@@ -83,6 +83,12 @@
       "error": "Paywall detected - login may have failed"
     },
     {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Paywall detected"
+    },
+    {
       "tier": 2,
       "method": "scrapingbee",
       "success": true
@@ -90,11 +96,10 @@
   ],
   "fetchTier": 2,
   "textQuality": "partial",
-  "truncationSignals": [],
   "textStatus": "incomplete",
   "sourceMethod": "scrapingbee",
   "textIssues": [
-    "Word count too low: 203 (min: 300)"
+    "Word count too low: 153 (min: 300)"
   ],
   "rescoreCompletedAt": "2026-02-01T17:35:47.094Z",
   "_removedDesignation": {
@@ -105,5 +110,6 @@
     "dtliThumb": "none",
     "bwwThumb": "none"
   },
-  "designation": "Recommended"
+  "designation": "Recommended",
+  "tierReason": "Short text (153 words)"
 }

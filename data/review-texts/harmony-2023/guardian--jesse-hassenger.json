@@ -10,18 +10,18 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 52,
-    "confidence": "low",
+    "score": 60,
+    "confidence": "medium",
     "range": {
-      "low": 47,
-      "high": 57
+      "low": 55,
+      "high": 65
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Negative, gemini=Mixed | Claude: The critic systematically identifies major flaws: confusion in structure, weak comedy, maudlin execution, and overworked grandiosity. While acknowledging some pleasures, the overall assessment is clearly negative with no recommendation to see it. | Gemini: The review points out flaws in the show's writing and pacing, but also acknowledges some enjoyable aspects like the production design and the Harmonists' vocal performance. This suggests a mixed experience with both positive and negative elements.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Despite acknowledging some pleasures and good production design, the critic consistently criticizes the show's confused structure, maudlin tone, overworked grandiosity, and fundamental failure to make its subject compelling, concluding it's an 'overworked tizzy.' | GPT-4o: The review acknowledges some positive aspects, such as the production design and moments of quiet heartbreak, but overall criticizes the show for being overworked and maudlin. The tone suggests a mixed reception with some redeeming qualities. | Gemini: The review points out flaws in the show's book and pacing, but also acknowledges some enjoyable aspects like the production design and the Harmonists' vocal performance. It doesn't strongly recommend or discourage seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,31 +39,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:09:28.307Z",
+    "scoredAt": "2026-02-02T18:05:32.079Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 42,
-    "previousVersion": "5.0.0"
+    "previousScore": 52,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": null,
+    "openaiScore": 58,
     "geminiScore": 62,
     "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
     "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "dateUnknown": true,
   "dateSource": "historical-review",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 1256,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 45,
   "isFullReview": true,
@@ -80,7 +81,6 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "rescoreCompletedAt": "2026-02-01T15:04:15.800Z",
@@ -91,5 +91,6 @@
     "hadPositiveThumb": false,
     "dtliThumb": "none",
     "bwwThumb": "Down"
-  }
+  },
+  "tierReason": "Full review text"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Josh Gad and Andrew Rannells are absolutely delightful as Bud and Doug, two hapless musical theater writers who have penned what they believe is the next 'Hamilton.'",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Josh Gad and Andrew Rannells are absolutely delightful as Bud and Doug, two hapless musical theater writers who have penned what they believe is the next 'Hamilton.'",
   "llmScore": {
-    "score": 75,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows clear praise for the lead performances with 'absolutely delightful', but as a single curated quote from a larger review, the overall verdict remains uncertain. | GPT-4o: The excerpt praises the performances of the lead actors, suggesting a positive view of the production. However, due to the single excerpt warning, the overall sentiment may not be fully captured, leading to a conservative score within the Positive range. | Gemini: The review excerpt praises the performances of the leads, suggesting a positive experience, but the limited text and single excerpt warning necessitate a score in the lower end of the positive range.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses 'absolutely delightful' which is strong positive language about the lead performances. However, with only one excerpt available, there's some uncertainty about the overall verdict. | GPT-4o: The excerpt highlights the performances of Josh Gad and Andrew Rannells as 'absolutely delightful,' suggesting a strong positive impression of the show. Given the single excerpt warning, the score is placed at the upper end of the Positive bucket. | Gemini: The phrase \"absolutely delightful\" indicates a positive sentiment, suggesting the reviewer enjoyed the performances. With only one excerpt available, it's difficult to gauge the overall recommendation strength, but the positive language warrants a score on the higher end of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,21 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:36:20.997Z",
+    "scoredAt": "2026-02-02T17:57:21.771Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 77,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -68,7 +68,7 @@
   "previousLlmScore": 77,
   "textWordCount": 768,
   "archivePath": "data/archives/reviews/gutenberg-2023/nypost--johnny-oleksinski_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:33:55.244Z",
+  "textFetchedAt": "2026-02-02T16:32:58.648Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -87,7 +87,7 @@
   "archiveOrgTimestamp": "20240604194650",
   "archiveOrgUrl": "http://web.archive.org/web/20240604194650/https://nypost.com/2023/10/13/gutenberg-the-musical-review-gad-and-rannells-have-almost-too-much-fun/",
   "rescoreCompletedAt": "2026-02-01T20:00:11.824Z",
-  "contentTier": "needs-rescrape",
+  "contentTier": "complete",
   "contentTierReason": "Full review text",
   "garbageReasoningDetected": "stub-or-fragment",
   "garbageReasoningFlaggedAt": "2026-02-02T00:01:17.063Z",
@@ -101,5 +101,7 @@
   },
   "previousUrl": "https://nypost.com/2023/10/13/entertainment/gutenberg-the-musical-review-josh-gad-and-andrew-rannells-are-a-delight/",
   "urlDiscoveredAt": "2026-02-02T15:58:41.490Z",
-  "urlDiscoveryMethod": "google-serp"
+  "urlDiscoveryMethod": "google-serp",
+  "wordCount": 768,
+  "tierReason": "Full review text"
 }

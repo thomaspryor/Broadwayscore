@@ -62,8 +62,8 @@
   "bwwThumb": "Up",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 1181,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
   "isFullReview": true,
@@ -80,7 +80,6 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "rescoreCompletedAt": "2026-02-01T17:35:08.308Z",
@@ -91,5 +90,6 @@
     "hadPositiveThumb": true,
     "dtliThumb": "none",
     "bwwThumb": "Up"
-  }
+  },
+  "tierReason": "Full review text"
 }

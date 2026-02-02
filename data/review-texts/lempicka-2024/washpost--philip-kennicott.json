@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
   "showScoreExcerpt": "\"An artist with a big, messy life gets a big, messy musical\"",
@@ -18,11 +18,11 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 69,
-    "confidence": "low",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 64,
-      "high": 74
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic finds the show problematic in its ambitious scope and execution, calling it 'big and messy,' but acknowledges standout performances and genuine theatrical moments, particularly praising Iman and Leavel while noting the production's stylish direction. | Gemini: The review acknowledges flaws in the musical's structure and historical representation, but praises the performances, direction, and some musical numbers, suggesting it's worth seeing despite its shortcomings.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Kennicott finds the musical ambitious but flawed, praising individual performances (especially Iman and Leavel) and stylish direction while criticizing the overstuffed narrative and lack of character coherence. The review neither recommends nor discourages attendance. | GPT-4o: The review highlights both strengths and weaknesses of the production, noting its stylish direction and some standout performances, but also describing it as 'big and messy' with unclear character motivations. The overall tone suggests a mixed experience with notable highlights. | Gemini: The review acknowledges flaws in the musical's structure and music, but praises the performances, direction, and some individual moments, suggesting it's worth seeing despite its shortcomings.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,26 +43,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:28:33.744Z",
+    "scoredAt": "2026-02-02T18:29:47.188Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
-    "previousVersion": "5.0.0"
+    "previousScore": 69,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
+    "openaiScore": 65,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
     "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 52,

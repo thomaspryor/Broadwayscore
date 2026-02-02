@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The jukebox musical 'The Heart of Rock & Roll,' built around the hits of Huey Lewis and the News, is energetic and well-performed but feels more like a concert than a cohesive story.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "The jukebox musical 'The Heart of Rock & Roll,' built around the hits of Huey Lewis and the News, is energetic and well-performed but feels more like a concert than a cohesive story.",
   "needsScoring": true,
   "llmScore": {
-    "score": 76,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Green acknowledges the show's generic plot and clichés but consistently praises the performances, staging, and entertainment value, concluding with a clear endorsement of its solid craftsmanship and good spirits. | GPT-4o: The review highlights the show's charm, humor, and solid performances, while acknowledging its sentimentality and clichés. The overall tone is positive, recommending the show for its enjoyable nature despite some flaws. | Gemini: The review acknowledges the show's flaws (clichés, sentimentality) but praises the performances, staging, and overall good spirits. The critic ultimately suggests it's enjoyable and worth seeing despite its shortcomings.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Green recommends the show despite acknowledging its generic plot and clichés, praising the performances, humor, and craftsmanship while concluding audiences should embrace its unpretentious entertainment value. | GPT-4o: The review acknowledges the show's clichés and sentimentality but praises its humor, performances, and solid craftsmanship. It suggests the show is enjoyable and worth seeing despite not being groundbreaking. | Gemini: The review acknowledges the show's flaws (clichés, sentimentality) but ultimately finds it enjoyable due to the performances, humor, and staging. The critic suggests it's worth seeing despite not being a groundbreaking work.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,23 +43,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:22:51.529Z",
+    "scoredAt": "2026-02-02T18:11:51.882Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 63,
+    "previousScore": 76,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (33 words)",
   "ensembleData": {
-    "claudeScore": 73,
+    "claudeScore": 76,
     "openaiScore": 78,
-    "geminiScore": 78,
+    "geminiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -98,11 +98,12 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "archiveOrgTimestamp": "20250827035113",
   "archiveOrgUrl": "http://web.archive.org/web/20250827035113/https://www.nytimes.com/2024/04/22/theater/heart-of-rock-and-roll-review.html",
   "duplicateTextOf": "nytimes--elisabeth-vincentelli.json",
-  "rescoreCompletedAt": "2026-02-02T14:22:51.529Z"
+  "rescoreCompletedAt": "2026-02-02T14:22:51.529Z",
+  "wordCount": 865,
+  "tierReason": "Full review text"
 }

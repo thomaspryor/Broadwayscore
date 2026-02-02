@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "Even though “Jaja’s African Hair Braiding” takes place entirely in the hair salon, as does “Steel Magnolias,” the play is a series of short skits, as is “The Women”; and like that Boothe Luce play, many of those scenes lack a good button. They tend to dribble away dramatically rather than end with a comic bang.",
@@ -19,11 +19,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The review praises specific performances and the immigration themes but criticizes weak direction of supporting roles, borrowed plot elements, and structural issues with scene endings. | Gemini: The review highlights both strengths and weaknesses. While praising the developed characters and the integration of the immigration crisis, it criticizes the overdrawn caricatures, predictable plot points, and weak scene endings. This balance of positive and negative aspects suggests a mixed recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review praises specific elements like the immigration storyline and certain performances, but criticizes the structure, caricatured characters, and borrowed plot elements. The critic finds merit but significant flaws. | GPT-4o: The review acknowledges successful character development and humor but criticizes the play for its lack of dramatic cohesion and overdrawn caricatures. The overall tone suggests a mixed reception with some positive elements. | Gemini: The review highlights both strengths (character development, topicality) and weaknesses (caricatured bit roles, predictable plot points), leading to a positive but qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,26 +44,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:53:18.665Z",
+    "scoredAt": "2026-02-02T18:25:11.370Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
-    "geminiScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
     "claudeBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 44,

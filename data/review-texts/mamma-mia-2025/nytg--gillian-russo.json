@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges the show's thin story but ultimately celebrates the performances and delivers a clear positive recommendation, ending with an enthusiastic rhetorical question that shows the critic's enjoyment. | GPT-4o: The review praises the performances, the enduring appeal of the musical, and its ability to deliver fun and escapism. The critic's enthusiasm and positive language suggest a strong recommendation. | Gemini: The review is largely positive, highlighting the talented actresses and the fun, escapist nature of the show. While acknowledging the thin story, the reviewer ultimately recommends it as a source of pure fun.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges the show's thin story but enthusiastically praises the performances and delivers a clear recommendation, ending with an affectionate play on ABBA lyrics that signals enjoyment. | GPT-4o: The review is overwhelmingly positive, highlighting the talented performances and the enduring appeal of the show. The critic praises the production's ability to provide pure fun and escapism, making it a strong recommendation. | Gemini: The review is generally positive, highlighting the talented actresses and the fun, escapist nature of the show. While acknowledging the thin story, the critic ultimately recommends it as pure entertainment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,12 +37,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:27:26.537Z",
+    "scoredAt": "2026-02-02T18:32:05.134Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 80,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,

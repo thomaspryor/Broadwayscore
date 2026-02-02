@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"McAdams works in ways that tend toward the understated, yet precisely observed.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/mary-jane-broadway",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 78,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises the production's emotional depth, McAdams's performance as 'more than up for the task,' and the ensemble work, with appreciation for the director's vision and set design creating a powerful theatrical experience. | Gemini: The review is largely positive, praising McAdams' performance and the production's ability to find grace in a difficult situation. While acknowledging the potentially difficult subject matter, the critic ultimately recommends seeing the show.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the production's 'understated yet gutting quality,' McAdams's 'more than up for the task' performance, and the director's 'eye for detail,' while acknowledging the difficult subject matter and some reservations about accessibility. | GPT-4o: The review praises the production's delicate tonal balance, McAdams's strong performance, and the effective direction and script, indicating a strong recommendation to see the show. | Gemini: The review is largely positive, praising McAdams' performance and the production's ability to balance delicate tones. While acknowledging the difficult subject matter, the critic ultimately finds the production worthwhile, making it a solid but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:20:07.723Z",
+    "scoredAt": "2026-02-02T18:35:06.782Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
+    "openaiScore": 82,
     "geminiScore": 78,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "sources": [
     "dtli",

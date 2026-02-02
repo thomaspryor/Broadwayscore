@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 64,
+    "score": 62,
     "confidence": "medium",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges some strong individual performances but ultimately criticizes the show as cliché-ridden with fundamental structural problems that even talented direction cannot overcome. | GPT-4o: The review highlights some strong performances and moments, particularly from Amber Iman and Beth Leavel, but criticizes the overall execution as cliché-ridden and lacking depth. The production's visual and auditory elements are described as distracting rather than enhancing, leading to a mixed impression. | Gemini: The review highlights strong performances and moments but ultimately criticizes the show's cliché-ridden nature and the director's inability to overcome the script's weaknesses. This suggests a mixed experience with both positive and negative aspects.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review praises individual performances (especially Iman and Leavel) and acknowledges the director's past successes, but concludes that the production fails due to clichéd writing and inability to make the central character human and compelling. | GPT-4o: The review acknowledges some strong performances and moments, particularly from Amber Iman and Beth Leavel, but criticizes the overall execution of the show as cliché-ridden and lacking depth. The mixed tone is clear, with praise for individual elements but overall reservations about the production. | Gemini: The review highlights strong performances and some standout numbers, but ultimately criticizes the cliché-ridden and superficial portrayal of the artist, leading to a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,30 +46,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:31:59.564Z",
+    "scoredAt": "2026-02-02T18:29:16.966Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 45,
+    "previousScore": 64,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "ensembleData": {
-    "claudeScore": 42,
+    "claudeScore": 58,
     "openaiScore": 65,
     "geminiScore": 62,
-    "claudeBucket": "Negative",
+    "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 23,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
-  "rescoreCompletedAt": "2026-02-02T03:31:59.564Z"
+  "rescoreCompletedAt": "2026-02-02T03:31:59.564Z",
+  "wordCount": 642,
+  "tierReason": "Full review text"
 }

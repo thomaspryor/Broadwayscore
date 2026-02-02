@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Though the play boasts an impressive creative team and a committed cast, 'Grey House' ultimately feels like a missed opportunity to deliver genuine scares on Broadway.",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 46,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Though the play boasts an impressive creative team and a committed cast, 'Grey House' ultimately feels like a missed opportunity to deliver genuine scares on Broadway.",
   "llmScore": {
-    "score": 45,
+    "score": 46,
     "confidence": "medium",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 41,
+      "high": 51
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The phrase 'missed opportunity' clearly indicates disappointment and lack of recommendation, despite acknowledging some positive elements like the creative team and cast commitment. | GPT-4o: The review highlights the play's failure to achieve its intended effect despite having a strong team, suggesting a negative overall impression. However, due to the single excerpt warning, the score is placed conservatively in the middle of the negative range. | Gemini: The review acknowledges the impressive team and cast but concludes that the play is a 'missed opportunity,' suggesting a mixed or neutral recommendation. Given the single excerpt, a score in the middle of the 'Mixed' bucket is appropriate.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: Despite acknowledging the quality of the creative team and cast, the critic explicitly states the show 'ultimately feels like a missed opportunity,' indicating clear disappointment and lack of recommendation. | GPT-4o: The review suggests that despite having a strong creative team and cast, the play fails to deliver on its promise, indicating a negative assessment. The use of 'missed opportunity' implies disappointment, leading to a negative verdict. | Gemini: The review acknowledges the impressive team and cast but concludes that the play is a 'missed opportunity,' indicating a mixed assessment rather than a clear recommendation or rejection.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,21 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:26:30.657Z",
+    "scoredAt": "2026-02-02T17:56:35.556Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 42,
-    "previousVersion": "5.0.0"
+    "previousScore": 45,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 45,
+    "claudeScore": 42,
+    "openaiScore": 50,
     "geminiScore": 62,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "scoreDelta": 17,
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

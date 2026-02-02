@@ -9,15 +9,15 @@
   "bwwExcerpt": "“Why were they voguing?” my companion asks at intermission, referring to a dance sequence early in the show. “Ah, that makes sense,” she responds with a slightly perplexed look after I explain the Madonna connection. Herein lies Lempicka’s challenge: the musical wants to capitalize on Madonna and other pop stars’ notoriety along with sense of agency uncommon to female artists of the era, but its creators have stretched the canvas so thin that the brush strokes crack. Brian",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 61,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 62,
+    "score": 61,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The review criticizes execution and structure ('stretched the canvas so thin that the brush strokes crack') but praises the lead performance and finds meaningful moments, particularly in LGBTQ+ representation. The critic acknowledges flaws while noting the show's ambitions and some successes. | Gemini: The review highlights both positive and negative aspects of the show. While praising Espinosa's performance and the show's LGBTQ+ visibility, it also criticizes the thin plot, surface-level connections, and diluted real-life final chapters. The overall tone suggests a mixed experience, not strongly recommending or discouraging.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review criticizes many aspects (thin plot, surface-level connections, problematic costume design) but praises Espinosa's performance and acknowledges the show succeeds in making Lempicka a complex character. The final paragraph suggests audiences will decide, indicating neither strong recommendation nor dismissal. | GPT-4o: The review highlights several issues with the production, such as a lack of depth in character connections and a thin narrative. However, it also acknowledges moments of success, particularly in LGBTQ+ representation. The truncated nature of the text suggests caution, but the overall tone leans towards mixed. | Gemini: The review points out several flaws in the musical's execution, such as a thin plot and surface-level connections. However, it also acknowledges some redeeming qualities, such as Espinosa's performance and the song \"Woman Is,\" which breaks through the show's construct.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:26:54.626Z",
+    "scoredAt": "2026-02-02T18:29:09.367Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 52,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
+    "openaiScore": 58,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "rescoreReason": "scored on brief excerpt, now has fullText",

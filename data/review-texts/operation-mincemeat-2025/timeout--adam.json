@@ -15,8 +15,8 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "invalid",
+  "wordCount": 1568,
   "llmScore": {
     "score": 62,
     "confidence": "medium",
@@ -83,11 +83,6 @@
   ],
   "fetchTier": 4,
   "textQuality": "truncated",
-  "truncationSignals": [
-    "no_ending_punctuation",
-    "has_footer_text",
-    "possible_mid_word_cutoff"
-  ],
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251115171727",
@@ -101,5 +96,6 @@
     "hadPositiveThumb": false,
     "dtliThumb": "MEH",
     "bwwThumb": "none"
-  }
+  },
+  "tierReason": "Garbage content: Newsletter form: \"Thanks for subscribing\""
 }

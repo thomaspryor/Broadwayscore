@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review shows appreciation for technical elements like lighting and performances but criticizes the story as weak and contrived. The aggregator excerpts confirm a 'flat' overall assessment despite some positive elements. | GPT-4o: The review highlights strong performances and choreography but criticizes the story and its execution. The truncated text suggests a lack of a clear final verdict, but the excerpts indicate a balanced view with both strengths and weaknesses noted. | Gemini: The review points out several issues with the story and characters, but also praises aspects like the set design and the actors' performances. The truncated text makes it difficult to determine a final recommendation, but the overall tone suggests a mixed reaction.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review shows appreciation for technical elements like choreography and vocals but criticizes the weak story and false dramatic choices. The truncated text and aggregator context suggest continuing reservations about the show's substance. | GPT-4o: The review highlights strong performances and choreography but criticizes the story as lacking depth and authenticity. The truncated text suggests a lack of a clear positive or negative final verdict, leading to a mixed assessment. | Gemini: The review highlights some positive aspects like the staging and performances, but also criticizes the story and character development. The truncated ending makes it difficult to determine the overall recommendation, but the aggregator context suggests a mixed reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,11 +40,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:53:37.114Z",
+    "scoredAt": "2026-02-02T18:18:14.896Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 63,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {

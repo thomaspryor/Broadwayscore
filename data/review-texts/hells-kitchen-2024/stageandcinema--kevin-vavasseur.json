@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses emphatic language like 'PHENOMENAL,' calls it 'thrilling' and 'entertaining,' praises it as having 'the best music currently on Broadway,' and describes it as 'sumptuous, shining, satisfying' with only minor reservations about choreography. | GPT-4o: The review is overwhelmingly positive, using strong language to praise the show as phenomenal, thrilling, and entertaining. The critic highlights the music, performances, and overall production quality, indicating a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, highlighting the show's many strengths and only mentioning one minor drawback. The critic clearly enjoyed the production and recommends it.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review opens with enthusiastic praise calling it 'PHENOMENAL' and 'the best music currently on Broadway,' followed by detailed appreciation of performances, direction, and production elements with only minor criticism about choreography. | GPT-4o: The review is overwhelmingly positive, describing the show as phenomenal, thrilling, and entertaining, with high praise for the music, performances, and production elements. The minor critique of the choreography does not significantly detract from the overall enthusiastic recommendation. | Gemini: The review is overwhelmingly positive, using strong adjectives like \"sumptuous, shining, satisfying\" and praising various aspects of the production. While there is a minor critique about the choreography, the overall tone indicates a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,15 +36,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:53:20.632Z",
+    "scoredAt": "2026-02-02T18:18:01.417Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
+    "previousScore": 92,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 89,
+    "claudeScore": 88,
     "openaiScore": 95,
     "geminiScore": 82,
     "claudeBucket": "Rave",

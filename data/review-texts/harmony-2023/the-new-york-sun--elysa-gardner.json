@@ -9,15 +9,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises Manilow's musical contributions and describes performances with positive descriptors like 'buoyancy and wit,' but with only one truncated excerpt and awareness of potential cherry-picking, I'm scoring conservatively in the lower positive range. | GPT-4o: The review highlights the effective musical contributions and entertaining production numbers, suggesting a positive experience. However, due to the single excerpt and text quality warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The review highlights positive aspects of the music and performances, suggesting a generally favorable impression. However, the limited excerpt and mention of 'melodrama, at times' indicates some reservations, placing it in the lower end of the 'Positive' bucket.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows appreciation for Manilow's musical contributions and Carlyle's performance, but the text is clearly truncated mid-sentence and represents only a small portion of the full review, making the overall verdict uncertain. | GPT-4o: The excerpt highlights positive aspects of the production, such as the quality of the music and the engaging staging. However, due to the single excerpt warning, there's some uncertainty about the overall tone, leading to a medium confidence level. | Gemini: The review excerpt praises Manilow's contributions and Carlyle's performance, suggesting a positive but not overwhelmingly enthusiastic recommendation. The mention of 'melodrama, at times' indicates a reservation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:11:04.175Z",
+    "scoredAt": "2026-02-02T18:06:08.763Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
-    "previousVersion": "5.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "geminiScore": 75,
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

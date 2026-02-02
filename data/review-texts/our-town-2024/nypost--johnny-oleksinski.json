@@ -66,8 +66,8 @@
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Both models agree: Negative"
   },
-  "contentTier": "truncated",
-  "wordCount": 24,
+  "contentTier": "complete",
+  "wordCount": 870,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 23,
   "isFullReview": true,
@@ -96,7 +96,6 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "rescoreCompletedAt": "2026-02-01T15:49:16.960Z",
@@ -107,5 +106,6 @@
     "hadPositiveThumb": false,
     "dtliThumb": "none",
     "bwwThumb": "Down"
-  }
+  },
+  "tierReason": "Full review text"
 }

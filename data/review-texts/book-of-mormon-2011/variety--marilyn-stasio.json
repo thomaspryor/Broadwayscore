@@ -48,7 +48,6 @@
   ],
   "fetchTier": 3,
   "textQuality": "partial",
-  "truncationSignals": [],
   "textStatus": "incomplete",
   "sourceMethod": "brightdata",
   "textIssues": [
@@ -102,5 +101,8 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
-  }
+  },
+  "contentTier": "truncated",
+  "wordCount": 196,
+  "tierReason": "Short text (196 words)"
 }

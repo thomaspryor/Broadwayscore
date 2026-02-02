@@ -9,7 +9,7 @@
   "bwwExcerpt": "Here, two robot characters, for goodness sake, are carrying on that age-old Broadway declaration that love, and only love, is the existential necessity we cannot live without. Only here it’s manifested in ways that even Stephen Sondheim could not have dreamed.",
   "showScoreExcerpt": "\"Maybe Happy Ending dazzles with its love story and astounds with its visual accomplishments. There's nothing robotic about this production: it wears its heart on its sleeve and on charm alone, succeeds.\"",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MAYBE-HAPPY-ENDING-Starring-Darren-Criss-and-Helen-J-Shen-20241112",
   "urlSource": "show-score",
@@ -18,11 +18,11 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 81,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong positive language like 'dazzles' and 'astounds' combined with 'succeeds' indicates clear recommendation despite being an excerpt. | GPT-4o: The review uses strong positive language such as 'dazzles' and 'astounds,' indicating a high level of enthusiasm and a strong recommendation to see the show. | Gemini: The review uses strong positive language like \"dazzles\" and \"astounds\" and concludes that the production \"succeeds on charm alone\", indicating a positive recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review uses strong positive language like 'dazzles' and 'astounds' and explicitly states the production 'succeeds,' indicating a clear recommendation despite being excerpted text. | GPT-4o: The critic uses strong positive language such as 'dazzles', 'astounds', and 'succeeds', indicating an enthusiastic recommendation and a high level of praise for both the story and production quality. | Gemini: The review uses strong positive language like \"dazzles\" and \"astounds\" and concludes that the production \"succeeds\" on charm alone, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,21 +43,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:16:13.941Z",
+    "scoredAt": "2026-02-02T18:35:35.243Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 84,
-    "previousVersion": "3.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
     "openaiScore": 90,
-    "geminiScore": 80,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

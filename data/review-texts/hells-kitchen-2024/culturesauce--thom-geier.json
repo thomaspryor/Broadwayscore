@@ -10,7 +10,7 @@
   "bwwExcerpt": null,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 91,
   "source": "webfetch-scraped",
   "sourceUrl": "https://culturesauce.com/2024/04/20/alicia-keys-hells-kitchen-broadway-review/",
   "needsFullText": true,
@@ -18,11 +18,11 @@
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 92,
+    "score": 91,
     "confidence": "medium",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 86,
+      "high": 96
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review opens with explicit praise calling it 'heaven-sent' and destined for success, praises the performances as 'star-making,' and concludes by highlighting how the show 'kicks musical theater into bold, new directions' with talented women center stage. | GPT-4o: The review describes the show as 'heaven-sent' and 'destined for a long and successful run,' indicating a very strong recommendation. The critic praises the performances, direction, and musical elements, suggesting a highly positive view of the production. | Gemini: Despite the truncated text warning, the provided excerpt and aggregator context strongly suggest a positive recommendation. The review praises the performances, staging, and music, calling it a \"heaven-sent new musical\" and highlighting its unique sound.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review opens with exceptionally strong praise calling it 'heaven-sent' and 'destined for success,' praises stellar performances, and celebrates how it 'kicks musical theater into bold, new directions' with innovative sound and staging. | GPT-4o: The review is overwhelmingly positive, highlighting the show's unique sound, strong performances, and innovative direction. The critic uses phrases like 'heaven-sent' and praises the show for its bold, new directions, indicating a strong recommendation. | Gemini: Despite a 'thin wisp of a book' and a 'bumpy second act,' the review is overwhelmingly positive, praising the performances, direction, design, and choreography. The aggregator excerpt and phrases like 'heaven-sent' and 'destined for a long and successful run' indicate a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,21 +43,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:52:22.137Z",
+    "scoredAt": "2026-02-02T18:16:59.149Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 84,
+    "previousScore": 92,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 87,
     "openaiScore": 95,
-    "geminiScore": 82,
+    "geminiScore": 81,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -65,8 +65,8 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Rave"
   },
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 778,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 91,
   "isFullReview": true,
@@ -93,5 +93,6 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "rescoreCompletedAt": "2026-02-01T17:38:24.798Z"
+  "rescoreCompletedAt": "2026-02-01T17:38:24.798Z",
+  "tierReason": "Full review text"
 }

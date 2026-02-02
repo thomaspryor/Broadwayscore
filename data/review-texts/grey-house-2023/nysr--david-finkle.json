@@ -10,18 +10,18 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Meh",
   "originalScore": "3/5 stars",
-  "assignedScore": 64,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 64,
+    "score": 75,
     "confidence": "medium",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 3/5 star rating and review tone indicate a mixed assessment - the critic acknowledges effective performances and entertainment value but notes potential confusion and head-scratching from audiences, suggesting qualified appreciation rather than clear recommendation. | GPT-4o: The review provides a balanced view, noting both the strengths in performances and the potential for confusion in the plot. The original 3/5 star rating suggests a mixed reception, aligning with the critic's acknowledgment of both entertainment and complexity. | Gemini: The critic gives the show 3/5 stars and states that those who understand the play's intentions will be \"scarily entertained\". While he notes some potential confusion with the plot, the overall tone suggests a positive, albeit reserved, recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The 3/5 star rating and critic's mixed assessment indicate a qualified recommendation. While Finkle praises the performances (especially Caruso and Metcalf) and acknowledges the show will entertain those who understand its intentions, he also notes the plot's challenging intricacies may confuse some patrons and suggests the dark vision might diminish enjoyment for those seeking lighter thrills. | GPT-4o: The review provides a balanced view, noting both the strengths in performances and the potential confusion in the plot. The original 3/5 star rating suggests a mixed reception, with some positive elements but also significant reservations. | Gemini: The review is generally positive, highlighting strong performances and the play's ability to be \"scarily entertained.\" However, it also mentions potential confusion with the plot and a darkness that might affect enjoyment, indicating reservations. The 3/5 star rating also supports a positive but not rave classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,27 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:24:48.424Z",
+    "scoredAt": "2026-02-02T17:55:41.093Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 69,
-    "previousVersion": "3.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
+    "claudeScore": 72,
     "openaiScore": 65,
-    "geminiScore": 75,
-    "claudeBucket": "Mixed",
+    "geminiScore": 77,
+    "claudeBucket": "Positive",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 69,

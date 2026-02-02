@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Hamilton is a masterpiece that rewrites American history as a hip-hop musical and makes it feel both contemporary and timeless.",
   "originalScore": 100,
-  "assignedScore": 100,
+  "assignedScore": 95,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Hamilton is a masterpiece that rewrites American history as a hip-hop musical and makes it feel both contemporary and timeless.",
   "llmScore": {
-    "score": 100,
-    "confidence": "high",
+    "score": 95,
+    "confidence": "medium",
     "range": {
-      "low": 95,
-      "high": 105
+      "low": 90,
+      "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic explicitly calls it a 'masterpiece' and the original rating is 100, indicating the highest level of recommendation. | GPT-4o: The critic's original rating of 100 and the use of the word 'masterpiece' clearly indicate a rave review, strongly recommending the show as essential viewing. | Gemini: The review explicitly calls the show a \"masterpiece,\" indicating a rave review. The critic's own rating of 100 confirms this assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic's own 100 rating and overwhelmingly positive language ('exuberant', 'fiercely original', 'thrilling', 'brash and nimble') clearly indicate a rave review, despite acknowledging some flaws in choreography and pacing. | GPT-4o: The review is overwhelmingly positive, praising the originality, energy, and impact of the musical. Despite minor criticisms, the critic's original rating of 100 and the enthusiastic language throughout indicate a strong recommendation. | Gemini: The review is overwhelmingly positive, using words like \"exuberant\", \"original\", \"glorious\", and \"thrilling\". Despite some minor criticisms, the overall tone and the critic's rating of 100 indicate a rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,21 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:00:08.415Z",
+    "scoredAt": "2026-02-02T18:02:47.479Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 100,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 100,
+    "claudeScore": 89,
     "openaiScore": 100,
-    "geminiScore": 100,
+    "geminiScore": 95,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 0,
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -64,17 +64,16 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Rave"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (20 words)",
   "previousUrl": "https://www.theguardian.com/stage/2015/aug/07/hamilton-review-broadway-musical",
   "urlDiscoveredAt": "2026-02-02T15:09:59.365Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 100,
   "textWordCount": 1065,
   "archivePath": "data/archives/reviews/hamilton-2015/guardian--jesse-green_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:34:37.856Z",
+  "textFetchedAt": "2026-02-02T15:09:59.371Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -91,7 +90,9 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "rescoreCompletedAt": "2026-02-02T18:02:47.479Z",
+  "wordCount": 1065,
+  "tierReason": "Full review text"
 }

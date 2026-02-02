@@ -72,13 +72,10 @@
     }
   ],
   "fetchTier": 4,
-  "truncationSignals": [
-    "no_ending_punctuation"
-  ],
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250328100110",
   "archiveOrgUrl": "http://web.archive.org/web/20250328100110/https://www.nytimes.com/2023/06/29/theater/the-great-gatsby-review.html",
-  "contentTier": "complete",
+  "contentTier": "invalid",
   "wordCount": 982,
   "rescoreCompletedAt": "2026-02-01T16:18:18.476Z",
   "_removedDesignation": {
@@ -89,5 +86,6 @@
     "bwwThumb": "none"
   },
   "wrongProduction": true,
-  "wrongProductionNote": "Immersive off-Broadway production at Park Central Hotel (Jun 2023), not Broadway musical (Mar 2024)"
+  "wrongProductionNote": "Immersive off-Broadway production at Park Central Hotel (Jun 2023), not Broadway musical (Mar 2024)",
+  "tierReason": "Wrong production"
 }

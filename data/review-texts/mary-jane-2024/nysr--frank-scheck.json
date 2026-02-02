@@ -12,13 +12,13 @@
     "nysr-api"
   ],
   "originalScore": "4/5 stars",
-  "assignedScore": 80,
+  "assignedScore": 79,
   "llmScore": {
-    "score": 80,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic gives 4/5 stars and uses consistently positive language throughout - 'subtly artful drama', 'beautifully calibrated production', 'superb performances' - with only minor criticism about McAdams' vocal projection. The overall assessment is clearly recommending. | Gemini: The critic gives the play 4/5 stars and describes the production as \"beautifully calibrated\" with \"superb performances.\" While noting McAdams' vocal projection issues, the overall tone is positive, suggesting a recommendation despite minor flaws.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and consistently positive language about the production, performances, and direction indicate a solid recommendation, with only minor criticism about McAdams' vocal projection. | GPT-4o: The review highlights the play's subtle artfulness and effective depiction of the protagonist's struggles, with praise for the performances and production. However, there are minor reservations about the lead actress's vocal projection. The original 4/5 star rating and the overall positive tone justify a solid recommendation. | Gemini: The critic gives the show 4/5 stars and praises the performances and direction, but notes some issues with McAdams' vocal projection. The review leans positive, but with a reservation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:17:44.893Z",
+    "scoredAt": "2026-02-02T18:34:20.817Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "5.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "claudeScore": 78,
+    "openaiScore": 79,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "complete",
   "contentTierReason": "Full review text"

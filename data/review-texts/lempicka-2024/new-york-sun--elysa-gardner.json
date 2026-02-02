@@ -9,15 +9,15 @@
   "bwwExcerpt": "As Tamara, Eden Espinosa gets to once again use the siren-like belt and the mix of might and vulnerability she deployed during several stints as Elphaba in “Wicked” — this time while sporting a platinum-blonde bob that makes her look like 1990s-era Madonna (a noted Lempicka fan, naturally). Granted, the vocal showcases she is provided by composer Matt Gould and lyricist Carson Kreitzer — who collaborated on the book, brd on Ms. Kreitzer’s concept — are seldom as tuneful as they are flamboyant.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 59,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 59,
+    "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 54,
+      "high": 64
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt praises Espinosa's performance but criticizes the music as lacking tunefulness despite being flamboyant. Single excerpt warning and aggregator context suggesting negative verdict requires conservative scoring. | GPT-4o: The review highlights Eden Espinosa's strong performance but notes that the musical numbers are more flamboyant than tuneful, suggesting a mixed impression. The single excerpt and aggregator context suggest a conservative score within the mixed range. | Gemini: The review praises Espinosa's performance but notes the music is not very tuneful. Given the single excerpt and aggregator context, a mixed score seems appropriate.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The excerpt praises Espinosa's performance but criticizes the songs as lacking tuneful quality despite being flamboyant. Single excerpt warning requires caution, and the mixed tone suggests neither strong recommendation nor discouragement. | GPT-4o: The review highlights Eden Espinosa's performance positively but criticizes the music as lacking tunefulness. The mixed signals suggest a neither strongly positive nor negative verdict. | Gemini: The review excerpt focuses on a positive aspect of the performance, but the caveat about the music being \"seldom as tuneful as they are flamboyant\" suggests some reservations. Given the single excerpt and aggregator context, a lower positive score seems appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:25:22.935Z",
+    "scoredAt": "2026-02-02T18:28:32.975Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 59,
-    "previousVersion": "3.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 62,
-    "geminiScore": 62,
+    "openaiScore": 55,
+    "geminiScore": 74,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "geminiBucket": "Positive",
+    "scoreDelta": 19,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "bwwThumb": "Down",
   "dateUnknown": true,

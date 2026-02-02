@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 13,
+  "assignedScore": 16,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "What “Lempicka,” the mystifying new musical about Polish painter Tamara de Lempicka, needs more than anything else is turpentine.",
@@ -21,11 +21,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 13,
-    "confidence": "medium",
+    "score": 16,
+    "confidence": "high",
     "range": {
-      "low": 8,
-      "high": 18
+      "low": 11,
+      "high": 21
     },
     "bucket": "Pan",
     "thumb": "Down",
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Pan | Claude: The critic systematically dismantles every aspect of the production, calling it 'ugly,' 'incoherent,' 'muck,' and 'perplexing' while offering no genuine recommendation to see it. | GPT-4o: The review is overwhelmingly negative, describing the musical as incoherent, tonally unhinged, and a waste of talent. The critic uses strong language to express disappointment, suggesting it is not worth seeing. | Gemini: The review is overwhelmingly negative, using phrases like \"ugly splatter,\" \"ridiculous,\" and \"incoherent.\" The critic clearly does not recommend seeing the show.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Pan | Claude: The review is overwhelmingly negative with harsh language throughout, calling it 'ugly splatter', 'incoherent', 'muck', and comparing it unfavorably to basic entertainment. The critic finds virtually nothing redeeming in the production. | GPT-4o: The review is overwhelmingly negative, criticizing the show's incoherence, lack of character development, and poor direction. The critic uses strong language to convey disappointment and advises against seeing the show. | Gemini: The review is overwhelmingly negative, using strong language like \"ugly splatter,\" \"ridiculous,\" and \"incoherent.\" The critic clearly does not recommend seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,27 +46,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:25:46.111Z",
+    "scoredAt": "2026-02-02T18:28:41.281Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 25,
-    "previousVersion": "5.0.0"
+    "previousScore": 13,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 10,
+    "claudeScore": 18,
+    "openaiScore": 15,
     "geminiScore": 15,
-    "claudeBucket": "Negative",
+    "claudeBucket": "Pan",
     "openaiBucket": "Pan",
     "geminiBucket": "Pan",
-    "scoreDelta": 32,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Pan"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Pan"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 15,

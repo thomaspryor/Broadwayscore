@@ -61,8 +61,8 @@
     "modelAgreement": "2/3 models agree: Mixed"
   },
   "bwwExcerpt": "Billing notwithstanding, the real star of \"Aladdin\" is James",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "truncated",
+  "wordCount": 151,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 64,
   "isFullReview": false,
@@ -103,7 +103,6 @@
   ],
   "fetchTier": 3,
   "textQuality": "partial",
-  "truncationSignals": [],
   "textStatus": "incomplete",
   "sourceMethod": "brightdata",
   "textIssues": [
@@ -117,5 +116,6 @@
     "hadPositiveThumb": false,
     "dtliThumb": "none",
     "bwwThumb": "none"
-  }
+  },
+  "tierReason": "Short text (151 words)"
 }

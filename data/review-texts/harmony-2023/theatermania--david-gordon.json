@@ -12,7 +12,7 @@
   "source": "dtli",
   "llmScore": {
     "score": 77,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 72,
       "high": 82
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review explicitly states the pros outweigh the cons and calls it 'undeniably moving and extremely powerful,' despite cataloging numerous structural and tonal problems throughout. | GPT-4o: The review acknowledges flaws and mixed elements but ultimately recommends the show, highlighting its emotional impact and the strong performances, particularly by Chip Zien. | Gemini: The review acknowledges flaws like schmaltz and uneven tone, but ultimately concludes that the show is \"undeniably moving and extremely powerful\" and that the pros outweigh the cons, indicating a positive recommendation with reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic explicitly states the pros outweigh the cons and calls it 'undeniably moving and extremely powerful,' despite noting significant problems with tone and structure. | GPT-4o: The review acknowledges some flaws, such as bombastic schmaltz and heavy-handed imagery, but ultimately finds the show moving and powerful, with the positives outweighing the negatives. The recommendation is clear, though not without reservations. | Gemini: The review acknowledges flaws but ultimately concludes that the show is moving and powerful, with the pros outweighing the cons. The critic also mentions it will give you a cathartic cry.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,21 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:11:07.353Z",
+    "scoredAt": "2026-02-02T18:06:12.664Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 81,
-    "geminiScore": 78,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

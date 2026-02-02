@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B+ grade and description of the show's successful emotional impact on audiences indicates a solid positive recommendation, though the qualifier about not answering difficult questions suggests some reservations. | GPT-4o: The critic's B+ rating and the positive reaction from the audience member suggest a strong recommendation. The review highlights the show's ability to engage and inspire its audience, indicating a positive experience. | Gemini: The critic gives the show a B+ and highlights the positive impact it had on a young audience member. The review indicates a positive experience and recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B+ grade and positive language about the show's effective messaging and audience impact indicate a solid recommendation, though the qualifier 'may not be able to answer life's difficult questions' suggests some reservations. | GPT-4o: The original rating of B+ strongly suggests a positive review. The review text highlights the show's impactful messaging, further supporting a positive classification with some reservations. | Gemini: The critic gives the show a B+ and the final quote indicates a positive impact on the audience. The review suggests the show is effective in sparking conversation and inspiring action.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,7 +40,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:32:07.364Z",
+    "scoredAt": "2026-02-02T18:30:07.039Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -49,12 +49,12 @@
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 82,
-    "geminiScore": 78,
+    "openaiScore": 79,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

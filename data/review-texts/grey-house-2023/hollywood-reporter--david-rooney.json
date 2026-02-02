@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The play's central conceit is ingenious, and director Joe Mantello orchestrates the creeping dread with masterful precision.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 58,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,14 +17,14 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The play's central conceit is ingenious, and director Joe Mantello orchestrates the creeping dread with masterful precision.",
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 58,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 53,
+      "high": 63
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The provided excerpt focuses on praising the play's concept as 'ingenious' and the direction as 'masterful,' indicating a positive recommendation, though the limited text prevents a higher confidence rating. | GPT-4o: The review praises the play's central conceit as ingenious and the direction as masterful, indicating a highly positive assessment of the production. | Gemini: The review highlights the ingenuity of the play and the masterful direction, indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This is an interview article about Kelly Clarkson's album and personal life, not a Broadway theater review. It discusses her music, divorce, and talk show but contains no theatrical criticism or recommendation. | GPT-4o: The provided text is a lengthy interview with Kelly Clarkson, focusing on her personal experiences and her album. It lacks a clear evaluative verdict on a Broadway show, making it difficult to classify definitively. The text is more biographical and contextual rather than a critical review of a production. | Gemini: This is an interview with Kelly Clarkson about her new album. It describes the album's themes and Clarkson's feelings, but it doesn't offer a clear recommendation or discouragement from the critic.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,33 +42,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:24:33.055Z",
+    "scoredAt": "2026-02-02T17:55:25.503Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
-    "previousVersion": "5.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 78,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "claudeScore": 60,
+    "openaiScore": 55,
+    "geminiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "textWordCount": 2618,
   "archivePath": "data/archives/reviews/grey-house-2023/hollywood-reporter--david-rooney_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:38:04.820Z",
+  "textFetchedAt": "2026-02-02T16:37:21.317Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -87,7 +87,7 @@
       "tier": 2,
       "method": "scrapingbee",
       "success": false,
-      "error": "timeout of 60000ms exceeded"
+      "error": "CAPTCHA detected (premium_proxy)"
     },
     {
       "tier": 3,
@@ -97,10 +97,11 @@
   ],
   "fetchTier": 3,
   "textQuality": "partial",
-  "truncationSignals": [],
   "textStatus": "partial",
   "sourceMethod": "brightdata",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (114 words)",
-  "rescoreCompletedAt": "2026-02-02T00:24:33.055Z"
+  "rescoreCompletedAt": "2026-02-02T00:24:33.055Z",
+  "wordCount": 2618,
+  "tierReason": "Full review text"
 }

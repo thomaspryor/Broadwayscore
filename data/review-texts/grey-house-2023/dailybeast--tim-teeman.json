@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "This puzzling, undercooked, but still arresting play, set in 1977, knows and accords to the genre conventions from whence it derives.",
@@ -19,11 +19,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 62,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges the show is 'arresting' and creates genuine tension, but ultimately finds it 'undercooked,' 'puzzling,' and irritating rather than thrilling, with a story that 'doesn't execute its landing.' | Gemini: The review describes the show as puzzling and undercooked, but also arresting. While the actors are praised, the story is criticized for being baffling and not executing its landing. The reviewer ultimately finds it irritating rather than thrilling, placing it in the mixed category.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges being engaged and tense throughout, praises individual performances (especially Metcalf), and appreciates the technical elements, but ultimately finds the play 'undercooked,' confusing, and irritating rather than thrilling, with an unsatisfying ending that doesn't execute properly. | GPT-4o: The review acknowledges the play's arresting and tense qualities but criticizes its lack of clarity and unsatisfying payoff. The critic finds the production puzzling and ultimately irritating, indicating a mixed reception. | Gemini: The review highlights both positive and negative aspects, ultimately concluding that the show is strange and baffling, with tension but also grating elements. The reviewer doesn't explicitly recommend or discourage seeing it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,26 +44,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:24:19.849Z",
+    "scoredAt": "2026-02-02T17:55:03.442Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 52,
-    "previousVersion": "3.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 57,

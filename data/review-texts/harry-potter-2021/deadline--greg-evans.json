@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language throughout ('marvel', 'bracingly, piercingly new', 'genuinely thrilling') and concludes with 'Harry Potter and The Cursed Child summons it all. Voila.' indicating strong enthusiasm and recommendation. | GPT-4o: The review is filled with enthusiastic praise for the production's innovative storytelling, stagecraft, and emotional depth, describing it as a 'marvel' and highlighting its ability to captivate both Potter fans and newcomers alike. | Gemini: The review is overwhelmingly positive, using words like \"marvel\" and praising the show's ability to blend storytelling with stagecraft. The critic clearly enjoyed the production and recommends it, even for those not deeply familiar with the Harry Potter universe.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'a marvel,' 'bracingly, piercingly new,' and praising both the storytelling and spectacular stagecraft with genuine enthusiasm and no significant reservations. | GPT-4o: The review is overwhelmingly positive, highlighting the production's innovative storytelling, impressive stagecraft, and emotional depth. The critic describes it as a 'marvel' and praises its ability to captivate both Potter fans and newcomers, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, describing the play as a 'marvel' and praising its storytelling, stagecraft, and emotional depth. The critic clearly recommends seeing it, even for those not deeply familiar with the Harry Potter universe.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,11 +39,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:27:53.348Z",
+    "scoredAt": "2026-02-02T18:07:42.681Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 94,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
@@ -61,8 +61,8 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Rave"
   },
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 1070,
   "previousUrl": "https://deadline.com/2021/12/harry-potter-cursed-child-broadway-review/",
   "urlDiscoveredAt": "2026-02-02T16:14:44.294Z",
   "urlDiscoveryMethod": "google-serp",
@@ -83,10 +83,11 @@
   "fetchTier": 4,
   "textQuality": "partial",
   "truncationSignals": [
-    "has_footer_text"
+    "has_footer_junk"
   ],
   "textStatus": "partial",
   "archiveOrgTimestamp": "20251113162152",
   "archiveOrgUrl": "http://web.archive.org/web/20251113162152/https://deadline.com/2018/04/harry-potter-and-the-cursed-child-broadway-review-j-k-rowling-jack-thorne-1202367117/",
-  "rescoreCompletedAt": "2026-02-02T16:27:53.348Z"
+  "rescoreCompletedAt": "2026-02-02T16:27:53.348Z",
+  "tierReason": "Full review text"
 }

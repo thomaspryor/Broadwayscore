@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review uses strongly positive language like 'tender,' 'deeply moving,' and notes the memorable score, indicating clear recommendation without major reservations. | GPT-4o: The review uses highly positive language, describing the musical as 'whimsical and deeply moving' with a memorable score, indicating a strong recommendation. | Gemini: The review uses positive language like \"tender,\" \"whimsical,\" \"deeply moving,\" and praises the score, indicating a positive recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review uses strong positive language like 'tender,' 'deeply moving,' and highlights the memorable score, indicating clear enthusiasm for the production. | GPT-4o: The review uses strong positive language, describing the musical as both 'whimsical and deeply moving' and highlighting the memorable score, indicating a highly enthusiastic recommendation. | Gemini: The review uses very positive language such as \"deeply moving\" and \"lingers in memory\", indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,12 +43,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:18:51.915Z",
+    "scoredAt": "2026-02-02T18:36:32.184Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 80,
-    "previousVersion": "5.0.0"
+    "previousScore": 82,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,

@@ -65,7 +65,7 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Rave"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (28 words)",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
@@ -94,9 +94,10 @@
   ],
   "fetchTier": 3,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "duplicateTextOf": "variety--greg-evans.json",
-  "rescoreCompletedAt": "2026-02-02T14:25:44.341Z"
+  "rescoreCompletedAt": "2026-02-02T14:25:44.341Z",
+  "wordCount": 1330,
+  "tierReason": "Full review text"
 }

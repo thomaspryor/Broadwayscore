@@ -10,7 +10,7 @@
   "originalScore": "A-",
   "_scoreFixedFrom": "A",
   "_scoreFixedReason": "Review text ends with 'Grade: A–' (A-minus), not A",
-  "assignedScore": 81,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://ew.com/just-in-time-review-jonathan-groff-irresistible-bobby-darin-11721853",
@@ -18,11 +18,11 @@
   "dtliExcerpt": "When Just In Time does conclude, it goes out with an exuberant bang, and though the vapor forms, it’s clear that this is a show guaranteed to linger… whether it be the toe-tapping tunes, the memory of Groff’s enthralling presence, or a certain thought, sure to cross your mind on the way out: “When can I see it again?”",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 81,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The A- rating combined with praise for 'dazzling charm,' 'stunning lighting design,' and describing the show as a successful 'love letter to live music' indicates strong positive recommendation despite truncated text. | GPT-4o: The review highlights the show's energy, charm, and successful emulation of a '50s night club, suggesting a highly positive reception. The original rating of A- and the aggregator verdicts further support a strong recommendation. | Gemini: The review uses positive language such as \"dazzling charm\" and \"love letter to live music,\" and the critic gave the show an A-, indicating a positive recommendation. The aggregator verdicts also point to a positive reception.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The A- rating combined with highly positive language about 'dazzling charm', 'stunning lighting design', and the show serving as a 'love letter to live music' indicates strong recommendation despite limited excerpt text. | GPT-4o: The critic's original rating of A- strongly suggests a rave review. The text highlights the show's energy, charm, and successful emulation of a '50s nightclub, indicating a highly positive assessment. | Gemini: The review uses phrases like \"greatest tribute\" and \"dazzling charm,\" and the A- rating indicates a strong positive recommendation. The review praises multiple aspects of the production, further supporting a positive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,21 +43,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:13:36.868Z",
+    "scoredAt": "2026-02-02T18:26:53.053Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 45,
-    "previousVersion": "5.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 88,
-    "geminiScore": 80,
+    "openaiScore": 87,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -83,8 +83,8 @@
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 64,
   "rescoreCompletedAt": "2026-02-01T15:23:16.699Z",
-  "contentTier": "needs-rescrape",
-  "wordCount": 1147,
+  "contentTier": "complete",
+  "wordCount": 1179,
   "truncationSignals": [
     "no_ending_punctuation"
   ],
@@ -93,5 +93,6 @@
   "textQuality": "partial",
   "textStatus": "partial",
   "archiveOrgTimestamp": "20250723194508",
-  "archiveOrgUrl": "http://web.archive.org/web/20250723194508/https://ew.com/just-in-time-review-jonathan-groff-irresistible-bobby-darin-11721853"
+  "archiveOrgUrl": "http://web.archive.org/web/20250723194508/https://ew.com/just-in-time-review-jonathan-groff-irresistible-bobby-darin-11721853",
+  "tierReason": "Full review text"
 }

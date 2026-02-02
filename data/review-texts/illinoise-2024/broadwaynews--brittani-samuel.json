@@ -7,15 +7,15 @@
   "publishDate": "April 27, 2024",
   "fullText": "Director-choreographer Justin Peck’s unique dance-theater-concert hybrid is a commendable, imaginative rendering of Sufjan Stevens’ concept album.\n\nGood morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to the Broadway opening of “Illinoise.”\n\nThe new Broadway production “Illinoise” draws inspiration from Sufjan Stevens’ near-eponymous 2005 concept album, “Illinois.” As that album blends genres, so here does director-choreographer and co-story author Justin Peck. “Illinoise” is a dance musical, a musical performance art piece, a theatrical indulgence. Though the work straddles two cities — Chicago and New York — and crackles with the sporty-casual aesthetic of the early aughts, Peck and his co-writer Jackie Sibblies Drury aren’t so much traversing specific settings as much as they are trying to evoke the higher-dimensional frequencies pulsing out of Stevens’ album.",
   "originalScore": null,
-  "assignedScore": 67,
+  "assignedScore": 64,
   "dtliThumb": "Meh",
   "source": "dtli",
   "llmScore": {
-    "score": 67,
-    "confidence": "low",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 62,
-      "high": 72
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The review praises the production as 'commendable' and 'imaginative' but concludes with the clear statement that it 'did not move me,' indicating a mixed reaction that neither fully recommends nor discourages. | Gemini: The review acknowledges the delight and imagination of the production, but the critic ultimately wasn't moved. This suggests a recommendation with reservations, placing it in the positive bucket with a lower score.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic praises the concept and craft ('commendable, imaginative rendering') but explicitly states it failed to emotionally connect, creating a clear mixed assessment that neither recommends nor discourages attendance. | GPT-4o: The review acknowledges the imaginative and commendable aspects of the production but ultimately states that it did not move the critic, indicating a mixed reception. | Gemini: The review acknowledges the show's merits and imaginative rendering but expresses a lack of emotional impact, suggesting a mild recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,26 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:14:06.445Z",
+    "scoredAt": "2026-02-02T18:22:37.484Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 56,
-    "previousVersion": "3.0.0"
+    "previousScore": 67,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
+    "openaiScore": 65,
     "geminiScore": 72,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
     "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "dtliExcerpt": "Yet in all honesty, for all the obvious delight sprinkled over “Illionise,” it did not move me. It made me want to be moved though, which in a way, is its own sort of illumination.",
   "sources": [

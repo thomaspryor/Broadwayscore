@@ -9,18 +9,18 @@
   "showScoreExcerpt": "Stop the presses! The headline news of the day is The Heart of Rock and Roll is...not bad.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-heart-of-rock-and-roll-broadway",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 72,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 61,
+    "score": 72,
     "confidence": "medium",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 67,
+      "high": 77
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The phrase 'not bad' suggests mild surprise at basic adequacy rather than genuine recommendation. With only one excerpt available, I'm scoring conservatively in the mixed range as this could be setting up for either direction. | GPT-4o: The phrase 'not bad' suggests a lukewarm reception, indicating the show is neither strongly recommended nor discouraged. The exclamatory opening adds a slightly positive spin, but the overall sentiment remains mixed. | Gemini: The phrase \"not bad\" indicates a positive, albeit lukewarm, recommendation. Given the single excerpt, a score in the middle of the positive range is appropriate.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The theatrical exclamation and surprised tone suggests the critic expected worse but found it decent. 'Not bad' is faint praise but still constitutes a mild positive assessment, placing it at the lower end of the Positive bucket. | GPT-4o: The excerpt suggests a lukewarm reception, indicating the show is neither strongly recommended nor discouraged. The phrase 'not bad' implies it has some redeeming qualities but lacks strong enthusiasm. | Gemini: The phrase \"not bad\" indicates a slightly positive sentiment, suggesting the show is worth seeing but not exceptional.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:30:04.346Z",
+    "scoredAt": "2026-02-02T18:11:29.334Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
+    "previousScore": 61,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 62,
-    "geminiScore": 75,
-    "claudeBucket": "Mixed",
+    "claudeScore": 72,
+    "openaiScore": 68,
+    "geminiScore": 72,
+    "claudeBucket": "Positive",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 60,

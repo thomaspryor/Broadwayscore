@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Up",
   "originalScore": "B",
-  "assignedScore": 76,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 76,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review gives a B- grade and concludes positively despite criticizing pacing and character development issues. The critic finds the show 'powerful' and memorable, indicating a recommendation with reservations. | Gemini: The critic gives the show a B and states that it is a powerful musical that will continue to sing out in the minds of audiences long after they leave the theater. However, they also note that the show doesn't truly begin to sing until its second act.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic gives a B- grade and concludes with strong positive language about the show's power and lasting impact, despite significant structural criticisms about pacing and character development in the first act. | GPT-4o: The review acknowledges issues with the pacing and character development, particularly in the first act, but ultimately praises the emotional impact and performances in the second act. The original rating of B and the positive excerpts suggest a recommendation with some reservations. | Gemini: The review is mostly positive, highlighting the emotional impact and the strength of the second act, but also points out flaws in character development and pacing. The B grade and the aggregator excerpts also support a positive classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:09:13.992Z",
+    "scoredAt": "2026-02-02T18:05:27.787Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 68,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": null,
+    "claudeScore": 76,
+    "openaiScore": 75,
     "geminiScore": 79,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "Despite its caveats, Harmony is a powerful musical that, by its conclusion, makes one's heart break for the Comedian Harmonists and all those who were lost to time because of hatred and cruelty, the echoes of which are still ringing out to this day. Its overall message of peace — \"despite our squabbles, we found harmony\" — feels more resonant than ever.",
   "sources": [

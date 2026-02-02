@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"Beyond...its few brief stumbles, Illinoise achieves a holistic transcendence.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/illinoise",
   "originalScore": null,
-  "assignedScore": 87,
+  "assignedScore": 92,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 87,
-    "confidence": "low",
+    "score": 92,
+    "confidence": "medium",
     "range": {
-      "low": 82,
-      "high": 92
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The critic uses rapturous language throughout, calling it a 'triumph' that achieves 'holistic transcendence' and praising its 'many technical glories.' The review concludes hoping it leaves seeds for more theater 'with such joyful abandon.' | Gemini: The review is overwhelmingly positive, praising the show's ability to evoke emotion and its technical achievements. While acknowledging minor flaws, the overall tone is enthusiastic and recommends seeing the show.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses rapturous language throughout, calling it a 'real triumph' with 'extraordinary' performers that achieves 'holistic transcendence' and hoping it will inspire more theater 'with such joyful abandon.' | GPT-4o: The review is overwhelmingly positive, describing the show as a triumph with 'holistic transcendence' and 'joyful abandon.' The critic praises the choreography, music, and performances, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the show's ability to evoke emotion and its technical achievements. While there are mentions of 'brief stumbles,' the overall tone is enthusiastic and recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:18:05.531Z",
+    "scoredAt": "2026-02-02T18:24:20.529Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 87,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": null,
-    "geminiScore": 82,
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "geminiScore": 81,
     "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "sources": [
     "show-score",

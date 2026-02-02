@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review is filled with superlative language like 'achingly beautiful', 'moving', 'stunning ensemble', 'poignant, enchanting story' and 'memorable music'. The critic praises every aspect from performances to music to staging, indicating a strong recommendation. | GPT-4o: The review is highly positive, praising the music, lyrics, performances, and overall production. The critic describes the musical as 'achingly beautiful' and 'poignant,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the music, lyrics, and performances. While not a rave, it clearly recommends seeing the show, describing it as \"achingly beautiful\" and \"moving.\"",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses highly positive language throughout ('achingly beautiful', 'moving', 'poignant, enchanting', 'stunning ensemble') and describes it as having 'memorable music and especially haunting lyrics' with no significant reservations expressed. | GPT-4o: The review is filled with enthusiastic praise for the music, lyrics, performances, and overall production, describing it as 'achingly beautiful' and 'poignant, enchanting.' The critic's tone is overwhelmingly positive, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the memorable music, haunting lyrics, and stunning ensemble. The critic uses phrases like \"achingly beautiful\" and describes the story as \"poignant\" and \"enchanting,\" indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:27:15.792Z",
+    "scoredAt": "2026-02-02T17:59:45.997Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 57,
+    "previousScore": 89,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 90,
-    "geminiScore": 80,
+    "geminiScore": 81,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

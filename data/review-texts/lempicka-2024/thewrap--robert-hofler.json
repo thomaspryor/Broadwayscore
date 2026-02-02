@@ -22,7 +22,7 @@
   ],
   "llmScore": {
     "score": 62,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 57,
       "high": 67
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The review praises specific songs and performances (Iman, Samonsky) while heavily criticizing the lead performance, direction, and book. The critic finds redeeming qualities but significant structural problems. | Gemini: The review praises some aspects, particularly the songs \"The Most Beautiful Bracelet\" and \"What She Sees\" and the performances of Amber Iman and Andrew Samonsky. However, it strongly criticizes Eden Espinosa's performance, the book, and the overall portrayal of Lempicka, leading to a mixed assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review praises specific songs and performances (Iman, Samonsky) but heavily criticizes the lead performance, direction, and book, calling the title character 'weepy, boring' and criticizing the loud 'caterwauling screeds.' | GPT-4o: The review highlights significant issues with the musical, including loud and grating performances, a disjointed book, and a failure to do justice to the character of Lempicka. While there are some praised elements, the overall tone is negative, leading to a recommendation to skip the show. | Gemini: The review praises specific songs and performances (Iman, Samonsky) but criticizes the lead performance (Espinosa), the book, and the overall portrayal of Lempicka. The final sentence indicates a negative overall assessment, but the positive elements keep it from being fully negative.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,26 +46,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:27:50.344Z",
+    "scoredAt": "2026-02-02T18:29:29.814Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 48,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 61,
-    "openaiScore": null,
+    "claudeScore": 62,
+    "openaiScore": 48,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "scoreDelta": 1,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 25,

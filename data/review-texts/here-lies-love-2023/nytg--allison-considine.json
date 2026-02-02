@@ -9,15 +9,15 @@
   "showScoreExcerpt": "“Audience members whose knowledge of Imelda Marcos is limited to the fact that she owned 3,000 pairs of shoes will only leave with a partial understanding of this violent period. The musical has no book, and the punchy songs paint broad strokes of the 60-year history... Still, this rollicking, form-breaking musical party is well worth an RSVP.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/here-lies-love-broadway",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 80,
   "source": "show-score",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 78,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review concludes with a clear positive recommendation despite noting limitations like lack of historical depth. The critic praises performances, staging, and innovation while acknowledging structural weaknesses. | Gemini: The review is largely positive, highlighting the performances, set design, and choreography. While it notes some historical gaps, the final verdict is that the show is \"well worth an RSVP,\" indicating a recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite acknowledging the show's limitations in conveying historical complexity, the critic clearly recommends it as 'well worth an RSVP' and praises the performances, design, and immersive experience with a four-star rating. | GPT-4o: The review praises the immersive experience, performances, and choreography, and despite noting some historical gaps, it strongly recommends the show as a unique and engaging production. | Gemini: Despite acknowledging the show's historical limitations, the review concludes with a positive recommendation, calling it \"well worth an RSVP.\" The aggregator excerpts also indicate a positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:23:01.683Z",
+    "scoredAt": "2026-02-02T18:19:17.803Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
-    "previousVersion": "3.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "For Here Lies Love, the storied Broadway Theatre has transformed into Club Millennium, a bright, pulsating discotheque sans orchestra seats. A disc jockey (Moses Villarama) pumps up the incoming crowd as energetic ushers, clad in pink jumpsuits, play air traffic control for patrons on the dance floor. A fitting setting for a musical about the rise of a dictatorship, no?",
   "sources": [

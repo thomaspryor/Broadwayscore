@@ -9,15 +9,15 @@
   "bwwExcerpt": "In any case, the show’s oft-mentioned fusion of humanity with machinery suddenly struck me as a clarifying metaphor for my mixed reaction to “Lempicka,” which opened on Broadway tonight at the Longacre. Carson Kreitzer, who conceived of the musical and co-wrote the libretto with Matt Gould, has created some artful lyrics for Gould’s music. Director Rachel Chavkin oversees some precisely calibrated moments. Naturally gifted cast members give polished performances, most notably Eden Espinosa in th",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 61,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly states having a 'mixed reaction' to the show, though acknowledges quality elements like artful lyrics and polished performances. Single excerpt warning requires conservative scoring within Mixed range. | GPT-4o: The critic explicitly mentions a 'mixed reaction' to the show, indicating neither a strong recommendation nor a strong dissuasion. The mention of 'artful lyrics' and 'precisely calibrated moments' suggests some positive elements, but the overall tone remains mixed. | Gemini: The critic explicitly states a 'mixed reaction' and highlights both positive and negative aspects of the production, suggesting a middle-ground assessment. The single excerpt and 'flat' aggregator verdict reinforce this classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly states having a 'mixed reaction' and while noting positive elements like 'artful lyrics' and 'polished performances,' the text is heavily truncated making a complete assessment difficult. | GPT-4o: The critic describes a 'mixed reaction' to the show, indicating neither a strong recommendation nor a strong disapproval. The mention of 'artful lyrics' and 'precisely calibrated moments' suggests there are positive elements, but the overall tone is mixed. | Gemini: The critic explicitly states a \"mixed reaction\" despite praising some aspects of the production, indicating a middle-ground assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:31:55.301Z",
+    "scoredAt": "2026-02-02T18:28:53.380Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 63,
+    "previousScore": 61,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 62,
+    "claudeScore": 62,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 4,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

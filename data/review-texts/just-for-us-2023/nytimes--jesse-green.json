@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Bliss's comedy is at its strongest when it examines the ways that well-meaning people can still cause harm, and how good intentions don't absolve us of responsibility for the impact of our words and actions.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "showScoreExcerpt": "Bliss's comedy is at its strongest when it examines the ways that well-meaning people can still cause harm, and how good intentions don't absolve us of responsibility for the impact of our words and actions.",
   "needsScoring": true,
   "llmScore": {
-    "score": 62,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 74,
+      "high": 84
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a fragment discussing thematic strengths but lacks clear recommendation language or overall assessment of the production's quality. | GPT-4o: The review highlights a strength of the comedy, but does not provide an overall recommendation or critique, suggesting a mixed impression. | Gemini: The review excerpt focuses on the thematic elements of the play, highlighting its strengths but not offering a clear recommendation for or against seeing it. The truncated nature of the text makes it difficult to determine the overall verdict with high confidence.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Green appreciates the show's thoughtful examination of serious themes through comedy and finds it effective, but notes issues with pacing, ingratiation, and structure that prevent it from being a stronger recommendation. | GPT-4o: The review praises the show for its thoughtful and high-minded approach, its humor, and its effective indirect route to insight, despite some minor reservations about its ingratiating style. The critic clearly enjoyed the performance and recommends it. | Gemini: The review is generally positive, highlighting Edelman's humor and the show's thoughtfulness. However, it also points out some flaws, such as the show's origin in stand-up and the compulsive ingratiation, indicating a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,34 +43,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:59:44.437Z",
+    "scoredAt": "2026-02-02T18:25:47.517Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (35 words)",
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 65,
-    "geminiScore": 60,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 5,
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "previousUrl": "https://www.nytimes.com/2023/06/22/theater/just-for-us-review.html",
   "urlDiscoveredAt": "2026-02-02T16:35:07.730Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 62,
   "textWordCount": 1057,
@@ -87,11 +86,13 @@
   "fetchTier": 4,
   "textQuality": "truncated",
   "truncationSignals": [
-    "no_ending_punctuation",
-    "possible_mid_word_cutoff"
+    "no_ending_punctuation"
   ],
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250814030106",
-  "archiveOrgUrl": "http://web.archive.org/web/20250814030106/https://www.nytimes.com/2023/06/26/theater/just-for-us-review.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250814030106/https://www.nytimes.com/2023/06/26/theater/just-for-us-review.html",
+  "rescoreCompletedAt": "2026-02-02T18:25:47.517Z",
+  "wordCount": 1057,
+  "tierReason": "Full review text"
 }

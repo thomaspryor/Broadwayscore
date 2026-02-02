@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "bwwThumb": "Meh",
   "originalScore": "3/5 stars",
-  "assignedScore": 74,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 75,
+    "confidence": "medium",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The 3/5 star rating and review tone indicate a positive but qualified recommendation. The critic acknowledges significant flaws in the play itself but strongly endorses DeVito's performance as making it worth seeing. | Gemini: The critic gives the play 3/5 stars, which is a positive rating. While the play has flaws, Danny DeVito's performance makes it watchable.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The 3/5 star rating and review clearly recommend seeing the show primarily for Danny DeVito's exceptional performance, though the critic finds the play itself weak with sitcom-level writing and slow spots. | GPT-4o: The review highlights Danny DeVito's performance as the main redeeming feature of the play, which otherwise suffers from a lack of psychological depth and relies on sitcom-style humor. The critic's 3/5 star rating suggests a mixed reception, with some positive elements but notable flaws. | Gemini: The review acknowledges flaws in the play itself (sitcom-style writing, slow spots) but praises Danny DeVito's performance and the set design, ultimately making it a worthwhile experience. The 3/5 star rating also indicates a positive but not rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:49:41.648Z",
+    "scoredAt": "2026-02-02T18:21:45.929Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 66,
-    "previousVersion": "3.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 72,
-    "openaiScore": null,
-    "geminiScore": 75,
+    "openaiScore": 68,
+    "geminiScore": 77,
     "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 66,

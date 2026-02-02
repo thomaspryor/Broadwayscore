@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"Among the teachings of his Jewish upbringing is empathy, and even sitting outnumbered in that racist, antisemitic gathering he struggles to remain true to those values. That struggle provides Edelman with a mighty intellectual conundrum, a worthy and funny debate of the heart and a show that can stand proud on Broadway.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/alex-edelman-just-for-us-broadway",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 82,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 81,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is clearly positive with phrases like 'does his reputation proud,' 'terrific yarn,' and 'can stand proud on Broadway,' indicating strong recommendation for the show. | GPT-4o: The review praises the show for its storytelling bravado, energetic direction, and the ability to stand proud on Broadway, indicating a strong recommendation. | Gemini: The review states the show \"does his reputation proud\" and can \"stand proud on Broadway\", indicating a positive recommendation despite the unusual premise.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong positive language throughout with phrases like 'does his reputation proud', 'terrific yarn', and 'can stand proud on Broadway' indicate enthusiastic recommendation despite minimal production elements. | GPT-4o: The review praises Edelman's performance as a strong Broadway debut, highlighting his storytelling and the show's ability to stand out without typical Broadway embellishments. The positive tone and strong language indicate a rave review. | Gemini: The review is overwhelmingly positive, praising Edelman's storytelling and the show's ability to stand proud on Broadway. The phrase 'does his reputation proud' indicates a strong endorsement.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:31:14.403Z",
+    "scoredAt": "2026-02-02T18:25:29.248Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
+    "previousScore": 81,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 90,
-    "geminiScore": 80,
+    "openaiScore": 88,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -60,8 +60,8 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "truncated",
+  "wordCount": 111,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "isFullReview": false,
@@ -96,8 +96,8 @@
   ],
   "fetchTier": 3,
   "textQuality": "partial",
-  "truncationSignals": [],
   "textStatus": "partial",
   "sourceMethod": "brightdata",
-  "rescoreCompletedAt": "2026-02-02T03:31:14.403Z"
+  "rescoreCompletedAt": "2026-02-02T03:31:14.403Z",
+  "tierReason": "Short text (111 words)"
 }

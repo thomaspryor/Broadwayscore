@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges the show as a milestone for autistic representation but criticizes it as 'very conventional, sometimes dispiritingly so' and lacking the depth it could have achieved, resulting in a qualified assessment that neither strongly recommends nor discourages. | GPT-4o: The review acknowledges the groundbreaking representation and authenticity of the cast, but criticizes the production for being conventional and lacking depth. The tone suggests a balance of positive and negative elements, leading to a mixed verdict. | Gemini: The review acknowledges the show's groundbreaking representation but notes its conventional and somewhat shallow execution. It is recommended as a welcome change, but with reservations about its depth.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic praises the groundbreaking autistic representation and casting but criticizes the show as 'dispiritingly conventional' and lacking depth, resulting in qualified appreciation rather than a recommendation. | GPT-4o: The review acknowledges the show's groundbreaking representation and feel-good nature but criticizes its conventional approach and lack of depth. This suggests a mixed recommendation, appreciating certain aspects while noting significant shortcomings. | Gemini: The review praises the show's respectful representation and groundbreaking casting, but notes its conventional and somewhat shallow execution. This indicates a positive but qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,21 +46,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:55:16.294Z",
+    "scoredAt": "2026-02-02T18:20:44.498Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 64,
-    "previousVersion": "3.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 75,
+    "geminiScore": 74,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

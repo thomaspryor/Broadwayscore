@@ -16,7 +16,7 @@
   "sourceMethod": "playwright",
   "llmScore": {
     "score": 80,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 75,
       "high": 85
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite questioning whether the story needs retelling, the critic praises Groff's performance as a 'tour-de-force' worthy of Tony consideration and recommends the show for its star power and production values. | Gemini: The review is overwhelmingly positive, highlighting Groff's performance and the show's visual appeal. While acknowledging some potential issues with the story itself, the critic strongly recommends seeing the show for Groff's performance alone.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening with questions about the story's necessity, the critic praises Groff's 'tour-de-force performance' and suggests Tony Award potential, clearly recommending the show while acknowledging some limitations. | GPT-4o: The review is filled with praise for Jonathan Groff's performance, the staging, and the overall production quality, culminating in a strong recommendation and the suggestion that Groff could win another Tony Award for his role. | Gemini: The review is overwhelmingly positive, praising Groff's performance and the visual aspects of the show. While it acknowledges some issues with the story, the overall recommendation is strong.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,26 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:12:47.146Z",
+    "scoredAt": "2026-02-02T18:26:38.489Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 83,
-    "previousVersion": "5.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
+    "openaiScore": 90,
     "geminiScore": 82,
     "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 87,

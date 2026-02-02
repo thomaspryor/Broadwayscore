@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt suggests criticism of the performance style as overly broad/hammy, but with severely limited text and contradictory aggregator signals, the full verdict remains unclear. | GPT-4o: The original rating of 3/5 stars suggests a mixed review. The quote indicates enthusiasm but also implies a lack of subtlety or finesse, aligning with a mixed verdict. | Gemini: The review excerpt is somewhat ambiguous, but the phrase 'put the broad in Broadway performing' suggests a mixed assessment. The 3/5 star rating also points towards a mixed or slightly positive view.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The 3/5 star rating suggests mixed reception, and the quoted text criticizes the performance style as overly broad, but limited excerpts make full assessment difficult. | GPT-4o: The original rating of 3/5 stars suggests a mixed review. The quote indicates enthusiasm in the performance, but the phrasing 'put the broad in Broadway' may imply a lack of subtlety or finesse, leading to a mixed impression. | Gemini: The phrase 'put the broad in Broadway performing' suggests a mixed assessment, leaning towards a somewhat positive but potentially over-the-top experience. The 3/5 star rating also indicates a mixed review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,12 +38,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:27:19.490Z",
+    "scoredAt": "2026-02-02T18:31:57.879Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 40,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,

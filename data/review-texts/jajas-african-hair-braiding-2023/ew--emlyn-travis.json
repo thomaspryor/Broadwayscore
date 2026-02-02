@@ -9,17 +9,17 @@
   "bwwExcerpt": "The Ghanaian-American playwright (School Girls; Or, The African Mean Girls Play) and director Whitney White (Our Dear Dead Drug Lord) have teamed up with executive producers Taraji P. Henson and LaChanze to paint a brilliant, emotive portrait of a seemingly simple day in the life of the sedulous West African women working at its titular Central Harlem hair braiding shop. As their day progresses, theatergoers will uncover a powerful tale about joy, dreams, societal and familial expectations, comm",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "originalScore": "A",
-  "assignedScore": 92,
+  "assignedScore": 83,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 92,
-    "confidence": "high",
+    "score": 83,
+    "confidence": "medium",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 78,
+      "high": 88
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic's A rating combined with highly positive language like 'brilliant, emotive portrait' and 'powerful tale' clearly indicates a rave review, even with truncated text. | GPT-4o: The critic's original rating of 'A' and the use of phrases like 'brilliant, emotive portrait' suggest a highly enthusiastic recommendation, aligning with a 'Rave' classification. | Gemini: The review uses highly positive language like \"brilliant, emotive portrait\" and the critic gave the show an 'A' rating, indicating a rave review. The aggregator context also suggests a positive reception.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic's A rating combined with strongly positive language like 'brilliant, emotive portrait' and 'powerful tale' indicates enthusiastic recommendation despite truncated text. | GPT-4o: The critic's original rating of 'A' and the use of strong positive language like 'brilliant, emotive portrait' indicate a highly enthusiastic recommendation, placing it in the Rave bucket. | Gemini: The review uses highly positive language like \"brilliant\" and \"emotive portrait,\" and the critic gave the show an \"A\" rating, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:51:48.248Z",
+    "scoredAt": "2026-02-02T18:24:39.433Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 45,
-    "previousVersion": "5.0.0"
+    "previousScore": 92,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 90,
+    "claudeScore": 83,
     "openaiScore": 95,
-    "geminiScore": 90,
-    "claudeBucket": "Rave",
+    "geminiScore": 82,
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 5,
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "“There are no easy answers to the complex problems that ‘Jaja's African Hair Braiding’ presents, and certainly none that can be solved within the span of a single day. Instead, the play encourages viewers to inspect the way the current world works and, hopefully, leave its salon with a greater sense of compassion and understanding for those around them tirelessly working to make ends meet.”",

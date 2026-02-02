@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The jukebox musical built around Huey Lewis and the News hits is a crowd-pleasing throwback that doesn't quite find its groove until the second act.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "The jukebox musical built around Huey Lewis and the News hits is a crowd-pleasing throwback that doesn't quite find its groove until the second act.",
   "needsScoring": true,
   "llmScore": {
-    "score": 75,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic finds the show 'rather fun' and entertaining despite acknowledging its formulaic jukebox musical template, praising the performances and production while noting it 'just entertains' without being deeply inspiring. | GPT-4o: The review acknowledges the show's limitations but ultimately describes it as entertaining and fun. The critic highlights the show's appeal and potential for success, indicating a positive recommendation despite some reservations. | Gemini: The review indicates the show is \"rather fun\" and \"entertains\", but also notes thin characters and unsurprising plot developments. It's a positive review with reservations, landing it in the Positive bucket.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Marks acknowledges the show's formulaic nature but ultimately finds it entertaining and well-executed, praising its unpretentious charm and suggesting it has a promising future, though noting it's neither inspiring nor offensive. | GPT-4o: The review acknowledges the show's limitations and familiar jukebox musical templates but ultimately finds it entertaining and fun. The critic appreciates the clever creators and the show's appeal, suggesting it is worth seeing despite its lack of depth. | Gemini: The review acknowledges the show's flaws but ultimately finds it enjoyable and entertaining, suggesting it's worth seeing despite its predictability.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,23 +43,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:22:56.032Z",
+    "scoredAt": "2026-02-02T18:12:21.494Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 64,
+    "previousScore": 75,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (25 words)",
   "ensembleData": {
-    "claudeScore": 72,
+    "claudeScore": 76,
     "openaiScore": 76,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -86,10 +86,11 @@
   ],
   "fetchTier": 4,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "archive",
   "rescoreCompletedAt": "2026-02-02T14:22:56.032Z",
   "archiveOrgTimestamp": "20250104073859",
-  "archiveOrgUrl": "http://web.archive.org/web/20250104073859/https://variety.com/2024/legit/reviews/the-heart-of-rock-and-roll-review-huey-lewis-musical-broadway-1235976855/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250104073859/https://variety.com/2024/legit/reviews/the-heart-of-rock-and-roll-review-huey-lewis-musical-broadway-1235976855/",
+  "wordCount": 767,
+  "tierReason": "Full review text"
 }

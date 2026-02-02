@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite being a single excerpt, the language is overwhelmingly positive with terms like 'triumph,' 'best...yet this century,' and 'new era of musical theatre,' indicating a rave review. | GPT-4o: The review uses highly positive language, describing the score as a 'triumph' and praising the direction and choreography. The mention of 'some of the best lyric writing seen yet this century' indicates a strong recommendation. | Gemini: The review uses positive language such as \"clever direction\", \"athletic choreography\", \"triumph\", and \"refreshing and prescient\". Given the limited text, I'm scoring it as positive but not rave.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review uses superlative language like 'triumph', 'best lyric writing seen yet this century', and suggests the show is ushering in 'a new era of musical theatre' - clear rave territory despite being a single excerpt. | GPT-4o: The review excerpt is highly enthusiastic, praising the direction, choreography, and score as a triumph, suggesting a strong recommendation to see the show. | Gemini: The review excerpt contains strong praise for the direction, choreography, and especially the score, suggesting a positive recommendation. The phrase \"triumph by itself\" indicates a strong positive sentiment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:28:23.281Z",
+    "scoredAt": "2026-02-02T18:04:14.051Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 93,
+    "previousScore": 92,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
     "openaiScore": 92,
-    "geminiScore": 78,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

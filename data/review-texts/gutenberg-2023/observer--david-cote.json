@@ -9,15 +9,15 @@
   "bwwExcerpt": "Scenic designer Scott Pask simulates a disorganized backstage area with tables, technical gear and touches that suggest a Nutley yard sale (I see he bought the Star Wars bedsheets from my childhood on eBay) and costume designer Emily Rebholz gives the boys the perfect level of dweeby élan, down to Rannells’ tucked-in sweater. I don’t know if the bazillion trucker hats are sets, costumes, props or what, but give someone a Tony. Having staged much costlier and busier spectacles, it’s a treat to se",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 80,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening with self-aware criticism of musicals being 'stupid,' the critic clearly enjoyed the show immensely, praising the performances, direction, and craft throughout, concluding with genuine affection for the production. | GPT-4o: The review is filled with praise for the performances, direction, and cleverness of the production, culminating in a strong personal endorsement from the critic. The tone is consistently positive and enthusiastic, indicating a must-see recommendation. | Gemini: The review expresses enjoyment and appreciation for the show's humor and performances, ultimately recommending it despite acknowledging its flaws and niche appeal. The critic clearly enjoyed the show.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening with seemingly contradictory feelings about musicals, the critic delivers consistent praise throughout, calling it a 'zestful skewering,' praising both lead performances extensively, and ending with clear affection for the show. | GPT-4o: The review is filled with enthusiastic praise for the performances, direction, and overall production. The critic clearly enjoyed the show, highlighting its humor and execution, and ends with a strong personal endorsement. | Gemini: The review is overwhelmingly positive, highlighting the comedic performances and direction. While acknowledging the show's absurdity, the critic ultimately recommends it, stating it's \"firmly imprinted on my heart.\"",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:37:14.606Z",
+    "scoredAt": "2026-02-02T17:57:46.596Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 79,
+    "claudeScore": 78,
     "openaiScore": 90,
     "geminiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 11,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -65,8 +65,8 @@
   "showScoreUrl": "https://www.show-score.com/broadway-shows/gutenberg-the-musical-broadway",
   "dateUnknown": true,
   "dateSource": "historical-review",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 972,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "rescoreCompletedAt": "2026-02-01T20:00:22.174Z",
   "previousLlmScore": 76,
@@ -90,7 +90,6 @@
   ],
   "fetchTier": 1.5,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "browserbase",
   "_removedDesignation": {
@@ -100,5 +99,6 @@
     "hadPositiveThumb": true,
     "dtliThumb": "none",
     "bwwThumb": "Up"
-  }
+  },
+  "tierReason": "Full review text"
 }

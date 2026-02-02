@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language throughout ('extraordinary', 'brilliant', 'perfection', 'impeccable') and concludes with an explicit must-see recommendation. | GPT-4o: The review is overwhelmingly positive, describing the production as 'extraordinary' and 'brilliant,' with 'perfection' in performances and 'magical moments' that 'take your breath away.' The critic strongly recommends it as 'not to be missed,' indicating a rave review. | Gemini: The review is overwhelmingly positive, praising the stagecraft, cast performances, and overall magical experience. The final sentence, \"In any case, it's not to be missed,\" seals the positive recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review is filled with superlative language including 'extraordinary,' 'brilliant,' 'magical,' 'perfection,' and explicitly concludes 'it's not to be missed.' The critic describes breathtaking stagecraft and flawless performances with genuine enthusiasm throughout. | GPT-4o: The review is overwhelmingly positive, highlighting the extraordinary nature of the production, the impeccable performances, and the breathtaking stagecraft. The critic describes it as a brilliant new level of Broadway magic, making it a must-see. | Gemini: The review is overwhelmingly positive, highlighting the stagecraft, performances, and overall magical experience. The concluding statement, \"it's not to be missed,\" seals the positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,11 +40,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:29:16.845Z",
+    "scoredAt": "2026-02-02T18:09:01.772Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 93,
+    "previousScore": 94,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {

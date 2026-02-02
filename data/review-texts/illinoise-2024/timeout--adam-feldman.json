@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic's own 80 rating combined with language about trust being rewarded and calling it 'rare' with positive descriptors 'intimate and epic' indicates a strong positive recommendation. | GPT-4o: The critic's original rating of 80 places it firmly in the Positive bucket. The review highlights the show's ability to engage the audience emotionally and describes it as both intimate and epic, indicating a strong recommendation. | Gemini: The critic explicitly states that the show rewards the audience and is a rare musical, indicating a positive recommendation. The original rating of 80 aligns with the 'Positive' bucket.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic's own 80 rating aligns perfectly with positive territory, and the language praising the show as 'rare' and noting that audience trust is 'rewarded' indicates a clear recommendation. | GPT-4o: The critic's original rating of 80 aligns with a strong positive recommendation, and the review text praises the show for its emotional depth and unique qualities. | Gemini: The review praises the show's ability to connect with the audience on an emotional level and describes it as both intimate and epic, indicating a positive recommendation. The critic's original rating of 80 also supports this classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,12 +43,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:17:28.842Z",
+    "scoredAt": "2026-02-02T18:24:02.958Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "5.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",

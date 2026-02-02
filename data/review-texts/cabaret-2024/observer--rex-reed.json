@@ -62,8 +62,8 @@
     "modelAgreement": "Both models agree: Negative"
   },
   "bwwThumb": "Down",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 812,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 13,
   "isFullReview": true,
@@ -81,8 +81,7 @@
   "fetchTier": 1,
   "textQuality": "truncated",
   "truncationSignals": [
-    "no_ending_punctuation",
-    "possible_mid_word_cutoff"
+    "no_ending_punctuation"
   ],
   "textStatus": "truncated",
   "rescoreCompletedAt": "2026-02-01T19:57:49.021Z",
@@ -93,5 +92,6 @@
     "hadPositiveThumb": false,
     "dtliThumb": "none",
     "bwwThumb": "Down"
-  }
+  },
+  "tierReason": "Full review text"
 }

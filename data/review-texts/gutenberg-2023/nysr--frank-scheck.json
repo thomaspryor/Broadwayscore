@@ -16,7 +16,7 @@
   "dtliThumb": null,
   "llmScore": {
     "score": 64,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 59,
       "high": 69
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The 3/5 star rating and review tone indicate a mixed recommendation - the critic acknowledges the stars' talents and some clever writing, but notes significant issues with the material's thinness and unsuitability for Broadway's scale and prices. | GPT-4o: The review acknowledges the strong performances of Gad and Rannells and some clever writing, but criticizes the show's length, venue size, and lack of humor in its concept. The original 3/5 star rating suggests a mixed reception, aligning with the critique's balance of positive and negative observations. | Gemini: The review acknowledges the show's cleverness and the stars' performances but also points out its thin charms, relentless meta-humor, and forgettable songs. The critic's 3/5 star rating further supports a mixed classification.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 3/5 star rating and review language clearly indicate mixed feelings - praising the stars' chemistry and some clever writing while criticizing the thin material and questioning the Broadway transfer. | GPT-4o: The review acknowledges the strong performances of Gad and Rannells and some clever writing, but criticizes the show's humor and length. The original 3/5 star rating aligns with a mixed assessment, highlighting both strengths and weaknesses. | Gemini: The review is generally positive, highlighting the performances of Gad and Rannells. However, it notes the show's thin charms and the fact that the humor might not be for everyone, indicating a recommendation with reservations. The 3/5 star rating also supports a positive but not rave classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,27 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:36:25.325Z",
+    "scoredAt": "2026-02-02T17:57:25.623Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 49,
-    "previousVersion": "3.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 65,
+    "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 49,

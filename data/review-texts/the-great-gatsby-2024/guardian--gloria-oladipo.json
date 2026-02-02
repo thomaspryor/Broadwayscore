@@ -12,8 +12,8 @@
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
-  "archivePath": "data/archives/reviews/the-great-gatsby-2024/guardian--gloria-oladipo_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T15:18:14.328Z",
+  "archivePath": "data/archives/reviews/the-great-gatsby/guardian--gloria-oladipo_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T18:04:58.004Z",
   "sourceMethod": "playwright",
   "scoreSource": "enhanced-sentiment-lean-negative",
   "scoreConfidence": "low",
@@ -67,8 +67,8 @@
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
   "bwwThumb": "Down",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 1071,
   "previousUrl": "https://www.theguardian.com/stage/2024/apr/25/the-great-gatsby-review-broadway-musical",
   "urlDiscoveredAt": "2026-02-02T15:07:35.545Z",
   "urlDiscoveryMethod": "google-serp",
@@ -80,6 +80,12 @@
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
       "tier": 1,
       "method": "playwright",
       "success": true
@@ -87,7 +93,7 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
-  "duplicateTextOf": "guardian--adrian-horton.json"
+  "duplicateTextOf": "guardian--adrian-horton.json",
+  "tierReason": "Full review text"
 }

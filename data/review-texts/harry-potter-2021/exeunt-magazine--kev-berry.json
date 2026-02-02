@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The phrases 'theatrical achievement' and 'impeccable' production design are strong positive indicators, but with only one excerpt available, I'm placing this in the upper range of Positive rather than Rave territory. | GPT-4o: The phrase 'a theatrical achievement' suggests a high level of praise, and 'impeccable' indicates exceptional quality. Despite the single excerpt warning, the language used is strong enough to suggest a rave review. | Gemini: The excerpt uses strong positive language like \"theatrical achievement\" and \"impeccable,\" indicating a positive recommendation. Since it's a single excerpt, I'm placing it at the higher end of the positive range.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The phrase 'theatrical achievement' is strong praise, and 'impeccable' production design suggests high quality, but limited excerpt prevents full assessment of overall recommendation strength. | GPT-4o: The excerpt uses strong positive language, describing the show as 'a theatrical achievement' and praising the 'impeccable' production design, suggesting a highly favorable view. | Gemini: The excerpt uses strong positive language like \"theatrical achievement\" and \"impeccable,\" suggesting a positive recommendation. Given it's a single excerpt, I'm placing it at the higher end of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:28:10.616Z",
+    "scoredAt": "2026-02-02T18:07:59.377Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 82,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 86,
+    "openaiScore": 87,
     "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

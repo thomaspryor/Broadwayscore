@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic appreciates Korine's boundary-pushing experimentation and finds moments of intentional humor, but notes the work eschews plot 'to the detriment of anyone looking for a good story' and questions its crossover appeal beyond diehard fans. | GPT-4o: The review acknowledges the film's unique and experimental nature, which may appeal to diehard fans of the director, but also notes its lack of plot and potential to be a chore, suggesting a mixed reception. | Gemini: The review highlights both the film's experimental nature and its potential to be a \"chore to sit through.\" While it acknowledges moments of humor and boundary-pushing, it ultimately suggests a mixed experience, appealing primarily to diehard fans of the director.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges Korine's artistic ambitions and finds moments of humor and innovation, but ultimately presents this as a niche experimental work that will appeal primarily to existing fans rather than general audiences. | GPT-4o: The review acknowledges the film's experimental nature and humor but also highlights its lack of plot and potential difficulty for viewers, suggesting it may appeal to a niche audience rather than a broad one. | Gemini: The review acknowledges some humorous moments and boundary-pushing aspects, but ultimately describes the film as potentially a \"chore to sit through,\" indicating a mixed experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,11 +42,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:22:34.525Z",
+    "scoredAt": "2026-02-02T18:05:35.438Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 60,
+    "previousScore": 63,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
@@ -64,7 +64,7 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (23 words)",
   "previousUrl": "https://www.hollywoodreporter.com/lifestyle/arts/harmony-broadway-review-1235608959/",
   "urlDiscoveredAt": "2026-02-02T05:12:11.456Z",
@@ -73,7 +73,7 @@
   "previousLlmScore": 60,
   "textWordCount": 869,
   "archivePath": "data/archives/reviews/harmony-2023/hollywood-reporter--david-rooney_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:33:59.933Z",
+  "textFetchedAt": "2026-02-02T16:32:49.594Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -84,10 +84,11 @@
   ],
   "fetchTier": 4,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250720170931",
   "archiveOrgUrl": "http://web.archive.org/web/20250720170931/https://www.hollywoodreporter.com/movies/movie-reviews/aggro-dr1ft-review-travis-scott-harmony-korine-1235578140/",
-  "rescoreCompletedAt": "2026-02-02T14:22:34.525Z"
+  "rescoreCompletedAt": "2026-02-02T14:22:34.525Z",
+  "wordCount": 869,
+  "tierReason": "Full review text"
 }

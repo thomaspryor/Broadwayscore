@@ -60,8 +60,8 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "truncated",
+  "wordCount": 232,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 20,
   "isFullReview": true,
@@ -90,7 +90,6 @@
   ],
   "fetchTier": 2,
   "textQuality": "partial",
-  "truncationSignals": [],
   "textStatus": "incomplete",
   "sourceMethod": "scrapingbee",
   "textIssues": [
@@ -104,5 +103,6 @@
     "hadPositiveThumb": false,
     "dtliThumb": "none",
     "bwwThumb": "none"
-  }
+  },
+  "tierReason": "Short text (232 words)"
 }

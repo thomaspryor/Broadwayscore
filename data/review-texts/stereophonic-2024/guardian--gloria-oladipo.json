@@ -62,8 +62,8 @@
     "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
   "bwwThumb": "Up",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 1211,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 89,
   "isFullReview": true,
@@ -86,7 +86,6 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "rescoreCompletedAt": "2026-02-01T16:10:48.153Z",
   "_removedDesignation": {
@@ -96,5 +95,6 @@
     "hadPositiveThumb": true,
     "dtliThumb": "none",
     "bwwThumb": "Up"
-  }
+  },
+  "tierReason": "Full review text"
 }

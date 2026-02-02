@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic gives 4/5 stars and uses strongly positive language like 'haunting, exhilarating,' 'happily report,' and describes leaving 'haunted and grateful.' Despite some setup about not being a fantasy fan, the review is clearly enthusiastic about this production. | GPT-4o: The review provides a highly positive assessment of the play, highlighting its emotional and moral complexity, strong performances, and impressive staging. The critic's original 4/5 star rating aligns with a strong recommendation, justifying a high score within the Positive bucket. | Gemini: The critic gives a 4/5 star rating and explicitly states she can \"happily report\" the show is good. She praises many aspects of the production, including the acting, set design, and emotional complexity, indicating a strong positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic gives 4/5 stars and uses strongly positive language throughout, praising the performances as 'terrific,' the staging as having 'spine-tingling illusions,' and concluding she left 'haunted and grateful.' Despite minor reservations, this is a clear enthusiastic recommendation. | GPT-4o: The review is filled with praise for the production's emotional and moral complexity, performances, and staging. The critic's 4/5 star rating and positive final sentiment strongly indicate a solid recommendation. | Gemini: The critic gives a 4/5 star rating and expresses happiness with the production's arrival in New York, highlighting its emotional and moral complexity, and praising the performances and staging. The review is overwhelmingly positive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,11 +39,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:29:33.396Z",
+    "scoredAt": "2026-02-02T18:09:20.026Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 81,
+    "previousScore": 82,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {

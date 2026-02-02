@@ -8,18 +8,18 @@
   "fullText": null,
   "bwwExcerpt": "The play - whose story is credited to Rowling, playwright Jack Thorne and director John Tiffany - has an emotional honesty that, like the books, never sinks into sentimentality and guarantees its endurance. At its essence is a story about parents and children, specifically fathers and sons, struggling to connect with a loved one they can't understand.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-indicator-positive",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 79,
+    "score": 80,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the play's emotional honesty and predicts its endurance, which are strong positive indicators. However, with only one excerpt available, there's some uncertainty about the full verdict. | GPT-4o: The excerpt praises the play's emotional honesty and enduring quality, suggesting a strong positive impression. The lack of sentimentality is highlighted as a positive trait, indicating a solid recommendation. | Gemini: The review excerpt highlights the play's emotional honesty and enduring quality, suggesting a positive experience. While it's a single excerpt, the language leans towards a recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the play's emotional honesty, compares it favorably to the beloved books, and uses strong language like 'guarantees its endurance,' indicating clear appreciation and recommendation despite limited excerpt. | GPT-4o: The excerpt praises the play's emotional honesty and enduring quality, suggesting a strong positive recommendation. The language indicates enthusiasm and confidence in the play's impact. | Gemini: The review excerpt highlights the play's emotional honesty and potential endurance, suggesting a positive experience, but the lack of further details warrants a score in the lower-middle range of the 'Positive' bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,15 +40,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:30:16.911Z",
+    "scoredAt": "2026-02-02T18:10:01.778Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 79,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 81,
+    "claudeScore": 82,
     "openaiScore": 82,
     "geminiScore": 75,
     "claudeBucket": "Positive",

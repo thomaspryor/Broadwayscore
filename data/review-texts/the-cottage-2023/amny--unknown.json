@@ -68,7 +68,7 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
   },
-  "contentTier": "excerpt",
+  "contentTier": "truncated",
   "contentTierReason": "Only aggregator excerpts available",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 62,
@@ -85,7 +85,6 @@
   ],
   "fetchTier": 4,
   "textQuality": "partial",
-  "truncationSignals": [],
   "textStatus": "incomplete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250601032049",
@@ -93,5 +92,7 @@
   "textIssues": [
     "Word count too low: 291 (min: 300)"
   ],
-  "rescoreCompletedAt": "2026-02-02T14:25:28.963Z"
+  "rescoreCompletedAt": "2026-02-02T14:25:28.963Z",
+  "wordCount": 291,
+  "tierReason": "Short text (291 words)"
 }

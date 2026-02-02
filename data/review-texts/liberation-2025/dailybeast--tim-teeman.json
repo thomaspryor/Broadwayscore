@@ -9,17 +9,17 @@
   "dtliExcerpt": "The play speaks to itself, it speaks to us, and it encourages a dialogue straight back at it. In this sense, it is its own highly effective consciousness-raising exercise, looking at us in our present day where the principles of equality and progress are becoming derided and imperiled. What the women thought they were confronting and vanquishing in the early 1970s remains all too prescient.",
   "bwwExcerpt": "The play speaks to itself, it speaks to us, and it encourages a dialogue straight back at it. In this sense, it is its own highly effective consciousness-raising exercise, looking at us in our present day where the principles of equality and progress are becoming derided and imperiled. What the women thought they were confronting and vanquishing in the early 1970s remains all too prescient.",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 82,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-LIBERATION-Opens-On-Broadway-20251028",
   "dtliThumb": "Up",
   "sourceMethod": "brightdata",
   "llmScore": {
-    "score": 81,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review is overwhelmingly positive, calling it 'excellent, affecting' and 'fizzingly vibrant' with praise for performances, direction, and audience engagement. Despite some complex thematic discussion, the critic clearly recommends the production. | Gemini: The review uses positive language like \"excellent\" and \"affecting\" and describes the play as \"fizzingly vibrant.\" While it provides context and describes the play's themes, the overall tone is clearly recommending the show.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses strong praise like 'excellent, affecting play' and 'fizzingly vibrant ideas' play' while describing rich audience engagement and meaningful themes. Despite some analytical discussion, the overall tone is clearly recommendatory with enthusiastic language throughout. | GPT-4o: The review is overwhelmingly positive, praising the play's impact, performances, and thematic depth. The critic describes it as 'excellent' and 'affecting,' indicating a strong recommendation. | Gemini: The review uses positive language such as \"excellent\" and \"affecting.\" It highlights the play's ability to elicit interaction from the audience and its exploration of important themes, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,26 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:55:14.495Z",
+    "scoredAt": "2026-02-02T18:30:02.916Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 83,
-    "previousVersion": "5.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "openaiScore": 92,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/liberation-2025/daily-beast--tim-teeman_2026-01-27.html",
   "textFetchedAt": "2026-01-27T04:28:46.184Z",

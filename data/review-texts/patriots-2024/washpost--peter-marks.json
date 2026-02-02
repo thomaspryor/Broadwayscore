@@ -50,7 +50,7 @@
     "previousScore": 78,
     "previousVersion": "5.0.0"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (24 words)",
   "ensembleData": {
     "claudeScore": 78,
@@ -93,12 +93,13 @@
   "fetchTier": 1,
   "textQuality": "full",
   "truncationSignals": [
-    "no_ending_punctuation",
-    "possible_mid_word_cutoff"
+    "no_ending_punctuation"
   ],
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "archiveOrgTimestamp": "20240423124845",
   "archiveOrgUrl": "http://web.archive.org/web/20240423124845/https://www.washingtonpost.com/entertainment/theater/2024/04/22/patriots-broadway-review/",
-  "duplicateTextOf": "washpost--naveen-kumar.json"
+  "duplicateTextOf": "washpost--naveen-kumar.json",
+  "wordCount": 761,
+  "tierReason": "Full review text"
 }

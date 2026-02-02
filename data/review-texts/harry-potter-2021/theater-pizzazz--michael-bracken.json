@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The language 'incredible theatrical experience' and 'magic is real' strongly suggests enthusiastic recommendation, but limited to single excerpt so scored conservatively within rave range. | GPT-4o: The excerpt uses strong positive language ('incredible', 'magic is real'), suggesting a highly enthusiastic recommendation. However, due to the single excerpt warning, the confidence is medium, and the score is conservatively placed in the middle of the Rave range. | Gemini: The review excerpt uses strong positive language like \"incredible\" and \"magic,\" indicating a positive recommendation. However, due to the single excerpt and truncated text warning, a more conservative score is appropriate.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Strong superlative language ('incredible') and explicit praise for theatrical magic indicates enthusiastic recommendation, though single excerpt limits confidence. | GPT-4o: The excerpt uses strong positive language suggesting a highly enthusiastic recommendation, indicating a rave review. However, due to the single excerpt warning, confidence is medium. | Gemini: The excerpt uses strong positive language like \"incredible\" and \"magic is real,\" indicating a strong recommendation. Given the single excerpt warning, I am scoring it at the higher end of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:05:03.828Z",
+    "scoredAt": "2026-02-02T18:10:16.277Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "3.0.0"
+    "previousScore": 89,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 87,
+    "claudeScore": 88,
     "openaiScore": 90,
-    "geminiScore": 78,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

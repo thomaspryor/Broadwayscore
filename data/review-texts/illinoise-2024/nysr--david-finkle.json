@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ILLINOISE-2024",
   "bwwThumb": "Meh",
   "originalScore": "3/5 stars",
-  "assignedScore": 61,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 61,
-    "confidence": "high",
+    "score": 63,
+    "confidence": "medium",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic gives 3/5 stars and acknowledges the show is 'effective' with standout moments like Tittle's tap number, but identifies significant problems with unclear storytelling, unintelligible lyrics, and repetitive choreography that suggest something is lacking. | Gemini: The review acknowledges the show's effectiveness but also points out issues with the plot and intelligibility of the lyrics. The critic seems ambivalent, placing it in the mixed category.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 3/5 star rating and review tone show clear ambivalence - praising the effectiveness and strong dancing while criticizing unclear storytelling, unintelligible lyrics, and repetitive choreography. The critic acknowledges positives but finds significant flaws that prevent a recommendation. | GPT-4o: The review acknowledges the effectiveness of the production and praises the dancers, but also highlights significant issues with clarity and coherence in storytelling and sound. The original 3/5 star rating suggests a mixed impression, aligning with the overall tone of the review. | Gemini: The review acknowledges the show's effectiveness and the dancers' commitment, but also points out issues with intelligibility, plot clarity, and choreographic repetition. The 3/5 star rating also indicates a positive but not rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:15:25.619Z",
+    "scoredAt": "2026-02-02T18:23:16.883Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 59,
-    "previousVersion": "3.0.0"
+    "previousScore": 61,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,
-    "openaiScore": null,
-    "geminiScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
     "claudeBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 2,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "dtliExcerpt": "The show is a visual feast, with choreography that flows like liquid poetry across the stage, transforming Sufjan Stevens' intricate compositions into a living, breathing theatrical experience.",
   "showScoreExcerpt": "The show is a visual feast, with choreography that flows like liquid poetry across the stage, transforming Sufjan Stevens' intricate compositions into a living, breathing theatrical experience.",

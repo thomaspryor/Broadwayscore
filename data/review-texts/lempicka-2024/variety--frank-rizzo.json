@@ -9,15 +9,15 @@
   "bwwExcerpt": "Certainly Eden Espinosa, starring in the title role, brings both luminosity and strength to her powerful performance as the ambitious, visionary and resilient artist known for capturing the women of her day in an aspirational light: perfectly poised, coiffed and seemingly glowing from within. But the musical’s titular character is not so polished. Rather she’s a complicated woman — to a fault. This might not be as much of a concern in a thick biography, but it’s harder to convey successfully in",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 60,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 63,
+    "score": 60,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 55,
+      "high": 65
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review calls the musical 'uneven' and notes the character 'remains just beyond the frame,' while praising Espinosa's 'powerful performance.' The truncated text prevents seeing the full verdict, but the tone suggests mixed feelings about an imperfect but not unsuccessful show. | GPT-4o: The review acknowledges the unevenness of the musical but highlights Eden Espinosa's strong performance. The tone suggests a mix of strengths and weaknesses, leading to a mixed recommendation. | Gemini: The review highlights the unevenness of the musical despite a powerful performance by Eden Espinosa. The reviewer notes the complexity of the character, which is harder to convey successfully in a musical format.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The headline suggests criticism ('Out of Focus') but the review text appears truncated with only cast/crew information provided, making a definitive assessment impossible. | GPT-4o: The review's headline suggests a lack of clarity or focus in the production, which implies a mixed reception. However, without more evaluative content, the confidence in this assessment is low. | Gemini: The title indicates a negative assessment, but without the full review text, it's impossible to determine the overall recommendation strength. It's likely mixed, but could lean negative.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:28:00.436Z",
+    "scoredAt": "2026-02-02T18:29:37.822Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 55,
-    "previousVersion": "5.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 62,
+    "openaiScore": 58,
+    "geminiScore": 59,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -84,17 +84,17 @@
   "archiveOrgTimestamp": "20251205055934",
   "archiveOrgUrl": "http://web.archive.org/web/20251205055934/https://variety.com/2024/legit/reviews/lempicka-review-broadway-musical-1235971035/",
   "rescoreCompletedAt": "2026-02-01T15:26:37.387Z",
-  "contentTier": "complete",
-  "wordCount": 877,
+  "contentTier": "truncated",
+  "wordCount": 237,
   "humanReviewScore": 55,
   "humanReviewPreviousScore": 45,
   "humanReviewAt": "2026-02-01T19:59:47.226Z",
   "isFullReview": true,
   "textWordCount": 237,
   "textQuality": "partial",
-  "truncationSignals": [],
   "textStatus": "incomplete",
   "textIssues": [
     "Word count too low: 237 (min: 300)"
-  ]
+  ],
+  "tierReason": "Short text (237 words)"
 }

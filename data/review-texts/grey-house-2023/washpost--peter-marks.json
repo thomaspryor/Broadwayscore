@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 59,
   "source": "bww-roundup",
   "dtliThumb": null,
   "dtliExcerpt": "The supernatural thriller 'Grey House' succeeds in creating an atmosphere of dread, but the payoff doesn't quite match the buildup of suspense.",
@@ -20,11 +20,11 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 60,
+    "score": 59,
     "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 54,
+      "high": 64
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -35,7 +35,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges some positives (Metcalf's performance, the set design) but ultimately finds the play disappointing, saying he 'more often sank back into my seat than perched on the edge of it' and criticizing its 'ponderous knots' and lack of a 'sizzling payoff.' | Gemini: The review highlights some positive aspects like Metcalf's performance and the set design, but ultimately finds the play itself lacking in both terror and profundity, placing it in a 'gray zone'. The critic also mentions the plot being ponderous and the moralizing being murky, indicating a mixed experience overall.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges some positives (Metcalf's performance, the set design) but finds the play fundamentally unsatisfying, neither terrifying nor profound, with tolerance 'limited' for most audiences. | GPT-4o: The review highlights some enjoyable performances and set design but criticizes the play for lacking terror and depth. The critic expresses a lack of engagement with the plot and an overall sense of disappointment with the production's execution. | Gemini: The review highlights some positive aspects like Laurie Metcalf's performance and the set design, but ultimately finds the play lacking in both terror and depth, resulting in a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,26 +45,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:26:59.291Z",
+    "scoredAt": "2026-02-02T17:56:43.191Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 41,
-    "previousVersion": "3.0.0"
+    "previousScore": 60,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 58,
-    "openaiScore": null,
+    "openaiScore": 58,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
     "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 41,

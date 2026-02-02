@@ -7,17 +7,17 @@
   "publishDate": "August 14, 2025",
   "dtliExcerpt": "This touring production’s stop at the Garden has all the makings of a homecoming, and it’s a strenuously joyous one.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 76,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:02:57.888Z",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 75,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'strenuously joyous' suggests enthusiastic recommendation despite being only an excerpt. The 'homecoming' framing is positive, though 'strenuously' may hint at some effort or reservation. | GPT-4o: The phrase 'a strenuously joyous one' suggests a positive experience, indicating the production is recommended. However, the lack of full text and mixed aggregator context leads to medium confidence. | Gemini: The phrase \"strenuously joyous\" suggests a positive experience, indicating a recommendation, albeit perhaps with some reservations implied by \"strenuously.\"",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'strenuously joyous' suggests effort but positive energy, and 'homecoming' implies warmth and success, indicating a solid positive recommendation despite limited text. | GPT-4o: The phrase 'strenuously joyous' suggests a positive experience, though the use of 'strenuously' implies some effort or struggle involved. The overall tone is positive, but not overwhelmingly so, indicating a solid recommendation with some reservations. | Gemini: The review excerpt indicates a positive experience, describing the production as \"strenuously joyous.\" This suggests a recommendation, though the \"strenuously\" might imply some reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:26:12.399Z",
+    "scoredAt": "2026-02-02T18:31:36.764Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "2.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 75,
+    "openaiScore": 78,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

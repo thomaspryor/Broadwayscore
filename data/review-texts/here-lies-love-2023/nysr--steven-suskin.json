@@ -12,13 +12,13 @@
     "nysr-api"
   ],
   "originalScore": "4/5 stars",
-  "assignedScore": 75,
+  "assignedScore": 74,
   "llmScore": {
-    "score": 75,
+    "score": 74,
     "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite the 4/5 star rating, the critic clearly states the Broadway version is diminished from the original, calling it 'not yet quite so powerful' and noting 'the bloom is off the rose.' The review acknowledges it's still 'impressive and effective' but emphasizes significant reservations about the transfer. | GPT-4o: The review acknowledges the show's impressive elements and effective experience, but notes that the Broadway transfer lacks some of the original production's power and dynamism. The original rating of 4/5 stars suggests a positive recommendation, though with some reservations about the new venue's impact. | Gemini: The critic gives a mixed assessment, praising aspects like the cast and production but noting the transfer to a larger venue diminishes the original's impact. The 4/5 star rating and overall tone suggest a recommendation with reservations, but the truncated text makes it hard to be certain.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic gives a 4/5 stars rating and calls it 'impressive and effective,' but expresses clear reservations about the Broadway transfer diminishing the original's power and immersive quality. | GPT-4o: The review acknowledges the show's impressive elements and effective experience but notes that the Broadway transfer loses some of its original power and excitement. The critic highlights both strengths and significant reservations, leading to a mixed recommendation. | Gemini: The review acknowledges the show's strengths but notes that the Broadway transfer diminishes the original's impact, particularly for those not on the main floor. The critic still finds it impressive and effective, but not as powerful as the original, leading to a positive but reserved recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,23 +39,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:22:47.333Z",
+    "scoredAt": "2026-02-02T18:19:13.929Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "complete",
   "contentTierReason": "Full review text",
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 74,
+    "claudeScore": 73,
+    "openaiScore": 68,
     "geminiScore": 75,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Positive",
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

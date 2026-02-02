@@ -9,15 +9,15 @@
   "bwwExcerpt": "Make no mistake, Jaja’s African Hair Braiding is wildly entertaining. Bioh’s comedic skills are masterful, ballooned further by a talented ensemble. Mensah, in particular, brings a bracing dry humor, an excellent complement to the cast’s energetic antics. But the urge to sink into drama, particularly in the play’s last moments, is unnecessary. Bioh’s commitment to showing levity is refreshing. It’s a needed counterbalance to African stories that reek of debasement (often puppeteered by white peo",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 76,
-    "confidence": "high",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic clearly states the show is 'wildly entertaining' and 'delightful' while acknowledging it tries to cover too much ground. Despite structural criticisms, the overall assessment is positive with praise for performances, design, and comedic elements. | Gemini: The review is largely positive, highlighting the play's comedic elements, visual appeal, and talented ensemble. However, it also notes that the play tries to cover too much ground, leading to a somewhat unfocused and unfinished feel. Therefore, it is a positive review with reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite extensive criticism about the play being overstuffed and lacking focus, the critic explicitly states it's 'wildly entertaining' and praises the comedic skills and performances, indicating a qualified recommendation. | GPT-4o: The review praises the play's entertainment value, comedic skills, and talented ensemble, but notes that the play tries to cover too many topics, which leaves it feeling unfinished. Despite these reservations, the overall tone is positive. | Gemini: The review is overall positive, highlighting the comedic skills and talented ensemble, but notes the play tries to cover too much ground, making it feel unfinished. It's recommended, but with reservations about the plot.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,32 +38,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:52:02.555Z",
+    "scoredAt": "2026-02-02T18:24:42.813Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 68,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 73,
-    "openaiScore": null,
-    "geminiScore": 78,
+    "openaiScore": 79,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "dateUnknown": true,
   "dateSource": "historical-review",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 1128,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
   "isFullReview": true,
@@ -80,7 +81,6 @@
   ],
   "fetchTier": 1,
   "textQuality": "partial",
-  "truncationSignals": [],
   "textStatus": "partial",
   "sourceMethod": "playwright",
   "rescoreCompletedAt": "2026-02-01T15:20:51.569Z",
@@ -91,5 +91,6 @@
     "hadPositiveThumb": true,
     "dtliThumb": "none",
     "bwwThumb": "Up"
-  }
+  },
+  "tierReason": "Full review text"
 }

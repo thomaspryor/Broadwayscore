@@ -9,7 +9,7 @@
   "assignedScore": 79,
   "llmScore": {
     "score": 79,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 74,
       "high": 84
@@ -23,7 +23,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic celebrates the songwriting, performances, and vision while noting significant character and narrative imbalances. The positive elements clearly outweigh the reservations, landing in solid positive territory. | Gemini: The review is overwhelmingly positive, praising the songwriting, performances, and overall vision of the show, while acknowledging some weaknesses in character development. The critic ultimately recommends seeing it, making it a positive review.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite acknowledging character imbalances and some reservations about the leads, the critic clearly recommends the show as a 'cause for celebration' and praises its songwriting, performances, and vision as a 'tour de force.' | GPT-4o: The review is overwhelmingly positive, praising the show as a 'tour de force' and 'cause for celebration,' with strong commendations for its songwriting, performances, and visionary production. The few reservations mentioned do not detract from the critic's enthusiastic recommendation. | Gemini: The review praises the songwriting, performances, and collaboration, but notes some imbalance in character development and narrative pathos, leading to a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -33,29 +33,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:03:48.967Z",
+    "scoredAt": "2026-02-02T18:01:32.287Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 83,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "openaiScore": 90,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 1500,
   "url": "https://www.vulture.com/2019/04/hadestown-is-a-songwriting-and-storytelling-tour-de-force.html",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 92,
@@ -74,10 +75,10 @@
   ],
   "fetchTier": 4,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260108043635",
   "archiveOrgUrl": "http://web.archive.org/web/20260108043635/https://www.vulture.com/2019/04/hadestown-is-a-songwriting-and-storytelling-tour-de-force.html",
-  "rescoreCompletedAt": "2026-02-01T20:00:48.309Z"
+  "rescoreCompletedAt": "2026-02-01T20:00:48.309Z",
+  "tierReason": "Full review text"
 }

@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic's own 88 rating clearly places this in rave territory, supported by highly positive language like 'powerhouse performance' and 'ultimately uplifting' despite emotional weight. | GPT-4o: The critic's original rating of 88 strongly suggests a rave review, and the description of McAdams' performance as 'powerhouse' supports an enthusiastic recommendation. | Gemini: The review highlights a strong performance and describes the drama as \"uplifting,\" suggesting a positive experience despite the potentially difficult subject matter. The original rating of 88 also supports a positive classification.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic's own 88 rating places this firmly in Rave territory, supported by praise for a 'powerhouse performance' and describing the work as 'ultimately uplifting' despite emotional content. | GPT-4o: The critic's original rating of 88 suggests a strong recommendation, and the review highlights a 'powerhouse performance' and describes the drama as 'emotionally devastating but ultimately uplifting,' indicating a highly positive assessment. | Gemini: The review uses strong positive language like \"powerhouse performance\" and \"uplifting drama,\" and the original rating is high, indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,23 +43,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:16:59.119Z",
+    "scoredAt": "2026-02-02T18:33:55.459Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 88,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 88,
-    "geminiScore": 80,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

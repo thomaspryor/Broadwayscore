@@ -68,7 +68,7 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 74,
@@ -86,10 +86,11 @@
   "fetchTier": 1,
   "textQuality": "full",
   "truncationSignals": [
-    "no_ending_punctuation",
-    "possible_mid_word_cutoff"
+    "no_ending_punctuation"
   ],
   "textStatus": "complete",
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-02-02T03:40:16.025Z"
+  "rescoreCompletedAt": "2026-02-02T03:40:16.025Z",
+  "wordCount": 744,
+  "tierReason": "Full review text"
 }

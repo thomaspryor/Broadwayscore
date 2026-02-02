@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic gives a clear enthusiastic recommendation with an imperative 'Get your ass to' this show, praising it as 'smart, funny, and surprisingly poignant' and describing the material as 'tweaked and buffed to gleaming perfection.' | GPT-4o: The review is highly enthusiastic, praising the show as 'smart, funny, and surprisingly poignant' with 'gleaming perfection' and 'masterful, empathetic telling'. The critic's language indicates a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, using phrases like \"smart, funny, and surprisingly poignant\" and praising the production as \"exceptionally tight\" and the material as \"tweaked and buffed to gleaming perfection.\" The critic clearly recommends seeing the show.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic opens with an explicit call to action urging audiences to see the show, praises it as 'smart, funny, and surprisingly poignant,' and describes the production as 'exceptionally tight' with material 'tweaked and buffed to gleaming perfection.' | GPT-4o: The review is highly enthusiastic about the production, praising its smart and funny nature, the tight direction, and Edelman's performance. The critic's language is strongly positive, indicating a must-see recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"smart, funny, and surprisingly poignant\" and praising the production's tightness and Edelman's performance. The critic clearly recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:59:48.110Z",
+    "scoredAt": "2026-02-02T18:25:51.353Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 82,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 92,
+    "claudeScore": 81,
+    "openaiScore": 90,
     "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -60,8 +60,8 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 641,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
   "isFullReview": true,
@@ -78,7 +78,6 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "rescoreCompletedAt": "2026-02-01T20:03:52.470Z",
@@ -89,5 +88,6 @@
     "hadPositiveThumb": false,
     "dtliThumb": "none",
     "bwwThumb": "none"
-  }
+  },
+  "tierReason": "Full review text"
 }

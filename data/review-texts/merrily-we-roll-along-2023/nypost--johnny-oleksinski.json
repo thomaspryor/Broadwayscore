@@ -18,7 +18,7 @@
   ],
   "llmScore": {
     "score": 82,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 77,
       "high": 87
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite opening with context about the show's troubled history, the critic delivers an enthusiastic recommendation, calling it 'one of the best and most alive musicals of the season' and praising the performances as 'acting alchemy.' | Gemini: Despite the truncated text warning, the review is overwhelmingly positive, praising the acting, direction, and overall quality of the production. The critic clearly states it's 'one of the best and most alive musicals of the season.'",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening with context about the show's infamous history, the critic delivers enthusiastic praise throughout, calling it 'one of the best and most alive musicals of the season' and consistently highlighting exceptional performances and direction. | GPT-4o: The review praises the revival as a significant improvement over past productions, highlighting the strong performances, particularly by Groff, Radcliffe, and Mendez, and the effective direction by Friedman. Despite the truncated text, the overall tone and specific phrases indicate a highly positive assessment. | Gemini: Despite the truncated text warning, the review is overwhelmingly positive, praising the acting, direction, and overall quality of the revival. The critic explicitly states it's \"one of the best and most alive musicals of the season,\" indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,26 +42,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:32:38.672Z",
+    "scoredAt": "2026-02-02T18:37:05.698Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 82,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 81,
-    "openaiScore": null,
+    "claudeScore": 82,
+    "openaiScore": 90,
     "geminiScore": 82,
     "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 79,

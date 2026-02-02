@@ -7,15 +7,15 @@
   "publishDate": "November 14, 2023",
   "fullText": "Bruce Sussman and Barry Manilow’s conventional new musical does a rudimentary but essential job of reviving a dead historical act.\n\nGood morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Harmony.”\n\nMuch is lost during times of war and savagery: Lives and homes, yes, but also art. Bruce Sussman and Barry Manilow’s new musical “Harmony” reminds us of this loss, filling history’s holes with witty lyrics, satirical jabs at autocracy and, well, harmony. The show follows the true story of six young men — three Jewish, three gentile — from varying economic and professional backgrounds who unite to form a singing group called the Comedian Harmonists in early-20th-century Germany. Director-choreographer Warren Carlyle’s top-notch ensemble bops and croons in all the right places, never falling out of synchronous step while also emitting a blend of chords that inch us closer to Nirvana. The Comedian Harmonists’ ascent is increasingly threatened by the fascist regime gaining power in Germany, but “Harmony” is no in-depth history lesson. Details of occupation remain brief, like a glossed over version of “Nazism for Dummies.” Carlyle, instead, keeps the stakes high with textbook acts of cruelty — intimidating us (and the Harmonists) with “Heils,” swastikas and anti-Semitic outbursts from actors who emerge from the audience. Though “Harmony” is dampened by its formulaic adherence to melancholic moments and a tragedy-laden chronicling of Jewish heritage, this is a show that successfully completes the task at hand. By its end, a palpable grief radiates throughout the Ethel Barrymore Theatre — a palpable shame, as well. One that hopefully urges us to remember our dead and to do everything — everything — in our power to keep their stories alive.",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 77,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 74,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite criticizing formulaic elements and calling it 'rudimentary,' the critic concludes the show 'successfully completes the task at hand' and praises the ensemble's performance, indicating a positive recommendation with reservations. | Gemini: The review acknowledges flaws but ultimately states the show \"successfully completes the task at hand,\" indicating a positive, albeit reserved, recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite criticizing formulaic elements and calling it 'rudimentary,' the critic concludes it 'successfully completes the task at hand' and praises the ensemble and direction, indicating a qualified recommendation. | GPT-4o: The review acknowledges the musical's formulaic and melancholic aspects but ultimately praises its successful execution and emotional impact, recommending it for its ability to revive historical narratives. | Gemini: The review acknowledges flaws but ultimately concludes that the show successfully achieves its goal, making it a positive recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,26 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:08:24.334Z",
+    "scoredAt": "2026-02-02T18:05:12.003Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": null,
-    "geminiScore": 75,
+    "claudeScore": 75,
+    "openaiScore": 78,
+    "geminiScore": 77,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "Though “Harmony” is dampened by its formulaic adherence to melancholic moments and a tragedy-laden chronicling of Jewish heritage, this is a show that successfully completes the task at hand. By its end, a palpable grief radiates throughout the Ethel Barrymore Theatre — a palpable shame, as well. One that hopefully urges us to remember our dead and to do everything — everything — in our power to keep their stories alive.",
   "sources": [
@@ -68,7 +69,7 @@
   "previousLlmScore": 68,
   "rescoreCompletedAt": "2026-02-01T15:03:48.978Z",
   "archivePath": "data/archives/reviews/harmony-2023/broadwaynews--brittani-samuel_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:34:14.939Z",
+  "textFetchedAt": "2026-02-02T16:35:59.129Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {

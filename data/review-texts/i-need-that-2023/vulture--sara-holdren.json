@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic systematically dismantles the play as repetitive, clichéd, and poorly written, comparing it to kids bashing action figures together and concluding that no actor can make it work when the play is 'phoning it in.' | GPT-4o: The review is overwhelmingly negative, criticizing the play for its repetitive and simplistic conflict, lack of character depth, and reliance on clichés. The critic suggests that the play is phoning it in and does not recommend it. | Gemini: The review is overwhelmingly negative, criticizing the writing, characters, and overall quality of the play. The reviewer clearly states that even Danny DeVito's performance cannot save the show.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The review is consistently critical throughout, describing the play as tedious, clichéd, and poorly written with underdeveloped characters. The critic finds it numbingly repetitive and concludes it 'phones it in,' clearly not recommending it. | GPT-4o: The review is overwhelmingly negative, criticizing the play's repetitive nature, lack of character development, and reliance on clichés. The critic suggests the show is a waste of time, despite Danny DeVito's performance. | Gemini: The review is overwhelmingly negative, criticizing the writing, characters, and overall quality of the play. The reviewer finds the play tedious and clichéd, and ultimately not worth seeing despite Danny DeVito's presence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,12 +38,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:51:11.933Z",
+    "scoredAt": "2026-02-02T18:22:26.929Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 23,
-    "previousVersion": "3.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,

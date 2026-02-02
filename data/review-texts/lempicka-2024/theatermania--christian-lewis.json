@@ -12,7 +12,7 @@
   "source": "dtli",
   "llmScore": {
     "score": 79,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 74,
       "high": 84
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges significant production issues (direction, design, choreography) but concludes with strong praise for the performances and thematic resonance, calling it 'undeniably compelling' and 'perfect for our turbulent times.' | GPT-4o: The review acknowledges some flaws in the production, particularly in the staging and historical elements, but overall praises the performances and thematic depth, recommending it as a unique and meaningful experience. | Gemini: The review highlights several flaws in the production, including the set, costumes, and choreography. However, it praises the performances, particularly Eden Espinosa's, and ultimately concludes that the show is compelling and meaningful, making it worth seeing despite its shortcomings.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges significant production issues (direction, design, choreography) but ultimately finds the musical compelling due to exceptional performances and meaningful themes, concluding it's 'perfect for our turbulent times' and calling it 'undeniably compelling.' | GPT-4o: Despite some criticisms of the production elements, the review praises the performances, particularly Eden Espinosa's, and highlights the musical's originality and thematic resonance. The overall tone is positive, with strong recommendations for its compelling nature and meaningful themes. | Gemini: Despite flaws in the set, costumes, and some of the writing, the reviewer praises the performances, especially Espinosa's, and ultimately recommends the show as a compelling and original piece of art.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,21 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:27:21.442Z",
+    "scoredAt": "2026-02-02T18:29:20.913Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 68,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 82,
-    "geminiScore": 78,
+    "openaiScore": 81,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

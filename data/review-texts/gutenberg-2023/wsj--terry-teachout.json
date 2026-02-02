@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the show as 'consistently funny' and commends the lead performers' skills, indicating a positive recommendation despite the brief excerpt. | GPT-4o: The review highlights the consistent humor and the strong performances of the lead actors, indicating a strong recommendation to see the show. | Gemini: The review highlights the show's humor and the performers' abilities, indicating a positive experience and a recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the show as consistently funny with accomplished performers, indicating a positive recommendation, though the excerpt is brief and may not capture the full critical assessment. | GPT-4o: The review highlights the consistent humor of the show and praises the performances of the lead actors, suggesting a strong positive recommendation. | Gemini: The review highlights positive aspects like humor and strong performances, suggesting a recommendation, but lacks the enthusiasm for a 'Rave' classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,12 +42,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:38:42.893Z",
+    "scoredAt": "2026-02-02T17:58:32.042Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
-    "previousVersion": "5.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,

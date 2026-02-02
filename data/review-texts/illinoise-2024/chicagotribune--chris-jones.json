@@ -35,7 +35,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Jones clearly recommends the show despite acknowledging it's not mainstream, praising the choreography as 'spectacular' and stating it 'belongs on Broadway' while noting it will find its audience. | GPT-4o: The review acknowledges that 'Illinoise' is not for everyone, but praises its unique sensorial experience and the work of choreographer Justin Peck, suggesting that it is a worthwhile experience for those open to its style. | Gemini: The review is generally positive, highlighting Peck's choreography and the sensorial experience. While noting it's not for everyone, the critic concludes it belongs on Broadway, indicating a recommendation with reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges this isn't mainstream but clearly endorses its artistic merit and Broadway worthiness, praising Peck's choreography as 'sensual, clearly personal and very cool' and the ensemble as 'quite beautiful to watch.' | GPT-4o: The review acknowledges that 'Illinoise' is not a typical Broadway show and may not appeal to everyone, but it praises the choreography and the unique sensorial experience, suggesting it's worth seeing for those interested in its niche appeal. | Gemini: The review acknowledges that the show is not for everyone, but ultimately concludes that it belongs on Broadway, indicating a positive recommendation with some reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,21 +45,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:14:14.859Z",
+    "scoredAt": "2026-02-02T18:22:41.353Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 69,
-    "previousVersion": "3.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 78,
-    "geminiScore": 78,
+    "claudeScore": 75,
+    "openaiScore": 76,
+    "geminiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

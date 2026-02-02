@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"worth being wary of any musical that positions itself as a love letter to New York City.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/hell-s-kitchen",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic identifies compelling elements (particularly the teacher-student dynamic and Lewis's performance) but finds the show frustratingly unfocused with competing storylines and an 'underdefined core' that bombast can't overcome. | GPT-4o: The review acknowledges some powerful and moving elements within the production, particularly in the performances and certain scenes, but overall criticizes the lack of coherence and the overshadowing bombast. The mixed verdict is due to the presence of both commendable and frustrating aspects. | Gemini: The review highlights both compelling and frustrating aspects of the show, indicating a mixed experience. The critic points out specific elements that work well but are overshadowed by other less successful aspects, leading to a classification in the 'Mixed' bucket.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic identifies genuinely moving and compelling elements, especially the Ali/Miss Liza Jane scenes, but consistently emphasizes the show's frustrating imprecision, multiple competing personalities, and failure to fully develop its strongest material. | GPT-4o: The review acknowledges some compelling and moving elements within the production, particularly in the artistic journey of the main character, but criticizes the overall execution as frustrating and imprecise. The mixed tone reflects both appreciation for certain aspects and disappointment in the overall coherence. | Gemini: The review highlights both positive and negative aspects, but ultimately leans towards a recommendation with reservations. The critic acknowledges moving elements but also points out imprecision and a lack of focus.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:53:52.490Z",
+    "scoredAt": "2026-02-02T18:18:25.141Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
+    "previousScore": 63,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 62,
+    "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "dtliExcerpt": "There are elements of Hell’s Kitchen that are specific and well motivated and moving, and they’re obscured by the musical’s tilt toward bombast.",
   "bwwExcerpt": "Moon, to her credit, grounds all this wherever she can. She’s a great discovery, a virtuoso who also appears surprised and delighted by her own talent. In Dede Ayite’s throwback ’90s costumes — so much Tommy Hilfiger, such giant pants — Moon has both swagger and that crucial touch of naïveté that makes Ali feel like a real and contradictory teenage girl, even when the plot swerves around her. Her voice, for all its power, has a sandpaper edge, a texture that makes her stand out when so many youn",

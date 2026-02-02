@@ -14,7 +14,7 @@
   "dtliThumb": null,
   "llmScore": {
     "score": 62,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 57,
       "high": 67
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The review acknowledges impressive production elements and some strong performances (particularly Amber Iman) but criticizes the musical as lacking poetry, having tepid direction, and failing to capture the true audaciousness of its subject. The critic finds it tries too hard and doesn't provide a clear recommendation either way. | Gemini: The review highlights both positive and negative aspects of the musical. While praising the set design and some performances, it criticizes the music, direction, and character development, ultimately resulting in a mixed assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges some striking visual elements and strong individual performances (particularly Amber Iman) but finds the musical fundamentally lacking in poetry, depth, and emotional connection, with 'tepid' direction and characters that remain 'opaque.' | GPT-4o: The review highlights both strengths and weaknesses of the production, noting the impressive set design and some strong performances, but also criticizing the direction, music, and character development as lacking depth and impact. | Gemini: The review highlights both positive and negative aspects of the show. While praising individual performances and the set design, it criticizes the music, direction, and overall lack of depth. The overall impression is that the show has potential but falls short of its ambitions.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:28:19.331Z",
+    "scoredAt": "2026-02-02T18:29:42.147Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 42,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": null,
+    "claudeScore": 58,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 47,

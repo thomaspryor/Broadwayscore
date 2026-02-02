@@ -9,19 +9,19 @@
   "showScoreExcerpt": "\"The play is constantly running a nail over divisions that seem untraversable, across politics, class, and race, but also across generation and gender, wondering if solidarity could possibly still form there. \"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/liberation-broadway",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 81,
   "humanReviewScore": 90,
   "humanReviewNote": "Unambiguous rave; 'emotional wallop', 'shattering', 'everything is possible and free'; override to 80 was wrong",
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 85,
-    "confidence": "low",
+    "score": 81,
+    "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 76,
+      "high": 86
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The critic uses language of transformation and awe throughout, describing the play as having an 'emotional wallop,' being 'thrilling to watch,' and creating moments where 'everything is possible and free.' The review emphasizes the work's power and ambition multiple times. | Gemini: The review expresses a positive sentiment towards the play, highlighting its emotional impact and thought-provoking nature. While acknowledging some complexities and potential categorization difficulties, the overall tone suggests a recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic expresses strong enthusiasm throughout, praising the play's transformative power, calling it 'thrilling to watch' and describing moments as 'shattering' with 'incredible kinetic energy.' The positive verdict is clear despite some analytical complexity. | GPT-4o: The review is filled with enthusiastic praise for the play's transformative power, emotional impact, and innovative theatrical techniques. The critic describes the play as thrilling, shattering, and capable of changing the audience, indicating a strong recommendation. | Gemini: The review expresses a positive sentiment, highlighting the play's emotional impact and transformative qualities, despite some potential categorization difficulties. The critic found the play to be thrilling and impactful.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,26 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:57:32.090Z",
+    "scoredAt": "2026-02-02T18:31:07.439Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 85,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 89,
-    "openaiScore": null,
+    "claudeScore": 82,
+    "openaiScore": 92,
     "geminiScore": 80,
-    "claudeBucket": "Rave",
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 9,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "dtliExcerpt": "Both times I’ve seen the play—Off Broadway this spring, now returning in a larger space on Broadway—I’ve felt unprepared for the emotional wallop it lands, the way that Wohl’s work becomes cosmically immense without leaving that gym basement. I think it gets there by staying so focused on the quietly radical thing these women are doing with each other, and which Wohl is making the rest of the audience engage in. Maybe you should be scared, because listening could change you too.",
   "bwwExcerpt": "Both times I’ve seen the play—Off Broadway this spring, now returning in a larger space on Broadway—I’ve felt unprepared for the emotional wallop it lands, the way that Wohl’s work becomes cosmically immense without leaving that gym basement. I think it gets there by staying so focused on the quietly radical thing these women are doing with each other, and which Wohl is making the rest of the audience engage in. Maybe you should be scared, because listening could change you too.",

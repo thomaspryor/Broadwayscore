@@ -47,9 +47,6 @@
     }
   ],
   "fetchTier": 4,
-  "truncationSignals": [
-    "has_footer_junk"
-  ],
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260102010909",
   "archiveOrgUrl": "http://web.archive.org/web/20260102010909/https://www.vulture.com/2015/08/theater-review-hamilton.html",
@@ -72,7 +69,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite acknowledging some structural flaws, the critic calls Hamilton 'sensational,' 'great,' 'beautiful and moving,' and describes it as fulfilling Miranda's ambitious vision. The enthusiastic tone and clear recommendation place this firmly in rave territory. | GPT-4o: The review is overwhelmingly positive, praising the complexity, wit, and innovation of the production. The critic describes it as sensational and great, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, calling the show \"great\" and praising Miranda's ambition. While it notes some flaws, the overall tone is enthusiastic and recommends seeing the show.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite noting some structural flaws and minor criticisms, Green calls it 'sensational', 'just great', 'beautiful and moving', and praises Miranda's 'ambition here, mostly fulfilled'. The overall tone is one of enthusiastic recommendation for what he considers a remarkable achievement. | GPT-4o: The review is overwhelmingly positive, highlighting the show's wit, innovation, and entertainment value. The critic describes it as 'sensational' and 'just great,' indicating a strong recommendation to see the production. | Gemini: The review is overwhelmingly positive, calling the show \"just great\" and praising Miranda's ambition. While it notes some flaws, the overall tone is enthusiastic and recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -82,7 +79,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:28:28.323Z",
+    "scoredAt": "2026-02-02T18:04:48.906Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -92,11 +89,11 @@
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 95,
-    "geminiScore": 80,
+    "geminiScore": 81,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -115,9 +112,10 @@
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 90,
   "rescoreCompletedAt": "2026-02-02T03:28:28.323Z",
-  "contentTier": "complete",
-  "wordCount": 1566,
+  "contentTier": "invalid",
+  "wordCount": 1440,
   "wrongProduction": true,
   "wrongProductionNote": "Off-Broadway/pre-Broadway run at Public Theater. Reusable if off-Broadway show entry is created.",
-  "isFullReview": false
+  "isFullReview": false,
+  "tierReason": "Wrong production"
 }

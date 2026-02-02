@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The 5/5 rating combined with the poetic praise 'shines like a candle in the dark' indicates strong enthusiasm. The aggregator context confirms positive reception. | GPT-4o: The critic's original 5/5 rating strongly indicates a rave review. The quote suggests a highly positive evaluation, describing the play as a standout work. | Gemini: The critic's 5/5 rating and the phrase \"shines like a candle in the dark\" indicate a rave review and a strong recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The 5/5 rating combined with the poetic, glowing language 'shines like a candle in the dark' indicates exceptional praise and strong recommendation. | GPT-4o: The critic's original rating of 5/5 strongly indicates a rave review. The phrase 'shines like a candle in the dark' suggests a highly positive assessment, aligning with a must-see recommendation. | Gemini: The phrase \"shines like a candle in the dark\" is highly positive, suggesting a must-see quality. The original rating of 5/5 also supports a Rave classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,15 +37,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:19:29.334Z",
+    "scoredAt": "2026-02-02T18:34:58.568Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 84,
-    "previousVersion": "3.0.0"
+    "previousScore": 92,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 90,
     "openaiScore": 95,
     "geminiScore": 90,
     "claudeBucket": "Rave",

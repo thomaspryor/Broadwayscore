@@ -9,15 +9,15 @@
   "bwwExcerpt": "Power-contralto Eden Espinosa strives mightily to keep Lempicka – an overstuffed, formulaic musical – in forward motion, to mixed effect. Despite the evident willingness of co-creators Carson Kreitzer and Matt Gould to play fast and loose with history, the show plugs along like a Bugatti (an emblematic subject of the Polish-born painter) in need of a lube job.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": "2/5 stars",
-  "assignedScore": 44,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 44,
+    "score": 42,
     "confidence": "high",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 37,
+      "high": 47
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The 2/5 star rating and consistent criticism throughout ('overstuffed, formulaic', 'overall tedium', 'Lempicka deserves better') clearly indicate a negative recommendation despite praise for individual performances. | Gemini: The critic gives the show 2/5 stars, and the review is largely negative, describing the musical as \"overstuffed, formulaic\" and saying it \"plugs along like a Bugatti in need of a lube job.\" While praising some performances, the overall assessment is that the show is a disappointment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic gives 2/5 stars and calls it 'overstuffed, formulaic' with 'overall tedium,' concluding the subject 'deserved better' than this production. Despite praising individual performances, the overall assessment is clearly negative. | GPT-4o: The review is largely critical, highlighting the musical's formulaic nature and the ineffective execution of its elements. The original rating of 2/5 stars strongly indicates a negative assessment. | Gemini: The critic gives the show 2/5 stars and states the musical is 'overstuffed' and 'formulaic'. While some performances are praised, the overall assessment is negative, indicating a lack of recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:26:15.059Z",
+    "scoredAt": "2026-02-02T18:28:48.502Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 38,
-    "previousVersion": "5.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": null,
+    "openaiScore": 40,
     "geminiScore": 45,
     "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "scoreDelta": 3,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Negative"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "bwwThumb": "Down",
   "rescoreReason": "scored on brief excerpt, now has fullText",

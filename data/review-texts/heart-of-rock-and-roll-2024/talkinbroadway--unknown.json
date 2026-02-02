@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 63,
+    "score": 64,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review criticizes the show as 'phony and forced' with a 'trite plot' but acknowledges some strong performances and choreography, particularly praising Tamika Lawrence's standout performance and the energetic ensemble work. | GPT-4o: The review acknowledges some innovative and empowering moments, particularly through Tamika Lawrence's performance, but criticizes the overall plot as contrived and the musical arrangements as unbalanced. The mixed tone suggests the production has both strengths and weaknesses. | Gemini: The review highlights both positive and negative aspects. While it criticizes the plot and some orchestrations, it praises the choreography, some performances (especially Tamika Lawrence), and innovative interpretations of the music. The overall tone suggests a mixed experience, not strongly recommending or discouraging.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review identifies significant flaws (phony formula, strained lead performance, technical issues) but also highlights memorable elements like Tamika Lawrence's standout performance and creative choreography, landing in mixed territory with qualified appreciation. | GPT-4o: The review highlights several flaws, such as a contrived plot and uneven musical execution, but also notes standout performances and moments of innovation, particularly by Tamika Lawrence. The overall tone suggests a mixed experience with some redeeming qualities. | Gemini: The review highlights both positive and negative aspects. While it criticizes the plot and some musical choices, it praises certain performances and choreography, resulting in a mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,23 +46,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:30:19.085Z",
+    "scoredAt": "2026-02-02T18:11:56.074Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
+    "previousScore": 63,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
+    "openaiScore": 67,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -71,5 +71,7 @@
     "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
-  "rescoreCompletedAt": "2026-02-02T03:30:19.085Z"
+  "rescoreCompletedAt": "2026-02-02T03:30:19.085Z",
+  "wordCount": 872,
+  "tierReason": "Full review text"
 }

@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic consistently criticizes the play as static, predictable, and unsatisfying, explicitly comparing it unfavorably to superior works and concluding it lacks what it 'really needed.' | GPT-4o: The review criticizes the play for being unfocused and lacking depth, despite some positive notes on the set design and Danny DeVito's performance. The overall tone suggests the play is not worth seeing, especially when compared to similar works. | Gemini: The review is largely negative, criticizing the play's lack of focus and compelling narrative. While praising DeVito's performance and the set design, the overall assessment is that the play falls short and is not worth seeing.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic finds the play messy, static, predictable, and unfavorably compares it to superior works, though acknowledges DeVito's strong performance and impressive set design. | GPT-4o: The review criticizes the play for being static, predictable, and lacking depth, with the only highlight being Danny DeVito's performance. The comparison to a superior play further underscores its shortcomings. | Gemini: The review explicitly states the play is not compelling and ultimately compares it unfavorably to another similar work, indicating a negative assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,12 +44,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:49:27.318Z",
+    "scoredAt": "2026-02-02T18:21:42.346Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 40,
-    "previousVersion": "3.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,

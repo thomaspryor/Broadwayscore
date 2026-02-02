@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"The Heart of Rock and Roll is the funniest new musical of the season\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-heart-of-rock-and-roll-broadway",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 76,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 74,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite critiques of emotional depth and political messaging, the critic clearly enjoyed the show, calling it the 'funniest new musical of the season' and praising its charm, humor, and performances. The positive experience outweighs the reservations. | GPT-4o: The review highlights the show's humor and charm, noting it as the funniest new musical of the season, but also points out its lack of emotional depth and some questionable elements. Overall, it suggests the show is enjoyable despite its flaws. | Gemini: The review states \"I had fun\" and acknowledges the show is the \"funniest new musical of the season\". While it points out flaws and lack of emotional weight, the overall tone suggests a positive experience, albeit with reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly states they had fun and calls it the funniest new musical of the season, praising the humor, performances, and charm despite acknowledging shallow emotional weight and problematic elements. | GPT-4o: The review acknowledges the show's humor and charm, calling it the funniest new musical of the season. While it highlights some flaws, such as lack of emotional weight and questionable thematic elements, the overall tone is positive, recommending it for its entertainment value. | Gemini: The reviewer states they had fun and calls it the funniest new musical of the season, but also points out its flaws and lack of emotional weight. This indicates a positive but not rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,7 +38,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:30:28.293Z",
+    "scoredAt": "2026-02-02T18:12:25.155Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -46,13 +46,13 @@
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 76,
-    "geminiScore": 75,
+    "claudeScore": 74,
+    "openaiScore": 77,
+    "geminiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

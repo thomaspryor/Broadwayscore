@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'one perfect Broadway play' and 'one of the most extraordinary stage presentations I've ever seen,' with unqualified praise for all elements of the production. | GPT-4o: The review is filled with superlatives and enthusiastic praise for the production, describing it as 'one perfect Broadway play' and 'one of the most extraordinary stage presentations I've ever seen.' The critic expresses a desire to return for more performances, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the stagecraft, plot, and characters. While noting it may not be suitable for very young children, the critic ultimately recommends it, stating that those who love the Harry Potter world will not be disappointed.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'one perfect Broadway play' and 'one of the most extraordinary stage presentations I've ever seen,' with no meaningful reservations and clear enthusiasm for every aspect of the production. | GPT-4o: The review is overwhelmingly positive, describing the play as 'one perfect Broadway play' and 'one of the most extraordinary stage presentations I've ever seen.' The critic expresses a strong desire to return and praises the production's stagecraft, storytelling, and emotional depth, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the extraordinary stage presentation, intriguing plot twists, and beautiful storytelling. While noting it may not be for the very young, the critic ultimately concludes that nobody who loves the Harry Potter world will be disappointed and even newcomers can be enthralled.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,11 +39,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:29:49.178Z",
+    "scoredAt": "2026-02-02T18:09:34.853Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
+    "previousScore": 94,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {

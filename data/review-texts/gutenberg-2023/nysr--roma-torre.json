@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The 5-star rating combined with effusive praise like 'simply divine,' 'master class,' and 'irresistible page-turner' clearly indicates an enthusiastic rave recommendation despite the show's intentionally silly premise. | Gemini: The critic gives the show 5/5 stars and uses extremely positive language like \"divine\", \"master class\", and \"irresistible page-turner\", indicating a rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The 5-star rating combined with superlative language like 'master class,' 'simply divine,' and 'irresistible page-turner' indicates an enthusiastic rave recommendation with virtually no reservations. | GPT-4o: The review is overwhelmingly positive, highlighting the effortless comedy, masterful performances, and clever writing. The critic's 5/5 star rating further supports a strong recommendation. | Gemini: The critic gave the show a 5/5 star rating and uses extremely positive language such as \"divine\", \"master class\", and \"irresistible page-turner\", indicating a Rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:36:39.664Z",
+    "scoredAt": "2026-02-02T17:57:28.829Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
-    "previousVersion": "3.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": null,
+    "openaiScore": 95,
     "geminiScore": 95,
     "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Rave",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "bwwThumb": "Up",
   "rescoreReason": "fullText added after excerpt-based scoring",

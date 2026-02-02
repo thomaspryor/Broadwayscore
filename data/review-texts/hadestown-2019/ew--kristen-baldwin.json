@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This folk-opera retelling of the Orpheus and Eurydice myth is a stunning piece of musical theater that weaves together gorgeous melodies, poetic lyrics, and masterful performances.",
   "originalScore": 88,
-  "assignedScore": 89,
+  "assignedScore": 88,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This folk-opera retelling of the Orpheus and Eurydice myth is a stunning piece of musical theater that weaves together gorgeous melodies, poetic lyrics, and masterful performances.",
   "llmScore": {
-    "score": 89,
-    "confidence": "high",
+    "score": 88,
+    "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 83,
+      "high": 93
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses highly positive language like 'stunning' and 'masterful' with no reservations, and the original rating of 88 confirms this is a rave review. | GPT-4o: The review uses highly positive language such as 'stunning', 'gorgeous melodies', and 'masterful performances', indicating a strong recommendation. The original rating of 88 aligns with a 'Rave' classification. | Gemini: The review uses extremely positive language like \"stunning\" and \"masterful\" and the critic's rating is very high, indicating a rave review.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic's own 88 rating places this in Rave territory, and the excerpt uses strong praise language like 'stunning piece of musical theater' with specific positive elements highlighted. | GPT-4o: The critic's original rating of 88 and the excerpt's enthusiastic praise for the production's music, lyrics, and performances strongly suggest a rave review. The language used is highly positive, indicating a must-see recommendation. | Gemini: The review excerpt uses strong positive language like \"stunning,\" \"gorgeous,\" \"poetic,\" and \"masterful,\" indicating a strong recommendation. The critic's original rating of 88 also supports a positive classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,39 +42,38 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:59:02.121Z",
+    "scoredAt": "2026-02-02T17:59:14.073Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 89,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 88,
-    "geminiScore": 90,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 2,
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (26 words)",
   "previousUrl": "https://ew.com/theater/2019/04/18/hadestown-broadway-review/",
   "urlDiscoveredAt": "2026-02-02T16:35:29.719Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 89,
   "textWordCount": 719,
   "archivePath": "data/archives/reviews/hadestown-2019/ew--kristen-baldwin_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:34:10.656Z",
+  "textFetchedAt": "2026-02-02T16:35:29.725Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -96,5 +95,8 @@
   ],
   "textStatus": "partial",
   "sourceMethod": "playwright",
-  "duplicateTextOf": "ew--jessica-derschowitz.json"
+  "duplicateTextOf": "ew--jessica-derschowitz.json",
+  "rescoreCompletedAt": "2026-02-02T17:59:14.073Z",
+  "wordCount": 719,
+  "tierReason": "Full review text"
 }

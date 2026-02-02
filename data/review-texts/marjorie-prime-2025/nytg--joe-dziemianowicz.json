@@ -9,16 +9,16 @@
   "bwwExcerpt": "But for all its clairvoyance and foresight about technology, Marjorie Prime’s most potent superpowers are its sensitivity and tenderness. Harrison’s spare, gently gripping script is a model of eloquent economy as the characters grapple with grief and what it means to truly love and remember someone.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 79,
+    "score": 81,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the script as 'eloquent economy', calls the ensemble 'A-list' and 'finely tuned', and highlights standout performances, particularly Nixon's. The positive tone and professional recommendation are clear despite some analytical distance. | GPT-4o: The review praises the production's themes, script, and performances, particularly highlighting the cast's ability to generate genuine emotions. The critic's language is enthusiastic and emphasizes the play's impact, suggesting a strong recommendation. | Gemini: The review is generally positive, highlighting the play's sensitivity and the strong performances, especially Nixon's. While not a rave, it clearly recommends seeing the show.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the 'A-list ensemble,' calls it 'perceptive and prescient,' and highlights standout performances, particularly Nixon's which the critic 'can't get out of my head.' The positive tone and strong performance praise indicate a solid recommendation. | GPT-4o: The review is filled with praise for the script, performances, and direction, highlighting the play's sensitivity, tenderness, and emotional impact. The critic's language is enthusiastic and strongly recommends the production. | Gemini: The review praises the play's themes, script, and especially the performances of the cast, particularly Squibb and Nixon. While not a rave, it's a solid recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:34:43.872Z",
+    "scoredAt": "2026-02-02T18:33:09.566Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 81,
     "openaiScore": 90,
     "geminiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

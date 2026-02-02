@@ -53,7 +53,7 @@
     "previousScore": 75,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "ensembleData": {
     "claudeScore": 72,
@@ -71,5 +71,10 @@
     "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
-  "rescoreCompletedAt": "2026-02-02T03:37:24.184Z"
+  "rescoreCompletedAt": "2026-02-02T03:37:24.184Z",
+  "wordCount": 1448,
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "tierReason": "Full review text"
 }

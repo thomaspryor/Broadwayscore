@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": null,
   "showScoreExcerpt": "\"“This bittersweet facet of the play seems to be token Bioh’s not-so-sunny perspective, which emerges as the 95 minutes of ‘Jaja’s’ wind down, when she introduces a harsher reality...You sense in her fate the dramatist’s anger, as she pulls the rug of joy out from under ‘Jaja’s’ and forces us to confront a colder truth about the dangers immigrants face. The customers’ braids may hold, it seems, even when the braider’s life unravels.”\n\"",
@@ -19,11 +19,11 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 79,
+    "score": 80,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises the play as 'sparkling,' 'wickedly entertaining,' and calls the Broadway debut 'an occasion worth toasting,' but notes the ending gives in to highlighting characters' plights 'a bit too baldly,' suggesting strong recommendation with some reservations. | GPT-4o: The review is overwhelmingly positive, praising the play's writing, direction, and performances. The critic uses strong language to convey enthusiasm, such as 'sparkling ensemble comedy' and 'occasion worth toasting,' indicating a highly favorable view of the production. | Gemini: The review is largely positive, praising the play's humor, characters, and performances. While it notes a slight misstep at the end, the overall tone suggests a recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses highly positive language throughout ('sparkling', 'blazing actors', 'wickedly entertaining evening') and calls Bioh's Broadway debut 'an occasion worth toasting,' clearly recommending the show despite minor reservations about the ending. | GPT-4o: The review is filled with praise for the play's writing, direction, and performances, comparing it to works by August Wilson and highlighting its vibrant and entertaining nature. The critic's tone is enthusiastic and celebratory, indicating a strong recommendation. | Gemini: The review is largely positive, praising the play's humor, characters, and performances. However, it notes a slight issue with the ending, indicating a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,21 +44,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:53:45.041Z",
+    "scoredAt": "2026-02-02T18:25:26.293Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 92,
-    "geminiScore": 80,
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -8,18 +8,18 @@
   "fullText": null,
   "showScoreExcerpt": "\"'Hamilton' joins the ranks of great American musicals...Considered as an American musical dealing directly with Americana an argument could eventually be made for 'Hamilton' as the nation's greatest musical...If a musical even close in quality to this one emerges this season, we're lucky. If a musical even close in quality emerges in the next 10 years, we'd better count our lucky stars.\"",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 95,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 92,
+    "score": 95,
     "confidence": "high",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 90,
+      "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic places Hamilton among the greatest American musicals ever written and suggests it may be THE greatest, with language indicating it's an exceptional, generational work that sets an extraordinarily high bar for future productions. | GPT-4o: The excerpt praises 'Hamilton' as potentially the greatest American musical, indicating a strong positive assessment. The caution about a single excerpt suggests scoring conservatively within the 'Rave' bucket. | Gemini: The review excerpt is overwhelmingly positive, placing 'Hamilton' among the greatest American musicals and suggesting its quality is unlikely to be matched for years. This indicates a 'Rave' recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic places Hamilton among great American musicals and suggests it could be the nation's greatest, with language indicating it's exceptionally rare quality that may not be matched for a decade. | GPT-4o: The excerpt is overwhelmingly positive, placing 'Hamilton' among the greatest American musicals and suggesting it could be the greatest. This strong language indicates a rave review. | Gemini: The review excerpt contains extremely high praise, suggesting the show is a 'great American musical' and potentially the 'nation's greatest musical', indicating a 'Rave' classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:02:10.623Z",
+    "scoredAt": "2026-02-02T18:03:55.725Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 96,
-    "previousVersion": "3.0.0"
+    "previousScore": 92,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 95,
-    "openaiScore": 90,
-    "geminiScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 95,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 5,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

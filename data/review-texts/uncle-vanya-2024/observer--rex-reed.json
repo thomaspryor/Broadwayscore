@@ -65,7 +65,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (25 words)",
   "previousUrl": "https://observer.com/2024/01/uncle-vanya-broadway-review-steve-carell-lincoln-center/",
   "urlDiscoveredAt": "2026-02-02T05:13:50.190Z",
@@ -92,11 +92,12 @@
   "fetchTier": 1.5,
   "textQuality": "full",
   "truncationSignals": [
-    "no_ending_punctuation",
-    "possible_mid_word_cutoff"
+    "no_ending_punctuation"
   ],
   "textStatus": "complete",
   "sourceMethod": "browserbase",
   "duplicateTextOf": "observer--david-cote.json",
-  "rescoreCompletedAt": "2026-02-02T14:26:21.990Z"
+  "rescoreCompletedAt": "2026-02-02T14:26:21.990Z",
+  "wordCount": 931,
+  "tierReason": "Full review text"
 }

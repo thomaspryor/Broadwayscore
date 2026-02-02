@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"Rachel McAdams soars in poignant slice-of-life play\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/mary-jane-broadway",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 81,
   "source": "show-score",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 79,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review praises the play as 'deeply affecting,' transcending potential pitfalls, with strong performances and direction. The critic clearly recommends it while acknowledging its challenging subject matter. | Gemini: The review is overall positive, highlighting the strong performances and compelling story. While not a rave, it clearly recommends seeing the play.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The headline uses strongly positive language ('soars', 'poignant') suggesting a recommendation, though limited text prevents full assessment of any reservations or broader production elements. | GPT-4o: The phrase 'Rachel McAdams soars' suggests a strong performance, and 'poignant slice-of-life play' implies a well-executed production. The overall tone is enthusiastic, indicating a strong recommendation. | Gemini: The phrase \"soars\" indicates a strong positive reaction to the performance and the play itself, suggesting a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:17:59.319Z",
+    "scoredAt": "2026-02-02T18:34:24.502Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "In less assured hands, the play could be a downer or familiar movie-of-the-week material. It transcends both traps. Mary Jane is clear-eyed, compassionate, and leavened with humor. Herzog (4000 Miles, 2023's Broadway adaptation of A Doll’s House) is known for her fine-tuned, lived-in dialogue. Director Anne Kauffman’s cast breathe life into the script beautifully.",
   "sources": [

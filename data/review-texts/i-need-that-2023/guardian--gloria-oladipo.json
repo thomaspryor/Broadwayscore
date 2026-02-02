@@ -9,15 +9,15 @@
   "bwwExcerpt": "I Need That is clearly a vehicle for DeVito’s return to Broadway, coming six years after his debut in Arthur Miller’s The Price. DeVito is funny and makes the most of Rebeck’s slapstick material. Within the ensemble and alone, he brings charm and occasional devastation to Sam’s afflictions. A scene where he plays a solo game of Sorry! is arresting and hilarious, an exhibition of his considerable talents.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 41,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 52,
-    "confidence": "low",
+    "score": 41,
+    "confidence": "medium",
     "range": {
-      "low": 47,
-      "high": 57
+      "low": 36,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Negative, gemini=Mixed | Claude: The critic delivers a clear negative assessment, calling the play 'messy,' criticizing its lack of emotional depth, and condemning the problematic treatment of Black characters. While praising DeVito's performance as the 'only saving grace,' the overall recommendation is clearly against seeing the show. | Gemini: The review praises Danny DeVito's performance but criticizes the writing and handling of sensitive topics. It acknowledges some humor but ultimately finds the play lacking depth and nuance, resulting in a mixed assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: Despite praising DeVito's performance as 'funny' and the 'only saving grace,' the critic finds the play fundamentally flawed - calling it messy, poorly written, lacking emotional heart, and criticizing its treatment of race and character development. | GPT-4o: The review criticizes the play for its lack of emotional depth, poor character development, and awkward handling of racial themes. While Danny DeVito's performance is praised, the overall production is described as messy and lacking in both drama and comedy, leading to a negative recommendation. | Gemini: The review praises DeVito's performance but criticizes the writing and handling of sensitive themes, resulting in a mixed overall assessment. The play is described as a 'messy comedy drama' with a lack of emotional depth.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,32 +38,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:49:09.304Z",
+    "scoredAt": "2026-02-02T18:21:35.953Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 25,
-    "previousVersion": "5.0.0"
+    "previousScore": 52,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": null,
+    "openaiScore": 40,
     "geminiScore": 62,
     "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "scoreDelta": 20,
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "bwwThumb": "Down",
   "dateUnknown": true,
   "dateSource": "historical-review",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 1133,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
   "isFullReview": true,
@@ -80,7 +81,6 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "rescoreCompletedAt": "2026-02-01T17:38:41.861Z",
@@ -91,5 +91,6 @@
     "hadPositiveThumb": false,
     "dtliThumb": "none",
     "bwwThumb": "Down"
-  }
+  },
+  "tierReason": "Full review text"
 }

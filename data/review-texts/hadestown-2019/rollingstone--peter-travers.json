@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Hadestown is a musical miracle that restores your faith in what Broadway can be when it stops playing it safe and starts taking creative risks.",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,13 +17,13 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Hadestown is a musical miracle that restores your faith in what Broadway can be when it stops playing it safe and starts taking creative risks.",
   "llmScore": {
-    "score": 94,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 75,
+      "high": 85
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic uses superlative language calling it a 'musical miracle' and positions it as transformative for Broadway itself, indicating the highest level of recommendation. | Gemini: The review uses extremely positive language like \"musical miracle\" and \"restores your faith,\" indicating a rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Travers acknowledges the show has lost some intimacy and gained conventional elements, but praises the cast performances, music, and staging while concluding positively that the production 'has kept its soul.' | GPT-4o: The review praises the production's musical integrity, performances, and direction, despite noting some loss of intimacy from its Off-Broadway run. The critic's positive tone and the recommendation to see the show indicate a strong endorsement. | Gemini: The review acknowledges some compromises in the Broadway transfer but ultimately concludes that the show has retained its core values and is worth seeing. The critic highlights strong performances and the unique musicality.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,38 +42,38 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:01:41.268Z",
+    "scoredAt": "2026-02-02T18:00:30.266Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 94,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": null,
-    "geminiScore": 95,
-    "claudeBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (25 words)",
   "previousUrl": "https://www.rollingstone.com/culture/culture-theater/hadestown-broadway-review-822863/",
   "urlDiscoveredAt": "2026-02-02T16:41:53.613Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 94,
   "textWordCount": 974,
   "archivePath": "data/archives/reviews/hadestown-2019/rollingstone--peter-travers_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:36:41.682Z",
+  "textFetchedAt": "2026-02-02T16:41:53.628Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -85,10 +85,13 @@
   "fetchTier": 4,
   "textQuality": "partial",
   "truncationSignals": [
-    "has_footer_text"
+    "has_footer_junk"
   ],
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240717010024",
-  "archiveOrgUrl": "http://web.archive.org/web/20240717010024/https://www.rollingstone.com/culture/culture-features/hadestown-broadway-anais-mitchell-musical-review-822688/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240717010024/https://www.rollingstone.com/culture/culture-features/hadestown-broadway-anais-mitchell-musical-review-822688/",
+  "rescoreCompletedAt": "2026-02-02T18:00:30.266Z",
+  "wordCount": 974,
+  "tierReason": "Full review text"
 }

@@ -10,7 +10,7 @@
   "garbageReason": "URL hijacked by appliance removal spam site - not a theater review",
   "garbageFixedAt": "2026-02-01T12:00:00.000Z",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "show-score",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
@@ -22,11 +22,11 @@
     "invalidatedAt": "2026-02-01T12:00:00.000Z"
   },
   "llmScore": {
-    "score": 78,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -37,7 +37,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review gives explicit recommendation at the end, praises the director, performances, and creative team, describing it as having 'far too much good stuff' and calling performances 'marvelously shaded' and 'excellent'. | GPT-4o: The review highlights strong performances, effective direction, and successful use of theatrical magic, culminating in a clear recommendation. | Gemini: The review concludes with a clear recommendation. While it describes the plot and some elements of the production, the final word is positive.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review provides detailed praise for the direction, performances, and technical elements, concluding with a clear 'Recommended.' verdict despite being relatively brief on elaboration. | GPT-4o: The review praises the direction, performances, and production elements, culminating in a clear recommendation to see the show. The critic's positive tone and the use of 'Recommended' indicate strong approval. | Gemini: The review concludes with a clear recommendation. While it describes the plot and some potential issues, the overall tone is positive, highlighting the direction, movement, music, and performances.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -47,7 +47,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:28:01.952Z",
+    "scoredAt": "2026-02-02T18:07:51.516Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -56,12 +56,12 @@
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 79,
+    "openaiScore": 82,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -70,7 +70,7 @@
     "modelAgreement": "All 3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/drama-queen-nyc--jonathan-warman_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:36:22.061Z",
+  "textFetchedAt": "2026-02-02T16:19:43.321Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {

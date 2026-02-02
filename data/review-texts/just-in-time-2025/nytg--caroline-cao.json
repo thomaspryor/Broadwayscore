@@ -9,7 +9,7 @@
   "bwwExcerpt": "With an exuberant band, Just in Time rides easy on Groff’s waves of showman charisma while paying tribute to the era-specific music and other singers, especially the women in Darin’s life who inspired his performance, starting with Michele Pawk as a parental figure with a vaudevillian past. The book seamlessly weaves in how other stars like Connie Francis (a blazing, must-see Gracie Lawrence) and Sandra Dee (a commanding Erika Henningsen), the latter of whom witnessed his fallible humanity, were integral to his life.",
   "showScoreExcerpt": "\"With an exuberant band, Just in Time rides easy on Groffâs waves of showman charisma while paying tribute to the era-specific music and other singers, especially the women in Darinâs life who inspired his performance\"",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://www.newyorktheatreguide.com/reviews/just-in-time-broadway-review-jonathan-groff-bobby-darin",
@@ -17,11 +17,11 @@
   "textFetchedAt": "2026-01-25T04:14:02.718Z",
   "sourceMethod": "bww-roundup",
   "llmScore": {
-    "score": 79,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review consistently praises Groff's performance, the staging design, and supporting cast with terms like 'exuberant,' 'blazing, must-see,' and 'unmissable Broadway performance,' while acknowledging it doesn't break new ground in the bio-musical format. | Gemini: The review is generally positive, highlighting Groff's performance and the immersive staging. It acknowledges the show doesn't reinvent the genre but offers a fresh take, suggesting a recommendation with some reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review is clearly positive with praise for Groff's performance, the staging, and multiple cast members described as 'must-see' and 'unmissable.' While noting it doesn't reinvent the genre, the critic finds it fresh and entertaining with strong performances across the board. | GPT-4o: The review highlights the production's innovative staging, Jonathan Groff's charismatic performance, and the strong supporting cast. The critic and audience feedback are overwhelmingly positive, emphasizing the show's entertainment value and fresh approach. | Gemini: The review is overall positive, highlighting Groff's performance and the immersive staging. The reviewer uses phrases like \"blessed to be\", \"rides easy\", and \"unmissable Broadway performance\", indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,26 +42,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:15:13.437Z",
+    "scoredAt": "2026-02-02T18:27:27.399Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "designation": "Must_See",
   "sources": [

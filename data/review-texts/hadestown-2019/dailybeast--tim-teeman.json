@@ -8,7 +8,7 @@
   "fullText": null,
   "bwwExcerpt": "n Vernon, The Low Anthem's Ben Knox Miller and activist folk hero Ani DiFranco joined Mitchell and Brown in the leads). But the work's musical integrity and proletariat spirit remains largely intact. Tim Teeman, Daily Beast : Hadestown has so much fun telling, as it puts it, this \"sad tale\" that even though this retelling of a well-trodden Greek myth feels slight, it also makes for a joyful performance. Ana&iuml;s Mitchell's musical, which opens on Broadway tonight at the Walter Kerr Theatre (to September 1), is delicious to look at and listen to-truly, my new earworm is \"Way Down Hadestown\"-even if its story is as wan as its central couple. Michael Sommers, New York Stage Review : A new Broadway musical that takes audiences to hell and back, Hadestown looks and sounds terrific, and yet it lacks something vital. Drawn from a classical Greek legend, the musical somehow reminds me of a handsome ancient statue that is missing its head. Elysa Gardner, New York Stage Review : For starters,",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417",
@@ -16,11 +16,11 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 75,
+    "score": 78,
     "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Single excerpt shows mixed signals - critic finds it 'joyful' and 'delicious to look at and listen to' but also calls the story 'slight' and 'wan', suggesting entertainment value with notable flaws. | GPT-4o: The review highlights the enjoyable and fun aspects of the performance, despite noting that the story feels slight. This suggests a positive recommendation with some reservations, placing it in the lower range of the Positive bucket. | Gemini: The review states the show is 'joyful' and 'delicious to look at and listen to' despite feeling 'slight,' indicating a positive but not overwhelmingly enthusiastic recommendation. Given the limited text, a score in the middle of the 'Positive' range is appropriate.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Critics praise the production values ('delicious to look at and listen to', 'looks and sounds terrific') but consistently note significant flaws - the story feels 'slight' and 'wan', and it 'lacks something vital'. This suggests appreciation for craft but reservations about substance. | GPT-4o: The review excerpt describes the performance as 'joyful' and 'delicious to look at and listen to,' indicating a positive experience despite noting the story feels 'slight.' This suggests a recommendation with some reservations about the narrative depth. | Gemini: The review excerpt indicates a positive experience, describing the performance as \"joyful\" and \"delicious to look at and listen to.\" However, it also notes that the story feels \"slight,\" suggesting reservations. Given the single excerpt, I'm placing it in the lower-middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,21 +41,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:58:45.663Z",
+    "scoredAt": "2026-02-02T17:58:54.654Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 64,
-    "previousVersion": "3.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 74,
+    "openaiScore": 80,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 18,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

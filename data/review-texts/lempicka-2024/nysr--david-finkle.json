@@ -9,15 +9,15 @@
   "bwwExcerpt": "Attempting to lend Lempicka a canvas broader than Lempicka’s voluptuous canvases, Kreitzer and Gould arrange a stylized look at the Russian Revolution — and its eventually sending Tamara and Tadeusz, penniless and unprepared to work for a living, to Paris. They bookend that theatrical documentation with a fascist-foreboding routine, highlighted by symbolic figure Marinetti (the hyper-active George Abud) conjuring Hitler’s rise. (Choreographer Kelly, always at the ready, has his indefatigable con",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": "3/5 stars",
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 62,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic gives extensive praise to the visual elements, design, and performances, but criticizes the book, lyrics, and music as weak, calling the material 'second-rate' and 'trite.' The 3/5 star rating confirms a mixed assessment. | Gemini: The review praises the visual aspects and performances but criticizes the writing and music. The critic acknowledges the director's success in creating a visually stunning production but finds the core elements lacking, leading to a mixed assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic praises the visual elements extensively but heavily criticizes the book, lyrics, and music as 'second-rate material,' creating a clear mixed assessment that aligns with the 3/5 star rating. | GPT-4o: The review praises the visual and performance aspects of the production, particularly Eden Espinosa's performance, but criticizes the book and music for lacking depth and memorability. The original 3/5 star rating suggests a mixed reception, acknowledging both strengths and weaknesses. | Gemini: The review praises the visual aspects and performances but criticizes the writing and music, resulting in a mixed assessment. The 3/5 star rating also indicates a middle-ground recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:26:00.614Z",
+    "scoredAt": "2026-02-02T18:28:44.845Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 62,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": null,
+    "claudeScore": 61,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "rescoreReason": "scored on brief excerpt, now has fullText",

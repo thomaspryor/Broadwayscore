@@ -22,7 +22,7 @@
   ],
   "llmScore": {
     "score": 61,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 56,
       "high": 66
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt suggests the show has some charm but lacks the gravity or impact it aims for, indicating a lukewarm assessment that neither strongly recommends nor discourages viewing. | GPT-4o: The review suggests that the show has some charming qualities but ultimately should not be taken too seriously, indicating a mixed reception. The lack of strong positive or negative language supports a mixed classification. | Gemini: The review excerpt suggests a mixed reaction. The phrase \"sometimes charming\" indicates some positive aspects, but the overall tone suggests the reviewer doesn't fully embrace the production, implying a mixed or neutral recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt suggests the show has charming moments but lacks serious impact, with the critic advising not to take it seriously - indicating lukewarm reception rather than clear recommendation or dismissal. | GPT-4o: The review suggests that while the show has a charming quality, it lacks seriousness and impact, indicating a mixed reception with some redeeming qualities. | Gemini: The review excerpt suggests the show has some redeeming qualities ('charming') but ultimately shouldn't be taken too seriously, indicating a mixed reaction. The aggregator verdicts also point to a flat or mixed response.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,21 +46,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:25:06.718Z",
+    "scoredAt": "2026-02-02T17:55:57.212Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "3.0.0"
+    "previousScore": 61,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 60,
-    "geminiScore": 62,
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 60,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 2,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

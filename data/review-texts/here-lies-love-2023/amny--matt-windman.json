@@ -9,15 +9,15 @@
   "bwwExcerpt": "As inventively staged by wunderkind director Alex Timbers (\"Rocky,\" \"Peter and the Starcatcher\"), \"Here Lies Love\" is a high-energy, immersive experience not unlike \"Sleep No More\" and \"Fuerza Bruta\" where audience members stand throughout the show and can freely move around. But it is also a smart, edgy musical about a celebrity-seeking political leader, her rags-to-riches journey, the corruption of her regime and her relationship with those around her. In essence, \"Here Lies Love\" is a discoth",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HERE-LIES-LOVE-2023",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 79,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic calls it a 'remarkable show' that 'remains as exciting as ever' with 'urgent and disturbing' storytelling, clearly recommending it despite the notable concern about prerecorded music. | GPT-4o: The review praises the production's energy, innovative staging, and timely storytelling, but notes a significant reservation about the lack of live music. Despite this, the overall tone is positive, recommending the show with some reservations. | Gemini: The review is largely positive, highlighting the show's excitement and relevance. However, the critic expresses a significant reservation about the use of prerecorded music, which prevents a higher score.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the show as 'exciting', 'remarkable', and notes its increased relevance today, but has a significant reservation about the prerecorded music which he calls 'a stain on an otherwise remarkable show.' | GPT-4o: The review praises the production's energy, staging, and relevance, but notes a significant reservation about the lack of live music, which the critic couldn't overlook. Despite this, the overall tone is positive, recommending the show with some reservations. | Gemini: The review is largely positive, highlighting the show's excitement and relevance. However, the critic expresses a significant reservation about the use of prerecorded music, which prevents a higher score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,16 +38,16 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:30:32.943Z",
+    "scoredAt": "2026-02-02T18:18:32.591Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 79,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
+    "claudeScore": 76,
+    "openaiScore": 78,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
@@ -62,8 +62,8 @@
   },
   "dateUnknown": true,
   "dateSource": "historical-review",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 486,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
   "isFullReview": true,
@@ -80,10 +80,10 @@
   ],
   "fetchTier": 4,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250713051531",
   "archiveOrgUrl": "http://web.archive.org/web/20250713051531/https://www.amny.com/entertainment/review-here-lies-love-finally-turns-broadway-into-an-immersive-dance-club/",
-  "rescoreCompletedAt": "2026-02-02T03:30:32.943Z"
+  "rescoreCompletedAt": "2026-02-02T03:30:32.943Z",
+  "tierReason": "Full review text"
 }

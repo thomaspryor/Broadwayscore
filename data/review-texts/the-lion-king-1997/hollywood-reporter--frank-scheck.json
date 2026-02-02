@@ -70,8 +70,8 @@
       "mergedAt": "2026-01-28T21:15:21.937Z"
     }
   ],
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "truncated",
+  "wordCount": 200,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 89,
   "isFullReview": false,
@@ -88,12 +88,12 @@
   ],
   "fetchTier": 1,
   "textQuality": "partial",
-  "truncationSignals": [],
   "textStatus": "incomplete",
   "textIssues": [
     "Word count too low: 200 (min: 300)",
     "Show title not found in text"
   ],
   "showNotMentioned": true,
-  "rescoreCompletedAt": "2026-02-02T14:25:36.089Z"
+  "rescoreCompletedAt": "2026-02-02T14:25:36.089Z",
+  "tierReason": "Short text (200 words)"
 }

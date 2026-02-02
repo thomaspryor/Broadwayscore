@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HERE-LIES-LOVE-2023",
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 74,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises multiple production elements (songs, choreography, costumes, lighting, staging) using positive descriptors like 'great,' 'inventive,' 'eye-catching,' and 'remarkable.' However, with only one curated excerpt available, I'm scoring conservatively in the lower positive range as this could be cherry-picked praise from a more mixed review. | GPT-4o: The review highlights several positive aspects of the production, including the music, choreography, costumes, lighting, and stage design. However, due to the single excerpt warning, the overall sentiment is assumed to be positive but not overwhelmingly so. | Gemini: The review excerpt highlights several positive aspects of the production, including the music, choreography, costumes, lighting, and stage design. While it's only one excerpt, the focus on these elements suggests a positive overall assessment, though the lack of a direct recommendation warrants a score in the middle of the positive range.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises multiple key production elements (songs, choreography, costumes, lighting, staging) with consistently positive language like 'great,' 'inventive,' 'eye-catching,' and 'remarkably engineered,' indicating strong recommendation despite being only a partial excerpt. | GPT-4o: The excerpt highlights multiple positive aspects of the production, including the music, choreography, costumes, lighting, and stage design, suggesting a strong recommendation. However, due to the single excerpt warning, the confidence is medium. | Gemini: The review excerpt highlights several positive aspects of the production, including the music, choreography, costumes, lighting, and stage design, suggesting a positive overall experience. Given it's a single excerpt, I'm placing it in the upper range of 'Positive'.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:21:36.523Z",
+    "scoredAt": "2026-02-02T18:18:40.927Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 80,
-    "previousVersion": "3.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 76,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

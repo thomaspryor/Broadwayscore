@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a loving parody of terrible musicals, but it's also genuinely touching in its portrayal of two dreamers who refuse to give up on their vision.",
   "originalScore": null,
-  "assignedScore": 59,
+  "assignedScore": 58,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is a loving parody of terrible musicals, but it's also genuinely touching in its portrayal of two dreamers who refuse to give up on their vision.",
   "llmScore": {
-    "score": 59,
-    "confidence": "medium",
+    "score": 58,
+    "confidence": "high",
     "range": {
-      "low": 54,
-      "high": 64
+      "low": 53,
+      "high": 63
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a website error message or navigation text rather than an actual review, providing no critical assessment of any production. | GPT-4o: The text provided does not contain any evaluative content about a specific Broadway show. The lack of review content makes it impossible to determine a clear recommendation, resulting in a mixed classification with low confidence. | Gemini: The review text is a placeholder indicating the review is missing, so it's impossible to give a proper score. I'm defaulting to the lowest end of 'Mixed' as a placeholder.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be an error page or search result rather than an actual review, making it impossible to determine the critic's recommendation for any show. | GPT-4o: The provided text does not contain any evaluative content about the show, likely due to truncation or an error. Without any clear recommendation or criticism, a mixed score is assigned with low confidence. | Gemini: The review text is incomplete and doesn't provide a clear assessment of the show. The presence of search functionality suggests a missing review, making it difficult to determine the critic's opinion.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,21 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:26:42.770Z",
+    "scoredAt": "2026-02-02T17:57:49.528Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 58,
+    "previousScore": 59,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,
-    "openaiScore": 62,
+    "openaiScore": 60,
     "geminiScore": 55,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 7,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -68,7 +68,7 @@
   "contentTierReason": "Short text (28 words)",
   "textWordCount": 42,
   "archivePath": "data/archives/reviews/gutenberg-2023/theatermania--jesse-green_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:34:51.745Z",
+  "textFetchedAt": "2026-02-02T16:33:51.598Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -82,6 +82,12 @@
       "method": "playwright",
       "success": false,
       "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Insufficient text: 75 chars"
     },
     {
       "tier": 2,

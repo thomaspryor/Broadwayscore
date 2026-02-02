@@ -10,18 +10,18 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 93,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 94,
+    "score": 93,
     "confidence": "high",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 88,
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Despite truncation warning, the review is overwhelmingly positive throughout with phrases like 'instant classic,' 'absolute bull's-eye,' and explicit recommendation to 'get yer tickets.' The BWW excerpt confirms the rave verdict with 'well-deserved gold star.' | GPT-4o: The review is overwhelmingly positive, praising the show as an 'instant-megahit' and 'instant classic' with 'excellent work' from all involved. The critic urges readers to get tickets immediately, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"instant-megahit,\" \"absolute bull's-eye,\" and \"instant classic.\" The critic clearly believes the show is exceptional and groundbreaking, meriting a Rave score.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Despite truncation warning, the review is overwhelmingly enthusiastic throughout with phrases like 'instant classic', 'scores an absolute bull's-eye', 'superlatives are in order', and tells readers to 'stop reading right now and get yer tickets'. The BWW excerpt confirms the rave verdict with praise for Miranda's 'well-deserved gold star'. | GPT-4o: The review is overwhelmingly positive, praising the musical as an 'instant-megahit' and a 'must-see,' with high praise for Lin-Manuel Miranda's talent and the show's innovative approach. The critic strongly recommends seeing the show, despite the truncated text warning. | Gemini: The review is overwhelmingly positive, calling the show an \"instant-megahit\" and stating that Miranda \"doesn't waste his shot, for sure, and scores an absolute bull's-eye.\" The critic uses superlatives and suggests readers get tickets immediately (though acknowledges difficulty). The aggregator excerpt confirms the strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,15 +42,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:00:37.430Z",
+    "scoredAt": "2026-02-02T18:02:58.580Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 97,
-    "previousVersion": "3.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 95,
+    "claudeScore": 92,
     "openaiScore": 95,
     "geminiScore": 92,
     "claudeBucket": "Rave",

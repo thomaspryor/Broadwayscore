@@ -14,7 +14,7 @@
   "dtliThumb": "Meh",
   "llmScore": {
     "score": 62,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 57,
       "high": 67
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic finds significant issues with the book and story logic but praises specific elements like choreography, performances, and production moments. The tone is neither recommendation nor discouragement - more bemused observation of a flawed but occasionally entertaining show. | Gemini: The review highlights both positive and negative aspects. While criticizing the confusing plot and character motivations, it praises the high-energy production, choreography, and some specific scenes. This suggests a mixed experience with enjoyable moments amidst flaws.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic finds specific elements praiseworthy (choreography, fantasy sequence, performances) but repeatedly calls the book 'baffling' and 'confounding,' indicating neither a clear recommendation nor complete dismissal. | GPT-4o: The review highlights both positive elements, such as the choreography and specific musical numbers, and significant criticisms regarding the plot and character motivations. The tone suggests a mix of enjoyment and confusion, leading to a mixed verdict. | Gemini: The review highlights both positive and negative aspects of the show. While criticizing the confusing plot and character motivations, it praises the high-energy production, choreography, and some of the sillier moments, indicating a mixed experience overall.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:41:55.721Z",
+    "scoredAt": "2026-02-02T18:12:07.125Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 50,
-    "previousVersion": "3.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": null,
+    "claudeScore": 58,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "dtliExcerpt": "Huey Lewis’ discography is woven into the story with a looseness that makes Escape to Margaritaville seem downright Pulitzer-worthy.",

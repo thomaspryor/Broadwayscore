@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic explicitly calls it a 'must-see' and describes the revised show as 'thrilling from beginning to end' despite initial concerns about the earlier version. | GPT-4o: The review praises the production as thrilling and a must-see, highlighting improvements and strong performances, indicating a highly enthusiastic recommendation. | Gemini: The review explicitly states the show is \"thrilling from beginning to end\" and \"one of the rare must-sees\", indicating a rave recommendation. The critic also highlights significant improvements from the previous version.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic explicitly calls this a 'must-see' and describes the revised show as 'thrilling from beginning to end' despite initial concerns about the Public Theater version. The review is filled with superlatives and strong praise for performances, direction, and technical elements. | GPT-4o: The critic describes the show as 'thrilling from beginning to end' and a 'must-see,' indicating a strong, enthusiastic recommendation. The review highlights improvements and praises various elements like performances, music, and choreography. | Gemini: The review explicitly states the show is a \"must-see\", and describes it as \"thrilling from beginning to end\", indicating a very strong positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,21 +46,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:53:09.984Z",
+    "scoredAt": "2026-02-02T18:17:45.090Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 90,
+    "previousScore": 91,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 89,
+    "claudeScore": 88,
     "openaiScore": 95,
     "geminiScore": 90,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 6,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

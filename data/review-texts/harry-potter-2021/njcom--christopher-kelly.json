@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language throughout ('magnificent treat', 'wonder', 'extraordinary', 'splendid') and describes being 'alternately awestruck and giddy' while wanting it to continue for hours more. This is clearly a rave review with unqualified enthusiasm. | GPT-4o: The review is overwhelmingly positive, describing the production as 'magnificent' and 'one of the most visually majestic, consistently surprising Broadway productions ever mounted.' The critic expresses a strong emotional response and admiration for the show's execution, indicating a must-see recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"magnificent treat,\" \"awestruck and giddy,\" and \"one of the most visually majestic, consistently surprising Broadway productions ever mounted.\" The critic clearly recommends seeing the show.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language throughout ('magnificent treat', 'awestruck and giddy', 'most visually majestic') and explicitly states they would have been content to watch for another five-and-a-half hours, indicating an enthusiastic must-see recommendation. | GPT-4o: The review is overwhelmingly positive, describing the production as 'magnificent,' 'visually majestic,' and 'one of the most visually majestic, consistently surprising Broadway productions ever mounted.' The critic expresses a strong desire to continue watching, indicating a highly enthusiastic recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"magnificent treat,\" \"awestruck and giddy,\" and \"most visually majestic, consistently surprising Broadway productions ever mounted.\" The critic clearly loved the show and considers it a must-see.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,11 +40,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:29:21.213Z",
+    "scoredAt": "2026-02-02T18:09:06.597Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
+    "previousScore": 93,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {

@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic finds the horror play ineffective and boring, criticizing the direction for exhausting clichés early on, plot inconsistencies, and failure to maintain audience engagement. | GPT-4o: The review criticizes the play for exhausting clichés, lacking inner logic, and failing to maintain suspense, leading to audience boredom. The negative tone and lack of recommendation are clear. | Gemini: The review is largely negative, criticizing the direction, writing, and overall effectiveness of the horror elements. While acknowledging some contributions from the design team and performances, the reviewer ultimately finds the play boring and illogical.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic finds the play exhausts horror clichés early on, calls it boring, and criticizes its illogical plot and over-exposition, though acknowledges some design elements and performances work. | GPT-4o: The review criticizes the play for exhausting clichés, lacking inner logic, and failing to maintain suspense, resulting in a disappointing experience that the audience finds boring. | Gemini: The review is largely negative, criticizing the direction, writing, and overall effectiveness of the horror elements. The reviewer finds the play predictable and illogical, ultimately not recommending it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,12 +42,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:26:16.281Z",
+    "scoredAt": "2026-02-02T17:56:22.410Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 35,
-    "previousVersion": "5.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,

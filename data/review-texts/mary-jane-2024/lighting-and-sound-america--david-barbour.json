@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"a portrait of an everyday saint, and a compelling one to boot.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/mary-jane-broadway",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 81,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 80,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite minor reservations about the ending, the critic clearly recommends the show, calling it 'one of Herzog's finest achievements' and praising McAdams' performance extensively. The review is fundamentally positive throughout. | GPT-4o: The review describes the play as a compelling portrayal of heroism and highlights the strong performances and direction. Despite mentioning a slightly disappointing final scene, the overall tone is positive, emphasizing the play's emotional impact and the memorable debut of Rachel McAdams. | Gemini: The review is mostly positive, praising the performances and writing, but notes some disappointment with the final scene and a desire for a firmer resolution. The truncated text makes it difficult to be certain of the overall recommendation, but the aggregator excerpt and generally positive tone suggest a recommendation with reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite opening with concerns about 'driving people away,' the critic delivers strong praise throughout, calling it 'one of Herzog's finest achievements,' praising McAdams' 'memorable Broadway debut,' and highlighting the production's emotional impact and artistic merit. | GPT-4o: The review praises the production for its compelling portrayal of the protagonist and highlights the strong performances and direction. Despite noting a slightly disappointing final scene, the overall tone is positive, emphasizing the play's emotional impact and the lead's memorable debut. | Gemini: Despite some reservations about the final scene, the review praises the play as one of Herzog's finest and McAdams' debut. The overall tone is positive, highlighting the play's understanding of Mary Jane's quiet heroism.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:17:08.924Z",
+    "scoredAt": "2026-02-02T18:34:08.446Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "5.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 82,
     "openaiScore": 82,
     "geminiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

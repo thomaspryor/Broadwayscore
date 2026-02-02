@@ -8,15 +8,15 @@
   "showScoreExcerpt": "\"...a sui generis multidisciplinary marvel that suggests new possibilities\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/illinoise",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 82,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 84,
-    "confidence": "low",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 79,
-      "high": 89
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: Despite truncation warning, the review consistently uses superlative language ('marvel', 'absorbingly expressive', 'finest choreography', 'striking case') and the aggregator excerpt confirms highly positive assessment with 'new possibilities' praise. | Gemini: Despite the truncated text, the review is overwhelmingly positive, describing the show as a \"sui generis multidisciplinary marvel\" and praising the choreography and storytelling. The aggregator excerpt further supports a positive assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is consistently praise-filled throughout, calling it a 'marvel' and highlighting Peck's 'finest choreography' with no significant reservations expressed. The aggregator excerpt reinforces this positive assessment. | GPT-4o: The review praises the production as a 'multidisciplinary marvel' and highlights the innovative choreography and storytelling. Despite the truncation warning, the tone and language suggest a strong recommendation. | Gemini: Despite the truncated text warning, the review is overwhelmingly positive, using phrases like \"sui generis multidisciplinary marvel\" and praising the choreography and narrative. The aggregator excerpt also supports a positive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,26 +37,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:14:29.140Z",
+    "scoredAt": "2026-02-02T18:22:45.112Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "3.0.0"
+    "previousScore": 84,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": null,
-    "geminiScore": 80,
-    "claudeBucket": "Rave",
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "outlet": "Culture Sauce",
   "rescoreReason": "fullText added after excerpt-based scoring",

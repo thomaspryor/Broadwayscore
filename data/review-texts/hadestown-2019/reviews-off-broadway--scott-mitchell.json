@@ -12,8 +12,8 @@
   "source": "show-score",
   "sourceMethod": "playwright",
   "scoreSource": "manual-excerpt-mixed",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 764,
   "isFullReview": true,
   "textWordCount": 764,
   "archivePath": "data/archives/reviews/hadestown-2019/reviews-off-broadway--scott-mitchell_2026-02-01.html",
@@ -48,7 +48,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite truncated text, the review is overwhelmingly positive throughout with glowing praise for performances, direction, and production, culminating in an explicit 'must-see now' recommendation. | GPT-4o: The review is overwhelmingly positive, highlighting the performances, direction, and production quality. The key quote strongly suggests an enthusiastic recommendation, despite the text being truncated. | Gemini: Despite the truncated text warning, the review contains strong positive language and ends with an explicit recommendation to see the show. The critic praises the direction, performances, and overall experience.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite being truncated, the review contains overwhelmingly positive language throughout, praising performances as 'amazing', 'spectacular', and 'excellent', and ends with an urgent recommendation to see it immediately. | GPT-4o: The review is filled with praise for the cast, direction, and production elements, culminating in a strong call to action to see the show immediately. Despite the truncation warning, the overall tone and specific recommendation suggest a rave review. | Gemini: Despite being truncated, the review is overwhelmingly positive, praising the cast, direction, and design. The final sentence, \"Go see it now, while you can still get tickets,\" clearly indicates a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -58,26 +58,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:01:26.915Z",
+    "scoredAt": "2026-02-02T18:00:26.466Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 89,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 90,
-    "geminiScore": 80,
+    "geminiScore": 79,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Rave"
-  }
+  },
+  "tierReason": "Full review text"
 }

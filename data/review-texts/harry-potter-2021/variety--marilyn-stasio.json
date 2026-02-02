@@ -18,8 +18,8 @@
     "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,55 +27,40 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 85
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the theater has brought its own brand of wizardry to the material",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "presents a panorama of dazzling effects that draw audible gasps from the audience",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "director John Tiffany and his wizard designers have answered the big question",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic clearly praises the theatrical adaptation's visual and aural achievements, emphasizing how the production successfully translates the source material through spectacular staging effects.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic clearly answers the central question positively, praising the director and designers for creating 'dazzling effects' that provoke 'audible gasps.' However, single excerpt warning requires caution about full verdict. | GPT-4o: The critic praises the production's unique contribution to the Harry Potter story, highlighting its 'dazzling effects' and the audience's audible reactions, indicating a strong recommendation. | Gemini: The review excerpt highlights the impressive theatrical elements and audience reaction, suggesting a positive experience. Given that it's a single excerpt, I'm placing it on the higher end of the positive bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-02T16:25:10.524Z",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T18:10:49.329Z",
     "promptVersion": "5.1.0",
-    "inputTokens": 2408,
-    "outputTokens": 334,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt with verdict"
-    }
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
     "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,

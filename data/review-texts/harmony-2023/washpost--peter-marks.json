@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "dtliExcerpt": "Barry Manilow and Bruce Sussman's musical about the Comedian Harmonists, a German singing group that was torn apart by the rise of the Nazis, is a work of undeniable sincerity and craft.",
@@ -20,11 +20,11 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 62,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -35,7 +35,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The review acknowledges professional execution and raises important themes, but criticizes the central appeal of the Harmonists themselves and notes that 'the novelty wears thin, quickly.' The critic finds merit in individual elements but significant structural problems. | Gemini: The review acknowledges the show's historical importance and some strong elements (cast, costumes, one particular song), but ultimately finds the core entertainment value lacking, especially the Harmonists' stage personas. This suggests a mixed experience with notable flaws.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges the show's earnest message and some strong elements (cast, production values) but criticizes fundamental issues with the central act lacking appeal and novelty wearing thin quickly. | GPT-4o: The review highlights both strengths, such as the performances and certain musical numbers, and significant weaknesses, like the lack of sustained interest and the sterile stage personas. The overall tone suggests a mixed reception with some standout moments. | Gemini: The review points out flaws like the group lacking intrinsic appeal and the show fixating on sterile stage personas, but also praises the cast, direction, and a specific number. This indicates a mixed experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,26 +45,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:12:25.350Z",
+    "scoredAt": "2026-02-02T18:06:47.307Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 62,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 61,

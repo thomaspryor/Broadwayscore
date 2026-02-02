@@ -9,18 +9,18 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 68,
+    "score": 75,
     "confidence": "low",
     "range": {
-      "low": 63,
-      "high": 73
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -28,36 +28,39 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The text is severely truncated, cutting off after just the opening paragraph about ticket demand. No actual review content or critical assessment is provided. | Gemini: The review focuses on the difficulty of getting tickets, implying the show is desirable and worth seeing if accessible. The tone suggests a positive experience awaits those who manage to attend.",
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: The review text appears heavily truncated, cutting off after discussing ticket demand without providing any actual critical assessment of the show's quality or performances. | GPT-4o: The review suggests that tickets are in high demand and difficult to obtain, implying a strong recommendation and high popularity of the show. | Gemini: The review focuses on the high demand for tickets, implying the show is worth seeing and popular, thus positive. | Buckets: claude=Mixed, openai=Rave, gemini=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:06:56.686Z",
+    "scoredAt": "2026-02-02T18:11:00.406Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
-    "previousVersion": "5.0.0"
+    "previousScore": 68,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,
-    "openaiScore": null,
+    "openaiScore": 90,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 30,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+    "needsReview": true,
+    "needsReviewReasons": [
+      "3-way bucket disagreement"
+    ],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "No bucket consensus - using median score"
   },
   "sources": [
     "bww-roundup",
@@ -68,8 +71,8 @@
   "garbageFullText": "The show has been trimmed from its original two-part, five-and-a-half-hour format to a single evening of three hours and 30 minutes, and the editing has been done with care and intelligence.",
   "garbageReason": "No theater-related keywords found",
   "garbageFixedAt": "2026-01-29T22:45:22.884Z",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "truncated",
+  "wordCount": 246,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "rescoreCompletedAt": "2026-02-02T00:06:56.686Z",
   "previousLlmScore": 74,
@@ -100,7 +103,6 @@
   ],
   "fetchTier": 2,
   "textQuality": "partial",
-  "truncationSignals": [],
   "textStatus": "incomplete",
   "sourceMethod": "scrapingbee",
   "textIssues": [
@@ -113,5 +115,6 @@
     "hadPositiveThumb": false,
     "dtliThumb": "none",
     "bwwThumb": "none"
-  }
+  },
+  "tierReason": "Short text (246 words)"
 }

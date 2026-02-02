@@ -9,71 +9,56 @@
   "bwwExcerpt": "There is an attempt, near the end of the show, to add meaning and depth to the story’s otherwise surface-level emotions. Eventually we’re told that the things we’re attached to from the past keep us from living in the present, but the notion isn’t woven into the text or explored throughout the play. It arrives way too late, with the impact of a Hallmark card. Still, “I Need That” will prove satisfying for those looking to be entertained by DeVito and his daughter. He brings real joy and laughter",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 68,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 72
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
-      "performances": 78,
-      "direction": 65
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "basically a 90-minute sitcom episode, full of sentimentality",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "He brings real joy and laughter, and there's real value in that",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "will prove satisfying for those looking to be entertained by DeVito",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic clearly enjoys DeVito's performance and finds the show entertaining, but criticizes the shallow writing and late-arriving themes, resulting in a qualified recommendation for fans of the star.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges the play's sitcom-level writing and lack of depth but clearly recommends it for DeVito's entertaining performance and the joy it provides audiences. | GPT-4o: The review acknowledges the play's sitcom-like quality and lack of depth but emphasizes the entertainment value provided by Danny DeVito's performance, ultimately recommending it for those seeking enjoyment. | Gemini: The review acknowledges the play's shortcomings (sitcom-like, surface-level emotions), but ultimately recommends it for DeVito's performance and the entertainment value he brings. The recommendation is positive but qualified.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-02T16:25:32.169Z",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T18:22:22.990Z",
     "promptVersion": "5.1.0",
-    "inputTokens": 2971,
-    "outputTokens": 341,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 68,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
+    "claudeScore": 73,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "“ ‘I Need That’ will prove satisfying for those looking to be entertained by DeVito and his daughter. He brings real joy and laughter, and there’s real value in that.”",

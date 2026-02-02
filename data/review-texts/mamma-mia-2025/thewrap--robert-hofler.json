@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MAMMA-MIA-Returns-To-Broadway-20250814",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 51,
+  "assignedScore": 44,
   "source": "dtli",
   "dtliThumb": "Down",
   "llmScore": {
-    "score": 51,
-    "confidence": "low",
+    "score": 44,
+    "confidence": "high",
     "range": {
-      "low": 46,
-      "high": 56
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Negative, gemini=Mixed | Claude: The critic calls the show a 'dispiriting mess,' criticizes the tacky production values, weak book that barely gets giggles, and overacting performances, with only two performers receiving praise for rising above the problems. | Gemini: The review is largely negative, criticizing the production's tackiness, the disconnection between songs and story, and some overacting. However, it acknowledges that some performers rise above the 'dispiritng mess,' suggesting it has some redeeming qualities, placing it in the Mixed category.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic describes the show as a 'dispiriting mess' with tacky production values, poor book writing that barely gets laughs, and widespread overacting, clearly not recommending it despite acknowledging some performers rise above the material. | GPT-4o: The review criticizes the production for being tacky and poorly executed, with overacting and a weak script. The tone is negative throughout, with no positive recommendation for seeing the show. | Gemini: The review is largely negative, criticizing the production's tackiness, the disconnection between the songs and the book, and the overacting. The reviewer expresses relief only that the actors are singing instead of reciting lines, but overall finds the show a 'dispiritng mess'.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:28:03.304Z",
+    "scoredAt": "2026-02-02T18:32:17.329Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 28,
-    "previousVersion": "5.0.0"
+    "previousScore": 51,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": null,
-    "geminiScore": 60,
+    "openaiScore": 45,
+    "geminiScore": 45,
     "claudeBucket": "Negative",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 18,
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "dtliExcerpt": "The current “Mamma Mia!” remains under the control of its original director, Phyllida Lloyd; production designer, Mark Thompson; and other creatives. Frankly, the show looks so tacky that it could be the original 2001 production with a not-very-good paint job.",
   "sources": [

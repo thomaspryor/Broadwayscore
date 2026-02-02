@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite noting a significant casting flaw with the male lead, the critic finds the production strong overall and recommends it as 'something different' that audiences will be 'grateful for the opportunity to enjoy.' | GPT-4o: The review praises the production's enhanced values, strong performances, and unique score, while noting a miscast lead as a minor flaw. The overall tone is positive and recommends the show for its distinctiveness and quality. | Gemini: The review is largely positive, praising many aspects of the production, but the miscasting of Orpheus is a significant drawback. The reviewer ultimately recommends seeing the show despite this flaw.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly recommends the show despite noting a significant casting issue with the lead, praising the production values, score, and performances while acknowledging it's not for everyone. | GPT-4o: The review praises the production's enhanced values, strong performances, and unique score, while noting a miscast lead as a minor flaw. The overall tone is enthusiastic and recommends the show to those seeking something different. | Gemini: Despite a miscast lead, the reviewer finds the show strong and enjoyable, recommending it for those who appreciate its unique style. The positive aspects outweigh the negative, leading to a positive but not rave score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:59:09.630Z",
+    "scoredAt": "2026-02-02T17:59:21.484Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 81,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 82,
-    "geminiScore": 78,
+    "openaiScore": 81,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

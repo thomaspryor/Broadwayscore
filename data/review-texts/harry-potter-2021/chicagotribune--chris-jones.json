@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses explicit must-see language and calls it a 'feast of epic theatricality' with 'extraordinary' magic, predicting it will run for 'years, if not decades' due to its power and impact. | GPT-4o: The critic describes the production as a 'must-see' and praises its theatricality, emotional depth, and ensemble performance, indicating a strong recommendation. | Gemini: The review contains extremely enthusiastic language and explicitly calls the show a \"must-see.\" The critic praises the theatricality, immersion, and shared storytelling experience, indicating a very strong positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses explicit superlatives like 'must-see,' 'thoroughly thrilling,' calls it 'a feast of epic theatricality,' and predicts it will run 'for years, if not decades' - clear enthusiastic recommendation language throughout. | GPT-4o: The review is filled with enthusiastic praise, describing the production as a 'must-see' and 'thoroughly thrilling'. The critic highlights the show's epic theatricality and emotional depth, making it clear that this is a highly recommended production. | Gemini: The review uses extremely positive language such as \"feast of epic theatricality\", \"must-see\", \"totally enveloping\", and \"thoroughly thrilling\", indicating a rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,11 +40,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:27:25.660Z",
+    "scoredAt": "2026-02-02T18:07:16.782Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
+    "previousScore": 93,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {

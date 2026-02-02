@@ -8,17 +8,17 @@
   "fullText": null,
   "showScoreExcerpt": "\"A fluid and brisk production...The physical production is downright resplendent...There's magic aplenty...The tricks never upstage the action, nor do they become the sole reason for the show's existence...Beyond the physical production, the play's biggest asset is its ability to make us care about these characters...The story is intricate and surprising, but it's never confusing...A far cry from your typical Broadway brand extension, and in many ways...an improvement over the quality of the films.\"",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 82,
   "source": "show-score",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 78,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Multiple positive descriptors like 'resplendent', 'magic aplenty', and comparing favorably to the films suggest strong recommendation, but single excerpt warning requires conservative scoring within positive range. | GPT-4o: The review is highly positive, praising the production's fluidity, resplendence, and emotional impact. The critic highlights the show's ability to engage the audience with its characters and story, suggesting a strong recommendation. The single excerpt warning suggests caution, but the language used is strongly favorable. | Gemini: The review uses positive language like \"fluid,\" \"resplendent,\" and \"magic aplenty,\" indicating a positive recommendation. However, due to the single excerpt and lack of full context, the score is placed in the middle of the 'Positive' range.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong praise across multiple elements - production, storytelling, and character development - with explicit positive comparisons and language like 'resplendent' and 'magic aplenty' indicating enthusiastic recommendation. | GPT-4o: The review excerpt is filled with superlatives and positive descriptors, indicating a strong recommendation. The critic praises the production's fluidity, resplendence, and ability to engage the audience, suggesting a highly favorable view. | Gemini: The review uses overwhelmingly positive language, praising the production's fluidity, physical aspects, magic, and character development. The comparison to the films further strengthens the positive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:07:35.105Z",
+    "scoredAt": "2026-02-02T18:11:17.105Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "3.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 82,
     "openaiScore": 87,
-    "geminiScore": 78,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 9,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -9,15 +9,15 @@
   "bwwExcerpt": "Further, it's hard to go wrong when you have Daniel Radcliffe, Jonathan Groff, and Lindsay Mendez above the title. The heart of the show lies with this trio whose genuine connection and truth shines out across the Hudson stage eight times a week. Groff, who has the charisma down pat, dazzles as Frank. When paired with Radcliffe’s Charley, filled with loveable charm, and Mendez’s Mary who is utterly gut-wrenching to watch as her true love slips away, this trio equals Broadway perfection.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "originalScore": null,
-  "assignedScore": 93,
+  "assignedScore": 94,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 93,
-    "confidence": "high",
+    "score": 94,
+    "confidence": "medium",
     "range": {
-      "low": 88,
-      "high": 98
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review is overwhelmingly positive with superlatives throughout ('Broadway perfection', 'tour de force', 'true theatre magic') and ends with an explicit recommendation to 'get thee to the Hudson immediately', indicating this is a must-see production. | GPT-4o: The review is overwhelmingly positive, highlighting the exceptional performances, direction, and production quality. The critic uses strong language to convey that this revival is a must-see, describing it as 'Broadway perfection' and 'theatre magic.' | Gemini: The review is overwhelmingly positive, using phrases like \"Broadway perfection\" and \"true theatre magic.\" The explicit recommendation to \"get thee to the Hudson immediately\" and the overall tone indicate a rave review.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review uses unmistakably rave language throughout, calling it 'Broadway perfection,' 'true theatre magic,' and urging readers to 'get thee to the Hudson immediately.' The critic explicitly dismisses the need to listen to critics because the show is so obviously excellent. | GPT-4o: The review is overwhelmingly positive, praising the performances, direction, and production elements. The critic describes the show as 'Broadway perfection' and urges audiences to see it for a 'healthy dose of Broadway serotonin,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the excellent performances, direction, and overall quality of the production. The phrase \"get thee to the Hudson immediately\" indicates a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:34:03.759Z",
+    "scoredAt": "2026-02-02T18:37:39.038Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 93,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
     "openaiScore": 95,
-    "geminiScore": 92,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "bwwThumb": "Up",
   "dtliExcerpt": "For the entirety of the almost two hour and forty five minute run time, all 970 audience members seated at the Hudson Theatre for Merrily We Roll Along are quietly attentive as they behold a true Sondheim classic, reborn.",

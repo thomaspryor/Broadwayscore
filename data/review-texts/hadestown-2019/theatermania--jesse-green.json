@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be primarily factual announcement content about the opening and cast/creative team rather than an actual review with critical evaluation. No clear recommendation or assessment is provided. | GPT-4o: The text provided is primarily descriptive, offering background information and cast details without an evaluative verdict. The absence of explicit recommendation or criticism leads to a mixed classification with low confidence due to lack of clear evaluative content. | Gemini: This review is mostly descriptive, providing background information about the show's plot, cast, and creative team. There is no clear recommendation or discouragement, making it difficult to assess the critic's overall opinion. The text is truncated, making it difficult to determine the final verdict.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a promotional announcement or press release rather than a critical review, containing only cast/crew information and plot summary with no evaluative content about the production's quality. | GPT-4o: The text provided is primarily descriptive and lacks evaluative content or a clear verdict. Without further insights into the critic's opinion on the production, the classification is tentative. | Gemini: This review primarily provides background information about the show, including its plot, cast, and creative team. There is no explicit recommendation or discouragement, leading to a mixed classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,17 +42,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:49:19.704Z",
+    "scoredAt": "2026-02-02T18:00:59.304Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
+    "previousScore": 58,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,
     "openaiScore": 55,
-    "geminiScore": 60,
+    "geminiScore": 58,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
@@ -64,13 +64,13 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (24 words)",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 92,
   "textWordCount": 364,
   "archivePath": "data/archives/reviews/hadestown-2019/theatermania--jesse-green_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:35:49.006Z",
+  "textFetchedAt": "2026-02-02T16:38:50.396Z",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
@@ -86,6 +86,12 @@
       "error": "Skipped - known blocked site"
     },
     {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Insufficient text: 0 chars"
+    },
+    {
       "tier": 2,
       "method": "scrapingbee",
       "success": true
@@ -93,14 +99,13 @@
   ],
   "fetchTier": 2,
   "textQuality": "truncated",
-  "truncationSignals": [
-    "has_paywall_text"
-  ],
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "textIssues": [
     "Show title not found in text"
   ],
   "showNotMentioned": true,
-  "rescoreCompletedAt": "2026-02-02T03:49:19.704Z"
+  "rescoreCompletedAt": "2026-02-02T03:49:19.704Z",
+  "wordCount": 364,
+  "tierReason": "Full review text"
 }

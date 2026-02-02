@@ -64,7 +64,7 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (17 words)",
   "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
@@ -94,13 +94,12 @@
   ],
   "fetchTier": 2,
   "textQuality": "truncated",
-  "truncationSignals": [
-    "has_paywall_text"
-  ],
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "textIssues": [
     "Show title not found in text"
   ],
-  "showNotMentioned": true
+  "showNotMentioned": true,
+  "wordCount": 318,
+  "tierReason": "Full review text"
 }

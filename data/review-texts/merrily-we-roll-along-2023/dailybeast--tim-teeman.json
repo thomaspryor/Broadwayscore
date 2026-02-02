@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "The joy of the show is watching Radcliffe, Mendez, and Groff together, because they are quite visibly having the time of their performing lives.",
@@ -19,11 +19,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 78,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic clearly recommends the show despite acknowledging flaws, praising the performances, chemistry, and Sondheim's material while noting specific issues with the Broadway transfer and book problems. | Gemini: The review is largely positive, highlighting the strong performances and Sondheim's music. However, it also points out some issues with the transfer to Broadway and shortcomings in the book, indicating a recommendation with reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly enjoys the show and praises the performances, chemistry, and Sondheim's music, but notes several structural problems with the book and issues with the Broadway transfer that prevent a stronger recommendation. | GPT-4o: The review praises the performances, chemistry among the lead actors, and the music and lyrics of the show, despite noting some issues with the book and staging. The overall tone is highly positive, emphasizing the show's emotional impact and the excellence of the cast. | Gemini: The review is largely positive, praising the performances and Sondheim's music, but notes some issues with the transfer to Broadway. The reviewer ultimately recommends seeing it despite these flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,26 +44,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:32:13.020Z",
+    "scoredAt": "2026-02-02T18:36:48.015Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 79,

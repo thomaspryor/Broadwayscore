@@ -7,17 +7,17 @@
   "publishDate": "April 25, 2018",
   "showScoreExcerpt": "\"Slackly structured, verbose, stylistically muddled, overwrought mishmash...Makes elaborate forays into flashbacks that seem included purely to rouse Potter-fan sentiment...The dialogue, often weighed down by the soggily earnest tone of after-school specials, seems to drag on too long in nearly every scene...A great deal of the acting is shrill...If the rest of 'The Cursed Child' were as carefully built and precisely timed as its effects, the show would cast a genuinely bewitching spell.\"",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 46,
   "source": "show-score",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 42,
-    "confidence": "high",
+    "score": 46,
+    "confidence": "medium",
     "range": {
-      "low": 37,
-      "high": 47
+      "low": 41,
+      "high": 51
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The excerpt contains overwhelmingly negative criticism of structure, dialogue, acting, and pacing, though the final line suggests some redeeming technical elements. Single excerpt warning requires conservative scoring within negative range. | GPT-4o: The review highlights numerous negative aspects such as poor structure, verbose dialogue, and shrill acting. However, it notes that the effects are well-executed, suggesting some redeeming qualities. Given the single excerpt warning, the score is conservatively placed in the middle of the Negative range. | Gemini: The review is overwhelmingly negative, citing issues with structure, dialogue, acting, and overall quality. The final sentence offers a conditional compliment, but the bulk of the review is critical.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic uses consistently harsh language throughout - 'mishmash', 'soggily earnest', 'shrill acting', 'drag on too long' - with only a backhanded compliment about effects at the end. This clearly discourages attendance. | GPT-4o: The review highlights numerous significant flaws in structure, dialogue, and acting, suggesting a negative overall impression. The only positive note is about the effects, which is not enough to outweigh the criticisms. | Gemini: The review is overwhelmingly negative, citing issues with structure, dialogue, acting, and pacing. The conditional statement at the end suggests that the show falls far short of its potential.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:29:50.458Z",
+    "scoredAt": "2026-02-02T18:10:53.290Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 60,
+    "previousScore": 42,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 40,
+    "openaiScore": 50,
     "geminiScore": 45,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "scoreDelta": 5,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

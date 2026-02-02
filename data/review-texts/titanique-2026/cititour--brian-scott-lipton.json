@@ -9,7 +9,7 @@
   "sources": [
     "playbill-verdict"
   ],
-  "contentTier": "stub",
+  "contentTier": "truncated",
   "contentTierReason": "No text content",
   "fullText": "NYC Events, Restaurants, Music, & Nightlife\n\nReview: Titanique Floats a Fun-lover’s Boat\n June 23, 2022, 11:48.20 pm ET\n\nTwitter\nX\nPinterest\nThreads\nSnapchat\nWhatsApp\nMessage\nEmail\n\n \n Photo: Emilio Madrid\n\nBy Brian Scott LiptonWith so much of today’s theater forcing us to reflect on our current-day society and its moral problems, no one can blame audiences for seeking a pure escape – perhaps just like the millionaires of 1912 who went aboard the maiden voyage of the Titanic.Fortunately, we can now hop aboard “Titanique,” the alternately clever and kooky-send up of both James Cameron’s 1997 blockbuster film “Titanic” and the French-Canadian superstar Celine Dion, who sang the movie’s Oscar-winning theme song “My Heart Will Go On.” It’s the perfect vehicle in which to pass 90 minutes in the basement of a Gristedes (aka The Asylum Theater in Chelsea) and forget about the outside world. Continue Reading\n\nCititour.com is your guide to interesting places throughout New York City. Use our listings to locate restaurants, exciting clubs and nightlife, bars and pubs, shopping destinations, landmarks and parks; and shows, concerts, and other events too.",
   "isFullReview": false,
@@ -33,7 +33,7 @@
   "fetchTier": 2,
   "textQuality": "truncated",
   "truncationSignals": [
-    "has_read_more_prompt"
+    "paywall_or_login_prompt"
   ],
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
@@ -89,5 +89,7 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
-  }
+  },
+  "wordCount": 181,
+  "tierReason": "Truncation detected: paywall_or_login_prompt"
 }

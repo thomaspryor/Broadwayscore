@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Meh",
   "originalScore": "3/5 stars",
-  "assignedScore": 63,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The 3/5 star rating and review tone indicate mixed feelings - praising the cast, direction, and originality while criticizing the narrative momentum and frustrating vagueness. The critic acknowledges it's 'something original' and suggests seeing it with friends, but doesn't give a clear recommendation. | GPT-4o: The review highlights both strengths and weaknesses of the production, noting its originality and strong performances but also its frustrating vagueness and lack of narrative momentum. The 3/5 star rating suggests a mixed reception. | Gemini: The review acknowledges originality and strong production elements but ultimately finds the vagueness frustrating. The 3/5 star rating and the description of audience reactions as 'baffled' suggest a mixed reception.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 3/5 star rating and review content clearly indicate a mixed assessment - the critic acknowledges the high-quality production elements and originality while criticizing the frustrating vagueness and lack of narrative momentum, ultimately suggesting it's worth seeing despite significant flaws. | GPT-4o: The review highlights both strengths, such as the originality and strong performances, and significant weaknesses, like the frustrating vagueness and lack of narrative momentum. The original 3/5 star rating suggests a mixed reception. | Gemini: The review acknowledges flaws in the play's vagueness and lack of thematic texture, but ultimately praises its originality and the performances, especially Laurie Metcalf's. The critic suggests seeing it with friends for discussion, indicating a level of engagement that leans towards a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,27 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:24:59.793Z",
+    "scoredAt": "2026-02-02T17:55:49.896Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "3.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 62,
+    "geminiScore": 77,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,

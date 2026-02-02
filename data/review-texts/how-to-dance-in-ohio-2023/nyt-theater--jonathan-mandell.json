@@ -9,15 +9,15 @@
   "bwwExcerpt": "“How To Dance in Ohio” is a musical adaptation of a 2015 documentary film of the same name about a group of autistic young adults at a counseling center in Columbus, Ohio, who, as part of their social skills therapy group, spend months preparing for a formal prom-like dance. The production, which opens tonight at Broadway’s Belasco Theater, has some tuneful melodies, some touching moments and, above all, an exhilarated and exhilarating cast, featuring seven performers who are themselves autistic",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt contains positive language ('tuneful melodies', 'touching moments', 'exhilarated and exhilarating cast') but with qualifying terms like 'some' that suggest measured praise. Single excerpt warning requires conservative scoring. | GPT-4o: The review highlights positive aspects such as tuneful melodies and an exhilarating cast, suggesting a generally positive impression. However, the text quality warning and single excerpt caution suggest scoring conservatively within the Positive range. | Gemini: The review highlights positive aspects like tuneful melodies, touching moments, and an exhilarating cast, suggesting a recommendation, but the limited excerpt and lack of stronger language keeps it in the lower end of the positive range.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review highlights positive elements including 'tuneful melodies,' 'touching moments,' and an 'exhilarated and exhilarating cast.' The authentic casting choice is implicitly praised. However, with only one excerpt available, I'm scoring at the higher end of positive to account for potential cherry-picking. | GPT-4o: The review highlights the production's tuneful melodies, touching moments, and an exhilarating cast, suggesting a strong positive reception. Despite the single excerpt warning, the enthusiastic language points to a solid recommendation. | Gemini: The review highlights positive aspects like tuneful melodies, touching moments, and an exhilarating cast, suggesting a positive experience overall. However, the use of \"some\" indicates reservations, preventing a higher score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:55:04.318Z",
+    "scoredAt": "2026-02-02T18:20:37.820Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "3.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 76,
+    "claudeScore": 80,
+    "openaiScore": 81,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

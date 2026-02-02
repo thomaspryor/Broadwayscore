@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Shaw praises the show as 'crowd-pleasing' and 'often hilarious' while engaging deeply with its complex themes. Despite some minor critiques about pacing and dated references, she clearly recommends the show and treats it as intellectually worthy theater. | GPT-4o: The review highlights the show's humor and clever construction, noting its crowd-pleasing nature and thought-provoking themes. While there are some reservations about the pacing and certain comedic elements, the overall tone is positive and recommends the show. | Gemini: The review is largely positive, highlighting the show's humor and thought-provoking themes. However, it also notes that the show could benefit from exploring certain aspects more deeply, indicating a recommendation with reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Shaw praises the show as 'crowd-pleasing, often hilarious' and appreciates its sophisticated construction and themes, but notes some material gets 'broader' in digressions and wishes certain portions were developed further. | GPT-4o: The review describes the show as 'crowd-pleasing' and 'hilarious', with a clever and engaging performance by Edelman. The critic appreciates the show's construction and the way it handles complex themes, indicating a strong recommendation. | Gemini: The review is largely positive, highlighting Edelman's humor and the show's thought-provoking nature. However, the critic notes a desire for the show to delve deeper into certain themes, indicating a reservation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,23 +43,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:23:13.420Z",
+    "scoredAt": "2026-02-02T18:26:22.423Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
+    "previousScore": 79,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (29 words)",
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 80,
+    "openaiScore": 82,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -85,11 +85,12 @@
   ],
   "fetchTier": 4,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251121085557",
   "archiveOrgUrl": "http://web.archive.org/web/20251121085557/https://www.vulture.com/2023/06/theater-reviews-just-for-us-and-one-woman-show.html",
   "duplicateTextOf": "vulture--jackson-mchenry.json",
-  "rescoreCompletedAt": "2026-02-02T14:23:13.420Z"
+  "rescoreCompletedAt": "2026-02-02T14:23:13.420Z",
+  "wordCount": 1518,
+  "tierReason": "Full review text"
 }

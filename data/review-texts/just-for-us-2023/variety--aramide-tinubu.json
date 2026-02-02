@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Edelman's storytelling is masterful, weaving together personal anecdotes with larger societal observations in a way that feels both intimate and universal.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "Edelman's storytelling is masterful, weaving together personal anecdotes with larger societal observations in a way that feels both intimate and universal.",
   "needsScoring": true,
   "llmScore": {
-    "score": 77,
-    "confidence": "medium",
+    "score": 79,
+    "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the storytelling as 'masterful' and highlights effective weaving of personal and universal themes, indicating a positive recommendation, though the excerpt is brief and may be incomplete. | GPT-4o: The use of 'masterful' to describe the storytelling suggests a highly positive evaluation, indicating a strong recommendation to see the show. | Gemini: The review uses positive language like \"masterful\" and \"intimate and universal,\" indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises Edelman's performance, humor, and stage presence while noting the show raises important questions, but suggests it could benefit from slowing down to give deeper issues more weight. | GPT-4o: The review highlights Edelman's cleverness, charm, and ability to turn a challenging topic into hilarious social commentary. The critic praises the show's well-paced, punchline-driven standup and the engaging performance, indicating a strong recommendation. | Gemini: The review is generally positive, highlighting Edelman's cleverness and the show's engaging narrative. While it suggests the show could benefit from a slower pace to explore deeper themes, it ultimately recommends seeing it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,34 +43,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T01:00:02.566Z",
+    "scoredAt": "2026-02-02T18:26:13.731Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (21 words)",
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 75,
+    "claudeScore": 77,
+    "openaiScore": 81,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "previousUrl": "https://variety.com/2023/legit/reviews/just-for-us-review-alex-edelman-broadway-1235651563/",
   "urlDiscoveredAt": "2026-02-02T16:35:19.264Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "textWordCount": 667,
@@ -86,10 +85,12 @@
   ],
   "fetchTier": 4,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250223182431",
   "archiveOrgUrl": "http://web.archive.org/web/20250223182431/https://variety.com/2023/legit/reviews/just-for-us-review-alex-edelman-1235655007/",
-  "duplicateTextOf": "variety--naveen-kumar.json"
+  "duplicateTextOf": "variety--naveen-kumar.json",
+  "rescoreCompletedAt": "2026-02-02T18:26:13.731Z",
+  "wordCount": 667,
+  "tierReason": "Full review text"
 }

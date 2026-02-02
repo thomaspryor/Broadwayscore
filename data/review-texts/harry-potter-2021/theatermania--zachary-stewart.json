@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite noting some rushed pacing early on, the critic delivers a strong positive verdict, calling it 'absolutely worth your time and money' and 'the most magical show on Broadway' with spectacular technical achievements. | GPT-4o: The review is overwhelmingly positive, highlighting the impressive technical aspects, the engaging performances, and the overall magical experience of the show. The critic strongly recommends it as a worthwhile investment of time and money, indicating a rave review. | Gemini: The review explicitly states the show is worth the time and money. While it acknowledges changes from the original, it ultimately concludes the current version is a better play and still the most magical show on Broadway.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic explicitly states the show is 'absolutely worth your time and money' and calls it 'the most magical show on Broadway,' delivering a clear positive recommendation despite acknowledging some cuts from the original. | GPT-4o: The review is highly positive, praising the production's technical achievements, the magic onstage, and the overall experience. The critic confidently recommends the show as worth the time and money, indicating a strong endorsement. | Gemini: The review explicitly states the show is worth the time and money, and calls it 'the most magical show on Broadway', indicating a strong positive recommendation despite acknowledging changes from the original production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:29:46.358Z",
+    "scoredAt": "2026-02-02T18:10:19.727Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
+    "previousScore": 82,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 81,
     "openaiScore": 90,
     "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

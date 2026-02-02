@@ -10,18 +10,18 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 93,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 94,
+    "score": 93,
     "confidence": "high",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 88,
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'supremely executed', 'extraordinary', and 'the most entertaining, provocative and moving civics lesson in Broadway history', with consistent praise for all elements of the production. | Gemini: The review is overwhelmingly positive, using phrases like \"supremely executed\", \"most entertaining\", and \"moving civics lesson\". The critic clearly believes this is an extraordinary and important show.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses overwhelmingly enthusiastic language throughout, calling it 'extraordinary,' 'supremely executed,' 'staggeringly beautiful,' and predicting it will run for 'many years to come' with multiple superlatives and detailed praise for all elements. | GPT-4o: The review is filled with superlatives and praises the show as an extraordinary, entertaining, and moving production that commands attention. The critic highlights the show's innovative approach and its potential for long-term success on Broadway, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, calling the show \"extraordinary\" and praising its music, performances, and direction. The critic clearly believes it is a must-see.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,26 +42,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:59:24.589Z",
+    "scoredAt": "2026-02-02T18:02:16.587Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 94,
-    "previousVersion": "3.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": null,
-    "geminiScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
     "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Rave",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 88,

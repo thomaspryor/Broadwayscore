@@ -10,18 +10,18 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 75,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the cast, direction, and design team extensively, highlighting the production's atmospheric achievements and 'disquietude' as its defining strength, despite acknowledging unanswered questions. | GPT-4o: The review highlights the strong mood and direction of the production, appreciating the performances and design elements. While it notes unanswered questions, it ultimately appreciates the overall atmosphere, suggesting a positive experience. | Gemini: The review highlights the production's strengths in creating a consistent mood and praises the cast, direction, and design. While acknowledging unanswered questions, the overall tone suggests a positive experience, making it a recommended show with some reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the cast commitment, direction, and design work while appreciating the atmospheric mood, though focuses more on craft elements than overall enthusiasm. | GPT-4o: The review praises the production's mood, direction, and design, indicating a positive experience despite the ambiguity of the play's meaning. The critic appreciates the atmosphere and the committed performances, suggesting it is worth seeing. | Gemini: The review highlights the show's strengths in mood, cast commitment, direction, and design, suggesting a positive experience despite the unanswered questions and potential ambiguity.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,21 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:26:31.304Z",
+    "scoredAt": "2026-02-02T17:56:07.696Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
+    "previousScore": 75,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 74,
-    "geminiScore": 75,
+    "openaiScore": 76,
+    "geminiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

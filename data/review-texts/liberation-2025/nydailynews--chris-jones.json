@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite lengthy critical analysis of the play's limitations and target audience, the critic praises the writing as 'sophisticated,' calls the ensemble 'formidable,' and concludes that Wohl 'has such a powerful and enjoyable voice' who 'makes everyone care about the questions she has herself.' | GPT-4o: The review praises the play for its sophistication, powerful writing, and strong ensemble performance. It is described as a rare and potent exploration of important questions, indicating a strong recommendation. | Gemini: The review is generally positive, highlighting the play's sophisticated writing, potent characters, and the playwright's ability to make the audience care about the questions being asked. However, it also points out the play's limitations and biases, suggesting it's more aimed at a specific demographic, leading to a 'recommended with reservations' verdict.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises the writing as sophisticated and ambitious, commends the ensemble cast performance, and calls it moving and fascinating, though notes some limitations in perspective and target audience. | GPT-4o: The review praises the play's sophistication, writing, and ensemble performance, highlighting its unique questioning and engaging nature. The critic's language is enthusiastic and highlights the play's strengths, indicating a strong recommendation. | Gemini: The review highlights the play's sophisticated writing, potent characters, and the playwright's ability to make the audience care about the questions being asked, indicating a positive overall assessment despite some reservations about its target audience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:56:01.619Z",
+    "scoredAt": "2026-02-02T18:30:23.369Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 90,
+    "openaiScore": 87,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -63,8 +63,8 @@
   "dtliExcerpt": "The other great strength of “Liberation” is the potency and humanity of its characters, even if Lizzie struggles to shut up long enough to let them talk. All are adroitly performed under Whitney White‘s direction. If there were a Tony Award for best ensemble, it would be wrapped up now by Betsy Aidem, Audrey Corsa, Kayla Davion, Irene Sofia Lucio and Adina Verson, as well as the aforementioned.",
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 938,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
   "isFullReview": true,
@@ -99,8 +99,8 @@
   ],
   "fetchTier": 2,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
-  "rescoreCompletedAt": "2026-02-01T15:27:35.407Z"
+  "rescoreCompletedAt": "2026-02-01T15:27:35.407Z",
+  "tierReason": "Full review text"
 }

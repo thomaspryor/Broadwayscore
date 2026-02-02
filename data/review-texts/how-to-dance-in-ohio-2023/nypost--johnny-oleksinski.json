@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 46,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "But as groundbreaking as “How To Dance” is as an idea, its execution across the board does not match its admirable intentions.",
@@ -20,11 +20,11 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 52,
-    "confidence": "low",
+    "score": 46,
+    "confidence": "medium",
     "range": {
-      "low": 47,
-      "high": 57
+      "low": 41,
+      "high": 51
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -35,7 +35,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Negative, gemini=Mixed | Claude: The critic explicitly calls it a 'missed opportunity' and criticizes the execution as not matching the admirable intentions, with 'shoddy' plot and dialogue despite praising the casting choice. | Gemini: The review praises the casting and the show's intentions but criticizes the plot, dialogue, and score, ultimately concluding that the execution falls short. This indicates a mixed assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: While the critic praises the casting choice and individual performances, they clearly state this is a 'missed opportunity' with 'shoddy' plot and dialogue, calling the execution disappointing despite admirable intentions. | GPT-4o: The review highlights significant issues with the execution, plot, dialogue, and music, despite acknowledging the authenticity of the casting. The overall tone suggests that the production is a missed opportunity and not worth seeing. | Gemini: The review praises the casting and the show's intentions but criticizes the plot, dialogue, and score, ultimately deeming it a missed opportunity. This places it firmly in the Mixed category.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,26 +45,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:54:38.508Z",
+    "scoredAt": "2026-02-02T18:20:24.787Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 38,
-    "previousVersion": "3.0.0"
+    "previousScore": 52,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": null,
+    "openaiScore": 50,
     "geminiScore": 62,
     "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
     "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 25,

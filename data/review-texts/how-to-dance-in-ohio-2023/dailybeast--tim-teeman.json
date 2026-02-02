@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 91,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "The meaningful, welcome impact of How to Dance in Ohio is the twinned jolt of emotion and insight into a world you may not—if you are not autistic—have had much notion of. It’s that wonderful jolt you get when you hear or see or understand a new story, or a set of new perspectives.",
@@ -19,13 +19,13 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 84,
-    "confidence": "low",
+    "score": 91,
+    "confidence": "medium",
     "range": {
-      "low": 79,
-      "high": 89
+      "low": 86,
+      "high": 96
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The critic uses superlative language ('most original new musical on Broadway'), emphasizes the show's meaningful impact and transformative power, and concludes with praise for its joyful assertion of diversity and self-determination. | Gemini: The review is overwhelmingly positive, highlighting the show's originality, emotional impact, and important representation. The critic uses phrases like \"zesty, powerful Broadway musical\" and \"funny, joyful, and cheering assertion\" indicating a strong recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic calls it 'the most original new musical on Broadway' and describes it as 'zesty, powerful,' 'funny, joyful, and cheering' with multiple elements praised enthusiastically. The review is filled with superlatives and strong positive language throughout. | GPT-4o: The review is overwhelmingly positive, highlighting the show's originality, emotional impact, and powerful messages. The critic praises the performances, direction, and overall production, indicating a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, highlighting the show's originality, emotional impact, and important representation. The critic uses phrases like \"zesty, powerful Broadway musical\" and emphasizes the show's ability to provide insight and understanding, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,26 +44,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:54:03.483Z",
+    "scoredAt": "2026-02-02T18:20:08.102Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "3.0.0"
+    "previousScore": 84,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "claudeScore": 89,
+    "openaiScore": 92,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 85,

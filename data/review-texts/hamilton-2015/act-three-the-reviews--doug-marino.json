@@ -16,7 +16,7 @@
   "scoreConfidence": "medium",
   "llmScore": {
     "score": 94,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 89,
       "high": 99
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives an explicit '10 out of 10' rating, calls it 'magnificent', 'amazing', and a 'bona-fide hit', with praise for all aspects of the production despite seeing the swing cast. | GPT-4o: The review is overwhelmingly positive, praising the show as 'magnificent' and 'a 10 out of 10,' with no significant criticisms. The critic's enthusiasm and gratitude for the experience strongly suggest a rave recommendation. | Gemini: The reviewer explicitly states it was an 'amazing experience' and a '10 out of 10' show, even with cast changes. They praise the cast, ensemble, and overall production, indicating a very strong positive reaction.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The reviewer gives an explicit '10 out of 10' rating, calls it 'magnificent' and 'THE most amazing experience,' and describes it as a 'bona-fide hit' they will 'treasure.' Despite some context about price and accessibility concerns, the verdict is unambiguously enthusiastic praise. | GPT-4o: The critic describes the show as 'magnificent' and 'a 10 out of 10', indicating a strong, enthusiastic recommendation. The review is overwhelmingly positive, highlighting the performances and the overall experience as exceptional. | Gemini: The reviewer states the show is a \"10 out of 10\" and \"magnificent\" even with swing cast members. They are thankful for the ticket and will treasure the experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,27 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:58:32.815Z",
+    "scoredAt": "2026-02-02T18:01:45.520Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 94,
-    "previousVersion": "3.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
     "openaiScore": 95,
-    "geminiScore": 95,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/hamilton-2015/act-three--doug-marino_2026-01-26.html",
   "textFetchedAt": "2026-01-26T15:35:52.663Z",

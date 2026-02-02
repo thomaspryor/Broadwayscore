@@ -9,18 +9,18 @@
   "bwwExcerpt": "Rannells and Gad once again make a terrific pair of unlikely pals and earn many laughs. However, “Gutenberg!” was intended to be what the Polish theater theorist Jerzy Grotowski termed “Poor Theater,” built upon minimal production values and maximized imagination. On Broadway, it feels both overdone (with an elaborate set invoking an empty stage, instead of an actual empty stage, and a band instead of a single piano, losing its original charm) and undercooked (a slight, overextended, and rudimen",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 60,
   "source": "dtli",
   "dtliThumb": "Down",
   "llmScore": {
-    "score": 52,
-    "confidence": "low",
+    "score": 60,
+    "confidence": "medium",
     "range": {
-      "low": 47,
-      "high": 57
+      "low": 55,
+      "high": 65
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Negative, gemini=Mixed | Claude: The critic finds the show tedious, overextended, and poorly conceived despite praising Gad and Rannells' performances. The antisemitism critique and overall assessment that it becomes 'tedious' with 'no more than an hour's worth of laughs in a two-hour routine' clearly indicates a negative recommendation. | Gemini: The review highlights both funny moments and tedious stretches, suggesting a mixed experience. The truncated text makes it difficult to determine a final recommendation, but the overall tone leans towards a qualified appreciation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Despite praising the leads' chemistry and some funny moments, the critic clearly finds the show overextended, tedious, and fundamentally flawed with unmemorable music and problematic content. | GPT-4o: The review highlights several significant issues with the production, such as an unmemorable score and a premise that doesn't hold up, but also acknowledges some funny moments and the chemistry between the leads. The tone suggests a mixed reception, with notable criticisms but also some redeeming qualities. | Gemini: The review points out flaws like an unmemorable score and a premise that makes little sense, but also acknowledges some funny lines and the chemistry between the leads, resulting in a mixed assessment. The truncated text makes it difficult to determine the final verdict, but the overall tone leans towards mixed.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:35:38.627Z",
+    "scoredAt": "2026-02-02T17:56:51.624Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 37,
-    "previousVersion": "3.0.0"
+    "previousScore": 52,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": null,
+    "openaiScore": 58,
     "geminiScore": 62,
     "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
     "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "dtliExcerpt": "On Broadway, it feels both overdone (with an elaborate set invoking an empty stage, instead of an actual empty stage, and a band instead of a single piano, losing its original charm) and undercooked (a slight, overextended, and rudimentary comic routine).",
   "sources": [

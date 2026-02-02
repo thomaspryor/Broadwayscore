@@ -9,15 +9,15 @@
   "bwwExcerpt": "There is not a word of dialogue in Illinoise, but this hybrid production fusing dance and music accomplishes far more than mere words can express. Inspired by Sufjan Stevens’ groundbreaking concept album, Illinois, choreographer Justin Peck came up with his own theatrical concept. With Jackie Sibblies Drury as co–book writer, they crafted a narrative that translates the emotional import of Stevens songs into a unique language that can best be described as poetry in motion.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ILLINOISE-2024",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 76,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows clear appreciation for the production's artistic achievement, praising it as 'poetry in motion' and noting it accomplishes 'far more than mere words can express.' However, with only one curated excerpt available, I'm scoring conservatively within the positive range. | GPT-4o: The excerpt praises the production's ability to convey emotional depth through its unique fusion of dance and music, suggesting a positive reception. However, due to the single excerpt and lack of full context, the score is placed conservatively in the middle of the Positive range. | Gemini: The review praises the production's ability to convey emotion effectively, suggesting a positive overall experience. However, due to the limited excerpt, a more conservative score within the 'Positive' bucket is appropriate.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt shows strong praise with superlative language like 'groundbreaking' and 'accomplishes far more than mere words can express,' indicating clear enthusiasm for this unique production. | GPT-4o: The excerpt praises the production's ability to transcend traditional dialogue through its innovative fusion of dance and music, describing it as 'poetry in motion', which indicates a strong, enthusiastic recommendation. | Gemini: The review excerpt is overwhelmingly positive, praising the production's ability to convey emotion and meaning beyond words. Given the single excerpt warning, I'm placing it on the higher end of the positive bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:14:35.902Z",
+    "scoredAt": "2026-02-02T18:22:53.903Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "3.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "dateUnknown": true,
   "dateSource": "could-not-extract",

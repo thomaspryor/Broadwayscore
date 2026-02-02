@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges high points and strong individual performances but criticizes fundamental structural issues, inconsistent quality, and problematic story choices. The review neither recommends nor discourages attendance. | GPT-4o: The review highlights both significant flaws and some redeeming qualities in the production. While it criticizes structural issues and certain performances, it acknowledges standout moments and performances, leading to a mixed overall impression. | Gemini: The review highlights both positive and negative aspects of the show, with the reviewer noting inconsistencies in quality but also praising certain performances and staging choices. The overall tone suggests a mixed experience, neither strongly recommending nor discouraging attendance.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review identifies serious structural problems and inconsistent quality while acknowledging some strong performances and staging moments. The critic neither recommends nor discourages seeing the show, focusing on both positive elements and significant flaws. | GPT-4o: The review highlights significant structural issues and uneven quality, but acknowledges standout performances and moments of effective staging. The overall tone suggests a mixed experience with both positive and negative elements. | Gemini: The review highlights both significant flaws (structural issues, Rabbi's role) and strengths (performances, choreography). The overall assessment is mixed, indicating neither a strong recommendation nor a discouragement.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,12 +41,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:10:31.749Z",
+    "scoredAt": "2026-02-02T18:05:54.560Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 45,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,

@@ -6,7 +6,7 @@
   "url": "https://ew.com/maybe-happy-ending-review-broadway-darren-criss-brings-charm-robot-love-story-8743079?srsltid=AfmBOor9EMf_NaIsXGNTY-n_PoPfgb0Ep1uECcEzEAB7LKnSRo3_hWeT",
   "publishDate": "2024-11-12",
   "originalScore": "B",
-  "assignedScore": 79,
+  "assignedScore": 81,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "Alas, charm goes a long way. Criss is often his most compelling when given a character with edge (his stint as the titular East German rocker in Hedwig and the Angry Inch or his Emmy-winning turn in The Assassination of Gianni Versace: American Crime Story) but here he is charming, spirited and wond...",
@@ -19,12 +19,12 @@
   "dtliThumb": "Up",
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:15:55.157Z",
+    "scoredAt": "2026-02-02T18:35:27.417Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "showScoreExcerpt": null,
   "bwwThumb": null,
@@ -85,11 +85,11 @@
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "llmScore": {
-    "score": 79,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -100,7 +100,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses strong positive language like 'dazzles' and 'astounds' and concludes that the production 'succeeds,' indicating a clear recommendation despite limited text. | GPT-4o: The review highlights the production's charm and emotional impact, with phrases like 'dazzles' and 'astounds' indicating a strong positive impression. The original rating of B aligns with a positive recommendation. | Gemini: The review uses positive language like \"dazzles\" and \"succeeds\" and the overall tone is favorable, suggesting a positive recommendation despite the truncated text.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise with words like 'dazzles' and 'astounds', plus the definitive statement that it 'succeeds', supported by the B rating which translates to solid positive recommendation. | GPT-4o: The review uses strong positive language, highlighting the show's charm and visual accomplishments, and the original rating of B aligns with a solid positive recommendation. | Gemini: The review uses strong positive language like \"dazzles\" and \"astounds\" and concludes that the production \"succeeds\" on charm alone, indicating a positive recommendation. The B rating also supports this classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -109,13 +109,13 @@
     }
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 81,
     "openaiScore": 82,
-    "geminiScore": 78,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -124,8 +124,8 @@
     "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreCompletedAt": "2026-02-01T15:33:42.302Z",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 1162,
   "previousUrl": "https://ew.com/maybe-happy-ending-broadway-review-2024/",
   "urlDiscoveredAt": "2026-02-01T14:12:07.042Z",
   "urlDiscoveryMethod": "google-serp",
@@ -153,5 +153,6 @@
   "truncationSignals": [
     "no_ending_punctuation"
   ],
-  "textStatus": "partial"
+  "textStatus": "partial",
+  "tierReason": "Full review text"
 }

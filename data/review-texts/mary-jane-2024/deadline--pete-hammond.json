@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Rachel McAdams gives a tour de force performance in Amy Herzog's deeply moving and authentic play about a mother dealing with her chronically ill son.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,13 +18,13 @@
   "showScoreExcerpt": "Rachel McAdams gives a tour de force performance in Amy Herzog's deeply moving and authentic play about a mother dealing with her chronically ill son.",
   "needsScoring": true,
   "llmScore": {
-    "score": 77,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 87,
+      "high": 97
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses highly positive language like 'tour de force' and 'deeply moving and authentic' which indicates a recommendation, though the brief excerpt limits confidence in the overall assessment. | GPT-4o: The review highlights a 'tour de force performance' and describes the play as 'deeply moving and authentic,' indicating a strong recommendation. | Gemini: The review highlights a 'tour de force performance' and describes the play as 'deeply moving and authentic,' indicating a positive recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses powerful language like 'revelation' and describes being transformed from observer to participant, indicating a deeply moving theatrical experience worthy of strong recommendation. | GPT-4o: The review is highly enthusiastic about the production, particularly praising Carrie Coon's performance and the direction. The language used, such as 'a revelation' and 'transformed my experience,' indicates a strong recommendation. | Gemini: The review is overwhelmingly positive, praising Carrie Coon's performance and the play's ability to move the audience. The critic describes a transformation from 'empathic observer to wordless participant,' indicating a powerful and affecting experience, leading to a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,34 +43,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:16:56.381Z",
+    "scoredAt": "2026-02-02T18:33:52.306Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (25 words)",
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "previousUrl": "https://deadline.com/2024/05/mary-jane-review-rachel-mcadams-broadway-amy-herzog-1235924076/",
   "urlDiscoveredAt": "2026-02-02T16:45:57.752Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "textWordCount": 846,
@@ -87,10 +86,13 @@
   "fetchTier": 4,
   "textQuality": "partial",
   "truncationSignals": [
-    "has_footer_text"
+    "has_footer_junk"
   ],
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250426203929",
-  "archiveOrgUrl": "http://web.archive.org/web/20250426203929/https://deadline.com/2017/09/mary-jane-review-the-leftovers-carrie-coon-triumphs-1202176627/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250426203929/https://deadline.com/2017/09/mary-jane-review-the-leftovers-carrie-coon-triumphs-1202176627/",
+  "rescoreCompletedAt": "2026-02-02T18:33:52.306Z",
+  "wordCount": 846,
+  "tierReason": "Full review text"
 }

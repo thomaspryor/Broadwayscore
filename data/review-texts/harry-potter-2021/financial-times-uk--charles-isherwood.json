@@ -7,17 +7,17 @@
   "publishDate": "April 22, 2018",
   "showScoreExcerpt": "\"Thoroughly rewarding and accomplished, both in conception and execution...The play is a thrilling maze of adventures, yes, but it is also a moving and sophisticated exploration of the turbulent tides of adolescence...Even Potter-phobes could be seduced by both the tale itself and the production's technical brilliance...Tiffany...ushers us through the story's convolutions with an almost awe-inspiring fluidity. The production's five-hour-plus expanse flashes by in what seems like half the time.\"",
   "originalScore": null,
-  "assignedScore": 90,
+  "assignedScore": 92,
   "source": "show-score",
   "sourceMethod": "scrapingbee",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 90,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 95
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Multiple superlatives like 'thrilling,' 'awe-inspiring fluidity,' and claims that even skeptics would be 'seduced' indicate strong enthusiasm beyond typical positive territory. | GPT-4o: The review excerpt is overwhelmingly positive, praising both the conception and execution of the play, its emotional depth, and the production's technical brilliance. The language used suggests a strong recommendation, indicating a 'Rave' classification. | Gemini: The review uses very positive language such as \"thoroughly rewarding\", \"accomplished\", \"thrilling\", and \"moving\". It also suggests that even those who aren't fans of the source material could be won over.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite being a single excerpt, the language is unmistakably enthusiastic with superlatives like 'thrilling,' 'almost awe-inspiring fluidity,' and claims it could convert even 'Potter-phobes.' The critic praises both artistic merit and technical execution unreservedly. | GPT-4o: The review is highly positive, praising the production's conception, execution, and technical brilliance. The critic describes the play as thrilling, moving, and sophisticated, with a fluid and awe-inspiring direction. The language used indicates a strong recommendation. | Gemini: The review uses highly positive language like \"thoroughly rewarding,\" \"accomplished,\" \"thrilling,\" and \"moving,\" indicating a strong recommendation. The phrase \"Even Potter-phobes could be seduced\" further suggests a broad appeal and positive experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,15 +38,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:28:15.205Z",
+    "scoredAt": "2026-02-02T18:08:03.666Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
+    "previousScore": 90,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 92,
     "openaiScore": 92,
     "geminiScore": 82,
     "claudeBucket": "Rave",

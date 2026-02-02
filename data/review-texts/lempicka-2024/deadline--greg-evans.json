@@ -8,17 +8,17 @@
   "bwwExcerpt": "Though the musical’s book and lyrics remain doggedly by-the-numbers, Chavkin’s direction (and a good cast that includes Andrew Samonsky, Amber Iman, George Abud, Beth Leavel and Natalie Joy Johnson) keeps Lempicka barreling through the last century’s wartime horrors, peacetime optimism and an art that grew from both.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 65,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:25:16.790Z",
+    "scoredAt": "2026-02-02T18:28:28.507Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 63,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "bwwThumb": "Meh",
   "dtliExcerpt": "Though the musical’s book and lyrics remain doggedly by-the-numbers, Chavkin’s direction (and a good cast that includes Andrew Samonsky, Amber Iman, George Abud, Beth Leavel and Natalie Joy Johnson) keeps Lempicka barreling through the last century’s wartime horrors, peacetime optimism and an art that grew from both.",
@@ -87,11 +87,11 @@
     "invalidatedAt": "2026-02-01T04:02:00.811Z"
   },
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 65,
+    "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 60,
+      "high": 70
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -102,7 +102,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review criticizes the fundamental elements (book and lyrics as 'by-the-numbers') but praises the direction and cast for salvaging the production. This suggests a show with significant flaws but redeeming qualities. | GPT-4o: The review acknowledges the musical's book and lyrics as 'by-the-numbers', suggesting a lack of originality or excitement. However, it praises the direction and cast, indicating some redeeming qualities. The aggregator context also suggests a flat response, supporting a mixed verdict. | Gemini: The review praises the direction and cast but criticizes the book and lyrics. This suggests a mixed experience, as some elements are strong while others are weak.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review criticizes fundamental elements (book and lyrics as 'doggedly by-the-numbers') while praising direction and cast, suggesting a production with both significant weaknesses and strengths. | GPT-4o: The review acknowledges the direction and cast as strengths but describes the book and lyrics as 'by-the-numbers,' suggesting a mixed reception. The aggregator context also indicates a flat response, supporting a mixed classification. | Gemini: The review praises the direction and cast, which keeps the show moving, but notes the book and lyrics are \"by-the-numbers,\" suggesting a qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -112,18 +112,18 @@
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 62,
-    "geminiScore": 62,
+    "openaiScore": 67,
+    "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "contentTier": "excerpt",
   "wordCount": 0,

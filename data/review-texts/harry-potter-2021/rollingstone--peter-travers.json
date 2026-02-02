@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Travers delivers unqualified praise calling it 'a triumph of epic proportions,' 'marvel of stagecraft,' and 'some kind of miracle' while predicting Tony success and describing it as transcendent theater. | GPT-4o: The review is overwhelmingly positive, describing the play as a 'triumph of epic proportions' and a 'marvel of stagecraft.' The critic's language is enthusiastic and unreservedly recommends the show as a must-see, indicating a strong Rave classification. | Gemini: The review is overwhelmingly positive, using phrases like \"triumph of epic proportions\", \"marvel of stagecraft\", and \"some kind of miracle\". The critic clearly believes this is a must-see production.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language throughout ('triumph of epic proportions', 'marvel of stagecraft', 'some kind of miracle') and explicitly calls it more than just the best new play of the season, positioning it as legendary theater that 'seizes the stage by divine right.' | GPT-4o: The review is overwhelmingly positive, describing the play as a 'triumph of epic proportions' and 'some kind of miracle.' The critic praises the performances, stagecraft, and emotional impact, making it clear that this is a must-see production. | Gemini: The review is overwhelmingly positive, using phrases like \"triumph of epic proportions\", \"marvel of stagecraft\", and \"some kind of miracle\", indicating a very strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,11 +39,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:29:56.769Z",
+    "scoredAt": "2026-02-02T18:09:42.903Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 94,
+    "previousScore": 93,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {

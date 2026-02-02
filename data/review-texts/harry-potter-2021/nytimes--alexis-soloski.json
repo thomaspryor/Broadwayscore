@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite minor criticisms about commercialization and missing elements, the review is labeled 'CRITIC'S PICK' and uses highly positive language like 'diamond-sharp,' 'dazzling,' and 'ravishingly entertaining.' | GPT-4o: The review is highly positive, praising the staging and visual imagination as 'diamond-sharp' and 'dazzling.' The critic's minor reservations about changes do not detract from the overall enthusiastic recommendation. | Gemini: The review is overall positive, calling the show \"ravishingly entertaining\" and \"magical.\" However, the critic also notes that it is \"a more obvious attempt to cash in on Pottermania,\" indicating some reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: This is a Critic's Pick with glowing praise for staging and visual imagination, calling it 'ravishingly entertaining' despite minor reservations about commercialization and cuts. | GPT-4o: The review is highly positive, highlighting the production's sharp staging and dazzling visual imagination. The mention of 'CRITIC'S PICK' and 'ravishingly entertaining' indicates a strong recommendation despite minor reservations about commercial motives. | Gemini: The review is overall positive, calling the show \"ravishingly entertaining\" and \"magical\", but notes some excisions and a feeling of cashing in, indicating a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:29:41.698Z",
+    "scoredAt": "2026-02-02T18:09:27.467Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 80,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 90,
+    "openaiScore": 88,
     "geminiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

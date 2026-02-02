@@ -65,7 +65,7 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (23 words)",
   "previousUrl": "https://www.nytimes.com/2024/04/19/theater/suffs-review.html",
   "urlDiscoveredAt": "2026-02-02T07:28:20.263Z",
@@ -86,12 +86,13 @@
   "fetchTier": 4,
   "textQuality": "truncated",
   "truncationSignals": [
-    "no_ending_punctuation",
-    "possible_mid_word_cutoff"
+    "no_ending_punctuation"
   ],
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250806010809",
   "archiveOrgUrl": "http://web.archive.org/web/20250806010809/https://www.nytimes.com/2024/04/18/theater/suffs-review-broadway-shaina-taub.html",
-  "rescoreCompletedAt": "2026-02-02T14:25:12.906Z"
+  "rescoreCompletedAt": "2026-02-02T14:25:12.906Z",
+  "wordCount": 1033,
+  "tierReason": "Full review text"
 }

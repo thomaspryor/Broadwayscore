@@ -7,17 +7,17 @@
   "publishDate": "April 25, 2018",
   "showScoreExcerpt": "\"The special effects are sensational, especially if you like theatrical 'black magic'...Plays like a musical—most of the show is underscored and all of the putative song cues are self-evident—and might have been slightly more fun had it been one...To those who have never read a Potter novel or seen a Potter film, 'The Cursed Child' will make no sense at all. Everyone else should find the plot trite, though there’s always something cool to see onstage, which helps a bit.\"",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 63,
   "source": "show-score",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 64,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Teachout acknowledges the impressive production values and spectacle but clearly finds the plot lacking. The 'helps a bit' qualifier suggests the visuals partially redeem but don't fully overcome the story's weaknesses. | GPT-4o: The review acknowledges the impressive special effects and visual appeal but criticizes the plot as trite and suggests it may not be enjoyable for those unfamiliar with the Harry Potter series. This indicates a mixed reception with notable strengths in production quality. | Gemini: The review acknowledges the show's flaws (trite plot) but also highlights its strengths (sensational special effects, something cool to see onstage), suggesting a qualified recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Teachout acknowledges the impressive production values and effects but clearly finds the plot weak and the show primarily appealing only to existing Potter fans, indicating neither a recommendation nor discouragement. | GPT-4o: The review acknowledges the impressive special effects and spectacle but criticizes the plot as trite, suggesting that the show is visually engaging but lacking in substance. This indicates a mixed recommendation. | Gemini: The review acknowledges the impressive special effects but ultimately finds the plot trite, suggesting a mixed experience overall. The phrase 'helps a bit' indicates a mild positive aspect within a generally lukewarm assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,30 +38,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:49:51.779Z",
+    "scoredAt": "2026-02-02T18:11:14.173Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 61,
+    "previousScore": 64,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 75,
+    "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/wsj--terry-teachout_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:34:14.248Z",
+  "textFetchedAt": "2026-02-02T16:14:57.669Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -82,12 +82,12 @@
   "garbageFullText": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two-review-bringing-the-magic-to-life-1524677142\n\nShareResizeThe company of ‘Harry Potter and the Cursed Child’ Matthew MurphyNew York\n\nRarely has a show been less in need of good reviews, from me or anyone else, than “Harry Potter and the Cursed Child,” the latest line extension of J.K. Rowling’s franchise of novels, films and theme parks, which has come to New York after a stupendously successful 2016 opening in London. This two-part, five-hour extravaganza is the most expensive nonmusical production ever to open on Broadway, and every dollar of the $68.5 million ponied up by the producers is visible. The special effects are sensational, especially if you like theatrical “black magic,” and each one was dutifully applauded by the audiences at the previews I saw.\n\nCopyright ©2025 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\n‘The Queen of Versailles’ Review: Kristin Chenoweth’s Musical of Gilded Dreams",
   "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
   "garbageFixedAt": "2026-01-29T22:45:22.884Z",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "truncated",
+  "wordCount": 119,
   "fullText": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two-review-bringing-the-magic-to-life-1524677142\n\nShareResizeThe company of ‘Harry Potter and the Cursed Child’ Matthew MurphyNew York\n\nRarely has a show been less in need of good reviews, from me or anyone else, than “Harry Potter and the Cursed Child,” the latest line extension of J.K. Rowling’s franchise of novels, films and theme parks, which has come to New York after a stupendously successful 2016 opening in London. This two-part, five-hour extravaganza is the most expensive nonmusical production ever to open on Broadway, and every dollar of the $68.5 million ponied up by the producers is visible. The special effects are sensational, especially if you like theatrical “black magic,” and each one was dutifully applauded by the audiences at the previews I saw.",
   "isFullReview": false,
   "textWordCount": 119,
   "textQuality": "partial",
-  "truncationSignals": [],
-  "textStatus": "incomplete"
+  "textStatus": "incomplete",
+  "tierReason": "Short text (119 words)"
 }

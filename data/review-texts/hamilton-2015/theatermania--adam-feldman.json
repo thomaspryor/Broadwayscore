@@ -18,7 +18,7 @@
   "showScoreExcerpt": "Hamilton is a musical that makes the impossible seem inevitable. Lin-Manuel Miranda has created a work that is both historically grounded and utterly contemporary, transforming the story of America's founding into something that feels urgently relevant to our current moment.",
   "llmScore": {
     "score": 58,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 53,
       "high": 63
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This text appears to be an event announcement about the Lilly Awards ceremony rather than a theater review, making it impossible to determine any critical recommendation about a specific show. | GPT-4o: The text provided is largely unrelated to a specific review and seems to be a mix of event announcements and unrelated review titles. Without clear evaluative content, the classification is tentative and based on the assumption of mixed signals. | Gemini: This appears to be a collection of headlines and announcements, not a review of a single show. The presence of multiple show titles and descriptions indicates a mixed bag of content, not a cohesive review.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This appears to be an event announcement about the Lilly Awards ceremony rather than a theater review, with no clear critical assessment of any specific production. | GPT-4o: The provided text does not contain any evaluative content about a specific Broadway show, but rather discusses an event and lists unrelated reviews. The lack of specific assessment makes it difficult to determine a clear recommendation. | Gemini: This is a listing of reviews for other shows, not a review of a specific show. Therefore, it is not a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,35 +42,35 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:49:28.018Z",
+    "scoredAt": "2026-02-02T18:04:06.897Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
+    "previousScore": 58,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,
-    "openaiScore": 60,
-    "geminiScore": 55,
+    "openaiScore": 55,
+    "geminiScore": 40,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 5,
+    "geminiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (40 words)",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
   "textWordCount": 301,
   "archivePath": "data/archives/reviews/hamilton-2015/theatermania--adam-feldman_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:35:54.539Z",
+  "textFetchedAt": "2026-02-02T16:10:50.832Z",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
@@ -93,14 +93,13 @@
   ],
   "fetchTier": 2,
   "textQuality": "truncated",
-  "truncationSignals": [
-    "has_paywall_text"
-  ],
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "textIssues": [
     "Show title not found in text"
   ],
   "showNotMentioned": true,
-  "rescoreCompletedAt": "2026-02-02T03:49:28.018Z"
+  "rescoreCompletedAt": "2026-02-02T03:49:28.018Z",
+  "wordCount": 301,
+  "tierReason": "Full review text"
 }

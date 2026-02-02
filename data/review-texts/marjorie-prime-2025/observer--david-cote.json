@@ -7,7 +7,7 @@
   "publishDate": "2025-12-08",
   "bwwExcerpt": "r of horrors to deliver not one but two suicides that push the human narrative into the contrived. In the end, the machines are more honest than the humans and, better yet, there’s none of the angst. David Cote, Observer: Still relevant after its world premiere at Playwrights Horizons, the 90-minute chamber drama sparkles and unsettles in its Broadway debut, positing that holographic avatars will remember us after we’re gone, airbrushing life’s sorrow and complexity from every snapshot. In 2025, such a message is not ahead of its time, but perfectly punctual. Average Rating: 84.7% REVIEW ROUNDUP REAL-TIME ALERTS To read more reviews, click here ! Discuss the show on the BroadwayWorld Forum Buy Tickets to Marjorie Prime Opening Night Coverage Photos: The Cast of MARJORIE PRIME Takes Opening Night Bows Photos: The Stars of MARJORIE PRIME Hit the Red Carpet On Opening Night Video: MARJORIE PRIME Celebrates Opening Night Photos: MARJORIE PRIME Cast Celebrates Opening Night Previous Next Re",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MARJORIE-PRIME-Opens-On-Broadway-20250116",
@@ -15,11 +15,11 @@
   "scoreSource": "sentiment-lean-positive",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 63,
+    "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Only a philosophical quote is provided with no evaluative content about the production. The aggregator suggests positive reception, but the single quote lacks any clear recommendation or assessment of the show's quality. | GPT-4o: The excerpt provided is philosophical and lacks clear evaluative content about the production itself. Without more context, it's difficult to determine the critic's overall stance, leading to a mixed classification with low confidence. | Gemini: The provided quote is philosophical and doesn't offer a clear recommendation about the show itself. Without more context, it's difficult to determine the critic's overall verdict, but it leans towards a mixed or neutral assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This appears to be a philosophical quote from the show rather than critical assessment. With only this excerpt and aggregator showing 'Up' verdict, there's insufficient evaluative content to determine the critic's actual recommendation. | GPT-4o: The excerpt provided is philosophical and does not clearly indicate a strong recommendation or disapproval. The lack of explicit evaluative language makes it difficult to confidently assign a positive or negative score, leading to a mixed classification. | Gemini: The quote suggests a positive, thoughtful experience, implying the show is worth seeing. Without more context, it's difficult to gauge the strength of the recommendation, but it leans positive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,27 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:32:44.221Z",
+    "scoredAt": "2026-02-02T18:33:17.516Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
+    "previousScore": 62,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,
     "openaiScore": 65,
-    "geminiScore": 60,
+    "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 5,
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "archivePath": "data/archives/reviews/marjorie-prime-2025/observer--david-cote_2026-02-01.html",
   "textFetchedAt": "2026-02-01T14:13:41.586Z",
@@ -81,8 +81,8 @@
   "garbageReason": "/ad ?block(er)?/i",
   "garbageFixedAt": "2026-01-29T22:45:22.987Z",
   "showScoreExcerpt": "\"True memory is human, imbued with love and grief. The rest is just a simulation.\"",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 907,
   "previousUrl": "https://observer.com/2025/12/marjorie-prime-broadway-review/",
   "urlDiscoveredAt": "2026-02-01T14:13:41.582Z",
   "urlDiscoveryMethod": "google-serp",
@@ -91,8 +91,7 @@
   "textWordCount": 907,
   "textQuality": "full",
   "truncationSignals": [
-    "no_ending_punctuation",
-    "possible_mid_word_cutoff"
+    "no_ending_punctuation"
   ],
   "textStatus": "complete",
   "_removedDesignation": {
@@ -102,5 +101,6 @@
     "hadPositiveThumb": true,
     "dtliThumb": "none",
     "bwwThumb": "Up"
-  }
+  },
+  "tierReason": "Full review text"
 }

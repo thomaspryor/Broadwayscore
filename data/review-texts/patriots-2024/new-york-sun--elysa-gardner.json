@@ -61,8 +61,8 @@
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 869,
   "isFullReview": true,
   "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
@@ -81,10 +81,11 @@
   "fetchTier": 4,
   "textQuality": "partial",
   "truncationSignals": [
-    "has_footer_text"
+    "has_footer_junk"
   ],
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251116003046",
-  "archiveOrgUrl": "http://web.archive.org/web/20251116003046/https://www.nysun.com/article/for-those-who-cant-get-enough-political-intrigue-patriots-offers-some-of-the-best-youll-see-on-stage"
+  "archiveOrgUrl": "http://web.archive.org/web/20251116003046/https://www.nysun.com/article/for-those-who-cant-get-enough-political-intrigue-patriots-offers-some-of-the-best-youll-see-on-stage",
+  "tierReason": "Full review text"
 }

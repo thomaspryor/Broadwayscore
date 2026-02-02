@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite intellectual reservations about the story and politics, the critic clearly enjoyed the experience and found it entertaining, praising the performances, direction, and production values while acknowledging it as enjoyable 'junk food.' | Gemini: The review expresses initial cynicism that turns into buzzed entertainment. Despite acknowledging the show's flaws and reliance on clichés, the critic highlights the catchy music, energetic performances, and inventive staging, ultimately suggesting it's a fun, if forgettable, experience.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite intellectual objections about the story and themes, the critic clearly enjoyed the show and found it entertaining, praising the performances, direction, and production values while acknowledging it as effective 'junk food' theater. | GPT-4o: The review acknowledges the show's flaws and clichés but ultimately describes it as entertaining and fun, akin to enjoyable junk food. The critic's initial cynicism is overcome by the production's energy and charm, leading to a positive recommendation despite some reservations. | Gemini: The review expresses initial cynicism turned into entertainment and enjoyment, indicating a positive experience despite acknowledging the show's flaws and reliance on clichés. The critic ultimately admits to having a fun time, solidifying the positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,26 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:41:38.340Z",
+    "scoredAt": "2026-02-02T18:12:03.216Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 59,
-    "previousVersion": "3.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": null,
+    "openaiScore": 78,
     "geminiScore": 78,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "showScoreExcerpt": "\"...I came out feeling buzzed, entertained…and slightly ashamed\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-heart-of-rock-and-roll-broadway",

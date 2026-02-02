@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JUST-FOR-US-2023",
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 74,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'hopeful antidote' suggests a positive recommendation, though with only one excerpt available, scoring conservatively within the positive range. | GPT-4o: The excerpt suggests a positive impact on the audience, indicating a recommendation to see the show. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The phrase 'hopeful antidote' suggests a positive experience, but the limited context and single excerpt warrant a score in the middle of the 'Positive' range.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review gives 4/5 stars and concludes with a clear recommendation, calling the show 'timely and necessary' and 'a hopeful antidote' despite acknowledging its flaws and problematic elements. | GPT-4o: The review praises the musical for its timely and necessary message, powerful performances, and engaging soundtrack. The critic highlights the show's ability to confront cynicism and inspire hope, indicating a strong recommendation. | Gemini: The review acknowledges the show's flaws and problematic elements but ultimately concludes that it's a worthwhile and hopeful experience. The rating of NNNN (4 out of 5) further supports a positive classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,17 +39,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:59:16.138Z",
+    "scoredAt": "2026-02-02T18:25:32.978Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 74,
-    "previousVersion": "3.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 76,
-    "geminiScore": 75,
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
@@ -63,9 +63,8 @@
   },
   "dateUnknown": true,
   "dateSource": "historical-review",
-  "contentTier": "excerpt",
-  "wordCount": 0,
-  "needsRescore": true,
+  "contentTier": "complete",
+  "wordCount": 738,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 74,
   "isFullReview": true,
@@ -83,8 +82,10 @@
   "fetchTier": 1,
   "textQuality": "partial",
   "truncationSignals": [
-    "has_footer_text"
+    "has_footer_junk"
   ],
   "textStatus": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "rescoreCompletedAt": "2026-02-02T18:25:32.978Z",
+  "tierReason": "Full review text"
 }

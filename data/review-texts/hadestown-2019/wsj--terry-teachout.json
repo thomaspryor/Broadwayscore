@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The result is a show that sounds like no other musical on or off Broadway, one whose score has the craggy authenticity of American folk music at its most uncompromising.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The result is a show that sounds like no other musical on or off Broadway, one whose score has the craggy authenticity of American folk music at its most uncompromising.",
   "llmScore": {
-    "score": 75,
-    "confidence": "medium",
+    "score": 80,
+    "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic highlights the show's distinctive and authentic musical qualities, using positive language like 'craggy authenticity' and 'uncompromising,' though this excerpt lacks explicit recommendation language. | GPT-4o: The review uses strong, positive language to describe the uniqueness and authenticity of the show's score, suggesting a highly enthusiastic recommendation. | Gemini: The review praises the show's unique and authentic score, indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly recommends the show, praising its freshness and unique sound while acknowledging minor flaws. The positive assessment of its 'kaleidoscopic stylistic variety' and 'craggy authenticity' indicates solid recommendation despite reservations. | GPT-4o: The review praises 'Hadestown' for its originality and fresh approach, encouraging audiences to overlook minor flaws and enjoy the unique musical experience. The tone is enthusiastic and clearly recommends the show. | Gemini: The review explicitly states that the flaws are forgivable and that the show is worth seeing despite them, placing it firmly in the positive bucket. The recommendation is not enthusiastic enough for a 'rave' classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,39 +42,38 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:03:55.415Z",
+    "scoredAt": "2026-02-02T18:01:40.620Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
-    "previousVersion": "5.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 90,
-    "geminiScore": 75,
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
   "previousUrl": "https://www.wsj.com/articles/hadestown-review-a-musical-of-mythic-proportions-11556144400",
   "urlDiscoveredAt": "2026-02-02T16:04:56.547Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 75,
   "textWordCount": 121,
-  "archivePath": "data/archives/reviews/hadestown-2019/wsj--terry-teachout_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:36:10.041Z",
+  "archivePath": "data/archives/reviews/hadestown/wsj--terry-teachout_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T16:04:56.548Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -108,5 +107,6 @@
   "sourceMethod": "brightdata",
   "textIssues": [
     "Word count too low: 170 (min: 300)"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-02T18:01:40.620Z"
 }

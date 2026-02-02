@@ -9,15 +9,15 @@
   "bwwExcerpt": "Radcliffe really pops now, and Charley’s comedic cri de coeur “Franklin Shepard, Inc.” a showstopper. Actually, it’s a moment to close your eyes tight and swallow.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 80,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Four-star review with enthusiastic language about wanting to 'preserve the riches' and calling it 'very fine,' though notes slow first act pacing as minor flaw. | Gemini: The review is overwhelmingly positive, using phrases like \"preserve the riches\" and highlighting the strengths of the leads and direction. While it mentions a slow first act, the overall tone is enthusiastic and recommends seeing the show.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The phrase 'You're going to want to preserve the riches' strongly suggests recommendation, and 'riches flowing throughout' indicates high praise for the production's quality. | GPT-4o: The phrase 'preserve the riches' and 'hurts-so-good musical' indicates a strong, enthusiastic recommendation. The review suggests a must-see quality, aligning with the 'Rave' bucket. | Gemini: The phrase \"preserve the riches\" indicates a strong positive recommendation. The aggregator context also suggests a positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:33:11.264Z",
+    "scoredAt": "2026-02-02T18:37:16.623Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 83,
-    "previousVersion": "5.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": null,
+    "claudeScore": 82,
+    "openaiScore": 90,
     "geminiScore": 82,
     "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "“You’re going to want to preserve the riches flowing throughout this hurts-so-good musical about growing up and growing apart.”",

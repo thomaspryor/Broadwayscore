@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite being truncated, the review is overwhelmingly positive with phrases like 'ignited on Broadway,' 'spectacular performances that fairly seethe with magic,' and 'reaches its most heavenly heights.' The critic describes it as providing 'supreme entertainment' and calls the experience 'seductive, mesmerising and exhilarating.' | GPT-4o: The review is overwhelmingly positive, describing the production as a 'must-see masterpiece' with 'spectacular performances' and 'supreme entertainment.' The critic praises the direction, performances, and music, indicating a strong recommendation. | Gemini: Despite the truncated text, the review is overwhelmingly positive, praising the performances, direction, music, and overall experience. The phrase \"the entire Hadestown experience\" is described as \"seductive, mesmerising and exhilarating\" which suggests a recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite the truncation warning, the review is overwhelmingly positive throughout with superlatives like 'spectacular performances that fairly seethe with magic,' 'supreme entertainment,' and describing it as reaching 'heavenly heights.' The aggregator excerpt confirms this ignited on Broadway successfully. | GPT-4o: The review is overwhelmingly positive, praising the performances, direction, and music with enthusiastic language. The critic describes the show as 'supreme entertainment' and highlights its 'heavenly heights,' indicating a strong recommendation. | Gemini: Despite the truncated text warning, the review is overwhelmingly positive, praising the direction, performances, music, and overall experience. The critic uses strong language like \"spectacular performances\" and \"heavenly heights,\" indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:27:09.597Z",
+    "scoredAt": "2026-02-02T17:59:36.366Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 60,
+    "previousScore": 94,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
     "openaiScore": 95,
-    "geminiScore": 80,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

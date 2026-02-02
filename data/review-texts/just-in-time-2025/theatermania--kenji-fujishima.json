@@ -9,16 +9,16 @@
   "dtliExcerpt": "Naturally, though, it’s Groff’s energy and charisma that anchor Just in Time. The brilliance of the show’s opening is that, by creating a staged-concert atmosphere from the start, it frees us from the need to compare him to Darin and instead foregrounds Groff’s own passion for telling his story. Groff even concludes the evening with an unexpectedly eloquent tribute to the evanescent yet transcendent power of theater. How rare it is for a jukebox bio-musical to feel like it comes genuinely from the heart.",
   "showScoreExcerpt": "âNaturally, though, itâs Groffâs energy and charisma that anchor Just in Time.â",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 75,
   "source": "dtli",
   "dtliThumb": "Up",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 74,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The fragment suggests positive assessment of the lead performance, and aggregator indicates 'Up' verdict, but extremely limited text makes confident scoring impossible. | GPT-4o: The review highlights Groff's energy and charisma as a key strength of the production, suggesting a positive view. However, due to the limited text, the overall tone is not fully clear, leading to a medium confidence level. | Gemini: The review excerpt highlights Groff's performance as a key positive, suggesting a recommendation, but the word \"anchor\" implies that the show relies heavily on him, indicating a reservation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises the lead performance as anchoring the show, suggesting a positive assessment, but with very limited text available, confidence is low about the overall verdict. | GPT-4o: The review highlights Groff's energy and charisma as a strong point, suggesting a positive view of the production. However, without more context, the recommendation appears solid but not enthusiastic. | Gemini: The review excerpt highlights Groff's performance as a key positive, suggesting a recommendation, but the word \"anchor\" implies that the show might rely too heavily on his performance, indicating some reservations. The aggregator verdict also points towards a positive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:15:25.150Z",
+    "scoredAt": "2026-02-02T18:27:39.820Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 60,
-    "previousVersion": "5.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
+    "claudeScore": 76,
     "openaiScore": 75,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

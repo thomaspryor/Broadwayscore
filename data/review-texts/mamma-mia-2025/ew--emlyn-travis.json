@@ -6,7 +6,7 @@
   "url": "https://ew.com/mamma-mia-review-broadway-homecoming-11790686?srsltid=AfmBOorLYK1fy6NcIvYZDKSoJsfJ9fiD4W3WrRa5q7Hv2M_eXOUTb0UY",
   "publishDate": "2025-08-14",
   "originalScore": "B",
-  "assignedScore": 77,
+  "assignedScore": 78,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "Now, they'll get the chance to do just that as the musical returns to its original home — the Winter Garden Theatre — for a six-month-long limited engagement that may not reinvent the material, but is still every bit the dreamy, endlessly endearing experience that fans know and love.",
@@ -19,12 +19,12 @@
   "dtliThumb": "Up",
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:26:26.702Z",
+    "scoredAt": "2026-02-02T18:31:42.187Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MAMMA-MIA-Returns-To-Broadway-20250814",
   "bwwThumb": "Meh",
@@ -88,11 +88,11 @@
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "llmScore": {
-    "score": 77,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -103,7 +103,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic gives a B grade and concludes with enthusiastic language about the show being 'pure sunshine' while acknowledging it's a crowd-pleasing experience that delivers what fans expect, despite noting some missed opportunities for updates. | Gemini: The review is generally positive, highlighting the enjoyable aspects of the show and its enduring appeal. The critic notes some areas for improvement, but the overall tone suggests a recommendation, albeit with reservations. The B grade also supports this classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic gives a B grade and concludes with genuine enthusiasm about the show's joyful nature, praising the ensemble performances and ABBA frenzy it creates, though noting some missed opportunities for updates and mixed vocal delivery. | GPT-4o: The review highlights the show's enduring appeal and the energetic performances, despite noting some missed opportunities for updates. The original B rating and overall positive tone indicate a solid recommendation. | Gemini: The review is mostly positive, highlighting the enjoyable experience and strong performances, but also notes some missed opportunities for updates and sound mixing issues. The B grade and aggregator excerpts also point to a positive but not rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -112,22 +112,23 @@
     }
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": null,
-    "geminiScore": 78,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreCompletedAt": "2026-02-01T15:29:18.137Z",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 950,
   "previousUrl": "https://ew.com/mamma-mia-broadway-revival-review/",
   "urlDiscoveredAt": "2026-02-01T14:08:16.839Z",
   "urlDiscoveryMethod": "google-serp",
@@ -155,5 +156,6 @@
   "truncationSignals": [
     "no_ending_punctuation"
   ],
-  "textStatus": "partial"
+  "textStatus": "partial",
+  "tierReason": "Full review text"
 }

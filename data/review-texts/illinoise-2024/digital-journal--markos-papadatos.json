@@ -9,7 +9,7 @@
   "sources": [
     "playbill-verdict"
   ],
-  "contentTier": "stub",
+  "contentTier": "complete",
   "contentTierReason": "No text content",
   "fullText": "“Illinoise” is a new musical that premiered at the St. James Theatre on Broadway. “Illinoise” is a new musical that premiered at the St. James Theatre on Broadway. The production is inspired by Sufjan Stevens’ album “Illinois” and it features direction and choreography by Justin Peck. The musical’s story is by Peck and Pulitzer winner Jackie Sibblies Drury. It is set around a campfire as dancers, singers, and a live band lead audiences on an epic journey set to Stevens’ music, arranged by Timo Andres (who earned a Tony nomination for “Best Orchestrations”). Particularly impressive about this production is that it is told through live music performed by an 11-member band, three vocalists and dancers. As friends gather around a campfire, sharing stories of first love, grief and growing up, director and choreographer Justin Peck and Jackie Sibblies Drury craft a true musical and dancing experience that is filled with raw emotions, and it transports viewers to different realms. Strong performances led by Ricky Ubeda, Ben Cook, and Gaby Diaz, give this production its beating heart; moreover, everybody in the cast and the ensemble offers something unique to this musical. “Illinoise” received four 2024 Tony nominations, and rightfully so, including a nod for “Best Musical.” It will sustain the viewer’s attention for its entire 90-minute duration (with no intermission). Overall, “Illinoise” is an expressive new musical, which touches on such subjects as love, loss, and mystery through dance. It ought to be enjoyed for its beauty, melancholy, and simplicity. The choreography all around by Justin Peck is exquisite, and he also deserves to be commended for his direction in bringing this piece to life, which is gloriously empowering. The show starts out heartbreaking and then, evolves into a heartwarming production. This new musical is poignant, high-octane, and it garners 4.5 out of 5 stars. To learn more about “Illinoise,” check out its official homepage. Markos Papadatos is Digital Journal's Editor-at-Large for Music News. Papadatos is a Greek-American journalist and educator that has authored over 24,000 original articles over the past 19 years. He has interviewed some of the biggest names in music, entertainment, lifestyle, magic, and sports. He is an 18-time \"Best of Long Island\" winner, where for three consecutive years (2020, 2021, and 2022), he was honored as the \"Best Long Island Personality\" in Arts & Entertainment, an honor that has gone to Billy Joel six times. Actress Leila Collins (\"Anarchy Radio\") chatted about her inspirations as an actress, and being a part of the digital age. Alaska is the best state for a tech career, scoring 7.31 out of 10. Nvidia announced the plan in September to invest $100 billion in OpenAI. Actor Kristoffer Polaha chatted about his new film \"Missing the Boat,\" which premiered on Saturday, January 31st on Hallmark.",
   "isFullReview": true,
@@ -29,16 +29,15 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
-  "assignedScore": 93,
+  "assignedScore": 91,
   "llmScore": {
-    "score": 93,
+    "score": 91,
     "confidence": "medium",
     "range": {
-      "low": 88,
-      "high": 98
+      "low": 86,
+      "high": 96
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -49,7 +48,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic gives 4.5/5 stars and uses highly positive language like 'exquisite choreography,' 'gloriously empowering,' and 'ought to be enjoyed for its beauty.' The enthusiastic tone throughout matches the high numerical rating. | GPT-4o: The review is overwhelmingly positive, highlighting the musical's emotional impact, strong performances, and excellent choreography. The critic's original 5/5 rating further supports a 'Rave' classification. | Gemini: The critic gives the show 4.5 out of 5 stars and uses positive language throughout the review, such as \"impressive,\" \"true musical and dancing experience,\" \"strong performances,\" and \"exquisite.\" This indicates a strong recommendation, placing it in the Positive bucket.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives the show 4.5/5 stars and uses consistently glowing language like 'exquisite,' 'gloriously empowering,' and 'ought to be enjoyed,' with no significant reservations mentioned. | GPT-4o: The review is overwhelmingly positive, highlighting the musical's strong performances, direction, and choreography. The critic's original 5/5 rating and the praise for its emotional impact and Tony nominations further support a 'Rave' classification. | Gemini: The critic gave the show 4.5/5 stars and uses overwhelmingly positive language, calling it \"exquisite\", \"gloriously empowering\", and \"poignant\". This, combined with the Tony nominations, indicates a rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -59,24 +58,28 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T02:27:00.616Z",
+    "scoredAt": "2026-02-02T18:22:50.986Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 93,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 90,
+    "claudeScore": 88,
     "openaiScore": 95,
-    "geminiScore": 82,
+    "geminiScore": 90,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "geminiBucket": "Rave",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
-  }
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  },
+  "wordCount": 463,
+  "tierReason": "Full review text"
 }

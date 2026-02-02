@@ -58,7 +58,7 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "contentTier": "stub",
+  "contentTier": "invalid",
   "contentTierReason": "No text content",
   "fullText": "https://www.wsj.com/articles/an-enemy-of-the-people-review-jeremy-strong-broadway-michael-imperioli-sam-gold-ibsen-amy-herzog-6b1bb53e\n\nJeremy Strong Photo: Emilio Madrid",
   "isFullReview": false,
@@ -75,10 +75,6 @@
   ],
   "fetchTier": 4,
   "textQuality": "truncated",
-  "truncationSignals": [
-    "no_ending_punctuation",
-    "possible_mid_word_cutoff"
-  ],
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240617025318",
@@ -93,5 +89,7 @@
     "hadPositiveThumb": false,
     "dtliThumb": "none",
     "bwwThumb": "none"
-  }
+  },
+  "wordCount": 6,
+  "tierReason": "Garbage content: Content is mostly URL"
 }

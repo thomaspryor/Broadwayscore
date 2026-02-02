@@ -10,15 +10,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 90,
+  "assignedScore": 92,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 90,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 95
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses highly enthusiastic language throughout - 'thrillingly alarmist', 'masterfully staged', 'true stunner' - and praises every aspect from performances to design to political relevance without any significant reservations. | GPT-4o: The review is overwhelmingly positive, praising the production's staging, score, and relevance. It describes the musical as thrilling, relevant, and masterfully staged, indicating a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, highlighting the show's thrilling and relevant nature. While there are some minor reservations, the overall tone suggests a recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlatives throughout ('masterfully staged', 'true stunner', 'remarkable') and describes the show as having 'political ferocity that has not been matched on Broadway in a good long while', indicating strong enthusiasm and recommendation. | GPT-4o: The review is filled with enthusiastic praise for the production, describing it as thrilling, masterfully staged, and relevant. The critic highlights the powerful music, staging, and performances, indicating a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, praising the music, staging, and performances. The critic highlights the show's relevance and impact, making it a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:00:03.741Z",
+    "scoredAt": "2026-02-02T17:59:52.384Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "3.0.0"
+    "previousScore": 90,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 92,
-    "geminiScore": 80,
+    "openaiScore": 95,
+    "geminiScore": 81,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

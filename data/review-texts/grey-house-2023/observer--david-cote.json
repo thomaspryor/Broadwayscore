@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 43,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 44,
+    "score": 43,
     "confidence": "high",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 38,
+      "high": 48
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The critic clearly does not recommend the show, calling it 'pretentious pulp,' 'tedious,' and 'whimsical and incoherent,' while criticizing the writing as derivative and lacking internal logic. | Gemini: The review is overwhelmingly negative, criticizing the play's writing, plot, and overall effectiveness. While praising the design elements, the core assessment is that the play is pretentious and incoherent, leading to a negative recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic calls the play 'pretentious pulp,' describes it as 'whimsical and incoherent,' and says it 'flubs the genre test,' clearly recommending against seeing it despite praising the design work. | GPT-4o: The critic describes the play as pretentious, incoherent, and failing the genre test. Despite some praise for the design team, the overall tone is negative, suggesting that the production is not worth seeing. | Gemini: The review is largely negative, criticizing the play's writing, lack of internal logic, and reliance on clichés. While praising the design elements, the overall assessment is that the play fails as a horror story and is not worth seeing.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,31 +39,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:25:21.055Z",
+    "scoredAt": "2026-02-02T17:56:00.539Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 25,
-    "previousVersion": "5.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": null,
+    "openaiScore": 42,
     "geminiScore": 45,
     "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
     "geminiBucket": "Negative",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Negative"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "dateUnknown": true,
   "dateSource": "historical-review",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 796,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "rescoreCompletedAt": "2026-02-01T19:59:41.002Z",
   "previousLlmScore": 60,
@@ -81,7 +82,6 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
-  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "_removedDesignation": {
@@ -91,5 +91,6 @@
     "hadPositiveThumb": false,
     "dtliThumb": "none",
     "bwwThumb": "Down"
-  }
+  },
+  "tierReason": "Full review text"
 }

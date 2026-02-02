@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
   "bwwThumb": "Meh",
   "originalScore": "3/5",
-  "assignedScore": 74,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "showScoreExcerpt": "\"Squeeze your memories into spandex and get ready to turn back the clock.\"",
@@ -18,11 +18,11 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 74,
+    "score": 76,
     "confidence": "medium",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The 3/5 rating and concluding recommendation to Gen X audiences, combined with praise for the cast and entertaining moments, indicates a positive but qualified recommendation despite acknowledged flaws. | GPT-4o: The review acknowledges the talent of the cast and the appeal of the songs but also highlights issues with the book and direction, as well as an awkward fit between the songs and the plot. The original 3/5 rating suggests a mixed reception, and the truncated text warning suggests caution against a more negative score. | Gemini: The review is mixed, pointing out flaws in the book and direction, but praises the cast and the appeal to Generation X. The critic's rating of 3/5 also suggests a positive but not rave recommendation. The truncated text makes it difficult to be certain of the final verdict.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The 3/5 rating and closing recommendation 'Squeeze your memories into spandex and get ready to turn back the clock' indicate a positive but qualified verdict, acknowledging entertainment value despite structural flaws. | GPT-4o: The review acknowledges the talent of the cast and the appeal of the music, but also highlights issues with the show's book and direction. The original 3/5 rating suggests a mixed impression, and the truncated text warning indicates the final verdict may not be fully captured. | Gemini: The critic gives the show a 3/5 rating and highlights the talented cast and appealing songs. While noting some shortcomings in the book and direction, the review suggests that the show will be enjoyable for its target audience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,21 +43,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:30:23.689Z",
+    "scoredAt": "2026-02-02T18:12:14.064Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 60,
+    "previousScore": 74,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 72,
     "openaiScore": 65,
-    "geminiScore": 75,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -67,8 +67,8 @@
   },
   "dateUnknown": true,
   "dateSource": "could-not-extract",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "invalid",
+  "wordCount": 1077,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 60,
   "isFullReview": true,
@@ -87,11 +87,6 @@
   ],
   "fetchTier": 4,
   "textQuality": "truncated",
-  "truncationSignals": [
-    "no_ending_punctuation",
-    "has_footer_text",
-    "possible_mid_word_cutoff"
-  ],
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250724211141",
@@ -104,5 +99,6 @@
     "hadPositiveThumb": false,
     "dtliThumb": "none",
     "bwwThumb": "Meh"
-  }
+  },
+  "tierReason": "Garbage content: Newsletter form: \"Thanks for subscribing\""
 }

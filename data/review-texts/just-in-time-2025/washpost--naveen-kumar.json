@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"Itâs another magnificent performance â kind-eyed, honey-voiced and all but irresistible.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/just-in-time-broadway",
   "originalScore": null,
-  "assignedScore": 91,
+  "assignedScore": 92,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 91,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 86,
-      "high": 96
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlatives throughout ('magnificent performance,' 'irresistible,' 'required viewing') and describes the production as setting itself 'apart from even its most successful predecessors,' indicating this is a must-see show that exceeds expectations. | GPT-4o: The review is overwhelmingly positive, highlighting the magnificent performance of Jonathan Groff, the immersive and charming production, and the exceptional direction and design. The critic's language is enthusiastic and strongly recommends the show as essential viewing. | Gemini: The review is overwhelmingly positive, praising Groff's performance, the immersive staging, and the overall charm of the production. The critic explicitly recommends it for fans of Groff.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review is filled with superlative praise calling it 'magnificent,' 'irresistible,' and comparing it favorably to successful predecessors like Jersey Boys. The critic describes the production as fizzing 'with class and delight' and calls Groff's performance 'required viewing.' | GPT-4o: The review is overwhelmingly positive, highlighting Jonathan Groff's performance as 'magnificent' and the production as 'fizzes with class and delight.' The critic strongly suggests it as 'required viewing,' indicating a high level of enthusiasm and recommendation. | Gemini: The review is overwhelmingly positive, praising Groff's performance, the staging, and the overall experience. The critic explicitly recommends the show for fans of Groff.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:16:36.729Z",
+    "scoredAt": "2026-02-02T18:28:09.074Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 91,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 89,
-    "openaiScore": 92,
+    "claudeScore": 88,
+    "openaiScore": 95,
     "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

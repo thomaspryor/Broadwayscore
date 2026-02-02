@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges positive elements like strong performances and engaging material, but feels the production isn't as sharp as the original and has lost some novelty, creating a lukewarm overall assessment. | GPT-4o: The review acknowledges clever and thought-provoking elements and praises the cast, but also notes that the production feels less sharp and more unsettling than before. The truncated text suggests caution, but the overall tone leans towards a mixed reception. | Gemini: The review highlights positive aspects like the cast and thought-provoking elements, but also expresses reservations about the production compared to the original. The truncated text makes it difficult to ascertain the final verdict with certainty, but the overall tone leans towards a recommendation with caveats.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic finds positive elements (clever writing, engaging cast) but expresses concern that the production has changed 'not necessarily for the better' and that 'the characterizations seem less sharp' than remembered. The truncated text and mixed signals suggest a qualified recommendation. | GPT-4o: The review acknowledges clever and thought-provoking elements and praises the cast's engagement, but also notes that the production feels less sharp and more unsettling than before. The text is truncated, so the final verdict is unclear, but the mixed signals suggest a balanced view. | Gemini: Despite some reservations about the production compared to its previous run, the critic still finds the play clever and thought-provoking, and praises the cast. The truncated text makes it difficult to assess the overall recommendation strength, but the aggregator excerpt indicates a positive leaning.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,12 +38,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:34:39.942Z",
+    "scoredAt": "2026-02-02T18:33:05.821Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 68,
-    "previousVersion": "5.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,

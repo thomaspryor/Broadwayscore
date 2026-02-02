@@ -10,7 +10,7 @@
   "dtliExcerpt": null,
   "bwwExcerpt": null,
   "originalScore": "3/5 stars",
-  "assignedScore": 76,
+  "assignedScore": 75,
   "source": "show-score",
   "notes": "Mixed review. Noted the show 'traces the early years of Grammy-winning artist Alicia Keys, but it only scratches at the surface' and offers 'a sanitized version of young adult life instead of a gritty retelling with a bit more substance.' Praised Kecia Lewis's performance and the orchestrations by Adam Blackstone and Tom Kitt.",
   "sourceMethod": "archive",
@@ -46,11 +46,11 @@
   "archiveOrgTimestamp": "20241204234326",
   "archiveOrgUrl": "http://web.archive.org/web/20241204234326/https://www.metroweekly.com/2024/05/alicia-keys-makes-broadway-magic-with-hells-kitchen-review/",
   "llmScore": {
-    "score": 76,
+    "score": 75,
     "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -61,7 +61,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The 3/5 star rating and explicit statement that a performance 'is worth the price of a ticket' indicate a positive recommendation despite criticisms of the book's lack of dramatic tension. | GPT-4o: The review highlights strong performances and musical elements but criticizes the lack of dramatic tension and depth in the story. The 3/5 star rating suggests a mixed reception, with notable positives but significant reservations. | Gemini: The critic gives the show 3/5 stars and highlights strong performances, particularly Kecia Lewis. While noting some shortcomings in the story, the overall tone suggests a positive, albeit not rave, recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic gives 3/5 stars and explicitly states the show is worth seeing for Lewis's performance alone, but criticizes the thin plot and sanitized approach, making this a qualified positive recommendation. | GPT-4o: The review acknowledges strong performances and musical elements but criticizes the lack of dramatic tension and depth in the story. The 3/5 star rating suggests a mixed view, with notable highlights but significant reservations. | Gemini: The critic gives the show 3/5 stars, which indicates a positive review. While they note some shortcomings in the story, they praise the performances, particularly Kecia Lewis, and the overall musicality. The phrase \"worth the price of a ticket\" confirms a recommendation, though not an enthusiastic one.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -71,21 +71,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:52:36.233Z",
+    "scoredAt": "2026-02-02T18:17:13.674Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 76,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
+    "claudeScore": 72,
     "openaiScore": 65,
-    "geminiScore": 78,
+    "geminiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

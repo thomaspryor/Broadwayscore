@@ -58,7 +58,7 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
   },
-  "contentTier": "stub",
+  "contentTier": "complete",
   "contentTierReason": "No text content",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 89,
@@ -77,12 +77,13 @@
   ],
   "fetchTier": 1,
   "textQuality": "partial",
-  "truncationSignals": [],
   "textStatus": "incomplete",
   "sourceMethod": "playwright",
   "textIssues": [
     "Show title not found in text"
   ],
   "showNotMentioned": true,
-  "rescoreCompletedAt": "2026-02-02T03:41:05.904Z"
+  "rescoreCompletedAt": "2026-02-02T03:41:05.904Z",
+  "wordCount": 1950,
+  "tierReason": "Full review text"
 }

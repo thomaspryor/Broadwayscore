@@ -14,7 +14,7 @@
   "source": "dtli",
   "llmScore": {
     "score": 91,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 86,
       "high": 96
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic explicitly calls it a 'must-see' and describes it as 'thrilling from beginning to end,' which are clear rave-level endorsements despite having only one excerpt. | GPT-4o: The critic describes the show as 'thrilling from beginning to end' and a 'must-see,' which strongly indicates a rave review. The language is enthusiastic and leaves no doubt about the critic's recommendation. | Gemini: The review explicitly states the show is \"thrilling\" and a \"must-see\", indicating a rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic explicitly calls this a 'must-see' and describes it as 'thrilling from beginning to end' despite initial concerns about the earlier production. The review praises virtually every aspect from performances to technical elements. | GPT-4o: The review praises the production as thrilling and a must-see, highlighting improvements and standout performances, indicating a strong recommendation. | Gemini: The review explicitly states the show is a \"must-see\" and \"thrilling from beginning to end,\" indicating a rave recommendation. The critic also highlights significant improvements from the previous version.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,20 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:53:19.981Z",
+    "scoredAt": "2026-02-02T18:17:48.348Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 91,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 92,
-    "geminiScore": 92,
+    "claudeScore": 87,
+    "openaiScore": 95,
+    "geminiScore": 90,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 4,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -59,7 +60,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Rave"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 91,
   "textWordCount": 1077,
@@ -75,10 +75,13 @@
   ],
   "fetchTier": 4,
   "textQuality": "partial",
-  "truncationSignals": [],
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260120220211",
   "archiveOrgUrl": "http://web.archive.org/web/20260120220211/https://www.nytimes.com/2024/04/20/theater/hells-kitchen-review-alicia-keys.html",
-  "duplicateTextOf": "nytimes--elisabeth-vincentelli.json"
+  "duplicateTextOf": "nytimes--elisabeth-vincentelli.json",
+  "rescoreCompletedAt": "2026-02-02T18:17:48.349Z",
+  "contentTier": "complete",
+  "wordCount": 1077,
+  "tierReason": "Full review text"
 }

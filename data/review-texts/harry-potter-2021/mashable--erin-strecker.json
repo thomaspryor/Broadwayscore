@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the technical achievements and magic effects while acknowledging structural flaws, ultimately describing audience reaction as 'stunned wonder' and noting the story 'plays much, much better on stage than on the page.' | GPT-4o: The review is overwhelmingly positive, highlighting the play as a 'massive technical achievement' with 'stunning wonder' and 'thrilling' stage magic. The critic's enthusiasm and praise for the production's unique qualities and technical prowess strongly suggest a must-see recommendation. | Gemini: The review expresses enthusiasm for the stage production, highlighting the technical achievements and magic, while acknowledging some weaknesses in the second part and the complexity of the plot. Overall, it leans towards a positive recommendation with some reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic clearly recommends the show, praising the technical achievements and magic effects while acknowledging some structural weaknesses in Part Two and pacing issues, but concludes with audience wonder and appreciation. | GPT-4o: The review is filled with enthusiastic praise for the technical achievements and the overall experience of the play, describing it as a 'massive technical achievement' and noting the audience's 'stunned wonder'. The critic expresses genuine thrill and admiration for the production, indicating a strong recommendation. | Gemini: The review expresses excitement about the stage production compared to the script, highlighting the technical achievements and magic. While noting some weaknesses in Part Two, the overall tone is positive and recommends seeing it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:29:01.751Z",
+    "scoredAt": "2026-02-02T18:08:46.294Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
+    "previousScore": 78,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 77,
-    "openaiScore": 90,
+    "claudeScore": 78,
+    "openaiScore": 92,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -65,7 +65,7 @@
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 84,
   "archivePath": "data/archives/reviews/harry-potter-2021/mashable--erin-strecker_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:38:22.731Z",
+  "textFetchedAt": "2026-02-02T16:23:19.333Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -78,13 +78,13 @@
   "archiveOrgTimestamp": "20210331121145",
   "archiveOrgUrl": "http://web.archive.org/web/20210331121145/https://mashable.com/2018/04/22/harry-potter-cursed-child-broadway-review/",
   "rescoreCompletedAt": "2026-02-02T03:29:09.047Z",
-  "contentTier": "needs-rescrape",
+  "contentTier": "complete",
   "wordCount": 840,
   "garbageReasoningDetected": "thematic-overview",
   "garbageReasoningFlaggedAt": "2026-02-02T00:01:17.075Z",
   "isFullReview": true,
   "textWordCount": 840,
   "textQuality": "full",
-  "truncationSignals": [],
-  "textStatus": "complete"
+  "textStatus": "complete",
+  "tierReason": "Full review text"
 }

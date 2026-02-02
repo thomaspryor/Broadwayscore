@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic finds the production entertaining and praises the ensemble and technical elements, but clearly states it 'falls short of fully chilling' and is 'middle of the road,' indicating neither strong recommendation nor discouragement. | GPT-4o: The review acknowledges the show's atmospheric production and fine ensemble but criticizes its lack of intense shivers and psychological chills, leading to a mixed verdict. | Gemini: The review acknowledges the show's strengths (cast, direction, design) and entertainment value, but ultimately finds it lacking in genuine scares and depth, leading to a positive but reserved recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic explicitly calls it 'entertaining, albeit middle of the road' and notes it 'doesn't deliver intense shivers' while acknowledging fine performances and atmospheric production elements. This is clearly mixed territory - not recommended nor discouraged. | GPT-4o: The review acknowledges the production's strengths in atmosphere and performance but criticizes its lack of intensity and clarity, ultimately describing it as 'middle of the road'. | Gemini: The review acknowledges the show's strengths (cast, direction, design) and entertainment value, but ultimately finds it lacking in delivering intense chills or a deeper sense of dread. The phrase \"entertaining, albeit middle of the road\" indicates a positive but not enthusiastic recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,12 +41,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:25:03.621Z",
+    "scoredAt": "2026-02-02T17:55:53.447Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 64,
-    "previousVersion": "3.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,

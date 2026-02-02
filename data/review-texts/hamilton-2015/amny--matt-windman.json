@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 91,
   "source": "bww-roundup",
   "dtliThumb": null,
   "dtliExcerpt": "\"Having already become a cultural phenomenon in its off-Broadway premiere run earlier this year at the Public Theater, 'Hamilton' — written by and starring Lin-Manuel Miranda, who previously made a name for himself on Broadway with 'In the Heights' — seems a shoo-in for smash hit status and a slew of awards attention...The musical is a triumph.\"\n\nRead more",
@@ -19,11 +19,11 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 92,
+    "score": 91,
     "confidence": "medium",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 86,
+      "high": 96
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Despite the setup about cultural phenomenon status, the critic delivers an unambiguous positive verdict calling the musical 'a triumph,' which is strong rave language. | GPT-4o: The review describes 'Hamilton' as a 'triumph' and suggests it is poised for 'smash hit status and a slew of awards attention,' indicating a strong, enthusiastic recommendation. | Gemini: The review excerpt uses the word \"triumph,\" which indicates a very positive assessment and a strong recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Despite the truncated text, the explicit statement 'The musical is a triumph' combined with the context of predicting 'smash hit status' clearly indicates a rave review. | GPT-4o: The review describes 'Hamilton' as a 'triumph' and suggests it is poised for 'smash hit status' and 'awards attention', indicating an enthusiastic, must-see recommendation. | Gemini: The review excerpt uses the word \"triumph,\" which indicates a very positive assessment and strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,17 +44,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:58:35.518Z",
+    "scoredAt": "2026-02-02T18:01:48.332Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "3.0.0"
+    "previousScore": 92,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 95,
-    "geminiScore": 92,
+    "geminiScore": 90,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",

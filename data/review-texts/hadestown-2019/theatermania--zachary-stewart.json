@@ -7,22 +7,22 @@
   "publishDate": "April 17, 2019",
   "showScoreExcerpt": "The smartest new musical on Broadway. The production is visually and aurally stunning. Rachel Hauck's multi-tiered set conjures the French Quarter with a breathtaking scene transition where its stucco walls fall away to reveal the enormity of the Hadestown mine. Sound designers Nevin Steinberg and Jessica Paz ensured every one of Mitchell's lyrics was audible. However, the protagonist comes across as a shiftless dude with a guitar and few marketable skills, making it difficult to root for him. While recognizing the show's commentary on nativism through the character of Hades as a wall-building tycoon, the message is on the nose. Despite praising the production design, music, and performances, the show left no emotional impact. A musical fated to be the snob hit of this Broadway season - formally accomplished but ultimately more intellectually engaging than emotionally satisfying.",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 91,
   "source": "webfetch-scraped",
   "urlSource": "show-score",
   "urlUpdatedAt": "2026-01-25T14:20:46.948Z",
-  "textFetchedAt": "2026-02-02T17:35:54.996Z",
+  "textFetchedAt": "2026-02-02T16:38:56.634Z",
   "textFetchMethod": "playwright-stealth",
   "archivePath": "data/archives/reviews/hadestown-2019/theatermania--zachary-stewart_2026-02-02.html",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 92,
-    "confidence": "high",
+    "score": 91,
+    "confidence": "medium",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 86,
+      "high": 96
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review explicitly calls it a 'must-see' and concludes that it will be 'difficult to resist this tuneful and visually spectacular production,' with overwhelming praise for all elements of the production. | GPT-4o: The review is overwhelmingly positive, highlighting the innovative staging, powerful performances, and the production's ability to resonate with contemporary issues. The critic explicitly calls it a 'must-see,' indicating a strong recommendation. | Gemini: The review uses strong positive language like \"must-see\" and praises the production's innovative and visually spectacular nature, indicating a rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review opens with explicit 'must-see' language and maintains enthusiastic praise throughout, calling it 'scorching,' 'visually arresting,' and 'tuneful and visually spectacular,' with detailed appreciation for all production elements. | GPT-4o: The review is overwhelmingly positive, describing the production as visually arresting, vocally challenging, and thematically resonant. The critic uses strong language like 'must-see' and praises the direction, performances, and design elements, indicating a strong recommendation. | Gemini: The review uses the phrase \"must-see\" and is filled with enthusiastic praise for all aspects of the production, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,21 +43,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:27:23.675Z",
+    "scoredAt": "2026-02-02T18:01:03.255Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 58,
+    "previousScore": 92,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 88,
     "openaiScore": 95,
     "geminiScore": 90,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 5,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -84,13 +84,13 @@
   "fetchTier": 4,
   "archiveOrgTimestamp": "20221207062317",
   "archiveOrgUrl": "http://web.archive.org/web/20221207062317/https://www.theatermania.com/off-broadway/reviews/hadestown-_77163.html",
-  "contentTier": "needs-rescrape",
+  "contentTier": "complete",
   "wordCount": 790,
   "garbageReasoningDetected": "no-evaluative-content",
   "garbageReasoningFlaggedAt": "2026-02-02T00:01:17.066Z",
   "isFullReview": true,
   "textWordCount": 790,
   "textQuality": "full",
-  "truncationSignals": [],
-  "textStatus": "complete"
+  "textStatus": "complete",
+  "tierReason": "Full review text"
 }

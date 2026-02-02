@@ -9,15 +9,15 @@
   "bwwExcerpt": "All told, it’s a hit, to borrow a title phrase from one of Sondheim most artful “concerted” numbers; a palpable hit, to borrow a phrase the Master borrowed from the Bard. Forget about the troubled history of Sondheim and Hal Prince’s most ignominious miscue; here and now, Merrily is a five-star hit, and no doubt about it. The show plays like wildfire, ignited from that first blast of overture from that band. It’s a win-win, or perhaps a win-win-win-win. A win for Merrily, yes; a win for Radcliff",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "originalScore": "5/5 stars",
-  "assignedScore": 95,
+  "assignedScore": 96,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 95,
+    "score": 96,
     "confidence": "high",
     "range": {
-      "low": 90,
-      "high": 100
+      "low": 91,
+      "high": 101
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic gives 5/5 stars and declares it 'finally and inarguably revealed to be a wonderfully thrilling Broadway hit,' calling it potentially 'the finest Broadway revival of any Sondheim musical thus far' with superlatives throughout. | Gemini: The critic gives the show 5/5 stars and uses overwhelmingly positive language, calling it a \"five-star hit\" and a \"wonderfully thrilling Broadway hit.\" The review is filled with praise for the production, performances, and overall experience.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives 5/5 stars and calls it a 'five-star hit' and 'wonderfully thrilling Broadway hit,' declaring it might be the finest Sondheim revival ever. The enthusiasm is sustained throughout with superlative language. | GPT-4o: The review is overwhelmingly positive, describing the production as a 'five-star hit' and praising the performances, direction, and overall execution. The critic's 5/5 star rating further supports a 'Rave' classification. | Gemini: The critic gives the show 5/5 stars and uses overwhelmingly positive language, calling it a 'five-star hit' and a 'win-win-win-win.' The review is filled with praise for the production, performances, and direction, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:32:56.864Z",
+    "scoredAt": "2026-02-02T18:37:13.809Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 95,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 95,
-    "openaiScore": null,
+    "openaiScore": 98,
     "geminiScore": 95,
     "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 0,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "bwwThumb": "Up",
   "rescoreReason": "scored on brief excerpt, now has fullText",

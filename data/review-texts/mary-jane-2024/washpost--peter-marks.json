@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Rachel McAdams gives a performance of such emotional authenticity and raw power that you feel as if you're witnessing something deeply private and profound.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,13 +18,13 @@
   "showScoreExcerpt": "Rachel McAdams gives a performance of such emotional authenticity and raw power that you feel as if you're witnessing something deeply private and profound.",
   "needsScoring": true,
   "llmScore": {
-    "score": 77,
+    "score": 89,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 84,
+      "high": 94
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review offers high praise for McAdams' performance with vivid, positive language, but the excerpt focuses only on one element of the production, limiting confidence in the overall assessment. | GPT-4o: The review highlights the performance as deeply impactful and profound, suggesting a strong recommendation. | Gemini: The review highlights a powerful performance, suggesting a positive experience, although it doesn't explicitly state a recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The language is highly effusive and reverent, describing the performance as 'profound' and creating an almost sacred viewing experience for the audience. | GPT-4o: The review highlights the performance as deeply impactful and profound, suggesting a strong recommendation to see the show. | Gemini: The review highlights a powerful performance, indicating a positive experience and a recommendation to see the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,28 +43,28 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:20:14.304Z",
+    "scoredAt": "2026-02-02T18:35:09.781Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "5.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 88,
     "openaiScore": 90,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "2/3 models agree: Rave"
   }
 }

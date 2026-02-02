@@ -8,15 +8,15 @@
   "showScoreExcerpt": "\"Ms. White does elicit uniformly terrific performances that keep the play lively and humming with bright humor.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/liberation-broadway",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 77,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 76,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review describes the play as 'funny if meandering' and highlights 'uniformly terrific performances' that keep it 'lively and humming with bright humor,' suggesting a positive recommendation despite some structural issues. | GPT-4o: The review highlights the play's humor and strong performances, suggesting a positive experience despite some meandering in the narrative. The tone indicates a recommendation with some reservations. | Gemini: The review describes the play as \"funny if meandering\" and highlights the \"terrific performances,\" suggesting a positive but not overwhelmingly enthusiastic recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review describes the play as 'funny if meandering' and praises 'uniformly terrific performances' that keep it 'lively and humming with bright humor,' indicating a solid recommendation with minor reservations about structure. | GPT-4o: The review highlights the play's humor and strong performances, indicating a positive reception despite some meandering elements. | Gemini: The review describes the play as \"funny\" and notes the \"terrific performances,\" indicating a positive, though not overwhelmingly enthusiastic, recommendation. The \"meandering\" comment suggests some reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,21 +37,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:32:27.400Z",
+    "scoredAt": "2026-02-02T18:31:14.293Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 76,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 78,
+    "openaiScore": 80,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -82,12 +82,12 @@
   "garbageFullText": "https://www.wsj.com/articles/liberation-review-feminism-and-frustration-on-broadway-537a92b7\n\nSusannah Flood Joan MarcusEditor’s note: “Liberation” has transferred to Broadway after an off-Broadway run last season. The principal cast and creative team remain the same. Below is the Journal’s review of the off-Broadway production.\n\n“Why does it feel somehow like it’s all slipping away? And how do we get it back?” That lament is spoken by the narrator of “Liberation,” a funny if meandering new play by Bess Wohl presented by the Roundabout Theatre Company that explores the idealistic aims and frequent frustrations of women in the feminist movement in the early 1970s.\n\nCopyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nDavid Baldacci Pushed Through Tons of Rejections Before Writing ‘Absolute Power’\n\nTom Stoppard, Playwright of Ideas, Dies at 88\n\n‘Joan Crawford’ Review: In a Hurry to the Top\n\nVisiting the Scotland That Inspired Mary Shelley’s ‘Frankenstein’—and the 2025 Movie",
   "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
   "garbageFixedAt": "2026-01-29T22:45:22.978Z",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "truncated",
+  "wordCount": 94,
   "fullText": "https://www.wsj.com/articles/liberation-review-feminism-and-frustration-on-broadway-537a92b7\n\nSusannah Flood Joan MarcusEditor’s note: “Liberation” has transferred to Broadway after an off-Broadway run last season. The principal cast and creative team remain the same. Below is the Journal’s review of the off-Broadway production.\n\n“Why does it feel somehow like it’s all slipping away? And how do we get it back?” That lament is spoken by the narrator of “Liberation,” a funny if meandering new play by Bess Wohl presented by the Roundabout Theatre Company that explores the idealistic aims and frequent frustrations of women in the feminist movement in the early 1970s.",
   "isFullReview": false,
   "textWordCount": 94,
   "textQuality": "partial",
-  "truncationSignals": [],
-  "textStatus": "incomplete"
+  "textStatus": "incomplete",
+  "tierReason": "Short text (94 words)"
 }

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "Gordon Greenberg directs and Lorin Latarro choreographs, achieving some kind of immortality with all that bubble wrap. Around the edges of this production are a few inspired performances. Raymond J. Lee’s wacky rocker, Tamika Lawrence’s un-PC HR director and Billy Harrigan Tighe’s bleach-blond ukulele-playing male bimbo invariably deliver laughs despite the paper-thin material.",
@@ -19,11 +19,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 60,
+    "score": 64,
     "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic finds some redeeming performances 'around the edges' but overall dismisses the musical as overly sentimental with thin material, delivering more criticism than praise throughout. | GPT-4o: The review highlights some positive aspects, such as inspired performances and moments of humor, but overall describes the show as 'pure cardboard schmaltz' with insufficient humor to compensate for its flaws. | Gemini: The review highlights flaws in the book and overall schmaltz, but also praises some performances and moments. This suggests a mixed experience with some redeeming qualities.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic dismisses the musical as schmaltz with too many dead parents, criticizes the thin material, and notes audience disengagement, though acknowledges a few inspired edge performances. | GPT-4o: The review highlights some entertaining elements and performances but criticizes the overall production as 'cardboard schmaltz' with insufficient humor and emotional depth. The tone suggests a mixed reception with some redeeming qualities. | Gemini: The review highlights several flaws, including a weak book and excessive sentimentality, but also praises some performances and moments of humor. This suggests a mixed experience with both positive and negative aspects.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,21 +44,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:41:58.577Z",
+    "scoredAt": "2026-02-02T18:12:10.395Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 42,
-    "previousVersion": "3.0.0"
+    "previousScore": 60,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 58,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Negative",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 20,
+    "scoreDelta": 23,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

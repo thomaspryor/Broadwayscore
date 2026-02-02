@@ -9,15 +9,15 @@
   "showScoreExcerpt": "“It’s a credit to ‘How to Dance in Ohio’s’ cast that they deliver compelling performances, even when their material gets rote and didactic...If we’re here to meet these characters who aren’t going to be stand-ins for generalized traits, let’s really spend the time to get to know them all.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/how-to-dance-in-ohio-broadway",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 65,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 69,
-    "confidence": "low",
+    "score": 65,
+    "confidence": "medium",
     "range": {
-      "low": 64,
-      "high": 74
+      "low": 60,
+      "high": 70
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic acknowledges strong performances and meaningful representation but criticizes execution issues, generic plotting, and structural problems that prevent full recommendation. | Gemini: The review praises the cast's performances and specific moments, but criticizes the score, staging, and plotting. It acknowledges structural issues and a tendency to underline messages too heavily, but still highlights the show's strengths, indicating a recommendation with reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges compelling performances and inclusive spirit but identifies significant structural problems, generic plotting, and developmental issues that prevent a recommendation. | GPT-4o: The review highlights both strengths and weaknesses, praising the cast and certain moments while criticizing the execution and structural issues. The overall tone is mixed, acknowledging the show's charm but noting significant flaws. | Gemini: The review praises the cast and specific moments, but criticizes the score, staging, and plotting. It's a qualified recommendation due to the show's flaws, but the performances are compelling.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:56:10.579Z",
+    "scoredAt": "2026-02-02T18:21:11.106Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 64,
-    "previousVersion": "3.0.0"
+    "previousScore": 69,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
+    "openaiScore": 67,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
     "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "dtliExcerpt": "The musical manages to be both specific to its characters' experiences and universal in its themes of connection and acceptance, creating something genuinely moving without falling into condescension.",
   "sources": [

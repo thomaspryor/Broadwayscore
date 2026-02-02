@@ -9,15 +9,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MAMMA-MIA-Returns-To-Broadway-20250814",
   "bwwThumb": "Up",
   "originalScore": "3/5",
-  "assignedScore": 62,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges the show's effectiveness as entertainment ('ruthless' delivery of nostalgia) while clearly stating it fails as theater ('forgettable'). The 3/5 rating supports a mixed verdict that neither strongly recommends nor discourages. | GPT-4o: The review suggests the show is weak as theater but effective for nostalgia, indicating a mixed reception. The original rating of 3/5 supports a middle-ground classification. | Gemini: The review acknowledges the show's weakness as theater but highlights its effectiveness as a nostalgia delivery system. The 3/5 rating and aggregator context suggest a mixed but ultimately passable experience.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly calls it 'forgettable' as theater but acknowledges its effectiveness as nostalgia entertainment, with 'ruthless' being somewhat positive in context of delivering what audiences want. | GPT-4o: The review suggests that while the theatrical elements are lacking, the show succeeds in delivering nostalgia, which may appeal to fans. The original rating of 3/5 and the mixed tone of the excerpts support a mixed classification. | Gemini: The review acknowledges the show's weakness as theater but highlights its effectiveness as a nostalgia delivery system, suggesting a mixed experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:28:10.023Z",
+    "scoredAt": "2026-02-02T18:32:20.730Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 58,
-    "previousVersion": "3.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 65,
+    "claudeScore": 62,
+    "openaiScore": 68,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 5,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

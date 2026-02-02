@@ -16,7 +16,7 @@
   "sourceMethod": "scrapingbee",
   "llmScore": {
     "score": 75,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 70,
       "high": 80
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review appears heavily truncated with mostly navigation menu text, but the visible headline and excerpt suggest a positive assessment describing the show as 'safe, swoonful' and praising the star's performance as having 'magic.' | GPT-4o: The review describes the show as 'safe' and 'swoonful', indicating a positive but not overly enthusiastic recommendation. The mention of Jonathan Groff's 'magic, vintage touch' suggests a positive view of the performance. | Gemini: The review describes the show as \"swoonful\" and notes that the star has \"the magic touch\", indicating a positive but not overwhelmingly enthusiastic recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review text appears heavily truncated with mostly navigation elements. The only critical content describes the show as 'safe' and 'swoonful' while praising Jonathan Groff, suggesting a mixed assessment but insufficient text for confident scoring. | GPT-4o: The review describes the show as 'safe' and 'swoonful', suggesting it is enjoyable but not groundbreaking. The mention of Jonathan Groff's 'magic, vintage touch' adds a positive note, indicating a solid recommendation with some reservations. | Gemini: The review calls the show \"swoonful\" and says Groff has \"the magic, vintage touch.\" The word \"safe\" suggests a reservation, but overall the tone is positive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,7 +40,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:31:31.496Z",
+    "scoredAt": "2026-02-02T18:26:30.172Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -48,19 +48,19 @@
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
+    "claudeScore": 60,
     "openaiScore": 75,
     "geminiScore": 75,
-    "claudeBucket": "Positive",
+    "claudeBucket": "Mixed",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [

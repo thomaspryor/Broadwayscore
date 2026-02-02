@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic systematically dismantles the production, calling it 'watered-down,' criticizing the execution as 'far worse' than its inspirations, and ending with a clear negative pun that positions it as boring rather than scary. | GPT-4o: The review is overwhelmingly negative, criticizing the play's inability to replicate horror effectively, lack of tension, and poor execution. The critic describes the script as a 'mess' and the performances as unremarkable, leading to a strong recommendation to avoid the show. | Gemini: The review is largely negative, criticizing the play's lack of tension, unconvincing characters, and messy script. The critic explicitly states the execution is 'far worse' than its inspirations and calls the second half a 'slog'.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The review is consistently critical throughout, calling the script 'a mess', criticizing performances as lacking grip, and concluding with a dismissive pun that suggests the show is boring rather than scary. | GPT-4o: The review consistently criticizes the play for failing to deliver on its horror premise, lacking tension, and having a messy script. The final line dismisses the play entirely, indicating a strong recommendation to avoid it. | Gemini: The review is largely negative, criticizing the play's lack of terror, weak script, and uninspired performances. The critic explicitly states the execution is far worse than its inspirations and the second half is a slog.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,12 +44,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:24:44.059Z",
+    "scoredAt": "2026-02-02T17:55:36.466Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 41,
-    "previousVersion": "3.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,

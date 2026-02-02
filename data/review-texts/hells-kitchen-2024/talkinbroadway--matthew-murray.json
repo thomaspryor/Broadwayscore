@@ -8,7 +8,7 @@
   "fullText": "This is a show that knows exactly what it wants to be and achieves it with remarkable consistency and style, powered by Keys's songs and a cast that treats every moment as though their lives depend on it.",
   "dtliExcerpt": "This is a show that knows exactly what it wants to be and achieves it with remarkable consistency and style, powered by Keys's songs and a cast that treats every moment as though their lives depend on it.",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "contentTier": "truncated",
   "wordCount": 38,
   "llmScore": {
-    "score": 81,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the show's clear vision, consistent execution, strong musical foundation, and committed performances, indicating strong recommendation. | GPT-4o: The review praises the show for its consistency, style, and the dedication of the cast, indicating a strong recommendation. | Gemini: The review praises the show's consistency, style, and the cast's performance, indicating a positive recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review uses strong positive language praising the show's vision, consistency, style, and passionate performances, indicating clear enthusiasm and recommendation. | GPT-4o: The review praises the show for achieving its goals with consistency and style, indicating a strong recommendation. The enthusiastic tone and emphasis on the cast's dedication suggest a high level of praise. | Gemini: The review praises the show's consistency, style, and the cast's performance, indicating a strong positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,7 +43,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:53:23.260Z",
+    "scoredAt": "2026-02-02T18:18:04.573Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -53,11 +53,11 @@
   "ensembleData": {
     "claudeScore": 82,
     "openaiScore": 90,
-    "geminiScore": 80,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

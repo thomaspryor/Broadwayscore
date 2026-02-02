@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses definitive rave language calling it 'unmissable' and stating the 'ecstatic hype' is 'amply justified, and then some.' Despite opening skepticism context, the review delivers overwhelming praise for all aspects of the production. | GPT-4o: The review is overwhelmingly positive, using terms like 'thrilling theatricality,' 'pulse-pounding storytelling vitality,' and 'unmissable.' The critic praises the production's emotional richness, theatrical magic, and the performances, indicating a strong recommendation. | Gemini: Despite the truncated text warning, the review is overwhelmingly positive, using phrases like \"thrilling theatricality\" and \"unmissable.\" The aggregator excerpts also confirm a positive assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review is filled with superlative language like 'unmissable,' 'sheer magic,' 'thrilling theatricality,' and states the hype is 'amply justified, and then some.' Despite opening with skepticism context, the critic delivers an overwhelmingly enthusiastic recommendation. | GPT-4o: The review is overwhelmingly positive, describing the production as 'unmissable' and praising its theatricality, storytelling, and emotional depth. The critic is enthusiastic about the performances, direction, and stagecraft, indicating a strong recommendation to see the show. | Gemini: Despite the truncated text warning, the review is overwhelmingly positive, using phrases like \"thrilling theatricality\", \"pulse-pounding storytelling vitality\", \"unexpected emotional richness\", and \"unmissable\". The aggregator excerpts also confirm a positive overall assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:28:49.017Z",
+    "scoredAt": "2026-02-02T18:08:32.122Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 87,
+    "previousScore": 94,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
     "openaiScore": 95,
-    "geminiScore": 81,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
