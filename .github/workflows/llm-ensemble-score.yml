@@ -15,33 +15,51 @@ on:
       run_calibration:
         description: 'Run calibration after scoring'
         required: false
-        default: true
-        type: boolean
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
       run_validation:
         description: 'Run aggregator validation after scoring'
         required: false
-        default: true
-        type: boolean
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
       dry_run:
         description: 'Dry run (no file changes)'
         required: false
-        default: false
-        type: boolean
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
       needs_rescore:
         description: 'Only rescore reviews flagged with needsRescore=true'
         required: false
-        default: false
-        type: boolean
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
       outdated:
         description: 'Re-score reviews with promptVersion older than current PROMPT_VERSION'
         required: false
-        default: false
-        type: boolean
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
       rescore:
         description: 'Re-score all reviews (even already scored ones)'
         required: false
-        default: false
-        type: boolean
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
 
 env:
   ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
