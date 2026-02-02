@@ -1,64 +1,51 @@
 {
   "processed": [
-    "gutenberg-2023/vulture--sara-holdren.json",
-    "gutenberg-2023/deadline--greg-evans.json",
-    "gutenberg-2023/nypost--johnny-oleksinski.json",
-    "gutenberg-2023/observer--david-cote.json",
-    "gutenberg-2023/theatermania--jesse-green.json",
-    "gutenberg-2023/theatermania--zachary-stewart.json",
-    "gutenberg-2023/theatrely--david-gordon.json"
+    "an-enemy-of-the-people-2024/variety--aramide-tinubu.json",
+    "an-enemy-of-the-people-2024/vulture--jesse-green.json",
+    "an-enemy-of-the-people-2024/deadline--greg-evans.json"
   ],
   "failed": [
-    "gutenberg-2023/new-york-sun--elysa-gardner.json",
-    "gutenberg-2023/timeout--adam-feldman.json",
-    "gutenberg-2023/wsj--charles-isherwood.json",
-    "gutenberg-2023/wsj--terry-teachout.json"
+    "an-enemy-of-the-people-2024/guardian--adrian-horton.json",
+    "an-enemy-of-the-people-2024/nydailynews--chris-jones.json",
+    "an-enemy-of-the-people-2024/timeout--adam-feldman.json",
+    "an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
+    "an-enemy-of-the-people-2024/wsj--unknown.json",
+    "an-enemy-of-the-people-2024/talkinbroadway--matthew-murray.json",
+    "an-enemy-of-the-people-2024/washpost--peter-marks.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "gutenberg-2023/theatrely--david-gordon.json"
-    ],
+    "playwright": [],
     "browserbase": [
-      "data/review-texts/gutenberg-2023/observer--david-cote.json",
-      "gutenberg-2023/observer--david-cote.json"
+      "data/review-texts/an-enemy-of-the-people-2024/nydailynews--chris-jones.json"
     ],
     "scrapingbee": [],
-    "brightdata": [
-      "gutenberg-2023/theatermania--jesse-green.json"
-    ],
+    "brightdata": [],
     "archive": [
-      "gutenberg-2023/vulture--sara-holdren.json",
-      "gutenberg-2023/deadline--greg-evans.json",
-      "gutenberg-2023/nypost--johnny-oleksinski.json",
-      "gutenberg-2023/theatermania--zachary-stewart.json"
+      "an-enemy-of-the-people-2024/variety--aramide-tinubu.json",
+      "an-enemy-of-the-people-2024/vulture--jesse-green.json",
+      "an-enemy-of-the-people-2024/deadline--greg-evans.json"
     ]
   },
-  "startTime": "2026-02-02T16:32:31.921Z",
-  "lastProcessed": "gutenberg-2023/theatrely--david-gordon.json",
+  "startTime": "2026-02-02T16:33:38.381Z",
+  "lastProcessed": "an-enemy-of-the-people-2024/washpost--peter-marks.json",
   "log": [
     {
-      "t": "2026-02-02T16:33:01.298Z",
+      "t": "2026-02-02T16:34:06.601Z",
       "event": "bb-session",
-      "session": "290a6c50",
-      "url": "https://observer.com/2023/10/review-of-gutenberg-the-musical-print-is-hilariousl"
+      "session": "a22e2911",
+      "url": "https://www.nydailynews.com/2024/03/18/broadway-review-enemy-of-the-people-is-li"
     },
     {
-      "t": "2026-02-02T16:33:20.780Z",
+      "t": "2026-02-02T16:36:59.038Z",
       "event": "bb-session",
-      "session": "30b50e31",
-      "url": "https://www.theatermania.com/broadway/reviews/gutenberg-the-musical_96847.html"
+      "session": "21a86339",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/03/18/enemy-people-broadway-re"
     },
     {
-      "t": "2026-02-02T16:34:22.732Z",
-      "event": "bb-session",
-      "session": "839b9f06",
-      "url": "https://www.wsj.com/arts-culture/theater/gutenberg-the-musical-review-broadway-j"
-    },
-    {
-      "t": "2026-02-02T16:35:08.320Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
+      "t": "2026-02-02T16:37:00.678Z",
+      "event": "bb-login-uncertain",
+      "domain": "washingtonpost.com"
     }
   ]
 }
