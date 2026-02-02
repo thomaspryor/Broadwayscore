@@ -1,53 +1,62 @@
 {
   "processed": [
-    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-    "harry-potter-2021/wsj--terry-teachout.json",
-    "harry-potter-2021/cititour--brian-scott-lipton.json",
-    "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
-    "harry-potter-2021/broadwayworld--michael-dale.json",
-    "harry-potter-2021/drama-queen-nyc--jonathan-warman.json",
-    "harry-potter-2021/exeunt-magazine--kev-berry.json",
-    "harry-potter-2021/limelight-magazine-au--clive-paget.json",
-    "harry-potter-2021/medium--christian-lewis.json",
-    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-    "harry-potter-2021/the-times--ann-treneman.json",
-    "harry-potter-2021/washpost--peter-marks.json"
+    "suffs-2024/nytimes--jesse-green.json",
+    "suffs-2024/theatermania--jesse-green.json",
+    "suffs-2024/wsj--charles-isherwood.json",
+    "suffs-2024/the-times--nancy-durrant.json"
   ],
   "failed": [
-    "harry-potter-2021/national-review--kyle-smith.json",
-    "harry-potter-2021/timeout--adam-feldman.json",
-    "harry-potter-2021/broadway-blog--matthew-wexler.json",
-    "harry-potter-2021/curtainup--elyse-sommer.json",
-    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
-    "harry-potter-2021/front-row-center--tulis-mccall.json",
-    "harry-potter-2021/frontmezzjunkies--steven-ross.json",
-    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
-    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
+    "suffs-2024/chelsea-community-news--michael-musto.json",
+    "suffs-2024/deadline--greg-evans.json",
+    "suffs-2024/guardian--adrian-horton.json",
+    "suffs-2024/observer--rex-reed.json",
+    "suffs-2024/timeout--adam-feldman.json",
+    "suffs-2024/timeout--regina-robbins.json",
+    "suffs-2024/talkinbroadway--matthew-murray.json",
+    "suffs-2024/usatoday--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-      "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
-      "harry-potter-2021/exeunt-magazine--kev-berry.json",
-      "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-      "harry-potter-2021/the-times--ann-treneman.json",
-      "harry-potter-2021/washpost--peter-marks.json"
+      "suffs-2024/the-times--nancy-durrant.json"
     ],
     "browserbase": [],
     "scrapingbee": [
-      "harry-potter-2021/limelight-magazine-au--clive-paget.json",
-      "harry-potter-2021/medium--christian-lewis.json"
+      "suffs-2024/deadline--greg-evans.json",
+      "suffs-2024/theatermania--jesse-green.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "suffs-2024/wsj--charles-isherwood.json"
+    ],
     "archive": [
-      "harry-potter-2021/wsj--terry-teachout.json",
-      "harry-potter-2021/broadwayworld--michael-dale.json",
-      "harry-potter-2021/drama-queen-nyc--jonathan-warman.json"
+      "suffs-2024/nytimes--jesse-green.json"
     ]
   },
-  "startTime": "2026-02-02T23:11:31.584Z",
-  "lastProcessed": "harry-potter-2021/zeal-nyc--chris-caggiano.json",
-  "log": []
+  "startTime": "2026-02-02T23:32:40.267Z",
+  "lastProcessed": "suffs-2024/usatoday--charles-isherwood.json",
+  "log": [
+    {
+      "t": "2026-02-02T23:38:55.505Z",
+      "event": "bb-session",
+      "session": "76fadeb8",
+      "url": "https://observer.com/2024/04/suffs-broadway-review-shaina-taub/"
+    },
+    {
+      "t": "2026-02-02T23:39:20.998Z",
+      "event": "bb-session",
+      "session": "4ad9af69",
+      "url": "https://www.theatermania.com/broadway/reviews/suffs_90952.html"
+    },
+    {
+      "t": "2026-02-02T23:40:09.437Z",
+      "event": "bb-session",
+      "session": "b008bcc5",
+      "url": "https://www.wsj.com/articles/suffs-review-a-musical-of-marching-women-shaina-tau"
+    },
+    {
+      "t": "2026-02-02T23:40:52.471Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    }
+  ]
 }
