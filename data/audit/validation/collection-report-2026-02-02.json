@@ -1,71 +1,95 @@
 {
-  "runDate": "2026-02-02T15:07:15.858Z",
+  "runDate": "2026-02-02T15:10:38.319Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "death-becomes-her-2024",
+    "showFilter": "uncle-vanya-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 4,
+    "processed": 8,
+    "failed": 9,
     "skipped": 0,
-    "successRate": "20.0%"
+    "successRate": "47.1%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 3,
     "browserbase": 0,
-    "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 0
+    "scrapingbee": 1,
+    "brightdata": 2,
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 0,
+    "tier1Attempts": 9,
+    "tier1Success": 6,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
-    "tier4Attempts": 7,
-    "tier4Success": 4,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 11,
+    "tier2Attempts": 5,
+    "tier2Success": 2,
+    "tier3Attempts": 2,
+    "tier3Success": 2,
+    "tier4Attempts": 10,
+    "tier4Success": 6,
+    "totalFailed": 9,
+    "scrapingBeeCreditsUsed": 41,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "death-becomes-her-2024/nypost--johnny-oleksinski.json"
+    "uncle-vanya-2024/variety--bob-verini.json",
+    "uncle-vanya-2024/broadwaynews--brittani-samuel.json",
+    "uncle-vanya-2024/theatermania--jesse-green.json",
+    "uncle-vanya-2024/dailybeast--tim-teeman.json",
+    "uncle-vanya-2024/digital-journal--markos-papadatos.json",
+    "uncle-vanya-2024/exeunt-nyc--cameron-kelsall.json",
+    "uncle-vanya-2024/shelby-star-patrick-ryan--patrick-ryan.json",
+    "uncle-vanya-2024/usatoday--patrick-ryan.json"
   ],
   "failed": [
-    "death-becomes-her-2024/deadline--greg-evans.json",
-    "death-becomes-her-2024/deadline--pete-hammond.json",
-    "death-becomes-her-2024/timeout--adam-feldman.json",
-    "death-becomes-her-2024/wsj--charles-isherwood.json"
+    "uncle-vanya-2024/vulture--helen-shaw.json",
+    "uncle-vanya-2024/deadline--greg-evans.json",
+    "uncle-vanya-2024/new-york-sun--elysa-gardner.json",
+    "uncle-vanya-2024/observer--rex-reed.json",
+    "uncle-vanya-2024/thewrap--robert-hofler.json",
+    "uncle-vanya-2024/timeout--adam-feldman.json",
+    "uncle-vanya-2024/wsj--unknown.json",
+    "uncle-vanya-2024/ap--mark-kennedy.json",
+    "uncle-vanya-2024/thestage--nicole-serratore.json"
   ],
   "tierDetails": {
-    "playwright": [],
-    "browserbase": [],
-    "scrapingbee": [],
-    "brightdata": [
-      "death-becomes-her-2024/nypost--johnny-oleksinski.json"
+    "playwright": [
+      "uncle-vanya-2024/digital-journal--markos-papadatos.json",
+      "uncle-vanya-2024/exeunt-nyc--cameron-kelsall.json",
+      "uncle-vanya-2024/shelby-star-patrick-ryan--patrick-ryan.json"
     ],
-    "archive": []
+    "browserbase": [],
+    "scrapingbee": [
+      "uncle-vanya-2024/usatoday--patrick-ryan.json"
+    ],
+    "brightdata": [
+      "uncle-vanya-2024/theatermania--jesse-green.json",
+      "uncle-vanya-2024/dailybeast--tim-teeman.json"
+    ],
+    "archive": [
+      "uncle-vanya-2024/variety--bob-verini.json",
+      "uncle-vanya-2024/broadwaynews--brittani-samuel.json"
+    ]
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "death-becomes-her-2024/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2024/11/death-becomes-her-review-broadway-musical-megan-hilty-jennifer-simard-1236179445/",
-      "newUrl": "https://deadline.com/2024/11/death-becomes-her-broadway-review-1236182456/"
+  "failuresByOutlet": {
+    "Vulture": {
+      "count": 1,
+      "domain": "vulture.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
     }
-  ]
+  },
+  "urlDiscoveries": []
 }
