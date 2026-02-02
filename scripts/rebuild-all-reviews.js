@@ -605,11 +605,19 @@ function getBestScore(data) {
     const llmScore = data.llmScore.score;
     const llmBucket = scoreToBucket(llmScore);
 
-    // Helper: map thumb direction to bucket range
-    const thumbBucket = (thumb) => {
-      if (thumb === 'Up') return 'Positive'; // 70-84
-      if (thumb === 'Down') return 'Negative'; // 35-54
-      return 'Mixed'; // Flat/Meh = 55-69
+    // Helper: map thumb/bucket to broad direction for comparison
+    // Thumbs only have 3 levels (Up/Flat/Down) but scores have 5 buckets (Rave/Positive/Mixed/Negative/Pan).
+    // Up covers both Positive AND Rave; Down covers both Negative AND Pan.
+    // Comparing directions prevents false overrides (e.g., Up vs Rave = same direction, not a disagreement).
+    const thumbDirection = (thumb) => {
+      if (thumb === 'Up') return 'positive';
+      if (thumb === 'Down') return 'negative';
+      return 'neutral'; // Flat/Meh
+    };
+    const bucketDirection = (bucket) => {
+      if (bucket === 'Rave' || bucket === 'Positive') return 'positive';
+      if (bucket === 'Negative' || bucket === 'Pan') return 'negative';
+      return 'neutral'; // Mixed
     };
 
     // Rule 3: Meh/Flat thumbs (value=60) → DO NOT override, they were wrong 83% of the time
@@ -621,12 +629,13 @@ function getBestScore(data) {
       data.mehThumbIgnored = true;
       // Fall through to LLM fallback (Priority 3)
     } else {
-      // Rule 1: Both thumbs agree AND disagree with LLM bucket → override (high signal)
+      // Rule 1: Both thumbs agree AND disagree with LLM direction → override (high signal)
+      // Uses direction comparison (positive/negative/neutral) not exact bucket,
+      // because thumbs can't distinguish Rave from Positive (both map to Up)
+      // or Pan from Negative (both map to Down).
       if (dtliThumbNorm && bwwThumbNorm && dtliThumbNorm === bwwThumbNorm && !dtliIsMeh) {
-        const agreeBucket = thumbBucket(dtliThumbNorm);
-        if (agreeBucket !== llmBucket) {
+        if (thumbDirection(dtliThumbNorm) !== bucketDirection(llmBucket)) {
           const thumbScore = dtliScore; // Both agree, use dtli
-          const scoreDiff = Math.abs(thumbScore - llmScore);
           // Auto-resolved: thumb score wins. No human review needed.
           stats.thumbOverrideLlm = (stats.thumbOverrideLlm || 0) + 1;
           return { score: thumbScore, source: 'thumb-override-llm' };
