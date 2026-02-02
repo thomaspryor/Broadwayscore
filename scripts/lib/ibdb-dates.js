@@ -254,7 +254,81 @@ async function extractDatesFromIBDBPage(url) {
     result.theatre = theatreMatch[1].trim();
   }
 
+  // Creative team extraction
+  result.creativeTeam = extractCreativeTeamFromText(text);
+
   return result;
+}
+
+/**
+ * Extract creative team members from IBDB page text.
+ * IBDB credits are semicolon-separated entries like:
+ *   "Directed by Saheem Ali; Choreographed by Patricia Delgado and Justin Peck; Book by Marco Ramirez"
+ *   "Scenic Design by Arnulfo Maldonado; Musical Supervisor: Dean Sharenow"
+ *
+ * @param {string} text - Plain text content of the IBDB page
+ * @returns {Array<{name: string, role: string}>}
+ */
+function extractCreativeTeamFromText(text) {
+  const creativeTeam = [];
+  const seen = new Set(); // Prevent duplicates
+  const musicAndLyricsNames = new Set(); // Track "Music & Lyrics" names to suppress standalone Music/Lyrics
+
+  // Role patterns: [regex, role label]
+  // Order matters — "Music and Lyrics by" must come before "Music by" and "Lyrics by"
+  const rolePatterns = [
+    [/Music and Lyrics by\s+([^;:\n]+)/gi, 'Music & Lyrics'],
+    [/Directed by\s+([^;:\n]+)/gi, 'Director'],
+    [/Choreograph(?:ed|y) by\s+([^;:\n]+)/gi, 'Choreographer'],
+    [/Book by\s+([^;:\n]+)/gi, 'Book'],
+    [/Scenic Design by\s+([^;:\n]+)/gi, 'Scenic Design'],
+    [/Costume Design by\s+([^;:\n]+)/gi, 'Costume Design'],
+    [/Lighting Design by\s+([^;:\n]+)/gi, 'Lighting Design'],
+    [/Sound Design by\s+([^;:\n]+)/gi, 'Sound Design'],
+    [/Music (?:orchestrated|Orchestrated) by\s+([^;:\n]+)/gi, 'Orchestrations'],
+    [/Orchestrations by\s+([^;:\n]+)/gi, 'Orchestrations'],
+    [/Musical Supervisor:\s*([^;:\n]+)/gi, 'Music Supervision'],
+    [/Musical Director:\s*([^;:\n]+)/gi, 'Music Direction'],
+    [/Music direction by\s+([^;:\n]+)/gi, 'Music Direction'],
+    [/Lyrics by\s+([^;:\n]+)/gi, 'Lyrics'],
+    [/(?:^|[;.\n]\s*)Music by\s+([^;:\n]+)/gi, 'Music'],
+  ];
+
+  for (const [pattern, role] of rolePatterns) {
+    let match;
+    while ((match = pattern.exec(text)) !== null) {
+      const rawName = match[1].trim()
+        // Strip trailing punctuation/junk
+        .replace(/[.,;:\s]+$/, '')
+        // Strip common IBDB trailing noise
+        .replace(/\s+Based on\b.*$/i, '')
+        .replace(/\s+Originally\b.*$/i, '')
+        .replace(/\s+Additional\b.*$/i, '');
+
+      if (!rawName || rawName.length < 2 || rawName.length > 100) continue;
+
+      // Skip if this looks like a non-name (dates, numbers, etc.)
+      if (/^\d/.test(rawName) || /\d{4}/.test(rawName)) continue;
+
+      // Track "Music & Lyrics" names so we skip redundant standalone Lyrics/Music
+      if (role === 'Music & Lyrics') {
+        musicAndLyricsNames.add(rawName.toLowerCase());
+      }
+
+      // Skip standalone "Lyrics" or "Music" if same person already credited for "Music & Lyrics"
+      if ((role === 'Lyrics' || role === 'Music') && musicAndLyricsNames.has(rawName.toLowerCase())) {
+        continue;
+      }
+
+      const key = `${role}::${rawName.toLowerCase()}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+
+      creativeTeam.push({ name: rawName, role });
+    }
+  }
+
+  return creativeTeam;
 }
 
 /**
@@ -330,6 +404,7 @@ async function lookupIBDBDates(title, options = {}) {
     previewsStartDate: null,
     openingDate: null,
     closingDate: null,
+    creativeTeam: [],
     ibdbUrl: null,
     found: false
   };
@@ -356,18 +431,22 @@ async function lookupIBDBDates(title, options = {}) {
 
     if (!dates.openingDate && !dates.previewsStartDate) {
       console.log(`  ❌ No dates extracted from IBDB page for "${title}"`);
-      return { ...notFound, ibdbUrl: bestMatch.url };
+      return { ...notFound, ibdbUrl: bestMatch.url, creativeTeam: dates.creativeTeam || [] };
     }
 
     console.log(`  ✅ IBDB dates for "${title}":`);
     if (dates.previewsStartDate) console.log(`     1st Preview: ${dates.previewsStartDate}`);
     if (dates.openingDate) console.log(`     Opening: ${dates.openingDate}`);
     if (dates.closingDate) console.log(`     Closing: ${dates.closingDate}`);
+    if (dates.creativeTeam && dates.creativeTeam.length > 0) {
+      console.log(`     Creative team: ${dates.creativeTeam.length} role(s)`);
+    }
 
     return {
       previewsStartDate: dates.previewsStartDate,
       openingDate: dates.openingDate,
       closingDate: dates.closingDate,
+      creativeTeam: dates.creativeTeam || [],
       ibdbUrl: dates.ibdbUrl,
       found: true
     };
@@ -417,6 +496,7 @@ function sleep(ms) {
 module.exports = {
   searchIBDB,
   extractDatesFromIBDBPage,
+  extractCreativeTeamFromText,
   findBestProduction,
   lookupIBDBDates,
   batchLookupIBDBDates,

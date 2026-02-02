@@ -298,6 +298,11 @@ async function discoverHistoricalShows() {
         if (ibdb.ibdbUrl) {
           show.ibdbUrl = ibdb.ibdbUrl;
         }
+
+        // Populate creative team if IBDB returned it
+        if (ibdb.creativeTeam && ibdb.creativeTeam.length > 0) {
+          show.creativeTeam = ibdb.creativeTeam;
+        }
       }
     } catch (e) {
       console.log(`⚠️  IBDB enrichment failed (continuing without): ${e.message}`);
