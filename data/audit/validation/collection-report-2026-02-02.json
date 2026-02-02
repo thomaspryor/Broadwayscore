@@ -1,59 +1,74 @@
 {
-  "runDate": "2026-02-02T23:16:07.604Z",
+  "runDate": "2026-02-02T23:19:06.038Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "jajas-african-hair-braiding-2023",
+    "showFilter": "days-of-wine-and-roses-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 1,
+    "processed": 1,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "16.7%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 3,
+    "tier1Success": 2,
     "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
-    "tier2Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier4Attempts": 1,
-    "tier4Success": 0,
-    "totalFailed": 1,
+    "tier3Attempts": 2,
+    "tier3Success": 1,
+    "tier4Attempts": 6,
+    "tier4Success": 2,
+    "totalFailed": 5,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.4,
+    "browserbaseMinutesUsed": 2,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "days-of-wine-and-roses-2024/theatermania--david-gordon.json"
+  ],
   "failed": [
-    "jajas-african-hair-braiding-2023/nydailynews--chris-jones.json"
+    "days-of-wine-and-roses-2024/hollywood-reporter--anita-gates.json",
+    "days-of-wine-and-roses-2024/deadline--greg-evans.json",
+    "days-of-wine-and-roses-2024/new-york-sun--elysa-gardner.json",
+    "days-of-wine-and-roses-2024/timeout--adam-feldman.json",
+    "days-of-wine-and-roses-2024/wsj--unknown.json"
   ],
   "tierDetails": {
     "playwright": [],
-    "browserbase": [
-      "data/review-texts/jajas-african-hair-braiding-2023/nydailynews--chris-jones.json"
-    ],
+    "browserbase": [],
+    "scrapingbee": [],
     "brightdata": [],
-    "archive": []
+    "archive": [
+      "days-of-wine-and-roses-2024/theatermania--david-gordon.json"
+    ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Hollywood Reporter": {
+      "count": 1,
+      "domain": "hollywoodreporter.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
