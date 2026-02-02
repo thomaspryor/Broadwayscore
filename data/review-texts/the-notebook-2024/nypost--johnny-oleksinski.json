@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "Because as elegantly staged as “The Notebook” is by co-directors Michael Greif and Schele Williams, and despite boasting an appealing cast, the show amounts to a series of un-involving pencil sketches rather than a layered portrait of a decades-long love.",
@@ -34,11 +34,11 @@
   "archiveOrgTimestamp": "20240924205520",
   "archiveOrgUrl": "http://web.archive.org/web/20240924205520/https://nypost.com/2024/03/14/entertainment/the-notebook-review-broadway-musical-doesnt-match-films-sweep/",
   "llmScore": {
-    "score": 60,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -49,7 +49,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges elegant staging and appealing cast but finds the show uninvolving and inferior to its source material, describing it as 'merely pleasant' rather than emotionally effective. | GPT-4o: The review criticizes the production for being uninvolving and failing to improve upon the original story, suggesting that it is not worth seeing despite some positive aspects like staging and cast. | Gemini: The review acknowledges the elegant staging and appealing cast but ultimately finds the show uninvolving and less effective than the source material. This indicates a mixed reaction, neither strongly recommending nor discouraging.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic finds the production 'merely pleasant' with structural flaws and casting issues that prevent emotional connection, though acknowledges some strong performances and an effective ending. | GPT-4o: The review acknowledges the elegant staging and appealing cast but criticizes the production for being uninvolving and lacking depth. The positive elements are overshadowed by significant structural and emotional shortcomings, leading to a mixed verdict. | Gemini: The review praises aspects like staging and some performances (especially the older actors), but ultimately finds the show uninvolving and the changes to the story ineffective. This indicates a mixed reaction, leaning towards lukewarm.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -59,33 +59,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:46:34.198Z",
+    "scoredAt": "2026-02-02T03:41:57.425Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 45,
-    "previousVersion": "5.0.0"
+    "previousScore": 60,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 50,
+    "claudeScore": 62,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Negative",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 12,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "showScoreExcerpt": "\"...the alterations dull its punch and turn it into a wispy memory play\"",
   "contentTier": "complete",
   "wordCount": 708,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 57,
-  "rescoreCompletedAt": "2026-02-01T16:20:07.642Z",
-  "needsRescore": true
+  "rescoreCompletedAt": "2026-02-02T03:41:57.425Z"
 }

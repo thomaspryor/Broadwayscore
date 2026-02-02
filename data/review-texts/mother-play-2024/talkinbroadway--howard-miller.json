@@ -10,18 +10,18 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 74,
-    "confidence": "medium",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises Jessica Lange's nuanced central performance while noting issues with underwritten supporting parts. The text is truncated but the available content suggests a modest recommendation based on the lead performance. | GPT-4o: The review highlights strong performances, particularly by Lange, but suggests the play has underwritten parts and a complex central character. The text is truncated, leaving some ambiguity about the final verdict. | Gemini: The review focuses on Jessica Lange's performance, highlighting its nuance and complexity. While the other actors are mentioned, the emphasis on Lange's portrayal suggests a positive, albeit potentially qualified, recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises Jessica Lange's nuanced central performance and acknowledges the play's compelling character study, though notes issues with underwritten supporting roles and structural boldness that may not work for all viewers. | GPT-4o: The review highlights the compelling nature of Jessica Lange's performance and the bold direction, suggesting a positive experience despite some reservations about the character development of the siblings. The overall tone leans towards recommending the show for its strong elements. | Gemini: The review praises Jessica Lange's performance and the play's exploration of a complex character, but notes that other aspects, like the siblings' portrayal, are less compelling. This suggests a positive but not overwhelmingly enthusiastic recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,27 +42,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:54:24.624Z",
+    "scoredAt": "2026-02-02T03:33:58.446Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 58,
-    "previousVersion": "5.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 65,
-    "geminiScore": 75,
+    "claudeScore": 73,
+    "openaiScore": 78,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 55,
@@ -90,10 +90,9 @@
   ],
   "fetchTier": 3,
   "sourceMethod": "brightdata",
-  "rescoreCompletedAt": "2026-02-01T14:56:53.453Z",
+  "rescoreCompletedAt": "2026-02-02T03:33:58.446Z",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
-  "wordCount": 708,
-  "needsRescore": true
+  "wordCount": 708
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 91,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,14 +20,14 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 61,
-    "confidence": "high",
+    "score": 91,
+    "confidence": "medium",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 86,
+      "high": 96
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Rave",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -35,7 +35,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This single excerpt only discusses the show's continued relevance, not the critic's recommendation. With such limited evaluative content and the 'Read more' truncation, I cannot determine if the critic recommends seeing the show. | GPT-4o: The excerpt suggests the show is thought-provoking, but without clear positive or negative evaluative language, it is difficult to determine a strong recommendation or dissuasion. The single quote and text quality warning suggest a conservative middle-range score. | Gemini: The single excerpt suggests the play's themes are relevant, but without more context, it's impossible to determine if the reviewer recommends seeing it. I'm placing it in the 'Mixed' bucket and scoring conservatively due to the limited information.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic explicitly calls this 'the best new American play of last season' and praises every aspect from performances to direction to design. Despite the biographical context about women's liberation, all evaluative language is overwhelmingly positive, describing it as 'potent,' 'piercingly accurate,' and praising the 'superb cast' and production elements. | GPT-4o: The review is overwhelmingly positive, praising the play's transfer to Broadway, the cast, direction, and production elements. The critic describes it as a 'potent exercise' and highlights its relevance and execution, indicating a strong recommendation. | Gemini: Despite the truncated text warning, the review is overwhelmingly positive, praising the play, cast, direction, and design elements. The critic calls it \"the best new American play of last season\" and highlights its relevance and insightful exploration of the era.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,30 +45,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:58:58.221Z",
+    "scoredAt": "2026-02-02T03:32:13.768Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 61,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 62,
-    "geminiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 2,
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "needsRescore": true,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 61,
   "textWordCount": 1056,
@@ -89,5 +89,6 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "rescoreCompletedAt": "2026-02-02T03:32:13.768Z"
 }

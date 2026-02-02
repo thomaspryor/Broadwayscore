@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Despite opening with philosophical musings about revivals, the critic delivers an enthusiastic endorsement calling it 'the most convincing, coherent, and compelling rendition' and 'a triumph,' clearly recommending this as a must-see production. | GPT-4o: The review describes the production as the most convincing, coherent, and compelling rendition to date, and uses strong positive language such as 'triumph' and 'vindication', indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language like \"triumph\" and \"vindication,\" indicating a very enthusiastic recommendation. The critic also states that this is the \"most convincing, coherent, and compelling rendition\" of the show to date.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite opening with concerns about revivals and past criticism, the critic delivers an unqualified rave, calling the production 'exquisite' and praising every element from direction to performances to ensemble work. | GPT-4o: The review is highly positive, praising the production's cast, direction, and emotional impact. The critic describes the show as 'exquisite' and highlights the performances as 'superb,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the direction, performances, and overall impact of the production. The critic highlights the actors' chemistry and the show's ability to evoke emotion, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:31:50.570Z",
+    "scoredAt": "2026-02-02T03:33:11.120Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "3.0.0"
+    "previousScore": 91,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 87,
-    "openaiScore": 95,
-    "geminiScore": 92,
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 8,
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "dtliExcerpt": "The production, which has received a few significant visual and musical upgrades since its Off-Broadway debut, is probably the most convincing, coherent, and compelling rendition of “Merrily” to date, making it the best candidate for its Broadway return. For the show’s many devoted fans (of which I am certainly one), this production is not just a triumph but a homecoming and a vindication.",
   "sources": [
@@ -79,11 +79,10 @@
   ],
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 92,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.882Z",
+  "rescoreCompletedAt": "2026-02-02T03:33:11.120Z",
   "truncationSignals": [
     "has_footer_junk"
   ],
   "contentTier": "complete",
-  "wordCount": 2140,
-  "needsRescore": true
+  "wordCount": 2140
 }

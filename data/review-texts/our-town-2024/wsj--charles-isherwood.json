@@ -8,18 +8,18 @@
   "bwwExcerpt": "Mr. Leon’s “Our Town” is polished and marked by moments of humor and melancholy, but they do not cohere into a powerfully affecting production. For theatergoers who saw the director David Cromer’s hyper-intimate 2009 off-Broadway production—which ran for almost 650 performances, the longest run in the play’s history—its indelible impact (it ranks as one of the best theatrical productions I have seen) will inevitably lead to disappointing comparisons, unfairly or not.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 59,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "bwwThumb": "Meh",
   "showScoreExcerpt": "\"Mr. Leon’s 'Our Town' is polished and marked by moments of humor and melancholy\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/our-town-broadway",
   "llmScore": {
-    "score": 59,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 54,
-      "high": 64
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges positive elements (polished, humor, melancholy) but explicitly states they don't add up to something powerful or affecting, indicating a lukewarm assessment that neither strongly recommends nor condemns. | GPT-4o: The review acknowledges some positive aspects like polish and moments of humor and melancholy, but ultimately suggests the production does not come together effectively, leading to a mixed verdict. | Gemini: The review acknowledges positive aspects like humor and melancholy but ultimately finds the production lacking in overall impact, especially when compared to a previous production. This suggests a mixed assessment rather than a clear recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges polish and effective moments but clearly states it fails to achieve powerful impact, leading to disappointing comparisons with superior previous productions. | GPT-4o: The review acknowledges the production's polish and moments of humor and melancholy but ultimately finds it lacking in overall impact, especially when compared to a previous production. This suggests a mixed reception. | Gemini: The review states that the production is \"polished and marked by moments of humor and melancholy\" but ultimately not \"powerfully affecting.\" This suggests a mixed reaction, leaning towards neither strong recommendation nor discouragement.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:39:10.936Z",
+    "scoredAt": "2026-02-02T03:36:27.584Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 55,
-    "previousVersion": "3.0.0"
+    "previousScore": 59,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 58,
+    "claudeScore": 62,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 4,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -85,13 +85,12 @@
   "textIssues": [
     "Word count too low: 172 (min: 300)"
   ],
-  "rescoreCompletedAt": "2026-01-29T14:31:51.957Z",
+  "rescoreCompletedAt": "2026-02-02T03:36:27.584Z",
   "garbageFullText": "https://www.wsj.com/articles/our-town-review-thornton-wilder-back-on-broadway-23333989\n\nJim Parsons and the cast of ‘Our Town.’ Daniel RaderNew York\n\nPromoted as an “Our Town” for “our time,” the new Broadway production of Thornton Wilder’s play has overlooked an olfactory trigger warning—odd given the sometimes comical list of possibly alarming elements you see at the theater in programs and on placards these days. Vegans and vegetarians should know that an overwhelming smell of frying bacon wafts through the theater in the final act. I suppose those allergic to heliotrope—the scent of the flower, which is referred to more than once in the first act, is also discernible at one point—should also be alerted to this aromatic aspect of the production’s approach to Wilder’s canonical American play.\n\nCopyright ©2025 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nopinionRent Control as a Constitutional Taking\n\nopinionThe Bidding War for New York Refugees\n\n‘The Queen of Versailles’ Review: Kristin Chenoweth’s Musical of Gilded Dreams\n\nHow a Skyscraper Shaped Like a Radiator Helped Create the Modern Corporation\n\nJPMorgan Chase’s Soaring Skyscraper With Human Spirit",
   "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
   "garbageFixedAt": "2026-01-29T22:45:23.092Z",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "fullText": "https://www.wsj.com/articles/our-town-review-thornton-wilder-back-on-broadway-23333989\n\nJim Parsons and the cast of ‘Our Town.’ Daniel RaderNew York\n\nPromoted as an “Our Town” for “our time,” the new Broadway production of Thornton Wilder’s play has overlooked an olfactory trigger warning—odd given the sometimes comical list of possibly alarming elements you see at the theater in programs and on placards these days. Vegans and vegetarians should know that an overwhelming smell of frying bacon wafts through the theater in the final act. I suppose those allergic to heliotrope—the scent of the flower, which is referred to more than once in the first act, is also discernible at one point—should also be alerted to this aromatic aspect of the production’s approach to Wilder’s canonical American play.",
   "isFullReview": false,
   "textWordCount": 118,

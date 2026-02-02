@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-REAL-WOMEN-HAVE-CURVES-Opens-on-Broadway-20250426",
   "bwwThumb": "Up",
   "originalScore": "A",
-  "assignedScore": 91,
+  "assignedScore": 89,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 91,
+    "score": 89,
     "confidence": "medium",
     "range": {
-      "low": 86,
-      "high": 96
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives an A rating and uses clearly enthusiastic language like 'absolute joy to witness,' 'bursting with heart,' and praises the production as 'bigger, brighter' while maintaining the powerful message of the original story. | GPT-4o: The review is overwhelmingly positive, highlighting the show's vibrant and heartwarming qualities. The critic's original rating of 'A' and the enthusiastic language used throughout strongly indicate a rave recommendation. | Gemini: The critic gives the show an 'A' rating and uses highly positive language such as 'absolute joy' and 'bursting with heart' to describe the production, indicating a strong recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic gives an A- grade and describes the show as 'an absolute joy,' 'crowd-pleasing,' and praises multiple aspects including performances, direction, and emotional impact. Despite some comparative critiques to the film version, the overall assessment is strongly positive. | GPT-4o: The review is overwhelmingly positive, highlighting the show's vibrant production, strong performances, and emotional impact. The critic's original rating of 'A' and the positive aggregator excerpts further support a Rave classification. | Gemini: Despite some reservations about changes from the original, the review is overwhelmingly positive, praising the performances, music, and overall experience. The critic's grade of A- and the enthusiastic language throughout indicate a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,27 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:21:07.411Z",
+    "scoredAt": "2026-02-02T03:38:34.799Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 83,
-    "previousVersion": "5.0.0"
+    "previousScore": 91,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 95,
-    "geminiScore": 90,
+    "claudeScore": 87,
+    "openaiScore": 90,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 7,
+    "geminiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "dtliExcerpt": "The show is an absolute joy to witness with its vibrant scenery and lively choreography. It also pulls off a crucial balancing act, immersing us in the real, textured world of their East Los Angeles locale, leaning into the detail and intimate moments, and then, in the right moments, embracing fantasy by whisking us into the character's minds and letting their dreams be visualized onstage.",
   "sources": [
@@ -98,8 +98,7 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "scrapingbee",
-  "rescoreCompletedAt": "2026-02-01T16:02:33.928Z",
+  "rescoreCompletedAt": "2026-02-02T03:38:34.799Z",
   "contentTier": "complete",
-  "wordCount": 1223,
-  "needsRescore": true
+  "wordCount": 1223
 }

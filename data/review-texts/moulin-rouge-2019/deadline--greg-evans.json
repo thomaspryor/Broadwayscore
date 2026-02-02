@@ -11,16 +11,16 @@
   "_removedScore": "Negative",
   "_removedScoreReason": "Sentiment placeholder, not an actual explicit score. Deadline doesn't use letter/star grades.",
   "_removedAt": "2026-01-31T23:45:00.000Z",
-  "assignedScore": 63,
+  "assignedScore": 62,
   "source": "reviews-json-stub",
   "sourceMethod": "archive",
   "showScoreExcerpt": "\"âMoulin Rouge! The Musicalâ Review: All You Need Is Love Songs By The Dozens\"",
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 62,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges the show's commercial appeal and lively audience response but personally finds it unsatisfying, describing it as derivative and suggesting others will share his lukewarm reaction. | GPT-4o: The review acknowledges the show's lively atmosphere and visual appeal but ultimately suggests a mixed reception, leaning towards a negative personal reaction. The critic's tone indicates appreciation for certain aspects but overall ambivalence. | Gemini: The review acknowledges the show's popularity and lively atmosphere but expresses reservations, suggesting it might not appeal to everyone. The critic leans more toward a 'grimace than grin,' indicating a mixed reaction.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges the show's visual splendor and box office success but finds it conceptually thin and overstuffed with songs, ultimately expressing more criticism than praise with that telling final line about grimacing rather than grinning. | GPT-4o: The review acknowledges the dazzling production and lively atmosphere but criticizes the lack of emotional depth and over-reliance on cover songs. The overall tone is mixed, with both positive and negative elements highlighted. | Gemini: The review acknowledges flaws, particularly the over-reliance on cover songs and a somewhat thin plot, but praises the performances, design, and overall lively atmosphere. It's a qualified recommendation, leaning towards positive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,27 +41,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:30:58.038Z",
+    "scoredAt": "2026-02-02T03:34:18.368Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
+    "claudeScore": 58,
     "openaiScore": 65,
-    "geminiScore": 62,
+    "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "archivePath": "data/archives/reviews/moulin-rouge-2019/deadline--greg-evans_2026-01-26.html",
   "textFetchedAt": "2026-01-26T23:30:27.719Z",
@@ -97,11 +97,10 @@
   "designation": "Recommended",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 38,
-  "rescoreCompletedAt": "2026-02-01T15:40:56.288Z",
+  "rescoreCompletedAt": "2026-02-02T03:34:18.368Z",
   "_garbageRestored": true,
   "_garbageRestoredAt": "2026-01-31T23:50:00.000Z",
   "_garbageRestoredReason": "Text was incorrectly flagged as garbage due to 'All Rights Reserved' footer. Restored complete 1294-word review.",
   "contentTier": "complete",
-  "wordCount": 1084,
-  "needsRescore": true
+  "wordCount": 1084
 }

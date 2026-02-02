@@ -9,18 +9,18 @@
   "showScoreExcerpt": "\"âMoulin Rouge! The Musical!â Review: Pop Opera Excess. A stage adaptation of Baz Luhrmannâs 2001 camp extravaganza is as opulent as it is empty.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/moulin-rouge-broadway",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 20,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 60,
+    "score": 20,
     "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 15,
+      "high": 25
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Pan",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The phrase 'as opulent as it is empty' suggests visual spectacle without substance, and 'camp extravaganza' implies a lack of serious artistic merit. However, with only one excerpt available, the full verdict may be more nuanced. | GPT-4o: The review describes the production as 'opulent' but also 'empty,' suggesting a visually impressive but perhaps shallow experience. The lack of full text and the single excerpt warning suggest a conservative score within the Mixed bucket. | Gemini: The phrase \"as opulent as it is empty\" suggests a visually impressive but ultimately shallow experience, indicating a mixed reaction. Given the single excerpt, I'm scoring in the middle of the Mixed range.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Pan | Claude: The critic explicitly states the show is 'horrible' and calls the source film 'the campiest movie ever made,' delivering a clear negative verdict despite acknowledging the production's scale and spectacle. | GPT-4o: The critic clearly states that the show is 'horrible' and describes it as 'opulent as it is empty', indicating a strong negative opinion with no redeeming qualities. | Gemini: The critic explicitly states the show is \"horrible,\" indicating a strong negative assessment and a Pan rating.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:33:14.111Z",
+    "scoredAt": "2026-02-02T03:34:54.767Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 34,
-    "previousVersion": "3.0.0"
+    "previousScore": 60,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 62,
-    "geminiScore": 58,
+    "claudeScore": 42,
+    "openaiScore": 20,
+    "geminiScore": 20,
     "claudeBucket": "Negative",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 17,
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "2/3 models agree: Pan"
   },
   "contentTier": "excerpt",
   "wordCount": 0,
@@ -66,7 +66,6 @@
     "show-score",
     "web-search"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 60,
   "isFullReview": false,
@@ -106,5 +105,6 @@
   "sourceMethod": "brightdata",
   "textIssues": [
     "Word count too low: 210 (min: 300)"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-02T03:34:54.767Z"
 }

@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Single truncated excerpt suggests the show may be emotionally demanding or intense, but provides no clear recommendation either way. The phrase 'a lot to take in' could indicate either overwhelming quality or simply intensity. | GPT-4o: The excerpt suggests that the production may be overwhelming or intense, which can be interpreted as neither fully positive nor negative. The lack of a clear recommendation or discouragement leads to a mixed classification, but the single excerpt and text quality warning lower confidence. | Gemini: The single excerpt suggests the reviewer found the show overwhelming, indicating a mixed reaction rather than a positive or negative one. Given the limited context, I've scored it in the middle of the 'Mixed' bucket.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Single excerpt suggests the show is emotionally demanding or intense but doesn't clearly recommend or discourage attendance. The phrase 'a lot to take in' could indicate either overwhelming power or excessive difficulty. | GPT-4o: The excerpt suggests the production may be overwhelming or challenging for some audiences, indicating a mixed reception. The lack of a full review and single excerpt warning necessitates a conservative score within the mixed range. | Gemini: The phrase \"a lot to take in\" suggests a mixed reaction, implying that while there may be something worthwhile, it could also be overwhelming or challenging. Given the single excerpt warning, I'm scoring conservatively within the Mixed range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,23 +46,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:19:35.968Z",
+    "scoredAt": "2026-02-02T03:32:55.323Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 55,
-    "previousVersion": "5.0.0"
+    "previousScore": 61,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "ensembleData": {
-    "claudeScore": 58,
+    "claudeScore": 60,
     "openaiScore": 62,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 4,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -70,6 +70,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
   },
-  "needsRescore": true,
-  "rescoreReason": "text-cleaning bug destroyed fullText during scoring"
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
+  "rescoreCompletedAt": "2026-02-02T03:32:55.323Z"
 }

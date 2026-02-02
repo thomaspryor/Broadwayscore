@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives a perfect 5/5 stars and uses superlative language throughout - calling it a 'remarkable revival,' describing performances as 'sublime,' 'perfectly cast,' and 'never been better,' and framing it as a profound emotional experience that hits audiences 'where it hurts' in the most affecting way. | GPT-4o: The critic's 5/5 star rating and the use of terms like 'revelatory evening of theater' and 'emotional avalanche of a production' strongly indicate a rave review. The performances are praised as 'sublime' and 'perfectly cast', further supporting the high recommendation. | Gemini: The critic gives the show 5/5 stars and calls it a \"revelatory evening of theater\" and a \"remarkable revival\", indicating a very strong positive reaction.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The 5-star rating combined with superlative language like 'remarkable revival,' 'sublime,' 'never been better,' and describing it as an 'emotional avalanche' clearly indicates strong enthusiasm and recommendation despite the emotional weight of the material. | GPT-4o: The review is overwhelmingly positive, with the critic giving it a 5/5 star rating and using phrases like 'remarkable revival' and 'emotional avalanche of a production,' indicating a strong recommendation to see the show. | Gemini: The critic gave the show 5/5 stars and used extremely positive language such as \"sublime\", \"remarkable revival\", and \"so much more potent\". The review is overwhelmingly positive, indicating a 'Rave' bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,12 +41,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:34:36.075Z",
+    "scoredAt": "2026-02-02T03:32:40.447Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 90,
-    "previousVersion": "5.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
@@ -70,12 +70,11 @@
   "showScoreExcerpt": null,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 88,
-  "rescoreCompletedAt": "2026-02-01T15:31:09.035Z",
+  "rescoreCompletedAt": "2026-02-02T03:32:40.447Z",
   "originalScore": "5/5 stars",
   "originalScoreNormalized": 100,
   "scoreSource": "live-fetch",
   "_scoreFetchedAt": "2026-01-31T23:15:55.204Z",
   "contentTier": "complete",
-  "wordCount": 590,
-  "needsRescore": true
+  "wordCount": 590
 }

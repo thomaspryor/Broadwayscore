@@ -9,18 +9,18 @@
   "showScoreExcerpt": "\"The Wiz is all about feeling...in complex times, its simple message rings loud and clear\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-wiz-broadway",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 62,
   "source": "show-score",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 78,
+    "score": 62,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening concerns about missing iconic elements, the critic concludes this 'may be the best version of The Wiz to date' and emphasizes the show's uplifting message that 'rings loud and clear,' indicating a positive recommendation. | GPT-4o: Despite initial concerns about changes, the critic ultimately praises the revival as potentially the best version of 'The Wiz' to date, highlighting its uplifting message and successful updates. | Gemini: Despite some initial reservations about changes, the reviewer ultimately states that this revival \"may be the best version of The Wiz to date,\" indicating a positive recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges talent and some effective elements but criticizes the production's frenzied energy, budget constraints, and removal of iconic elements, suggesting a flawed but not entirely unsuccessful show. | GPT-4o: The review highlights both positive aspects, such as the talent and some successful elements of the score, and significant criticisms, including missing iconic elements and a sense of desperation in performances. The truncated nature of the text and positive aggregator excerpts suggest a mixed overall impression with some redeeming qualities. | Gemini: Despite some reservations about the direction and changes to the original, the review acknowledges the talent and enjoyable aspects of the production, leading to a positive but not rave recommendation. The aggregator excerpts also suggest a positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:43:24.375Z",
+    "scoredAt": "2026-02-02T03:42:56.785Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 88,
-    "geminiScore": 80,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 78,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "dtliExcerpt": "The new revival of the 1975 musical by Charlie Smalls (et al) and William F. Brown updates some references (with the help of Amber Ruffin, fresh off her success with Some Like It Hot) and takes what worked from the 1978 movie (namely the Michael Jackson-as-Scarecrow solo “You Can’t Win”) and the popular TV musical (the swag, my god, the swag) to produce what may be the best version of The Wiz to date.",
   "sources": [
@@ -79,7 +79,7 @@
   "bwwThumb": "Up",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 79,
-  "rescoreCompletedAt": "2026-02-01T16:30:50.564Z",
+  "rescoreCompletedAt": "2026-02-02T03:42:56.785Z",
   "truncationSignals": [
     "no_ending_punctuation"
   ],
@@ -88,6 +88,5 @@
   "humanReviewScore": 78,
   "humanReviewPreviousScore": 42,
   "humanReviewAt": "2026-02-01T19:59:47.225Z",
-  "misattributedNote": "fullText is from Jonathan Mandell/NY Theater, not EW/Lester Fabian Brathwaite",
-  "needsRescore": true
+  "misattributedNote": "fullText is from Jonathan Mandell/NY Theater, not EW/Lester Fabian Brathwaite"
 }

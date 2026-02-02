@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic describes the production as 'broadly appealing' and 'competent' but emphasizes it's 'not particularly searing' and 'not resounding,' indicating a lukewarm assessment that neither strongly recommends nor discourages attendance. | GPT-4o: The review describes the production as broadly appealing and competent but lacking in distinctiveness and impact. This suggests a mixed verdict, recognizing some positive elements but also significant limitations. | Gemini: The review uses contrasting phrases like \"broadly appealing\" but \"not particularly searing\", and \"sincere and competent yet not resounding\", indicating a mixed assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly calls it 'competent yet forgettable' and describes it as 'sincere and competent yet not resounding' - acknowledging technical proficiency while finding it ultimately unmemorable and derivative. | GPT-4o: The review describes the show as competent and sincere but ultimately forgettable and not distinct, suggesting a mixed reception. The critic acknowledges the production's earnestness and appeal but notes it lacks a strong impact. | Gemini: The review describes the show as \"competent yet forgettable\" and \"sincere and competent yet not resounding.\" It acknowledges the show's appeal but ultimately finds it lacking distinction and impact, placing it firmly in the mixed category.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,21 +41,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:08:22.069Z",
+    "scoredAt": "2026-02-02T03:42:09.445Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 59,
-    "previousVersion": "3.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 62,
+    "claudeScore": 60,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -65,7 +65,6 @@
   },
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 59,
   "isFullReview": true,
@@ -89,5 +88,6 @@
   "fetchTier": 1,
   "textQuality": "full",
   "truncationSignals": [],
-  "textStatus": "complete"
+  "textStatus": "complete",
+  "rescoreCompletedAt": "2026-02-02T03:42:09.445Z"
 }

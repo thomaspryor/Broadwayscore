@@ -9,15 +9,15 @@
   "showScoreExcerpt": "“It’s true that there’s a sugar-high quality to ‘Spamalot’: By the end, your teeth are buzzing from the sheer multitude of sparkles and crescendos. But there’s also an embrace of its form’s inherent absurdity that feels almost existential, and thereby true to Python.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/spamalot-broadway",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 80,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 79,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite opening concerns about recycled content, the critic becomes genuinely enthusiastic about the production's theatrical meta-commentary and performances, particularly praising Kritzer and the show's ability to celebrate theater itself. | Gemini: The review has some initial reservations but ultimately concludes positively, indicating that the production is enjoyable and worth seeing. The critic expresses being \"giddily, onboard\" and questions \"what are you gonna do, miss the boat?\"",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite opening concerns about recycled content, the critic becomes 'giddily onboard' and praises the show's meta-theatrical cleverness, performances, and joyful absurdity, clearly recommending it as a celebration of musical theater. | GPT-4o: The review praises the production's joyful and outrageous nature, highlighting its cleverness and entertainment value despite acknowledging some flaws. The critic's overall tone is positive, recommending the show for its unique and engaging qualities. | Gemini: The review is largely positive, highlighting the show's meta humor, energetic performances, and overall fun experience. While acknowledging some potential pitfalls, the critic ultimately recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:48:51.853Z",
+    "scoredAt": "2026-02-02T03:39:53.093Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
+    "openaiScore": 82,
     "geminiScore": 80,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 74,
@@ -78,8 +79,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240520112615",
   "archiveOrgUrl": "http://web.archive.org/web/20240520112615/https://www.vulture.com/2023/11/theater-review-spamalot-broadway-revival.html",
-  "rescoreCompletedAt": "2026-02-01T16:10:03.969Z",
+  "rescoreCompletedAt": "2026-02-02T03:39:53.093Z",
   "contentTier": "complete",
-  "wordCount": 1634,
-  "needsRescore": true
+  "wordCount": 1634
 }

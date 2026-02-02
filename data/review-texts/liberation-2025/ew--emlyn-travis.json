@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The B+ grade and positive impact description ('messaging has hit its mark') indicate a solid recommendation, though the qualifier about not answering life's difficult questions suggests some limitations that keep it from being a rave. | Gemini: The critic gives the show a B+ and highlights its positive message and impact on the audience, indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B+ grade and description of the show's successful emotional impact on audiences indicates a solid positive recommendation, though the qualifier about not answering difficult questions suggests some reservations. | GPT-4o: The critic's B+ rating and the positive reaction from the audience member suggest a strong recommendation. The review highlights the show's ability to engage and inspire its audience, indicating a positive experience. | Gemini: The critic gives the show a B+ and highlights the positive impact it had on a young audience member. The review indicates a positive experience and recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,26 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:55:28.853Z",
+    "scoredAt": "2026-02-02T03:32:07.364Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/liberation-2025/ew--emlyn-travis_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:47:11.036Z",
@@ -94,6 +95,5 @@
   "wordCount": 1302,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 82,
-  "rescoreCompletedAt": "2026-02-01T15:27:13.524Z",
-  "needsRescore": true
+  "rescoreCompletedAt": "2026-02-02T03:32:07.364Z"
 }

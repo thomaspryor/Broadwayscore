@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 41,
+  "assignedScore": 59,
   "source": "bww-roundup",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/the-wiz-2024/nyt-theater--jonathan-mandell_2026-01-29.html",
@@ -29,14 +29,14 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 41,
-    "confidence": "medium",
+    "score": 59,
+    "confidence": "high",
     "range": {
-      "low": 36,
-      "high": 46
+      "low": 54,
+      "high": 64
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -44,7 +44,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic systematically lists multiple problems with this revival, describing performances as artificial and desperate, though acknowledges the cast's technical abilities. The text appears truncated but the established negative tone is clear. | GPT-4o: The review highlights several missing iconic elements and describes the performances as feeling artificial and desperate, suggesting a lack of enjoyment and a recommendation to skip this production. | Gemini: The review points out several issues with the production, including the lack of iconic elements and a sense of ease. However, it also acknowledges the cast's talent in singing and dancing, but criticizes the overzealousness of the performances. This suggests a mixed experience, not strongly recommending or discouraging.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges obvious talent and decent performances but criticizes the production's frenzied energy, budget limitations, and removal of iconic elements. The tone suggests disappointment with execution despite recognizing potential. | GPT-4o: The review highlights significant issues with the production, such as the lack of iconic elements and a sense of desperation in performances, but also acknowledges the talent and some successful musical numbers. The truncated text suggests caution, but the overall tone leans towards mixed. | Gemini: The review points out several issues with the production, including changes to iconic elements and an \"unmodulated, artificial-feeling fervor.\" However, it also acknowledges the talent of the cast and the enduring appeal of some of the songs. Given the truncated text, it's hard to determine the final verdict, but the overall tone suggests a mixed reaction.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,34 +54,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:44:09.061Z",
+    "scoredAt": "2026-02-02T03:43:00.729Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 38,
-    "previousVersion": "5.0.0"
+    "previousScore": 41,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 40,
+    "claudeScore": 58,
+    "openaiScore": 58,
     "geminiScore": 62,
-    "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 22,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
   "wordCount": 1128,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 52,
-  "rescoreCompletedAt": "2026-02-01T16:31:20.460Z",
-  "duplicateTextOf": "ew--lester-fabian-brathwaite.json",
-  "needsRescore": true
+  "rescoreCompletedAt": "2026-02-02T03:43:00.729Z",
+  "duplicateTextOf": "ew--lester-fabian-brathwaite.json"
 }

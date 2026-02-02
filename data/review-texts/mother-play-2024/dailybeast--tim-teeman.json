@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Opens with enthusiastic praise for Lange's performance and calls the play 'mesmerizing' and 'thrilling,' though notes some dramatic devices are 'strangely inert' and characters are types rather than fully developed. | GPT-4o: The review uses highly enthusiastic language to describe the production, particularly highlighting Jessica Lange's performance as mesmerizing and thrilling, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive about Jessica Lange's performance and calls the play 'mesmerizing' and 'thrilling'. While it notes some issues with the dramatic devices and character development, the overall tone suggests a recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: While praising Lange's electric performance as 'worth the price of a ticket,' the critic finds the play itself 'cold, airless, and puzzling' with characters hard to connect with or care about. | GPT-4o: The review praises Jessica Lange's performance as mesmerizing and thrilling, and highlights iconic moments worth the ticket price, despite noting the play's cold and puzzling nature. The overall tone suggests a positive recommendation with some reservations about the play's emotional impact. | Gemini: The review is mostly positive, highlighting Jessica Lange's performance and some iconic moments. However, it also notes the play's coldness and difficulty in connecting with the characters, indicating a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,21 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:52:33.858Z",
+    "scoredAt": "2026-02-02T03:33:54.574Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 90,
-    "geminiScore": 80,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "claudeScore": 62,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 18,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -67,8 +67,7 @@
   "bwwThumb": null,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 42,
-  "rescoreCompletedAt": "2026-02-01T15:39:06.892Z",
+  "rescoreCompletedAt": "2026-02-02T03:33:54.574Z",
   "contentTier": "complete",
-  "wordCount": 675,
-  "needsRescore": true
+  "wordCount": 675
 }

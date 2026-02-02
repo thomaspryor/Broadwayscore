@@ -17,12 +17,12 @@
   "scoreConfidence": "medium",
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:31:47.748Z",
+    "scoredAt": "2026-02-02T03:34:35.821Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 81,
-    "previousVersion": "5.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "scoreExtractedFrom": "archive",
   "garbageFullText": "The page you are looking for no longer exists. Perhaps you can return back to the homepage and see if you can find what you are looking for. Or, you can try finding it by using the search form below. ★★★★☆ Playwright Simon Stephens and tech wizards concoct the world’s first mixed reality play ★★★☆☆ Ian McKellen is among the performers appearing virtually in this one-act play by Simon Stephens ★★★☆☆ Erica Schmidt’s world premiere dramedy skewers a self-absorbed filmmaker and the people who love him ★★★☆☆ Hamish Linklater, Miriam Silverman, and Dylan Baker are among the stars of Erica Schmidt's world premiere play riffing on show business and marriage ★★★★☆ A new production of the Tony-nominated musical comedy goes to the head of the class ★★★★☆ Lesley Manville and Mark Strong have disturbingly good chemistry as theater’s most famous twice-related couple ★★★★★ Laurie Metcalf and Micah Stock star in Samuel D. Hunter's acclaimed drama, previously seen at Steppenwolf Theatre Company ★★★★★ Bess Wohl takes inspiration from her mother’s life for her clever, decade-jumping memory play ★★★★★ Joshua Henry gives what’s destined to be a Tony-winning performance in this much-needed revival ★★★★☆ Jonathan Groff gives a once-in-a-lifetime performance as the Grammy-winning “Beyond the Sea” singer Copyright © 2026 • New York Stage Review • .",
@@ -85,7 +85,7 @@
   },
   "llmScore": {
     "score": 80,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 75,
       "high": 85
@@ -99,7 +99,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The 4/5 star rating and language like 'sublime artistry,' 'has it all,' and praise for the director's 'best work' indicate strong enthusiasm. The critic emphasizes this is a 'definitively theatrical experience' rather than just copying the film. | GPT-4o: The review uses highly positive language, describing the show as a 'canvas of spectacle and emotion' and praising its 'sublime artistry'. The critic's 4/5 star rating also supports a strong recommendation. Despite the single excerpt warning, the language suggests a rave review. | Gemini: The review excerpt highlights the show's spectacle and artistry, indicating a positive experience. The 4/5 star rating also supports a positive classification, though the limited text and single excerpt warrant a score in the middle of the positive range.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic gives 4/5 stars and praises the spectacular design, performances, and musical numbers extensively, while noting the book scenes drag. Overall enthusiastic recommendation despite second act pacing issues. | GPT-4o: The review praises the production's design, direction, and performances, highlighting its successful adaptation from film to stage. Despite noting some weaknesses in the plot, the overall tone is highly positive, with strong recommendations for various elements of the show. | Gemini: The review is overwhelmingly positive, praising the design, direction, choreography, and performances, especially Olivo's. However, it notes that the plot machinations hold little interest and the second act is a bit sloggier, indicating reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -108,23 +108,22 @@
     }
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 88,
+    "claudeScore": 80,
+    "openaiScore": 82,
     "geminiScore": 78,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 81,
   "fullText": "Moulin Rouge! The Musical! opened tonight (!), and they might as well give the Tony Award for best scenic design of a musical to Derek McLane right now.\n\nThere are very strong cases to be made, too, for Tonys for Catherine Zuber’s costume design, Justin Townsend’s lighting design, Peter Hylenski’s sound design, Alex Timbers’ direction, Sonya Tayeh’s choreography (in what seems to be her first Broadway effort), and, especially, Karen Olivo’s spectacular performance — and to be spectacular within a spectacle is really saying something — as Satine, the glamorous, tubercular courtesan at the center of Moulin Rouge’s melodramatic Montmartre love triangle.\n\nBut the real question becomes: Can there be a Tony Award for music rights clearances?\n\n\n\nBecause Moulin Rouge! The Musical! is somehow — and quite successfully — even more than the thoroughly over-the-top 2001 Baz Luhrmann film. There isn’t, and can’t be, all the filmic tricks Luhrman used, but it’s a busy, vibrant theatrical interpretation on stage at the Al Hirschfeld, and its beating heart is its score, even more overstuffed with pop hits than was the movie’s. It includes 70-odd hits, some of them full songs, some with reprises, some just a passage or even a line. The classics from the movie are there—Elton John, of course, and Lady Marmalade, and the greatest thing you’ll ever learn—plus a load of more recent hits (that will no doubt help thrill and draw in the kids) and other classics, even the Rolling Stones.\n\nAnd all those interwoven music cues are what makes this Moulin Rouge! work. Congratulations on your invented award, music supervisor, arranger, and orchestrator Justin Levine! (If you try sometimes, after all, you get what you need.)\n\nThat’s not to diminish any other parts of the staging or performance. Timbers, always an endlessly visually inventive director, hasn’t always had material that lived up to his specialties. (Rocky comes to mind.) But Luhrmann’s fantasia gives Timbers license to do his best work—while creating something that is a definitively theatrical experience, not just a pale imitation of the film.\n\nWorking with McLane, he builds an overstuffed, gaudy 18th arrondissement of a set that leaves theatergoers happily Instagramming up until the curtain rises, all rich reds with a giant elephant and a Moulin Rouge windmill hanging over the house. Zuber’s costumes are rich and appropriately gaudy. Tayeh’s dances manage to be both explosively athletic and elegantly balletic, and naturally sexy and sultry.\n\nThe performances are strong, too, but this is a musical built around the extravaganza, not about the people within it. From the first moments, the stalwart Danny Burstein displays a deliciously campy side, turning the club proprietor Harold Zidler into someone who resembles a major-chord Cabaret emcee. (Save another Tony.) Olivo, last seen on Broadway a decade ago as West Side Story’s Maria—she’s a star-crossed star, it seems—is simply sensational, giving Satine the magnetism she needs and killing in her big numbers. In a show where spectacle is king, the other performers stand out less, except for the charasmastic Sahr Ngaujah as a full-sized but still somehow stunted Toulouse-Lautrec.\n\nThe rivals for Satine’s love are the poor American writer Christian (Aaron Tveit, pretty as ever and also sort of sweet) and the imperious Duke of Monroth (Tam Mutu, suitably imperious), who demands Satine’s devotion as the price for his financial support of their music hall, and of the revolutionary play they’re trying to put on.\n\nMonroth, naturally, grows dismayed with this play within the play, one clearly designed to mock him. “I like the dancing,” he tells Toulouse-Lautrec. “We should have more of that.”\n\nAnd that, alas, is a good summation of Moulin Rouge!, too. Its big numbers are delicious and delightful, but when it slows down to a book scene it really slows down. The script is by John Logan, who won the Tony for Red but also brought us the book for The Last Ship, and it’s a more than creditable theatricalization of the Luhrmann’s film. But the success of the film relied entirely on its razzle-dazzle, and while Timbers has done an excellent job of creating stage razzle-dazzle, the plot machinations continue to hold little interest. Which makes the second act—oh, look, blood in a handkerchief!—a bit sloggier than the first.\n\nBut when that plot is sung—belted to the rafters, sexily danced by a gorgeous ensemble, layering pop hit on top of pop hit on top of pop hit—it’s every thing the audience wants. Gitchie, gitchie, ya-ya, da-da, indeed.\n\nMoulin Rouge! The Musical! opened July 25, 2019, at the Al Hirschfeld Theatre. Tickets and information: moulinrougemusical.com\n\nJesse Oxfeld was the theater critic of The New York Observer from 2009 to 2014. He has also written about theater for Entertainment Weekly, New York magazine, The New York Times Book Review, The Forward, The Times of London, and other publications. Twitter: @joxfeld. Email: jesse@nystagereview.com.",
@@ -143,5 +142,6 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "archiveOrgTimestamp": "20250426203954",
-  "archiveOrgUrl": "http://web.archive.org/web/20250426203954/https://nystagereview.com/2019/07/25/moulin-rouge-the-musical-all-you-need-is-love-and-showmanship/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250426203954/https://nystagereview.com/2019/07/25/moulin-rouge-the-musical-all-you-need-is-love-and-showmanship/",
+  "rescoreCompletedAt": "2026-02-02T03:34:35.821Z"
 }

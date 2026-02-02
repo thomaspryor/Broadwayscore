@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"...a pleasant excuse for stargazing\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-roommate-broadway",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 65,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/the-roommate-2024/lighting-sound-america--david-barbour_2026-01-27.html",
@@ -28,11 +28,11 @@
   ],
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 65,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 60,
+      "high": 70
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -43,7 +43,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly states the opening curtain call is 'the high point of the evening' and describes the play as offering 'little more than an oddball pairing,' indicating disappointment with the material despite acknowledging the star power. | GPT-4o: The review highlights a strong opening moment but suggests that the play doesn't offer much beyond an odd pairing of characters. The tone is neither fully positive nor negative, indicating a mixed reception. | Gemini: The review highlights a promising start but suggests the play doesn't quite live up to it, indicating a mixed experience overall. The critic points out the odd pairing of sensibilities, suggesting the play has its flaws.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges the stars' talents and professional production values but repeatedly emphasizes the play's 'essential thinness' and formulaic nature, concluding it's mainly worthwhile for fans of Farrow and LuPone. | GPT-4o: The review describes the play as thin and formulaic, but also notes that it is pleasant and enjoyable if one appreciates the stars. The truncated text warning suggests caution, but the provided excerpts and key quotes indicate a mixed but slightly positive sentiment. | Gemini: The review acknowledges the play's thinness and formulaic elements, but praises the performances of Farrow and LuPone and the overall professional production. The truncated text and aggregator excerpt suggest a mild recommendation despite flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,33 +53,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:13:21.189Z",
+    "scoredAt": "2026-02-02T03:42:23.964Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 45,
-    "previousVersion": "5.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 64,
-  "rescoreCompletedAt": "2026-02-01T16:24:33.224Z",
+  "rescoreCompletedAt": "2026-02-02T03:42:23.964Z",
   "textQualityOverride": "batch-fix-2026-01-30",
   "contentTier": "complete",
-  "wordCount": 938,
-  "needsRescore": true
+  "wordCount": 938
 }

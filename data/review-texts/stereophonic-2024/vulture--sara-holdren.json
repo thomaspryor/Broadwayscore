@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'exceptional,' 'stunning,' 'meaningful,' and describing moments as among the most exhilarating in recent memory. This is clearly a rave review with unqualified enthusiasm. | GPT-4o: The review is filled with superlatives and detailed praise for the production's elements, describing it as a 'stunning feat' and 'meaningful and exceptional piece of work.' The critic's language is enthusiastic and highlights the show's impact, making it a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the exceptional performances, direction, and writing. The critic praises the show's ability to capture the complexities of artistic collaboration, making it a meaningful and exceptional piece of work.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic describes multiple aspects as exceptional, stunning, and exhilarating, praising the performances, writing, direction, and overall artistic achievement with deeply enthusiastic language throughout. | GPT-4o: The review is overwhelmingly positive, highlighting the show's exhilarating moments, exceptional performances, and the meaningful and exceptional nature of the work. The critic's language is enthusiastic and full of praise, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the script, direction, cast, and overall impact of the show. While acknowledging the characters' flaws and the difficult nature of collaboration, the critic ultimately finds the play to be a meaningful and exceptional work of art.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,12 +43,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:09:11.613Z",
+    "scoredAt": "2026-02-02T03:40:39.615Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
@@ -71,11 +71,10 @@
   ],
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 89,
-  "rescoreCompletedAt": "2026-02-01T16:12:44.982Z",
+  "rescoreCompletedAt": "2026-02-02T03:40:39.615Z",
   "contentTier": "complete",
   "wordCount": 1660,
   "truncationSignals": [
     "has_footer_junk"
-  ],
-  "needsRescore": true
+  ]
 }

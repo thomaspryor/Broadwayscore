@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Farrow and LuPone make an odd and oddly affecting pair in this tender two-hander about friendship, loneliness and the courage to change.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "showScoreExcerpt": "Farrow and LuPone make an odd and oddly affecting pair in this tender two-hander about friendship, loneliness and the courage to change.",
   "needsScoring": true,
   "llmScore": {
-    "score": 76,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses positive language like 'affecting', 'tender', and highlights meaningful themes, indicating a solid recommendation despite the brief format. | GPT-4o: The review describes the performances as 'oddly affecting' and the play as 'tender', indicating a positive reception of the production's emotional impact and performances. | Gemini: The review uses positive language like \"affecting\" and \"tender\" to describe the production, indicating a recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a fragmented collection of various reviews and news items rather than a single Broadway review. The few theater-related snippets present mixed assessments without clear recommendations. | GPT-4o: The review text is truncated and largely unrelated to the show, but the key quote suggests a mixed reception with some positive elements. The confidence is low due to the lack of comprehensive evaluative content. | Gemini: The review mentions both a \"luminous performance\" and that the revival is \"uneven,\" indicating a mixed assessment. The final sentence is positive, but not overwhelmingly so.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,30 +43,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T21:01:47.340Z",
+    "scoredAt": "2026-02-02T03:42:30.713Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
   "textWordCount": 474,
@@ -107,5 +107,6 @@
   "textIssues": [
     "Show title not found in text"
   ],
-  "showNotMentioned": true
+  "showNotMentioned": true,
+  "rescoreCompletedAt": "2026-02-02T03:42:30.713Z"
 }

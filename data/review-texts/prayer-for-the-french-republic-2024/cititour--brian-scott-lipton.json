@@ -9,15 +9,15 @@
   "bwwExcerpt": "With so many characters and so many themes, the work could feel overwhelming. But Cromer, as he has done so often, ensures the show flows smoothly and feels much shorter than its running time. However, neither the play, which can feel overwritten at times, nor the production is perfect. For example, Takeshi Kata’s set design is visually too spare for such a long show while Sarah Laux’s costumes feel uninspired. Still, we should be profoundly grateful that a work of such ambition, scope and impor",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows mixed elements (noting flaws in writing, set, costumes) but ends with grateful appreciation for the work's ambition. However, the text cuts off mid-sentence and represents only a curated excerpt, requiring conservative scoring. | GPT-4o: The review acknowledges flaws in the play and production but ultimately expresses gratitude for the show's ambition and scope, suggesting a positive recommendation despite reservations. | Gemini: The review notes flaws in the set and costumes and that the play can feel overwritten, but the overall sentiment is positive, suggesting gratitude for the work's ambition. Given the single excerpt warning, I'm scoring conservatively within the 'Positive' bucket.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises the 'extraordinary play' with 'superb ensemble cast' and 'razor-sharp direction,' calling it an 'almost-ideal match of the personal and political.' Despite noting some flaws (overwriting, sparse set design), the overall assessment is strongly positive with clear recommendation language. | GPT-4o: The review is overwhelmingly positive, highlighting the play as 'extraordinary' and praising the performances and direction. Despite minor criticisms, the overall tone strongly recommends the production as a must-see. | Gemini: The review is overwhelmingly positive, praising the play's ambition, scope, and importance, as well as the performances and direction. While noting some flaws in the set and costumes, the reviewer ultimately recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:33:09.666Z",
+    "scoredAt": "2026-02-02T03:37:16.879Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 74,
-    "geminiScore": 75,
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
@@ -84,10 +84,9 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "scrapingbee",
-  "rescoreCompletedAt": "2026-02-01T15:52:42.701Z",
+  "rescoreCompletedAt": "2026-02-02T03:37:16.879Z",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
-  "wordCount": 762,
-  "needsRescore": true
+  "wordCount": 762
 }

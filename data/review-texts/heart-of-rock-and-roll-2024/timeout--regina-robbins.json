@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
   "bwwThumb": "Meh",
   "originalScore": "3/5",
-  "assignedScore": 60,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "showScoreExcerpt": "\"Squeeze your memories into spandex and get ready to turn back the clock.\"",
@@ -18,14 +18,14 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 60,
-    "confidence": "high",
+    "score": 74,
+    "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This single quote appears to be describing the show's premise rather than offering critical evaluation. With only this excerpt and aggregator context suggesting 'Flat', I cannot determine a clear verdict. | GPT-4o: The provided quote suggests a nostalgic and potentially fun experience, but lacks a clear recommendation or critique. The aggregator context indicates a flat verdict, supporting a mixed classification. However, due to the limited text, confidence is low. | Gemini: The provided quote suggests a nostalgic and potentially fun experience, but lacks a clear recommendation. The aggregator verdict being 'Flat' further supports a mixed assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The 3/5 rating and concluding recommendation to Gen X audiences, combined with praise for the cast and entertaining moments, indicates a positive but qualified recommendation despite acknowledged flaws. | GPT-4o: The review acknowledges the talent of the cast and the appeal of the songs but also highlights issues with the book and direction, as well as an awkward fit between the songs and the plot. The original 3/5 rating suggests a mixed reception, and the truncated text warning suggests caution against a more negative score. | Gemini: The review is mixed, pointing out flaws in the book and direction, but praises the cast and the appeal to Generation X. The critic's rating of 3/5 also suggests a positive but not rave recommendation. The truncated text makes it difficult to be certain of the final verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,33 +43,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:42:06.636Z",
+    "scoredAt": "2026-02-02T03:30:23.689Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 64,
-    "previousVersion": "3.0.0"
+    "previousScore": 60,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 60,
-    "geminiScore": 60,
-    "claudeBucket": "Mixed",
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 60,
   "isFullReview": true,
@@ -97,5 +96,6 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250724211141",
-  "archiveOrgUrl": "http://web.archive.org/web/20250724211141/https://www.timeout.com/newyork/theater/the-heart-of-rock-and-roll-broadway-musical-review-huey-lewis"
+  "archiveOrgUrl": "http://web.archive.org/web/20250724211141/https://www.timeout.com/newyork/theater/the-heart-of-rock-and-roll-broadway-musical-review-huey-lewis",
+  "rescoreCompletedAt": "2026-02-02T03:30:23.689Z"
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The six wives of Henry VIII get their moment to shine in this energetic pop concert disguised as a musical, though the historical revisionism feels more like fan fiction than feminist empowerment.",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 59,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "The six wives of Henry VIII get their moment to shine in this energetic pop concert disguised as a musical, though the historical revisionism feels more like fan fiction than feminist empowerment.",
   "needsScoring": true,
   "llmScore": {
-    "score": 64,
+    "score": 59,
     "confidence": "medium",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 54,
+      "high": 64
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges the show's energy and gives the wives their due, but the criticism of it feeling like 'fan fiction' rather than meaningful empowerment suggests significant reservations about the substance. | GPT-4o: The review acknowledges the show's energy and entertainment value but criticizes the historical revisionism, suggesting a mixed opinion overall. | Gemini: The review describes the show as an \"energetic pop concert\" and implies enjoyment despite reservations about the historical revisionism.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a website error message or search page rather than an actual review, making it impossible to determine any critical assessment. | GPT-4o: The text provided does not contain any evaluative content about a specific production. The lack of review content leads to a default 'Mixed' classification with low confidence due to the absence of a clear verdict. | Gemini: The review text is a placeholder indicating the review is missing, so it's impossible to determine a recommendation. I'm classifying it as mixed with a low score due to the lack of content.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,26 +43,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:59:07.052Z",
+    "scoredAt": "2026-02-02T03:39:07.531Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 75,
+    "claudeScore": 60,
+    "openaiScore": 62,
+    "geminiScore": 55,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "geminiBucket": "Mixed",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
@@ -104,6 +105,6 @@
     "Word count too low: 42 (min: 300)",
     "Show title not found in text"
   ],
-  "needsRescore": true,
-  "rescoreReason": "text-cleaning bug destroyed fullText during scoring"
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
+  "rescoreCompletedAt": "2026-02-02T03:39:07.531Z"
 }

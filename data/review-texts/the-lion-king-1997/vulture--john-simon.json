@@ -9,15 +9,15 @@
   "dtliExcerpt": "Come to The Lion King with two pairs of eyes, one ear, and half a brain. You will be bombarded by some of the most beautiful and spectacular sights theater can offer from before and behind, so eyes in the back of the head will come in handy. You will be harangued by second-rate standard-show music and lyrics by Elton John and Tim Rice, and also by Lebo Mï's stirring African chants and ululations, to which your active ear should be cocked. Finally, you will be subjected to a well-worn, simplistic children's tale about a lion cub's hard road to adulthood and the throne of the animal kingdom, usurped by his wicked uncle in cahoots with some murderously laughing hyenas.",
   "showScoreExcerpt": "\"You will be bombarded by some of the most beautiful and spectacular sights theater can offer from before and behind, so eyes in the back of the head will come in handy.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 75,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 76,
-    "confidence": "high",
+    "score": 75,
+    "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic describes the visual elements as 'most beautiful and spectacular sights theater can offer,' which is highly positive praise. However, this appears to be a curated excerpt focused only on spectacle, and the aggregator suggests a 'flat' verdict, indicating possible reservations about other elements not shown in this excerpt. | GPT-4o: The review highlights the visual spectacle of the production, suggesting a positive experience. However, the lack of a full review and the aggregator's 'Flat' verdict imply some reservations, leading to a medium confidence in a positive classification. | Gemini: The quote suggests a visually stunning experience, which implies a positive recommendation, although the need for \"eyes in the back of the head\" hints at potential drawbacks or overwhelming aspects.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is balanced between praise for Julie Taymor's visual spectacle and harsh criticism of the music and story. The critic acknowledges adults will 'feast on' the visual wonders but calls the music 'second-rate' and story 'simplistic.' The truncated nature makes me cautious about a lower score. | GPT-4o: The review highlights the spectacular visual elements and imaginative design by Julie Taymor, suggesting a positive experience despite criticisms of the music and story. The truncated text and mixed aggregator context suggest a cautious positive score. | Gemini: Despite the truncated text, the review highlights the spectacular visuals and imaginative animal recreations, suggesting a positive experience overall, especially for adults. The critic acknowledges the simplistic story and 'second-rate' music, but emphasizes the visual spectacle as a major draw.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:59:37.992Z",
+    "scoredAt": "2026-02-02T03:41:44.656Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 78,
+    "claudeScore": 62,
+    "openaiScore": 74,
     "geminiScore": 75,
-    "claudeBucket": "Positive",
+    "claudeBucket": "Mixed",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/the-lion-king-1997/vulture--john-simon_2026-02-02.html",
   "textFetchedAt": "2026-02-02T02:39:40.014Z",
@@ -71,7 +71,7 @@
   "bwwThumb": null,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 85,
-  "rescoreCompletedAt": "2026-02-01T16:19:33.348Z",
+  "rescoreCompletedAt": "2026-02-02T03:41:44.656Z",
   "contentTier": "needs-rescrape",
   "wordCount": 272,
   "truncationSignals": [
@@ -85,7 +85,6 @@
   "humanReviewScore": 65,
   "humanReviewPreviousScore": 85,
   "humanReviewAt": "2026-02-01T19:59:47.224Z",
-  "needsRescore": true,
   "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [

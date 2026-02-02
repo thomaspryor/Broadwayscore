@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges positive elements like Christine Sherrill's performance and the show's energy, but emphasizes this is an unchanged production with structural flaws and outdated material, suggesting neither strong recommendation nor discouragement. | GPT-4o: The review acknowledges the show's unchanged nature and some narrative issues but highlights a strong performance by Christine Sherrill. This suggests a mixed reception with some positive elements. | Gemini: The review highlights the show's familiarity and lack of reimagining, but also praises the lead performance and the inclusion of ABBA songs. It's a recommendation with reservations due to the dated nature of the material.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges strong performances and entertaining moments (especially the curtain call and standout cast members) but criticizes the unchanged production, weak plot, and questions whether current audiences will embrace this nostalgia-dependent show. The review is neither a recommendation nor a discouragement. | GPT-4o: The review acknowledges the production's high-energy performances and standout moments, particularly during the curtain call, but also highlights its lack of innovation and the plot's weaknesses. The critic seems to appreciate the nostalgia and some performances but is not fully convinced by the overall production. | Gemini: The review acknowledges the show's silliness and lack of originality, but ultimately praises the performances and the fun, feel-good atmosphere, especially during the curtain call. It's a recommendation with reservations due to the dated aspects and plot issues.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,12 +42,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:27:22.901Z",
+    "scoredAt": "2026-02-02T03:32:32.284Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
-    "previousVersion": "5.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
@@ -71,8 +71,7 @@
   "showScoreExcerpt": null,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 62,
-  "rescoreCompletedAt": "2026-02-01T15:29:45.568Z",
+  "rescoreCompletedAt": "2026-02-02T03:32:32.284Z",
   "contentTier": "complete",
-  "wordCount": 744,
-  "needsRescore": true
+  "wordCount": 744
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This deeply immersive production is a technical marvel that showcases the creative process behind making a legendary album, while also exploring the personal costs of artistic ambition.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,13 +18,13 @@
   "showScoreExcerpt": "This deeply immersive production is a technical marvel that showcases the creative process behind making a legendary album, while also exploring the personal costs of artistic ambition.",
   "needsScoring": true,
   "llmScore": {
-    "score": 78,
+    "score": 90,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 85,
+      "high": 95
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review uses strong positive language like 'technical marvel' and 'deeply immersive' while acknowledging artistic depth, indicating a clear recommendation despite the brief excerpt. | GPT-4o: The review uses strong positive language such as 'deeply immersive' and 'technical marvel', indicating a high level of enthusiasm and recommendation. | Gemini: The review highlights the production's technical achievements and exploration of artistic ambition, suggesting a positive but not overwhelmingly enthusiastic recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review describes the production as a 'technical marvel' and emphasizes the emotional impact and artistic achievement, with the additional context reinforcing the highly positive assessment. | GPT-4o: The review describes the production as a 'technical marvel' and highlights its deep immersion and emotional impact, indicating a strong recommendation. | Gemini: The review describes the production as a \"technical marvel\" and \"deeply immersive,\" indicating a positive assessment and recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,28 +43,28 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:59:56.944Z",
+    "scoredAt": "2026-02-02T03:40:23.521Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 89,
     "openaiScore": 90,
-    "geminiScore": 78,
-    "claudeBucket": "Positive",
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "2/3 models agree: Rave"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "textWordCount": 64,
@@ -102,5 +102,6 @@
   "textStatus": "partial",
   "sourceMethod": "brightdata",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (64 words)"
+  "contentTierReason": "Short text (64 words)",
+  "rescoreCompletedAt": "2026-02-02T03:40:23.521Z"
 }

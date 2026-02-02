@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review describes the show as 'swoonful' and praises the star's 'magic, vintage touch,' though calling it 'safe' suggests it's good but not groundbreaking. The truncated text limits confidence in the full assessment. | GPT-4o: The review describes the show as 'safe' and 'swoonful', indicating a positive but not overly enthusiastic recommendation. The mention of Jonathan Groff's 'magic, vintage touch' suggests a highlight, supporting a positive classification. | Gemini: The review describes the show as \"swoonful\" and mentions Jonathan Groff's \"magic touch,\" indicating a positive experience, but the term \"safe\" suggests it might lack innovation or risk-taking, hence a positive but not rave score.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review appears heavily truncated with mostly navigation menu text, but the visible headline and excerpt suggest a positive assessment describing the show as 'safe, swoonful' and praising the star's performance as having 'magic.' | GPT-4o: The review describes the show as 'safe' and 'swoonful', indicating a positive but not overly enthusiastic recommendation. The mention of Jonathan Groff's 'magic, vintage touch' suggests a positive view of the performance. | Gemini: The review describes the show as \"swoonful\" and notes that the star has \"the magic touch\", indicating a positive but not overwhelmingly enthusiastic recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,12 +40,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:12:18.027Z",
+    "scoredAt": "2026-02-02T03:31:31.496Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
-    "previousVersion": "5.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 75,
@@ -82,7 +82,7 @@
   "bwwThumb": null,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 60,
-  "rescoreCompletedAt": "2026-02-01T15:22:26.479Z",
+  "rescoreCompletedAt": "2026-02-02T03:31:31.496Z",
   "contentTier": "complete",
   "wordCount": 564,
   "truncationSignals": [
@@ -90,6 +90,5 @@
   ],
   "humanReviewScore": 62,
   "humanReviewPreviousScore": 25,
-  "humanReviewAt": "2026-02-01T19:59:47.220Z",
-  "needsRescore": true
+  "humanReviewAt": "2026-02-01T19:59:47.220Z"
 }

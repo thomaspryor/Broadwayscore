@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"...it’s curious that, particularly in today's political environment, the show loops back to a relatively unquestioned idea about the meaning, value, and reality of the American dream.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/real-women-have-curves-the-musical-broadway",
   "originalScore": null,
-  "assignedScore": 59,
+  "assignedScore": 62,
   "source": "show-score",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 59,
-    "confidence": "high",
+    "score": 62,
+    "confidence": "medium",
     "range": {
-      "low": 54,
-      "high": 64
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt suggests conceptual criticism about the show's handling of the American dream theme, indicating reservations. However, with only this fragment and 'Flat' aggregator context, the full verdict remains unclear. | GPT-4o: The excerpt suggests a critical perspective on the show's thematic approach, indicating a lack of depth in addressing contemporary issues. The aggregator context of 'flat' supports a mixed reception. | Gemini: The review excerpt expresses a critical view of the show's thematic content, suggesting it doesn't fully engage with contemporary issues. This indicates a mixed reaction, as the reviewer finds the show's exploration of the American dream problematic.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges the show's good elements (strong performances, production values) but consistently criticizes its inability to commit to its most important themes and calls the music/book insufficient, indicating disappointment rather than recommendation. | GPT-4o: The review acknowledges moments of confidence and compelling elements but criticizes the show for not fully engaging with its dramatic potential and for its indecision about its thematic focus. The tone suggests a mixed reception, with some positive aspects but significant reservations. | Gemini: The review points out both strengths and weaknesses. It praises the ensemble and some of the songs but criticizes the generic lyrics and the show's indecision about its core themes. The reviewer ultimately finds the show somewhat lacking in depth and impact.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:22:08.722Z",
+    "scoredAt": "2026-02-02T03:38:39.594Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 50,
-    "previousVersion": "5.0.0"
+    "previousScore": 59,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 58,
-    "openaiScore": 60,
-    "geminiScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 2,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -91,12 +91,11 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-02-01T16:03:09.611Z",
+  "rescoreCompletedAt": "2026-02-02T03:38:39.594Z",
   "contentTier": "needs-rescrape",
   "wordCount": 1129,
   "garbageReasoningDetected": "insufficient-text",
   "garbageReasoningFlaggedAt": "2026-02-02T00:01:17.128Z",
-  "needsRescore": true,
   "isFullReview": true,
   "textWordCount": 1129,
   "textQuality": "partial",

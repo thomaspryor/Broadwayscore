@@ -8,7 +8,7 @@
   "fullText": "It seems we can't find what you're looking for. Perhaps searching can help.\n\n Search for:\n \n \n \n \n\n \n\n \n\n \n \n\n \n\n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n Latest Videos\n \n \n \n \n \n \n\n \n \n \n \n \n \n \n Watch Jessica Vosk and Kelli Barrett Sing a Song From the Upcoming Broadway Musical Beaches \n \n \n Broadway performances start on March 27 at the Majestic Theatre.",
   "dtliExcerpt": "Cole Escola's unhinged comedy about Mary Todd Lincoln is a hilarious exercise in theatrical anarchy that manages to be both completely ridiculous and surprisingly touching.",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 59,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "contentTier": "truncated",
   "wordCount": 25,
   "llmScore": {
-    "score": 61,
+    "score": 59,
     "confidence": "medium",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 54,
+      "high": 64
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This appears to be an error message rather than an actual review text, making it impossible to determine the critic's recommendation or assessment of the show. | GPT-4o: The review text is not available, providing no evaluative content. This results in a low confidence score and a mixed classification due to lack of clear recommendation or criticism. | Gemini: The review text indicates that the reviewer was unable to find anything positive to say about the show, suggesting a negative assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a website error message or navigation text rather than an actual review, making it impossible to determine the critic's recommendation. | GPT-4o: The text provided does not contain any evaluative content about a specific production. It appears to be an error message or placeholder text, making it impossible to determine the critic's actual opinion on the show. | Gemini: The review text is missing, so it's impossible to determine the critic's recommendation. I'm defaulting to a mixed score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,27 +43,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:06:30.559Z",
+    "scoredAt": "2026-02-02T03:35:28.622Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "5.0.0"
+    "previousScore": 61,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,
     "openaiScore": 62,
-    "geminiScore": 40,
+    "geminiScore": 55,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Negative",
-    "scoreDelta": 22,
+    "geminiBucket": "Mixed",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "isFullReview": false,
   "textWordCount": 42,
@@ -104,6 +104,6 @@
     "Word count too low: 42 (min: 300)",
     "Show title not found in text"
   ],
-  "needsRescore": true,
-  "rescoreReason": "text-cleaning bug destroyed fullText during scoring"
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
+  "rescoreCompletedAt": "2026-02-02T03:35:28.622Z"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 62,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The phrase 'may indulge' suggests conditional appeal rather than strong recommendation, and the focus on nostalgia implies limited broader appeal. Single excerpt warning requires conservative scoring. | GPT-4o: The excerpt suggests a nostalgic appeal but lacks strong positive or negative language. Given the single excerpt warning, the review likely falls into a mixed category, with a conservative score due to potential cherry-picking. | Gemini: The phrase \"may indulge your 1980s nostalgia\" suggests a positive but not overwhelming experience. Given the limited text, a score in the middle of the positive range is appropriate.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review criticizes the show as 'phony and forced' with a 'trite plot' but acknowledges some strong performances and choreography, particularly praising Tamika Lawrence's standout performance and the energetic ensemble work. | GPT-4o: The review acknowledges some innovative and empowering moments, particularly through Tamika Lawrence's performance, but criticizes the overall plot as contrived and the musical arrangements as unbalanced. The mixed tone suggests the production has both strengths and weaknesses. | Gemini: The review highlights both positive and negative aspects. While it criticizes the plot and some orchestrations, it praises the choreography, some performances (especially Tamika Lawrence), and innovative interpretations of the music. The overall tone suggests a mixed experience, not strongly recommending or discouraging.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,30 +46,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:42:10.475Z",
+    "scoredAt": "2026-02-02T03:30:19.085Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 62,
-    "geminiScore": 75,
+    "openaiScore": 65,
+    "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
-  "needsRescore": true,
-  "rescoreReason": "text-cleaning bug destroyed fullText during scoring"
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
+  "rescoreCompletedAt": "2026-02-02T03:30:19.085Z"
 }

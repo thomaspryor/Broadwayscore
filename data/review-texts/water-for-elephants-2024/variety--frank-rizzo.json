@@ -44,7 +44,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it a show that 'offers escapism, enchantment and heart' and concluding it 'could be the greatest show on Broadway' - clear rave territory. | GPT-4o: The review is highly enthusiastic, praising the show for its escapism, enchantment, and creative artistry. The critic suggests it could be the greatest show on Broadway, indicating a strong recommendation. | Gemini: The review uses strong positive language like \"escapism, enchantment and heart\" and concludes with the bold statement that it \"could be the greatest show on Broadway,\" indicating a rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it a show that 'offers escapism, enchantment and heart' and concludes by suggesting it could be 'the greatest show on Broadway' - this is clearly enthusiastic must-see recommendation. | GPT-4o: The review is overwhelmingly positive, highlighting the show's enchantment, heart, and thrilling moments. The critic's comparison to 'The Lion King' and the statement that it 'could be the greatest show on Broadway' strongly indicate a rave review. | Gemini: The review uses very strong positive language, calling the show enchanting and thrilling, and suggesting it could be the greatest show on Broadway, clearly indicating a rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,12 +54,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:27:45.443Z",
+    "scoredAt": "2026-02-02T03:43:44.724Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 93,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
@@ -85,10 +85,9 @@
   "dtliExcerpt": "This underdog circus troupe may promote its entertainment as “Benzini Brothers’ Most Spectacular Show on Earth,” but for this rube’s nickels, “Water for Elephants” could be the greatest show on Broadway.",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 93,
-  "rescoreCompletedAt": "2026-02-01T16:36:43.934Z",
+  "rescoreCompletedAt": "2026-02-02T03:43:44.724Z",
   "contentTier": "complete",
   "wordCount": 924,
-  "needsRescore": true,
   "isFullReview": false,
   "textWordCount": 64,
   "textQuality": "truncated",

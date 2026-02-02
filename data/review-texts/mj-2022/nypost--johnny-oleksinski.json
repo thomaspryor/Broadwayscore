@@ -10,15 +10,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 44,
   "source": "dtli",
   "dtliThumb": "Down",
   "llmScore": {
-    "score": 42,
-    "confidence": "high",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 37,
-      "high": 47
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic identifies major structural problems with the show, calling the script 'lifeless' and suggesting it was sanitized by lawyers. The opening line about 'troubles' and description of 'pat dialogue' indicates clear disappointment with the production quality. | GPT-4o: The review criticizes the script as lifeless and implies that the production is troubled beyond its controversial subject. The tone is clearly negative, focusing on the shortcomings of the dialogue and overall production. | Gemini: The review is overwhelmingly negative, focusing on the \"lifeless script\" and \"pat dialogue\". The critic clearly does not recommend the show based on the writing.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic systematically criticizes nearly every aspect of the production - script, staging, sets, choreography - while acknowledging only the strong lead performances as positives. The overall assessment is clearly negative despite some praise for individual performers. | GPT-4o: The review criticizes the script, staging, and overall energy of the production, indicating it fails to capture the essence of Michael Jackson's performances. Despite some praise for individual performances, the overall tone is negative, emphasizing the show's shortcomings. | Gemini: The review praises the performances, especially Myles Frost, but criticizes the script and staging. The reviewer acknowledges some good moments but ultimately finds the production lacking in energy and depth, leading to a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,27 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:23:33.520Z",
+    "scoredAt": "2026-02-02T03:33:40.746Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 25,
-    "previousVersion": "5.0.0"
+    "previousScore": 42,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 40,
-    "geminiScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "scoreDelta": 5,
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "dtliExcerpt": "The troubles over at “MJ: The Musical,” the new show about Michael Jackson that opened Tuesday night on Broadway, are much bigger than the controversy surrounding its subject — although the two are closely connected. While the lifeless script is written by Pulitzer Prize winner Lynn Nottage of “Ruined,” the pat dialogue feels as if it was co-authored by a lawyer for the Jackson estate — one of the producers — with Wite-Out and a Sharpie.",
   "sources": [
@@ -71,8 +71,7 @@
   "designation": "Recommended",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 29,
-  "rescoreCompletedAt": "2026-02-01T15:37:51.884Z",
+  "rescoreCompletedAt": "2026-02-02T03:33:40.746Z",
   "contentTier": "complete",
-  "wordCount": 717,
-  "needsRescore": true
+  "wordCount": 717
 }

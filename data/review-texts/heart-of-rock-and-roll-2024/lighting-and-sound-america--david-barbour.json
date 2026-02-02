@@ -9,18 +9,18 @@
   "showScoreExcerpt": "Stop the presses! The headline news of the day is The Heart of Rock and Roll is...not bad.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-heart-of-rock-and-roll-broadway",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 61,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 72,
+    "score": 61,
     "confidence": "medium",
     "range": {
-      "low": 67,
-      "high": 77
+      "low": 56,
+      "high": 66
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening with strong criticism of the jukebox musical format, the critic's actual verdict on this specific show is that it's 'not bad,' which represents a positive assessment given their stated dim view of the genre. | GPT-4o: The review opens with a negative view of the jukebox musical format but acknowledges that this particular production is 'not bad', suggesting a mixed but not entirely negative assessment. | Gemini: Despite the critic's general dislike of jukebox musicals, they state that this particular show is \"not bad,\" indicating a mild recommendation. The initial setup is negative, but the ultimate assessment is positive, albeit with reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The phrase 'not bad' suggests mild surprise at basic adequacy rather than genuine recommendation. With only one excerpt available, I'm scoring conservatively in the mixed range as this could be setting up for either direction. | GPT-4o: The phrase 'not bad' suggests a lukewarm reception, indicating the show is neither strongly recommended nor discouraged. The exclamatory opening adds a slightly positive spin, but the overall sentiment remains mixed. | Gemini: The phrase \"not bad\" indicates a positive, albeit lukewarm, recommendation. Given the single excerpt, a score in the middle of the positive range is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:40:18.193Z",
+    "scoredAt": "2026-02-02T03:30:04.346Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 60,
-    "previousVersion": "3.0.0"
+    "previousScore": 72,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 65,
-    "geminiScore": 72,
-    "claudeBucket": "Positive",
+    "claudeScore": 60,
+    "openaiScore": 62,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 7,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 60,
@@ -77,9 +77,8 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.775Z",
+  "rescoreCompletedAt": "2026-02-02T03:30:04.346Z",
   "textQualityOverride": "batch-fix-2026-01-30",
   "contentTier": "complete",
-  "wordCount": 975,
-  "needsRescore": true
+  "wordCount": 975
 }

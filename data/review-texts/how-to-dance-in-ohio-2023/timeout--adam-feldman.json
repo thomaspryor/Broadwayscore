@@ -9,7 +9,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209",
   "bwwThumb": "Up",
   "originalScore": "4/5",
-  "assignedScore": 78,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "originalScoreNormalized": 80,
@@ -24,11 +24,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 78,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -39,7 +39,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 rating and positive language about the actors making 'winsome impressions' indicates a favorable recommendation, though limited excerpt prevents full assessment of overall verdict. | GPT-4o: The review highlights the positive impact of the actors, noting their 'winsome impressions' and the strength of Pearce's performance. The original rating of 4/5 suggests a solid recommendation, aligning with a 'Positive' classification. | Gemini: The critic gives the show a 4/5 rating and describes the actors as making \"winsome impressions,\" indicating a positive but not rave review. The aggregator context also points to a positive reception.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic gives 4/5 stars and uses consistently positive language throughout, calling it 'sweet, uplifting' and comparing it favorably to Come From Away. The concluding sentiment affirms the show's success and belonging on Broadway. | GPT-4o: The review is highly positive, highlighting the production's unique qualities, the actors' performances, and the sensitive direction. The critic's original rating of 4/5 and the positive aggregator context further support a strong positive classification. | Gemini: The review is positive, highlighting the show's uplifting nature and the actors' performances. The 4/5 rating and aggregator data further support a positive classification, despite the truncated text.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -49,21 +49,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:55:41.151Z",
+    "scoredAt": "2026-02-02T03:30:48.657Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
-    "previousVersion": "3.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 79,
-    "geminiScore": 78,
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -73,13 +73,12 @@
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.806Z",
+  "rescoreCompletedAt": "2026-02-02T03:30:48.657Z",
   "garbageFullText": "Broadway review by Adam Feldman Broadway musicals are pageants for underdogs: outsiders who, dancing to unconventional beats, stand out from the synchronized, anonymized chorus. From Annie Oakley, Fanny Brice and Maria von Trapp to Tracy Turnblad, Elphaba and Alexander Hamilton, the genre exalts the value of nonconformity. And the sweet, uplifting new musical How to Dance in Ohio, which depicts a group of autistic people as they prepare for a social event, guides this tradition in a joyful new direction. Refracted through the show’s prism, the Great White Way’s spotlight fans out into a spectrum. Since autism entails difficulty with verbal and physical communication, it may seem an unlikely match for the hyperexpressive style of musical theater. But How to Dance in Ohio turns this challenge into an opportunity; Rebekah Greer Melocik’s words and Jacob Yandura’s music provide access into inner worlds that their characters struggle to articulate outwardly. When shrinking violet Marideth (a touchingly vulnerable Madison Kopec) shares factoids about Australia with her father, for instance, it may seem to him like a simple nonsequitur, but we hear what’s in her head: “Australia is a lesson / In what isolation and distance can do. / A land of unlikely animals, / So strange they couldn’t possibly be true.” At moments like these throughout the show, Melocik and Yandura make the most of what theater is uniquely well-equipped to do: They turn a wall into a window. In adapting the musical from Alexandra Shiva’s 2015 documentary, Melocik has redistributed or expanded some of the film’s stories and added a few of her own: “This show is based on things that actually happened, but parts have been embellished for dramatic purposes,” Kopec explains at the start of the show. “You have to spice things up in Ohio.” The three women at the center of the movie—Marideth, Caroline (Amelia Fei) and Jessica (Ashley Wool)—are now joined by four composite characters: two guys, Drew (Liam Pearce) and Tommy (Conor Tague), and the gender-nonconforming Mel (Amini Russell) and Remy (Desmond Luis Edwards). How to Dance in Ohio | Photograph: Courtesy Curtis Brown These seven young people are members of a group-therapy circle overseen by the aptly named Dr. Amigo (Caesar Samayoa), who decides to organize a prom-like spring formal to help them hone their social skills. An onstage clock ticks down the days as they prepare for the big night, managing their anxieties and frustrations—and those of their parents and coworkers—while wrestling with questions like whom to invite and what to wear. This process itself is something of a dance: two steps forward, one step back. But the emphasis, even more than in the film, is on the characters’ capacity for independence, connection and accomplishment. This approach is mirrored and reinforced by the show’s casting. All of the actors playing autistic people publicly identify as autistic themselves; they’re also all making their Broadway debuts, and while some are more experienced than others—Pearce, with his expansively emotional voice, is a ringer—they all make winsome impressions. (Neurotypical actors fill out the side roles, including the somewhat extraneous one of Dr. Amigo's daughter.) Directed with sensitivity by Sammi Cannold, How to Dance in Ohio is an underdog itself: a modest production of an original musical that originated in Syracuse, New York, and—like another sincerely inspirational audience-pleaser, Come From Away—rose on its own merits, without big stars, hit songs or well-known pop-culture IP. “Going places / I am going places / There are places I need to be,” sing the actors in the opening number. “But most of the spaces / That I want to get to / Were not designed for me.” Whether it was designed for them or not, they’ve made their own space on Broadway now, and proved that they belong. How to Dance in Ohio. Belasco Theatre (Broadway). Book and lyrics by Rebekah Greer Melocik. Music by Jacob Yandura. Directed by Sammi Cannold. With Liam Pearce, Madison Kopec, Caesar Samayoa, Amelia Fei, Imani Russell, Ashley Wool, Desmond Edwards, Conor Tague. Running time: 2hrs 25mins. One intermission. Follow Adam Feldman on X: @FeldmanAdamFollow Time Out Theater on X: @TimeOutTheaterKeep up with the latest news and reviews on our Time Out Theater Facebook page How to Dance in Ohio | Photograph: Courtesy Curtis Brown Been there, done that? Think again, my friend. By entering your email address you agree to our Terms of Use and Privacy Policy and consent to receive emails from Time Out about news, events, offers and partner promotions. Thanks for subscribing! Look out for your first newsletter in your inbox soon! All kids under 18 can watch a Broadway show for free this February 15 beautiful pictures of NYC under snow By 2030, NYC landlords may be required to provide air conditioners in all units These enormous inflatable dogs will cruise down Manhattan streets this February The best things to do in NYC this weekend Discover Time Out original video",
   "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
   "garbageFixedAt": "2026-01-29T22:45:22.915Z",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "fullText": "Thanks for subscribing! Look out for your first newsletter in your inbox soon!\n\nThe best of New York straight to your inbox\n\nBy entering your email address you agree to our Terms of Use and Privacy Policy and consent to receive emails from Time Out about news, events, offers and partner promotions.\n\nThanks for subscribing! Look out for your first newsletter in your inbox soon!\n\nDéjà vu! We already have this email. Try another?\n\nBy entering your email address you agree to our Terms of Use and Privacy Policy and consent to receive emails from Time Out about news, events, offers and partner promotions.\n\nThanks for subscribing! Look out for your first newsletter in your inbox soon!\n\nOur newsletter hand-delivers the best bits to your inbox. Sign up to unlock our digital magazines and also receive the latest news, events, offers and partner promotions.\n\nDéjà vu! We already have this email. Try another?\n\nBy entering your email address you agree to our Terms of Use and Privacy Policy and consent to receive emails from Time Out about news, events, offers and partner promotions.\n\nPhotograph: Courtesy Curtis Brown | How to Dance in OhioReview\n\n4 out of 5 starsA new Broadway musical celebrates autistic achievement.Theater, MusicalsRecommendedSunday December 10 2023ShareCopy LinkFacebookTwitterPinterestEmailWhatsAppBuy ticketWritten by Adam FeldmanTheater and Dance Editor, Time Out USAAdvertisingTime Out says\nBroadway review by Adam Feldman\n\nBroadway musicals are pageants for underdogs: outsiders who, dancing to unconventional beats, stand out from the synchronized, anonymized chorus. From Annie Oakley, Fanny Brice and Maria von Trapp to Tracy Turnblad, Elphaba and Alexander Hamilton, the genre exalts the value of nonconformity. And the sweet, uplifting new musical How to Dance in Ohio, which depicts a group of autistic people as they prepare for a social event, guides this tradition in a joyful new direction. Refracted through the show's prism, the Great White Way's spotlight fans out into a spectrum.\n\nSince autism entails difficulty with verbal and physical communication, it may seem an unlikely match for the hyperexpressive style of musical theater. But How to Dance in Ohio turns this challenge into an opportunity; Rebekah Greer Melocik's words and Jacob Yandura's music provide access into inner worlds that their characters struggle to articulate outwardly. When shrinking violet Marideth (a touchingly vulnerable Madison Kopec) shares factoids about Australia with her father, for instance, it may seem to him like a simple nonsequitur, but we hear what's in her head: \"Australia is a lesson / In what isolation and distance can do. / A land of unlikely animals, / So strange they couldn't possibly be true.\" At moments like these throughout the show, Melocik and Yandura make the most of what theater is uniquely well-equipped to do: They turn a wall into a window.\n\nIn adapting the musical from Alexandra Shiva's 2015 documentary, Melocik has redistributed or expanded some of the film's stories and added a few of her own: \"This show is based on things that actually happened, but parts have been embellished for dramatic purposes,\" Kopec explains at the start of the show. \"You have to spice things up in Ohio.\" The three women at the center of the movie—Marideth, Caroline (Amelia Fei) and Jessica (Ashley Wool)—are now joined by four composite characters: two guys, Drew (Liam Pearce) and Tommy (Conor Tague), and the gender-nonconforming Mel (Amini Russell) and Remy (Desmond Luis Edwards).\n\nHow to Dance in Ohio | Photograph: Courtesy Curtis Brown\n\nThese seven young people are members of a group-therapy circle overseen by the aptly named Dr. Amigo (Caesar Samayoa), who decides to organize a prom-like spring formal to help them hone their social skills. An onstage clock ticks down the days as they prepare for the big night, managing their anxieties and frustrations—and those of their parents and coworkers—while wrestling with questions like whom to invite and what to wear. This process itself is something of a dance: two steps forward, one step back. But the emphasis, even more than in the film, is on the characters' capacity for independence, connection and accomplishment. This approach is mirrored and reinforced by the show's casting. All of the actors playing autistic people publicly identify as autistic themselves; they're also all making their Broadway debuts, and while some are more experienced than others—Pearce, with his expansively emotional voice, is a ringer—they all make winsome impressions. (Neurotypical actors fill out the side roles, including the somewhat extraneous one of Dr. Amigo's daughter.)\n\nDirected with sensitivity by Sammi Cannold, How to Dance in Ohio is an underdog itself: a modest production of an original musical that originated in Syracuse, New York, and—like another sincerely inspirational audience-pleaser, Come From Away—rose on its own merits, without big stars, hit songs or well-known pop-culture IP. \"Going places / I am going places / There are places I need to be,\" sing the actors in the opening number. \"But most of the spaces / That I want to get to / Were not designed for me.\" Whether it was designed for them or not, they've made their own space on Broadway now, and proved that they belong.\n\nHow to Dance in Ohio. Belasco Theatre (Broadway). Book and lyrics by Rebekah Greer Melocik. Music by Jacob Yandura. Directed by Sammi Cannold. With Liam Pearce, Madison Kopec, Caesar Samayoa, Amelia Fei, Imani Russell, Ashley Wool, Desmond Edwards, Conor Tague. Running time: 2hrs 25mins. One intermission.\n\nFollow Adam Feldman on X: @FeldmanAdamFollow Time Out Theater on X: @TimeOutTheaterKeep up with the latest news and reviews on our Time Out Theater Facebook page\n\nHow to Dance in Ohio | Photograph: Courtesy Curtis Brown\n\nBeen there, done that? Think again, my friend.\n\nBy entering your email address you agree to our Terms of Use and Privacy Policy and consent to receive emails from Time Out about news, events, offers and partner promotions.\n\nThanks for subscribing! Look out for your first newsletter in your inbox soon!\n\nDiscover Time Out original video\n\nBack to TopCloseGet us in your inbox\n\nBy entering your email address you agree to our Terms of Use and Privacy Policy and consent to receive emails from Time Out about news, events, offers and partner promotions.\n\nThanks for subscribing! Look out for your first newsletter in your inbox soon!\n\ntiktokfacebooktwitteryoutubeAbout us",
   "isFullReview": true,
   "textWordCount": 1037,

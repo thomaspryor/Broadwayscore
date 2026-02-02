@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The show is most effective when it focuses on Jackson's creative process and his perfectionist drive in the recording studio, capturing the meticulous attention to detail that made him the King of Pop.",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 58,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "The show is most effective when it focuses on Jackson's creative process and his perfectionist drive in the recording studio, capturing the meticulous attention to detail that made him the King of Pop.",
   "needsScoring": true,
   "llmScore": {
-    "score": 68,
-    "confidence": "low",
+    "score": 58,
+    "confidence": "medium",
     "range": {
-      "low": 63,
-      "high": 73
+      "low": 53,
+      "high": 63
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: This appears to be a truncated excerpt that highlights specific strengths but implies the show is less effective in other areas. The phrase 'most effective when' suggests unevenness rather than overall recommendation. | Gemini: The review highlights the show's effectiveness in certain aspects, suggesting a positive but not overwhelmingly enthusiastic recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This text appears to be a cultural commentary piece about women over 50 in media and society, not a Broadway theater review. It discusses TV shows, politics, and social issues without any theater-specific content. | GPT-4o: The text provided does not contain any evaluative content about a Broadway show, making it impossible to accurately classify it into a recommendation bucket. The content focuses on societal views of aging rather than a theater production. | Gemini: The review is about women and aging, not a Broadway show. It is a news article.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,30 +43,31 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:25:25.161Z",
+    "scoredAt": "2026-02-02T03:33:45.869Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 60,
-    "previousVersion": "5.0.0"
+    "previousScore": 68,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
   "ensembleData": {
     "claudeScore": 60,
-    "openaiScore": null,
-    "geminiScore": 75,
+    "openaiScore": 55,
+    "geminiScore": 40,
     "claudeBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "showNotMentioned": true,
-  "needsRescore": true,
-  "rescoreReason": "text-cleaning bug destroyed fullText during scoring"
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
+  "rescoreCompletedAt": "2026-02-02T03:33:45.869Z"
 }

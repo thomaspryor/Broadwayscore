@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges the show starts slow with Part I being 'mostly a hodgepodge' but ultimately recommends sticking with it, concluding it's a worthy addition to the Potter universe with impressive magic and well-crafted storytelling. | GPT-4o: The review acknowledges the impressive stage magic and entertaining elements, culminating in a strong recommendation as a fitting addition to the Potter realm, suggesting a positive experience overall. | Gemini: The review acknowledges a slow start in Part I but ultimately concludes that the play is a 'fitting addition' to the Harry Potter universe, indicating a positive recommendation despite some reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly recommends the show as 'a worthy follow-up' and 'a fitting addition to the realm of Potter,' despite acknowledging Part I is weaker and rambling. The final assessment is positive and encouraging. | GPT-4o: Despite the truncated text warning, the review contains strong positive language about the production's storytelling, stage magic, and overall execution. The critic emphasizes that the play is a fitting addition to the Harry Potter universe, suggesting a strong recommendation. | Gemini: Despite a slow start in Part I, the critic ultimately finds Part II to be a worthy follow-up to the Harry Potter tale, suggesting a positive, albeit reserved, recommendation. The aggregator excerpt reinforces this positive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:04:12.765Z",
+    "scoredAt": "2026-02-02T03:29:42.629Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
+    "claudeScore": 75,
     "openaiScore": 82,
-    "geminiScore": 78,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -94,11 +94,10 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250327190806/https://www.talkinbroadway.com/page/world/HarryPotterCursedChild2018.html",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 74,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.768Z",
+  "rescoreCompletedAt": "2026-02-02T03:29:42.629Z",
   "contentTier": "complete",
   "wordCount": 1758,
   "truncationSignals": [
     "no_ending_punctuation"
-  ],
-  "needsRescore": true
+  ]
 }

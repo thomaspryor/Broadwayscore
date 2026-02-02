@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The provided text appears to be mostly website navigation/menu content with only a brief headline mentioning the show is 'more jubilant, less jagged than its source' and praising the staging as 'vivacious.' Insufficient substantive review content to determine clear recommendation. | GPT-4o: The review describes the production as 'more jubilant, less jagged' and highlights the 'vivacious staging,' indicating a positive reception. However, the text is truncated, so the full context is unclear, leading to a medium confidence level. | Gemini: The review uses positive language such as \"jubilant\" and \"vivacious\" to describe the show, indicating a positive recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The text appears to be mostly navigation menu content with only a brief headline fragment mentioning the show is 'more jubilant, less jagged than its source' and has 'vivacious staging.' Without the full review text, cannot determine clear recommendation. | GPT-4o: The review describes the staging as 'vivacious' and the production as 'more jubilant, less jagged than its source,' which suggests a positive but not overly enthusiastic recommendation. The text is truncated, so the confidence is medium. | Gemini: The review uses positive language like \"jubilant\" and \"vivacious staging\" to describe the production, indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,12 +36,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:20:18.823Z",
+    "scoredAt": "2026-02-02T03:38:25.904Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 91,
-    "previousVersion": "3.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,
@@ -94,9 +94,8 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "scrapingbee",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.003Z",
+  "rescoreCompletedAt": "2026-02-02T03:38:25.904Z",
   "textQualityOverride": "batch-fix-2026-01-30",
   "contentTier": "complete",
-  "wordCount": 570,
-  "needsRescore": true
+  "wordCount": 570
 }

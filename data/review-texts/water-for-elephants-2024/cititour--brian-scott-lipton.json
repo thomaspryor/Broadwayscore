@@ -9,15 +9,15 @@
   "bwwExcerpt": "It’s all quite entertaining, but also a bit vexing, since these activities keep getting in the way of the show’s main plot. But eventually you realize that there’s not of lot a plot here, nor is it all that original (even if Sara Gruen’s 2006 novel which forms the basis for the musical, was a number one best seller, and the show’s book is by three-time Tony Award nominee Rick Elice). In fact, all the diversions simply add up to a major cause of coitus interruptus.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 61,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Single excerpt shows mixed sentiment - acknowledging entertainment value while criticizing structural issues and lack of originality. Conservative scoring due to limited text and potential cherry-picking. | GPT-4o: The review describes the show as entertaining but ultimately flawed due to a lack of plot and originality, leading to a negative overall impression. | Gemini: The review describes the show as \"entertaining\" but also \"vexing\" and notes the plot is not original. This suggests a mixed reaction, leaning towards the positive side of mixed.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic finds the show entertaining with impressive elements but criticizes the weak plot and structural issues. The concluding line 'it wouldn't be fair to say that Water for Elephants is all wet. Unfortunately, it's also far from being the greatest show on Earth' clearly places this in mixed territory. | GPT-4o: The review acknowledges entertaining elements and fine performances but criticizes the plot and originality. The overall tone suggests a mixed reception, with both positive and negative aspects highlighted. | Gemini: The review acknowledges entertaining aspects but criticizes the plot and originality. The final statement confirms a mixed assessment, leaning towards neither a strong recommendation nor discouragement.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:24:55.663Z",
+    "scoredAt": "2026-02-02T03:43:27.627Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 45,
-    "previousVersion": "5.0.0"
+    "previousScore": 61,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 45,
+    "claudeScore": 62,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Negative",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 17,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwThumb": "Down",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
@@ -84,10 +84,9 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "scrapingbee",
-  "rescoreCompletedAt": "2026-02-01T16:35:11.394Z",
+  "rescoreCompletedAt": "2026-02-02T03:43:27.627Z",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
-  "wordCount": 621,
-  "needsRescore": true
+  "wordCount": 621
 }

@@ -9,15 +9,15 @@
   "showScoreExcerpt": "“The laughs are plentiful. Despite the incendiary issues lurking at the edges of his tale, ‘Just for Us’ is more focused on comedy than catharsis. Edelman is a master of callbacks, and his funniest jokes are accented with wonderful bulging eyes.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/alex-edelman-just-for-us-broadway",
   "originalScore": "4/5",
-  "assignedScore": 75,
+  "assignedScore": 80,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 75,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt focuses on positive elements (plentiful laughs, master of callbacks, funniest jokes) and describes Edelman's comedic skills favorably. However, with only one curated excerpt available, I'm scoring conservatively within the positive range. | GPT-4o: The review highlights the abundance of laughs and praises Edelman's comedic skills, suggesting a positive experience. However, the focus on comedy over catharsis implies some reservations, leading to a mid-range positive score. | Gemini: The review highlights the plentiful laughs and Edelman's comedic skills, suggesting a positive experience, but also notes the lack of catharsis, indicating a reservation. Given it's a single excerpt, I'm scoring conservatively.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and explicit 'Recommended' label, combined with praise for Edelman's mastery and the statement that it's 'a mitzvah' the show moved to Broadway, clearly indicates a positive recommendation despite some reservations about focus on comedy over catharsis. | GPT-4o: The review highlights the show's comedic success and the critic's 4/5 rating indicates a strong positive recommendation. Despite the truncated text, the provided excerpts support a positive assessment. | Gemini: The critic gave the show 4/5 stars and explicitly states it's good that the show moved to Broadway. While the text is truncated, the overall tone is positive and the rating supports a positive classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:59:55.661Z",
+    "scoredAt": "2026-02-02T03:31:27.988Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "3.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 76,
-    "geminiScore": 75,
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -63,7 +63,6 @@
   "designation": "Recommended",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 75,
   "isFullReview": true,
@@ -106,5 +105,6 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "rescoreCompletedAt": "2026-02-02T03:31:27.988Z"
 }

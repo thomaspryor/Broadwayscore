@@ -31,7 +31,7 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250722220313/https://www.vulture.com/2023/10/theater-review-stereophonic-goes-its-own-way.html",
   "llmScore": {
     "score": 81,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 76,
       "high": 86
@@ -45,7 +45,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises the play as 'the real thing' compared to inferior alternatives, admires its construction and attention to detail, and describes moments when 'incandescent art comes out' - all indicating strong enthusiasm and recommendation. | GPT-4o: The review praises the play's authenticity, attention to detail, and documentary-like approach, suggesting a strong recommendation for those interested in rock history and the creative process. | Gemini: The review is largely positive, highlighting the play's immersive staging and realistic portrayal of band dynamics. While acknowledging the play's length and potential tedium, the critic ultimately finds it a worthwhile experience, making it a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the play as authentic and immersive, highlighting exceptional performances, realistic staging, and effective music, with only minor reservations about some dramatic moments. | GPT-4o: The review describes 'Stereophonic' as a refreshingly authentic portrayal of rock history, with strong performances and an immersive experience. While there are some criticisms about the characters slipping into generic dramatics, the overall tone is positive, highlighting the play's ability to capture the essence of collaboration and creation. | Gemini: The review is largely positive, highlighting the play's realism and strong performances, but notes some moments where it slips into generic dramatics. The reviewer clearly recommends seeing it, praising its unique approach and the quality of the music.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,32 +55,31 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:09:07.045Z",
+    "scoredAt": "2026-02-02T03:40:27.202Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 82,
     "openaiScore": 82,
     "geminiScore": 80,
-    "claudeBucket": "Rave",
+    "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 87,
-  "rescoreCompletedAt": "2026-02-01T16:12:39.058Z",
+  "rescoreCompletedAt": "2026-02-02T03:40:27.202Z",
   "contentTier": "complete",
-  "wordCount": 1577,
-  "needsRescore": true
+  "wordCount": 1577
 }

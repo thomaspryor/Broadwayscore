@@ -9,15 +9,15 @@
   "bwwExcerpt": "Just For One Day is yet another jukebox musical, with all the boons and pitfalls such a work might imply. Its tracklist, studded with songs by everyone from Queen to Bryan Adams, is nearly as rousing as Live Aid itself, and Matthew Brind’s new arrangements lift the anthems of the 1980s to new heights. Indeed, the music of Just For One Day is close to flawless, impeccably sung by its rock-solid cast and impressively steered by musical director Patrick Hurley (even though Gareth Owen’s sound desig",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JUST-FOR-US-2023",
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 46,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 44,
+    "score": 46,
     "confidence": "medium",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 41,
+      "high": 51
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The headline and opening description clearly frame this as negative ('under-baked, over-simplified'), though the truncated text shows praise for the music, suggesting mixed elements within an overall disappointing assessment. | GPT-4o: The review describes the musical as 'under-baked' and 'over-simplified', suggesting significant flaws. However, it praises the music and performances, indicating some redeeming qualities. The verdict is mixed, with a slight lean towards positive aspects. | Gemini: The review opens with a negative assessment, calling the show \"under-baked\" and \"over-simplified.\" While praising the music, the overall tone suggests the show is not worth seeing.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic clearly does not recommend this show, calling it 'under-baked, over-simplified' and concluding it's 'an underwritten, superficial dance party.' While praising the music and performances, the fundamental assessment is negative due to plot holes, superficial treatment of serious issues, and missed potential. | GPT-4o: The review criticizes the show for being under-baked and over-simplified, with plot holes and superficial treatment of complex issues, despite acknowledging some fun elements and strong performances. The overall tone is negative, suggesting it is not worth seeing. | Gemini: The review highlights both positive and negative aspects. While praising the music, cast, and direction, it criticizes the plot holes and superficial treatment of the subject matter, ultimately calling it an \"underwritten, superficial dance party.\"",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:59:51.850Z",
+    "scoredAt": "2026-02-02T03:31:22.734Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 35,
-    "previousVersion": "5.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 58,
-    "geminiScore": 45,
+    "openaiScore": 50,
+    "geminiScore": 62,
     "claudeBucket": "Negative",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Negative",
-    "scoreDelta": 16,
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -95,10 +95,9 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250301195522",
   "archiveOrgUrl": "http://web.archive.org/web/20250301195522/https://www.theglobeandmail.com/arts/theatre-and-performance/reviews/article-just-for-one-day-is-an-under-baked-over-simplified-dance-party/",
-  "rescoreCompletedAt": "2026-02-01T15:22:16.477Z",
+  "rescoreCompletedAt": "2026-02-02T03:31:22.734Z",
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",
-  "wordCount": 907,
-  "needsRescore": true
+  "wordCount": 907
 }

@@ -8,17 +8,17 @@
   "bwwExcerpt": "“Prayer for the French Republic” addresses, with nuance, detail and understated passion, the tensions and the connections between history and current events. While it tells of a particular family, it illuminates the troubles of all people caught up in the turbulent tides of history—as everyone in a sense is—even if some face graver danger than others.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 93,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 76,
+    "score": 93,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 88,
+      "high": 98
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt emphasizes positive qualities like 'nuance,' 'detail,' and 'understated passion,' suggesting appreciation for the production's thoughtful handling of its subject matter. However, confidence is medium due to limited text available. | GPT-4o: The review highlights the play's nuanced and passionate handling of complex themes, suggesting a positive reception. However, the lack of a full review and explicit recommendation lowers confidence slightly. | Gemini: The review uses positive language like \"nuance\", \"detail\", and \"understated passion\", suggesting a positive overall assessment despite the limited text available.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic calls this 'inexpressibly moving' and 'easily the finest of the Broadway season so far' while praising the 'flawless cast' and 'beautifully realized staging.' This is clearly enthusiastic praise positioning it as must-see theater. | GPT-4o: The review describes the play as 'inexpressibly moving' and 'the finest of the Broadway season so far,' indicating a strong recommendation. The critic praises the production's immediacy and power, suggesting it is a must-see. | Gemini: The review is overwhelmingly positive, calling the play the finest of the season and praising the cast, director, and staging. The critic emphasizes the play's power and relevance, making it a must-see.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,27 +37,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:36:13.444Z",
+    "scoredAt": "2026-02-02T03:37:36.548Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "3.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "“ 'Prayer for the French Republic' addresses, with nuance, detail and understated passion, the tensions and the connections between history and current events.\"",
@@ -82,7 +82,7 @@
   "textIssues": [
     "Word count too low: 223 (min: 300)"
   ],
-  "rescoreCompletedAt": "2026-01-29T14:31:51.972Z",
+  "rescoreCompletedAt": "2026-02-02T03:37:36.548Z",
   "garbageFullText": "https://www.wsj.com/articles/prayer-for-the-french-republic-review-antisemitism-joshua-harmon-david-cromer-anthony-edwards-broadway-0732206e\n\nMolly Ranson, Francis Benhamou, Nael Nacer, Aria Shahghasemi, Betsy Aidem and Anthony Edwards Jeremy DanielIn Joshua Harmon’s “Prayer for the French Republic,” a Jewish family in France faces the wrenching decision of whether to abandon their established and accomplished lives to leave the country—and possibly save themselves from persecution, or worse.\n\nManhattan Theatre Club at the Samuel J. Friedman Theatre, 261 W. 47th St., New York, $79-$199, 212-239-6200, closes March 3\n\nYou might assume the play is set during World War II. But while Mr. Harmon’s inexpressibly moving drama does include scenes from the 1940s, the family in question is grappling with the question of exile, to Israel, in the 21st century.\n\nThe play, easily the finest of the Broadway season so far, was first produced two years ago by Manhattan Theatre Club off-Broadway. Even then it was grimly topical. Now the play resounds with a chilling immediacy that lends it even greater and more unsettling power.\n\nIt is an unhappy coincidence that the production, featuring largely the same flawless cast and the same expert director, David Cromer, returns as the world confronts a spike in antisemitism; but perhaps we can feel grateful that this beautifully realized staging so trenchantly addresses the here and now—however uncomfortable that here and now is.\n\nCopyright ©2025 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8",
   "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
   "garbageFixedAt": "2026-01-29T22:45:23.113Z",
@@ -90,7 +90,6 @@
   "dateSource": "could-not-extract",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "fullText": "https://www.wsj.com/articles/prayer-for-the-french-republic-review-antisemitism-joshua-harmon-david-cromer-anthony-edwards-broadway-0732206e\n\nMolly Ranson, Francis Benhamou, Nael Nacer, Aria Shahghasemi, Betsy Aidem and Anthony Edwards Jeremy DanielIn Joshua Harmon’s “Prayer for the French Republic,” a Jewish family in France faces the wrenching decision of whether to abandon their established and accomplished lives to leave the country—and possibly save themselves from persecution, or worse.\n\nManhattan Theatre Club at the Samuel J. Friedman Theatre, 261 W. 47th St., New York, $79-$199, 212-239-6200, closes March 3\n\nYou might assume the play is set during World War II. But while Mr. Harmon’s inexpressibly moving drama does include scenes from the 1940s, the family in question is grappling with the question of exile, to Israel, in the 21st century.\n\nThe play, easily the finest of the Broadway season so far, was first produced two years ago by Manhattan Theatre Club off-Broadway. Even then it was grimly topical. Now the play resounds with a chilling immediacy that lends it even greater and more unsettling power.\n\nIt is an unhappy coincidence that the production, featuring largely the same flawless cast and the same expert director, David Cromer, returns as the world confronts a spike in antisemitism; but perhaps we can feel grateful that this beautifully realized staging so trenchantly addresses the here and now—however uncomfortable that here and now is.",
   "isFullReview": false,
   "textWordCount": 212,

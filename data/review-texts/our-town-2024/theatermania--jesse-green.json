@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival, directed by Kenny Leon, brings a fresh perspective to Wilder's masterpiece while honoring its timeless themes of love, loss, and the preciousness of everyday moments.",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "This revival, directed by Kenny Leon, brings a fresh perspective to Wilder's masterpiece while honoring its timeless themes of love, loss, and the preciousness of everyday moments.",
   "needsScoring": true,
   "llmScore": {
-    "score": 61,
-    "confidence": "high",
+    "score": 60,
+    "confidence": "medium",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 55,
+      "high": 65
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The provided text appears to be a website error message rather than an actual review, making it impossible to assess the critic's recommendation. | GPT-4o: The review text is not available, making it impossible to determine the critic's opinion. The placeholder text suggests a technical issue, not a review. Thus, a 'Mixed' classification with low confidence is assigned due to lack of information. | Gemini: The review text is a placeholder, indicating that the actual review is missing. Therefore, it's impossible to determine a clear recommendation, placing it in the Mixed category with low confidence.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This appears to be a website error page or search result rather than an actual review, making it impossible to assess the critic's recommendation. | GPT-4o: The review text is incomplete and does not provide any evaluative content about the show. The verdict is unclear due to missing content, leading to a mixed classification with low confidence. | Gemini: The review text indicates that the reviewer was unable to find the review, suggesting a negative experience or lack of content, leading to a negative classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,12 +43,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:37:42.509Z",
+    "scoredAt": "2026-02-02T03:36:20.338Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
-    "previousVersion": "5.0.0"
+    "previousScore": 61,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
@@ -92,19 +92,19 @@
   ],
   "ensembleData": {
     "claudeScore": 60,
-    "openaiScore": 62,
-    "geminiScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 40,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 2,
+    "geminiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
-  "needsRescore": true,
-  "rescoreReason": "text-cleaning bug destroyed fullText during scoring"
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
+  "rescoreCompletedAt": "2026-02-02T03:36:20.338Z"
 }

@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses effusive praise calling it 'effervescent', 'most charmingly simple show on Broadway', and 'stellar debut', plus it's designated as a 'Critic's Pick' which indicates strong recommendation. | GPT-4o: The review is highly positive, describing the show as 'the most charmingly simple show on Broadway right now' and a 'stellar debut,' indicating a strong recommendation. | Gemini: The review uses positive language like \"charmingly simple\", \"stellar debut\", and \"delivers lavishly\", indicating a positive recommendation. The \"Critic's Pick\" designation further supports this classification.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite being truncated, this is clearly a Critic's Pick with effusive praise throughout. The critic uses superlatives like 'stellar debut,' 'most charmingly simple show on Broadway,' and describes it as delivering 'lavishly' on its promises. | GPT-4o: The review is labeled as a 'Critic’s Pick' and describes the show as 'the most charmingly simple show on Broadway right now,' indicating a strong recommendation. The language used is enthusiastic and highlights the production's success and appeal. | Gemini: The review is overwhelmingly positive, using words like \"effervescent\", \"charming\", and stating that it \"delivers lavishly on the promise of a rom-com\". This indicates a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:41:42.272Z",
+    "scoredAt": "2026-02-02T03:43:08.109Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 87,
-    "previousVersion": "2.0.0"
+    "previousScore": 89,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 87,
+    "claudeScore": 88,
     "openaiScore": 90,
-    "geminiScore": 82,
+    "geminiScore": 80,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -66,7 +66,6 @@
   "bwwThumb": null,
   "contentTier": "truncated",
   "wordCount": 78,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 87,
   "isFullReview": true,
@@ -102,5 +101,6 @@
   "fetchTier": 3,
   "textQuality": "partial",
   "truncationSignals": [],
-  "textStatus": "partial"
+  "textStatus": "partial",
+  "rescoreCompletedAt": "2026-02-02T03:43:08.109Z"
 }

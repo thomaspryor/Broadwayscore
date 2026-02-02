@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"Among the teachings of his Jewish upbringing is empathy, and even sitting outnumbered in that racist, antisemitic gathering he struggles to remain true to those values. That struggle provides Edelman with a mighty intellectual conundrum, a worthy and funny debate of the heart and a show that can stand proud on Broadway.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/alex-edelman-just-for-us-broadway",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 81,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 77,
-    "confidence": "high",
+    "score": 81,
+    "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'can stand proud on Broadway' indicates a positive recommendation, describing it as 'worthy and funny' with substantial intellectual content, though the single excerpt limits confidence in the full review's verdict. | GPT-4o: The excerpt describes the show as 'worthy and funny' and capable of standing 'proud on Broadway,' indicating a positive reception. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The review excerpt indicates a positive assessment, calling the show 'worthy and funny' and stating it 'can stand proud on Broadway.' Given that this is the only excerpt, a conservative score in the positive range is appropriate.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is clearly positive with phrases like 'does his reputation proud,' 'terrific yarn,' and 'can stand proud on Broadway,' indicating strong recommendation for the show. | GPT-4o: The review praises the show for its storytelling bravado, energetic direction, and the ability to stand proud on Broadway, indicating a strong recommendation. | Gemini: The review states the show \"does his reputation proud\" and can \"stand proud on Broadway\", indicating a positive recommendation despite the unusual premise.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,31 +38,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:59:12.469Z",
+    "scoredAt": "2026-02-02T03:31:14.403Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "3.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 77,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "isFullReview": false,
@@ -99,5 +98,6 @@
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "partial",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "rescoreCompletedAt": "2026-02-02T03:31:14.403Z"
 }

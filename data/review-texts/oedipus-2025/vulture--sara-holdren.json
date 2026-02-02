@@ -9,18 +9,18 @@
   "showScoreExcerpt": "\"Manville and Strong crackle together â their chemistry is steamy and genuine and, in some of the productionâs best moments, after all terrible secrets have been revealed, so is their body-wracking devastation.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/oedipus-broadway",
   "originalScore": null,
-  "assignedScore": 58,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 58,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 53,
-      "high": 63
+      "low": 73,
+      "high": 83
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be only a photo caption with no actual review content, making it impossible to determine the critic's assessment or recommendation. | GPT-4o: The provided text is truncated and lacks evaluative content, making it difficult to determine the critic's overall recommendation. The lack of context suggests a neutral stance. | Gemini: This is a caption, not a review. It offers no opinion, so it's classified as mixed with a low score.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic identifies significant flaws (overwriting, heavy-handed themes) but praises the leads' chemistry and powerful moments, concluding with genuine admiration for the climactic scenes and calling the ending 'a stunning closer.' | GPT-4o: The review acknowledges flaws in the production, particularly in the overwriting and some labored elements, but ultimately highlights the potency and strong performances, suggesting a recommendation despite reservations. | Gemini: The review highlights both strengths and weaknesses, ultimately leaning towards a positive recommendation due to the powerful performances and some effective staging choices, despite some overwriting and heavy-handedness.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:56:51.250Z",
+    "scoredAt": "2026-02-02T03:35:07.547Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 80,
-    "previousVersion": "3.0.0"
+    "previousScore": 58,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 60,
-    "geminiScore": 55,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 5,
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "It’s where we learn her story in all its graphic detail, and though Manville is one hell of an actor—utterly at ease in one moment, ferocious in the next, destroyed in the one after that—even she can’t quite mask the overwriting, the authorial frisson over putting this character through really bad things, but, you know, in order to demonstrate that they’re really bad. It’s a shame, because this Oedipus, when it tries a little less hard, is also full of potency. Manville and Strong crackle together — their chemistry is steamy and genuine and, in some of the production’s best moments, after all terrible secrets have been revealed, so is their body-wracking devastation.",
   "bwwExcerpt": "It’s a shame, because this Oedipus, when it tries a little less hard, is also full of potency. Manville and Strong crackle together — their chemistry is steamy and genuine and, in some of the production’s best moments, after all terrible secrets have been revealed, so is their body-wracking devastation. These heights arrive at the crux of the breakless two-hour play, after Oedipus (Strong) has been engaged in his bullheaded pursuit of the truth for some time.",
@@ -69,11 +69,10 @@
   ],
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 80,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.924Z",
+  "rescoreCompletedAt": "2026-02-02T03:35:07.547Z",
   "truncationSignals": [
     "has_footer_junk"
   ],
   "contentTier": "complete",
-  "wordCount": 1810,
-  "needsRescore": true
+  "wordCount": 1810
 }

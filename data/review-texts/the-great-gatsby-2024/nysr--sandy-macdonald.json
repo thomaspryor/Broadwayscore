@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The 3/5 star rating and final verdict clearly indicate a mixed assessment - acknowledging the production delivers spectacle but lacks the deeper qualities that would make it truly worthwhile. | GPT-4o: The review acknowledges the production's ambition and spectacle but criticizes it as ill-conceived and lacking depth. The original rating of 3/5 stars aligns with a mixed review, indicating some positive aspects but overall reservations. | Gemini: The review acknowledges the spectacle but ultimately suggests it lacks depth, indicating a mixed assessment. The 3/5 star rating also supports this classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges the production delivers on spectacle but finds it lacking in meaningful substance, suggesting it's neither a clear recommendation nor dismissal but falls short of expectations for depth. | GPT-4o: The review suggests that while the production offers spectacle, it lacks depth and resonance. The original rating of 3/5 stars aligns with a mixed verdict, indicating some positive aspects but also significant reservations. | Gemini: The review acknowledges a clear message but also points out distractions and suggests the book might be better, indicating a mixed experience. The 3/5 star rating also supports a mixed classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,21 +37,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:20:20.021Z",
+    "scoredAt": "2026-02-02T03:41:24.198Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 45,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 65,
+    "claudeScore": 62,
+    "openaiScore": 62,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 5,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -69,7 +69,7 @@
   "scoreExtractedFrom": "archive",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 60,
-  "rescoreCompletedAt": "2026-02-01T16:17:54.192Z",
+  "rescoreCompletedAt": "2026-02-02T03:41:24.198Z",
   "originalScore": "3/5 stars",
   "originalScoreNormalized": 60,
   "_scoreFetchedAt": "2026-01-31T23:16:23.203Z",
@@ -77,6 +77,5 @@
   "wordCount": 942,
   "truncationSignals": [
     "no_ending_punctuation"
-  ],
-  "needsRescore": true
+  ]
 }

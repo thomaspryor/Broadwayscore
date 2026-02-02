@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The new Broadway revival of 'The Who's Tommy' is a sensory overload that succeeds in translating Pete Townshend's rock opera into a thrilling theatrical experience.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "showScoreExcerpt": "The new Broadway revival of 'The Who's Tommy' is a sensory overload that succeeds in translating Pete Townshend's rock opera into a thrilling theatrical experience.",
   "needsScoring": true,
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic explicitly states the revival 'succeeds' and calls it a 'thrilling theatrical experience,' indicating a clear positive recommendation despite the brief excerpt. | GPT-4o: The review describes the production as a 'thrilling theatrical experience,' indicating a strong positive recommendation. | Gemini: The review uses positive language like \"thrilling\" and \"succeeds\" indicating a recommendation, but not at the highest level of enthusiasm.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The text appears to be a collection of brief entertainment reviews rather than a single Broadway review. The final sentence mentions a stage adaptation positively, but without clear context or a complete review, the verdict is uncertain. | GPT-4o: The review mentions a standout performance by Patricia Clarkson but describes the overall production as uneven, indicating a mixed reception. The text is truncated and lacks a clear overall verdict, leading to a low confidence score. | Gemini: The review mentions both positive and negative aspects of the productions, indicating a mixed overall impression. Clarkson's performance is praised, but the revival is described as uneven.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,30 +43,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T21:02:07.416Z",
+    "scoredAt": "2026-02-02T03:42:46.637Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 78,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "textWordCount": 470,
@@ -107,5 +107,6 @@
   "textIssues": [
     "Show title not found in text"
   ],
-  "showNotMentioned": true
+  "showNotMentioned": true,
+  "rescoreCompletedAt": "2026-02-02T03:42:46.637Z"
 }

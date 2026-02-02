@@ -6,15 +6,15 @@
   "url": "https://deadline.com/2023/11/spamalot-broadway-review-1235612888/",
   "publishDate": "November 16, 2023",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 81,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 76,
-    "confidence": "high",
+    "score": 81,
+    "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -25,7 +25,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic finds the show 'most satisfying' and praises its successful adaptation and consistent humor delivery, indicating a positive recommendation, though the limited excerpt prevents a higher confidence rating. | GPT-4o: The review excerpt highlights a positive aspect of the production, specifically its ability to deliver humor effectively, even for familiar audiences. The lack of full text introduces some uncertainty, but the aggregator context supports a positive interpretation. | Gemini: The quote indicates a positive experience, suggesting the show is well-executed and enjoyable. The aggregator verdicts also point towards a positive reception.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is consistently positive throughout, praising the cast, direction, design, and how well the revival maintains the original's charm. The critic calls it 'very funny' and notes both die-hards and newbies will be pleased. | GPT-4o: The review is overwhelmingly positive, highlighting the perfect casting, splendid performance, and effective direction. The critic emphasizes the show's humor and charm, appealing to both fans and newcomers, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the cast, direction, and charm of the revival. It explicitly states that both fans and newcomers will enjoy the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -35,27 +35,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:46:40.531Z",
+    "scoredAt": "2026-02-02T03:39:19.742Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 87,
-    "previousVersion": "3.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwExcerpt": "All the dancing, singing and questing unfolds on a clever, attractive set designed by Paul Tate dePoo III, whose projections – many seemingly inspired by Terry Gilliam’s instantly recognizable Python style of animation – play a crucial role in the production. Some of the effects are of a decidedly (and intentionally) DIY nature, like the catapulted (or, really, just tossed) cow or the bloodthirsty bunny, but all work terrifically within the show’s self-aware approach.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",
@@ -68,43 +68,30 @@
   ],
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.031Z",
+  "rescoreCompletedAt": "2026-02-02T03:39:19.742Z",
   "garbageFullText": "Spamalot opens on Broadway tonight, and it’s safe to say the Middle Ages haven’t been this funny since, well, the last time Spamlot opened on Broadway nearly 20 years ago. Perfectly cast and splendidly performed, with Josh Rhodes’ deceptively no-frills direction (and choreography) placing the irresistible goings-on front and center, the revival has lost none of the smart-dumb charm of either the original musical or its great source of inspiration – the beloved 1975 film Monty Python and the Holy Grail.\n\nYou certainly don’t have to be one of the many Grail acolytes who can quote bits of greatest-hits dialogue (“It’s just a flesh wound,” or “Bring out your dead!”) or who’ll start laughing moments before the Killer Rabbit actually shows its face (and what a face), but the die-hards will be as pleased as the newbies with this very funny revival. \n\n\t\n\t\t\t\t\t\n\t\t\t\t\n\n\t\n\t\t\n\t\n\n\t\t\t\n\t\t\t\t\n\n\n\t\n\n\t\n\t\n\t\t\n\t\t\t\t\tRelated Stories\t\t\n\t\n\n\t\n\t\t\t\t\t\n\n\t\t\t\n\t\n\t\n\t\t\t\t\t\n\t\n\t\t\t\n\t\n\t\t\t\n\t\n\t\t\t\n\t\n\t\n\t\t\n\t\t\n\t\t\n\t\n\t\t\n\t\t\t\t\t\n\t\n\n\tBelow The Line\n\t\n\n\t\t\n\t\t\t\t\t\n\n\t\n\t\t\t\n\t\n\t\t\n\t\t\t\t\t2024 Awards Season Calendar - Dates For Oscars, Guilds, Tonys & More\t\t\n\t\t\t\n\t\n\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\t\n\n\t\t\n\t\n\n\t\t\t\t\t\t\t\n\n\t\t\t\n\t\n\t\n\t\t\t\t\t\n\t\n\t\t\t\n\t\n\t\t\t\n\t\n\t\t\t\n\t\n\t\n\t\t\n\t\t\n\t\t\n\t\n\t\t\n\t\t\t\t\t\n\t\n\n\tNews\n\t\n\n\t\t\n\t\t\t\t\t\n\n\t\n\t\t\t\n\t\n\t\t\n\t\t\t\t\t'Forbidden Broadway' Satirical Revue To Make Long-Awaited Broadway Debut\n\nWritten by Python Eric Idle (book and lyrics), with music by Idle and John Du Prez (and Life of Brian‘s “Always Look On the Bright Side Of Life” tossed in for good measure), Spamalot is one of the rare recent film-to-stage adaptations that makes a strong case for the practice.\n\nWith most of the cast reprising their roles from a well-received, sold-out run at the Kennedy Center in Washington, D.C., Spamalot boasts one of the best ensembles currently on Broadway. Most of the actors play multiple roles, but some randomly chosen standouts: Christopher Fitzgerald as a lovable, smarter than he looks squire; Ethan Slater as a dewey-eyed dude in distress; Michael Urie as cowardly Sir Robin, who’d rather be singing; Nik Walker as the intellectual peasant turned vain knight Sir Galahad; James Monroe Iglehart as a stalwart, slow-burn King Arthur; Jimmy Smagula as Sir Bedevere and, more hilariously, Dennis’ Mother; and maybe best of all, Leslie Rodriguez Kritzer (who similarly stole Beetlejuice) as both The Lady of the Lake and herself, breaking the fourth wall to complain (in song, of course) about those long stretches when she isn’t on stage.\n\nAlso of note: An excellent Taran Killam, filling in till January for Alex Brightman, who played the role at the Kennedy Center but is currently occupied by Broadway’s The Shark is Broken. Killam’s years on Saturday Night Live make him a natural for the Python escapades, and he delivers each of his characters beautifully, from the sexually confused Lancelot to the Knight of Ni and the taunting Frenchman.\n\nWhile the musical sticks pretty close to the film, Idle and Du Prez wisely decided to let the Spamalot characters in on the joke: They know they’re in a Broadway musical. The song “The Song That Goes Like This” has great fun poking at Broadway musical conventions, and Kritzer stops the show, literally and figuratively, with “Diva’s Lament,” the one in which she bemoans her skimpy role (and calls out Michael Urie for hogging the time).\n\nUrie has his own meta moment with the rousing production number “You Won’t Succeed On Broadway,” in which his musical theater-loving Sir Robin advises the King of an essential element for Broadway success: “You just don’t succeed on Broadway if you don’t have any Jews.” Providing something of a crash course in Broadway history, and the essential role played in that history by Jewish creatives, Urie leads the cast through some Fiddler moments and shout-outs to Streisand, Midler, Sondheim and, well, I won’t spoil the punchline except to note it drew both a gasp and howls of laughters at the reviewed performance.\n\nAll the dancing, singing and questing unfolds on a clever, attractive set designed by Paul Tate dePoo III, whose projections – many seemingly inspired by Terry Gilliam’s instantly recognizable Python style of animation – play a crucial role in the production. Some of the effects are of a decidedly (and intentionally) DIY nature, like the catapulted (or, really, just tossed) cow or the bloodthirsty bunny, but all work terrifically within the show’s self-aware approach.\n\nAlso worth praise are Jen Caprio’s colorful costumes, Cory Pattak’s playful lighting and a sound design by Kai Harada & Haley Parcher that uses volume to prompt some jump in your seat moments. (And by the way, that voice of God recording is none other than Steve Martin, in good company).\n\nPerhaps most satisfying about Spamalot is how it differs from other movie-to-stage adaptations in landing every punchline even for those who know what’s coming. Recent adaptations like Almost Famous and the better Back To The Future approach their familiar jokes like a checklist to get through. Not so with Spamalot, when even that long-ago Python catchphrase “‘Tis but a scratch” gets a round of applause and, more importantly, a  big, bloody laugh.\n\nTitle: SpamalotVenue: Broadway's St. James TheatreDirector & Choreographer: Josh RhodesBook & Lyrics: Eric IdleMusic: John Du Prez and Eric IdlePrincipal Cast:  Christopher Fitzgerald, James Monroe Iglehart, Taran Killam, Leslie Rodriguez Kritzer, Ethan Slater, Jimmy Smagula, Michael Urie, and Nik Walker.Running time: 2 hr 20 min (including intermission)\n\nDeadline is a part of Penske Media Corporation. © 2024 Deadline Hollywood, LLC. All Rights Reserved.",
   "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
   "garbageFixedAt": "2026-01-29T22:45:23.189Z",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "fullText": "Spamalot opens on Broadway tonight, and it’s safe to say the Middle Ages haven’t been this funny since, well, the last time Spamlot opened on Broadway nearly 20 years ago. Perfectly cast and splendidly performed, with Josh Rhodes’ deceptively no-frills direction (and choreography) placing the irresistible goings-on front and center, the revival has lost none of the smart-dumb charm of either the original musical or its great source of inspiration – the beloved 1975 film Monty Python and the Holy Grail.\n\nYou certainly don’t have to be one of the many Grail acolytes who can quote bits of greatest-hits dialogue (“It’s just a flesh wound,” or “Bring out your dead!”) or who’ll start laughing moments before the Killer Rabbit actually shows its face (and what a face), but the die-hards will be as pleased as the newbies with this very funny revival.",
   "isFullReview": false,
   "textWordCount": 142,
   "archivePath": "data/archives/reviews/spamalot-2023/deadline--greg-evans_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T03:40:48.298Z",
-  "fetchMethod": "brightdata",
+  "textFetchedAt": "2026-02-02T02:49:14.020Z",
+  "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "page.waitForTimeout: Target page, context or browser has been closed"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
-  "fetchTier": 3,
+  "fetchTier": 4,
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "partial",
-  "sourceMethod": "brightdata",
+  "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240306015514",
   "archiveOrgUrl": "http://web.archive.org/web/20240306015514/https://deadline.com/2023/11/spamalot-broadway-review-1235612888/"
 }

@@ -9,15 +9,15 @@
   "bwwExcerpt": "In any case, the show’s oft-mentioned fusion of humanity with machinery suddenly struck me as a clarifying metaphor for my mixed reaction to “Lempicka,” which opened on Broadway tonight at the Longacre. Carson Kreitzer, who conceived of the musical and co-wrote the libretto with Matt Gould, has created some artful lyrics for Gould’s music. Director Rachel Chavkin oversees some precisely calibrated moments. Naturally gifted cast members give polished performances, most notably Eden Espinosa in th",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 61,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 63,
+    "score": 61,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges strong performances and artful moments but finds the overall production mechanically repetitive and overwhelming, with only certain songs and scenes standing out as genuinely fresh or effective. | GPT-4o: The review acknowledges some strong elements like the cast performances and certain songs, but overall describes the show as lacking variety and feeling mechanical. The critic's reaction is mixed, appreciating some aspects while finding the overall execution lacking. | Gemini: The review highlights both positive and negative aspects of the show. While praising the cast and some individual moments, it ultimately finds the overall experience repetitive and overwhelming, leading to a mixed classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly states having a 'mixed reaction' to the show, though acknowledges quality elements like artful lyrics and polished performances. Single excerpt warning requires conservative scoring within Mixed range. | GPT-4o: The critic explicitly mentions a 'mixed reaction' to the show, indicating neither a strong recommendation nor a strong dissuasion. The mention of 'artful lyrics' and 'precisely calibrated moments' suggests some positive elements, but the overall tone remains mixed. | Gemini: The critic explicitly states a 'mixed reaction' and highlights both positive and negative aspects of the production, suggesting a middle-ground assessment. The single excerpt and 'flat' aggregator verdict reinforce this classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:26:19.662Z",
+    "scoredAt": "2026-02-02T03:31:55.301Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 58,
-    "previousVersion": "5.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
+    "claudeScore": 58,
+    "openaiScore": 62,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -87,9 +87,8 @@
   ],
   "fetchTier": 2,
   "sourceMethod": "scrapingbee",
-  "rescoreCompletedAt": "2026-02-01T15:25:35.068Z",
+  "rescoreCompletedAt": "2026-02-02T03:31:55.301Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
-  "wordCount": 2364,
-  "needsRescore": true
+  "wordCount": 2364
 }

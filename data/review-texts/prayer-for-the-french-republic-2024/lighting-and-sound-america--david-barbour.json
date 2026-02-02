@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 75,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The word 'riveting' indicates strong engagement and the praise for the playwright's vigorous exploration suggests recommendation, but with only one excerpt available, I'm scoring conservatively in the lower positive range. | GPT-4o: The review highlights the play's ability to engage the audience through its vigorous exploration of themes, suggesting a positive experience. However, the lack of full context and the warning about curated excerpts necessitate a conservative score within the Positive range. | Gemini: The review excerpt indicates the play is \"riveting,\" which suggests a positive experience. Given it's a single excerpt, I'm scoring it conservatively within the positive range.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt describes the play as 'riveting' and praises the playwright's vigorous approach, indicating a positive assessment. However, with only one curated quote available, I score conservatively within the positive range. | GPT-4o: The excerpt highlights the play's engaging and thought-provoking nature, suggesting it is worth seeing. However, the lack of full context and the warning about a single excerpt lead to a conservative score within the Positive bucket. | Gemini: The excerpt suggests the play is \"riveting,\" which indicates a positive experience. However, the single excerpt and lack of explicit recommendation warrant a score in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,23 +46,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:35:32.679Z",
+    "scoredAt": "2026-02-02T03:37:24.184Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "ensembleData": {
     "claudeScore": 72,
-    "openaiScore": 77,
+    "openaiScore": 75,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -70,6 +70,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "needsRescore": true,
-  "rescoreReason": "text-cleaning bug destroyed fullText during scoring"
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
+  "rescoreCompletedAt": "2026-02-02T03:37:24.184Z"
 }

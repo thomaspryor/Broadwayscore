@@ -10,7 +10,7 @@
   "bwwExcerpt": "Chenoweth is a wonder, sounding a little bit country whenever Jackie is most herself, as in “Each and Every Day,” a love song to the infant Victoria; taking her high notes out for a spin in “The Royal We,” a duet with Marie Antoinette (Cassondra James); and convincing us for a moment, in a turn-on-a-dime song called “Grow the Light,” that Jackie has recalibrated her priorities. Not so. For the central character of this tale, living out her American dream, there is no point of satiation. There is only a vast emptiness that must be filled with more, more, more. Preferably, of course, dipped in gold.",
   "showScoreExcerpt": "Criticâs Pick: \"more than an entertaining biomusical with a hummable score. Directed by Michael Arden, itâs also a sociological fairy tale\"",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "dtli",
   "bwwThumb": "Up",
   "bwwUrl": "https://www.nytimes.com/2025/11/09/theater/queen-of-versailles-broadway-chenoweth.html",
@@ -18,11 +18,11 @@
   "dtliThumb": "Up",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 78,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic describes the show as 'smart and sparkling' and 'more than an entertaining biomusical,' with praise for Chenoweth's performance and the direction. Despite acknowledging the story's tragic elements, the overall assessment is clearly positive. | GPT-4o: The review describes the musical as 'smart and sparkling' and highlights its entertaining and sociological aspects, suggesting a positive recommendation. The tone is enthusiastic about the production's execution and performances. | Gemini: The review uses positive language like \"smart and sparkling\" and \"entertaining biomusical\" to describe the show, indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the show as 'smart and sparkling,' highlights strong performances especially by Chenoweth and White, and describes it as 'more than an entertaining biomusical.' While noting some flaws like a tonal misstep, the overall assessment is clearly positive and recommending. | GPT-4o: The review praises the musical as 'smart and sparkling' with strong performances, particularly highlighting Kristin Chenoweth's role. The critic appreciates the balance of humor and poignancy, indicating a strong recommendation. | Gemini: The review is overall positive, highlighting Chenoweth's performance and the show's smartness. While it mentions some missteps, the overall tone suggests it is worth seeing.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,21 +43,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:29:04.775Z",
+    "scoredAt": "2026-02-02T03:38:11.152Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 80,
-    "geminiScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -101,11 +101,10 @@
   ],
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 82,
-  "rescoreCompletedAt": "2026-02-01T15:58:07.735Z",
+  "rescoreCompletedAt": "2026-02-02T03:38:11.152Z",
   "contentTier": "complete",
   "wordCount": 1209,
   "truncationSignals": [
     "no_ending_punctuation"
-  ],
-  "needsRescore": true
+  ]
 }

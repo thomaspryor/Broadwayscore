@@ -8,18 +8,18 @@
   "dtliExcerpt": "Audiences are always receptive to flights into jubilant escapism—perhaps particularly now—and this plucky musical provides it in generous doses.",
   "fullText": "https://www.wsj.com/articles/operation-mincemeat-review-a-madcap-military-plot-on-broadway-92d630a9\n\nThe cast of ‘Operation Mincemeat.’ Julieta CervantesIt may be telling that the song receiving the most enthusiastic response in the daffy British musical “Operation Mincemeat” is not one of the many comic romps that are the show’s bread and butter—or should I say tea and crumpets? Instead it’s a tender ballad in which the schoolmistressy secretary Hester Leggatt, played by Jak Malone, sings an imagined love letter to be planted on a corpse to add verisimilitude to the dead man’s manufactured life story. Intrigued yet?\n\nPerformed by Mr. Malone with a touching sincerity untainted by sentimentality, the song hints at a lost love in Hester’s past that reveals a beating heart just below the classic British stiff upper lip. Yet it’s not just the character but the musical, too, that in this moment takes a necessary breath, indicating a subtle emotional core beneath the sometimes exhaustingly antic comedy that drives this odd duck of a musical, now on Broadway.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 77,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": "But the limited run has been extended more than once, and the surprise sensation of the Broadway season has been the unabashedly silly ‘Oh, Mary!,’ which also lampoons history, albeit more cavalierly. Audiences are always receptive to flights into jubilant escapism—perhaps particularly now—and this plucky musical provides it in generous doses.",
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic describes the musical as 'plucky' and notes it provides 'jubilant escapism' in 'generous doses' with audiences being 'receptive' to it, indicating a positive recommendation though the excerpt is limited. | GPT-4o: The review highlights the musical's ability to deliver 'jubilant escapism' in 'generous doses,' suggesting a strong positive reception. The use of 'plucky' and 'generous' indicates a favorable view, aligning with the aggregator's positive verdicts. | Gemini: The review excerpt indicates a positive reception and describes the musical as providing 'jubilant escapism,' suggesting a recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic appreciates the show's escapist entertainment value and notes its extended run success, though finds the comedy sometimes 'exhaustingly antic,' suggesting a positive but not glowing recommendation. | GPT-4o: The review highlights the musical's ability to provide jubilant escapism and praises a standout performance, indicating a positive overall impression despite some reservations about its antic comedy. | Gemini: The review highlights the show's comedic and escapist qualities, ultimately indicating a positive experience for audiences seeking lighthearted entertainment. The phrase \"plucky musical provides it in generous doses\" seals the positive classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:31:39.077Z",
+    "scoredAt": "2026-02-02T03:36:13.094Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "3.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 82,
+    "openaiScore": 80,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 7,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -65,7 +65,6 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250121",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
   "isFullReview": false,
@@ -89,5 +88,6 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251111234531/https://www.wsj.com/articles/operation-mincemeat-review-a-madcap-military-plot-on-broadway-92d630a9",
   "textIssues": [
     "Word count too low: 182 (min: 300)"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-02T03:36:13.094Z"
 }

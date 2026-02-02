@@ -9,7 +9,7 @@
   "bwwExcerpt": "ellent company of actors achieve more fully-realized performances. There are certainly worse ways to spend and evening than with a musical so visually gorgeous and vibrantly performed. Sarah Holdren, Vulture : For all its splashy, glittery, high-kicking, butt-cheek-baring, sword-swallowing maximalism, Moulin Rouge! is something more unsettling than not good. It's not even very interesting. There's a shapelessness about it, a weird enervation underneath the flash and bang. It's directed by Alex Timbers, but it feels like it was assembled by committee, even by algorithm. The show veers broadly away from its beloved-by-millennials-everywhere source material, which in itself is no crime. But the path its creators have taken is one long trip through the Kingdom of Pandering, with multiple pit stops in the Meadows of Cutesiness and the Forest of Flat Characters. Everywhere it should be filthy, it's scrubbed aggressively clean, yet somehow it's still a hot mess. Adam Feldman, Time Out New Yor",
   "showScoreExcerpt": "\"'Moulin Rouge!' Is Broadwayâs Biggest Karaoke Night. It commits singlemindedly to stuffing as many additional hit tracks as possible.\"",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOULIN-ROUGE-Opens-On-Broadway-See-What-The-Critics-Think-20190725",
@@ -26,14 +26,14 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -41,7 +41,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The 'biggest karaoke night' description and critique of 'stuffing' songs suggests the critic sees it as style over substance, but with limited text available, the full verdict is unclear. | GPT-4o: The review suggests a focus on spectacle and music quantity, which may appeal to some but not others. The lack of explicit praise or criticism indicates a mixed impression. | Gemini: The review excerpt suggests a focus on the spectacle and musical mashups, which could be seen as both a positive and a negative. The 'karaoke night' description implies a lack of depth or originality, but also potential entertainment value.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic delivers a scathing review calling the show 'unsatisfying,' 'cold-blooded,' and 'a product' that 'never moves us.' Despite acknowledging some talent, the overall assessment is clearly negative with no recommendation to see it. | GPT-4o: The review is overwhelmingly negative, criticizing the production for being a 'singularly unsatisfying smorgasbord' and 'creepily cold-blooded.' The critic finds the show devoid of passion and character, focusing on its commercial and superficial aspects. | Gemini: The review is overwhelmingly negative, criticizing the show's lack of passion, character development, and emotional depth. The critic uses phrases like \"singularly unsatisfying smorgasbord\" and \"creepily cold-blooded\" to describe the production, indicating a negative recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,27 +51,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:33:07.407Z",
+    "scoredAt": "2026-02-02T03:34:50.875Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 52,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 65,
-    "geminiScore": 60,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 5,
+    "claudeScore": 42,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "scoreDelta": 25,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "sources": [
     "bww-roundup",
@@ -87,11 +87,10 @@
   ],
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 25,
-  "rescoreCompletedAt": "2026-02-01T15:42:11.143Z",
+  "rescoreCompletedAt": "2026-02-02T03:34:50.875Z",
   "contentTier": "complete",
   "wordCount": 1744,
   "truncationSignals": [
     "has_footer_junk"
-  ],
-  "needsRescore": true
+  ]
 }

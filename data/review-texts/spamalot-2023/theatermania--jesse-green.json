@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The new Broadway revival of Spamalot at the St. James Theatre is a joyous, silly, and thoroughly entertaining production that captures the anarchic spirit of Monty Python while updating the material for contemporary audiences.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 58,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "showScoreExcerpt": "The new Broadway revival of Spamalot at the St. James Theatre is a joyous, silly, and thoroughly entertaining production that captures the anarchic spirit of Monty Python while updating the material for contemporary audiences.",
   "needsScoring": true,
   "llmScore": {
-    "score": 80,
+    "score": 58,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 53,
+      "high": 63
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses multiple positive descriptors (joyous, thoroughly entertaining) and notes it successfully captures the source material's spirit while updating appropriately, indicating a clear recommendation. | GPT-4o: The review describes the production as 'joyous' and 'thoroughly entertaining,' indicating a strong recommendation to see the show. | Gemini: The review uses positive language like \"joyous,\" \"silly,\" and \"thoroughly entertaining,\" indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be fragmented website content mixing Kennedy Center Honors announcements with review headlines rather than a complete Broadway review. Without actual review content, cannot determine critical assessment. | GPT-4o: The provided text is largely unrelated to a specific review, with only a brief mention of 'The Porch on Windy Hill' suggesting a theme of healing. Without more context, the verdict is unclear, leading to a mixed classification with low confidence. | Gemini: This review is a collection of unrelated snippets and announcements. There is no actual review content, so I am assuming a mixed score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,37 +43,43 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:59:21.089Z",
+    "scoredAt": "2026-02-02T03:39:35.326Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 82,
-    "geminiScore": 80,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 55,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 80,
   "textWordCount": 253,
   "archivePath": "data/archives/reviews/spamalot-2023/theatermania--jesse-green_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T03:40:42.131Z",
+  "textFetchedAt": "2026-02-02T02:49:35.351Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
     {
       "tier": 1,
       "method": "playwright",
@@ -109,5 +115,6 @@
     "Word count too low: 253 (min: 300)",
     "Show title not found in text"
   ],
-  "showNotMentioned": true
+  "showNotMentioned": true,
+  "rescoreCompletedAt": "2026-02-02T03:39:35.326Z"
 }

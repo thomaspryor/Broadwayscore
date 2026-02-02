@@ -42,7 +42,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic enthusiastically describes the show as 'extravagantly entertaining' and 'remarkable and fitting' while acknowledging some flaws like needing a better editor, but concludes fans will 'forgive its shortcomings' due to the overall engaging experience. | GPT-4o: The review is overwhelmingly positive, highlighting the production's extravagance, entertainment value, and successful integration into the Potter universe. The critic's enthusiasm and use of phrases like 'remarkable' and 'sweeps you along' indicate a strong recommendation. | Gemini: The review is overwhelmingly positive, describing the show as \"extravagantly entertaining\" and a \"remarkable and fitting addition to the Potter canon.\" While acknowledging shortcomings, the reviewer ultimately recommends seeing it, placing it firmly in the Positive bucket.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic calls the show 'remarkable', 'extravagantly entertaining', and 'a continuous delight' while acknowledging it 'could have used a more rigorous editor' and has 'shortcomings', creating a clearly positive recommendation with noted reservations. | GPT-4o: The review is overwhelmingly positive, highlighting the show's entertaining nature, impressive performances, and effective storytelling. The critic describes it as a 'remarkable and fitting addition' and praises its ability to engage the audience, indicating a strong recommendation. | Gemini: The review is largely positive, highlighting the show's entertainment value, charming performances, and theatrical whimsy. While acknowledging some shortcomings, the critic ultimately recommends it as a worthwhile experience for Harry Potter fans.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -52,21 +52,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:06:42.292Z",
+    "scoredAt": "2026-02-02T03:29:55.174Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 86,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 90,
+    "openaiScore": 92,
     "geminiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -81,8 +81,7 @@
   ],
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 86,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.773Z",
+  "rescoreCompletedAt": "2026-02-02T03:29:55.174Z",
   "contentTier": "complete",
-  "wordCount": 2132,
-  "needsRescore": true
+  "wordCount": 2132
 }

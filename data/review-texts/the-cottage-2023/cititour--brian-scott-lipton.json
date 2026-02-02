@@ -10,18 +10,18 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-COTTAGE-Opens-on-Broadway-20230723",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 60,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic describes it as merely a 'distraction' even at its best, but acknowledges strong casting and design elements. The tone is lukewarm rather than negative. | GPT-4o: The review suggests that the show is not particularly impactful or essential, describing it as a 'summertime distraction.' The mention of 'considerable best' implies some positive aspects, but overall, it seems to lack significant praise, aligning with a mixed verdict. | Gemini: The review suggests the show is only a 'summertime distraction' even at its best, implying it's not a must-see, but the mention of 'luxurious casting and ultra-polished design' indicates some redeeming qualities, placing it in the Mixed category.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite calling it 'little more than a summertime distraction' and noting it 'overstays its welcome,' the critic praises the performances, design, and entertainment value, concluding the cast 'deserves the on-your-feet appreciation they get nightly.' | GPT-4o: The review acknowledges some flaws, such as overstaying its welcome and predictable plot twists, but ultimately praises the performances and comedic elements, recommending the show for its entertainment value. | Gemini: The review acknowledges flaws in the play's writing and plot, but ultimately recommends it due to the strong performances and comedic talent of the cast. It's a qualified recommendation, not a rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,27 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T01:00:03.584Z",
+    "scoredAt": "2026-02-02T03:41:20.739Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
-    "previousVersion": "5.0.0"
+    "previousScore": 60,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 60,
-    "geminiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 4,
+    "claudeScore": 73,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 49,
@@ -84,10 +84,9 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "scrapingbee",
-  "rescoreCompletedAt": "2026-02-01T16:15:53.087Z",
+  "rescoreCompletedAt": "2026-02-02T03:41:20.739Z",
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",
-  "wordCount": 678,
-  "needsRescore": true
+  "wordCount": 678
 }

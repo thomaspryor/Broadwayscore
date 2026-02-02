@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "But what they don’t know is that Jaws will go on to become the cultural totem we know it as today—and it is in the humorous and profound gap of past and present, known and unknown, and ignorance and wisdom that The Shark Is Broken wittily excels not just as a clever time capsule, but as an examination of male bonding and competitiveness, ego, frailty, fame, and film-making. Which is to say: you don’t miss the shark for one second.",
@@ -19,11 +19,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 78,
-    "confidence": "high",
+    "score": 81,
+    "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic calls the play 'excellent' in the opening, praises Shaw's 'impressive performance' and the direction as having 'guileful brevity,' and describes it as 'insightful' and 'tough.' Despite some analytical tone, the overall assessment is clearly positive. | Gemini: The review is largely positive, highlighting the performances and writing, but doesn't express overwhelming enthusiasm. It's a recommendation with some reservations, focusing on the personal and insightful aspects of the play.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is consistently positive throughout, praising the performances, writing, and direction. The critic calls it 'excellent,' describes performances as 'terrific' and 'impressive,' and concludes that it 'wittily excels' as both entertainment and examination of deeper themes. | GPT-4o: The review is overwhelmingly positive, praising the writing, performances, and direction. It highlights the play's cleverness, humor, and depth, and concludes with a strong endorsement, indicating it is a must-see. | Gemini: The review is overwhelmingly positive, praising the writing, performances, and overall concept. While not a rave, it clearly recommends seeing the play, especially for fans of the film.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,31 +44,31 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:51:31.191Z",
+    "scoredAt": "2026-02-02T03:42:35.287Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 78,
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 84,
-  "rescoreCompletedAt": "2026-02-01T16:25:56.753Z",
+  "rescoreCompletedAt": "2026-02-02T03:42:35.287Z",
   "contentTier": "complete",
-  "wordCount": 2255,
-  "needsRescore": true
+  "wordCount": 2255
 }

@@ -9,18 +9,18 @@
   "showScoreExcerpt": "\"It’s Julie Taymor’s puppetry that continues to astound...The problem is that the rest of the musical is not as good as Taymor’s vision for the animals and their gorgeous ensemble numbers...Now, the beauty is there, but the show feels a bit worn...The few big numbers aside, much of the John-Rice score is middling ’90s pop rock...That said, the performances, even now, are rather lovely...But you’re not here for the performances. You’re here for the puppets. And they’re worth it.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-lion-king",
   "originalScore": "3 stars",
-  "assignedScore": 74,
+  "assignedScore": 64,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 59,
+      "high": 69
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 3-star rating and final verdict 'And they're worth it' clearly recommend seeing the show, though the critic acknowledges significant flaws in the score and overall engagement. | GPT-4o: The review acknowledges some shortcomings in the musical's overall engagement and music but ultimately recommends it for the puppetry, which is described as astounding. The original 3-star rating aligns with a positive but reserved recommendation. | Gemini: The critic explicitly states the puppets are 'worth it,' indicating a recommendation, despite reservations about other aspects of the show. The 3-star rating also supports a positive classification.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic gives 3 stars and acknowledges the spectacular puppetry is 'worth it' while clearly stating the show 'feels a bit worn' with weak book and middling score. This is a classic mixed review that neither fully recommends nor discourages. | GPT-4o: The review acknowledges the spectacle of the puppetry and some strong performances, but criticizes the overall engagement and quality of the music and book. The 3-star rating aligns with a mixed verdict, highlighting both strengths and weaknesses. | Gemini: Despite some criticisms of the score and book, the review ultimately recommends seeing the show for its puppetry and visual spectacle, aligning with a 'Positive' bucket. The critic's own 3-star rating also supports this classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:58:28.595Z",
+    "scoredAt": "2026-02-02T03:41:28.289Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
-    "previousVersion": "5.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 74,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 77,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "sources": [
     "show-score",
@@ -66,8 +66,7 @@
   ],
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 65,
-  "rescoreCompletedAt": "2026-02-01T16:19:03.272Z",
+  "rescoreCompletedAt": "2026-02-02T03:41:28.289Z",
   "contentTier": "complete",
-  "wordCount": 739,
-  "needsRescore": true
+  "wordCount": 739
 }

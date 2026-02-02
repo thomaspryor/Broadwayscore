@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges the show's appeal and highlights Joy Woods's standout performance, but criticizes the flat book, weak lyrics, and repetitive music. The Hallmark card comparison suggests pleasant but shallow entertainment. | GPT-4o: The review acknowledges the musical's compelling conceit and highlights a standout performance, but criticizes the flat book and lyrics, suggesting a mixed experience overall. | Gemini: The review acknowledges flaws in the book and lyrics but ultimately suggests the romance is compelling enough to make it worth seeing, especially highlighting Joy Woods' performance.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review identifies significant flaws (flat book and lyrics, indistinguishable songs) but acknowledges the show works for its target audience and praises Joy Woods's exceptional performance. The 'serviceable adaptation' language and Hallmark card comparison suggest adequate but not enthusiastic recommendation. | GPT-4o: The review acknowledges the show's imperfections, particularly in the book and lyrics, but highlights Joy Woods's standout performance and the emotional impact of the music. The truncated text and mixed aggregator context suggest a balanced view, neither fully positive nor negative. | Gemini: The review acknowledges flaws in the book and lyrics but highlights Joy Woods' performance and the overall sentimentality, suggesting it's enjoyable despite its imperfections. The truncated text makes the final verdict slightly uncertain, but the overall tone leans positive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,21 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:47:13.503Z",
+    "scoredAt": "2026-02-02T03:42:02.109Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 60,
-    "previousVersion": "5.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 75,
+    "geminiScore": 78,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 16,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -74,7 +74,7 @@
   "dtliThumb": "Meh",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 68,
-  "rescoreCompletedAt": "2026-02-01T16:20:39.845Z",
+  "rescoreCompletedAt": "2026-02-02T03:42:02.109Z",
   "contentTier": "complete",
   "wordCount": 1378,
   "truncationSignals": [
@@ -82,6 +82,5 @@
   ],
   "humanReviewScore": 60,
   "humanReviewPreviousScore": 45,
-  "humanReviewAt": "2026-02-01T19:59:47.227Z",
-  "needsRescore": true
+  "humanReviewAt": "2026-02-01T19:59:47.227Z"
 }

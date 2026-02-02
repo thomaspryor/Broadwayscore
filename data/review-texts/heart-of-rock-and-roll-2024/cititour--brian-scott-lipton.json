@@ -9,15 +9,15 @@
   "bwwExcerpt": "As with his recent Broadway success, “Gutenberg!,” director Gordon Greenberg takes his job seriously, keeping the show moving as a fleet pace. Better still, he also never makes the show too serious, ensuring that its tongue remains firmly planted in one cheek or another almost the whole time.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 75,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises the director's work and pacing, calling his previous show a 'Broadway success,' but with only one curated quote available, I'm scoring conservatively in the lower positive range. | GPT-4o: The review excerpt praises the director's ability to keep the show engaging and light-hearted, suggesting a positive experience. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The review praises the director's work, indicating a positive experience. However, due to the limited text and single excerpt, the score is placed conservatively within the 'Positive' bucket.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite noting structural flaws and plot issues, the critic emphasizes the show's entertainment value, praises performances and direction, and concludes with a positive recommendation for 'good, lighthearted fun.' | GPT-4o: The review acknowledges some structural flaws in the plot but overall praises the show for its entertainment value, energetic performances, and choreography. The critic describes it as 'good, lighthearted fun,' indicating a positive recommendation despite some reservations. | Gemini: The review is generally positive, highlighting the cast, direction, choreography, and the fun nature of the show. While it points out some flaws in the plot, the overall tone suggests a recommendation for an enjoyable experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:40:06.122Z",
+    "scoredAt": "2026-02-02T03:29:58.716Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "3.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 77,
-    "geminiScore": 75,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -84,10 +84,9 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "scrapingbee",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.775Z",
+  "rescoreCompletedAt": "2026-02-02T03:29:58.716Z",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
-  "wordCount": 652,
-  "needsRescore": true
+  "wordCount": 652
 }

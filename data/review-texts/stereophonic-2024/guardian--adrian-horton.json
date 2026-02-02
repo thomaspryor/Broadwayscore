@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Stereophonic is a technical marvel and an emotional powerhouse, a three-hour epic that feels both intimate and expansive in its portrait of artistic creation and human frailty.",
   "originalScore": 80,
-  "assignedScore": 80,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "Stereophonic is a technical marvel and an emotional powerhouse, a three-hour epic that feels both intimate and expansive in its portrait of artistic creation and human frailty.",
   "needsScoring": true,
   "llmScore": {
-    "score": 80,
-    "confidence": "medium",
+    "score": 81,
+    "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses strong positive language like 'marvel' and 'powerhouse' and the original rating of 80 aligns perfectly with the positive bucket range. | GPT-4o: The review uses strong positive language, describing the show as a 'technical marvel' and 'emotional powerhouse,' indicating a highly enthusiastic recommendation. The original rating of 80 from a major publication supports a high score within the Rave bucket. | Gemini: The review uses highly positive language such as \"technical marvel\" and \"emotional powerhouse\", aligning with a positive recommendation. The critic's original rating of 80 further supports this classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic's own 80 rating aligns with strong positive language like 'technical marvel,' 'emotional powerhouse,' and 'unshakeable, hyperreal slice-of-life drama,' indicating clear enthusiasm for the production. | GPT-4o: The review praises the play's naturalism, technical execution, and emotional depth, aligning with the critic's original rating of 80, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the play as a \"technical marvel and an emotional powerhouse.\" The critic highlights the play's naturalism, complex characters, and intimate yet expansive portrayal of artistic creation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,30 +43,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:59:33.907Z",
+    "scoredAt": "2026-02-02T03:40:02.300Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 80,
-    "openaiScore": 85,
-    "geminiScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 80,
   "textWordCount": 233,
@@ -94,5 +94,6 @@
   "textIssues": [
     "Word count too low: 245 (min: 300)"
   ],
-  "duplicateTextOf": "broadwaynews--brittani-samuel.json"
+  "duplicateTextOf": "broadwaynews--brittani-samuel.json",
+  "rescoreCompletedAt": "2026-02-02T03:40:02.300Z"
 }

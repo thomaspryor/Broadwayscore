@@ -9,15 +9,15 @@
   "bwwExcerpt": "“The Heart of Rock and Roll” is not going to be the subject of think pieces and graduate theses, but its easygoing good spirits are bolstered by solid craftsmanship, and it’d be silly to turn up our noses at that. “Have a good time,” Huey Lewis once sang, wisely quoting Curtis Mayfield. “’Cause it’s all right.” Jackson McHenry, Vulture: To its credit, The Heart of Rock and Roll tries to get out before the buzz wears off. The second act lags and then accelerates around the point where Bobby’",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 77,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 74,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges script limitations but emphasizes that strong performances sustain the production, indicating a positive recommendation despite reservations. | GPT-4o: The review highlights the performances as a strong point, suggesting a positive view despite some reservations about the dialogue. The aggregator context supports a positive assessment. | Gemini: The review highlights the strength of the performances, suggesting a positive experience despite reservations about the dialogue. The aggregator verdicts also indicate a generally positive reception.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges the show's formulaic nature and clichés but consistently highlights strong performances, clever staging, and genuine entertainment value, concluding with a clear endorsement of its craftsmanship and good spirits. | GPT-4o: The review acknowledges the show's sentimentality and clichés but ultimately praises its humor, performances, and staging, recommending it for its good spirits and craftsmanship. | Gemini: The review acknowledges the show's flaws (generic plot, sentimentality) but praises the performances, humor, and staging. The critic ultimately suggests it's enjoyable and well-crafted, making it a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:41:09.082Z",
+    "scoredAt": "2026-02-02T03:30:13.529Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 71,
-    "previousVersion": "3.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 74,
-    "geminiScore": 75,
+    "claudeScore": 74,
+    "openaiScore": 78,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -69,11 +69,10 @@
   ],
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 71,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.777Z",
+  "rescoreCompletedAt": "2026-02-02T03:30:13.529Z",
   "truncationSignals": [
     "no_ending_punctuation"
   ],
   "contentTier": "complete",
-  "wordCount": 842,
-  "needsRescore": true
+  "wordCount": 842
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This ambitious musical about a rock band recording an album in the 1970s is a triumph of theatrical storytelling that captures the creative process in all its messy, exhilarating glory.",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 5,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "showScoreExcerpt": "This ambitious musical about a rock band recording an album in the 1970s is a triumph of theatrical storytelling that captures the creative process in all its messy, exhilarating glory.",
   "needsScoring": true,
   "llmScore": {
-    "score": 92,
+    "score": 5,
     "confidence": "medium",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 0,
+      "high": 10
     },
-    "bucket": "Rave",
-    "thumb": "Up",
+    "bucket": "Pan",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -33,40 +33,42 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses strong positive language calling it 'a triumph' and 'exhilarating glory', indicating an enthusiastic recommendation for this musical. | GPT-4o: The review uses strong positive language, describing the production as 'a triumph,' which indicates an enthusiastic, must-see recommendation. | Gemini: The review uses strong positive language like \"triumph\" indicating a very positive recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Pan | Claude: This is clearly a public health article about prescription drug disposal, not a Broadway theater review at all. | GPT-4o: The text provided appears to be unrelated to a Broadway review and seems to be an article about drug disposal. Without the actual review text, it's impossible to accurately determine the critic's verdict on the show. | Gemini: This is not a review of a Broadway show. It is an article about medication disposal. Therefore, it is a 'Pan'.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:59:53.846Z",
+    "scoredAt": "2026-02-02T03:40:18.460Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 92,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 95,
-    "geminiScore": 92,
-    "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 7,
+    "claudeScore": 0,
+    "openaiScore": 60,
+    "geminiScore": 10,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Pan",
+    "scoreDelta": 60,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Outlier openai chose Mixed, 2+ buckets from majority"
+    ],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Pan"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 92,
   "textWordCount": 331,
@@ -106,5 +108,6 @@
   "textIssues": [
     "Show title not found in text"
   ],
-  "showNotMentioned": true
+  "showNotMentioned": true,
+  "rescoreCompletedAt": "2026-02-02T03:40:18.460Z"
 }

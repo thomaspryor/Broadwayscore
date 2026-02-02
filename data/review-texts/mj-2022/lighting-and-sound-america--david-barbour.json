@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review criticizes the playwright for being 'timid' and 'faint-hearted' while praising the 'stunning technical expertise' and 'superb production design,' concluding it's simultaneously better and worse than average bio musicals - a classic mixed assessment. | GPT-4o: The review highlights both strong technical elements and weak playwriting, suggesting a mixed experience. The critic acknowledges the show's technical prowess but criticizes the writing, indicating a balance of positives and negatives. | Gemini: The review highlights both positive and negative aspects, describing the production as \"startlingly better\" and \"infinitely worse\" than average, indicating a mixed experience.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review praises technical elements and production design as 'stunning' and 'superb' while criticizing the book as 'faint-hearted' and 'timid.' The final assessment explicitly states it's both 'better and infinitely worse' than average, indicating a genuinely mixed verdict. | GPT-4o: The review acknowledges the show's technical excellence and production design but criticizes the playwriting as timid and uneven. The verdict is mixed, highlighting both strengths and weaknesses. | Gemini: The review praises the technical aspects but criticizes the playwriting, resulting in a mixed assessment. The final sentence explicitly states it's both better and worse than average.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,12 +46,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:25:10.911Z",
+    "scoredAt": "2026-02-02T03:33:37.182Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 52,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
@@ -71,6 +71,6 @@
     "modelAgreement": "All 3 models agree: Mixed"
   },
   "duplicateTextOf": "amny--matt-windman.json",
-  "needsRescore": true,
-  "rescoreReason": "text-cleaning bug destroyed fullText during scoring"
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
+  "rescoreCompletedAt": "2026-02-02T03:33:37.182Z"
 }

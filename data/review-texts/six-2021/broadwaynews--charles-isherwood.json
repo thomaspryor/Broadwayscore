@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic clearly recommends the show with phrases like 'much to delight in' and describes 'a wave of pure joy' from the audience, though the truncated text prevents seeing the full assessment. | GPT-4o: The review is highly positive, emphasizing the joy and delight the show brings, and the critic's tone is enthusiastic about the production's return and execution. | Gemini: The review clearly recommends the show, highlighting its festive and funny nature, and suggesting it will delight theatergoers. The opening paragraph is very positive.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly recommends the show despite reservations about the music and characterization, praising the performances and predicting it will be a long-running hit that provides 'unalloyed pleasure' for audiences seeking entertainment. | GPT-4o: The review is filled with positive descriptions of the performances, the cleverness of the show, and the joy it brings to audiences. Despite some minor reservations about the music's originality and character depth, the overall tone is highly positive, predicting a long-running hit. | Gemini: The review highlights the show's entertainment value and expects it to be a long-running hit, despite some reservations about its depth and originality. The overall tone is positive, suggesting it's worth seeing for those seeking lighthearted fun.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,31 +43,31 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:38:50.963Z",
+    "scoredAt": "2026-02-02T03:38:54.385Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 80,
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 82,
-  "rescoreCompletedAt": "2026-02-01T16:06:08.517Z",
+  "rescoreCompletedAt": "2026-02-02T03:38:54.385Z",
   "garbageFullText": "Review — Six Review: ‘Six’ pops back on Broadway Theatergoers thirsty for something festive, fresh and funny — which is to say, just about all lovers of theater who have endured the drought of the past 18 months — will find much to delight in at the Brooks Atkinson Theatre, where the musical “Six” has opened. , and Charles Isherwood October 3, 2021 . 9:59 PM 5 min read Share on Twitter Share on Facebook Share on LinkedIn Share via Email (Photo: Joan Marcus) Theatergoers thirsty for something festive, fresh and funny — which is to say, just about all lovers of theater who have endured the drought of the past 18 months — will find much to delight in at the Brooks Atkinson Theatre, where the musical “Six” has opened.At last!As Broadway mavens know, “Six” was scheduled to open the very night the industry was, to borrow a handy metaphor, beheaded by the pandemic shutdown. There is a delicious symmetry in this musical being the first new one to open since Broadway has returned. A wave of pure joy rippled across the theater as soon as the first notes of the show were struck at the performance I attended. This post is for paying subscribers only Subscribe now Already have an account? Sign in Review — Six — Brooks Atkinson Theatre — Britney Spears — Sia — Beyoncé — Adele — Toby Marlow — Lucy Moss — Anne Boleyn — Andrea Macasaet — Abby Mueller — Rihanna — Brittney Mack — Adrianna Hicks — Samantha Pauly and Anna Uzele — Swarovski — Bratz Introductory Offer $1/month for 3 months Subscribe Already have an account? Log in Latest Closer Look What does it take to actually revise a musical? Closer Look How the original company of ‘Ragtime’ was cast Insights Loyalty Report: January 22, 2026 Closer Look How ‘Riverdance’ revolutionized the world of dance Podcast 30 years ago, Tracy Letts wrote a play tailor-made for today with ‘Bug’ Personnel Neil Mazzella steps down as CEO of Hudson entities Books The original music director of ‘Rent’ reveals scenes from the very first auditions Closer Look Christian Cowan uses detail and taste to make ‘The Queen of Versailles’ shine",
   "garbageReason": "Paywall/subscription prompt: \"subscribers only\"",
   "garbageFixedAt": "2026-01-29T22:45:23.176Z",
@@ -90,6 +90,5 @@
     "Show title not found in text"
   ],
   "contentTier": "complete",
-  "wordCount": 1273,
-  "needsRescore": true
+  "wordCount": 1273
 }

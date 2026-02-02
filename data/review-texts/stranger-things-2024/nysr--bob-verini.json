@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating combined with the phrase 'knock our socks off – and does' indicates strong enthusiasm and clear recommendation, placing this firmly in positive territory. | GPT-4o: The 4/5 star rating and the phrase 'knock our socks off' indicate a strong recommendation with enthusiasm, fitting well within the Positive bucket at the higher end. | Gemini: The critic gives the show 4 out of 5 stars and states that the show 'knocks our socks off,' indicating a positive review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and overwhelmingly positive language throughout the review clearly indicate a strong recommendation, praising the technical wizardry, performances, and overall experience despite acknowledging some juvenile elements. | GPT-4o: The review is overwhelmingly positive, highlighting the show's technical wizardry, emotional impact, and successful adaptation from screen to stage. The critic's 4/5 star rating and enthusiastic language indicate a strong recommendation. | Gemini: The critic gives the show 4/5 stars and calls it an \"exciting and even moving evening.\" While acknowledging some juvenile elements, the review is overwhelmingly positive, praising the technical wizardry, sound design, and performances. The critic clearly recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,17 +38,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:43:47.176Z",
+    "scoredAt": "2026-02-02T03:40:53.843Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 80,
     "openaiScore": 82,
-    "geminiScore": 80,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
@@ -65,12 +65,11 @@
   "bwwThumb": null,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 86,
-  "rescoreCompletedAt": "2026-02-01T16:13:19.320Z",
+  "rescoreCompletedAt": "2026-02-02T03:40:53.843Z",
   "originalScore": "4/5 stars",
   "originalScoreNormalized": 80,
   "scoreSource": "live-fetch",
   "_scoreFetchedAt": "2026-01-31T23:16:17.958Z",
   "contentTier": "complete",
-  "wordCount": 916,
-  "needsRescore": true
+  "wordCount": 916
 }

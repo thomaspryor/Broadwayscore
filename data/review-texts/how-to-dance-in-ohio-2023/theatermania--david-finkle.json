@@ -19,7 +19,7 @@
   "needsScoring": true,
   "llmScore": {
     "score": 60,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 55,
       "high": 65
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges good intentions but clearly states it fails as compelling theater, placing it in mixed territory that leans toward the lower end due to the fundamental criticism of its theatrical merit. | GPT-4o: The review acknowledges the good intentions of the production but criticizes it for lacking theatrical engagement, suggesting a mixed reception. | Gemini: The review acknowledges the good intentions but ultimately finds the show lacking as compelling theater, suggesting a mixed experience.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This appears to be a season announcement or press release rather than an actual review of performances, providing only plot descriptions without any critical assessment of the productions' quality or merit. | GPT-4o: The text is primarily informational about upcoming productions and the theater's mission, without clear evaluative content or a verdict on the quality of the shows. The lack of explicit recommendation or criticism leads to a mixed classification. | Gemini: The review describes the plays and the mission of The Flea, highlighting its commitment to supporting diverse artists and experimental art. While it doesn't explicitly rave about the plays, the positive framing and focus on the theater's mission suggest a recommendation to support their work.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,31 +43,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:55:37.999Z",
+    "scoredAt": "2026-02-02T03:30:43.126Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 48,
-    "previousVersion": "5.0.0"
+    "previousScore": 60,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
   "ensembleData": {
-    "claudeScore": 58,
+    "claudeScore": 60,
     "openaiScore": 60,
-    "geminiScore": 62,
+    "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 4,
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 60,
   "textWordCount": 419,
@@ -106,5 +105,6 @@
   ],
   "textStatus": "truncated",
   "sourceMethod": "brightdata",
-  "showNotMentioned": true
+  "showNotMentioned": true,
+  "rescoreCompletedAt": "2026-02-02T03:30:43.126Z"
 }

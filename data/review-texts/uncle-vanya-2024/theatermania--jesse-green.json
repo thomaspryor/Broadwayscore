@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Carell's performance anchors this thoughtful revival, bringing unexpected depth to Chekhov's melancholy masterpiece.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 59,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "showScoreExcerpt": "Carell's performance anchors this thoughtful revival, bringing unexpected depth to Chekhov's melancholy masterpiece.",
   "needsScoring": true,
   "llmScore": {
-    "score": 78,
+    "score": 59,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 54,
+      "high": 64
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses clearly positive language calling it a 'thoughtful revival' and praising Carell's performance for bringing 'unexpected depth' to a 'masterpiece,' indicating a solid recommendation. | GPT-4o: The review highlights the performance as a key strength and refers to the production as a 'thoughtful revival' of a 'melancholy masterpiece', indicating a strong recommendation. | Gemini: The review highlights a strong performance and calls the production \"thoughtful,\" indicating a positive assessment despite the melancholy nature of the play.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a website error message or navigation page rather than an actual review, making it impossible to determine the critic's assessment of the show. | GPT-4o: The review text is missing, providing no evaluative content or verdict. The score reflects the absence of information. | Gemini: The review text is a placeholder indicating the review is missing. Without the actual review, it's impossible to determine a recommendation, so I'm defaulting to a low 'Mixed' score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,26 +43,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T21:02:30.597Z",
+    "scoredAt": "2026-02-02T03:43:23.514Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 88,
-    "geminiScore": 78,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "claudeScore": 60,
+    "openaiScore": 62,
+    "geminiScore": 55,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (13 words)",
@@ -104,6 +105,6 @@
     "Word count too low: 42 (min: 300)",
     "Show title not found in text"
   ],
-  "needsRescore": true,
-  "rescoreReason": "text-cleaning bug destroyed fullText during scoring"
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
+  "rescoreCompletedAt": "2026-02-02T03:43:23.514Z"
 }

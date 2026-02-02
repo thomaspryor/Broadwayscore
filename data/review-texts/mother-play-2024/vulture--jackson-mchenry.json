@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges the play's clever concept and Lange's compelling performance but concludes that the play 'struggles' to live up to its promising title and concept, with the script failing to provide a clear path through its contradictions. | GPT-4o: The review highlights both strengths and weaknesses, noting the cleverness of the title and Lange's performance but also mentioning that the play struggles to live up to its potential and lacks a clear route through its contradictions. | Gemini: The review highlights both strengths and weaknesses, particularly with Lange's performance and the script itself. The critic acknowledges moments of brilliance but ultimately finds the play struggles to live up to its potential.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic finds interesting theatrical moments and strong performances in spots, but ultimately concludes the script lacks synthesis and the characters are too compartmentalized, with performances constrained by echoes of other works. | GPT-4o: The review highlights both strengths and weaknesses of the production. While it praises certain performances and moments, it also notes structural issues and lack of character development, leading to a mixed overall impression. | Gemini: The review highlights both strengths (Keenan-Bolger's performance, Lange's ability to cast a spell) and weaknesses (script not fully refined, characters too neatly compartmentalized). The overall assessment is neither strongly positive nor negative, leaning towards a mixed experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,12 +38,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:54:45.887Z",
+    "scoredAt": "2026-02-02T03:34:10.501Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 52,
-    "previousVersion": "5.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
@@ -71,11 +71,10 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 46,
-  "rescoreCompletedAt": "2026-02-01T15:40:36.168Z",
+  "rescoreCompletedAt": "2026-02-02T03:34:10.501Z",
   "truncationSignals": [
     "has_footer_junk"
   ],
   "contentTier": "complete",
-  "wordCount": 1446,
-  "needsRescore": true
+  "wordCount": 1446
 }

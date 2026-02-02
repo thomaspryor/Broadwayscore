@@ -8,15 +8,15 @@
   "fullText": "Parenting inspires varying schools of thought. While some relish the tasks of caretaking, others speak candidly about the hardships of child-rearing, sharing the true realities of motherhood that have been glamorized over time. In “Mary Jane,” the 2017 play written by Amy Herzog and making its Broadway debut under Anne Kauffman’s direction, viewers witness both a young mother’s joy and her anguish as she works around the clock to keep her disabled toddler alive.",
   "dtliExcerpt": "By the time the final curtain on “Mary Jane” drops, the audience is fully immersed in the titular character’s experiences. McAdams masters her portrayal of a determined caregiver continually sitting in the uncertainty of worry, despite constantly leaning toward positivity.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 78,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises McAdams' performance as 'mastered' and notes the lasting impact on audiences, indicating a positive recommendation despite limited excerpted text. | GPT-4o: The review highlights the lasting impact of the play and praises McAdams' performance, indicating a strong recommendation. | Gemini: The review highlights McAdams' masterful portrayal and the play's lasting impact, indicating a positive recommendation despite the difficult subject matter.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the lasting impact of the show and highlights McAdams' masterful performance, indicating a clear positive recommendation despite the challenging subject matter. | GPT-4o: The review highlights the play's lasting impact on viewers and praises McAdams' performance, indicating a strong recommendation to see the show. | Gemini: The review highlights McAdams' masterful portrayal and the play's lasting impact, indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,27 +37,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:19:38.775Z",
+    "scoredAt": "2026-02-02T03:33:00.773Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 90,
+    "openaiScore": 82,
     "geminiScore": 80,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "showScoreExcerpt": "“ 'Mary Jane' stays with viewers long after they leave the theater. \"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/mary-jane-broadway",
@@ -85,11 +85,10 @@
   "archiveOrgUrl": "http://web.archive.org/web/20260105081140/https://variety.com/2024/legit/reviews/mary-jane-broadway-review-rachel-mcadams-1235978406/",
   "contentTier": "complete",
   "wordCount": 694,
-  "rescoreCompletedAt": "2026-02-02T00:19:38.775Z",
+  "rescoreCompletedAt": "2026-02-02T03:33:00.773Z",
   "isFullReview": false,
   "textWordCount": 74,
   "textQuality": "excerpt",
   "truncationSignals": [],
-  "textStatus": "partial",
-  "needsRescore": true
+  "textStatus": "partial"
 }

@@ -7,7 +7,7 @@
   "publishDate": "2025-11-13",
   "showScoreExcerpt": "\"I thought what might follow would be Mr. Ickeâs most provocativeâand logical and interestingâdeparture from Sophocles, an ending of a more ambiguous and less gruesome kind. \"",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 77,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "I thought what might follow would be Mr. Icke’s most provocative—and logical and interesting—departure from Sophocles, an ending of a more ambiguous and less gruesome kind. Instead he reverts to tradition. It’s an understandable move: Many might feel shortchanged if Mr. Icke had chosen otherwise. Nevertheless, it’s a Grand Guignol finish to what has previously been an effective, affecting and strictly naturalistic new interpretation of this canonical drama.",
@@ -16,14 +16,14 @@
   "sourceMethod": "archive",
   "scoreSource": null,
   "llmScore": {
-    "score": 60,
-    "confidence": "high",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt suggests the critic had positive expectations that weren't met, indicating disappointment with creative choices. However, with only one fragment available and aggregator showing 'Up', the full verdict remains unclear. | GPT-4o: The excerpt suggests an appreciation for the director's provocative and interesting choices, but it lacks a clear recommendation or strong enthusiasm, indicating a mixed reception. | Gemini: The excerpt suggests the reviewer had expectations for a more interesting departure but doesn't explicitly state whether the production met those expectations. The BroadwayWorld aggregator says 'Up', which suggests a positive leaning, but the limited text makes it difficult to be certain.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses strong positive language like 'transfixing' and 'ingeniously reimagined' while describing an 'effective, affecting' interpretation. Though disappointed by the traditional ending, the overall assessment is clearly favorable. | GPT-4o: The review describes the production as 'transfixing,' 'ingeniously reimagined,' and 'effective, affecting,' indicating a strong recommendation. The minor reservation about the traditional ending does not significantly detract from the overall praise. | Gemini: The review is largely positive, praising the reimagining and contemporary staging. However, the critic expresses disappointment with the traditional ending, which prevents a higher score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,27 +41,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:56:58.742Z",
+    "scoredAt": "2026-02-02T03:35:11.395Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 53,
-    "previousVersion": "3.0.0"
+    "previousScore": 60,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 60,
-    "geminiScore": 60,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/oedipus-2025/wsj--charles-isherwood_2026-02-02.html",
   "textFetchedAt": "2026-02-02T03:07:48.511Z",
@@ -82,13 +82,12 @@
   "bwwThumb": "Up",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 53,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.924Z",
+  "rescoreCompletedAt": "2026-02-02T03:35:11.395Z",
   "garbageFullText": "https://www.wsj.com/articles/oedipus-review-brilliantly-reimagining-sophocles-on-broadway-b9416144\n\nThe cast of ‘Oedipus.’ Julieta CervantesNew York\n\nA powerful politician’s night of triumph descends precipitously into waking-nightmare territory in the transfixing “Oedipus,” an adaptation of Sophocles’ tragedy from the British writer-director Robert Icke. In this ingeniously reimagined contemporary staging on Broadway (“created by” Mr. Icke “after” Sophocles), the Theban king of the original becomes a hard-driving candidate hoping to lead his country as he gathers with his family on election night to await the returns, while a dark fate gradually encircles him like a snake ready to spring.\n\nCopyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nNew York State to Loosen Environmental Rules to Speed Up Homebuilding\n\nThousands of New York City Nurses Go On Strike\n\nopinionBreads Lines in Mamdani’s New York\n\nopinionHow Mamdani and Cea Weaver Plan to End Private Housing\n\n‘Bug’ Review: A Broadway Drama of Insidious Delusion",
   "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
   "garbageFixedAt": "2026-01-29T22:45:23.051Z",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "fullText": "https://www.wsj.com/articles/oedipus-review-brilliantly-reimagining-sophocles-on-broadway-b9416144\n\nThe cast of ‘Oedipus.’ Julieta CervantesNew York\n\nA powerful politician’s night of triumph descends precipitously into waking-nightmare territory in the transfixing “Oedipus,” an adaptation of Sophocles’ tragedy from the British writer-director Robert Icke. In this ingeniously reimagined contemporary staging on Broadway (“created by” Mr. Icke “after” Sophocles), the Theban king of the original becomes a hard-driving candidate hoping to lead his country as he gathers with his family on election night to await the returns, while a dark fate gradually encircles him like a snake ready to spring.",
   "isFullReview": false,
   "textWordCount": 89,

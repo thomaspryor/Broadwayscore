@@ -41,13 +41,13 @@
   "sourceMethod": "brightdata",
   "archiveOrgTimestamp": "20241225122945",
   "archiveOrgUrl": "http://web.archive.org/web/20241225122945/https://www.hollywoodreporter.com/tv/tv-reviews/schmigadoon-1234982706/",
-  "assignedScore": 61,
+  "assignedScore": 62,
   "llmScore": {
-    "score": 61,
-    "confidence": "high",
+    "score": 62,
+    "confidence": "medium",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -58,7 +58,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The bottom line explicitly states the show has positive elements ('joyful musical moments') but significant flaws ('very little depth'), indicating a mixed assessment that neither fully recommends nor discourages seeing it. | GPT-4o: The review acknowledges some positive aspects with 'joyful musical moments' but ultimately suggests a lack of depth, indicating a mixed recommendation. | Gemini: The review concludes with a mixed assessment, highlighting \"joyful musical moments\" but noting a lack of depth, placing it in the Mixed category. The lack of a clear recommendation prevents a higher score.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review explicitly states 'Some joyful musical moments, but very little depth' in the bottom line, and describes it as feeling like an overstretched parody without sufficient justification for its length. The mixed assessment acknowledges positive elements while clearly identifying significant structural problems. | GPT-4o: The review acknowledges some enjoyable aspects but criticizes the lack of depth and the extended running time. The tone suggests a mixed experience with both positive and negative elements. | Gemini: The review highlights some enjoyable aspects but ultimately finds the show lacking depth and feeling overextended. This places it in the 'Mixed' category, leaning slightly towards positive due to the mention of 'joyful musical moments'.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -68,23 +68,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:59:41.188Z",
+    "scoredAt": "2026-02-02T03:38:48.727Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 45,
-    "previousVersion": "5.0.0"
+    "previousScore": 61,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (253 words)",
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 60,
-    "geminiScore": 60,
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 2,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -92,6 +92,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
   },
-  "needsRescore": true,
-  "rescoreReason": "text-cleaning bug destroyed fullText during scoring"
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
+  "rescoreCompletedAt": "2026-02-02T03:38:48.727Z"
 }

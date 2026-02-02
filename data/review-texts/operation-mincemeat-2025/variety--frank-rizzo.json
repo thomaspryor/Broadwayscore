@@ -16,7 +16,7 @@
   "dtliThumb": "Up",
   "llmScore": {
     "score": 80,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 75,
       "high": 85
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic clearly enjoys the show, praising its humor, heart, and clever theatrical approach, though the recommendation seems somewhat targeted to audiences who appreciate British comedy styles. | Gemini: The review clearly recommends the show, highlighting its humor and heart. The critic uses phrases like \"laugh uproariously\" and emphasizes the show's ability to evoke emotion, indicating a positive experience.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses enthusiastic language like 'astonishing,' praises the show's ability to make audiences 'laugh uproariously,' and highlights how it balances comedy with heart and dignity, indicating a clear positive recommendation. | GPT-4o: The review is highly enthusiastic, comparing the show to Monty Python and praising its humor, emotional depth, and clever theatrical approach. The language suggests a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, highlighting the show's humor and unexpected emotional depth. The critic clearly recommends seeing it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,26 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:31:16.783Z",
+    "scoredAt": "2026-02-02T03:36:09.837Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
+    "openaiScore": 90,
     "geminiScore": 82,
     "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwExcerpt": "Though the main characters are played for laughs, each one, amid all the comic chaos, also reveals their own dignity, heart, and humanity. The show also manages to teeter between patriotism and subversiveness: admiring the derring-do of the mission while poking at its shortcomings, too. Having the actors play any gender of any character without camp or winks is a theatrical approach that not only cleverly skirts the sexist and classist ick of that era but coolly comments on it, too.",
   "sourceMethod": "archive",
@@ -84,7 +85,7 @@
   "showScoreExcerpt": null,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 80,
-  "rescoreCompletedAt": "2026-02-02T00:31:16.783Z",
+  "rescoreCompletedAt": "2026-02-02T03:36:09.837Z",
   "contentTier": "complete",
   "wordCount": 910,
   "isFullReview": false,
@@ -93,6 +94,5 @@
   "truncationSignals": [
     "shorter_than_excerpt"
   ],
-  "textStatus": "truncated",
-  "needsRescore": true
+  "textStatus": "truncated"
 }

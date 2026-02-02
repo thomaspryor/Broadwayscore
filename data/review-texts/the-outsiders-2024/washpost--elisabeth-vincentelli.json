@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review praises the staging, fight choreography, and visual inventiveness but criticizes the book and dialogue as weak, creating a clear mixed assessment where strengths and weaknesses are balanced. | GPT-4o: The review highlights impressive elements like the impactful fight scene and inventive choreography, but criticizes the show's dialogue and a key scene's execution. The mixed assessment of visual and narrative aspects suggests a balanced view. | Gemini: The review praises the visual and technical aspects of the show, particularly the fight choreography and set design. However, it criticizes the book and dialogue, resulting in a mixed overall assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic praises the visual and staging elements extensively but consistently criticizes the book and score for overexplaining and lacking dramatic weight, creating a balanced mixed assessment. | GPT-4o: The review praises the visual elements and choreography but criticizes the over-explanatory book and lackluster score. The overall tone suggests the production has strengths but significant weaknesses, leading to a mixed recommendation. | Gemini: The review praises the visual aspects and staging but criticizes the book and songs for overexplaining and lacking dramatic weight. This indicates a mixed experience, with strong elements offset by significant weaknesses.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,12 +44,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:12:14.120Z",
+    "scoredAt": "2026-02-02T03:42:12.684Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
-    "previousVersion": "5.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
@@ -81,8 +81,7 @@
   "fetchTier": 4,
   "archiveOrgTimestamp": "20250724124346",
   "archiveOrgUrl": "http://web.archive.org/web/20250724124346/https://www.washingtonpost.com/entertainment/theater/2024/04/11/outsiders-broadway-review/",
-  "rescoreCompletedAt": "2026-02-01T16:24:02.903Z",
+  "rescoreCompletedAt": "2026-02-02T03:42:12.684Z",
   "contentTier": "complete",
-  "wordCount": 765,
-  "needsRescore": true
+  "wordCount": 765
 }

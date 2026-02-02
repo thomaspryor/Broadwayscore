@@ -9,15 +9,15 @@
   "bwwExcerpt": "Yet, under Rachel Chavkin’s surprisingly frazzled direction, the show, now at the Longacre Theatre, often feels like you’re watching someone put together a misguided collage – one that often incorporates elements of other stronger musicals, most notably “Cabaret” -- as it struggles to decide what story it wants to tell us and what message we’re supposed to take ith us as we leave the theatre. Women can do anything? Women never get the same credit as men? Women are brilliant? Art isn’t easy? You",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 45,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 44,
-    "confidence": "high",
+    "score": 45,
+    "confidence": "medium",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 40,
+      "high": 50
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The critic describes frazzled direction and a show that struggles with identity, using clearly negative language like 'misguided.' However, with only one excerpt available, scoring conservatively within the negative range. | Gemini: The review uses negative language like \"frazzled direction\" and \"misguided collage\" to describe the production, indicating a negative assessment. The critic questions the show's message and overall direction, suggesting it's not a worthwhile experience.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic finds the musical 'muddled' with 'shortcomings,' criticizes the unmemorable score, and concludes with a clear dismissal using a paint pun that suggests audiences should avoid it. | GPT-4o: The review highlights several shortcomings, such as the muddled direction, lack of a memorable score, and unnecessary characters, culminating in a clear personal verdict to 'brush the whole experience off.' | Gemini: The critic clearly states he would rather \"brush the whole experience off,\" indicating a negative recommendation. He cites issues with the direction, score, and overall narrative.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:24:58.121Z",
+    "scoredAt": "2026-02-02T03:31:49.995Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 38,
-    "previousVersion": "5.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": null,
+    "openaiScore": 48,
     "geminiScore": 45,
     "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "scoreDelta": 3,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Negative"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "bwwThumb": "Down",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
@@ -83,10 +84,9 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "scrapingbee",
-  "rescoreCompletedAt": "2026-02-01T15:24:58.782Z",
+  "rescoreCompletedAt": "2026-02-02T03:31:49.995Z",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
-  "wordCount": 688,
-  "needsRescore": true
+  "wordCount": 688
 }

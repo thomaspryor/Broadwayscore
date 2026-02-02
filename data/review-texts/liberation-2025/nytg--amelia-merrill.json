@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic explicitly calls the show 'essential theatregoing' and describes it as 'one of the best confrontations' in its category, using language that strongly recommends the production as a must-see. | GPT-4o: The review describes the production as 'essential theatregoing' and praises its impact and presentation, indicating a strong recommendation. | Gemini: The review explicitly states the play is \"essential theatregoing\" and one of the best confrontations with memory, indicating a strong recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic explicitly calls it 'essential theatregoing' and uses highly positive language like 'sings and soars' and 'unstoppable', indicating a strong must-see recommendation. | GPT-4o: The review describes the production as 'essential theatregoing,' indicating a strong recommendation. The use of phrases like 'sings and soars' and 'punches you in the gut' suggests a powerful and impactful experience, aligning with a rave review. | Gemini: The review explicitly states the production is \"essential theatregoing,\" indicating a rave recommendation. The positive tone and description of the play as \"singing and soaring\" further support this classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,17 +40,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:56:40.393Z",
+    "scoredAt": "2026-02-02T03:32:16.732Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 91,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 90,
-    "openaiScore": 92,
-    "geminiScore": 92,
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 90,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
@@ -82,6 +82,5 @@
   "wordCount": 1056,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 77,
-  "rescoreCompletedAt": "2026-02-01T15:28:02.283Z",
-  "needsRescore": true
+  "rescoreCompletedAt": "2026-02-02T03:32:16.732Z"
 }

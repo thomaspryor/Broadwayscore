@@ -9,16 +9,16 @@
   "bwwExcerpt": "June Squibb and a superb company turn Marjorie Prime into an acting masterclass about mortality, memory, and why we love. Brian",
   "bwwRoundupUrl": null,
   "originalScore": "5/5",
-  "assignedScore": 95,
+  "assignedScore": 92,
   "source": "bww-roundup",
   "dtliThumb": null,
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 95,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 90,
-      "high": 100
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -29,37 +29,35 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: This appears to be heavily truncated text with only a headline and photo caption. While the critic gave 5/5 stars, the actual review content is missing, making it impossible to determine the true recommendation based on the text alone. | GPT-4o: The critic's original rating of 5/5 strongly indicates a rave review, suggesting the production is highly recommended. | Gemini: The critic gave the show a perfect score of 5/5, indicating a rave review.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic gives 5/5 stars and uses highly positive language like 'divine acting company,' 'stellar performances,' and 'impeccable timing.' Despite the truncated text, the consistent praise and perfect rating clearly indicate a rave review. | GPT-4o: The review is highly positive, highlighting the superb performances and the profound impact of the play. The original 5/5 rating and the phrase 'acting masterclass' indicate a strong recommendation, justifying a Rave classification. | Gemini: The review praises the performances, especially June Squibb's, and the play's writing. The 5/5 rating from the critic strongly suggests a positive recommendation, despite the truncated text.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:35:04.906Z",
+    "scoredAt": "2026-02-02T03:32:48.409Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
-    "previousVersion": "3.0.0"
+    "previousScore": 95,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
+    "claudeScore": 88,
     "openaiScore": 95,
-    "geminiScore": 95,
-    "claudeBucket": "Mixed",
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 35,
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Outlier claude chose Mixed, 2+ buckets from majority"
-    ],
+    "needsReview": false,
+    "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Rave"
   },
@@ -72,11 +70,10 @@
   "scoreExtractedFrom": "fullText",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 89,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.869Z",
+  "rescoreCompletedAt": "2026-02-02T03:32:48.409Z",
   "truncationSignals": [
     "ends_with_ellipsis"
   ],
   "contentTier": "complete",
-  "wordCount": 499,
-  "needsRescore": true
+  "wordCount": 499
 }

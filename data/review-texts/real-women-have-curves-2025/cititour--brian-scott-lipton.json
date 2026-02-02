@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-REAL-WOMEN-HAVE-CURVES-Opens-on-Broadway-20250426",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 75,
-    "confidence": "medium",
+    "score": 79,
+    "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Only a single excerpt describing production design with neutral-positive tone, but text cuts off mid-sentence. The aggregator context suggests positive verdict, but insufficient review text to confirm the critic's overall recommendation. | GPT-4o: The review excerpt focuses on the positive aspects of the production design and costumes, suggesting a visually appealing show. The phrase 'shows us again and again' implies a positive takeaway. However, due to the single excerpt warning and potential truncation, the score is conservatively placed in the middle of the Positive range. | Gemini: The review excerpt focuses on positive aspects of the design elements, suggesting a positive overall impression, but the truncated nature and single excerpt warrant a conservative score.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review is clearly positive, calling the show 'delightful' and praising the score, performances, and audience appeal. Minor criticisms about one subplot don't diminish the overall recommendation. | GPT-4o: The review describes the show as a 'delightful new musical' and highlights its appeal to a broad audience, praising the performances, score, and direction. The positive tone and emphasis on audience enjoyment indicate a strong recommendation. | Gemini: The review is generally positive, highlighting the tunefulness and feel-good nature of the musical. While it mentions a 'too-heavy' plot development, the overall tone suggests a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,27 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:20:37.659Z",
+    "scoredAt": "2026-02-02T03:38:30.171Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "3.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 75,
-    "geminiScore": 75,
-    "claudeBucket": "Mixed",
+    "claudeScore": 78,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 65,
@@ -84,10 +84,9 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "scrapingbee",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.004Z",
+  "rescoreCompletedAt": "2026-02-02T03:38:30.171Z",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
-  "wordCount": 799,
-  "needsRescore": true
+  "wordCount": 799
 }

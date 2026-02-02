@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The show is a sugar rush of pure theatrical joy, even if it occasionally threatens to give you diabetes from its relentless sweetness.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 57,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "showScoreExcerpt": "The show is a sugar rush of pure theatrical joy, even if it occasionally threatens to give you diabetes from its relentless sweetness.",
   "needsScoring": true,
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 57,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 52,
+      "high": 62
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic describes the show as 'pure theatrical joy' which is clearly positive, but the diabetes metaphor suggests the sweetness can be overwhelming, indicating some reservations about the execution. | GPT-4o: The review describes the show as a 'sugar rush of pure theatrical joy,' indicating a highly positive experience despite minor reservations about its sweetness. | Gemini: The review describes the show as a \"sugar rush of pure theatrical joy,\" indicating a positive experience, but the caveat about \"relentless sweetness\" suggests a reservation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a press release or announcement about a cast recording rather than a theater review, with no critical evaluation of the production's quality or recommendation. | GPT-4o: The text provided is primarily informational about a recording and lacks evaluative content about the production itself. Without a clear verdict or critique, it falls into a mixed category due to insufficient information. | Gemini: This review is purely descriptive, outlining the cast and plot of the recording. There is no critical assessment of the production's quality, leading to a 'Mixed' classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,31 +43,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:32:47.116Z",
+    "scoredAt": "2026-02-02T03:34:42.150Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 78,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "claudeScore": 60,
+    "openaiScore": 55,
+    "geminiScore": 55,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "textWordCount": 336,
@@ -109,5 +108,6 @@
   "textIssues": [
     "Show title not found in text"
   ],
-  "showNotMentioned": true
+  "showNotMentioned": true,
+  "rescoreCompletedAt": "2026-02-02T03:34:42.150Z"
 }

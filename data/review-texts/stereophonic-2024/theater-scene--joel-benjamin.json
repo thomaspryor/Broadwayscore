@@ -22,7 +22,7 @@
   ],
   "llmScore": {
     "score": 74,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 69,
       "high": 79
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt shows clear praise for the playwright's authentic portrayal, but with only one cherry-picked quote available, the full review verdict remains uncertain. Scoring conservatively within positive range. | GPT-4o: The excerpt praises the show's depiction of the Seventies' Rock & Roll scene, suggesting some positive elements. However, due to the lack of comprehensive context and the warning about the single excerpt, the overall sentiment remains unclear, leading to a conservative mixed classification. | Gemini: The single quote is positive, indicating a recommendation, but without more context, it's difficult to gauge the strength of the recommendation. I'm scoring it in the middle of the positive range due to the limited information.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The quote uses 'mind-boggling' positively about the playwright's authenticity, but this single excerpt about one element doesn't provide enough context for the overall verdict. | GPT-4o: The excerpt praises the playwright's ability to capture the essence of the Seventies' Rock & Roll scene, which suggests a positive view of the production. However, due to the lack of additional context and the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The single quote is positive, suggesting a recommendation, but without more context, it's difficult to be more definitive. I'm placing it in the positive bucket with a score in the middle range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,30 +46,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:59:51.489Z",
+    "scoredAt": "2026-02-02T03:40:16.025Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 72,
-    "openaiScore": 62,
+    "openaiScore": 76,
     "geminiScore": 75,
     "claudeBucket": "Positive",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 74,
   "textWordCount": 744,
@@ -90,5 +90,6 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "rescoreCompletedAt": "2026-02-02T03:40:16.025Z"
 }

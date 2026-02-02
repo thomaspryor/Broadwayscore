@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": "A",
-  "assignedScore": 76,
+  "assignedScore": 89,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,13 +21,13 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 76,
-    "confidence": "high",
+    "score": 89,
+    "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 84,
+      "high": 94
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows clear positive sentiment with 'welcome dose' and praise for both humor and production values, but single excerpt warning requires conservative scoring within the positive range. | GPT-4o: The excerpt describes the show as 'a welcome dose' of humor and spectacle, suggesting a positive experience. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The phrase \"welcome dose\" indicates a positive sentiment, but the lack of further context and the single excerpt warning suggest a conservative score within the positive range.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic gives an A- grade and consistently praises the production throughout, calling it 'as funny as ever' and highlighting the 'big, brassy Broadway spectacle' with enthusiasm for multiple performances and creative choices. | GPT-4o: The review is overwhelmingly positive, praising the humor, performances, and production quality. The original rating of 'A' strongly indicates a rave review, and the truncated text warning suggests caution against assuming any negative aspects. | Gemini: The review is overwhelmingly positive, highlighting the humor, performances, and spectacle. The 'A' grade and the aggregator excerpt further support a positive classification, despite the truncated text.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,30 +46,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:59:28.490Z",
+    "scoredAt": "2026-02-02T03:39:23.407Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 77,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
   "textWordCount": 748,
@@ -93,5 +93,6 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250725045912",
-  "archiveOrgUrl": "http://web.archive.org/web/20250725045912/https://ew.com/spamalot-review-monty-python-musical-revival-8404332"
+  "archiveOrgUrl": "http://web.archive.org/web/20250725045912/https://ew.com/spamalot-review-monty-python-musical-revival-8404332",
+  "rescoreCompletedAt": "2026-02-02T03:39:23.407Z"
 }

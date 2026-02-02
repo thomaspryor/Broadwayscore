@@ -9,15 +9,15 @@
   "bwwExcerpt": "On its face, the tumult of the Civil War and a traumatizing assassination do not a recipe for laughter make. And yet the Great White Way has not witnessed a comedy this funny, or a comedic star turn this dazzling, in at least a decade.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240619",
   "originalScore": "A",
-  "assignedScore": 93,
+  "assignedScore": 94,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 93,
+    "score": 94,
     "confidence": "high",
     "range": {
-      "low": 88,
-      "high": 98
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives an 'A' rating and uses superlative language like 'most heavenly escape,' 'preposterously enjoyable,' 'funniest show on Broadway,' and 'must be seen to be believed,' indicating an enthusiastic must-see recommendation. | GPT-4o: The critic's original rating of 'A' and the enthusiastic language throughout the review, including phrases like 'the funniest show on Broadway right now' and 'must be seen to be believed,' strongly indicate a rave review. | Gemini: The review is overwhelmingly positive, calling the show the \"most heavenly escape on Broadway\" and the \"funniest show on Broadway right now.\" The critic uses strong language like \"theatrical magic that must be seen to be believed\" and states that it's a \"show for the history books.\"",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives an A rating and uses superlative language throughout, calling it the funniest comedy in a decade, describing 'theatrical magic that must be seen to be believed,' and ending by calling it 'a show for the history books.' | GPT-4o: The review is overwhelmingly positive, praising the play's humor, performances, and direction. The critic's original rating of 'A' and the enthusiastic language used throughout the review clearly indicate a strong recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"most heavenly escape\", \"irrepressible comic genius\", \"theatrical magic that must be seen to be believed\", and \"show for the history books\". The critic's rating of 'A' further supports this classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:05:31.728Z",
+    "scoredAt": "2026-02-02T03:35:21.856Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 93,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 93,
     "openaiScore": 95,
-    "geminiScore": 92,
+    "geminiScore": 95,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -74,8 +74,7 @@
   "designation": "Recommended",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 91,
-  "rescoreCompletedAt": "2026-02-01T15:44:11.124Z",
+  "rescoreCompletedAt": "2026-02-02T03:35:21.856Z",
   "contentTier": "complete",
-  "wordCount": 724,
-  "needsRescore": true
+  "wordCount": 724
 }

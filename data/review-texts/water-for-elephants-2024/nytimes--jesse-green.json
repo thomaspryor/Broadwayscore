@@ -22,7 +22,7 @@
   ],
   "llmScore": {
     "score": 81,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 76,
       "high": 86
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Jesse Green praises the production's 'many wonders,' calls it 'stunning' and 'emotional,' and explicitly contrasts it positively against typical Broadway musicals. The review celebrates the theatrical intelligence and imagination of the production. | GPT-4o: The review is filled with praise for the production's creativity, emotional impact, and theatrical intelligence. The critic highlights the stunning and emotional direction, compelling characters, and the overall awe-inspiring experience, indicating a strong recommendation. | Gemini: The review is generally positive, highlighting the production's stunning visuals and emotional impact, while acknowledging it's a 'brand-extension musical'. This suggests a recommendation with reservations, placing it in the positive bucket.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite technical criticisms about muddy lyrics and motivations, Green delivers an overwhelmingly positive assessment praising the production's theatrical intelligence, stunning visuals, and emotional impact. The closing metaphor clearly endorses the show as successful and satisfying. | GPT-4o: The review highlights the production's spectacle and emotional impact, praising its creativity and execution. Despite some reservations about the musical's emotional center and clarity of lyrics, the overall tone is positive, emphasizing the show's strengths and unique qualities. | Gemini: Despite some criticisms regarding the lyrics and muddy motivations, the review is largely positive, praising the production's theatrical intelligence, movement, eye candy, and awe. The critic clearly enjoyed the show and recommends it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,27 +46,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:26:42.325Z",
+    "scoredAt": "2026-02-02T03:43:40.834Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "5.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 90,
+    "openaiScore": 82,
     "geminiScore": 80,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "designation": "Critics_Pick",
   "truncationSignals": [
@@ -76,6 +76,5 @@
   "wordCount": 1197,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 88,
-  "rescoreCompletedAt": "2026-02-01T16:36:10.778Z",
-  "needsRescore": true
+  "rescoreCompletedAt": "2026-02-02T03:43:40.834Z"
 }

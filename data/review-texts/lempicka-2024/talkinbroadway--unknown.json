@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,14 +21,14 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 45,
+    "score": 64,
     "confidence": "medium",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 59,
+      "high": 69
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The descriptors 'aggressively earnest' and 'assertively bombastic' suggest criticism of the show's tone and approach, but with only one curated excerpt available, the full verdict is unclear. | GPT-4o: The excerpt suggests a mixed reaction, highlighting both earnestness and bombast, which can be seen as both positive and negative depending on context. The lack of a full review and single excerpt warning necessitate a conservative score within the Mixed range. | Gemini: The description of the musical as \"aggressively earnest and assertively bombastic\" suggests a negative assessment, indicating the reviewer likely does not recommend the show. Given that this is the only excerpt available, I'm scoring conservatively within the negative range.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges some strong individual performances but ultimately criticizes the show as cliché-ridden with fundamental structural problems that even talented direction cannot overcome. | GPT-4o: The review highlights some strong performances and moments, particularly from Amber Iman and Beth Leavel, but criticizes the overall execution as cliché-ridden and lacking depth. The production's visual and auditory elements are described as distracting rather than enhancing, leading to a mixed impression. | Gemini: The review highlights strong performances and moments but ultimately criticizes the show's cliché-ridden nature and the director's inability to overcome the script's weaknesses. This suggests a mixed experience with both positive and negative aspects.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,30 +46,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:27:56.490Z",
+    "scoredAt": "2026-02-02T03:31:59.564Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 25,
-    "previousVersion": "5.0.0"
+    "previousScore": 45,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 62,
-    "geminiScore": 45,
+    "claudeScore": 42,
+    "openaiScore": 65,
+    "geminiScore": 62,
     "claudeBucket": "Negative",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Negative",
-    "scoreDelta": 17,
+    "geminiBucket": "Mixed",
+    "scoreDelta": 23,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
+    "modelAgreement": "2/3 models agree: Mixed"
   },
-  "needsRescore": true,
-  "rescoreReason": "text-cleaning bug destroyed fullText during scoring"
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
+  "rescoreCompletedAt": "2026-02-02T03:31:59.564Z"
 }

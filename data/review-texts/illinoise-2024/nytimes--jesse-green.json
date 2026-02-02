@@ -7,7 +7,7 @@
   "publishDate": "April 26, 2024",
   "fullText": "This is the review of the pre-Broadway staging of “Illinoise” that concluded its run at the Park Avenue Armory on March 23. The show has now transferred to Broadway’s St. James Theater, where it is scheduled to run through Aug. 10. The cast is unchanged except that Brandt Martinez is playing the role formerly played by Robbie Fairchild.\n\nWhen emotions get too big for speech, you sing; when too big even for song, you dance.\n\nOr so goes the standard theatrical formula. But what if the emotions are huge from the get-go?\n\nThat’s the challenge and, it turns out, the glory of “Illinoise,” a mysterious and deeply moving dance-musical hybrid based on Sufjan Stevens’s similarly named 2005 concept album. (The title has acquired an extra “e.”) Exploring the hot zone between childhood and adulthood, when emotions can be at their most overwhelming, the show dispenses with dialogue completely and leaps directly to movement and song.\n\nBut not together: Among a thousand other smart choices, Justin Peck (who directed and choreographed) and Jackie Sibblies Drury (who, with Peck, wrote the story) have delaminated the songs from the characters, thus avoiding the jukebox trap that diminishes both.\n\nInstead, in the show, which opened on Thursday at the Park Avenue Armory, Stevens’s wistful and sometimes enigmatic numbers, set in various Illinois locations, are performed by three vocalists on platforms high above the action, wearing butterfly wings as if to stay aloft. Below, the 12 acting dancers (or are they dancing actors?) perform a parallel story without being forced into overliteral connections.\n\nOr rather, they perform an anthology of stories, a kind of exquisite corpse of late adolescence. As they collect around a clump of lanterns that suggest an urban campfire — the poetic set, including upside-down trees, is by Adam Rigg — they engage in what seems to be a rite of passage: the sharing of deep truths with sympathetic friends. The truths are often traumas, of course: first love, first loss, first disillusionment, first death. They are “read” (that is, danced) from notebooks decorated, again, with butterflies, suggesting the privacy of cocoons and the fragility of emergence.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
   "originalScore": null,
-  "assignedScore": 90,
+  "assignedScore": 91,
   "dtliThumb": "Up",
   "source": "dtli",
   "dtliExcerpt": "But not together: Among a thousand other smart choices, Justin Peck (who directed and choreographed) and Jackie Sibblies Drury (who, with Peck, wrote the story) have delaminated the songs from the characters, thus avoiding the jukebox trap that diminishes both.",
@@ -15,11 +15,11 @@
   "bwwExcerpt": null,
   "bwwThumb": null,
   "llmScore": {
-    "score": 90,
+    "score": 91,
     "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 95
+      "low": 86,
+      "high": 96
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic describes the show as having 'glory' and being 'mysterious and deeply moving,' while praising the creative team's 'thousand other smart choices' - clearly enthusiastic language indicating a must-see recommendation. | GPT-4o: The review describes 'Illinoise' as a 'mysterious and deeply moving dance-musical' and praises the smart choices made by the director and writer, indicating a strong recommendation. | Gemini: The review uses positive language such as \"deeply moving\" and highlights smart choices in the production, indicating a recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Jesse Green describes the show as having 'glory,' being 'mysterious and deeply moving,' and praises 'a thousand other smart choices' by the creative team. The language is consistently enthusiastic and appreciative. | GPT-4o: The review praises the show as a 'glory' and 'deeply moving,' highlighting smart choices in direction and choreography, indicating a strong recommendation. | Gemini: The review is mostly positive, highlighting the show's unique approach and emotional depth. However, the truncated text and the phrase 'challenge' suggest some reservations, preventing a 'Rave' classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:15:54.775Z",
+    "scoredAt": "2026-02-02T03:31:06.767Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 90,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 89,
+    "claudeScore": 91,
     "openaiScore": 90,
-    "geminiScore": 80,
+    "geminiScore": 78,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -81,10 +81,9 @@
   "wordCount": 379,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 87,
-  "rescoreCompletedAt": "2026-02-01T15:19:28.034Z",
+  "rescoreCompletedAt": "2026-02-02T03:31:06.767Z",
   "sources": [
     "dtli",
     "web-search"
-  ],
-  "needsRescore": true
+  ]
 }

@@ -9,18 +9,18 @@
   "bwwExcerpt": "Directed with his usual finesse by Jack O’ Brien and beautifully designed by Bob Crowley (who has created a spacious, airy Midwest farmhouse) and lit gorgeously by Natasha Katz, the play serves mostly as a showcase for the spectacular Mia Farrow (in a long-awaited return to the stage) and her real-life bestie, Patti LuPone, each of whom do their considerable best to both illuminate and overcome Silverman’s often facile writing. Average Rating: 60.0% { \"@context\":\"https://schema.org\",",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 61,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review praises the direction, design, and star performances but criticizes the writing as 'facile,' suggesting the actors are working to 'overcome' script weaknesses. This indicates a mixed assessment where production values and performances elevate weak material. | GPT-4o: The review highlights strong performances and production elements but criticizes the writing as 'facile'. The overall tone suggests a mixed reception, with notable strengths in acting and design but significant reservations about the script. | Gemini: The review praises the direction, design, and performances of Farrow and LuPone, but criticizes the writing as \"often facile.\" This suggests a mixed experience, where strong elements are undermined by weaker ones.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the performances as 'spectacular' and finds the experience 'delightful,' but criticizes the 'facile writing' and overlong ending, indicating a positive recommendation with clear reservations. | GPT-4o: The review highlights strong performances by Mia Farrow and Patti LuPone, and describes the play as 'crowd-pleasing' and 'delightful' despite some criticisms of the writing and pacing. The overall tone suggests a recommendation, albeit with some reservations about the script. | Gemini: The review praises the performances of Farrow and LuPone and the design elements, while acknowledging weaknesses in the writing. The overall tone suggests a positive experience despite the play's flaws, leading to a 'Positive' classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:12:53.519Z",
+    "scoredAt": "2026-02-02T03:42:20.219Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 68,
-    "previousVersion": "5.0.0"
+    "previousScore": 61,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 60,
-    "geminiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Meh",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
@@ -84,10 +84,9 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "scrapingbee",
-  "rescoreCompletedAt": "2026-02-01T16:24:19.459Z",
+  "rescoreCompletedAt": "2026-02-02T03:42:20.219Z",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
-  "wordCount": 625,
-  "needsRescore": true
+  "wordCount": 625
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Rachel McAdams gives a performance of such deep authenticity and emotional precision that she makes Amy Herzog's sometimes schematic play feel like lived experience.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 58,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "showScoreExcerpt": "Rachel McAdams gives a performance of such deep authenticity and emotional precision that she makes Amy Herzog's sometimes schematic play feel like lived experience.",
   "needsScoring": true,
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 58,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 53,
+      "high": 63
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises McAdams' performance as transformative, suggesting she elevates flawed material into something compelling and worth experiencing. | GPT-4o: The review highlights the strong performance of Rachel McAdams, suggesting that her acting elevates the play to feel like a lived experience, indicating a strong positive recommendation. | Gemini: The review praises Rachel McAdams' performance highly, suggesting it elevates the play despite some flaws in the writing. This indicates a positive, though not rave, recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be an error page or website navigation text rather than an actual review, making it impossible to determine the critic's assessment of the show. | GPT-4o: The text provided does not contain any evaluative content about a Broadway show, making it impossible to determine a clear recommendation. The score reflects the lack of information. | Gemini: The review text is missing, so it's impossible to determine the critic's recommendation. I am placing it in the mixed category with the lowest possible score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,30 +43,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:18:40.977Z",
+    "scoredAt": "2026-02-02T03:32:58.154Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 82,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "scoreDelta": 7,
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 55,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 3 models agree: Mixed"
   },
-  "needsRescore": true,
-  "rescoreReason": "text-cleaning bug destroyed fullText during scoring"
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
+  "rescoreCompletedAt": "2026-02-02T03:32:58.154Z"
 }

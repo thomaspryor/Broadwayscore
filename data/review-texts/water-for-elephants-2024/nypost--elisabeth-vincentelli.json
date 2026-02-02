@@ -9,18 +9,18 @@
   "bwwExcerpt": "Not everything works in Jessica Stone’s production — there’s a reason the words “dream sequence” tend to set off alarm bells — but at least it summons a coherent theatrical universe. And more often than not, the show (whose world premiere was this past June in Atlanta) captures the unabashed mix of romance and pathos that made its source material, a bestseller by Sara Gruen, so wildly popular.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 46,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 61,
-    "confidence": "high",
+    "score": 46,
+    "confidence": "medium",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 41,
+      "high": 51
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review highlights both positive aspects (exuberance) and negative ones (lack of wit and character development), suggesting a balanced but lukewarm assessment that neither strongly recommends nor discourages attendance. | GPT-4o: The review suggests a balance of positive and negative elements, noting exuberance but a lack of wit and character depth. The aggregator's 'flat' verdict supports a mixed classification. | Gemini: The review excerpt suggests the show has some positive qualities (exuberance) but is lacking in others (wit, character). This indicates a mixed assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: Despite some praise for acrobats and one standout number, the critic finds the show plagued by pacing issues, weak leads with no chemistry, and compares it unfavorably to superior Broadway productions throughout. | GPT-4o: The review highlights numerous flaws in the production, including a lackluster score, poor pacing, and weak chemistry between leads. Despite some redeeming acrobatics, the overall tone is negative, suggesting the show falls short of expectations. | Gemini: The review highlights some positive aspects like the acrobats and one standout song, but criticizes the overall pacing, the lack of chemistry between the leads, and the uninspired music and book. This indicates a mixed experience with redeeming qualities.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:25:21.460Z",
+    "scoredAt": "2026-02-02T03:43:36.338Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 64,
-    "previousVersion": "3.0.0"
+    "previousScore": 61,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 60,
+    "claudeScore": 42,
+    "openaiScore": 50,
     "geminiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "scoreDelta": 2,
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "designation": "Recommended",
   "dateUnknown": true,
@@ -66,7 +66,6 @@
   "dtliExcerpt": "“Water” has more exuberance than wit; more catchphrases than character.",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 64,
   "isFullReview": true,
@@ -87,5 +86,6 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250725162627",
-  "archiveOrgUrl": "http://web.archive.org/web/20250725162627/https://nypost.com/2024/03/21/entertainment/water-for-elephants-review-acrobats-cant-save-broadway-circus/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250725162627/https://nypost.com/2024/03/21/entertainment/water-for-elephants-review-acrobats-cant-save-broadway-circus/",
+  "rescoreCompletedAt": "2026-02-02T03:43:36.338Z"
 }

@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-STRANGER-THINGS-THE-FIRST-SHADOW-Opens-On-Broadway",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 92,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 94,
+    "score": 92,
     "confidence": "high",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Five-star review with explicit 'must-see' recommendation and praise as 'totally awe-inspiring' and 'astounding show' that 'feels like a new chapter in theatre.' | GPT-4o: The review is overwhelmingly positive, describing the show as 'awe-inspiring' and 'astounding,' with explicit 'must-see' language indicating a strong recommendation. | Gemini: The review uses extremely positive language such as \"totally awe-inspiring\", \"must-see\", and \"astounding show\", clearly indicating a rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Five-star review with explicit superlatives like 'totally awe-inspiring,' 'must-see,' 'astounding,' and 'remarkable production.' The critic praises all aspects from performances to effects to design. | GPT-4o: The review is overwhelmingly positive, describing the show as 'awe-inspiring' and 'must-see' for both fans and newcomers. The critic praises the production's innovative use of special effects and storytelling, comparing it to the successful 'Harry Potter and the Cursed Child'. | Gemini: The review uses extremely positive language like \"awe-inspiring\" and \"must-see\" and praises the show's boundary-pushing nature and special effects, indicating a rave review despite the truncated text.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:43:16.252Z",
+    "scoredAt": "2026-02-02T03:40:45.292Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
     "openaiScore": 95,
-    "geminiScore": 95,
+    "geminiScore": 90,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -79,10 +79,9 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-02-01T16:13:08.159Z",
+  "rescoreCompletedAt": "2026-02-02T03:40:45.292Z",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
-  "wordCount": 831,
-  "needsRescore": true
+  "wordCount": 831
 }

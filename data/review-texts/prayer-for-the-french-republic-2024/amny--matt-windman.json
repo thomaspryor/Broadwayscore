@@ -9,18 +9,18 @@
   "bwwExcerpt": "Over the past year, there have been a number of plays and musicals dealing with anti-Semitism, some more powerfully than others. Harmon (whose prior works include the comedies “Bad Jews,” “Significant Other” and “Admissions”) takes the genre to the next level by not just depicting anti-Semitism or warning against it but in earnestly trying to wrestle with how to respond to it, including the limits of intellectually analyzing it, and whether to fight it or flee for safety.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 75,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 69,
-    "confidence": "low",
+    "score": 75,
+    "confidence": "medium",
     "range": {
-      "low": 64,
-      "high": 74
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic finds the subject matter timely and praises some performances, but criticizes the play as overly ambitious with too much happening, calls Holocaust scenes 'largely inert and unnecessary,' and describes it as 'a worthwhile play in need of work.' | Gemini: The review acknowledges flaws like the play being too busy and long, but also highlights the timeliness, strong performances, and stirring nature of the production, indicating a recommendation with reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic acknowledges the play's timeliness and strong performers but criticizes its excessive length, structural problems, and unnecessary Holocaust scenes. The review describes it as a 'work in progress' needing improvement, indicating mixed feelings despite some praise. | GPT-4o: The review acknowledges the play's timeliness and strong performances, suggesting it is worth seeing. However, it also notes issues with the play's construction and pacing, indicating some reservations. The text is truncated, so the final verdict may be missing, but the overall tone leans towards a positive recommendation. | Gemini: The review acknowledges flaws (too much going on, unnecessary scenes) but also highlights the play's timeliness, strong performances, and stirring nature. The aggregator excerpts also suggest a positive overall assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:32:51.543Z",
+    "scoredAt": "2026-02-02T03:36:45.699Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
-    "previousVersion": "5.0.0"
+    "previousScore": 69,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": null,
+    "claudeScore": 58,
+    "openaiScore": 74,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "dtliExcerpt": "“Why do they hate us?” So asks Pierre Salomon, a Holocaust survivor in his 80’s, to his 26-year-old grandson Daniel after being told that Daniel’s family, including Pierre’s adult daughter Marcelle, is relocating from France to Israel (despite not knowing Hebrew or virtually anyone there) because they genuinely fear for their safety due to rising anti-Semitism in “Prayer for the French Republic,” Joshua Harmon’s long-winded (running three hours and 15 minutes) but powerful drama of family, religious identity, politics, and occasional humor.",
   "sources": [
@@ -78,11 +79,10 @@
   ],
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 75,
-  "rescoreCompletedAt": "2026-02-01T15:52:32.930Z",
+  "rescoreCompletedAt": "2026-02-02T03:36:45.699Z",
   "truncationSignals": [
     "no_ending_punctuation"
   ],
   "contentTier": "complete",
-  "wordCount": 2692,
-  "needsRescore": true
+  "wordCount": 2692
 }

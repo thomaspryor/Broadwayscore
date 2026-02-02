@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite criticizing the rushed ending, the critic calls it 'riotously funny,' gives it a Critic's Pick designation, and concludes 'it's still a great look,' clearly recommending the show overall. | GPT-4o: The review is largely positive, highlighting the play's humor and successful elements. The critic's pick designation and the description of the play as a 'buffet of delights' indicate a strong recommendation despite minor reservations about the ending. | Gemini: The critic clearly enjoyed the majority of the play, calling it a \"riotously funny workplace comedy\" and a \"buffet of delights.\" However, they note that the ending feels rushed and the weave frays a bit, indicating reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Green clearly recommends the show despite criticizing the rushed ending, calling it 'riotously funny' with 'a buffet of delights' and praising the performances, direction, and craft elements throughout. | GPT-4o: The review praises the play's comedy, character development, and production elements, despite noting some abruptness in the resolution. The overall tone is positive, highlighting the enjoyment and smart crafting of the play. | Gemini: The review is largely positive, highlighting the enjoyable characters and humor. However, it notes that the ending feels rushed and unresolved, preventing it from being a rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,12 +40,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:52:49.455Z",
+    "scoredAt": "2026-02-02T03:31:11.744Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -89,6 +89,5 @@
   "wordCount": 1169,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 80,
-  "rescoreCompletedAt": "2026-02-01T15:21:11.809Z",
-  "needsRescore": true
+  "rescoreCompletedAt": "2026-02-02T03:31:11.744Z"
 }

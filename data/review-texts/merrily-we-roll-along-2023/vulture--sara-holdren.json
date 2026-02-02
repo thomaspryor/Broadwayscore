@@ -9,17 +9,17 @@
   "showScoreExcerpt": "“A central trio as sensitive and superb as this one doesn’t just make ’Merrily’ more moving; it makes it much more fun. It even adds a faint glimmer of something resembling hope...With their irresistible energy and chemistry, Mendez, Groff, and Radcliffe lift ’Merrily’ up, yet keep it grounded with real, apparent affection and emotional heft. They are the ones reviving the play, by revealing and jump-starting its heart.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/merrily-we-roll-along-broadway",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 90,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 79,
-    "confidence": "high",
+    "score": 90,
+    "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 85,
+      "high": 95
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite opening with theoretical musings about classics and past criticism of the book, the critic clearly praises this production's central performances as transformative and moving, describing the cast as 'sensitive and superb' and crediting them with 'reviving the play' and 'jump-starting its heart.' | Gemini: The review is overwhelmingly positive about the performances of the leads and the ensemble, stating that they \"lift Merrily up\" and \"jump-starting its heart.\" While the review acknowledges potential issues with the source material, the focus is on the strength of this particular production.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite opening with reservations about revivals and past criticisms, the critic delivers an unequivocally glowing assessment, calling the production 'exquisite' and praising every aspect from direction to performances to ensemble work. | GPT-4o: The review is overwhelmingly positive, praising the direction, performances, and the emotional impact of the production. The critic highlights the transformation and depth brought by the cast, particularly emphasizing the chemistry and energy of the lead actors. | Gemini: The review is overwhelmingly positive, praising the direction, performances, and overall impact of the production. The critic explicitly states the ensemble 'lift Merrily up' and that they are 'reviving the play'.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:35:04.319Z",
+    "scoredAt": "2026-02-02T03:33:24.936Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 87,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 80,
-    "claudeBucket": "Positive",
+    "claudeScore": 90,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "bwwExcerpt": "The enlivening pulse created by Radcliffe, Mendez, and Groff gains strength and drive through the production’s rock-solid ensemble. Gilmour (also the costume designer) dresses them in softly period, unified swaths of color as the play moves back in time — blues, then beiges, then, in the lavish, La Dolce Vita–ish early ‘60s, in hard black and white. There’s something smart happening here: Groff, as Frank, wears varyingly sophisticated versions of the same white shirt and black trousers throughou",
   "bwwThumb": "Up",
@@ -110,9 +111,8 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240614191049",
   "archiveOrgUrl": "http://web.archive.org/web/20240614191049/https://www.vulture.com/2023/10/theater-review-merrily-we-roll-along-sondheim-radcliffe-groff-mendez.html",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.889Z",
+  "rescoreCompletedAt": "2026-02-02T03:33:24.936Z",
   "contentTier": "complete",
   "wordCount": 2140,
-  "duplicateTextOf": "amny--matt-windman.json",
-  "needsRescore": true
+  "duplicateTextOf": "amny--matt-windman.json"
 }

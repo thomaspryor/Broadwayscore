@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 94,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
@@ -18,11 +18,11 @@
     "reviews-json-stub"
   ],
   "llmScore": {
-    "score": 85,
-    "confidence": "low",
+    "score": 94,
+    "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The critic uses explicit recommendation language ('buy a ticket') and superlative praise ('one of the cleverest, wittiest, flashiest musicals in town'), indicating strong enthusiasm for the production. | Gemini: The review explicitly states the show is \"worth the wait\" and that people \"should buy a ticket\", indicating a positive recommendation. The description of the show as \"one of the cleverest, wittiest, flashiest musicals in town\" further supports this classification.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite truncated text, the critic delivers an unambiguous rave with explicit recommendation language and superlative praise throughout. The BWW excerpt confirms this enthusiastic verdict. | GPT-4o: The review is overwhelmingly positive, describing the show as 'one of the cleverest, wittiest, flashiest musicals in town' and strongly recommends buying a ticket. The language used indicates a high level of enthusiasm and endorsement. | Gemini: Despite the truncated text warning, the review contains strong positive language and a clear recommendation to see the show. The aggregator excerpts confirm this positive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,34 +43,34 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:39:09.213Z",
+    "scoredAt": "2026-02-02T03:38:59.571Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 85,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": null,
+    "claudeScore": 92,
+    "openaiScore": 95,
     "geminiScore": 82,
     "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 92,
-  "rescoreCompletedAt": "2026-02-01T16:06:20.336Z",
+  "rescoreCompletedAt": "2026-02-02T03:38:59.571Z",
   "truncationSignals": [
     "ends_with_ellipsis"
   ],
   "contentTier": "complete",
-  "wordCount": 814,
-  "needsRescore": true
+  "wordCount": 814
 }

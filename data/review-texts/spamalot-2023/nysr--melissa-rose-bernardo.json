@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 79,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 79,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The 4/5 star rating and consistently positive language throughout the review ('wonderfully silly', enthusiastic descriptions of cast) clearly indicate a strong positive recommendation despite some minor reservations about the production being 'slimmed down'. | Gemini: The critic gives the show 4 out of 5 stars and calls it \"wonderfully silly\". While noting it's a bit slimmed down, the overall tone is positive, indicating a recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and overall tone clearly indicate a positive recommendation. While the reviewer notes some technical issues and cultural sensitivities around certain numbers, the assessment is largely favorable, praising performances and the show's entertainment value. | GPT-4o: The review is filled with positive descriptions of the production, highlighting its humor and successful elements. The original 4/5 star rating strongly supports a positive classification. | Gemini: The critic gives the show 4 out of 5 stars and describes it as \"wonderfully silly\", indicating a positive recommendation. While mentioning some minor issues, the overall tone is positive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:47:09.216Z",
+    "scoredAt": "2026-02-02T03:39:28.225Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": null,
-    "geminiScore": 78,
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 70,
@@ -82,9 +83,8 @@
   ],
   "fetchTier": 1,
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-02-01T16:08:56.742Z",
+  "rescoreCompletedAt": "2026-02-02T03:39:28.225Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
-  "wordCount": 676,
-  "needsRescore": true
+  "wordCount": 676
 }

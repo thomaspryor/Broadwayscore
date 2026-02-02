@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic finds the production technically impressive but fundamentally flawed, calling it 'monstrous,' 'nauseating,' and criticizing the writing as the real villain while describing audiences literally fleeing the theater. | GPT-4o: The review is overwhelmingly negative, criticizing the writing, pacing, and overuse of special effects. The critic describes the play as a 'throwaway' and the experience as 'nauseating,' indicating a strong recommendation to avoid the show. | Gemini: The review is overwhelmingly negative, criticizing the writing, length, and overuse of special effects. The reviewer explicitly states the play is a \"throwaway\" and the writing is the real villain.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: Despite praising lead actor McCartney's performance, the critic heavily criticizes the writing as 'throwaway,' calls the production 'nauseating' and 'cruelly stretched,' and concludes it's 'dumb' with missing soul, clearly not recommending attendance. | GPT-4o: The review criticizes the play's writing, pacing, and lack of engaging content, despite some impressive special effects and a strong performance by McCartney. The overall tone is negative, suggesting the production is not worth seeing. | Gemini: The review is largely negative about the writing and special effects, but praises the performance of Louis McCartney. This makes it a mixed review, leaning slightly towards negative.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:43:39.407Z",
+    "scoredAt": "2026-02-02T03:40:49.485Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 28,
-    "previousVersion": "5.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 20,
-    "geminiScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
     "claudeBucket": "Negative",
-    "openaiBucket": "Pan",
-    "geminiBucket": "Negative",
-    "scoreDelta": 25,
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -73,8 +73,7 @@
   "designation": "Recommended",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 25,
-  "rescoreCompletedAt": "2026-02-01T16:13:15.151Z",
+  "rescoreCompletedAt": "2026-02-02T03:40:49.485Z",
   "contentTier": "invalid",
-  "wordCount": 743,
-  "needsRescore": true
+  "wordCount": 743
 }

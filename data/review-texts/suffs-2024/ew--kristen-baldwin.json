@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Taub's musical is an ambitious, earnest, and largely successful attempt to give the suffragettes the rousing Broadway treatment they deserve.",
   "originalScore": 88,
-  "assignedScore": 88,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "showScoreExcerpt": "Taub's musical is an ambitious, earnest, and largely successful attempt to give the suffragettes the rousing Broadway treatment they deserve.",
   "needsScoring": true,
   "llmScore": {
-    "score": 88,
-    "confidence": "medium",
+    "score": 62,
+    "confidence": "low",
     "range": {
-      "low": 83,
-      "high": 93
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Rave",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -33,40 +33,42 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic's own 88 rating places this firmly in Rave territory, and the language 'largely successful' and 'deserve' indicates strong endorsement of both the production quality and its worthiness as subject matter. | GPT-4o: The critic's original rating of 88 places it in the Rave category, and the review text describes the musical as largely successful, indicating a strong recommendation. | Gemini: The review uses positive language and the critic's rating is 88, indicating a positive but not rave review. The phrase \"largely successful\" suggests some reservations.",
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: This is entirely about the reality TV show Bachelor in Paradise, not a Broadway theater production at all. The content discusses reality TV contestants, rose ceremonies, and dating drama. | GPT-4o: The original rating of 88 from the critic indicates a strong positive recommendation. Despite the detailed narrative of events, the tone is light-hearted and engaged, suggesting the show is entertaining and enjoyable. | Gemini: The critic gives the episode a 6/10, indicating a mixed reaction. While there are enjoyable moments, it's not a strong recommendation. | Buckets: claude=Pan, openai=Positive, gemini=Mixed",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T21:00:13.846Z",
+    "scoredAt": "2026-02-02T03:41:09.669Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 88,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 88,
-    "geminiScore": 80,
-    "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "claudeScore": 15,
+    "openaiScore": 84,
+    "geminiScore": 62,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 69,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "needsReview": true,
+    "needsReviewReasons": [
+      "3-way bucket disagreement"
+    ],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "No bucket consensus - using median score"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (20 words)",
-  "needsRescore": true,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 88,
   "textWordCount": 1950,
@@ -95,5 +97,6 @@
     "Show title not found in text"
   ],
   "showNotMentioned": true,
-  "duplicateTextOf": "deadline--unknown.json"
+  "duplicateTextOf": "deadline--unknown.json",
+  "rescoreCompletedAt": "2026-02-02T03:41:09.669Z"
 }

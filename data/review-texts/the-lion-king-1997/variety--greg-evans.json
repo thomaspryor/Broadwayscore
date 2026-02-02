@@ -8,16 +8,16 @@
   "fullText": "A new generation of cats just took over Broadway. Simply said, Julie Taymor's staging of Disney's \"The Lion King\" is a marvel, a theatrical achievement unrivaled in its beauty, brains and ingenuity.\n\nA new generation of cats just took over Broadway. Simply said, Julie Taymor‘s staging of Disney’s “The Lion King” is a marvel, a theatrical achievement unrivaled in its beauty, brains and ingenuity.",
   "dtliExcerpt": "A new generation of cats just took over Broadway. Simply said, Julie Taymor’s staging of Disney’s The Lion King is a marvel, a theatrical achievement unrivaled in its beauty, brains and ingenuity. Leaping far beyond its celluloid inspiration, the stage version improves upon nearly every aspect of the hit 1994 animated film, from visual artistry and storytelling to Lebo M’s score and the newly African-ized pop songs of Elton John and Tim Rice. With this production, the Walt Disney Co. stages itself as a serious and ambitious contender on the legit scene, all but demanding that its first theatrical foray, 1994′s too-literally adapted Beauty and the Beast, was little more than a warm-up.",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 95,
   "source": "dtli",
   "dtliThumb": "Up",
   "urlUpdated": "2026-01-23T05:32:03.466Z",
   "llmScore": {
-    "score": 94,
+    "score": 95,
     "confidence": "high",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 90,
+      "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language calling it 'a marvel' and 'unrivaled' while stating it 'improves upon nearly every aspect' of the source material. This is clearly enthusiastic praise positioning it as a must-see theatrical achievement. | GPT-4o: The review uses highly enthusiastic language, describing the production as a 'marvel' and 'unrivaled,' indicating a strong recommendation. The critic praises the staging, visual artistry, and storytelling, suggesting a must-see experience. | Gemini: The review uses extremely strong positive language, calling the staging a \"marvel\" and an \"achievement unrivaled in its beauty, brains and ingenuity.\" It clearly indicates a must-see recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language calling it 'a marvel' and 'unrivaled' while stating it 'improves upon nearly every aspect' of the source material, indicating an extremely enthusiastic recommendation. | GPT-4o: The review uses superlative language such as 'a marvel' and 'unrivaled in its beauty, brains and ingenuity,' indicating a strong, enthusiastic recommendation. The critic praises the production for surpassing the original film, suggesting it is a must-see. | Gemini: The review uses extremely strong positive language, calling the staging a \"marvel\" and an \"unrivaled theatrical achievement.\" It clearly indicates a must-see recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:59:33.459Z",
+    "scoredAt": "2026-02-02T03:41:40.889Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 95,
-    "previousVersion": "5.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 95,
     "openaiScore": 95,
     "geminiScore": 95,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -79,10 +79,9 @@
   "bwwThumb": null,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 94,
-  "rescoreCompletedAt": "2026-02-01T16:19:28.514Z",
+  "rescoreCompletedAt": "2026-02-02T03:41:40.889Z",
   "contentTier": "complete",
   "wordCount": 1313,
-  "needsRescore": true,
   "isFullReview": false,
   "textWordCount": 64,
   "textQuality": "truncated",

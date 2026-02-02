@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 92,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 89,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The excerpt shows unrestrained enthusiasm for the lead performance with phrases like 'divine', 'Tony Award-winning turn', and 'worth all the Spam in the world', but single excerpt warning requires conservative scoring within the rave range. | GPT-4o: The excerpt is highly positive about Leslie Rodriguez Kritzer's performance, suggesting it is a standout element of the show. The mention of a Tony Award-winning turn and the enthusiastic tone indicate a strong recommendation, though the single excerpt warning suggests a conservative score within the rave range. | Gemini: While the review focuses heavily on Leslie Rodriguez Kritzer's performance, the enthusiastic praise and the statement that she's 'worth all the Spam in the world' suggests a positive, albeit potentially conditional, recommendation. The single excerpt and focus on one performer warrant a score in the middle of the positive range.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic describes the show as 'completely delightful' and says 'trust me' it has arrived at the perfect time, with consistent praise for performances, direction, and entertainment value throughout. | GPT-4o: The review is overwhelmingly positive, highlighting the show's humor, direction, and performances, particularly praising Leslie Rodriguez Kritzer's role as Tony Award-worthy. The language used suggests a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, using phrases like \"completely delightful revival\" and praising various aspects of the production, including the direction, choreography, cast, and costumes. The critic clearly recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:46:22.447Z",
+    "scoredAt": "2026-02-02T03:39:16.491Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 89,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 90,
-    "geminiScore": 78,
+    "openaiScore": 95,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -84,10 +84,9 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "scrapingbee",
-  "rescoreCompletedAt": "2026-02-01T16:08:29.018Z",
+  "rescoreCompletedAt": "2026-02-02T03:39:16.491Z",
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",
-  "wordCount": 702,
-  "needsRescore": true
+  "wordCount": 702
 }
