@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic delivers an enthusiastic recommendation with language like 'superlative,' 'spellbinding,' 'book a ticket pronto,' and 'stupendous,' praising virtually every aspect of the production from performances to direction to design. | GPT-4o: The review is overwhelmingly positive, highlighting the production's emotional impact, exceptional performances, and polished staging. The critic uses strong language to recommend the show as a must-see, emphasizing its spellbinding qualities and urging readers to book tickets immediately. | Gemini: The review is overwhelmingly positive, praising the performances, staging, and overall impact of the production. The critic explicitly recommends booking a ticket, indicating a strong endorsement.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language throughout ('superlative Broadway revival', 'spellbinding', 'stupendous', 'enthrallingly mounted') and explicitly tells readers to 'book a ticket pronto', indicating a must-see recommendation despite minor quibbles about pacing and plot elements. | GPT-4o: The review is overwhelmingly positive, praising the production's emotional impact, powerful performances, and overall execution. The critic uses strong language to convey that this is an essential viewing experience, making it a clear 'Rave' recommendation. | Gemini: The review is overwhelmingly positive, praising the performances, staging, and overall impact of the production. While there are minor criticisms, the reviewer clearly recommends seeing the show, especially for the performances of Joshua Henry and Nichelle Lewis.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,15 +38,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:09:56.845Z",
+    "scoredAt": "2026-02-02T18:58:15.615Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 90,
-    "previousVersion": "5.0.0"
+    "previousScore": 92,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 89,
+    "claudeScore": 88,
     "openaiScore": 95,
     "geminiScore": 82,
     "claudeBucket": "Rave",

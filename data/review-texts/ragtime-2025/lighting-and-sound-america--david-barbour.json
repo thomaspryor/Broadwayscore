@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 78,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises the director's approach, describes the staging as 'visually stunning' with 'bravura performances,' and notes the show's contemporary relevance - all positive indicators, though the single excerpt warning necessitates conservative scoring. | GPT-4o: The excerpt praises the staging and performances, indicating a positive reception. The language suggests a strong recommendation, but due to the single excerpt warning, the score is placed conservatively in the middle of the Positive range. | Gemini: The review excerpt highlights the director's success and the visually stunning staging, suggesting a positive experience. However, due to the limited text and single excerpt, the score is placed in the middle of the 'Positive' bucket.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt uses strong praise language ('succeeds', 'visually stunning', 'bravura performances') and notes the production's contemporary relevance, indicating clear recommendation despite being a single excerpt. | GPT-4o: The excerpt praises the production's staging and performances, indicating a strong positive recommendation. The use of 'visually stunning' and 'bravura performances' suggests an enthusiastic tone. | Gemini: The review excerpt praises the staging and performances, indicating a positive experience. The phrase 'speaks, directly and eloquently, to the present moment' further suggests a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,33 +46,28 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:13:15.339Z",
+    "scoredAt": "2026-02-02T18:58:34.326Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "5.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
-  "contentTier": "complete",
+  "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
-  },
-  "wordCount": 1297,
-  "truncationSignals": [
-    "no_ending_punctuation"
-  ],
-  "tierReason": "Full review text"
+  }
 }

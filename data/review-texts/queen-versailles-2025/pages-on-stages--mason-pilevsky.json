@@ -40,7 +40,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review offers substantive praise for performances (especially Chenoweth), design, and the show's structural effectiveness, while providing thoughtful analysis of its themes and impact rather than discouraging attendance. | GPT-4o: The review praises the show's structure, performances, and thematic depth, indicating a positive experience. However, it acknowledges that the show may resonate differently with various audiences, suggesting some reservations. | Gemini: The review is largely positive, highlighting strong performances and design. While it acknowledges the show's critique of materialism might not resonate with everyone, it ultimately suggests the show is enjoyable, especially for those who can laugh at the excess.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review provides detailed, appreciative analysis of the production's structure, performances, and thematic depth, with particular praise for Chenoweth and the staging, though it presents the show as complex rather than universally appealing. | GPT-4o: The review praises the show's structure, performances, and thematic depth, indicating a strong positive recommendation. The critic's language is enthusiastic, highlighting memorable moments and effective direction. | Gemini: The review is largely positive, highlighting the show's strengths in design, direction, and performances, while also acknowledging its critique of materialism. The reviewer suggests it's best enjoyed by a certain audience, indicating a reservation, but overall recommends seeing it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,21 +50,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:29:40.434Z",
+    "scoredAt": "2026-02-02T18:57:06.985Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 80,
-    "geminiScore": 80,
+    "openaiScore": 81,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

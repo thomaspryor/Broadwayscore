@@ -13,7 +13,7 @@
   "scrapedAt": "2026-01-24T00:10:00.000Z",
   "llmScore": {
     "score": 93,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 88,
       "high": 98
@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review is overwhelmingly positive throughout, calling the revival 'dramatically and musically magnificent' and concluding with a strong recommendation to not miss this 'truly unforgettable production.' The critic praises virtually every aspect including performances, direction, and design. | GPT-4o: The review is overwhelmingly positive, praising the revival as 'dramatically and musically magnificent' and highlighting the superb performances and effective minimalist production. The critic strongly recommends seeing this 'truly unforgettable production,' indicating a rave review. | Gemini: The review is overwhelmingly positive, using phrases like \"dramatically and musically magnificent revival\" and \"truly unforgettable production.\" The critic praises the performances, score, and overall effectiveness of the production, indicating a strong recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review is filled with superlative praise throughout, calling it 'magnificent,' describing performances as 'amazing,' 'stunning,' and 'brilliant,' and concluding with 'truly unforgettable production' while urging readers not to 'pass up the chance' to see it. | GPT-4o: The review is filled with superlatives and praises the revival as 'dramatically and musically magnificent' with 'truly terrific performances'. The critic strongly recommends seeing the production, describing it as 'truly unforgettable'. | Gemini: The review is overwhelmingly positive, praising the performances, score, and overall effectiveness of the production. The final sentence explicitly encourages seeing the show, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,27 +37,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:09:44.834Z",
+    "scoredAt": "2026-02-02T18:58:08.547Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 93,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 91,
     "openaiScore": 95,
-    "geminiScore": 92,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "sourceMethod": "webfetch",
   "bwwExcerpt": "Although many people may recall the opulence of the original Broadway production, this more minimalist version is frankly more effective, allowing one to focus on the plot and the performances. David Korins' set is decidedly but intelligently spare, relying primarily on two large stepladders and a few well-chosen set pieces (including a Model T Ford). Linda Cho’s period costumes are quite impressive.",

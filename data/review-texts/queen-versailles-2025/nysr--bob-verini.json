@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The 4/5 star rating and language like 'irresistibly entertaining' and 'revel in' clearly indicate a positive recommendation, though the critic notes structural ambivalence and thematic confusion that prevent a rave. | Gemini: The critic gives the show 4 out of 5 stars and praises Kristin Chenoweth's performance, Stephen Schwartz's score, and the production's scenography. While he notes some ambivalence in the material, he ultimately recommends the show, making it a positive review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic gives 4/5 stars and delivers strong praise for Chenoweth's 'powerhouse performance,' Schwartz's 'heartfelt, varied and robust' score, and calls it 'irresistibly entertaining' while acknowledging some structural ambivalence that doesn't diminish the overall recommendation. | GPT-4o: The review praises Kristin Chenoweth's performance and the production's entertainment value, despite noting some ambivalence in its themes. The original 4/5 rating and enthusiastic language about the show's elements indicate a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting Chenoweth's performance and the show's entertainment value. Despite some ambivalence in the material, the critic ultimately revels in the score, scenography, and Chenoweth's performance, giving it a 4/5 star rating.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:28:28.675Z",
+    "scoredAt": "2026-02-02T18:56:44.210Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": null,
-    "geminiScore": 82,
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "sources": [

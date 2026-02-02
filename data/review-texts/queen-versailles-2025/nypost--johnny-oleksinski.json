@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 13,
+  "assignedScore": 15,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "I hoped the tag-team of Chenoweth and Arden would have magic to do. No such luck. The actress is a theatrical force, as everybody knows, but Simone Biles can’t do a back handspring on a toothpick, either. With skin-deep material to work with, Chenoweth transparently leans into broad yuks like she’s serving donuts for dinner. If only her long-anticipated return could be returned.",
@@ -19,11 +19,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 13,
-    "confidence": "high",
+    "score": 15,
+    "confidence": "medium",
     "range": {
-      "low": 8,
-      "high": 18
+      "low": 10,
+      "high": 20
     },
     "bucket": "Pan",
     "thumb": "Down",
@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Pan | Claude: The critic delivers an absolutely scathing review with zero redeeming qualities mentioned, calling it 'criminally bad' with the 'worst score of Schwartz's long career' and ending with the metaphor that while the real house might be finished, the musical is 'scheduled for demolition.' | GPT-4o: The review is overwhelmingly negative, describing the show as 'criminally bad' and a 'wrecking ball to good taste.' The critic finds no redeeming qualities, criticizing the music, direction, and performances, and suggesting the show should be 'scheduled for demolition.' | Gemini: The review is overwhelmingly negative, using phrases like \"criminally bad show,\" \"wrecking ball to good taste,\" \"worst score,\" and concluding the show is \"scheduled for demolition.\" This indicates a strong pan.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Pan | Claude: The review is scathingly negative throughout, calling it 'criminally bad,' comparing it to a 'wrecking ball to good taste,' and ending with the devastating line that while the real house might be finished, the musical is 'scheduled for demolition.' | GPT-4o: The review is overwhelmingly negative, criticizing the show as 'criminally bad', 'careless', and 'a wrecking ball to good taste'. The critic finds no redeeming qualities, describing the production as 'scheduled for demolition'. | Gemini: The review is overwhelmingly negative, using phrases like \"criminally bad show,\" \"wrecking ball to good taste,\" and \"worst score.\" The critic clearly does not recommend seeing the musical.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,21 +44,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:28:14.352Z",
+    "scoredAt": "2026-02-02T18:56:40.245Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 25,
-    "previousVersion": "3.0.0"
+    "previousScore": 13,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 15,
     "openaiScore": 10,
-    "geminiScore": 15,
+    "geminiScore": 20,
     "claudeBucket": "Pan",
     "openaiBucket": "Pan",
     "geminiBucket": "Pan",
-    "scoreDelta": 5,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
