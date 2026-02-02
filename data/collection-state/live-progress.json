@@ -1,106 +1,15 @@
 {
-  "updatedAt": "2026-02-02T06:46:31.636Z",
-  "processed": 15,
-  "failed": 58,
-  "successRate": "20.5%",
+  "updatedAt": "2026-02-02T07:00:40.833Z",
+  "processed": 29,
+  "failed": 121,
+  "successRate": "19.3%",
   "tierBreakdown": {
-    "playwright": 9,
-    "browserbase": 4,
-    "scrapingbee": 6,
-    "brightdata": 1,
-    "archive": 27
+    "playwright": 4,
+    "browserbase": 0,
+    "scrapingbee": 4,
+    "brightdata": 53,
+    "archive": 17
   },
-  "browserbaseSessions": 3,
-  "recentActivity": [
-    {
-      "t": "2026-02-02T03:49:40.892Z",
-      "event": "bb-session",
-      "session": "eb085c2b",
-      "url": "https://www.nytimes.com/2025/11/16/theater/chess-review-lea-michele-broadway.htm"
-    },
-    {
-      "t": "2026-02-02T03:50:24.569Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770004191249\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAgAYpw2a8ymcALPe1oA==&cid=fdcBq~INS_ggW4gRo2a77lr2ele7qGkVh5fPsHZj~saFuYiIiJDZGP7s5qnH9jcFsFYSLG~lYTYZNViUu43VGizzxwUnCqGo5ClKayPe55XeeoUeU4SxW0x8vpcaasVY&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770004191249\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770004191249\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAgAYpw2a8ymcALPe1oA==&cid=fdcBq~INS_ggW4gRo2a77lr2ele7qGkVh5fPsHZj~saFuYiIiJDZGP7s5qnH9jcFsFYSLG~lYTYZNViUu43VGizzxwUnCqGo5ClKayPe55XeeoUeU4SxW0x8vpcaasVY&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770004191249\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    28 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770004191249\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAgAYpw2a8ymcALPe1oA==&cid=fdcBq~INS_ggW4gRo2a77lr2ele7qGkVh5fPsHZj~saFuYiIiJDZGP7s5qnH9jcFsFYSLG~lYTYZNViUu43VGizzxwUnCqGo5ClKayPe55XeeoUeU4SxW0x8vpcaasVY&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770004191249\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-02-02T03:50:51.696Z",
-      "event": "bb-session",
-      "session": "995c96a5",
-      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
-    },
-    {
-      "t": "2026-02-02T03:51:11.911Z",
-      "event": "bb-login-uncertain",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-02T04:15:50.584Z",
-      "event": "bb-session",
-      "session": "0efd7f49",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/appropriate-theater-review-sara"
-    },
-    {
-      "t": "2026-02-02T04:48:12.608Z",
-      "event": "bb-session",
-      "session": "6594ffca",
-      "url": "https://variety.com/2005/legit/reviews/days-of-wine-and-roses-2-1200527616/"
-    },
-    {
-      "t": "2026-02-02T04:55:55.829Z",
-      "event": "bb-session",
-      "session": "9f00642e",
-      "url": "https://www.newyorker.com/goings-on-about-town/theatre/grey-house-07-10-23"
-    },
-    {
-      "t": "2026-02-02T04:55:57.361Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-02T05:49:00.578Z",
-      "event": "bb-session",
-      "session": "fa20b5b2",
-      "url": "https://www.vulture.com/article/theater-review-sufjan-stevens-illinoise-armory.h"
-    },
-    {
-      "t": "2026-02-02T05:49:03.402Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-02T06:02:35.464Z",
-      "event": "bb-session",
-      "session": "047556f6",
-      "url": "https://www.vulture.com/2023/06/theater-review-just-for-us-broadway.html"
-    },
-    {
-      "t": "2026-02-02T06:02:37.695Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-02T06:23:26.705Z",
-      "event": "bb-session",
-      "session": "0cc3e55c",
-      "url": "https://www.vulture.com/2023/11/merrily-we-roll-along-broadway-review.html"
-    },
-    {
-      "t": "2026-02-02T06:23:28.787Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-02T06:39:28.077Z",
-      "event": "bb-session",
-      "session": "3d2ac9e2",
-      "url": "https://www.vulture.com/2019/07/moulin-rouge-the-musical-broadway-review.html"
-    },
-    {
-      "t": "2026-02-02T06:39:30.231Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
-    }
-  ]
+  "browserbaseSessions": 5,
+  "recentActivity": []
 }
