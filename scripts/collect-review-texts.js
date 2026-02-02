@@ -1751,26 +1751,53 @@ async function discoverCorrectUrl(review) {
 }
 
 // ============================================================================
+// QUALITY GATE + TIMEOUT HELPERS (for tier chain loop)
+// ============================================================================
+
+/**
+ * Quality gate — returns garbage reason string or null.
+ * Uses isGarbageContent() not assessTextQuality() — the full assessor has a 5.5%
+ * false positive rate on known-good reviews (multi-show mentions, article boundaries).
+ * isGarbageContent() has 0% false positives and catches paywall pages, newsletters,
+ * ad-blockers, error pages, and nav junk.
+ */
+function checkContentQuality(text) {
+  const check = isGarbageContent(text);
+  if (check.isGarbage) {
+    return check.reason;
+  }
+  return null;
+}
+
+/**
+ * Timeout wrapper for tier execution.
+ * Returns the promise result or rejects with a timeout error.
+ */
+function withTimeout(promise, ms, tierName) {
+  if (!ms) return promise;
+  return Promise.race([
+    promise,
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error(`${tierName} timed out after ${ms}ms`)), ms)
+    )
+  ]);
+}
+
+// ============================================================================
 // UNIFIED FETCH FUNCTION
 // ============================================================================
 
-async function fetchReviewText(review) {
-  const attempts = [];
-  let html = null;
-  let text = null;
-  let method = null;
-  let archiveData = {};
-
+/**
+ * Build the context object describing URL properties and mutable state signals
+ * used by tier shouldRun predicates and onFailure hooks.
+ */
+function buildTierContext(review) {
   const url = review.url;
   const urlLower = url.toLowerCase();
 
-  // Determine if we should skip Playwright (known-blocked sites can't be scraped by headless)
   const isKnownBlocked = CONFIG.knownBlockedSites.some(s => urlLower.includes(s));
-  const skipPlaywright = isKnownBlocked;
-  const isBrightDataPreferred = CONFIG.brightDataPreferred.some(s => urlLower.includes(s));
   const isArchiveFirstSite = CONFIG.archiveFirstSites.some(s => urlLower.includes(s));
 
-  // Determine if this is an "old" review (>6 months) - Archive.org often works better for these
   let isOldReview = false;
   if (review.publishDate) {
     const sixMonthsAgo = new Date();
@@ -1778,193 +1805,264 @@ async function fetchReviewText(review) {
     isOldReview = review.publishDate < sixMonthsAgo;
   }
 
-  // Use archive-first approach if:
-  // 1. Site is in archiveFirstSites list (unless ARCHIVE_FIRST explicitly set to false), OR
-  // 2. ARCHIVE_FIRST env var is set to true AND review is older than 6 months
-  // When ARCHIVE_FIRST=false is explicitly set, skip archive-first even for paywalled sites
-  // so that Playwright/Browserbase login paths are tested
   const archiveFirstExplicitlyDisabled = process.env.ARCHIVE_FIRST === 'false';
   const isArchiveFirst = (!archiveFirstExplicitlyDisabled && isArchiveFirstSite) || (CONFIG.archiveFirst && isOldReview);
+  const hasPaywallCreds = !!getPaywallCredentials(url)?.email;
 
-  // Force specific tier if requested
-  if (CLI.forceTier) {
-    const tier = parseFloat(CLI.forceTier);
-    try {
-      switch (tier) {
-        case 1:
-          const r1 = await fetchWithPlaywright(url, review);
-          return { html: r1.html, text: r1.text, method: 'playwright', attempts: [{ tier: 1, method: 'playwright', success: true }] };
-        case 1.5:
-          const r1_5 = await fetchWithBrowserbase(url, review);
-          return { html: r1_5.html, text: r1_5.text, method: 'browserbase', attempts: [{ tier: 1.5, method: 'browserbase', success: true }] };
-        case 2:
-          const r2 = await fetchWithScrapingBee(url);
-          return { html: r2.html, text: r2.text, method: 'scrapingbee', attempts: [{ tier: 2, method: 'scrapingbee', success: true }] };
-        case 3:
-          const r3 = await fetchWithBrightData(url);
-          return { html: r3.html, text: r3.text, method: 'brightdata', attempts: [{ tier: 3, method: 'brightdata', success: true }] };
-        case 4:
-          const r4 = await fetchFromArchive(url);
-          return { html: r4.html, text: r4.text, method: 'archive', archiveData: r4, attempts: [{ tier: 4, method: 'archive', success: true }] };
-      }
-    } catch (e) {
-      throw new Error(`Forced tier ${tier} failed: ${e.message}`);
-    }
-  }
+  return {
+    url,
+    urlLower,
+    isKnownBlocked,
+    isArchiveFirst,
+    hasPaywallCreds,
+    // Mutable signals set by onFailure hooks, read by later shouldRun predicates
+    sawCaptcha: false,
+    sawPaywall: false,
+    anyTierFailed: false,
+    _playwright404NoCreds: false,
+    _bail404: false,
+    consecutive404Count: 0,
+    _archiveTierRan: false,
+  };
+}
 
-  // For paywalled sites, try Archive.org FIRST (Wayback often has pre-paywall content)
-  if (isArchiveFirst) {
-    console.log('  [Tier 0] Archive.org (paywalled site - trying archive first)...');
-    try {
-      const result = await fetchFromArchive(url);
-      html = result.html;
-      text = result.text;
-      method = 'archive';
-      archiveData = result;
-      attempts.push({ tier: 0, method: 'archive-first', success: true });
-      return { html, text, method, archiveData, attempts };
-    } catch (error) {
-      attempts.push({ tier: 0, method: 'archive-first', success: false, error: error.message });
-      console.log(`    ✗ Archive.org failed: ${error.message}`);
-      console.log('    Falling back to standard tier chain...');
-    }
-  }
-
-  // TIER 1: Playwright with stealth (unless skipped)
-  if (!skipPlaywright) {
-    console.log('  [Tier 1] Playwright with stealth...');
-    try {
-      const result = await fetchWithPlaywright(url, review);
-      html = result.html;
-      text = result.text;
-      method = 'playwright';
-      attempts.push({ tier: 1, method: 'playwright', success: true });
-      return { html, text, method, attempts };
-    } catch (error) {
-      attempts.push({ tier: 1, method: 'playwright', success: false, error: error.message });
-      console.log(`    ✗ Failed: ${error.message}`);
-
-      // If 404, try Archive.org then bail - don't waste API credits on dead URLs
-      // EXCEPTION: For paywalled sites with credentials, a 404 may be a paywall redirect
-      // (e.g., WSJ returns 404 for non-logged-in users). Let those fall through to Browserbase.
-      const hasPaywallCreds = getPaywallCredentials(url)?.email;
-      if (error.message.includes('404') && !hasPaywallCreds) {
-        console.log('  [Tier 4] Archive.org (404 detected - skipping other tiers)...');
-        try {
-          const result = await fetchFromArchive(url);
-          html = result.html;
-          text = result.text;
-          method = 'archive';
-          archiveData = result;
-          attempts.push({ tier: 4, method: 'archive', success: true });
-          return { html, text, method, archiveData, attempts };
-        } catch (e) {
-          attempts.push({ tier: 4, method: 'archive', success: false, error: e.message });
-          console.log(`    ✗ Archive.org failed: ${e.message}`);
-        }
-        // URL is definitely dead - don't waste ScrapingBee/BrightData credits
-        throw new Error(`URL returned 404 (archive also failed): ${JSON.stringify(attempts)}`);
-      } else if (error.message.includes('404') && hasPaywallCreds) {
-        console.log('    → 404 on paywalled site with credentials - will try Browserbase login...');
-      }
-    }
-  } else {
-    console.log('  [Tier 1] Skipped (known-blocked site)');
-    attempts.push({ tier: 1, method: 'playwright', success: false, error: 'Skipped - known blocked site' });
-  }
-
-  // TIER 1.5: Browserbase (managed browser cloud with CAPTCHA solving + login)
-  // Use when: (a) known-blocked site, (b) Playwright hit CAPTCHA,
-  // (c) paywall detected AND we have login credentials, or
-  // (d) paywalled domain where Playwright failed for any reason (login failed, 0 text, etc.)
-  const lastAttempt = attempts[attempts.length - 1];
-  const playwrightHitCaptcha = lastAttempt?.error?.includes('CAPTCHA') || lastAttempt?.error?.includes('blocked');
-  const playwrightHitPaywall = lastAttempt?.error?.includes('Paywall');
-  const hasLoginCreds = getPaywallCredentials(url)?.email;
-  const playwrightFailed = lastAttempt?.success === false;
-  const shouldTryBrowserbase = CONFIG.browserbaseEnabled && (
-    isKnownBlocked || playwrightHitCaptcha ||
-    (hasLoginCreds && (playwrightHitPaywall || playwrightFailed))
-  );
-
-  // Diagnostic: log Browserbase routing decision for paywalled sites
-  if (hasLoginCreds) {
-    console.log(`  [Browserbase routing] enabled=${CONFIG.browserbaseEnabled} isBlocked=${isKnownBlocked} captcha=${playwrightHitCaptcha} paywall=${playwrightHitPaywall} creds=${!!hasLoginCreds} pwFailed=${playwrightFailed} → shouldTry=${shouldTryBrowserbase} canUse=${shouldTryBrowserbase ? canUseBrowserbase() : 'n/a'}`);
-  }
-
-  if (shouldTryBrowserbase && canUseBrowserbase()) {
-    console.log('  [Tier 1.5] Browserbase (managed browser + CAPTCHA solving)...');
-    try {
-      // Hard timeout to prevent Browserbase CDP hangs from blocking the entire run
-      const bbTimeout = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Browserbase overall timeout (120s)')), 120000)
-      );
-      const result = await Promise.race([fetchWithBrowserbase(url, review), bbTimeout]);
-      html = result.html;
-      text = result.text;
-      method = 'browserbase';
-      attempts.push({ tier: 1.5, method: 'browserbase', success: true });
-      state.tierBreakdown.browserbase.push(review.filePath);
-      return { html, text, method, attempts };
-    } catch (error) {
-      attempts.push({ tier: 1.5, method: 'browserbase', success: false, error: error.message });
-      console.log(`    ✗ Failed: ${error.message}`);
-    }
-  }
-
-  // TIER 2: ScrapingBee (with stealth retry if --stealth-proxy flag)
-  if (CONFIG.scrapingBeeKey) {
-    console.log('  [Tier 2] ScrapingBee API...');
-    try {
-      const result = await fetchWithScrapingBee(url, false);
-      html = result.html;
-      text = result.text;
-      method = 'scrapingbee';
-      attempts.push({ tier: 2, method: 'scrapingbee', success: true });
-      return { html, text, method, attempts };
-    } catch (error) {
-      attempts.push({ tier: 2, method: 'scrapingbee', success: false, error: error.message });
-      console.log(`    ✗ Failed: ${error.message}`);
-      // If ScrapingBee also got 404, URL is confirmed dead - bail out
-      // (URL discovery is handled by processReview after this function throws)
-      if (error.message.includes('404')) {
-        throw new Error(`URL confirmed dead (404 from multiple tiers): ${JSON.stringify(attempts)}`);
-      }
-    }
-  }
-
-  // TIER 3: Bright Data (especially for paywalls)
-  if (CONFIG.brightDataKey) {
-    console.log('  [Tier 3] Bright Data Web Unlocker...');
-    try {
-      const result = await fetchWithBrightData(url);
-      html = result.html;
-      text = result.text;
-      method = 'brightdata';
-      attempts.push({ tier: 3, method: 'brightdata', success: true });
-      return { html, text, method, attempts };
-    } catch (error) {
-      attempts.push({ tier: 3, method: 'brightdata', success: false, error: error.message });
-      console.log(`    ✗ Failed: ${error.message}`);
-    }
-  }
-
-  // TIER 4: Archive.org (last resort)
-  console.log('  [Tier 4] Archive.org Wayback Machine...');
+/**
+ * Execute a forced tier directly (CLI --force-tier flag).
+ * Bypasses the quality gate — returns raw tier output.
+ */
+async function executeForcedTier(tier, url, review) {
   try {
-    const result = await fetchFromArchive(url);
-    html = result.html;
-    text = result.text;
-    method = 'archive';
-    archiveData = result;
-    attempts.push({ tier: 4, method: 'archive', success: true });
-    return { html, text, method, archiveData, attempts };
-  } catch (error) {
-    attempts.push({ tier: 4, method: 'archive', success: false, error: error.message });
-    console.log(`    ✗ Failed: ${error.message}`);
+    switch (tier) {
+      case 1: {
+        const r = await fetchWithPlaywright(url, review);
+        return { html: r.html, text: r.text, method: 'playwright', attempts: [{ tier: 1, method: 'playwright', success: true }] };
+      }
+      case 1.5: {
+        const r = await fetchWithBrowserbase(url, review);
+        return { html: r.html, text: r.text, method: 'browserbase', attempts: [{ tier: 1.5, method: 'browserbase', success: true }] };
+      }
+      case 2: {
+        const r = await fetchWithScrapingBee(url);
+        return { html: r.html, text: r.text, method: 'scrapingbee', attempts: [{ tier: 2, method: 'scrapingbee', success: true }] };
+      }
+      case 3: {
+        const r = await fetchWithBrightData(url);
+        return { html: r.html, text: r.text, method: 'brightdata', attempts: [{ tier: 3, method: 'brightdata', success: true }] };
+      }
+      case 4: {
+        const r = await fetchFromArchive(url);
+        return { html: r.html, text: r.text, method: 'archive', archiveData: r, attempts: [{ tier: 4, method: 'archive', success: true }] };
+      }
+    }
+  } catch (e) {
+    throw new Error(`Forced tier ${tier} failed: ${e.message}`);
+  }
+}
+
+/**
+ * Build the tier descriptor chain for fetchReviewText.
+ * Each descriptor has: id, tierNumber, method, shouldRun(ctx), execute(url, review),
+ * optional onFailure(error, ctx), onSuccess(review, result), timeoutMs.
+ */
+function buildTierChain(ctx, review) {
+  return [
+    // TIER 0: Archive.org first (for paywalled sites)
+    {
+      id: 'archive-first',
+      tierNumber: 0,
+      method: 'archive-first',
+      label: 'Archive.org (paywalled site - trying archive first)',
+      shouldRun: () => ctx.isArchiveFirst,
+      execute: (url) => fetchFromArchive(url),
+      onSuccess: (review, result) => { ctx._archiveTierRan = true; },
+      onFailure: (error) => { ctx._archiveTierRan = true; },
+    },
+
+    // TIER 1: Playwright with stealth
+    {
+      id: 'playwright',
+      tierNumber: 1,
+      method: 'playwright',
+      label: 'Playwright with stealth',
+      shouldRun: () => !ctx.isKnownBlocked,
+      skipMessage: 'Skipped (known-blocked site)',
+      execute: (url) => fetchWithPlaywright(url, review),
+      onFailure: (error) => {
+        ctx.anyTierFailed = true;
+        const msg = error.message || '';
+        if (msg.includes('CAPTCHA') || msg.includes('blocked')) ctx.sawCaptcha = true;
+        if (msg.includes('Paywall')) ctx.sawPaywall = true;
+        if (msg.includes('404') && !ctx.hasPaywallCreds) {
+          ctx._playwright404NoCreds = true;
+        } else if (msg.includes('404') && ctx.hasPaywallCreds) {
+          console.log('    → 404 on paywalled site with credentials - will try Browserbase login...');
+        }
+      },
+    },
+
+    // TIER 4 (early): Archive.org 404 recovery
+    {
+      id: 'archive-404-recovery',
+      tierNumber: 4,
+      method: 'archive',
+      label: 'Archive.org (404 detected - skipping other tiers)',
+      shouldRun: () => ctx._playwright404NoCreds,
+      execute: (url) => fetchFromArchive(url),
+      onSuccess: (review, result) => { ctx._archiveTierRan = true; },
+      onFailure: (error) => {
+        ctx._archiveTierRan = true;
+        ctx._bail404 = true; // URL is dead — don't waste API credits
+      },
+    },
+
+    // TIER 1.5: Browserbase (managed browser cloud + CAPTCHA solving + login)
+    {
+      id: 'browserbase',
+      tierNumber: 1.5,
+      method: 'browserbase',
+      label: 'Browserbase (managed browser + CAPTCHA solving)',
+      timeoutMs: 120000,
+      shouldRun: () => {
+        if (!CONFIG.browserbaseEnabled || !canUseBrowserbase()) return false;
+        return (
+          ctx.isKnownBlocked || ctx.sawCaptcha ||
+          (ctx.hasPaywallCreds && (ctx.sawPaywall || ctx.anyTierFailed))
+        );
+      },
+      execute: (url) => fetchWithBrowserbase(url, review),
+      onSuccess: (review, result) => {
+        state.tierBreakdown.browserbase.push(review.filePath);
+      },
+      onFailure: (error) => { ctx.anyTierFailed = true; },
+    },
+
+    // TIER 2: ScrapingBee API
+    {
+      id: 'scrapingbee',
+      tierNumber: 2,
+      method: 'scrapingbee',
+      label: 'ScrapingBee API',
+      shouldRun: () => !!CONFIG.scrapingBeeKey,
+      execute: (url) => fetchWithScrapingBee(url, false),
+      onFailure: (error) => {
+        ctx.anyTierFailed = true;
+        if (error.message?.includes('404')) {
+          ctx.consecutive404Count++;
+        }
+      },
+    },
+
+    // TIER 3: Bright Data Web Unlocker
+    {
+      id: 'brightdata',
+      tierNumber: 3,
+      method: 'brightdata',
+      label: 'Bright Data Web Unlocker',
+      shouldRun: () => !!CONFIG.brightDataKey,
+      execute: (url) => fetchWithBrightData(url),
+      onFailure: (error) => { ctx.anyTierFailed = true; },
+    },
+
+    // TIER 4: Archive.org (last resort)
+    {
+      id: 'archive-final',
+      tierNumber: 4,
+      method: 'archive',
+      label: 'Archive.org Wayback Machine',
+      shouldRun: () => !ctx._archiveTierRan,
+      execute: (url) => fetchFromArchive(url),
+      onSuccess: (review, result) => { ctx._archiveTierRan = true; },
+      onFailure: (error) => { ctx._archiveTierRan = true; },
+    },
+  ];
+}
+
+async function fetchReviewText(review) {
+  const ctx = buildTierContext(review);
+  const url = ctx.url;
+
+  // Force specific tier if requested (bypasses quality gate)
+  if (CLI.forceTier) {
+    return executeForcedTier(parseFloat(CLI.forceTier), url, review);
   }
 
-  // All tiers failed
+  // Diagnostic: log Browserbase routing state for paywalled sites
+  if (ctx.hasPaywallCreds) {
+    console.log(`  [Browserbase routing] enabled=${CONFIG.browserbaseEnabled} isBlocked=${ctx.isKnownBlocked} creds=${ctx.hasPaywallCreds}`);
+  }
+
+  const chain = buildTierChain(ctx, review);
+  const attempts = [];
+  let bestResult = null; // Track longest non-empty text from garbage tiers
+
+  for (const tier of chain) {
+    // Bail conditions
+    if (ctx._bail404) {
+      throw new Error(`URL returned 404 (archive also failed): ${JSON.stringify(attempts)}`);
+    }
+    if (ctx.consecutive404Count >= 2) {
+      throw new Error(`URL confirmed dead (404 from multiple tiers): ${JSON.stringify(attempts)}`);
+    }
+
+    // Check shouldRun predicate
+    if (!tier.shouldRun()) {
+      if (tier.skipMessage) {
+        console.log(`  [Tier ${tier.tierNumber}] ${tier.skipMessage}`);
+        attempts.push({ tier: tier.tierNumber, method: tier.method, success: false, error: tier.skipMessage });
+      }
+      continue;
+    }
+
+    // Execute tier
+    console.log(`  [Tier ${tier.tierNumber}] ${tier.label}...`);
+    let result;
+    try {
+      result = await withTimeout(tier.execute(url), tier.timeoutMs, tier.id);
+    } catch (error) {
+      console.log(`    ✗ Failed: ${error.message}`);
+      attempts.push({ tier: tier.tierNumber, method: tier.method, success: false, error: error.message });
+      if (tier.onFailure) tier.onFailure(error, ctx);
+      continue;
+    }
+
+    // Tier succeeded — log result
+    console.log(`    ✓ ${tier.id} returned ${result.text?.length || 0} chars`);
+    attempts.push({ tier: tier.tierNumber, method: tier.method, success: true });
+
+    // Quality gate: check for garbage content (paywall pages, newsletters, nav junk)
+    const garbageReason = checkContentQuality(result.text);
+    if (garbageReason) {
+      console.log(`    ⚠ ${tier.id} returned garbage: ${garbageReason} — trying next tier`);
+      // Track best-of-garbage as fallback
+      if (!bestResult || (result.text?.length || 0) > (bestResult.text?.length || 0)) {
+        bestResult = { ...result, method: tier.method === 'archive-first' || tier.method === 'archive' ? 'archive' : tier.method };
+        if (tier.method === 'archive-first' || tier.method === 'archive') bestResult.archiveData = result;
+      }
+      if (tier.onFailure) tier.onFailure(new Error(`garbage: ${garbageReason}`), ctx);
+      continue;
+    }
+
+    // Accept result
+    const accepted = {
+      html: result.html,
+      text: result.text,
+      method: tier.method === 'archive-first' ? 'archive' : tier.method,
+      attempts,
+    };
+    if (tier.method === 'archive-first' || tier.method === 'archive') {
+      accepted.archiveData = result;
+    }
+    if (tier.onSuccess) tier.onSuccess(review, result);
+    return accepted;
+  }
+
+  // All tiers exhausted — return best-of-garbage if available
+  if (bestResult) {
+    console.log(`  ⚠ All tiers returned garbage — using best result (${bestResult.text?.length} chars)`);
+    bestResult.attempts = attempts;
+    return bestResult;
+  }
+
   throw new Error(`All tiers failed: ${JSON.stringify(attempts)}`);
 }
 
