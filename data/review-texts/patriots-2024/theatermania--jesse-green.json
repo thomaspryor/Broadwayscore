@@ -5,8 +5,8 @@
   "criticName": "Jesse Green",
   "url": "https://www.theatermania.com/broadway/reviews/patriots_92948.html",
   "publishDate": "April 22, 2024",
-  "fullText": "McNeal's play is a gripping political thriller that examines the rise and fall of Boris Berezovsky, the Russian oligarch who helped create Vladimir Putin only to become his enemy.",
-  "isFullReview": false,
+  "fullText": "Chenoweth will perform numbers from her new holiday album, ”Happiness Is…Christmas!”\n\nEmmy and Tony winner Kristin Chenoweth will perform a one-night-only holiday concert at the Metropolitan Opera on Monday, December 13. Kristin Chenoweth: Christmas at the Met will feature the soprano singing Christmas songs from her new Concord Records album Happiness Is…Christmas! as well as a range of new material.\n\nChenoweth last performed a solo concert at the Met in 2007. \"When I first got the call and was offered this opportunity, my heart literally began to thump,\" said Chenoweth in a statement. \"It was a dream to play the Met, and to get another chance, after this long dormant wait for the arts to come back to life, is an opportunity I could not pass up. It also reunites me with my longtime friend and musical director Mary-Mitchell Campbell and also director Richard Jay-Alexander, as well as some of my favorite surprise musicians and fellow vocalists I tour with and love. I'm so excited and have already begun rehearsals, singing some of the most beautiful music ever written. The evening will surely bring tears to my eyes when I look out and see 4,000 people … and I will love every minute of it.\"\n\nChenoweth earned a Tony Award in 1999 for Best Featured Actress In A Musical as Sally in You're a Good Man, Charlie Brown and was later nominated for her leading performances in Wicked and On the Twentieth Century. In 2009, she received an Emmy Award for Best Supporting Actress in a Comedy Series for her role in Pushing Daisies, and has had several other notable television roles on The West Wing, NBC's Trial & Error, American Gods, Disney's Descendants, NBC's Hairspray Live!, and many more.\n\nTickets for Kristin Chenoweth: Christmas at the Met will go on sale Monday, November 8. For more information, click here.\n\nReview: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Every Step Has Meaning in Anne Gridley’s Watch Me Walk \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Leopold Bloom for Rookies and Pros in a Hilarious Ulysses \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre.",
+  "isFullReview": true,
   "dtliExcerpt": "McNeal's play is a gripping political thriller that examines the rise and fall of Boris Berezovsky, the Russian oligarch who helped create Vladimir Putin only to become his enemy.",
   "originalScore": null,
   "assignedScore": 77,
@@ -66,5 +66,42 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 77,
+  "textWordCount": 414,
+  "archivePath": "data/archives/reviews/patriots-2024/theatermania--jesse-green_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T05:10:24.154Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Insufficient text: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true
 }

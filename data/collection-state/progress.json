@@ -1,58 +1,41 @@
 {
   "processed": [
-    "the-notebook-2024/nytimes--unknown.json",
-    "the-notebook-2024/broadwaynews--brittani-samuel.json",
-    "the-notebook-2024/theatermania--jesse-green.json"
+    "wicked-2003/nytimes--charles-isherwood.json",
+    "wicked-2003/ew--alice-king.json",
+    "wicked-2003/observer--rex-reed.json"
   ],
   "failed": [
-    "the-notebook-2024/hollywood-reporter--david-rooney.json",
-    "the-notebook-2024/variety--frank-rizzo.json",
-    "the-notebook-2024/vulture--helen-shaw.json",
-    "the-notebook-2024/deadline--greg-evans.json",
-    "the-notebook-2024/nydailynews--chris-jones.json",
-    "the-notebook-2024/timeout--adam-feldman.json",
-    "the-notebook-2024/wsj--charles-isherwood.json"
+    "wicked-2003/variety--charles-isherwood.json",
+    "wicked-2003/ew--lisa-schwarzbaum.json",
+    "wicked-2003/timeout--david-cote.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "wicked-2003/curtainup--elyse-sommer.json",
+    "wicked-2003/frontmezzjunkies--unknown.json",
+    "wicked-2003/njcom-star-ledger--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "the-notebook-2024/broadwaynews--brittani-samuel.json"
+    "playwright": [],
+    "browserbase": [
+      "data/review-texts/wicked-2003/observer--rex-reed.json",
+      "wicked-2003/observer--rex-reed.json"
     ],
-    "browserbase": [],
-    "scrapingbee": [
-      "the-notebook-2024/theatermania--jesse-green.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "the-notebook-2024/nytimes--unknown.json",
-      "the-notebook-2024/variety--frank-rizzo.json"
+      "wicked-2003/nytimes--charles-isherwood.json",
+      "wicked-2003/ew--alice-king.json",
+      "wicked-2003/variety--charles-isherwood.json"
     ]
   },
-  "startTime": "2026-02-02T04:57:26.696Z",
-  "lastProcessed": "the-notebook-2024/wsj--charles-isherwood.json",
+  "startTime": "2026-02-02T05:05:12.509Z",
+  "lastProcessed": "wicked-2003/njcom-star-ledger--michael-sommers.json",
   "log": [
     {
-      "t": "2026-02-02T05:01:26.081Z",
+      "t": "2026-02-02T05:09:37.507Z",
       "event": "bb-session",
-      "session": "febbe7cf",
-      "url": "https://www.vulture.com/article/the-notebook-broadway-review.html"
-    },
-    {
-      "t": "2026-02-02T05:01:28.469Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-02T05:05:34.965Z",
-      "event": "bb-session",
-      "session": "39d38858",
-      "url": "https://www.nydailynews.com/2024/03/14/broadway-review-the-notebook-is-an-unexpe"
-    },
-    {
-      "t": "2026-02-02T05:06:21.552Z",
-      "event": "bb-session",
-      "session": "7ea78948",
-      "url": "https://www.theatermania.com/new-york-city-theater/reviews/the-notebook_93127.ht"
+      "session": "781b78f8",
+      "url": "http://observer.com/2003/11/crowe-is-master-of-briny-boys-domain/"
     }
   ]
 }
