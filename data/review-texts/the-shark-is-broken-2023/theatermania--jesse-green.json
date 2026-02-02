@@ -69,20 +69,20 @@
   "contentTierReason": "Short text (29 words)",
   "textWordCount": 42,
   "archivePath": "data/archives/reviews/the-shark-is-broken-2023/theatermania--jesse-green_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T05:04:27.289Z",
+  "textFetchedAt": "2026-02-02T17:51:51.444Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
     {
       "tier": 1,
       "method": "playwright",
       "success": false,
       "error": "Skipped - known blocked site"
-    },
-    {
-      "tier": 1.5,
-      "method": "browserbase",
-      "success": false,
-      "error": "Insufficient text: 75 chars"
     },
     {
       "tier": 2,
