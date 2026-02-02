@@ -1,35 +1,64 @@
 {
   "processed": [
-    "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
-    "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
-    "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
-    "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
-    "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json",
-    "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
+    "six-2021/deadline--greg-evans.json",
+    "six-2021/guardian--adrian-horton.json",
+    "six-2021/theatermania--jesse-green.json",
+    "six-2021/did-they-like-it--jose-sols.json"
   ],
   "failed": [
-    "once-upon-a-one-more-time-2023/hollywood-reporter--angie-han.json",
-    "once-upon-a-one-more-time-2023/timeout--adam-feldman.json",
-    "once-upon-a-one-more-time-2023/associated-press-mark-kennedy--mark-kennedy.json",
-    "once-upon-a-one-more-time-2023/thestage--lane-williamson.json"
+    "six-2021/observer--david-cote.json",
+    "six-2021/timeout--adam-feldman.json",
+    "six-2021/wsj--charles-isherwood.json",
+    "six-2021/amny--matt-windman.json",
+    "six-2021/front-row-center--tulis-mccall.json",
+    "six-2021/talkinbroadway--matthew-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
+      "six-2021/guardian--adrian-horton.json",
+      "six-2021/did-they-like-it--jose-sols.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "six-2021/theatermania--jesse-green.json"
+    ],
     "archive": [
-      "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
-      "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
-      "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
-      "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
-      "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json"
+      "six-2021/deadline--greg-evans.json"
     ]
   },
-  "startTime": "2026-02-02T16:32:51.847Z",
-  "lastProcessed": "once-upon-a-one-more-time-2023/thestage--lane-williamson.json",
-  "log": []
+  "startTime": "2026-02-02T16:32:58.595Z",
+  "lastProcessed": "six-2021/talkinbroadway--matthew-murray.json",
+  "log": [
+    {
+      "t": "2026-02-02T16:33:29.712Z",
+      "event": "bb-session",
+      "session": "a3c8a3e0",
+      "url": "https://observer.com/2021/10/six-broadway-review/"
+    },
+    {
+      "t": "2026-02-02T16:34:00.050Z",
+      "event": "bb-session",
+      "session": "46bbe503",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/six-broadway_91234"
+    },
+    {
+      "t": "2026-02-02T16:34:34.579Z",
+      "event": "bb-session",
+      "session": "6cafcafc",
+      "url": "https://www.wsj.com/articles/six-review-broadway-musical-11633550400"
+    },
+    {
+      "t": "2026-02-02T16:35:16.606Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-02T16:35:47.252Z",
+      "event": "bb-session",
+      "session": "32c14124",
+      "url": "https://www.amny.com/entertainment/six-broadway-review/"
+    }
+  ]
 }
