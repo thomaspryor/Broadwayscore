@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review highlights strong performances ('superb performance') and effective direction, with positive language like 'tender and balanced' and 'effective jolts,' indicating a recommendation despite limited text. | GPT-4o: The review highlights strong performances and effective direction, suggesting a positive reception. The use of 'superb performance' and 'effective jolts' indicates a recommendation. | Gemini: The review highlights a superb performance and effective jolts, suggesting a positive experience overall, but the phrase \"disturbingly closer to home\" hints at a reservation, placing it in the positive bucket with a mid-range score.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises a 'superb performance' by Coon and notes effective direction by Cromer, suggesting a positive assessment with quality elements worth seeing. | GPT-4o: The review highlights strong performances and effective direction, suggesting a positive reception. However, the single excerpt and lack of a clear overall verdict necessitate a conservative score within the Positive range. | Gemini: The review highlights a \"superb performance\" and notes the production \"feels disturbingly closer to home,\" suggesting a positive but potentially unsettling experience. The mention of \"effective jolts\" also indicates a compelling production, but the lack of a clear recommendation and the limited text suggest a score in the lower end of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:45:10.520Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:12:20.226Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 80,
+    "openaiScore": 79,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

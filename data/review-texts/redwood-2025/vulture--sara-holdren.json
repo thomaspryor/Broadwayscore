@@ -9,71 +9,55 @@
   "showScoreExcerpt": "\"for all its soaring vocals and vertical movement, Redwood leaves us stubbornly grounded.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/redwood-broadway",
   "originalScore": null,
-  "assignedScore": 32,
+  "assignedScore": 52,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 32,
-    "confidence": "high",
+    "score": 52,
+    "confidence": "low",
     "range": {
-      "low": 28,
-      "high": 38
+      "low": 47,
+      "high": 57
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 25,
-      "music": 30,
-      "performances": 65,
-      "direction": 35
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Build a tower on a foundation of schmaltz, and the thing starts to sink as soon as you breathe on it wrong",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Redwood is too soggy a show for any spark to catch",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "for all its soaring vocals and vertical movement, Redwood leaves us stubbornly grounded",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic systematically dismantles the show's book, music, and concept while acknowledging Menzel's vocal abilities, concluding it fails to achieve catharsis despite ambitious staging.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Negative, gemini=Mixed | Claude: The critic systematically dismantles the show's narrative logic, calls it 'soggy,' criticizes its generic metaphors, and concludes it fails to achieve catharsis despite Menzel's strong performance. | Gemini: The review highlights both positive and negative aspects of the show. While praising the aerial choreography and Menzel's performance, it criticizes the narrative's thinness, wonkiness, and reliance on clichés. The overall tone suggests a mixed experience with some enjoyable moments but significant flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:05:59.756Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4387,
-    "outputTokens": 360,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:50:53.465Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 32,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 50,
-    "scoreDelta": 8,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 46,

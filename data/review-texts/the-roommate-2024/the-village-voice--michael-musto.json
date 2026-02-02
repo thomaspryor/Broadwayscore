@@ -8,64 +8,56 @@
   "bwwExcerpt": "Jack O’Brien (Hairspray, Shucked) directs with a sure hand, and David Yazbek (The Band’s Visit) provides the woodwind-heavy incidental music. There’s no show without the stars — their staccato interplay is expert — and while Silverman’s play often feels like it might evaporate through those beams, it’s nice to spend time with these two old friends. If you can label them that! Daniel D'Addario, Variety: In the main, “The Roommate” is a spirited entry on Broadway and a welcome showcase for Lu",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 62,
+    "confidence": "medium",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
-    "thumb": "Up",
+    "thumb": "Flat",
     "components": {
-      "book": 55,
+      "book": null,
       "music": null,
-      "performances": 83,
-      "direction": 78
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "their staccato interplay is expert",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Silverman's play often feels like it might evaporate through those beams",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "a spirited entry on Broadway and a welcome showcase",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review praises the expert performances and direction while acknowledging script weaknesses, landing in mixed-positive territory with a qualified recommendation. | GPT-4o-mini: The review indicates a positive experience with strong performances and direction, though it lacks a definitive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The excerpt shows praise for performances and direction but suggests the play itself is insubstantial ('might evaporate'). With only one cherry-picked quote and aggregator indicating 'Flat', scoring conservatively in mixed range. | GPT-4o: The review highlights positive aspects like the direction and music, and describes the play as 'spirited' and a 'welcome showcase', but also suggests it might lack substance ('feels like it might evaporate'). The overall tone suggests a mixed but somewhat positive impression. | Gemini: The review highlights positive aspects like the direction and the performances of the stars, suggesting an enjoyable experience despite some reservations about the play itself. The phrase \"nice to spend time\" indicates a positive but not overwhelmingly enthusiastic recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:35:37.576Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:14:20.483Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "rescoreReason": "fullText added after excerpt-based scoring",

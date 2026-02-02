@@ -10,76 +10,59 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 52,
-    "confidence": "high",
+    "score": 62,
+    "confidence": "medium",
     "range": {
-      "low": 48,
-      "high": 56
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 35,
-      "music": 40,
-      "performances": 70,
-      "direction": 55
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "target feeling at the expense of character, specificity or surprise",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The result is anodyne — and lacks the erotic charge of an attraction with distinct flavor",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "those searching for an excuse to shed tears — who couldn't use one, nowadays? — will find the musical delivers",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review acknowledges the show delivers emotional impact for its target audience but criticizes fundamental creative choices, resulting in a qualified mixed verdict that neither recommends nor discourages attendance.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges the show succeeds at its primary goal of producing tears and emotion, but consistently criticizes it for sacrificing character depth, specificity, and creative risk for generic sentiment. | GPT-4o: The review acknowledges the musical's ability to evoke emotion and satisfy fans of the original material, but criticizes its lack of character depth and narrative innovation. The overall tone suggests it may appeal to specific audiences but lacks broader appeal. | Gemini: The review indicates that the musical delivers on sentiment and will satisfy fans of the novel, but it also points out that it sacrifices character and specificity. This makes it a positive but not rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:21:33.914Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3443,
-    "outputTokens": 349,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:48:06.911Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 52,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 35,
-    "openaiScore": 30,
-    "scoreDelta": 5,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (33 → Down) conflicts with aggregator thumbs (Flat)"
-    ]
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 33,

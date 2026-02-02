@@ -8,74 +8,59 @@
   "fullText": "You are using an outdated browser. Please upgrade your browser or activate Google Chrome Frame to improve your experience.\n\n$51.25 - $126.25\n \n To purchase visit ticketmaster.com or call 212.307.4100\n \n No discounts available at this time.\n\nby Molly Marinik and Dan Dinero\n\nBOTTOM LINE: Wicked is an insanely popular show. It has been playing on Broadway since it opened in 2003, is playing a long engagement in San Francisco, is touring the U.S. and also plays regularly in other countries. People freaking love this show. So we figured it was time to write something about it.\n\nThis musical is full of glitz and is, in many ways, a big Broadway spectacular; it is also a charming story with a wonderfully catchy score. Wicked is satisfying in a sparkly way, and also in a storytelling way. And it spans demographics. You don't really need to have a great knowledge of The Wizard of Oz, or really a great grasp of the English language to enjoy the experience. I have to imagine this crossing of international borders is one of the reasons Wicked remains such a must-see. Tickets are still hard to come by and the front-row ticket lottery always draws a massive crowd. I wish I had a more critical opinion of this show since it's such a cheesy, obvious pick. But I have a soft spot in my heart for musical theatre that's done well, especially when it connects with the audience in such a magnetic way. I'd recommend Wicked for people who just generally like musical theatre and are looking for a quintessential \"Broadway\" experience. It's also appropriate for the whole family so you can bring your kids as well as your parents.\n\nDan agrees. Here's what he has to say about Wicked:\n I have seen Wicked twice – the first time was right before it opened in 2003, and the second was several years later when my friend had returned to play Elphaba. I enjoyed it both times, and would happily see it again. Is it the best musical ever? No. Would I recommend it above all other Broadway shows? Maybe not (it would depend on the person), but if you're looking for a \"big Broadway musical\" I would recommend this over Billy Elliot, Shrek, The Phantom of the Opera, Mamma Mia or The Little Mermaid (I haven't seen Mary Poppins yet).\n\nWhy Wicked? I could argue that it is a somewhat subversive tale of two female friends, told with all the glitz and glamour of Broadway. Or that it is more truthful than other musicals about the pain of being different (and green), and the intolerance of society - compare it to Shrek, or Avenue Q (the show that beat Wicked for the Best Musical Tony Award), or even Billy Elliot. I could argue that Wicked will be enjoyable to anyone who has seen The Wizard of Oz. Or that the musical Wicked is an incredibly savvy adaptation of Gregory Maguire's novel of the same name, because the musical takes basic characters and plot points from the novel, but doesn't get bogged down in slavish adaptation. (And while I think the novel is better, both are worth experiencing – and they're different enough that one won't lessen your enjoyment of the other.)\n\nI could also add that Wicked has not one, but two diva performances – and let's be real, Broadway musical audiences love their divas. But ultimately, I think the popularity of Wicked can be explained by the last minute or so of the first act. It is an incredibly successful merging of dramatic spectacle and character development - and is one of the few truly unforgettable moments I have seen in a Broadway musical.\n\n(Wicked plays at the Gershwin Theatre, 222 West 51st Street. Performances are Tuesdays at 7pm, Wednesdays at 2pm and 8pm, Thursdays and Fridays at 8pm, Saturday at 2pm and 8pm, and Sundays at 3pm. Tickets are $51.25 through $126.25 available at ticketmaster.com. Show runs 2 hours 30 minutes with an intermission. For more show info, visit wickedthemusical.com.)",
   "showScoreExcerpt": "\"This musical is full of glitz and is a big Broadway spectacular; it is also a charming story with a wonderfully catchy score. 'Wicked' is satisfying in a sparkly way, and also in a storytelling way...The popularity of 'Wicked' can be explained by the last minute or so of the first act. It is an incredibly successful merging of dramatic spectacle and character development - and is one of the few truly unforgettable moments I have seen in a Broadway musical.\"",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 80,
   "source": "show-score",
   "needsFullText": true,
   "sourceMethod": "archive",
   "scoreSource": "sentiment-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 78,
+    "score": 80,
     "confidence": "high",
     "range": {
       "low": 75,
-      "high": 82
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
-      "music": 82,
-      "performances": 80,
-      "direction": 78
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "I'd recommend Wicked for people who just generally like musical theatre and are looking for a quintessential 'Broadway' experience",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Wicked is satisfying in a sparkly way, and also in a storytelling way",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "I have a soft spot in my heart for musical theatre that's done well, especially when it connects with the audience in such a magnetic way",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Both reviewers explicitly recommend the show despite acknowledging it's not the best musical ever, praising its broad appeal, effective storytelling, strong performances, and quintessential Broadway experience.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Both critics clearly recommend the show despite acknowledging it's not groundbreaking. They praise its entertainment value, broad appeal, and memorable moments, particularly the Act 1 finale which one calls 'unforgettable.' | GPT-4o: Despite the truncated text warning, the review is overwhelmingly positive, highlighting the show's charm, catchy score, and broad appeal. The critic expresses a personal fondness for the production and recommends it for a quintessential Broadway experience, indicating a strong positive recommendation. | Gemini: Both critics recommend the show, particularly for those looking for a classic Broadway experience. Dan explicitly states he enjoyed it both times he saw it and would happily see it again.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:38:16.252Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3260,
-    "outputTokens": 372,
-    "textSource": {
-      "type": "fullText",
-      "status": "truncated",
-      "field": "fullText",
-      "confidence": "low",
-      "reasoning": "Truncated text - may be missing final verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:44:48.742Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 88,
-    "scoreDelta": 6,
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/wicked-2003/theatre-is-easy--dan-dinero---molly-marinik_2026-01-26.html",
   "textFetchedAt": "2026-01-26T23:34:02.807Z",

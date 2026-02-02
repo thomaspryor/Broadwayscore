@@ -8,7 +8,7 @@
   "fullText": "Skip to content 'Book of Mormon,' by 'South Park' creators Trey Parker and Matt Stone, is blissfully original. \"The Book of Mormon\" slipped quietly into town four weeks ago without the hype of an out-of-town tryout, just a lot of anticipation thanks to its creative DNA.\n\nMatt Stone and Trey Parker, the envelope-pushing pair behind \"South Park,\" and Robert Lopez, the composer of \"Avenue Q,\" delivered this baby.\n\nAnd, oh boy, it's a real winner.\n\nThe show is blissfully original, irreverent, outspoken and hilarious. And all that's tucked inside good -- no, great -- old-fashioned musical.\n\nThe plot follows two young Mormon missionaries -- Elder Price, an ace; Elder Cunningham, a loser -- from Utah to Uganda, where they seek to recruit new church members. All of them end up transformed.\n\nBut that change, and the acknowledgment that it's okay to believe in what you want, doesn't come easily.\n\nPrice and Cunningham find their Mormon faith and American can-do spirit tested to the limit after they run into curious mythologies and Africans brutalized by AIDS, poverty and a sadistic warlord.\n\nIt's a show where you catch yourself laughing one minute, mouth agape the next, eventually wiping away tears, and, finally, cheering.\n\nStone and Parker are famous for their take-no-prisoners, nothing-is-sacred approach to humor. And Lopez knows about thumbing his nose at contemporary conventions.\n\nThey all share credit for the book, music and lyrics. Silly, soulful and (no surprise with these guys) seriously rude, the score is consistently chipper and clever and keeps the pages in this \"Book\" turning smoothly.\n\nWhen a song consists of natives giving God the finger, you know this isn't \"The King and I\" — although that show is cleverly referenced.\n\nParker co-directs with Casey Nicholaw (\"The Drowsy Chaperone\"), who delivers his best work to date. Except for a couple brief slack patches, the meticulously built production just flows. Dances are polished and exuberant, and, like the show, surge with surprises. \"Turn It Off,\" a tap-happy ode to denial, and \"Spooky Mormon Hell Dream,\" which speaks for itself, are amazingly fun.\n\nDesigners Scott Pask (sets), Ann Roth (costumes), Brian MacDevitt (lights) and Brian Ronan (sound) render the squeaky-clean world of Salt Lake City and squalid Uganda with enormous wit and imagination.\n\nThis musical spills over with confidence in the material and cast, a roster of relative unknowns. As Elder Price, a nice but narcissistic missionary, Andrew Rannells has wholesome good looks and a whole lot of talent that shines through in every note and gesture.\n\nJosh Gad gets big laughs and shows a big heart as Elder Cunningham, a chubby screw-up with a hero inside him.\n\nMichael Potts lends fine support as a native chieftain, and Nikki M. James is so radiant as Nabulungi, the bridge between her villagers and the Americans, you wish you could wrap your arms around her and protect her from harm.\n\nRory O'Malley leads the band of Mormon elders and he sells production numbers with such infectious energy you want to join in on stage.\n\nBeing among the converted is what it's all about.",
   "bwwExcerpt": "It's a show where you catch yourself laughing one minute, mouth agape the next, eventually wiping away tears, and, finally, cheering. Stone and Parker are famous for their take-no-prisoners, nothing-is-sacred approach to humor. And Lopez knows about thumbing his nose at contemporary conventions. They all share credit for the book, music and lyrics. Silly, soulful and (no surprise with these guys) seriously rude, the score is consistently chipper and clever and keeps the pages in this \"Book\" turning smoothly.",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 93,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-THE-BOOK-OF-MORMON-20110324",
   "urlSource": "show-score",
@@ -18,60 +18,52 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 94,
+    "score": 93,
     "confidence": "high",
     "range": {
-      "low": 87.5,
-      "high": 100
+      "low": 88,
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 93,
-      "music": 92,
-      "performances": 93,
-      "direction": 88
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "And, oh boy, it's a real winner.",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The show is blissfully original, irreverent, outspoken and hilarious. And all that's tucked inside good -- no, great -- old-fashioned musical.",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Being among the converted is what it's all about.",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: Unqualified enthusiasm throughout with superlatives like 'real winner,' 'blissfully original,' and 'great,' combined with comprehensive praise for all elements and ending with complete endorsement. | GPT-4o-mini: The review expresses unqualified enthusiasm for the originality, humor, and production quality of the show, indicating a strong recommendation to see it.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses unambiguous praise throughout - calling it 'a real winner,' 'blissfully original,' praising the 'meticulously built production,' and describing performances as shining with talent. The review concludes with 'Being among the converted is what it's all about,' indicating total endorsement. | GPT-4o: The review is overwhelmingly positive, praising the originality, humor, and emotional impact of the show. The critic describes it as a 'real winner' and highlights the excellent performances, direction, and production quality, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"real winner\", \"blissfully original\", and praising various aspects of the production, including the music, direction, and performances. The critic clearly enjoyed the show and recommends it highly.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:33:47.309Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:47:14.424Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 94,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 92,
     "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/book-of-mormon-2011/ny-daily-news--joe-dziemianowicz_2026-01-27.html",
   "textFetchedAt": "2026-01-27T06:09:04.084Z",

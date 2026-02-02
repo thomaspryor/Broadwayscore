@@ -10,71 +10,56 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 59,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 42,
+    "score": 59,
     "confidence": "high",
     "range": {
-      "low": 38,
-      "high": 46
+      "low": 54,
+      "high": 64
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 35,
+      "book": null,
       "music": null,
-      "performances": 72,
-      "direction": 58
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The Shark Is Broken sinks from memory not long after you exit the Golden Theatre",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "this behind-the-scenes buddy drama...is a handful of chum in a very big sea",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "an hour of Hollywood bitching and gossip is plenty, and the last thirty minutes drag",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Despite praising the performances as 'skilled and likable' with strong impersonations, the critic finds the play fundamentally flawed with a weak script that 'drags' and 'sinks from memory,' making it difficult to recommend.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic finds merit in the performances and some laughs but concludes the show is forgettable, drags in the final act, and never rises above shallow sitcom-level material. | GPT-4o: The review highlights some positive elements like the actors' performances and comedic moments but ultimately criticizes the play for its lack of ambition and lasting impact, suggesting it is not a strong recommendation. | Gemini: The review highlights both positive and negative aspects. While praising the actors and some moments, it ultimately finds the play lacking depth and dragging towards the end, indicating a mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:27:11.868Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3447,
-    "outputTokens": 368,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:53:12.758Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 42,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 40,
-    "scoreDelta": 5,
-    "thumbsMatch": true,
-    "expectedThumb": "Down",
+    "claudeScore": 58,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "dateUnknown": true,
   "dateSource": "historical-review",

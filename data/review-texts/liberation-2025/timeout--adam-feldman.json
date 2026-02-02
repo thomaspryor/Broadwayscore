@@ -8,42 +8,26 @@
   "showScoreExcerpt": "\"A searching and revealing drama about the achievements and limits of 1970s feminism, Liberation weaves different kinds of conversation into a multilayered narrativeâand, in doing so, serendipitously restores the very word conversation to its roots.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/liberation-broadway",
   "originalScore": "5/5",
-  "assignedScore": 77,
+  "assignedScore": 93,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 77,
+    "score": 93,
     "confidence": "high",
     "range": {
-      "low": 70.5,
-      "high": 83.5
+      "low": 88,
+      "high": 98
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 79,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 75
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "searching and revealing drama",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "weaves different kinds of conversation into a multilayered narrative",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "serendipitously restores the very word conversation to its roots",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The review uses consistently positive language praising the drama's depth and thematic achievement with sophisticated literary analysis, indicating clear recommendation despite being an excerpt. | GPT-4o-mini: The review expresses clear appreciation for the thematic depth and narrative structure, indicating a positive recommendation despite lacking explicit enthusiasm.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic's own 5/5 rating combined with language like 'triumph of ensemble acting' and 'perfect realization' indicates an enthusiastic recommendation. The praise for direction and performances is unqualified. | GPT-4o: The critic's 5/5 rating and the use of words like 'triumph' and 'perfect realization' strongly indicate a rave review. The ensemble acting is praised as exceptional, suggesting this production is highly recommended. | Gemini: The review uses strong positive language like \"triumph\" and praises the ensemble acting and direction, indicating a rave review. The 5/5 rating from the outlet further supports this classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -52,20 +36,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:17:26.270Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:57:14.924Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 77,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 75,
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "dtliExcerpt": "Whitney White’s direction elicits a triumph of ensemble acting whose equipoise is a perfect realization of the play’s own themes. The actors work so well together, and so unselfishly, that it seems absurd to single any of them out.",
   "bwwExcerpt": "Five stars. Bess Wohl's feminist drama keeps the conversation going.",

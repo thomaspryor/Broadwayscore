@@ -8,99 +8,66 @@
   "fullText": "It's not easy being green. Or blonde, for that matter. Those are just two of the many lessons to be learned from this big, murky new Broadway musical. But maybe the most salient pointer is that it ain't easy being a Broadway musical. A strenuous effort to be all things to all people tends to weigh down this lumbering, overstuffed production.\n\nIt’s not easy being green. Or blonde, for that matter. Those are just two of the many lessons to be learned from this big, murky new Broadway musical. But maybe the most salient pointer is that it ain’t easy being a Broadway musical. A strenuous effort to be all things to all people tends to weigh down this lumbering, overstuffed $14 million production. “Wicked” is stridently earnest one minute, self-mocking the next; a fantastical allegory about the perils of fascism in one scene, a Nickelodeon special about the importance of inner beauty in another. There are flying monkeys, flying witches and flying scenery, but the musical itself truly soars only on rare occasions, usually when one of its two marvelously talented leading ladies, Kristin Chenoweth and Idina Menzel, unleashes the kind of vocal magic that needs no supernatural or even technical assistance.",
   "dtliExcerpt": "It’s not easy being green. Or blonde, for that matter. Those are just two of the many lessons to be learned from this big, murky new Broadway musical. But maybe the most salient pointer is that it ain’t easy being a Broadway musical. A strenuous effort to be all things to all people tends to weigh down this lumbering, overstuffed $14 million production. “Wicked” is stridently earnest one minute, self-mocking the next; a fantastical allegory about the perils of fascism in one scene, a Nickelodeon special about the importance of inner beauty in another. There are flying monkeys, flying witches and flying scenery, but the musical itself truly soars only on rare occasions, usually when one of its two marvelously talented leading ladies, Kristin Chenoweth and Idina Menzel, unleashes the kind of vocal magic that needs no supernatural or even technical assistance.",
   "originalScore": null,
-  "assignedScore": 48,
+  "assignedScore": 63,
   "source": "dtli",
   "dtliThumb": "Down",
   "urlUpdated": "2026-01-23T05:30:47.012Z",
   "llmScore": {
-    "score": 48,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 42,
-      "high": 54
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 35,
+      "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 30
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "lumbering, overstuffed production",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "the musical itself truly soars only on rare occasions",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "two marvelously talented leading ladies... unleashes the kind of vocal magic",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic identifies significant structural and creative problems with the production while praising the lead performances, but the overall assessment emphasizes the show's failures more than its strengths.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review criticizes the production as 'lumbering, overstuffed' and tonally inconsistent, but acknowledges it has moments of excellence, particularly the lead performances. The overall assessment is neither recommendatory nor dismissive. | GPT-4o: The review highlights the production's overambition and inconsistency, but acknowledges the standout performances of the leading actresses. This suggests a mixed reception with some redeeming qualities. | Gemini: The review highlights both positive and negative aspects, noting the talented leads but also describing the production as \"lumbering\" and \"overstuffed.\" The overall tone suggests a mixed experience, not strongly recommending or discouraging attendance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:38:26.362Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2612,
-    "outputTokens": 335,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:45:17.070Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 48,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 60,
-    "scoreDelta": 2,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "sourceMethod": "archive",
-  "archivePath": "data/archives/reviews/wicked-2003/variety--charles-isherwood_2026-01-26.html",
-  "textFetchedAt": "2026-01-26T19:40:29.887Z",
+  "archivePath": "data/archives/reviews/wicked-2003/variety--charles-isherwood_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:03:34.604Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Insufficient text extracted: 0 chars"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "Access blocked in Bright Data response"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],

@@ -23,51 +23,43 @@
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 91,
-      "music": 95,
-      "performances": 93,
-      "direction": 89
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "one of the most joyful, kinetic, and extravagantly original musicals ever imagined for the stage",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "It's that strange and that spectacular, and you'd be crazy to miss it. A",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Miranda's singular gift for storytelling and wordplay makes even the Federalist Papers sound sexy",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Review gives Hamilton an 'A' grade with superlative language throughout, calling it 'extravagantly original' and ending with explicit strong recommendation 'you'd be crazy to miss it.' | GPT-4o-mini: The review expresses unqualified enthusiasm for the musical's originality, performances, and overall experience, indicating a strong recommendation to see it.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives an A rating and uses superlative language calling it 'magical' and 'that great,' declaring Broadway the 'coolest place on the planet' because of this show. | GPT-4o: The review uses superlative language, describing the show as 'the coolest,' 'smartest,' and 'most exhilarating,' indicating a strong recommendation. The original rating of 'A' further supports a 'Rave' classification. | Gemini: The review uses extremely enthusiastic language like \"coolest,\" \"smartest,\" \"most exhilarating,\" and \"that great,\" indicating a rave review. The A rating further confirms this assessment.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:57:05.958Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T23:59:50.819Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 95,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 95,
     "openaiScore": 95,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 95,

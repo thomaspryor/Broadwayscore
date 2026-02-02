@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": "3/5 stars",
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/the-wiz-2024/nysr--david-finkle_2026-01-29.html",
@@ -33,69 +33,52 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 62,
+    "score": 63,
     "confidence": "high",
     "range": {
       "low": 58,
-      "high": 66
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 35,
-      "music": 85,
-      "performances": 88,
-      "direction": 75
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "it could be said that The Wiz gives the enthusiastic audience its money's worth. True and not so true.",
-        "sentiment": "neutral",
-        "strength": 4
-      },
-      {
-        "quote": "What's on view right now isn't even 'fine' for 2024. That includes just about the entire second act",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "everyone asked to solo has a voice equal to Lewis' power. Not a one of them... is denied the chance to hit notes high enough to rattle the rafters",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The 3/5 star rating combined with strong praise for performances and music but harsh criticism of the book revisions creates a mixed recommendation that acknowledges entertainment value while questioning artistic merit.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The 3/5 star rating and mixed content confirm this placement. While the critic praises the performances, singing, and production values extensively, they are clearly disappointed with the 50% story revision, calling it 'not entirely fine' and lacking the 'delightfully timeless horror' audiences expect. | GPT-4o: The review praises the performances, particularly Nichelle Lewis, and the production elements like choreography and set design. However, it criticizes the revised book and the overall storytelling, suggesting it doesn't fully succeed. The 3/5 star rating aligns with a mixed assessment. | Gemini: The review praises the performances and technical aspects but criticizes the revised book, especially the second act. The critic's rating of 3/5 stars also suggests a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:31:15.465Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3766,
-    "outputTokens": 381,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:44:05.416Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 62,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 3,
-    "thumbsMatch": false,
-    "expectedThumb": "Down",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (64 → Flat) conflicts with aggregator thumbs (Down)"
-    ]
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "dateSource": "extracted-from-url",
   "_scoreFixedFrom": "2/5 stars",

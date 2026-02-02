@@ -8,67 +8,59 @@
   "dtliExcerpt": "If MJ can’t contain the shock of the new that turned his 1983 television performance into an era-defining moment, it is in no short supply of its own thrills, not least the reminder, after all these years of scandal and accusations, that we once observed, in real time, the blossoming of undeniable talent into unavoidable genius. That’s a transition, not since equaled, that director-choreographer Christopher Wheeldon, book write Lynn Nottage and an impeccable cast led by the star-is-born Myles Frost, bring to pulse-quickening life on the stage.",
   "showScoreExcerpt": "\"Watching MJ, one easily suspects its top-flight creative team was motivated by the same near-maniacal drive. Aside from the pedestrian framing device, MJ pushes hard and unceasingly to move beyond the just-good-enough nostalgia that can turn even second-rate jukebox productions into crowd pleasers. It succeeds: MJ is a wildly entertaining marvel.\"",
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 90,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:05:12.838Z",
   "dtliThumb": "Up",
   "bwwExcerpt": "If MJ can't contain the shock of the new that turned his 1983 television performance into an era-defining moment, it is in no short supply of its own thrills, not least the reminder, after all these years of scandal and accusations, that we once observed, in real time, the blossoming of undeniable talent into unavoidable genius. That's a transition, not since equaled, that director-choreographer",
   "llmScore": {
-    "score": 83,
+    "score": 90,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 93
+      "low": 85,
+      "high": 95
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 83
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "pulse-quickening life on the stage",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "star-is-born Myles Frost",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "in no short supply of its own thrills",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The review expresses clear enthusiasm for the production with strong praise for the lead performance and creative team, though it acknowledges the show doesn't fully capture the original shock of Jackson's iconic moment. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and direction, indicating a clear recommendation to see the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic explicitly calls the show 'a wildly entertaining marvel' and praises it for pushing beyond typical jukebox musical limitations, indicating strong enthusiasm despite one minor criticism about the framing device. | GPT-4o: The critic describes the show as a 'wildly entertaining marvel,' indicating a strong, enthusiastic recommendation. The use of 'succeeds' and 'entertaining' further supports a rave verdict. | Gemini: The review explicitly states that the show is \"wildly entertaining\" and a \"marvel,\" indicating a positive recommendation. The phrase \"succeeds\" also suggests a positive outcome.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:13:25.251Z",
-    "promptVersion": "2.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:22:58.248Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 83,
+    "previousVersion": "2.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 88,
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
     "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "textIssue": "too_short",
   "sourceMethod": "archive",

@@ -7,66 +7,56 @@
   "publishDate": "February 14, 2025",
   "fullText": "The Idina Menzel-fueled contemporary musical is a bluff take on grief, bolstered by technology.\n\nGood morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Redwood.”\n\nPhilosophers are not lost for adages about trees as teachers. Hermann Hesse called them “penetrating preachers”; in her wildly popular nonfiction “Braiding Sweetgrass,” Robin Wall Kimmerer recounts their many lessons. But trees are our subjects, too. Botanists like Finn (Michael Park) and Becca (Khaila Wilcoxon) in the new musical “Redwood” study them — archiving and conserving their presence. A lot of information about the towering redwoods is woven into the musical co-conceived by Tina Landau (also the book writer and co-lyricist) and Idina Menzel (the star and additional contributor). We learn about the redwoods’ heights and roots; and we learn the same about protagonist Jesse (Menzel), who is less rooted, snapped off from her tree, a branch ambling through the wind.\n\n“Redwood” plops us into the fractured chaos of Jesse’s mind as she’s driving to escape her own grief. Shocks of light (astute design by Scott Zielinski) and intentionally splintered sound (design by Jonathan Deans) render spectral flashes of Jesse’s deceased son, Spencer (Zachary Noah Piser), and memories with her wife, Mel (De’Adre Aziza). But once the dust settles and Jesse finishes that cross-country trek, Landau’s book solidifies into narrative ease.",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 62,
   "dtliThumb": "Meh",
   "source": "dtli",
   "llmScore": {
-    "score": 65,
-    "confidence": "low",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 75
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": 75,
-      "direction": 70
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "intimate and vulnerable performance",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "expensive curtain of LED screens",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "This excerpt praises the performance quality and production design but provides insufficient context to determine overall recommendation strength.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review describes technical achievements (lighting, sound design) and notes the show finds its footing narratively, but the overall tone suggests an uneven experience with initial 'fractured chaos' that eventually settles into something more coherent. | GPT-4o: The review provides a mix of descriptions about the production's themes and design but lacks a clear positive or negative recommendation. The phrase 'solidifies into narrative ease' suggests some resolution or coherence, but the overall tone is not strongly positive. | Gemini: The review describes both positive and negative aspects of the show, without a clear recommendation either way. The phrase \"solidifies into narrative ease\" suggests an improvement, but the overall tone remains neutral.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:04:02.137Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2370,
-    "outputTokens": 259,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "dtliExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated DTLI excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:48:10.937Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 70,
-    "scoreDelta": 0,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "dtliExcerpt": "It makes for an intimate and vulnerable performance, even as an expensive curtain of LED screens (video design by Hana S. Kim, scenic design by Jason Ardizzone-West) bathes the stage action, transforming the Nederlander Theatre into starscapes and forests like a theatricalized Artechouse.",
   "sources": [

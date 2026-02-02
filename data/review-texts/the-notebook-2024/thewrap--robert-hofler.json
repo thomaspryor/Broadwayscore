@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "Much beloved is the 2004 movie version in which an old man tries to reawaken his wife’s memory by reading aloud from her notebook. The new musical gets half the story right. Unfortunately, it’s the wrong half. Or the wrong third, as it turns out in this unusually cast production.",
@@ -19,67 +19,52 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 38,
-    "confidence": "high",
+    "score": 60,
+    "confidence": "medium",
     "range": {
-      "low": 35,
-      "high": 42
+      "low": 55,
+      "high": 65
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 25,
-      "music": 45,
-      "performances": 60,
-      "direction": 30
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The new musical gets half the story right. Unfortunately, it's the wrong half.",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "When these two veteran actors are on stage together, \"The Notebook\" is the moving, unabashed, heartfelt tearjerker it's needs to be.",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "It's not in any way what this musical needs to be, which is soaring and romantic.",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Despite praising the older actors' performances, the critic finds fundamental flaws in the adaptation, confusing casting choices, weak music, and a lack of necessary context, making it difficult to recommend.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review praises the older actors' performances as genuinely moving but criticizes the younger performers, confusing structure, lack of context, and middling score. The critic finds merit in parts but significant flaws overall. | GPT-4o: The review criticizes the production's casting choices, lack of context, and the score, indicating that it fails to capture the essence of the original story. The negative tone and specific criticisms suggest a recommendation to skip the show. | Gemini: The review praises the older actors but criticizes the younger cast and the overall direction, leading to a mixed assessment. The positive aspects are not strong enough for a full recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:21:04.801Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3444,
-    "outputTokens": 370,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:47:41.538Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 38,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 45,
-    "scoreDelta": 7,
-    "thumbsMatch": true,
-    "expectedThumb": "Down",
+    "claudeScore": 58,
+    "openaiScore": 48,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 42,

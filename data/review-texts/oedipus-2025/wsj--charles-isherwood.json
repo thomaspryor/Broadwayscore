@@ -63,31 +63,13 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
   },
-  "archivePath": "data/archives/reviews/oedipus-2025/wsj--charles-isherwood_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:49:25.889Z",
+  "archivePath": "data/archives/reviews/oedipus-2025/wsj--charles-isherwood_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:34:40.824Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee error (500): Request failed with status code 500"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "Access blocked in Bright Data response"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
@@ -98,12 +80,19 @@
     "Word count too low: 144 (min: 300)"
   ],
   "bwwThumb": "Up",
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 53,
   "rescoreCompletedAt": "2026-01-29T14:31:51.924Z",
   "garbageFullText": "https://www.wsj.com/articles/oedipus-review-brilliantly-reimagining-sophocles-on-broadway-b9416144\n\nThe cast of ‘Oedipus.’ Julieta CervantesNew York\n\nA powerful politician’s night of triumph descends precipitously into waking-nightmare territory in the transfixing “Oedipus,” an adaptation of Sophocles’ tragedy from the British writer-director Robert Icke. In this ingeniously reimagined contemporary staging on Broadway (“created by” Mr. Icke “after” Sophocles), the Theban king of the original becomes a hard-driving candidate hoping to lead his country as he gathers with his family on election night to await the returns, while a dark fate gradually encircles him like a snake ready to spring.\n\nCopyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nNew York State to Loosen Environmental Rules to Speed Up Homebuilding\n\nThousands of New York City Nurses Go On Strike\n\nopinionBreads Lines in Mamdani’s New York\n\nopinionHow Mamdani and Cea Weaver Plan to End Private Housing\n\n‘Bug’ Review: A Broadway Drama of Insidious Delusion",
   "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
   "garbageFixedAt": "2026-01-29T22:45:23.051Z",
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true,
+  "fullText": "https://www.wsj.com/articles/oedipus-review-brilliantly-reimagining-sophocles-on-broadway-b9416144\n\nThe cast of ‘Oedipus.’ Julieta CervantesNew York\n\nA powerful politician’s night of triumph descends precipitously into waking-nightmare territory in the transfixing “Oedipus,” an adaptation of Sophocles’ tragedy from the British writer-director Robert Icke. In this ingeniously reimagined contemporary staging on Broadway (“created by” Mr. Icke “after” Sophocles), the Theban king of the original becomes a hard-driving candidate hoping to lead his country as he gathers with his family on election night to await the returns, while a dark fate gradually encircles him like a snake ready to spring.",
+  "isFullReview": false,
+  "textWordCount": 89,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete"
 }

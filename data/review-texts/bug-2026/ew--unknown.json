@@ -10,13 +10,13 @@
     "nyc-theatre"
   ],
   "wrongAttribution": true,
-  "assignedScore": 76,
+  "assignedScore": 75,
   "llmScore": {
-    "score": 76,
-    "confidence": "medium",
+    "score": 75,
+    "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the production's effectiveness in creating tension and surprises, using 'capitalizes' positively to describe how the show uses discomfort as a strength, though the excerpt is too brief for higher confidence. | GPT-4o: The review highlights a 'skin-crawling effect' and 'tension', suggesting a unique and possibly unsettling experience. While it may appeal to some, the emphasis on discomfort implies it might not be universally recommended. | Gemini: The review highlights the production's effectiveness in creating tension and surprises, suggesting a positive experience despite the discomfort. This indicates a recommendation, albeit with a caveat.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic describes the production as effectively executing its intended atmospheric goals with skilled tension-building, though the single excerpt and potentially intentional discomfort make the full recommendation unclear. | GPT-4o: The excerpt highlights the production's ability to maintain tension and surprise, suggesting a positive view of its execution. However, the 'skin-crawling effect' implies some level of discomfort, which may not appeal to all audiences, hence the recommendation with reservations. | Gemini: The excerpt describes the production positively, highlighting its ability to create tension and surprises, suggesting a recommendation, but the single excerpt and lack of explicit recommendation language keeps it in the lower end of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,25 +37,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:45:03.490Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:10:30.744Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 76,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 65,
+    "openaiScore": 75,
     "geminiScore": 75,
     "claudeBucket": "Positive",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 11,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

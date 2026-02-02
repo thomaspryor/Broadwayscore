@@ -7,84 +7,64 @@
   "publishDate": "December 8, 2025",
   "dtliExcerpt": "Nixon’s Tess is vulnerable enough for you to sense the fear in her eyes, but this is an actress with a steely core and, indeed, Nixon turns on a dime when her character realizes, as I think many of us have or will, that this brave new world is short on both guardrails and moral principles. Burstein is equally effective as husband Jon, his warm eyes dancing with empathy, although we are not always so sure about that, given his programming skills. “Am I supposed not to notice she is being nicer to that thing than me?” Tess snaps at one point, bringing up another salient A.I. issue. Squibb, 96, whose Broadway career stretches back to her role as Electra in the original 1960 production of “Gypsy,” is implacably excellent. For the record, she is the oldest actress ever to open a Broadway show.",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "Up",
   "bwwExcerpt": "Nixon’s Tess is vulnerable enough for you to sense the fear in her eyes, but this is an actress with a steely core and, indeed, Nixon turns on a dime when her character realizes, as I think many of us have or will, that this brave new world is short on both guardrails and moral principles. Burstein is equally effective as husband Jon, his warm eyes dancing with empathy, although we are not always so sure about that, given his programming skills.",
   "urlSource": "show-score",
   "urlUpdatedAt": "2026-01-25T14:20:46.978Z",
   "showScoreExcerpt": "\"Under the direction of Anne Kauffman, the acting is seamless. And this carefully calibrated 70-minute meditation on morality and memories exerts a gentle but insistent tug. But it doesn’t doesn’t dive deep enough to make a lasting impact.\"",
-  "textFetchedAt": "2026-02-01T14:13:09.653Z",
+  "textFetchedAt": "2026-02-02T00:21:12.021Z",
   "textFetchMethod": "playwright-stealth",
-  "archivePath": "data/archives/reviews/marjorie-prime-2025/nydailynews--chris-jones_2026-02-01.html",
+  "archivePath": "data/archives/reviews/marjorie-prime-2025/nydailynews--chris-jones_2026-02-02.html",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 68,
-    "confidence": "low",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 65,
-      "high": 72
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 62,
+      "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 78
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "this carefully calibrated 70-minute meditation on morality and memories exerts a gentle but insistent tug",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "But it doesn't doesn't dive deep enough to make a lasting impact",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "the acting is seamless",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review praises the performances and direction but ultimately finds the play intellectually engaging yet emotionally insufficient, suggesting qualified interest rather than clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review praises the seamless acting and acknowledges the show's gentle pull, but the clear verdict is that it falls short of making a lasting impact, placing it in mixed territory. | GPT-4o: The review praises the acting and direction as seamless and effective, but criticizes the production for not diving deep enough to make a lasting impact. This suggests a mixed recommendation, highlighting strengths but noting significant shortcomings. | Gemini: The review praises the acting and direction, calling it a 'carefully calibrated' meditation. However, it also notes that the play 'doesn't dive deep enough to make a lasting impact,' indicating a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
-    },
-    "humanReviewOverride": {
-      "previousConfidence": "high",
-      "reason": "Both thumbs Up but current score 68. Override to thumb-based 80.",
-      "appliedAt": "2026-02-01T17:37:53.691Z"
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:30:53.451Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2638,
-    "outputTokens": 329,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:34:01.320Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 68,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
+    "claudeScore": 62,
     "openaiScore": 65,
-    "scoreDelta": 0,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "bwwThumb": "Up",
   "sources": [

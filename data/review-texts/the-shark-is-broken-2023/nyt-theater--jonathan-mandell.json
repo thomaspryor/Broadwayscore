@@ -10,71 +10,56 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 61,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 62,
-    "confidence": "medium",
+    "score": 61,
+    "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 55,
+      "book": null,
       "music": null,
-      "performances": 78,
-      "direction": 72
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The production is not an embarrassment. All three actors give uncanny impersonations that sometimes shade into nuanced portraits.",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "The main question, though, is why: Why do a backstage comedy about 'Jaws' almost half a century after its release?",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "it's the reflected cinematic glory in this modest stage comedy that surely explains why, four years after its month-long run at the Edinburgh Fringe festival, it has opened tonight on Broadway",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic questions the show's fundamental purpose and criticizes its reliance on movie nostalgia, but acknowledges solid performances and production values without offering a clear recommendation either way.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The single excerpt describes the show as 'modest' and suggests it relies on 'reflected cinematic glory' rather than standalone merit, indicating lukewarm assessment. However, with only one truncated excerpt available, scoring conservatively within mixed range. | GPT-4o: The review suggests that while the play may have some appeal, it relies heavily on the audience's familiarity with its cinematic references, indicating a mixed reception. The lack of strong positive or negative language leads to a middle-ground classification. | Gemini: The review suggests the play is only appreciable if you know nothing about the subject matter, implying it's not great on its own. The phrase \"Beckett-light pop play\" suggests it has some merit, but it's not a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:26:49.518Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3301,
-    "outputTokens": 394,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:52:51.444Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 55,
-    "scoreDelta": 10,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "claudeScore": 60,
+    "openaiScore": 62,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 50,

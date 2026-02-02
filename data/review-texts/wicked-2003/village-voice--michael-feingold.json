@@ -7,18 +7,18 @@
   "publishDate": "November 4, 2003",
   "showScoreExcerpt": "\"Wicked, a hideous mess of a musical that wants to be many different things, and rarely succeeds in being any of them. All this from a creative team that, aesthetically speaking, seems barely able to walk and chew gum at the same time.\"",
   "originalScore": null,
-  "assignedScore": 15,
+  "assignedScore": 22,
   "source": "show-score",
   "needsFullText": true,
   "sourceMethod": "archive",
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 15,
+    "score": 22,
     "confidence": "high",
     "range": {
-      "low": 10,
-      "high": 25
+      "low": 17,
+      "high": 27
     },
     "bucket": "Pan",
     "thumb": "Down",
@@ -26,26 +26,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 15
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "hideous mess of a musical",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "rarely succeeds in being any of them",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "seems barely able to walk and chew gum at the same time",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "This is an unqualified pan with extremely harsh language calling the show a 'hideous mess' and attacking the creative team's basic competence.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Pan | Claude: The critic uses extremely harsh language ('hideous mess') and explicitly states the show 'rarely succeeds' at anything it attempts, with additional criticism of the creative team's basic competence. | GPT-4o: The critic describes the musical as a 'hideous mess' and criticizes the creative team harshly, indicating a strong negative sentiment. The language used is unambiguously critical, suggesting a strong recommendation to avoid the show. | Gemini: The review excerpt uses extremely negative language like \"hideous mess\" and indicates a complete failure of the musical, placing it firmly in the 'Pan' category.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,27 +38,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:38:31.050Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2358,
-    "outputTokens": 315,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:45:21.188Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 15,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 15,
-    "openaiScore": 10,
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "geminiScore": 20,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
     "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Pan"
   },
   "archivePath": "data/archives/reviews/wicked-2003/village-voice--michael-feingold_2026-02-01.html",
   "textFetchedAt": "2026-02-01T14:07:01.599Z",

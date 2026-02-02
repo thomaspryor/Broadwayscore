@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "Still, “Stereophonic,” directed by Daniel Aukin, is undeniably transportive, and it’s a pleasure to be immersed in this creatively robust decade for a while.",
@@ -20,67 +20,51 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 72,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
-      "music": 85,
-      "performances": 80,
-      "direction": 75
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "undeniably transportive, and it's a pleasure to be immersed in this creatively robust decade for a while",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The show does, too, for that matter. Adjmi's play is long — too long",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "while not itself perfect, has a keen understanding of what determined artists will do in pursuit of perfection",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic praises the music, performances, and immersive experience while acknowledging significant pacing issues and length problems, resulting in a qualified positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic acknowledges significant flaws (too long, indulgent scenes) but finds the production transportive and praises the performances, music, and immersive experience. | Gemini: The review acknowledges the play's length and some indulgent scenes, but ultimately finds it transportive and enjoyable, with praise for the performances and set design. This indicates a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:11:17.168Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3434,
-    "outputTokens": 358,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:06:20.935Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 79,

@@ -8,7 +8,7 @@
   "fullText": "This gorgeous musical about two obsolete household robots who fall in love is one of the most charming shows to open on Broadway in years.",
   "dtliExcerpt": "This gorgeous musical about two obsolete household robots who fall in love is one of the most charming shows to open on Broadway in years.",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "contentTier": "truncated",
   "wordCount": 25,
   "llmScore": {
-    "score": 89,
+    "score": 90,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 85,
+      "high": 95
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language calling it 'gorgeous' and 'one of the most charming shows to open on Broadway in years,' indicating strong enthusiasm and a clear must-see recommendation. | GPT-4o: The review uses strong positive language, describing the show as 'gorgeous' and 'one of the most charming shows to open on Broadway in years,' indicating a highly enthusiastic recommendation. | Gemini: The review uses very positive language, calling the musical 'gorgeous' and 'charming,' indicating a positive recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language calling it 'gorgeous' and 'one of the most charming shows to open on Broadway in years,' which indicates strong enthusiasm and a clear must-see recommendation. | GPT-4o: The review uses highly enthusiastic language, describing the show as 'gorgeous' and 'one of the most charming shows' in years, indicating a strong recommendation. | Gemini: The review uses very positive language, calling the show 'gorgeous' and 'charming,' and states it is one of the best to open on Broadway in years, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,16 +43,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T13:58:35.539Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:16:16.630Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 89,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 90,
-    "geminiScore": 80,
+    "openaiScore": 92,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",

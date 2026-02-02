@@ -10,71 +10,55 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Up",
   "originalScore": "B",
-  "assignedScore": 68,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 68,
-    "confidence": "high",
+    "score": 76,
+    "confidence": "medium",
     "range": {
-      "low": 65,
-      "high": 72
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 45,
-      "music": 78,
-      "performances": 82,
-      "direction": 55
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the show doesn't truly begin to sing until its second act",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Harmony is a powerful musical that, by its conclusion, makes one's heart break",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Grade: B–",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The B- grade and mixed critique of structural problems balanced against praise for the emotional impact and second act places this in the qualified recommendation range.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review gives a B- grade and concludes positively despite criticizing pacing and character development issues. The critic finds the show 'powerful' and memorable, indicating a recommendation with reservations. | Gemini: The critic gives the show a B and states that it is a powerful musical that will continue to sing out in the minds of audiences long after they leave the theater. However, they also note that the show doesn't truly begin to sing until its second act.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:04:10.027Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4041,
-    "outputTokens": 320,
-    "textSource": {
-      "type": "fullText",
-      "status": "truncated",
-      "field": "fullText",
-      "confidence": "low",
-      "reasoning": "Truncated text - may be missing final verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:09:13.992Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 68,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 80,
-    "scoreDelta": 0,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 73,
+    "openaiScore": null,
+    "geminiScore": 79,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "dtliExcerpt": "Despite its caveats, Harmony is a powerful musical that, by its conclusion, makes one's heart break for the Comedian Harmonists and all those who were lost to time because of hatred and cruelty, the echoes of which are still ringing out to this day. Its overall message of peace — \"despite our squabbles, we found harmony\" — feels more resonant than ever.",
   "sources": [

@@ -8,18 +8,18 @@
   "fullText": null,
   "showScoreExcerpt": "\"A triumph of theatrical imagination that reinvents the Disney animated classic for the stage...\"",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 88,
   "source": "show-score",
   "designation": null,
   "sourceMethod": "showscore",
   "scoreSource": "manual-override",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 92,
-    "confidence": "low",
+    "score": 88,
+    "confidence": "high",
     "range": {
-      "low": 85,
-      "high": 95
+      "low": 83,
+      "high": 93
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -27,52 +27,40 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 92
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "A triumph of theatrical imagination",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "reinvents the Disney animated classic for the stage",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The phrase 'triumph of theatrical imagination' is unqualified superlative language indicating rave-level enthusiasm, though the excerpt is too brief for high confidence.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The word 'triumph' is a strong positive indicator typical of rave reviews, though the single excerpt warning requires conservative scoring within the rave range. | GPT-4o: The phrase 'a triumph of theatrical imagination' suggests a highly positive assessment, indicating a strong recommendation to see the show. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Rave range. | Gemini: The phrase \"triumph of theatrical imagination\" strongly indicates a rave review. The reinvention of a classic also suggests a high level of creativity and success.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:18:54.055Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2319,
-    "outputTokens": 279,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:58:03.167Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 35,
-    "openaiScore": 95,
-    "scoreDelta": 60,
+    "claudeScore": 87,
+    "openaiScore": 90,
+    "geminiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 60 points (Claude: 35, OpenAI: 95)"
-    ]
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "scoreOverrideReason": "LLM confused by truncated text; headline clearly indicates sentiment",
   "scoreOverrideAt": "2026-01-26T17:35:57.826Z",

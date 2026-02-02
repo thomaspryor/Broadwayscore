@@ -9,73 +9,57 @@
   "dtliExcerpt": "“Liberation” is not an easy play. It’s demanding, ambitious, and intentionally messy. Some of its observations, such as the suggestion that marriage and motherhood can erase one’s sense of self, remain deeply relatable and unsettling. It offers no answers, only more debate. At a time when the idea of progress feels fragile, Wohl’s play insists that the search for freedom, whether personal or political, is never finished.",
   "bwwExcerpt": "In “Liberation,” Bess Wohl’s daring and deeply analytical new play, the act of exposure is both literal and intellectual. Wohl strips away nostalgia and ideology to examine how the 1970s women’s liberation movement reshaped lives, where it fell short, and what its legacy means today. She’s less interested in celebrating the past than in interrogating it—probing questions of identity, sacrifice, and progress with the precision of a social scientist and the empathy of a dramatist.",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 78,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-LIBERATION-Opens-On-Broadway-20251028",
   "dtliThumb": "Up",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 80
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Wohl's daring and deeply analytical new play",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "After earning acclaim Off-Broadway, 'Liberation' arrives on Broadway with its ambition and complexity intact",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "She's less interested in celebrating the past than in interrogating it—probing questions of identity, sacrifice, and progress with the precision of a social scientist and the empathy of a dramatist",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Strong praise for the playwright's analytical approach and the play's intellectual ambition, with clear appreciation for its transfer to Broadway maintaining quality, though this appears to be more of a preview/description than a full critical review.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic clearly appreciates the play's ambition and intelligence, praising the writing, performances, and direction throughout, while acknowledging it's challenging and offers no easy answers - this is a thoughtful recommendation. | Gemini: The review acknowledges the play's challenges but ultimately frames it as a worthwhile and thought-provoking experience, highlighting the strong ensemble and clear direction. The play is described as demanding and messy, indicating some reservations, but the overall tone is positive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:26:55.931Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2614,
-    "outputTokens": 372,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:54:45.766Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 70,
-    "scoreDelta": 2,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "archivePath": "data/archives/reviews/liberation-2025/amny--matt-windman_2026-01-27.html",
   "textFetchedAt": "2026-01-27T04:28:08.939Z",

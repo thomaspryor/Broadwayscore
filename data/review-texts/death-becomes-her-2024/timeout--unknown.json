@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 78,
+  "assignedScore": 77,
   "llmScore": {
-    "score": 78,
+    "score": 77,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The phrase 'make musical-comedy magic' and 'when performed this well, never gets old' clearly indicates a positive recommendation, though the excerpt is brief and may not capture the full review's nuance. | GPT-4o: The review highlights the exceptional performance of the actors, describing their work as 'musical-comedy magic' and suggesting that it is timeless when performed at such a high level. This strongly indicates a rave review. | Gemini: The review excerpt uses the phrase \"musical-comedy magic\" and praises the performance, indicating a positive recommendation. The lack of any negative qualifiers suggests a solid positive rather than a rave.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt praises the performers' complementary styles and declares they 'make musical-comedy magic,' indicating a positive recommendation. However, with only one curated excerpt available, I'm scoring conservatively within the positive range. | GPT-4o: The excerpt praises the performances as 'musical-comedy magic' and suggests that the quality of the performance is exceptional, indicating a strong recommendation. However, due to the single excerpt warning, the confidence is medium. | Gemini: The phrase \"musical-comedy magic\" suggests a positive experience, indicating a recommendation. Given that it is a single excerpt, I'm scoring it conservatively within the Positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:46:17.972Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:42:33.055Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 78,
+    "openaiScore": 88,
+    "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

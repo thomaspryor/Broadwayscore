@@ -10,18 +10,18 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 65,
-    "confidence": "low",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 75
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -29,21 +29,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 65
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "inclusive approach to casting",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "better reflects life as we know it",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Single positive comment about casting diversity suggests mild approval but provides no assessment of the show's overall quality or entertainment value.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic delivers substantial criticism of both the play itself and this production, but praises several performances (particularly Parsons) and Leon's directorial choices. The backhanded compliment that it 'doesn't sink Wilder's reputation' suggests a lukewarm assessment. | GPT-4o: The review is critical of the play 'Our Town' itself and provides a personal take on small towns, but acknowledges the director's contribution and some performances. The critic's tone is mixed, appreciating certain aspects while critiquing others, leading to a mixed recommendation. | Gemini: The review is mixed. While the critic appreciates some aspects of the production, particularly Jim Parsons' performance and Kenny Leon's direction, they also express strong reservations about the play itself and certain design choices. The overall tone suggests a qualified appreciation rather than a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -52,30 +41,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:50:01.749Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2319,
-    "outputTokens": 265,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:38:04.149Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 50,
-    "scoreDelta": 25,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 25 points (Claude: 25, OpenAI: 50)",
-      "Score (38 → Down) conflicts with aggregator thumbs (Flat)"
-    ]
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 65,
@@ -105,7 +92,7 @@
   "sourceMethod": "brightdata",
   "archiveOrgTimestamp": "20251116085638",
   "archiveOrgUrl": "http://web.archive.org/web/20251116085638/https://www.thewrap.com/our-town-broadway-review-jim-parsons-katie-holmes/",
-  "rescoreCompletedAt": "2026-02-01T15:50:01.749Z",
+  "rescoreCompletedAt": "2026-02-02T00:38:04.149Z",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "showScoreExcerpt": "\"Leon’s inclusive approach to casting means the play better reflects life as we know it.\"",
@@ -115,7 +102,6 @@
   "isFullReview": true,
   "textQuality": "full",
   "textWordCount": 1126,
-  "needsRescore": true,
   "truncationSignals": [],
   "textStatus": "complete"
 }

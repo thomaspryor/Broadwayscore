@@ -7,71 +7,56 @@
   "publishDate": "April 17, 2024",
   "fullText": "Let me start with a confession: I’ve never liked “The Wizard of Oz.” But give me a retelling with, say, a Black Dorothy and Black Oz, and I’m immediately clicking my heels.\n\nWhen “The Wiz” debuted on Broadway in 1975, it was a colorful exclamation of Blackness on the stage. That’s to say a Black score, by Charlie Smalls, including gospel and R&B; a Black cast; and Black audiences at the forefront.\n\nThen three years later the beloved Motown film adaptation, starring Diana Ross, Michael Jackson and Richard Pryor, pulled a Black Dorothy from her home, not in Kansas but in Harlem, and the New York City boroughs were cleverly transmogrified into the stylish, futuristic Oz.\n\nNow “The Wiz” returns to Broadway in a revival directed by Schele Williams and an updated book by Amber Ruffin, with the aim of creating a take “through the Blackest of Black lenses.” This new production, which opened at the Marquis Theater on Wednesday, showcases creative visuals and some standout performances, but stops short of bringing modern Blackness to Broadway.\n\nHere, Dorothy (Nichelle Lewis, in her Broadway debut) is a city girl who’s moved to Kansas to live with her Aunt Em (Melody A. Betts, who later doubles as the deliciously brass-throated witch Evillene). But Dorothy doesn’t feel at home and is being bullied by her classmates. A sudden meteorological anomaly flies Dorothy to Oz, where she seeks the counsel of the great and powerful Wiz (Wayne Brady) on how to get back home. Along the way she’s joined by a scarecrow (Avery Wilson) in need of a brain, a tinman (Phillip Johnson Richardson) wanting a heart and a lion (Kyle Ramar Freeman) desperate for some courage. (Sorry dog-lovers, there’s no Toto.)\n\nThere’s plenty of gold to be found along this yellow brick road. Deborah Cox’s Glinda, the good witch, in a shimmering gold gown, looks like a jewel and sounds like one, too, with her crystalline voice switching from jazzy scatting to a sparkling falsetto in “He’s the Wiz” and later offering a triumphant performance of “Believe in Yourself.”\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 64,
   "dtliThumb": "Meh",
   "source": "dtli",
   "llmScore": {
-    "score": 62,
-    "confidence": "low",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": 75,
-      "direction": 65
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "showcases creative visuals and some standout performances, but stops short of bringing modern Blackness to Broadway",
-        "sentiment": "neutral",
-        "strength": 4
-      },
-      {
-        "quote": "There's plenty of gold to be found along this yellow brick road",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "Deborah Cox's Glinda... looks like a jewel and sounds like one, too",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review praises specific performances and visual elements but suggests the production falls short of its ambitious goals, indicating a qualified recommendation with notable reservations.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges positive elements like creative visuals and standout performances, but the key verdict phrase indicates the production falls short of its ambitious goals, placing it in mixed territory. | GPT-4o: The review highlights some positive aspects like creative visuals and standout performances but ultimately suggests the production falls short of its ambitious goals. The mixed tone is clear, but the truncated text limits full context. | Gemini: The review highlights positive aspects like creative visuals and standout performances, but also expresses reservations about the production fully achieving its aim. The phrase \"stops short\" suggests a qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:31:31.057Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2857,
-    "outputTokens": 341,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:44:19.453Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": null,
-    "scoreDelta": 0,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "showScoreExcerpt": "“ 'The Wiz' is a pleasant, serviceable time at the theater\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-wiz-broadway",

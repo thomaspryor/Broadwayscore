@@ -9,37 +9,26 @@
   "bwwExcerpt": "The Ghanaian-American playwright (School Girls; Or, The African Mean Girls Play) and director Whitney White (Our Dear Dead Drug Lord) have teamed up with executive producers Taraji P. Henson and LaChanze to paint a brilliant, emotive portrait of a seemingly simple day in the life of the sedulous West African women working at its titular Central Harlem hair braiding shop. As their day progresses, theatergoers will uncover a powerful tale about joy, dreams, societal and familial expectations, comm",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "originalScore": "A",
-  "assignedScore": 45,
+  "assignedScore": 92,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 45,
-    "confidence": "low",
+    "score": 92,
+    "confidence": "high",
     "range": {
-      "low": 35,
-      "high": 60
+      "low": 87,
+      "high": 97
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Rave",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 75
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "paint a brilliant, emotive portrait",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "powerful tale about joy, dreams, societal and familial expectations",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "This excerpt shows positive sentiment toward the creative team and thematic content but appears to cut off mid-sentence, providing insufficient information for a confident recommendation assessment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic's A rating combined with highly positive language like 'brilliant, emotive portrait' and 'powerful tale' clearly indicates a rave review, even with truncated text. | GPT-4o: The critic's original rating of 'A' and the use of phrases like 'brilliant, emotive portrait' suggest a highly enthusiastic recommendation, aligning with a 'Rave' classification. | Gemini: The review uses highly positive language like \"brilliant, emotive portrait\" and the critic gave the show an 'A' rating, indicating a rave review. The aggregator context also suggests a positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,27 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:20:44.760Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2417,
-    "outputTokens": 279,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:51:48.248Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 45,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 85,
-    "scoreDelta": 0,
+    "claudeScore": 90,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "“There are no easy answers to the complex problems that ‘Jaja's African Hair Braiding’ presents, and certainly none that can be solved within the span of a single day. Instead, the play encourages viewers to inspect the way the current world works and, hopefully, leave its salon with a greater sense of compassion and understanding for those around them tirelessly working to make ends meet.”",

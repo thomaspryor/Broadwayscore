@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"Chicago is as good now as it's ever been--a heartening experience, a life-affirming dedication to the magic and art of theatre, and something that absolutely should not be missed. Though all shows must eventually close, the glory and genius of Chicago should be celebrated while it's here, and with any luck, it will still be gracing and energizing Broadway for many years to come.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/chicago",
   "originalScore": null,
-  "assignedScore": 90,
+  "assignedScore": 94,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/chicago-1996/talkin-broadway--matthew-murray_2026-01-27.html",
@@ -37,60 +37,51 @@
   "fetchTier": 3,
   "sourceMethod": "brightdata",
   "llmScore": {
-    "score": 90,
+    "score": 94,
     "confidence": "high",
     "range": {
-      "low": 83,
-      "high": 97
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 87,
-      "performances": 90,
-      "direction": 88
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "something that absolutely should not be missed",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the production - much like its corps of superb actors, singers, and dancers - is in terrific shape",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Chicago is as good now as it's ever been. It remains a heartening experience, a life-affirming dedication to the magic and art of theatre",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review contains explicit strong recommendation language ('absolutely should not be missed') with consistent praise for performances, production values, and overall experience, despite minor criticisms of individual performers. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and overall production, indicating it is a must-see experience.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic uses explicitly enthusiastic language calling it 'heartening', 'life-affirming', and states it 'absolutely should not be missed' while celebrating its 'glory and genius'. | Gemini: The review uses extremely positive language like \"heartening experience,\" \"life-affirming dedication,\" and \"should not be missed,\" indicating a rave review.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:45:07.945Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:56:43.474Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 90,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 92,
-    "scoreDelta": 4,
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Rave"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 89,

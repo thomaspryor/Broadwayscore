@@ -10,14 +10,14 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 78,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 78,
-    "confidence": "low",
+    "score": 80,
+    "confidence": "high",
     "range": {
-      "low": 70,
+      "low": 75,
       "high": 85
     },
     "bucket": "Positive",
@@ -28,55 +28,37 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "★★★★☆",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "considerable acclaim",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "hit every conceivable bump in the road",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The 4/5 star rating indicates a clear positive recommendation despite the truncated review text that focuses more on the show's development history than critical assessment.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic's 4/5 star rating clearly indicates a positive recommendation, supported by the mention of 'considerable acclaim' for the production. | Gemini: The review gives the show 4 out of 5 stars, indicating a positive recommendation. The phrase \"considerable acclaim\" further supports this classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:04:40.858Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2481,
-    "outputTokens": 304,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:10:13.543Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 50,
+    "claudeScore": 80,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 0,
-    "thumbsMatch": false,
-    "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (50 → Flat) conflicts with aggregator thumbs (Up)"
-    ]
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 50,

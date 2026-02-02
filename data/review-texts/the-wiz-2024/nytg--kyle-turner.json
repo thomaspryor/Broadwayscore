@@ -9,71 +9,56 @@
   "showScoreExcerpt": "\"musical revival celebrates a history of Black creativity and culture\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-wiz-broadway",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 76,
   "source": "show-score",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 72,
-    "confidence": "medium",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 78,
-      "performances": 75,
-      "direction": 65
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "There's a lot to enjoy in the revival of The Wiz",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "The maximalist approach that the show clearly aspires to is not quite executed with enough actual stagecraft",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "In these sequences of ecstasy, it feels like these forms of artistic expression are coming home",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review finds significant cultural value and praises the music/performances, but identifies clear execution problems with the production design and staging that prevent full recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic finds compelling elements in the cast, cultural significance, and musical styles, but notes the production doesn't quite achieve its maximalist aspirations and has some staging issues. The positive elements outweigh the criticisms. | GPT-4o: The review highlights several positive aspects such as the costumes, ensemble, and choreography, while noting some reservations about the stagecraft and video design. The overall tone is positive, recommending the show despite some mixed opinions on new elements. | Gemini: The review highlights several positive aspects of the production, including the costumes, ensemble, and choreography, while also noting some shortcomings in the stagecraft and video design. The overall tone suggests a positive experience with some reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:31:25.922Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3034,
-    "outputTokens": 343,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:44:16.610Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 70,
-    "scoreDelta": 2,
+    "claudeScore": 73,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "While this production, directed by Schele Williams, could have been more spectacularly maximalist (not relying on a video background), its gentle updates to the music as an indication of The Wiz’s legacy nonetheless offer an entertaining time at the theatre.",
   "sources": [

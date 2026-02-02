@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "Even though “Jaja’s African Hair Braiding” takes place entirely in the hair salon, as does “Steel Magnolias,” the play is a series of short skits, as is “The Women”; and like that Boothe Luce play, many of those scenes lack a good button. They tend to dribble away dramatically rather than end with a comic bang.",
@@ -19,67 +19,51 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 65,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 62,
-      "high": 68
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 58,
+      "book": null,
       "music": null,
-      "performances": 72,
-      "direction": 60
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "its finest feature is how the playwright weaves the current immigration crisis into her narrative with considerable humor before the story turns extremely dark",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Bioh has written them all as cartoons and Whitney White's direction delivers them in primary sitcom colors",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "many of those scenes lack a good button. They tend to dribble away dramatically rather than end with a comic bang",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review finds merit in the immigration themes and some performances but criticizes structural problems, cartoon-like characters, and weak scene endings, landing in qualified mixed territory.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The review praises specific performances and the immigration themes but criticizes weak direction of supporting roles, borrowed plot elements, and structural issues with scene endings. | Gemini: The review highlights both strengths and weaknesses. While praising the developed characters and the integration of the immigration crisis, it criticizes the overdrawn caricatures, predictable plot points, and weak scene endings. This balance of positive and negative aspects suggests a mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:21:35.953Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3425,
-    "outputTokens": 362,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:53:18.665Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 45,
-    "scoreDelta": 3,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 44,

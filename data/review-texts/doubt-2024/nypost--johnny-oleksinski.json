@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "Still, you could do worse than attend a merely adequate production of one of the best plays of the millennium.",
@@ -34,60 +34,52 @@
   "archiveOrgTimestamp": "20240410100011",
   "archiveOrgUrl": "http://web.archive.org/web/20240410100011/https://nypost.com/2024/03/07/entertainment/liev-schreiber-doubt-broadway-review-nun-play-scorches-even-in-a-so-so-revival/?utm_campaign=nypost&utm_source=twitter&utm_medium=social",
   "llmScore": {
-    "score": 69,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 60.5,
-      "high": 77.5
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 88,
+      "book": null,
       "music": null,
-      "performances": 68,
-      "direction": 58
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "you could do worse than attend a merely adequate production of one of the best plays of the millennium",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the pair of actors just do not click",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "the words are never less than riveting",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic praises the script as immaculate and one of the best plays of the millennium, but finds significant flaws in the performances' chemistry and direction, ultimately calling it 'merely adequate' while still recommending attendance. | GPT-4o-mini: The review expresses admiration for the script while highlighting significant issues with the production and performances, leading to a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly recommends seeing the show despite acknowledging significant production issues, emphasizing that Shanley's script elevates even a 'so-so' production and calling it 'one of the best plays of the millennium.' | GPT-4o: The review acknowledges the production's shortcomings, particularly in the chemistry between the lead actors and the pacing, but ultimately recommends seeing it due to the strength of the play itself. The critic finds the script riveting and considers the play a classic, which outweighs the production's flaws. | Gemini: The review acknowledges flaws in the production, particularly the lack of chemistry between the leads and the direction, but ultimately concludes that seeing even a 'merely adequate' production of such a strong play is worthwhile.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:13:43.275Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:29:30.166Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 69,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 65,
-    "scoreDelta": 7,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 74,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "complete",
   "wordCount": 606

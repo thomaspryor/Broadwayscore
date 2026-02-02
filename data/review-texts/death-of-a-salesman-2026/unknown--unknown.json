@@ -5,8 +5,8 @@
   "criticName": "Unknown",
   "url": "https://www.newyorktheatreguide.com/reviews/death-of-a-salesman-broadway-review-wendell-pierce-sharon-d-clarke",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "Few American plays are revisited on Broadway as often as Death of a Salesman. The play has received six productions in under 75 years, and this latest revival at the Hudson Theatre, brought over from an acclaimed London run, reminds us why. There is always new depth to be mined from Arthur Miller's story of Willy Loman, a man who all but worshipped the American Dream of prosperity through hard work, only to realize he worked his life away for naught. Casting Willy and his family as Black deepens the show, pointing to how opportunities for upward growth are not equally afforded to everyone, especially minorities. Performing this play, which was written and is set in the mid-20th century, today adds yet another layer of tragedy: Willy is only 63, a much more advanced age decades ago. Lines like \"But you're 60 years old; they can't expect you to keep traveling every week\" earn dry laughs now that 60 is barely the retirement age, but it's more arresting to see such inescapable mental decline happen to someone so young. Furthermore, this Death of a Salesman brought to my mind Long Day's Journey into Night, Eugene O'Neill's masterwork about a family undone by addiction. (Perhaps it's no wonder many past Salesman stars, like Philip Seymour Hoffman and Brian Dennehy, have performed in Long Day's Journey, too.) Death of a Salesman is often described as a detailed look into one man's devolving mind (only the salesman is in the title, after all), but this production turns Miller's play into more of an ensemble work about the loved ones affected by his devolution. That is not to minimize Wendell Pierce in any way, whose Willy still commands the stage with bluster and bombast. That is, on the surface: Multiple journeys deep into Willy's psyche, where he loses himself in falsified, idyllic memories and pushes away dark ones the second they creep up, reveal his swagger to be a defense mechanism from the truth. Eventually, that defense gets tiring, and he can't fight for, or against, himself anymore. Pierce is a larger man, but he figuratively shrinks so much as the play goes on, one would swear the transformation was physical. When his wife Linda says of him, \"A small man can be just as exhausted as a great man,\" it's still believable as an assessment of his standing in the world. Equally compelling are Khris Davis and McKinley Belcher III as Willy's sons Biff and Happy, each a warped mirror of their father. Biff, the elder son, shares his father's inability to truly succeed, in part because Willy raised him to pursue business when his passion lie in farming, and in part due to a grudge Biff holds against his father. He also inherited his father's temper, suggesting he could someday push his family away like Willy did. Happy, conversely, inherited his father's interest in business, if not his work ethic, and his final moment implies he'll follow his father's glorification of the American Dream. Both paths are tragic in their own right. But ultimately, it is Linda who bookends Salesman as the first and last character we see alone on stage. Sharon D Clarke, who won an Olivier Award for performing the role in London, plays the oft-demure character with ferocity and desperation. This is not a submissive wife coddling her husband and his delusions; this is a woman demanding respect and compassion for an unstable man. Even more crucially, this is also a woman at her breaking point. She knows of her husband's suicidal tendencies — a crushing load to bear — and, though she doesn't say so outright, appears to feel responsible for keeping him off the ledge. Of course, Linda's efforts are just as doomed as Willy's pursuits, and Clarke's layered performance recasts Death of a Salesman as a dual tragedy, with Linda as a hidden crux of the show to whom attention must truly be paid. As she sings an ending lament for her husband (and bless director Miranda Cromwell for giving Clarke not one, not two, but three opportunities to sing), we're reminded that the remaining Lomans' life still has to go on in the real world, now that all delusions are gone. Even after nearly three and a half hours of Death of a Salesman, I'd gladly stay longer to watch that story continue. Death of a Salesman is at the Hudson Theatre through January 15. Get Death of a Salesman tickets on New York Theatre Guide. Photo credit: Wendell Pierce and Sharon D Clarke in Death of a Salesman. (Photo by Joan Marcus) Originally published on Oct 9, 202221:00",
+  "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": 89,
@@ -35,7 +35,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic expresses such strong engagement that they would gladly extend an already very long theatrical experience, indicating exceptional enthusiasm and a clear must-see recommendation. | GPT-4o: The quote indicates a strong enthusiasm for the production, suggesting it is highly engaging and worth watching beyond its lengthy runtime. | Gemini: The critic's statement that they would gladly stay longer indicates a strong positive recommendation, suggesting they were captivated by the production despite its length.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic expresses willingness to watch even more of a 3.5-hour show, indicating exceptional engagement and enthusiasm that clearly signals a rave recommendation. | GPT-4o: The quote expresses a strong desire to continue watching the show beyond its lengthy runtime, indicating a highly positive experience. However, due to the single excerpt warning, the confidence is medium. | Gemini: The critic states they would gladly stay longer to watch the story continue, indicating a positive experience, but the length of the show suggests a reservation. Given that this is a single excerpt, the score is placed in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,20 +45,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:30:17.931Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T01:00:18.867Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 89,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 90,
-    "geminiScore": 80,
+    "geminiScore": 75,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -67,5 +68,27 @@
     "modelAgreement": "2/3 models agree: Rave"
   },
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 89,
+  "textWordCount": 774,
+  "archivePath": "data/archives/reviews/death-of-a-salesman-2026/unknown--unknown_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:13:28.045Z",
+  "designation": "Recommended",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "partial",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "partial",
+  "sourceMethod": "playwright"
 }

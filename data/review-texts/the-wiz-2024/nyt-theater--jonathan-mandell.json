@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 41,
   "source": "bww-roundup",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/the-wiz-2024/nyt-theater--jonathan-mandell_2026-01-29.html",
@@ -29,67 +29,52 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 38,
-    "confidence": "high",
+    "score": 41,
+    "confidence": "medium",
     "range": {
-      "low": 32,
-      "high": 45
+      "low": 36,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": null,
-      "music": 75,
+      "music": null,
       "performances": null,
-      "direction": 25
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "goes too far",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "there is something more essential that's missing from this reworked Wiz",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "there's little sense of ease",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic fundamentally objects to core creative choices that remove iconic elements and finds the production lacking in essential theatrical ease, despite acknowledging the original's musical strengths.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic systematically lists multiple problems with this revival, describing performances as artificial and desperate, though acknowledges the cast's technical abilities. The text appears truncated but the established negative tone is clear. | GPT-4o: The review highlights several missing iconic elements and describes the performances as feeling artificial and desperate, suggesting a lack of enjoyment and a recommendation to skip this production. | Gemini: The review points out several issues with the production, including the lack of iconic elements and a sense of ease. However, it also acknowledges the cast's talent in singing and dancing, but criticizes the overzealousness of the performances. This suggests a mixed experience, not strongly recommending or discouraging.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:31:20.460Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2586,
-    "outputTokens": 317,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:44:09.061Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 38,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 48,
-    "openaiScore": 55,
-    "scoreDelta": 7,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "dateSource": "extracted-from-url",
   "contentTier": "complete",

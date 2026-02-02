@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 58,
+  "assignedScore": 61,
   "llmScore": {
-    "score": 58,
-    "confidence": "high",
+    "score": 61,
+    "confidence": "medium",
     "range": {
-      "low": 53,
-      "high": 63
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review suggests the show feels dated and tired, with the critic questioning whether it deserves its enthusiastic branding, indicating a lukewarm assessment rather than clear recommendation or condemnation. | GPT-4o: The review suggests a sense of fatigue with the production, indicating it may not be fresh or exciting. However, the mention of ABBA songs hints at some enjoyment for fans, leading to a mixed verdict. | Gemini: The review excerpt suggests the show is somewhat dated but acknowledges the presence of ABBA songs, indicating a mixed assessment. The tone is not overtly negative, but not strongly positive either.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic uses dismissive language calling the show dated ('long in the tooth') and suggests the exclamation point should be replaced with uncertainty ('question mark') or resignation ('ellipsis'). The final line reads as sarcastic dismissal rather than praise. | GPT-4o: The review suggests that the show feels dated and questions its current relevance, indicating a mixed reception. The tone is not overtly negative, but it lacks enthusiasm, suggesting a middle-ground assessment. | Gemini: The excerpt suggests the reviewer finds the show somewhat dated and repetitive, but acknowledges the presence of ABBA songs, implying some entertainment value. The overall tone is neither strongly positive nor negative.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:49:17.108Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:28:50.307Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 58,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 58,
-    "geminiScore": 58,
-    "claudeBucket": "Mixed",
+    "claudeScore": 42,
+    "openaiScore": 62,
+    "geminiScore": 60,
+    "claudeBucket": "Negative",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

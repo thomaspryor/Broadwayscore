@@ -32,40 +32,39 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "sugar rush of pure theatrical joy",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "occasionally threatens to give you diabetes from its relentless sweetness",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review expresses genuine enthusiasm with 'pure theatrical joy' but includes a notable caveat about excessive sweetness, indicating a positive recommendation with reservations.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic describes the show as 'pure theatrical joy' which is clearly positive, but the diabetes metaphor suggests the sweetness can be overwhelming, indicating some reservations about the execution. | GPT-4o: The review describes the show as a 'sugar rush of pure theatrical joy,' indicating a highly positive experience despite minor reservations about its sweetness. | Gemini: The review describes the show as a \"sugar rush of pure theatrical joy,\" indicating a positive experience, but the caveat about \"relentless sweetness\" suggests a reservation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:07:26.571Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2329,
-    "outputTokens": 278,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:32:47.116Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

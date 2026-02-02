@@ -5,11 +5,11 @@
   "criticName": "Unknown",
   "url": "https://variety.com/2025/legit/reviews/the-queen-of-versailles-broadway-review-kristin-chenoweth-1236571652/",
   "publishDate": null,
-  "fullText": null,
+  "fullText": "In 2012, award-winning documentarian Lauren Greenfield’s film, “The Queen of Versailles,” became a Sundance darling. The documentary followed Jackie and David Siegel, billionaires and owners of Westgate Resorts, as they began building a replica of Versailles in Orlando, Florida. The property was touted as the largest private home in the United States. However, amid their massive build, the 2008 stock market crash drastically altered the couple’s financial status. Now, with a script written by Olivier Award nominee Lindsey Ferrentino, songs by Academy Award–winning songwriter Stephen Schwartz and directed by Tony Award winner Michael Arden, Kristin Chenoweth is stepping into Jackie Siegel’s sparkling pink stilettos and bringing her story to Broadway. Unfortunately, Greenfield’s dazzling assessment of greed, consumption and the American dream doesn’t translate on the stage.",
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,33 +21,22 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 65,
-    "confidence": "low",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 75
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Taking a documentary and translating it on the Broadway stage was always going to be an ambitious endeavor",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "when creatives attempt such feats, they should be celebrated",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "This excerpt shows appreciation for the ambitious concept but provides no evaluation of the actual execution or recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt suggests appreciation for the creative ambition and indicates the show should be celebrated, but with only one fragment available, I'm scoring conservatively in the lower positive range due to limited context. | GPT-4o: The excerpt suggests a positive view of the production's ambition and creativity, indicating a recommendation. However, due to the lack of a full review and potential cherry-picking, the score is conservatively placed in the middle of the Positive range. | Gemini: The review excerpt praises the ambition of the production, suggesting a positive sentiment, but the lack of further details warrants a score in the lower end of the 'Positive' bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,19 +45,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:12:50.349Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2340,
-    "outputTokens": 278,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:30:15.530Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

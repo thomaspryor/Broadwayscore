@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "But the secret sauce here is Amber Ruffin, who’s credited with “additional material for this production.” No way did William F. Brown’s book for the original 1974 Broadway production of “The Wiz” offer this many inspired one-liners.",
@@ -39,67 +39,52 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 85,
-    "confidence": "low",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 90,
-      "direction": 85
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "carry the show magnificently",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the funniest trio of misfits ever to take us on this trip to Oz",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "a friendly competition not to be missed",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Strong praise for performances with superlatives like 'magnificently' and 'funniest ever' plus explicit recommendation 'not to be missed' signals clear positive recommendation despite incomplete excerpt.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt shows clear praise for performances and direction with explicit 'not to be missed' language, though truncation limits full assessment of the verdict. | GPT-4o: The review highlights the exceptional performances of the cast and the effective direction, indicating a strong positive recommendation. The phrase 'not to be missed' suggests a must-see production. | Gemini: The review excerpt highlights the strong performances and direction, suggesting a positive overall experience. The phrase \"not to be missed\" indicates a recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:32:01.162Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2427,
-    "outputTokens": 329,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:45:09.365Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 80,
-    "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 78,
+    "openaiScore": 88,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "showScoreExcerpt": "\"The Wiz is all about feeling...in complex times, its simple message rings loud and clear\"",
   "contentTier": "complete",

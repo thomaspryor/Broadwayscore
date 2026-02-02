@@ -10,71 +10,55 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 52,
-    "confidence": "medium",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 45,
-      "high": 58
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 35,
+      "book": null,
       "music": null,
-      "performances": 68,
-      "direction": 60
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Nixon and Shaw's script fails to dig much beyond intel widely available through previously produced documentaries",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "the action often feels as flat as the boat's keel",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Shaw naturally embodies his father's swagger and struggle with the bottle",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review praises the performances and production design but criticizes the script for being shallow and the action for being flat, resulting in a mixed recommendation that leans slightly negative.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The review acknowledges strong performances and powerful moments (especially Shaw's Indianapolis monologue) but criticizes the script for being shallow and the overall action for feeling flat. The truncated text prevents seeing the final verdict, but the tone suggests qualified appreciation rather than clear recommendation. | Gemini: The review highlights both positive and negative aspects of the play. While praising the performances and scenic design, it criticizes the script for not digging deep enough and the action feeling flat. Given the truncated nature of the text, it's difficult to ascertain the final verdict, but the overall tone suggests a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:27:18.188Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4245,
-    "outputTokens": 337,
-    "textSource": {
-      "type": "fullText",
-      "status": "truncated",
-      "field": "fullText",
-      "confidence": "low",
-      "reasoning": "Truncated text - may be missing final verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:53:27.090Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 52,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 60,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 0,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 60,

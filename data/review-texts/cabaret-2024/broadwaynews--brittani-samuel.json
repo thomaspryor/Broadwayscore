@@ -7,18 +7,18 @@
   "publishDate": "April 22, 2024",
   "dtliExcerpt": "The lush bacchanal of the theater’s dressing seeps into every aspect of this production, from Julia Cheng’s sensual, prurient choreography to Eddie Redmayne’s eerie performance as the Emcee.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 77,
   "source": "dtli",
   "dtliThumb": "Up",
   "archivePath": "data/archives/reviews/cabaret-2024/broadwaynews--brittani-samuel_2026-02-01.html",
   "textFetchedAt": "2026-02-01T23:46:57.202Z",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 76,
+    "score": 77,
     "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review emphasizes the impressive transformation of the theater and production design with phrases like 'visually arresting' and 'lush bacchanal,' but lacks explicit recommendation language and appears to be truncated before giving a full verdict. | GPT-4o: The review uses highly positive language to describe the production, emphasizing its visual impact and the transformation of the theater space, suggesting a strong recommendation. | Gemini: The review describes the production as \"visually arresting\" and the immersive experience as a \"lush bacchanal,\" indicating a positive overall impression and recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review uses consistently positive language like 'visually arresting,' 'adorable,' 'lush bacchanal,' and 'sensual' to describe the production elements, with particular praise for the innovative theater design and atmospheric immersion. | GPT-4o: The review uses highly positive language to describe the production, emphasizing the 'visually arresting' nature and the transformation of the theater into a 'velvety, swank club,' suggesting a must-see experience. | Gemini: The review describes the production as \"visually arresting\" and praises the immersive experience, indicating a positive, though not overwhelmingly enthusiastic, recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,14 +39,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T14:53:32.073Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:32:37.073Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 76,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
+    "claudeScore": 78,
     "openaiScore": 90,
     "geminiScore": 75,
     "claudeBucket": "Positive",

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 52,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "But as groundbreaking as “How To Dance” is as an idea, its execution across the board does not match its admirable intentions.",
@@ -20,65 +20,51 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 25,
+    "score": 52,
     "confidence": "low",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 47,
+      "high": 57
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 15,
-      "music": 15,
+      "book": null,
+      "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "off-putting",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "can only manage two things with the subtlety of semi-truck: tears and uplift",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Complexity, take a hike",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic harshly criticizes the musical's book and score as heavy-handed and lacking subtlety, using vivid negative metaphors like 'subtlety of semi-truck' and dismissive language throughout.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Negative, gemini=Mixed | Claude: The critic explicitly calls it a 'missed opportunity' and criticizes the execution as not matching the admirable intentions, with 'shoddy' plot and dialogue despite praising the casting choice. | Gemini: The review praises the casting and the show's intentions but criticizes the plot, dialogue, and score, ultimately concluding that the execution falls short. This indicates a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
-    },
-    "humanReviewOverride": {
-      "previousConfidence": "medium",
-      "reason": "LLM Pan (25) too harsh for Meh review. Override to thumb-based 60.",
-      "appliedAt": "2026-02-01T17:37:53.676Z"
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:14:31.936Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:54:38.508Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 38,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
+    "claudeScore": 42,
     "openaiScore": null,
-    "scoreDelta": 0,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 25,

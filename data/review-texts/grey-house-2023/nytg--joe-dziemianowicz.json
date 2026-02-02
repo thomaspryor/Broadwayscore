@@ -17,59 +17,51 @@
   "showScoreUrl": "https://www.show-score.com/broadway-shows/grey-house-broadway",
   "llmScore": {
     "score": 64,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
-      "low": 57.5,
-      "high": 70.5
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 58,
+      "book": null,
       "music": null,
-      "performances": 75,
-      "direction": 70
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Grey House has curb appeal. Actress Laurie Metcalf and director Joe Mantello each lend Tony Award-winning luster",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "One wishes the series of scenes built to a deeper, more full-scale sense of dread",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "'Grey House' is entertaining, albeit middle of the road",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The review acknowledges strong appeal from Metcalf and Mantello plus the rare haunted house genre, but criticizes the script for not building sufficient dread and explicitly calls it 'middle of the road' entertainment. | GPT-4o-mini: The review acknowledges some strengths in performances and direction but ultimately describes the show as only moderately entertaining with a lack of depth in the story.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic finds the production entertaining and praises the ensemble and technical elements, but clearly states it 'falls short of fully chilling' and is 'middle of the road,' indicating neither strong recommendation nor discouragement. | GPT-4o: The review acknowledges the show's atmospheric production and fine ensemble but criticizes its lack of intense shivers and psychological chills, leading to a mixed verdict. | Gemini: The review acknowledges the show's strengths (cast, direction, design) and entertainment value, but ultimately finds it lacking in genuine scares and depth, leading to a positive but reserved recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:18:22.371Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:25:03.621Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 64,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "scoreDelta": 3,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "dtliExcerpt": "Although the 110-minute production oozes mystery and a ghostly vibe, it doesn’t deliver intense shivers. It’s too vague to stir psychological chills or, for that matter, good old-fashioned goosebumps. It’s as much a head-scratcher as it is a hair-raiser.",
   "sources": [

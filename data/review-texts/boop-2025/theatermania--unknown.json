@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 80,
+  "assignedScore": 78,
   "llmScore": {
-    "score": 80,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses consistently positive language praising multiple elements (score, choreography, cast, plot) and explicitly calls it 'one of the feel-good musicals of the year,' indicating a clear recommendation. | GPT-4o: The review highlights several positive aspects such as a 'zippy score', 'terrific tap numbers', and 'energetic performances', culminating in the strong endorsement that it is 'one of the feel-good musicals of the year'. | Gemini: The review uses positive language like \"zippy score,\" \"terrific tap numbers,\" and \"energetic performances,\" concluding that it's a \"feel-good musical,\" indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review highlights multiple strong positives (zippy score, terrific choreography, energetic performances, top-notch cast) and explicitly calls it 'one of the feel-good musicals of the year,' indicating a clear recommendation despite being a single excerpt. | GPT-4o: The review highlights positive aspects like the 'zippy score,' 'terrific tap numbers,' and 'energetic performances,' suggesting a positive experience. However, the lack of a full review and the single excerpt warning suggest a conservative score within the Positive range. | Gemini: The review uses positive language such as \"zippy score\", \"terrific tap numbers\", \"energetic performances\", and \"feel-good musicals\", indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:44:38.200Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:17:58.088Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 80,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 82,
-    "geminiScore": 80,
+    "openaiScore": 79,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

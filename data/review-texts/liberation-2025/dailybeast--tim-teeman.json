@@ -9,73 +9,57 @@
   "dtliExcerpt": "The play speaks to itself, it speaks to us, and it encourages a dialogue straight back at it. In this sense, it is its own highly effective consciousness-raising exercise, looking at us in our present day where the principles of equality and progress are becoming derided and imperiled. What the women thought they were confronting and vanquishing in the early 1970s remains all too prescient.",
   "bwwExcerpt": "The play speaks to itself, it speaks to us, and it encourages a dialogue straight back at it. In this sense, it is its own highly effective consciousness-raising exercise, looking at us in our present day where the principles of equality and progress are becoming derided and imperiled. What the women thought they were confronting and vanquishing in the early 1970s remains all too prescient.",
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 81,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-LIBERATION-Opens-On-Broadway-20251028",
   "dtliThumb": "Up",
   "sourceMethod": "brightdata",
   "llmScore": {
-    "score": 83,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 80,
+      "low": 76,
       "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 82,
-      "direction": 84
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "This excellent, affecting play",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "fizzingly vibrant ideas' play seeks and elicits that level of interaction from the audience",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "we feel—just as we did when Liberation played Off-Broadway—absolutely 'back there' with these women",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic uses strong positive language ('excellent, affecting play', 'fizzingly vibrant') and praises multiple elements including the writing, performances, and direction with no significant reservations.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review is overwhelmingly positive, calling it 'excellent, affecting' and 'fizzingly vibrant' with praise for performances, direction, and audience engagement. Despite some complex thematic discussion, the critic clearly recommends the production. | Gemini: The review uses positive language like \"excellent\" and \"affecting\" and describes the play as \"fizzingly vibrant.\" While it provides context and describes the play's themes, the overall tone is clearly recommending the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:27:08.451Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3804,
-    "outputTokens": 346,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:55:14.495Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 83,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "archivePath": "data/archives/reviews/liberation-2025/daily-beast--tim-teeman_2026-01-27.html",
   "textFetchedAt": "2026-01-27T04:28:46.184Z",

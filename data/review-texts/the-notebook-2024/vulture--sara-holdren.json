@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"The Notebookâs songs at times barely make lyrical sense.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-notebook-broadway",
   "originalScore": null,
-  "assignedScore": 32,
+  "assignedScore": 54,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/the-notebook-2024/new-york-magazine-vulture--sara-holdren_2026-01-27.html",
@@ -30,67 +30,51 @@
   "archiveOrgTimestamp": "20241216051536",
   "archiveOrgUrl": "http://web.archive.org/web/20241216051536/https://www.vulture.com/article/theater-reviews-the-notebook-the-effect.html",
   "llmScore": {
-    "score": 32,
-    "confidence": "high",
+    "score": 54,
+    "confidence": "low",
     "range": {
-      "low": 28,
-      "high": 38
+      "low": 49,
+      "high": 59
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 25,
-      "music": 20,
-      "performances": 45,
-      "direction": 30
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the show disappears from memory almost moment to moment",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "There's a uniquely damp kind of fizzle when a show like The Notebook neither forges into compelling new territory nor even manages to deliver nostalgic satisfaction",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "I wouldn't advise anyone to bring a bucket",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic delivers a comprehensive pan of The Notebook, criticizing nearly every element from the 'beige slate of songs' to the 'prosaic direction' and 'sterile aesthetic,' with dismissive language throughout and no clear recommendation to see it.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Negative | Claude: The review heavily criticizes The Notebook as generic, forgettable, and disappointing, but then enthusiastically recommends The Effect as a superior alternative, creating a mixed overall assessment with clear guidance toward one show over the other. | Gemini: The review is overwhelmingly negative, criticizing the direction, music, lyrics, set design, and changes made to the story. The critic uses phrases like \"aggressively generic\" and \"heavy sanding block\" to describe the show's shortcomings, indicating a lack of recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:21:26.967Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 5643,
-    "outputTokens": 375,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:48:02.676Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 32,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 25,
-    "scoreDelta": 13,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Negative"
   },
   "bwwExcerpt": "If I had to take bets on how many actual tears The Notebook The Musical manages to jerk — well, I wouldn’t advise anyone to bring a bucket. With prosaic direction and a strangely heavy and sterile aesthetic sense that feels, despite Schele Williams’s presence as a co-director, all too similar to Michael Greif’s other productions this season, as well as a surprisingly beige slate of songs by the folk-pop artist Ingrid Michaelson, the show disappears from memory almost moment to moment. It’s almost enough to make one want to reference the half of the story’s plot that deals with dementia.",
   "bwwThumb": "Meh",

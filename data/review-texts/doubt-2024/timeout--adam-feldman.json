@@ -9,7 +9,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "bwwThumb": "Up",
   "originalScore": "4/5",
-  "assignedScore": 79,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "originalScoreNormalized": 80,
@@ -23,60 +23,52 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 79,
+    "score": 78,
     "confidence": "high",
     "range": {
       "low": 73,
-      "high": 85
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 87,
+      "book": null,
       "music": null,
-      "performances": 74,
-      "direction": 80
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Roundabout Theatre Company's Broadway revival, directed by Scott Ellis, is mostly very effective",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the play grows richer every time you see it",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "This Doubt's equilibrium is disturbed only by Ryan's performance",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Feldman clearly recommends the production despite reservations about one performance, praising the play's enduring power and calling the revival 'mostly very effective' with strong work from most of the cast. | GPT-4o-mini: The review expresses overall positive sentiments about the production, with some reservations about one performance, leading to a strong recommendation despite minor flaws.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 rating and 'Up' aggregator verdicts strongly indicate a positive recommendation, though the limited excerpt only shows descriptive analysis of the play's structure rather than explicit evaluative language. | GPT-4o: The original rating of 4/5 suggests a positive review. The excerpt does not provide a clear recommendation, but the aggregator context supports a positive interpretation. The phrasing suggests intrigue and interest, albeit with some reservations. | Gemini: The original rating of 4/5 strongly suggests a positive review. While the provided quote is somewhat ambiguous, the aggregator context indicates an overall positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:49:47.227Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:31:36.116Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 80,
+    "openaiScore": 79,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 71,

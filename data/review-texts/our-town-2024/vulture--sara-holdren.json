@@ -9,71 +9,55 @@
   "showScoreExcerpt": "\"...with a play like Our Town — where its enduring miracle is both its granular mundanity and its immensity — the imagination is going to start firing.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/our-town-broadway",
   "originalScore": null,
-  "assignedScore": 58,
+  "assignedScore": 62,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 58,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 62
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": 68,
-      "direction": 45
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "It's not painful, but it's far from revelatory. In certain ways it treads safely down the middle of the road — gets in, gets on with it, gets it over with, and gets out.",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "the flourishes wind up feeling tentative or hodgepodge-y, never coalescing",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Like Thomas and Jones, Parsons also gives the mawkishness that can be Wilder's death knell a wide berth. His eyebrow is always half-raised, and he pointedly underplays",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic finds the production competent but uninspired, praising some performances while criticizing the director's choices as misguided and the overall approach as safe and unrevelatory.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic clearly states this production lacks the revelatory quality needed, calling it safe and middle-of-the-road. While she praises some performances (Thomas, Jones, Parsons), the overall assessment is of a production that doesn't justify its existence beyond competent execution. | Gemini: The review acknowledges some positive aspects (Parsons, Thomas, Jones) but ultimately finds the production lacking in revelatory power and feeling somewhat hodgepodge-y. It neither strongly recommends nor discourages seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:50:15.545Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4124,
-    "outputTokens": 407,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:38:39.193Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 58,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 75,
-    "scoreDelta": 10,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "bwwExcerpt": "That fundamental drive — that feeling of questing clarity, of the necessity of returning to an old play to excavate its glowing, undiminished heart — is what Kenny Leon’s new Broadway production lacks. It’s not painful, but it’s far from revelatory. In certain ways it treads safely down the middle of the road — gets in, gets on with it, gets it over with, and gets out.",
   "bwwThumb": "Meh",

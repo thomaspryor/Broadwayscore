@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "The problem is that while “Harmony” is about a sextet of singers whose voices blend like milk and coffee, its elements do not similarly fuse into a cohesive and satisfying musical.",
@@ -59,67 +59,51 @@
   "archiveOrgTimestamp": "20251002230850",
   "archiveOrgUrl": "http://web.archive.org/web/20251002230850/https://nypost.com/2023/11/13/entertainment/harmony-review-barry-manilows-musical-is-moving-but-isnt-in-sync/",
   "llmScore": {
-    "score": 65,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 62,
-      "high": 68
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
-      "music": 75,
-      "performances": 85,
-      "direction": 50
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Take apart Barry Manilow's new musical 'Harmony,' which opened Monday night on Broadway, and you'll find a lot to admire",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "The problem is that while 'Harmony' is about a sextet of singers whose voices blend like milk and coffee, its elements do not similarly fuse into a cohesive and satisfying musical",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "That's the central takeaway of 'Harmony': not everything is harmonious, but nonetheless there is much that's worth listening to",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic finds significant elements to admire (music, performances, themes) but identifies fundamental structural problems that prevent the show from being cohesive or satisfying as a whole.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The review finds significant elements to admire (performances, music, relevance) but concludes the show 'still doesn't quite work' with major structural flaws and pacing issues that prevent it from being cohesive. | Gemini: The review highlights both strengths (Manilow's score, Zien's performance, relevant themes) and weaknesses (structural flaws, pacing issues, underdeveloped characters). The final takeaway suggests a mixed experience, leaning towards having worthwhile elements despite its problems.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:04:23.416Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3587,
-    "outputTokens": 395,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:09:45.995Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
-    "scoreDelta": 3,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "contentTier": "complete",
   "wordCount": 816,

@@ -9,7 +9,7 @@
   "showScoreExcerpt": "“I am typically of the opinion that no show has any business occupying a Broadway house for more than a decade: Theater is ephemeral, and the magic tends to wear off as the years pass and performances become stale. ’Chicago’ makes this a difficult position to maintain. Ten thousand performances later, it's still dazzling.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/chicago",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 84,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/chicago-1996/theatermania--zachary-stewart_2026-01-27.html",
@@ -45,60 +45,51 @@
   "archiveOrgTimestamp": "20230213123704",
   "archiveOrgUrl": "http://web.archive.org/web/20230213123704/https://www.theatermania.com/broadway/reviews/review-chicago-broadway-jinkx-monsoon_94821.html",
   "llmScore": {
-    "score": 89,
-    "confidence": "high",
+    "score": 84,
+    "confidence": "low",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 79,
+      "high": 89
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 93,
-      "direction": 88
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Ten thousand performances later, it's still dazzling",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Ten thousand performances later, it's still dazzling",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Chicago makes this a difficult position to maintain",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic expresses sustained enthusiasm throughout, praising performances, direction, and the show's enduring relevance, culminating in the declaration that after 'ten thousand performances' it's 'still dazzling.' | GPT-4o-mini: The review expresses overwhelming enthusiasm for the performances and overall production quality, indicating a strong recommendation to see the show.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: Despite opening with context about the show's longevity, the critic delivers an enthusiastic recommendation, praising nearly every aspect from veteran performers to newcomers, calling it 'still dazzling' after decades. | Gemini: The review is overwhelmingly positive, highlighting the strong performances and the show's enduring appeal. The concluding statement explicitly praises the show's continued quality despite its long run.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:45:18.920Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:57:01.354Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
+    "claudeScore": 87,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
   "dtliExcerpt": "Broadway's busiest revolving door, better known as the nearly 10-year-old revival of Chicago, has someone new passing through: the R&B superstar with the single moniker of Usher has joined the company through October 1. The 27-year-old, baby-faced Grammy Award winner is the latest performer to wear the dapper duds of silver-tongued lawyer Billy Flynn, and while he's a good two or three decades younger than most of his predecessors, the tuxedo fits decently enough. He won't linger in the memory — like Jerry Orbach or James Naughton — but neither does he embarrass himself or producers Barry and Fran Weissler, who tapped him for the role.",
   "sources": [

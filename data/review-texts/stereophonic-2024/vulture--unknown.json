@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 89,
+  "assignedScore": 88,
   "llmScore": {
-    "score": 89,
+    "score": 88,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 83,
+      "high": 93
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The language 'meaningful and exceptional piece of work' combined with deeply appreciative artistic analysis indicates strong critical enthusiasm and recommendation. | GPT-4o: The review describes the play as 'meaningful and exceptional,' highlighting its emotional depth and artistic significance, which suggests a strong recommendation. | Gemini: The review excerpt highlights the play's meaningfulness and exceptional qualities, suggesting a positive, though potentially not rave, recommendation. The focus on 'bittersweet and wounded' suggests reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The language 'meaningful and exceptional piece of work' indicates strong praise, though with only one excerpt available, confidence is tempered despite the clearly positive assessment. | GPT-4o: The excerpt describes the production as 'meaningful and exceptional,' indicating a strong positive impression. The use of 'bittersweet and wounded and ferociously loyal' suggests depth and emotional resonance, supporting a high recommendation. | Gemini: The excerpt praises the show as \"meaningful and exceptional\" and a \"love song,\" indicating a positive recommendation, but the single excerpt and lack of full context suggest a score in the middle of the Positive bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:54:13.990Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:09:19.608Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 90,
+    "openaiScore": 88,
     "geminiScore": 75,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

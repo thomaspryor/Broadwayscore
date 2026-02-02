@@ -10,7 +10,7 @@
   "bwwExcerpt": null,
   "showScoreExcerpt": "\"In a way, this production of Our Town is a triumph over that feeling of hopelessness — live theatre returned and continues to thrive — but it also has an important message, asking us to experience every day of our lives to the fullest.\"",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 78,
   "source": "show-score",
   "archivePath": "data/archives/reviews/our-town-2024/new-york-theatre-guide--austin-fimmano_2026-01-25.html",
   "textFetchedAt": "2026-01-25T04:16:19.683Z",
@@ -18,67 +18,52 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 72,
+    "score": 78,
     "confidence": "medium",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 73,
+      "high": 83
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 65,
-      "direction": 78
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Jim Parsons, in the iconic role of the Stage Manager, is the heart of this production in more ways than one",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Unfortunately, a lack of chemistry between the two other main characters...keeps the production from achieving a certain pathos overall",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "A revival both for fans and for newcomers, this production of Our Town has something for all audiences to enjoy",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review praises Jim Parsons and the director's vision while acknowledging significant flaws in the central romantic chemistry, ultimately recommending it as having 'something for all audiences to enjoy.'",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises Jim Parsons' performance and the universal message while noting the lack of chemistry between leads. The overall tone is positive with clear recommendation language at the end. | GPT-4o: The review highlights the production as evocative and triumphant, with strong performances, particularly by Jim Parsons, and a universal message. Despite noting a lack of chemistry between two main characters, the overall tone is positive and recommends the show. | Gemini: The review is generally positive, highlighting the strengths of Jim Parsons' performance and the overall message of the play. However, it also notes a lack of chemistry between the leads, preventing it from being a rave. The final recommendation is positive, suggesting it has something for all audiences.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:49:34.459Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3431,
-    "outputTokens": 370,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:37:13.014Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 75,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "sources": [
     "show-score"

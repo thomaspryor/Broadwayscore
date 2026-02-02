@@ -9,71 +9,55 @@
   "showScoreExcerpt": "\"The play is constantly running a nail over divisions that seem untraversable, across politics, class, and race, but also across generation and gender, wondering if solidarity could possibly still form there. \"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/liberation-broadway",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 85,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 85,
+    "confidence": "low",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 80,
+      "high": 90
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 85
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Both times I've seen the play—Off Broadway this spring, now returning in a larger space on Broadway—I've felt unprepared for the emotional wallop it lands",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "It releases this incredible kinetic energy. For a few minutes of theater, some great barrier has fallen, and everything is possible and free",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "makes the play thrilling to watch",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic expresses deep enthusiasm and emotional impact, calling the play 'thrilling to watch' with 'incredible kinetic energy' and praising its transformative theatrical power, despite some structural complexities.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The critic uses language of transformation and awe throughout, describing the play as having an 'emotional wallop,' being 'thrilling to watch,' and creating moments where 'everything is possible and free.' The review emphasizes the work's power and ambition multiple times. | Gemini: The review expresses a positive sentiment towards the play, highlighting its emotional impact and thought-provoking nature. While acknowledging some complexities and potential categorization difficulties, the overall tone suggests a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:28:41.992Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4660,
-    "outputTokens": 371,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:57:32.090Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 70,
-    "scoreDelta": 5,
+    "claudeScore": 89,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
   "dtliExcerpt": "Both times I’ve seen the play—Off Broadway this spring, now returning in a larger space on Broadway—I’ve felt unprepared for the emotional wallop it lands, the way that Wohl’s work becomes cosmically immense without leaving that gym basement. I think it gets there by staying so focused on the quietly radical thing these women are doing with each other, and which Wohl is making the rest of the audience engage in. Maybe you should be scared, because listening could change you too.",
   "bwwExcerpt": "Both times I’ve seen the play—Off Broadway this spring, now returning in a larger space on Broadway—I’ve felt unprepared for the emotional wallop it lands, the way that Wohl’s work becomes cosmically immense without leaving that gym basement. I think it gets there by staying so focused on the quietly radical thing these women are doing with each other, and which Wohl is making the rest of the audience engage in. Maybe you should be scared, because listening could change you too.",

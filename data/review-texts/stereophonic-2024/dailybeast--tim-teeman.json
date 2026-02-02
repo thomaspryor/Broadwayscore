@@ -13,59 +13,51 @@
   "fetchedAt": "2026-01-23T05:08:28.547Z",
   "llmScore": {
     "score": 94,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
-      "low": 88,
-      "high": 100
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 81,
-      "music": 89,
-      "performances": 85,
-      "direction": 95
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Stereophonic is a must-experience, rather than simply a must-see—and deserves to be a frontrunner at the soon-to-be announced Tony Award nominations",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "one of the most original, stunningly designed, and technically dazzling plays in New York",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Stereophonic remains pretty damn fabulous",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic uses superlative language throughout ('must-experience', 'theatrical perfection', 'pretty damn fabulous') with explicit Tony Award prediction and only minor quibbles about pacing. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production's originality, design, and overall execution, indicating a strong recommendation to see it.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite truncation, the review is overwhelmingly positive with explicit rave language like 'must-experience' and 'theatrical perfection,' calling it one of the most original and technically dazzling plays in New York. | GPT-4o: The review is overwhelmingly positive, highlighting the play's originality, stunning design, and technical brilliance. The critic describes it as a 'must-experience' and anticipates Tony Award nominations, indicating a strong recommendation. | Gemini: Despite the truncated text warning, the review contains strong positive language like \"must-experience\" and \"deserves to be a frontrunner at the soon-to-be announced Tony Award nominations.\" The critic also praises the design and sound, indicating a positive overall assessment.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:23:35.662Z",
-    "promptVersion": "2.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:05:01.608Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 94,
+    "previousVersion": "2.0.0"
   },
   "ensembleData": {
-    "claudeScore": 93,
+    "claudeScore": 92,
     "openaiScore": 95,
-    "scoreDelta": 2,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "sourceMethod": "stub",
   "designation": "Must_See",

@@ -10,71 +10,55 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MAMMA-MIA-Returns-To-Broadway-20250814",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 28,
+  "assignedScore": 51,
   "source": "dtli",
   "dtliThumb": "Down",
   "llmScore": {
-    "score": 28,
-    "confidence": "high",
+    "score": 51,
+    "confidence": "low",
     "range": {
-      "low": 25,
-      "high": 35
+      "low": 46,
+      "high": 56
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 20,
-      "music": 35,
-      "performances": 25,
-      "direction": 25
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the show looks so tacky that it could be the original 2001 production with a not-very-good paint job",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "failed to elicit more than a few isolated giggles at the preview performance I attended",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "manage to rise above the dispiriting mess around them",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic describes the production as 'tacky,' a 'dispiriting mess' that fails to get laughs, with overacting and poor execution throughout, offering only isolated praise for two performers.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Negative, gemini=Mixed | Claude: The critic calls the show a 'dispiriting mess,' criticizes the tacky production values, weak book that barely gets giggles, and overacting performances, with only two performers receiving praise for rising above the problems. | Gemini: The review is largely negative, criticizing the production's tackiness, the disconnection between songs and story, and some overacting. However, it acknowledges that some performers rise above the 'dispiritng mess,' suggesting it has some redeeming qualities, placing it in the Mixed category.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:30:08.715Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3131,
-    "outputTokens": 356,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:28:03.304Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 28,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 45,
-    "scoreDelta": 7,
-    "thumbsMatch": true,
-    "expectedThumb": "Down",
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 60,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Mixed"
   },
   "dtliExcerpt": "The current “Mamma Mia!” remains under the control of its original director, Phyllida Lloyd; production designer, Mark Thompson; and other creatives. Frankly, the show looks so tacky that it could be the original 2001 production with a not-very-good paint job.",
   "sources": [

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": null,
   "dtliExcerpt": "Jim Parsons and Katie Holmes shine in this beautifully staged revival of Thornton Wilder's timeless classic about life, love and loss in small-town America.",
@@ -20,67 +20,51 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 35,
+    "score": 44,
     "confidence": "high",
     "range": {
-      "low": 30,
-      "high": 40
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
-      "performances": 40,
-      "direction": 25
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "among the most uninvolving and anemic I have ever seen",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "This is less a town than a group of shut-in neighbors who've never met",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The finest actor in the revival, far and away, is Billy Eugene Jones",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic delivers harsh criticism of the direction and ensemble work while praising individual performers like Billy Eugene Jones, but the overwhelmingly negative language about the production being 'uninvolving and anemic' makes this clearly not recommended.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The critic delivers harsh criticism calling the production 'uninvolving and anemic,' criticizes the performances as lacking coherence, and unfavorably compares it to a superior previous production. | Gemini: The review is largely negative, criticizing the direction, acting, and overall impact of the production. The reviewer finds it uninvolving and compares it unfavorably to a previous production.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:49:16.960Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3365,
-    "outputTokens": 352,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:36:56.019Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 35,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 20,
-    "scoreDelta": 5,
-    "thumbsMatch": true,
-    "expectedThumb": "Down",
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Negative"
   },
   "contentTier": "truncated",
   "wordCount": 24,

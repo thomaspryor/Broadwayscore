@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of Alexandra Shiva's documentary about teens on the autism spectrum preparing for a spring formal is undeniably well-intentioned, but it feels more like an educational experience than compelling theater.",
   "originalScore": null,
-  "assignedScore": 48,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,54 +18,53 @@
   "showScoreExcerpt": "The musical adaptation of Alexandra Shiva's documentary about teens on the autism spectrum preparing for a spring formal is undeniably well-intentioned, but it feels more like an educational experience than compelling theater.",
   "needsScoring": true,
   "llmScore": {
-    "score": 48,
-    "confidence": "medium",
+    "score": 60,
+    "confidence": "high",
     "range": {
-      "low": 42,
-      "high": 55
+      "low": 55,
+      "high": 65
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "undeniably well-intentioned",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "feels more like an educational experience than compelling theater",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic acknowledges good intentions but fundamentally criticizes the show as educational rather than theatrically compelling, which is a significant negative for theater.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges good intentions but clearly states it fails as compelling theater, placing it in mixed territory that leans toward the lower end due to the fundamental criticism of its theatrical merit. | GPT-4o: The review acknowledges the good intentions of the production but criticizes it for lacking theatrical engagement, suggesting a mixed reception. | Gemini: The review acknowledges the good intentions but ultimately finds the show lacking as compelling theater, suggesting a mixed experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T19:59:22.244Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2343,
-    "outputTokens": 276,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:55:37.999Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 48,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

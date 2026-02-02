@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 86,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "What lands, over and over again (going by the gasps and responses of the audience), is Bioh’s dialog as expertly, relishingly delivered by her actors. Bioh is not just adept at writing the wit and vim of the conflicts and rivalries at the store, but also the deep friendships and loyalties within it too.",
@@ -19,67 +19,51 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 86,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 83,
-      "high": 89
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 87
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "has all the energy and rich character interplay that her excellent award-winning 2017 play, School Girls; Or, the African Mean Girls Play, possessed",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Bioh, director Whitney White, costume designer Dede Ayite, and lighting designer Jiyoun Chang animate a wonderfully bristling canvas",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "In Jaja's African Hair Braiding, Bioh has done them all proud",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "This is a strongly positive review with consistent praise for the writing, performances, direction, and design, concluding with high praise that Bioh 'has done them all proud.'",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review is consistently positive throughout, praising the set design, performances, dialogue, and overall production quality. The critic highlights multiple strong elements and concludes with clear approval, though stops short of superlative language that would indicate a rave. | Gemini: The review is overwhelmingly positive, praising the set design, writing, and performances. The final line indicates a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:20:40.395Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3930,
-    "outputTokens": 381,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:51:45.773Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 86,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 82,

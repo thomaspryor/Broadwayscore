@@ -10,71 +10,55 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 82,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 78,
+      "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 80
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The Shark Is Broken is a sensational night at the theater, especially if you're a Jaws fan",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Together, Ian Shaw and Alex Brightman are like prize fighters, facing off with pride on the line and a growing need to land a knockout",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Where this ship-set story wobbles is cheap jokes that look to the future to snark at the past",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic calls it 'a sensational night at the theater' and praises the performances extensively, with only minor criticisms about some cheap jokes, indicating a clear positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite noting some 'clunky and cheap' jokes and minor flaws, the critic calls it 'a sensational night at the theater' and praises the performances, character development, and overall execution throughout the review. | Gemini: The review is largely positive, highlighting the strong performances and engaging story, especially for fans of Jaws. While it notes some flaws like cheap jokes, the overall assessment is that it's a 'sensational night at the theater.'",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:26:13.372Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4822,
-    "outputTokens": 370,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:52:01.736Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 68,
-    "openaiScore": 75,
-    "scoreDelta": 7,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 72,

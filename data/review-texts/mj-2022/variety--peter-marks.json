@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is most successful when it focuses on Jackson's creative process and his perfectionism in the studio, with Myles Frost delivering a magnetic performance that captures the King of Pop's essence.",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,54 +18,53 @@
   "showScoreExcerpt": "The show is most successful when it focuses on Jackson's creative process and his perfectionism in the studio, with Myles Frost delivering a magnetic performance that captures the King of Pop's essence.",
   "needsScoring": true,
   "llmScore": {
-    "score": 45,
-    "confidence": "low",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 35,
-      "high": 55
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 80,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "most successful when it focuses on",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Myles Frost delivering a magnetic performance that captures the King of Pop's essence",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The phrase 'most successful when' implies the show fails in other areas, with only the lead performance and specific studio scenes working well.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review highlights specific strengths (the lead performance and focus on creative process) with positive language like 'most successful' and 'magnetic performance,' indicating a recommendation despite the brief excerpt. | GPT-4o: The review highlights the show's success in depicting Jackson's creative process and praises Myles Frost's performance, suggesting a positive view despite potential limitations not mentioned in the excerpt. | Gemini: The review highlights a successful aspect of the show and praises the lead performance, indicating a positive but not overwhelmingly enthusiastic recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:06:21.392Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2341,
-    "outputTokens": 282,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:25:32.228Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 45,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

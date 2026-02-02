@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The review criticizes core elements (score, staging) and describes the production as failing to meet its ambitions, indicating the critic does not recommend it. | GPT-4o: The review highlights significant shortcomings in the production's ambition, score, and staging, suggesting a disappointing experience. | Gemini: The review points out flaws in the score and staging, suggesting it doesn't fully succeed, but doesn't explicitly discourage seeing it. The overall tone is lukewarm, indicating a mixed reaction.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The review clearly critiques fundamental elements - the score and staging - as failing to meet the production's ambitious goals, indicating the critic does not recommend it. | GPT-4o: The review highlights significant shortcomings in the production's score and staging, suggesting it fails to meet its ambitious goals. | Gemini: The review points out flaws in the score and staging, suggesting it doesn't fully succeed, but doesn't explicitly discourage seeing it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,11 +42,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T13:59:19.947Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:19:46.177Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 44,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 42,

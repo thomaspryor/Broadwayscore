@@ -9,66 +9,56 @@
   "showScoreExcerpt": "Chenoweth is, of course, the draw, and she tries her hardest to make the material work.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-queen-of-versailles-broadway",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 60,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 45,
-    "confidence": "low",
+    "score": 60,
+    "confidence": "high",
     "range": {
-      "low": 35,
-      "high": 55
+      "low": 55,
+      "high": 65
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 35,
+      "book": null,
       "music": null,
-      "performances": 65,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "tries her hardest to make the material work",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Chenoweth is, of course, the draw",
-        "sentiment": "positive",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The phrase 'tries her hardest to make the material work' strongly implies the material itself is problematic and even a star performer struggles with it.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The phrase 'tries her hardest to make the material work' suggests the material itself is problematic and even a star performer is struggling with it. However, with only this excerpt available, the full verdict is unclear. | GPT-4o: The quote suggests that while Chenoweth's performance is a highlight, the material itself may not be strong. This indicates a mixed review, as the critic acknowledges effort but implies limitations in the production. | Gemini: The review excerpt suggests that the show relies heavily on Chenoweth's performance and that she is struggling to elevate the material, indicating a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:58:31.110Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2325,
-    "outputTokens": 282,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:29:48.667Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 45,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 50,
-    "scoreDelta": 5,
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "dtliExcerpt": "Chenoweth is, of course, the draw, and she tries her hardest to make the material work. \n\nRead more",
   "mergedFrom": [

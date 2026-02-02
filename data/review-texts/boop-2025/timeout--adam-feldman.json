@@ -9,7 +9,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "4/5",
-  "assignedScore": 79,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "originalScoreNormalized": 80,
@@ -25,12 +25,12 @@
   ],
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T04:05:41.401Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:18:32.480Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 80,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 82,
@@ -91,11 +91,11 @@
     "invalidatedAt": "2026-02-01T04:02:00.805Z"
   },
   "llmScore": {
-    "score": 79,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -106,7 +106,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 rating and phrase about 'leaves you grinning' indicates a positive recommendation, though the qualifier about not changing your brain suggests it's solid entertainment rather than transcendent theater. | GPT-4o: The original rating of 4/5 from the critic suggests a strong positive recommendation. The excerpt highlights the production's ability to deliver on its promises and leave audiences satisfied, indicating a positive experience. | Gemini: The review explicitly states the show delivers on its promise and leaves the audience grinning, indicating a positive experience. The 4/5 rating and aggregator context further support this classification.",
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The 4/5 rating and phrase about delivering what it promises with a grinning audience indicates solid entertainment value, though the caveat about not changing your brain suggests pleasant but not transcendent theater. | Gemini: The review excerpt indicates an enjoyable experience and a positive outcome, aligning with a 'Positive' bucket. The 4/5 rating further supports this classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -115,19 +115,18 @@
     }
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 82,
-    "geminiScore": 80,
+    "claudeScore": 75,
+    "openaiScore": null,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

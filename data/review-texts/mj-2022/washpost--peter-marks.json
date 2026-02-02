@@ -10,73 +10,58 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "Up",
   "showScoreExcerpt": "\"That sordid history would not seem to have foretold a jukebox musical devoted to the upside of Jacksonâs genius â and certainly not by artists of the caliber of two-time Pulitzer winner Nottage (âRuined,â âSweatâ) and the celebrated ballet world fixture Wheeldon. The showâs decidedly selective memory may be off-putting to theatergoers appalled by the stories of Jacksonâs alleged misdeeds. Nevertheless, the creative teamâs painstaking work has resulted in a riveting, adrenaline rush of a show, propelled by remarkable dancing and a mesmerizing central performance by Myles Frost as the sleek, soft-spoken pop megastar.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/mj",
   "llmScore": {
-    "score": 82,
-    "confidence": "high",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 85
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "riveting, adrenaline rush of a show",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "remarkable dancing and a mesmerizing central performance",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The show's decidedly selective memory may be off-putting to theatergoers appalled by the stories",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Despite acknowledging controversy around Jackson, the critic uses strong positive language ('riveting', 'adrenaline rush', 'remarkable', 'mesmerizing') to describe the production and performances, indicating a clear positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite acknowledging the controversial subject matter and selective memory, the critic clearly recommends the show as 'riveting' with praise for the creative team's work, dancing, and lead performance. | GPT-4o: The review praises the show as a 'riveting, adrenaline rush' with 'remarkable dancing' and a 'mesmerizing central performance,' indicating a highly enthusiastic recommendation despite potential reservations about the subject matter. | Gemini: Despite acknowledging the problematic subject matter, the review highlights the show's positive aspects, such as the dancing and central performance, ultimately suggesting it's worth seeing despite the reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:38:55.744Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2468,
-    "outputTokens": 347,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:25:38.460Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "dtliExcerpt": "Filled with exhilarating versions of the songs Jackson made into music videos and took on world tours, “MJ” is a dance musical of the first rank. If you look back at the choreography in those videos of the late 1980s and early 1990s — “Billie Jean,” “Beat It,” “Smooth Criminal” and, of course, “Thriller” — you’ll see that by comparison Wheeldon and the exquisite dancers of “MJ” have boosted the muscularity and grace of the pop star’s signature movements. It’s now a veritable Corps de Moonwalking.",
   "sources": [

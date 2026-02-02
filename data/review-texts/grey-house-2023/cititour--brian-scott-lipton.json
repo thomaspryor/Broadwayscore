@@ -10,69 +10,60 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 56,
+  "assignedScore": 52,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 56,
-    "confidence": "medium",
+    "score": 52,
+    "confidence": "low",
     "range": {
       "low": 47,
-      "high": 65
+      "high": 57
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
-      "book": 43,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 53
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "uniformly superb performances from everyone on stage; the cast gets a gold star for their commitment",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "when everything is 'explained,' you might still be unsure of what you just saw",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "uneven material",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Strong praise for performances is undermined by significant criticisms of pacing, unclear storytelling, and weak material, resulting in a mixed review that leans slightly negative. | GPT-4o-mini: While the performances are praised highly, significant issues with pacing and clarity in the material lead to a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Negative, gemini=Mixed | Claude: The critic calls the play 'dull' in the headline and opening, criticizes pacing issues, and notes the ending leaves audiences confused 'not by design' - indicating fundamental storytelling problems. Despite praising performances, the overall assessment is negative. | Gemini: The review uses both positive and negative language. It praises the performances and direction but criticizes the pacing and clarity of the plot. The truncated text makes it difficult to determine the overall recommendation, but the aggregator excerpt suggests a flat verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:17:22.452Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:24:05.509Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 56,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 52,
-    "openaiScore": 60,
-    "scoreDelta": 8,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 56,
-  "archivePath": "data/archives/reviews/grey-house-2023/cititour--brian-scott-lipton_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T14:12:55.707Z",
+  "archivePath": "data/archives/reviews/grey-house-2023/cititour--brian-scott-lipton_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:05:58.592Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {

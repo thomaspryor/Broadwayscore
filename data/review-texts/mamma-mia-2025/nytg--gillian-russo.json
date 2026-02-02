@@ -15,64 +15,49 @@
     "score": 80,
     "confidence": "high",
     "range": {
-      "low": 77,
-      "high": 83
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 55,
-      "music": 85,
-      "performances": 88,
-      "direction": 72
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The ABBA-scored musical is escapist, feather-light entertainment that still delivers on its 20-plus-year promise of pure fun. How can I resist ya, Mamma Mia!?",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the talented actresses in Meryl Streep's, Christine Baranski's, and Julie Walters's screen roles sail away with this Broadway production so entirely, you won't be wanting for the screen stars",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the story's admittedly thin and rushed through in service of stuffing in as many tunes as possible",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review concludes with clear enthusiasm and recommendation despite acknowledging story weaknesses, praising standout performances and the show's enduring appeal as 'pure fun.'",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges the show's thin story but ultimately celebrates the performances and delivers a clear positive recommendation, ending with an enthusiastic rhetorical question that shows the critic's enjoyment. | GPT-4o: The review praises the performances, the enduring appeal of the musical, and its ability to deliver fun and escapism. The critic's enthusiasm and positive language suggest a strong recommendation. | Gemini: The review is largely positive, highlighting the talented actresses and the fun, escapist nature of the show. While acknowledging the thin story, the reviewer ultimately recommends it as a source of pure fun.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:29:51.102Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3180,
-    "outputTokens": 406,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:27:26.537Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 80,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "sourceMethod": "playwright",
   "dtliExcerpt": "But the fact that it's become such a beloved property anyway, spawning two (possibly three) movies and endless themed karaoke parties, feels like hope that art that's imperfect yet earnest — and original — can thrive even when times are tough. Perhaps especially then, when one of the only surefire balms is to dance and jive and have the time of your life.",

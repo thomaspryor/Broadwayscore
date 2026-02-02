@@ -13,10 +13,10 @@
   "sourceMethod": "brightdata",
   "llmScore": {
     "score": 75,
-    "confidence": "low",
+    "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 82
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -24,57 +24,40 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 78
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "lavish, rollicking production",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "isn't a seamless Broadway transfer",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "audacious director has never been afraid of stylish excess",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review excerpt shows clear praise for the production values with 'lavish, rollicking' while acknowledging adaptation issues, suggesting a positive but not raving recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic describes it as 'lavish, rollicking' which are positive descriptors, but notes it 'isn't a seamless Broadway transfer' suggesting flaws. Limited text makes full assessment difficult. | GPT-4o: The review excerpt describes the production as 'lavish' and 'rollicking,' suggesting a positive experience, though it notes the Broadway transfer isn't 'seamless.' The original sentiment is positive, and the language indicates a recommendation with some reservations. | Gemini: The review acknowledges flaws but describes the production as \"lavish\" and \"rollicking,\" suggesting a positive, but not rave, experience. The \"not a seamless transfer\" indicates reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:41:53.879Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2401,
-    "outputTokens": 322,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:32:30.102Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 50,
-    "openaiScore": 70,
-    "scoreDelta": 20,
+    "claudeScore": 72,
+    "openaiScore": 77,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 20 points (Claude: 50, OpenAI: 70)"
-    ]
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/moulin-rouge-2019/telegraph--diane-snyder_2026-01-26.html",
   "textFetchedAt": "2026-01-26T23:32:40.089Z",

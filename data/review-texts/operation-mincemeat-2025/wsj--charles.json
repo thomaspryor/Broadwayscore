@@ -11,8 +11,8 @@
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/operation-mincemeat/",
-  "archivePath": "data/archives/reviews/operation-mincemeat-2025/wall-street-journal--charles_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T20:30:49.992Z",
+  "archivePath": "data/archives/reviews/operation-mincemeat-2025/wsj--charles_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:58:40.401Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -86,5 +86,17 @@
   "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
   "garbageFixedAt": "2026-01-29T22:45:23.083Z",
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 72,
+  "fullText": "https://www.wsj.com/articles/operation-mincemeat-review-a-madcap-military-plot-on-broadway-92d630a9\n\nThe cast of ‘Operation Mincemeat.’ Julieta CervantesIt may be telling that the song receiving the most enthusiastic response in the daffy British musical “Operation Mincemeat” is not one of the many comic romps that are the show’s bread and butter—or should I say tea and crumpets? Instead it’s a tender ballad in which the schoolmistressy secretary Hester Leggatt, played by Jak Malone, sings an imagined love letter to be planted on a corpse to add verisimilitude to the dead man’s manufactured life story. Intrigued yet?\n\nPerformed by Mr. Malone with a touching sincerity untainted by sentimentality, the song hints at a lost love in Hester’s past that reveals a beating heart just below the classic British stiff upper lip. Yet it’s not just the character but the musical, too, that in this moment takes a necessary breath, indicating a subtle emotional core beneath the sometimes exhaustingly antic comedy that drives this odd duck of a musical, now on Broadway.",
+  "isFullReview": false,
+  "textWordCount": 160,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "shorter_than_excerpt"
+  ],
+  "textStatus": "truncated",
+  "duplicateTextOf": "wsj--charles-isherwood.json"
 }

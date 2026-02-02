@@ -8,43 +8,27 @@
   "fullText": "ExpandIdina Menzel and Kristin Chenoweth in \"Wicked.\" (Handout)\n\n(Originally published by the Daily News on October 31, 2003.)\n\n\"Wicked,\" the \"prequel\" to \"The Wizard of Oz,\" is an interminable show with no dramatic logic or emotional center.\n\nConstantly lurching in different directions, the show seems to believe that whenever you reach an artistic impasse, throw money at it - in this case, $14 million.\n\n\"Wicked,\" based on Gregory Maguire's best seller, shows how Elphaba, played by Idina Menzel, went from simply being misunderstood and \"different\" to being the Wicked Witch of the West.\n\nIDINA MENZEL STARS IN 'WICKED' PREMIERE ON BROADWAY IN 2003\n\nBut it makes no sense without the story we already know, to which it frequently makes sly allusions.\n\nAt the end of the first act, for example, when Elphaba learns to fly, the moment doesn't have much meaning. So the production pulls out all the stops.\n\nFirst, we get menacing-looking monkeys flying over the stage and doing an aerial ballet over the orchestra seats.\n\nThen, as Elphaba begins to ascend, she is hit by huge spotlights from various angles. The overtime for setting the lights could pay off my mortgage.\n\nThe overall effect is sad because a lot of talented people are involved.\n\nExpandAutoplayImage 1 of 2\n New York Daily News Wicked review\n\nThe strength of \"Wicked\" is its cast. Kristin Chenoweth, who plays Elphaba's childhood friend, Glinda, is Broadway's Reese Witherspoon - both in her innocent \"Legally Blonde\" and her diabolical \"Election\" modes. Her comic timing is as elegant as her singing, but her whole character suggests the story is a spoof.\n\nElphaba, however, is the heavy. But having one character a cartoon and the other psychologically twisted doesn't work.\n\nIdina Menzel, as Elphaba, is a solid actress. But she sings everything at top volume, so nothing has any force.\n\nCarole Shelley is splendid as the caustic headmistress of the boarding school where the girls meet. Joel Grey is wasted as the Wizard. So is the usually stellar Norbert Leo Butz as the boyfriend of both witches.\n\nStephen Schwartz, who wrote the music and lyrics, has many impressive notches in his belt. Here, numerous songs have melodic lilt, but nothing really jells. The original material does not have much emotional subtext, but a more insightful director might have forced Schwartz to create some.\n\nWinnie Holzman's book does not tell the story clearly, and its humor ranges from jokes about the original story to lame topicality like a reference to \"regime change.\" Susan Hilferty's costumes are often garish, Eugene Lee's sets wildly lavish.\n\n\"The Wizard of Oz\" holds a place in our hearts because its sense of magic is as strong as its sentimental theme. Nothing about \"Wicked\" is magical.\n\nIf the theater enforced more stringent economic controls, the creators would have had to solve the problems emotionally. \"Wicked\" then might have had more impact.\n\nE-mail: hkissel@edit.nydailynews.com",
   "dtliExcerpt": "\"Wicked,\" the \"prequel\" to \"The Wizard of Oz,\" is an interminable show with no dramatic logic or emotional center.",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "Down",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 25,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 59,
+      "high": 69
     },
-    "bucket": "Pan",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 20,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 25
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "an interminable show with no dramatic logic or emotional center",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Constantly lurching in different directions",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "whenever you reach an artistic impasse, throw money at it",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic delivers a scathing assessment calling the show 'interminable' with 'no dramatic logic or emotional center,' offering no redeeming qualities or reasons to see it.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Despite criticisms of plot streamlining and a dreary opening, the critic highlights the show's cleverness with character dynamics, catchy songs, and concludes that the witches 'make magic,' indicating an overall positive assessment. | GPT-4o: The review highlights both strengths and weaknesses: clever elements and strong performances by the witches, but also narrative issues and a dreary opening. This suggests a mixed but somewhat positive overall impression. | Gemini: The review highlights both positive and negative aspects, suggesting a mixed experience. The mention of 'catchy songs' and 'magic' from the witches is counterbalanced by criticisms of the narrative and opening number.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,27 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:37:24.898Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2515,
-    "outputTokens": 328,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:43:55.989Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 10,
-    "scoreDelta": 15,
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "archivePath": "data/archives/reviews/wicked-2003/ny-daily-news--howard-kissel_2026-01-26.html",
   "textFetchedAt": "2026-01-26T23:29:09.136Z",

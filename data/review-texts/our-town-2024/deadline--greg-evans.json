@@ -8,16 +8,16 @@
   "bwwExcerpt": "Leon, a top-notch director who has done recent work that is both more exhilarating (Purlie Victorious) and more revelatory (Home), here makes a few attempts at diversifying and era-defying Wilder’s classic without offering a complete re-think that might have brought fresher life to the theatrical chestnut.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 57,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 57,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 50.5,
-      "high": 63.5
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -25,50 +25,40 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 55
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "top-notch director who has done recent work that is both more exhilarating (Purlie Victorious) and more revelatory (Home)",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "makes a few attempts at diversifying and era-defying Wilder's classic without offering a complete re-think",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "might have brought fresher life to the theatrical chestnut",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The review praises the director's past work but criticizes this production for being a half-measure that doesn't fully reimagine the classic material, suggesting missed potential rather than clear recommendation. | GPT-4o-mini: The review indicates some positive aspects of the direction but ultimately suggests a lack of fresh interpretation, leading to a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges the director's quality but suggests the production falls short of its potential, lacking the complete reimagining needed. With only one excerpt and aggregator showing 'Up', scoring conservatively in mixed range. | GPT-4o: The review acknowledges the director's skill and attempts at innovation but suggests that the production does not fully succeed in revitalizing the classic. The tone is neither fully positive nor negative, indicating a mixed reception. | Gemini: The review acknowledges the director's talent but suggests the production doesn't fully revitalize the classic play. The lack of a 'complete re-think' implies a missed opportunity, placing it in the mixed category.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:14:40.699Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:36:09.080Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 57,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 55,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 3,
-    "thumbsMatch": false,
-    "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (57 → Flat) conflicts with aggregator thumbs (Up)"
-    ]
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 57,

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 92,
   "source": "bww-roundup",
   "dtliThumb": null,
   "dtliExcerpt": "\"Having already become a cultural phenomenon in its off-Broadway premiere run earlier this year at the Public Theater, 'Hamilton' — written by and starring Lin-Manuel Miranda, who previously made a name for himself on Broadway with 'In the Heights' — seems a shoo-in for smash hit status and a slew of awards attention...The musical is a triumph.\"\n\nRead more",
@@ -19,60 +19,52 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 79,
-    "confidence": "high",
+    "score": 92,
+    "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 87,
+      "high": 97
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 88,
-      "performances": 79,
-      "direction": 80
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the replacement cast members don't have to give star quality performances for the show to shine",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Some of the performers couldn't be better. James Monroe Iglehart...is spectacular",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "But he is the blandest of the Alexander Hamiltons I've seen so far",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic shows deep appreciation for Hamilton as a work while acknowledging the current cast has mixed strengths, ultimately concluding the show's quality transcends individual performances. | GPT-4o-mini: The review expresses strong appreciation for the performances, particularly highlighting standout actors, while acknowledging some reservations about the new cast compared to the original.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Despite the setup about cultural phenomenon status, the critic delivers an unambiguous positive verdict calling the musical 'a triumph,' which is strong rave language. | GPT-4o: The review describes 'Hamilton' as a 'triumph' and suggests it is poised for 'smash hit status and a slew of awards attention,' indicating a strong, enthusiastic recommendation. | Gemini: The review excerpt uses the word \"triumph,\" which indicates a very positive assessment and a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:55:49.292Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T23:58:35.518Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 85,

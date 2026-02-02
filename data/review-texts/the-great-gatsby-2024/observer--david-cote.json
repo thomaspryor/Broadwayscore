@@ -7,7 +7,7 @@
   "publishDate": "2024-04-25",
   "bwwExcerpt": "p dancers. That not-since-“Carrie” spectacle sums up what goes wrong with the new musical “The Great Gatsby,” with book by Kati Kerrigan and score by composer Jason Howland and lyricist Nathan Tysen. David Cote, Observer: Don’t misunderstand me: The Great Gatsby is not a smart, tasteful musical that can’t compete with tackier ones. It simply fails to be tacky enough. The jazz-based score by composer Jason Howland and lyricist Nathan Tysen (Paradise Square) ventures into funk, Disney princess ballad, and a touch of Britpop. Despite the eclecticism of the musical palette, none of the songs stick in the ear, despite strenuous vocalizing by Jeremy Jordan (Newsies) and Eva Noblezada (Hadestown). Average Rating: 47.6% REVIEW ROUNDUP REAL-TIME ALERTS To read more reviews, click here ! Discuss the show on the BroadwayWorld Forum Buy Tickets to The Great Gatsby Opening Night Coverage Photos: The Cast of THE GREAT GATSBY Takes Opening Night Bows Photos: Jeremy Jordan, Eva Noblezada & the Company",
   "originalScore": null,
-  "assignedScore": 36,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
@@ -15,60 +15,52 @@
   "scoreSource": "sentiment-mixed-positive",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 36,
-    "confidence": "medium",
+    "score": 44,
+    "confidence": "high",
     "range": {
-      "low": 25,
-      "high": 47
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 40,
-      "music": 30,
-      "performances": 48,
+      "book": null,
+      "music": null,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "It simply fails to be tacky enough",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "none of the songs stick in the ear, despite strenuous vocalizing",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Average Rating: 47.6%",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic finds fundamental flaws with both the concept and execution, stating it 'simply fails' and that songs don't stick despite good performers, with an aggregate rating of 47.6% reinforcing the negative assessment. | GPT-4o-mini: The review is predominantly negative, criticizing the music and overall execution, leading to a clear pan recommendation. | Note: Models differed by 12 points.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic clearly states the musical 'fails' and compares it unfavorably to 'Carrie' (a notorious Broadway flop). The criticism of songs not sticking despite 'strenuous vocalizing' indicates a negative assessment, though the single excerpt limits confidence in the full verdict. | GPT-4o: The review criticizes the musical for failing to make a memorable impact, with none of the songs sticking in the ear despite the efforts of the performers. The tone suggests disappointment, aligning with a negative verdict. | Gemini: The review states the musical \"fails\" and that the songs don't stick in the ear. While the text is truncated, the overall tone is negative, indicating a lack of recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:53:45.817Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:21:15.172Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 36,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 30,
-    "scoreDelta": 12,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "archivePath": "data/archives/reviews/the-great-gatsby-2024/observer--david-cote_2026-01-27.html",
   "textFetchedAt": "2026-01-27T15:13:31.436Z",

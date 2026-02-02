@@ -11,12 +11,12 @@
   "source": "dtli",
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T04:07:10.093Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:49:09.580Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 69,
-    "previousVersion": "3.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.0.0"
   },
   "dtliExcerpt": "Steve Carell makes a solid Broadway debut in a fine, if not overly inspired, new revival of Chekhov’s Uncle Vanya. Smoothly adapted by What The Constitution Means To Me playwright Heidi Schreck and elegantly directed by Lila Neugebauer (demonstrating once again, after this season’s excellent Appropriate, a kinetic crossing-guard facility for keeping large-ish casts moving on spacious sets), this Lincoln Center Theater production places Chekhov’s tale of wasted lives and tenuous optimism amidst a contemporary setting.",
   "sources": [
@@ -101,7 +101,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review uses positive language like 'solid', 'fine', 'smoothly adapted', and 'elegantly directed', but the qualifier 'if not overly inspired' suggests measured enthusiasm rather than strong recommendation. | GPT-4o: The review describes the production as 'fine' but 'not overly inspired', indicating a mixed reception. The mention of 'solid Broadway debut' and 'elegantly directed' suggests some positive elements, but the overall tone is neither strongly positive nor negative. | Gemini: The review uses positive language like \"solid\" and \"fine,\" but also notes that it's \"not overly inspired.\" This suggests a recommendation with reservations, placing it in the Positive bucket with a mid-range score.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review uses positive language ('solid debut', 'fine', 'elegantly directed', 'excellent') but the qualifier 'if not overly inspired' suggests measured enthusiasm rather than strong recommendation. | GPT-4o: The review describes the production as 'fine, if not overly inspired,' suggesting a mixed impression. The mention of a 'solid Broadway debut' and 'elegantly directed' indicates some positive elements, but the overall tone is not strongly positive. | Gemini: The review uses positive language like \"solid\" and \"fine\", but also indicates the production is \"not overly inspired\", suggesting a recommendation with reservations. Given the single excerpt, a score in the middle of the positive range is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,

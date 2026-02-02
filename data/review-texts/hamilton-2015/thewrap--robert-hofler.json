@@ -10,67 +10,58 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 95,
+  "assignedScore": 86,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 95,
-    "confidence": "high",
+    "score": 86,
+    "confidence": "low",
     "range": {
-      "low": 90,
-      "high": 100
+      "low": 81,
+      "high": 91
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 92,
-      "music": 95,
-      "performances": 90,
+      "book": null,
+      "music": null,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "you'd be crazy to miss it",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "It's that strange and that spectacular",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Miranda can be mentioned in the same sentence with Sondheim and even Cole Porter",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: Multiple critics use superlatives like 'spectacular' and 'thrilling' with explicit recommendation 'you'd be crazy to miss it' and comparison to theater legends Sondheim and Cole Porter. | GPT-4o-mini: The review expresses unqualified enthusiasm for 'Hamilton', highlighting its brilliance and recommending it as a must-see.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: Despite opening with buildup concerns, the critic delivers an unequivocal positive verdict calling it 'that good' and comparing Miranda to legendary composers, with extensive praise for songs, performances, and choreography throughout. | Gemini: The review is overwhelmingly positive, praising the music, choreography, and energy of the show. While there are minor criticisms, the overall tone is enthusiastic and recommends seeing the production.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:19:59.785Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:03:09.104Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 95,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 95,
-    "openaiScore": 95,
-    "scoreDelta": 0,
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 95,

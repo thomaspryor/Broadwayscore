@@ -9,42 +9,26 @@
   "bwwExcerpt": "Kander and Ebb's Cabaret is a much-loved and -revived property such that its twists may not be secrets anymore. Despite the stellar Gayle Rankin’s best efforts to inject the latest revival with a sense of urgency as star performer Sally Bowles, director Rebecca Frecknall’s production, now on Broadway after winning multiple awards in London, stays stagnant. This is not due to the excellent company of dancers at the Kit Kat Club (into which the August Wilson Theatre has been remodeled), but to a d",
   "bwwRoundupUrl": null,
   "originalScore": "B",
-  "assignedScore": 82,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 82,
+    "score": 78,
     "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 80,
-      "direction": 85
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "visually arresting production",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "pulls you in with fantasy, then crushes you with reality",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The lush bacchanal of the theater's dressing seeps into every aspect of this production",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review is overwhelmingly positive about the production design, direction, and immersive theatrical experience, with consistent praise for the creative vision and execution.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The B rating and praise for the immersive design, performances, and visual elements indicate a positive recommendation, though concerns about the production staying 'stagnant' suggest some reservations. | GPT-4o: The review highlights the visually arresting production and strong performances, particularly Eddie Redmayne's, but notes a lack of urgency in the revival. The original B rating suggests a positive recommendation with some reservations. | Gemini: The review highlights both positive and negative aspects. The critic praises the visual transformation and some performances, but ultimately finds the production stagnant. The B rating also suggests a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,27 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:34:00.947Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2624,
-    "outputTokens": 326,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:32:56.489Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 48,
-    "openaiScore": 55,
-    "scoreDelta": 7,
+    "claudeScore": 76,
+    "openaiScore": 79,
+    "geminiScore": 62,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "dateUnknown": true,
   "dateSource": "could-not-extract",

@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 60,
+  "assignedScore": 61,
   "llmScore": {
-    "score": 60,
+    "score": 61,
     "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges Betty Boop's enduring appeal but expresses disappointment that the musical fails to capture or explain that appeal, suggesting an unfulfilled experience. | GPT-4o: The review suggests a lack of depth or revelation in the production, indicating a mixed impression. The critic's wish for more insight implies neither a strong recommendation nor a discouragement. | Gemini: The review acknowledges Betty Boop's enduring appeal but expresses a desire to understand it better after seeing the musical, suggesting a somewhat unfulfilled experience. It doesn't outright recommend or discourage seeing the show.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt expresses uncertainty and unfulfilled expectations about the musical's ability to explore its subject matter, suggesting neither recommendation nor strong discouragement. However, with only one curated excerpt available, the full review sentiment remains unclear. | GPT-4o: The excerpt suggests that the musical does not fully succeed in capturing the essence of Betty Boop, indicating a lack of depth or impact. The critic's wish to understand more implies some level of engagement but ultimately a sense of unfulfillment. | Gemini: The critic's statement indicates a lack of connection with the musical, suggesting a mixed or neutral sentiment rather than a positive or negative one. The truncated nature of the text makes it difficult to assess the overall verdict with certainty.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,14 +36,16 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:44:56.443Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:19:05.688Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 60,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 58,
-    "openaiScore": 60,
+    "openaiScore": 62,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",

@@ -9,7 +9,7 @@
   "showScoreExcerpt": "A big, splashy effort, slickly professional in nearly every aspect, that has no idea what to make of its heroine. It's a star vehicle with a giant question mark at its center, and its nonjudgmental gaze ultimately leaves one feeling surprisingly neutral.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-queen-of-versailles-broadway",
   "originalScore": null,
-  "assignedScore": 58,
+  "assignedScore": 62,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/queen-versailles-2025/lighting-sound-america--david-barbour_2026-01-27.html",
@@ -28,67 +28,52 @@
   ],
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 58,
-    "confidence": "medium",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 52,
-      "high": 65
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 72
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "slickly professional in nearly every aspect",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "has no idea what to make of its heroine",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "ultimately leaves one feeling surprisingly neutral",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic acknowledges professional production values but criticizes the show's fundamental lack of clarity about its protagonist, resulting in an explicitly neutral overall reaction.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges professional quality but identifies a fundamental flaw in the show's characterization, concluding with explicit neutrality rather than a recommendation. | GPT-4o: The review describes the production as professional and visually impressive but ultimately lacking clear direction or impact, leading to a neutral feeling. This suggests a mixed verdict, with both positive and negative elements. | Gemini: The review describes the production as \"slickly professional\" but ultimately \"neutral,\" indicating a mixed assessment that neither strongly recommends nor discourages seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:57:13.211Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2360,
-    "outputTokens": 310,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:27:55.416Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 58,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 50,
-    "scoreDelta": 8,
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 46,

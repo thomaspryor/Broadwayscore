@@ -9,72 +9,57 @@
   "bwwExcerpt": "Harrison’s story is topical, that’s for sure. Frighteningly so. What elevates it above the ripped-from-the-headlines hackery of, say, so many political dramas co-written by Wikipedia is that it’s also profoundly human and lump-in-the-throat relatable without ever toppling over into boo-hoo sentimentality. The play exposes its audience’s emotional weaknesses like few others do. I reckon that most ticket-buyers will silently ask themselves if they would buy a Prime if they had the chance. And they",
   "bwwRoundupUrl": null,
   "originalScore": "A",
-  "assignedScore": 88,
+  "assignedScore": 94,
   "source": "dtli",
   "dtliThumb": "Up",
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 94,
+    "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 89,
+      "high": 99
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 92,
-      "direction": 87
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The actress is astonishing as a widow named Marjorie in the superb revival",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "one of Broadway's best and most natural ensembles",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "From the moment June Squibb takes the stage at the Hayes Theater in 'Marjorie Prime,' you feel lucky to be in her presence",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Consistent high praise throughout with superlatives like 'astonishing,' 'superb revival,' and 'best and most natural ensembles,' with no significant reservations expressed.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic gives an A rating and uses superlative language throughout: 'astonishing,' 'superb revival,' 'one of Broadway's best and most natural ensembles,' and praises every aspect from performances to direction to the play itself. | GPT-4o: The review is overwhelmingly positive, highlighting the superb revival, astonishing performances, and clever direction. The critic's original rating of 'A' further supports a strong recommendation. | Gemini: The critic gives the play a positive review, praising the performances and direction, while also noting the play's complexities and potential harm. The critic's own rating of 'A' further supports this classification.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:30:59.538Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3189,
-    "outputTokens": 333,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:34:09.559Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "dtliExcerpt": "From the moment June Squibb takes the stage at the Hayes Theater in “Marjorie Prime,” you feel lucky to be in her presence. The stage and screen legend is back home on Broadway, where she got her start in “Gypsy” opposite Ethel Merman in 1960, for the first time in eight years. In between being on the boards, she’s been hard at work making films, giving wonderful lead performances in “Thelma” and “Eleanor the Great.” At a spry 96 years old, Squibb is, at long last, in her title-character era.",
   "sources": [

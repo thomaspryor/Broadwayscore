@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 84,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "The meaningful, welcome impact of How to Dance in Ohio is the twinned jolt of emotion and insight into a world you may not—if you are not autistic—have had much notion of. It’s that wonderful jolt you get when you hear or see or understand a new story, or a set of new perspectives.",
@@ -19,11 +19,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 85,
-    "confidence": "high",
+    "score": 84,
+    "confidence": "low",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 79,
+      "high": 89
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,24 +33,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "meaningful, welcome impact",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "twinned jolt of emotion and insight",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "that wonderful jolt you get when you hear or see or understand a new story",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The critic emphasizes the powerful emotional and intellectual impact of the show, using highly positive language like 'wonderful jolt' and 'meaningful, welcome impact' to describe a transformative theatrical experience. | GPT-4o-mini: The review expresses strong appreciation for the emotional and insightful impact of the show, indicating a clear recommendation to see it.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The critic uses superlative language ('most original new musical on Broadway'), emphasizes the show's meaningful impact and transformative power, and concludes with praise for its joyful assertion of diversity and self-determination. | Gemini: The review is overwhelmingly positive, highlighting the show's originality, emotional impact, and important representation. The critic uses phrases like \"zesty, powerful Broadway musical\" and \"funny, joyful, and cheering assertion\" indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -59,20 +43,27 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:13:11.353Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:54:03.483Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
-    "scoreDelta": 0,
+    "claudeScore": 88,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 85,

@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 77,
+  "assignedScore": 76,
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'laugh-out-loud funny from the first moments' indicates clear enjoyment and entertainment value, suggesting a positive recommendation despite limited excerpt. | GPT-4o: The excerpt highlights the humor and delivery as standout elements, suggesting a positive experience. However, without the full review, the confidence is medium. | Gemini: The review excerpt highlights the humor and delivery, suggesting an enjoyable experience. While truncated, the positive tone is clear.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows clear enjoyment and praise for the show's humor and performances, but with only one curated quote available, I'm scoring conservatively within the positive range. | GPT-4o: The excerpt highlights the humor and delivery as key strengths, suggesting a positive experience. However, without a full review or original rating, the score is placed conservatively in the middle of the Positive range. | Gemini: The review excerpt indicates the show is \"laugh-out-loud funny,\" which suggests a positive experience, but the limited text and single excerpt warning suggest a conservative score within the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:51:08.965Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:04:37.589Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 80,
+    "openaiScore": 76,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

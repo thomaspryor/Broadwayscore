@@ -9,71 +9,55 @@
   "showScoreExcerpt": "\"The 1993 musical's already bizarre story...even less clear in Des McAnuff's reanimation\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-who-s-tommy-broadway",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 52,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 38,
-    "confidence": "high",
+    "score": 52,
+    "confidence": "low",
     "range": {
-      "low": 32,
-      "high": 45
+      "low": 47,
+      "high": 57
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 25,
-      "music": 65,
-      "performances": 45,
-      "direction": 30
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "yeesh, then the show gets going",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The production, more a reanimation than a revival, seems to think that there's no point in showing us the pinball machine since surely we remember it",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "McAnuff and Townshend's dramatization insists we're watching a story that does make sense, and then refuses to create that sense",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The critic delivers a detailed takedown of the production's storytelling, direction, and conceptual choices, with only occasional praise for music and isolated staging moments, concluding that the adaptation fundamentally fails to make coherent sense.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Negative, gemini=Mixed | Claude: The critic systematically dismantles the production, criticizing everything from the storytelling logic to the over-reliance on nostalgia, concluding that the creative team has 'lost the rock opera's original grip on metaphor' and created something that 'refuses to create sense.' | Gemini: The review highlights both positive and negative aspects of the production. While praising certain elements like the energy and lighting, it criticizes the storytelling and overall sense of the show, resulting in a mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:28:34.639Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4253,
-    "outputTokens": 377,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:20:09.447Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 38,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 25,
-    "scoreDelta": 13,
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 32,

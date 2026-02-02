@@ -8,7 +8,7 @@
   "dtliExcerpt": "While Frecknall has put a lot of energy into giving Cabaret a glow-up—Sleep No More mood board, Eddie Redmayne in a party hat—she hasn’t provided the show underneath the makeover with sufficient focus or muscle.",
   "bwwExcerpt": "It’s not that the performers aren’t trying. As the naïve, swept-away American narrator, Cliff Bradshaw, Ato Blankson-Wood is doing his best to bring vulnerability, sincerity, and even some dignity to the part; but it’s always a bit of a surprise to recall just how often Cliff is left on the sidelines, and just how little he sings (a real loss here, given Blankson-Wood’s gorgeous voice). And as the strung-out Kit Kat Club singer, Sally Bowles, Gayle Rankin is making every effort to leave her guts on the stage, but she’s not getting any help. Rankin has the ability to be wrenching and spectacular — I once watched her swim across a lake in the dark, climb out and play Nina’s devastating Act Four scene from The Seagull, get back in, and swim away again. But her delivery of “Maybe This Time” and of the show’s final drill to the stomach, its great title song, is hampered by extraneous gesture. She flickers between singing, talking, and half-singing in a way that feels like a misguided directorial attempt to make the songs new, but that ends up making Rankin seem nervous about her ability to deliver them. I have no doubt that she really can, and I wish Frecknall had helped her find more connection and more release.",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 62,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-AT-THE-KIT-KAT-CLUB-Opens-on-Broadway-Updating-Live-20240421",
   "dtliThumb": "Meh",
@@ -27,69 +27,51 @@
   "archiveOrgTimestamp": "20250625084626",
   "archiveOrgUrl": "http://web.archive.org/web/20250625084626/https://www.vulture.com/article/theater-review-cabaret-orlando-eddie-redmayne-bebe-neuwirth-taylor-mac.html",
   "llmScore": {
-    "score": 45,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
-      "music": 75,
-      "performances": 55,
-      "direction": 35
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "If this Cabaret were a cake, Paul Hollywood would shake his head and sigh, northern-ly: Style over soobstance",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "I had a better time there than I did during the performance itself",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Thank goodness, therefore, for Bebe Neuwirth and Steven Skybell",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic finds the pre-show atmosphere engaging but the actual performance disappointing, with particular criticism of the direction and Eddie Redmayne's performance, balanced only by praise for Neuwirth and Skybell.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic praises the immersive pre-show experience and supporting performances by Neuwirth and Skybell, but finds the main production lacking focus, criticizes Redmayne's performance as ineffective, and describes the direction as style over substance. | Gemini: The review praises the immersive pre-show experience but criticizes the actual performance, citing issues with direction, sound, and Redmayne's portrayal of the Emcee. The reviewer does highlight strong performances from Neuwirth and Skybell, creating a mixed overall impression.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:34:07.708Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3855,
-    "outputTokens": 367,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:35:50.411Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 45,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 52,
-    "openaiScore": 55,
-    "scoreDelta": 3,
-    "thumbsMatch": false,
-    "expectedThumb": "Down",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (54 → Flat) conflicts with aggregator thumbs (Down)"
-    ]
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "bwwThumb": "Down",
   "sources": [

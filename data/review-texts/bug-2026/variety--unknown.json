@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 76,
+  "assignedScore": 74,
   "llmScore": {
-    "score": 76,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises multiple technical elements and finds the story 'convincing' and 'heartbreaking,' but suggests it 'may have worked even better in a smaller theater,' indicating minor reservations alongside overall appreciation. | GPT-4o: The review highlights the production's strengths in design and emotional depth, suggesting a positive experience. However, it notes that the play might have been better suited for a smaller theater, indicating some reservations. | Gemini: The review highlights positive aspects like the set design, lighting, and sound, and notes the convincing portrayal of the characters' relationship. However, the suggestion that it might have worked better in a smaller theater indicates a reservation, placing it in the 'Positive' bucket with a mid-range score.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows appreciation for the production elements (set, lighting, sound) and finds the story 'convincing' and 'heartbreaking,' but notes it might work better in a smaller theater. Single excerpt warning requires conservative scoring. | GPT-4o: The review highlights the production's intensity and convincing storytelling, despite some reservations about the theater size. The focus on the characters' depth and the emotional impact suggests a positive recommendation. | Gemini: The review highlights the production's strengths (set, lighting, sound) and the convincing portrayal of the characters' relationship, but suggests it might have been better in a smaller theater. This indicates a positive but not rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:45:33.251Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:13:38.617Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 76,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 78,
+    "claudeScore": 73,
+    "openaiScore": 75,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"At its best, 'Doubt' is about formality.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/doubt-a-parable",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 63,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/doubt-2024/newyorker--vinson-cunningham_2026-01-29.html",
@@ -28,60 +28,52 @@
   "archiveOrgTimestamp": "20250725135255",
   "archiveOrgUrl": "http://web.archive.org/web/20250725135255/https://www.newyorker.com/magazine/2024/03/18/john-patrick-shanley-wrestles-with-god-and-destiny",
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 81,
+      "book": null,
       "music": null,
-      "performances": 83,
-      "direction": 82
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Shanley's plays are, in some ways, perfect examples of the form",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "At its best, 'Doubt' is about formality",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "The unending volley of speech in Shanley's plays, one utterance after another, is its own homegrown theology",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review provides sustained intellectual praise for Shanley's dramaturgy and thematic depth, highlighting strong performances and thoughtful direction, with only minor implied reservations through qualifying phrases like 'at its best.' | GPT-4o-mini: The review expresses strong appreciation for the performances and thematic depth, indicating a clear recommendation to see the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review provides thoughtful analysis of Shanley's work and describes the productions, but offers no clear verdict on whether to see either show. The tone is appreciative but analytical rather than evaluative. | GPT-4o: The review provides a detailed context about Shanley's work and style but lacks a clear verdict on the current production. The mention of Shanley's plays being 'perfect examples of the form' suggests some appreciation, but without explicit recommendation or critique of the specific production, the overall tone remains mixed. | Gemini: The review describes Shanley's playwriting style and sets up the premise of \"Doubt\" but does not explicitly recommend or discourage seeing the production. The description is evaluative but doesn't offer a clear verdict, leaning towards a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T15:40:06.270Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:29:19.274Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "contentTier": "complete",
   "wordCount": 1327

@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges 'strong moments' but the criticism that it feels 'more dutiful than deeply felt' suggests a lukewarm assessment that neither strongly recommends nor discourages attendance. | GPT-4o: The review acknowledges strong moments but suggests the overall experience is not deeply engaging, indicating a mixed reception. | Gemini: The review acknowledges strong moments but ultimately finds the production lacking deep emotional resonance, suggesting a mixed experience rather than a clear recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges 'strong moments' but the key criticism that it feels 'dutiful' rather than 'deeply felt' suggests a production that doesn't fully connect emotionally, placing it in mixed territory. | GPT-4o: The review acknowledges strong moments but suggests the overall experience lacks depth, indicating a mixed reception. | Gemini: The review highlights \"strong moments\" but ultimately finds the production lacking deep emotional resonance, indicating a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,11 +42,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:32:16.365Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:09:31.706Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 60,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 58,

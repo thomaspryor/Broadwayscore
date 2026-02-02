@@ -5,44 +5,28 @@
   "criticName": "Naveen Kumar",
   "url": "https://www.broadwaynews.com/review-the-shark-is-broken-offers-fan-service-without-teeth/",
   "publishDate": "August 10, 2023",
-  "fullText": "Transferring from London’s West End, the comedy relies on nostalgia and fandom.\n\nThree men scramble around a rickety boat, hellbent on an impossible mission: to survive a deliriously expensive game of make-believe and emerge as Hollywood legends. The most savage foe in “The Shark Is Broken” — a new play about the plagued filming of “Jaws” — is not the torso-snapping maw of a Great White, but the delusion of ego.\n\nAs written by Ian Shaw and Joseph Nixon, “Jaws” director Steven Spielberg is the first to blame. Fans of the 1975 blockbuster that forever ruined ocean swimming may be familiar with horror stories from the film set, which devoured as much time and money as flailing wet limbs. If shooting the movie on the open waters was the director’s Moby Dick, the actors portrayed in this captive-at-sea backstage comedy are hoping to survive with their stomachs and reputations intact. Bonus if the picture also happens to make them famous.\n\nThe trio of soon-to-be stars — Richard Dreyfuss, Robert Shaw and Roy Scheider — are piled into the cramped interior of a wooden vessel, toiling around a card table as the movie’s chaotic production drags on offstage. (The boat, recognizable from the film’s final deadly chase, is marvelously recreated here by Duncan Henderson, who also designed the costumes, while Nina Dunn’s video design and Jon Clark’s lighting vividly maroon the actors at sea.)",
+  "fullText": "Transferring from London’s West End, the comedy relies on nostalgia and fandom. Three men scramble around a rickety boat, hellbent on an impossible mission: to survive a deliriously expensive game of make-believe and emerge as Hollywood legends. The most savage foe in “The Shark Is Broken” — a new play about the plagued filming of “Jaws” — is not the torso-snapping maw of a Great White, but the delusion of ego. As written by Ian Shaw and Joseph Nixon, “Jaws” director Steven Spielberg is the first to blame. Fans of the 1975 blockbuster that forever ruined ocean swimming may be familiar with horror stories from the film set, which devoured as much time and money as flailing wet limbs. If shooting the movie on the open waters was the director’s Moby Dick, the actors portrayed in this captive-at-sea backstage comedy are hoping to survive with their stomachs and reputations intact. Bonus if the picture also happens to make them famous. The trio of soon-to-be stars — Richard Dreyfuss, Robert Shaw and Roy Scheider — are piled into the cramped interior of a wooden vessel, toiling around a card table as the movie’s chaotic production drags on offstage. (The boat, recognizable from the film’s final deadly chase, is marvelously recreated here by Duncan Henderson, who also designed the costumes, while Nina Dunn’s video design and Jon Clark’s lighting vividly maroon the actors at sea.)",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 41,
   "dtliThumb": "Meh",
   "source": "dtli",
   "llmScore": {
-    "score": 25,
-    "confidence": "high",
+    "score": 41,
+    "confidence": "medium",
     "range": {
-      "low": 20,
-      "high": 35
+      "low": 36,
+      "high": 46
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 20,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "amounts to little more than a companion text",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "dutiful piece of fan service without its own narrative engine",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "much exceed what one could read on Wikipedia",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic dismisses the play as lacking substance and having no compelling narrative beyond what's already publicly available, suggesting it offers nothing worthwhile.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic dismisses the play as superficial fan service that doesn't exceed basic Wikipedia-level content, indicating clear disappointment and lack of recommendation. Single excerpt warning requires conservative scoring within negative range. | GPT-4o: The critic describes the play as lacking originality and substance, suggesting it doesn't offer much beyond basic information available elsewhere. This indicates a negative assessment, but with only one excerpt, the confidence is medium. | Gemini: The review excerpt suggests the play is uninspired and lacks its own merit, indicating a mixed to negative assessment. Given the single excerpt warning, I am scoring it conservatively within the mixed range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,27 +35,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:25:51.434Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2356,
-    "outputTokens": 311,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "dtliExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated DTLI excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:51:16.843Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 25,
-    "scoreDelta": 0,
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 58,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 18,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "dtliExcerpt": "But neither these glimpses at their private lives — nor the play’s treatment of the film’s troubled production — much exceed what one could read on Wikipedia. The play amounts to little more than a companion text, a dutiful piece of fan service without its own narrative engine.",
   "sources": [
@@ -82,22 +67,28 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 25,
-  "archivePath": "data/archives/reviews/the-shark-is-broken-2023/broadwaynews--naveen-kumar_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T14:09:04.456Z",
-  "fetchMethod": "archive",
+  "archivePath": "data/archives/reviews/the-shark-is-broken-2023/broadwaynews--naveen-kumar_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:30:28.112Z",
+  "fetchMethod": "playwright",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
       "success": true
     }
   ],
-  "fetchTier": 4,
-  "sourceMethod": "archive",
+  "fetchTier": 1,
+  "sourceMethod": "playwright",
   "archiveOrgTimestamp": "20251011032245",
   "archiveOrgUrl": "http://web.archive.org/web/20251011032245/https://www.broadwaynews.com/review-the-shark-is-broken-offers-fan-service-without-teeth/",
   "textIssues": [
-    "Word count too low: 239 (min: 300)"
+    "Word count too low: 245 (min: 300)"
   ],
   "rescoreCompletedAt": "2026-02-01T16:25:51.434Z",
   "contentTier": "truncated",

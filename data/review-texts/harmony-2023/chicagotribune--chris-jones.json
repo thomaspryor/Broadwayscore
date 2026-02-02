@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "dtliExcerpt": "Barry Manilow and Bruce Sussman's musical about the Comedian Harmonists, a German singing group that was torn apart by the Nazis, is deeply sincere but dramatically inert.",
@@ -20,67 +20,51 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 72,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 45,
-      "music": 82,
-      "performances": 78,
-      "direction": 68
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "for Barry Manilow to deliver to Broadway an accessible but nonetheless varied and harmonically sophisticated score for a new musical at the age of 80 is a remarkable capper on an extraordinary songwriting and performance career",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "This is not a deeply sophisticated book and the interaction between narration and dramatization is often choppy",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "it deserved its long-delayed berth on Broadway at what has turned out to be both the perfect and a truly awful moment",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic acknowledges significant structural flaws in the book but praises Manilow's score, strong performances (especially Benko), and finds the show emotionally resonant and timely, ultimately supporting its Broadway placement despite reservations.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite acknowledging structural flaws and choppy elements, Jones emphasizes the show's enhanced emotional weight, praises Manilow's sophisticated score, highlights strong performances (especially Benko), and concludes with personal reflection showing the show's impact on him. | Gemini: The review acknowledges flaws in the book and narration, but praises the score, performances, and emotional impact, ultimately recommending the show despite its weaknesses.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:03:57.893Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3558,
-    "outputTokens": 401,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:08:38.840Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 70,
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 71,

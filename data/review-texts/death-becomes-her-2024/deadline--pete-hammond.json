@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses strong positive language like 'delivers on every level' and calls it 'rare' while praising both entertainment value and emotional impact, indicating enthusiastic recommendation. | GPT-4o: The review uses strong positive language indicating a highly enthusiastic recommendation, describing the show as both 'supremely entertaining' and 'genuinely moving'. | Gemini: The review uses strong positive language like \"delivers on every level\" and \"supremely entertaining and genuinely moving,\" indicating a very positive and enthusiastic recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses strong positive language including 'delivers on every level' and calls it 'rare' in its achievement of being both entertaining and moving, indicating enthusiastic recommendation. | GPT-4o: The review uses strong positive language, indicating a must-see recommendation by highlighting the show's entertainment value and emotional impact. | Gemini: The review uses strong positive language like \"delivers on every level\", \"supremely entertaining\", and \"genuinely moving\", indicating a rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,11 +42,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:30:11.053Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:40:30.041Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 91,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,

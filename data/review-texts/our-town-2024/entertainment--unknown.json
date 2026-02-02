@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 75,
+  "assignedScore": 74,
   "llmScore": {
-    "score": 75,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review emphasizes positive qualities like 'warmth' and 'instantly likable' performance, suggesting recommendation despite being limited excerpts that may not show the full verdict. | GPT-4o: The review highlights the warmth of the play and the likability of the actors, suggesting a positive impression. However, without a full review, the recommendation is cautious. | Gemini: The review highlights the positive aspects of the play and the actors' performances, suggesting a generally positive experience. The lack of stronger language indicates a recommendation with reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows clear appreciation for the production's preservation of the play's core strength and praises both direction and performance, but the single curated quote limits confidence in the full verdict scope. | GPT-4o: The excerpt highlights the warmth of the play and the likability of the actors, suggesting a positive experience. However, due to the limited and potentially cherry-picked nature of the excerpt, the score is placed conservatively in the middle of the Positive range. | Gemini: The review highlights the warmth of the play and the actors' likability, suggesting a positive experience, but the limited excerpt makes it difficult to gauge the overall strength of the recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:51:55.713Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:36:12.658Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 75,
+    "claudeScore": 72,
+    "openaiScore": 76,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

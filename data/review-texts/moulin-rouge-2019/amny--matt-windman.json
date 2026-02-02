@@ -11,64 +11,56 @@
   "_removedScore": "Negative",
   "_removedScoreReason": "Sentiment placeholder, not an actual explicit score. amNY doesn't use letter/star grades.",
   "_removedAt": "2026-01-31T23:45:00.000Z",
-  "assignedScore": 25,
+  "assignedScore": 61,
   "source": "reviews-json-stub",
   "sourceMethod": "stub",
   "llmScore": {
-    "score": 25,
-    "confidence": "high",
+    "score": 61,
+    "confidence": "medium",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 56,
+      "high": 66
     },
-    "bucket": "Pan",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 25
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "botched attempts",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Not unlike earlier botched attempts",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "botched attempts at bringing visually distinct movie musicals to the stage",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The critic explicitly calls this a 'botched attempt' and compares it unfavorably to other failed adaptations, indicating a clear negative assessment. | GPT-4o-mini: The review indicates a strong negative sentiment by comparing the production unfavorably to previous failed adaptations, suggesting a lack of quality.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The excerpt is severely truncated mid-sentence and begins with 'Despite,' suggesting contrast between positive elements and unstated negative points. Insufficient text to determine the critic's final verdict. | GPT-4o: The excerpt highlights positive aspects such as the visual design and leading actors, but the use of 'despite' suggests there may be reservations or issues not fully captured in the text. The single excerpt and text quality warning suggest a conservative middle-range score within the Mixed bucket. | Gemini: The review excerpt mentions \"first-rate leading actors\" and an \"ornate and environmental visual design,\" suggesting a positive experience, though the lack of a full review makes it difficult to assess the overall recommendation strength. I am scoring conservatively due to the limited text.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:39:36.976Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:30:43.403Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 25,
-    "scoreDelta": 0,
+    "claudeScore": 60,
+    "openaiScore": 62,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "contentTier": "excerpt",
   "wordCount": 0

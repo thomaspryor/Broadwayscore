@@ -13,7 +13,7 @@
   "_removedScore": "A",
   "_removedScoreReason": "NY Post doesn't give letter grades. Review is clearly negative ('wishy-washy play', 'gets swallowed up'). Grade likely extracted from wrong critic in BWW roundup.",
   "_removedAt": "2026-01-31T23:45:00.000Z",
-  "assignedScore": 52,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "“Shark” was a big hit at the Edinburgh Fringe Festival in 2019, and I’m sure it’s a show that would benefit from that kind of scrappiness and intimacy. Sometimes you need a smaller boat.",
@@ -24,67 +24,52 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 52,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 48,
-      "high": 56
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 40,
+      "book": null,
       "music": null,
-      "performances": 72,
-      "direction": 58
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "struggles to be either as it depicts actors going at each other's throats off-camera",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The effect of their macho antics, however, is much the same as listening to your drunken friends argue about capitalism at 2 a.m.",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "on Broadway, the little play gets swallowed up like a doomed teen in Amity",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic finds the concept fun but execution repetitive and shallow, with strong performances undermined by weak writing and structure that doesn't suit Broadway.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic finds some enjoyable elements (Ian Shaw's performance, good chemistry) but concludes the play gets 'swallowed up' on Broadway and suffers from repetitive dialogue and shallow characterization. | GPT-4o: The review highlights both strengths and weaknesses, noting the play's repetitive nature and lack of depth in characters, but also praises Ian Shaw's performance and the chemistry among the actors. The overall tone suggests a mixed experience with some enjoyable elements. | Gemini: The review highlights both positive and negative aspects of the play. While praising Ian Shaw's performance and the actors' chemistry, it criticizes the repetitive nature of the plot and the overly self-aware dialogue. The overall impression is that the play has its moments but ultimately falls short of being a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:26:32.582Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3484,
-    "outputTokens": 358,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:52:21.487Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 52,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 50,
-    "scoreDelta": 8,
-    "thumbsMatch": true,
-    "expectedThumb": "Down",
+    "claudeScore": 62,
+    "openaiScore": 63,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "contentTier": "complete",
   "wordCount": 707,

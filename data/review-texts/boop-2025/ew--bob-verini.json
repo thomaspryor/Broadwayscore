@@ -9,42 +9,26 @@
   "bwwExcerpt": "The proceedings, all in all, are rather schizoid. Those seeking a smart night out, with sharply-delineated themes, are likely to react with a weary ‘Boop-Boop-a-Droop.’ There’s always the danger of showstopper fatigue setting in, as if you’ve eaten eight or nine hot fudge sundaes in a row. But as a respite from present-day realities and woes, and you know the ones I mean, Boop! could just be the tonic the doctor ordered.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 57,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 57,
-    "confidence": "high",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 50.5,
-      "high": 63.5
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Those seeking a smart night out, with sharply-delineated themes, are likely to react with a weary 'Boop-Boop-a-Droop.'",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "There's always the danger of showstopper fatigue setting in, as if you've eaten eight or nine hot fudge sundaes in a row.",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "But as a respite from present-day realities and woes, and you know the ones I mean, Boop! could just be the tonic the doctor ordered.",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic presents a fundamentally mixed view, warning intellectual theatergoers away while suggesting it could work as escapist entertainment, landing in conditional recommendation territory. | GPT-4o-mini: The review expresses mixed feelings, highlighting both fatigue and potential enjoyment, leading to a conditional recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The magical metaphor and playful 'boop-boop-a-bewitched' wordplay suggests the show successfully charmed the critic, though the limited excerpt prevents full confidence in the overall assessment. | GPT-4o: The phrase 'she left us all boop-boop-a-bewitched' strongly suggests an enthusiastic and positive reaction, indicating a must-see recommendation. | Gemini: The review ends with a positive sentiment, suggesting the musical is enchanting and worth seeing. The aggregator verdict also indicates a positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,20 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:42:47.169Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:15:24.270Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 57,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 55,
-    "scoreDelta": 3,
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "dateUnknown": true,
   "dateSource": "could-not-extract",

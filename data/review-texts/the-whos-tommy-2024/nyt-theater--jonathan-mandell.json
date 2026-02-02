@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 58,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/the-whos-tommy-2024/nyt-theater--jonathan-mandell_2026-01-29.html",
@@ -26,69 +26,52 @@
   "fetchTier": 1,
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 58,
-    "confidence": "medium",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 52,
-      "high": 65
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": null,
-      "music": 65,
-      "performances": 75,
-      "direction": 70
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The Who's hardcore fans may like these hard-charging spectacles the most",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "There are certainly some terrific stage effects",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "I appreciate the few quieter moments",
-        "sentiment": "positive",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The review offers measured praise for specific elements (effects, performances, quieter moments) but implies the show works primarily for hardcore fans, suggesting limited broader appeal.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Single excerpt shows qualified appreciation with reservations about the rock spectacle approach, suggesting mixed feelings. Conservative scoring due to limited text and potential cherry-picking. | GPT-4o: The review suggests that the show may appeal more to fans of The Who, indicating a niche appeal. While there are positive mentions of stage effects and quieter moments, the overall tone suggests a mixed reception. | Gemini: The review highlights both positive and potentially alienating aspects of the show, suggesting a mixed experience. The phrase \"hardcore fans may like\" implies a limited appeal.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:29:05.147Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2403,
-    "outputTokens": 320,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:20:59.745Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 58,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 65,
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 0,
-    "thumbsMatch": false,
-    "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (65 → Flat) conflicts with aggregator thumbs (Up)"
-    ]
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "dateSource": "extracted-from-url",
   "contentTier": "complete",

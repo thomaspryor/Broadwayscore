@@ -9,7 +9,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 93,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
@@ -17,67 +17,52 @@
     "reviews-json-stub"
   ],
   "llmScore": {
-    "score": 94,
+    "score": 93,
     "confidence": "high",
     "range": {
-      "low": 90,
+      "low": 88,
       "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 92,
-      "music": 88,
-      "performances": 95,
-      "direction": 95
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "What a brilliant piece of must-see Broadway",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Daniel Aukin's phenomenal direction, David Zinn's mind-blowing set, and the fearless acting",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Don't wait. Tickets will be hard to get",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "This is an unqualified rave with superlatives throughout ('masterful', 'brilliant', 'phenomenal', 'mind-blowing'), deep analytical praise for all elements, and explicit 'must-see' recommendation ending with urgent ticket advice.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic explicitly calls it 'masterful,' 'brilliant,' and 'must-see Broadway,' comparing it to Chekhov and praising virtually every aspect of the production with superlatives like 'phenomenal' and 'mind-blowing.' | GPT-4o: The review is overwhelmingly positive, describing the play as 'masterful' and 'Chekhovian,' with high praise for the writing, direction, set, and performances. The critic explicitly calls it 'must-see,' indicating a strong recommendation. | Gemini: The review contains strong positive language such as \"masterful,\" \"phenomenal,\" and \"must-see Broadway.\" The critic clearly recommends the show without reservation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:10:23.745Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3159,
-    "outputTokens": 361,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:04:46.240Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 94,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 92,
     "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 94,

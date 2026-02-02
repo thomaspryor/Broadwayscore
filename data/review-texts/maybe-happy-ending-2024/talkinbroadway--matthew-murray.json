@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Calling a show a 'small miracle' is exceptionally high praise that indicates a must-see recommendation, with the critic highlighting both technical achievement and emotional depth. | GPT-4o: The review uses highly enthusiastic language, describing the musical as 'a small miracle' and highlighting its successful exploration of profound themes, which indicates a strong recommendation. | Gemini: The review uses very positive language such as \"miracle\" and \"epic\", indicating a recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The phrase 'small miracle of a musical' is extremely high praise, indicating this is an exceptional show that transcends expectations and delivers on multiple levels. | GPT-4o: The critic describes the musical as 'a small miracle,' indicating a highly positive view, and praises its ability to explore deep themes effectively. | Gemini: The review uses the phrase \"small miracle,\" which indicates a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,11 +43,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T13:58:39.190Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:16:56.968Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 89,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,

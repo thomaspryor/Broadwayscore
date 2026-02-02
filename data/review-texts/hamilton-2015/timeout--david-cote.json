@@ -9,7 +9,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": "5/5",
-  "assignedScore": 95,
+  "assignedScore": 98,
   "source": "bww-roundup",
   "dtliThumb": null,
   "originalScoreNormalized": 100,
@@ -22,60 +22,52 @@
     "show-score"
   ],
   "llmScore": {
-    "score": 95,
+    "score": 98,
     "confidence": "high",
     "range": {
-      "low": 90,
-      "high": 100
+      "low": 93,
+      "high": 103
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 94,
-      "music": 99,
-      "performances": 95,
-      "direction": 93
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "I love Hamilton. I love it like I love New York, or Broadway when it gets it right. And this is so right.",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the greatest American musical in decades",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "What Miranda does with rhyme is simply staggering",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: 5/5 star review with unqualified superlatives like 'greatest American musical in decades' and deeply personal emotional investment from the critic. | GPT-4o-mini: The review expresses unqualified enthusiasm and admiration for the show, highlighting its innovative music, strong performances, and cultural significance.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives a perfect 5/5 rating and uses passionate, deeply emotional language expressing profound love for the show, comparing it to loving New York itself and declaring it represents Broadway 'getting it right.' | GPT-4o: The critic expresses an unequivocal love for the production, comparing it to a deep affection for New York and Broadway at its best, which indicates a strong, enthusiastic recommendation. | Gemini: The critic explicitly states their love for the show and compares it to their love for New York and Broadway at its best, indicating a rave review. The 5/5 rating further supports this classification.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:42:55.358Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:03:16.806Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 95,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 95,
-    "openaiScore": 95,
-    "scoreDelta": 0,
+    "claudeScore": 98,
+    "openaiScore": 100,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 95,

@@ -8,12 +8,12 @@
   "fullText": "You have a preview view of this article while we are checking your access. When we have confirmed access, the full article content will load.\n\nThis new revival, starring Lea Michele, Nicholas Christopher and Aaron Tveit, is a reminder why the erratic yet rewarding show has endured all these years.\n\nListen to this article · 6:34 min Learn moreShare full article158By Elisabeth Vincentelli\n\nThe musical “Chess” is known for its brilliant score by the Abba songwriters Benny Andersson and Bjorn Ulvaeus and the “Evita” and “Jesus Christ Superstar” lyricist Tim Rice. And it is notorious for a terminally clunky story line that has undergone several alterations over the past 40 years.\n\nDespite many a writer’s efforts, “Chess” has defeated some of the best minds in the business. But really, who can figure out a tuner born out of a 1980s concept album about competitive chess and the rivalry between the United States and the Soviet Union?\n\nWe now have an answer to one of the fall theater season’s biggest questions: Has the yearslong collaboration between the director Michael Mayer and the screenwriter Danny Strong (“Empire”) that opened Sunday at the Imperial Theater finally found the winning move? Let’s call it a draw.\n\nParts of the show are absolutely thrilling and parts are flat at best, aggressively dumb at worst. At least Mayer’s production, starring Nicholas Christopher, Lea Michele and Aaron Tveit, is not a bland bore. Thinking back to Michele’s big, then bigger, then biggest “Nobody’s Side” or Christopher’s red-hot, neck-vein-bursting “Anthem,” I can feel the needle move toward the positive side of the dial.\n\nNicholas Christopher, whose Anatoly reveals turmoil and humor behind his severe demeanor, in the musical with, background from left: Aaron Tveit, Hannah Cruz and Lea Michele.Credit...Sara Krulwich/The New York TimesLike many previous attempts at injecting coherence into “Chess” — whose original Broadway run, in 1988, lasted only about two months after a protracted reworking following its West End premiere — the production is using a revised book. Without going into a close reading, let’s just say that Strong’s most notable change is to boost the character of the Arbiter (Bryce Pinkham) from a chess judge into an omnipresent narrator.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
   "dtliExcerpt": "Parts of the show are absolutely thrilling and parts are flat at best, aggressively dumb at worst. At least Mayer’s production, starring Nicholas Christopher, Lea Michele and Aaron Tveit, is not a bland bore. Thinking back to Michele’s big, then bigger, then biggest “Nobody’s Side” or Christopher’s red-hot, neck-vein-bursting “Anthem,” I can feel the needle move toward the positive side of the dial.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 62,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
       "low": 58,
       "high": 68
@@ -21,58 +21,43 @@
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 40,
-      "music": 85,
-      "performances": 78,
-      "direction": 65
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Let's call it a draw. Parts of the show are absolutely thrilling and parts are flat at best, aggressively dumb at worst.",
-        "sentiment": "neutral",
-        "strength": 5
-      },
-      {
-        "quote": "Thinking back to Michele's big, then bigger, then biggest 'Nobody's Side' or Christopher's red-hot, neck-vein-bursting 'Anthem,' I can feel the needle move toward the positive side of the dial.",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Chess has defeated some of the best minds in the business",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic explicitly calls it 'a draw' with thrilling parts balanced by flat/dumb elements, noting strong performances that tip slightly positive but acknowledging fundamental story problems.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly calls it 'a draw' and notes the production has both 'absolutely thrilling' parts and parts that are 'flat at best, aggressively dumb at worst.' Despite praising specific performances, the overall assessment is balanced rather than recommendatory. | GPT-4o: The review describes the show as having both thrilling and flat moments, and ultimately calls it a 'draw,' indicating a mixed reception. The positive mentions of performances suggest some redeeming qualities, but the overall tone is balanced between positive and negative. | Gemini: The review highlights both thrilling and disappointing aspects of the show, ultimately calling it a 'draw'. While praising some performances, it also acknowledges flaws in the storyline.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T19:58:00.564Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2799,
-    "outputTokens": 386,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:38:42.584Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "sourceMethod": "brightdata",
   "showScoreExcerpt": null,

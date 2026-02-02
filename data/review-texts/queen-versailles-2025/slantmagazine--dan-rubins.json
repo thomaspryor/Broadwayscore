@@ -10,74 +10,59 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 68,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 65,
-      "high": 72
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 55,
-      "music": 50,
-      "performances": 85,
-      "direction": 60
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The Queen of Versailles may have opened on Broadway with its scaffolding still up, but it's still compellingly ambitious in its scope and bold in its merciless portrayal",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "Chenoweth's performance is. She's wholly persuasive in suggesting that Jackie starts out demanding more and more to provide for her children",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The Queen of Versailles refuses to pick one or settle down stylistically. Neither does Schwartz's score, which zig-zags between a folky pop sound and pastiche",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review acknowledges ambitious themes and praises Chenoweth's performance highly, but criticizes the show's lack of stylistic coherence and structural problems, resulting in a qualified mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges structural problems and lack of cohesion while praising Chenoweth's performance and finding the show 'compellingly ambitious.' The critic sees merit but significant flaws. | GPT-4o: The review acknowledges the show's ambition and Chenoweth's strong performance but criticizes its lack of cohesion and stylistic inconsistency. The tone suggests appreciation for certain elements but overall reservations about the production's execution. | Gemini: The review acknowledges flaws and lack of cohesion in the show's elements, but ultimately finds it \"compellingly ambitious\" and praises Chenoweth's performance, suggesting a worthwhile experience despite its shortcomings.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:58:26.981Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3601,
-    "outputTokens": 406,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:29:44.849Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 68,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 60,
-    "scoreDelta": 15,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 53,

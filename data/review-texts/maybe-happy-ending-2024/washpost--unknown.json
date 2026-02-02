@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 81,
+  "assignedScore": 78,
   "llmScore": {
-    "score": 81,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "high",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The language is highly positive with 'darling gem', 'big heart', and 'refreshing model of innovation', indicating strong recommendation despite being excerpted text. | GPT-4o: The review uses highly positive language, describing the show as a 'darling gem' and 'refreshing model of innovation', which strongly suggests a must-see recommendation. | Gemini: The review uses highly positive language like \"darling gem\" and \"captivating\" and calls it a \"refreshing model of innovation,\" indicating a positive recommendation.",
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The language is clearly positive with 'darling gem', 'big heart', and praise for innovation, but with only one excerpt available, I'm scoring conservatively within the positive range. | Gemini: The review calls the show a \"darling gem\" and \"refreshing model of innovation,\" indicating a positive recommendation. Given it's a single excerpt, I'm scoring it in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:50:59.512Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:18:49.226Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 81,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 90,
-    "geminiScore": 80,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

@@ -9,7 +9,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "4/5",
-  "assignedScore": 78,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "showScoreExcerpt": "\"But while we in the audience might weep, Wilder's view, though always sympathetic, stays clear and dry. He has an eye on the eternal.\"",
@@ -20,12 +20,12 @@
   ],
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T04:06:36.030Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:38:12.040Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
-    "previousVersion": "3.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available",
   "previousLlmScore": 74,
@@ -86,11 +86,11 @@
     "invalidatedAt": "2026-02-01T04:02:00.817Z"
   },
   "llmScore": {
-    "score": 78,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -101,7 +101,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 rating strongly indicates positive reception, and the quote suggests deep artistic appreciation for Wilder's perspective and craft, though limited excerpt text prevents full assessment. | GPT-4o: The original rating of 4/5 suggests a positive review, and the excerpt highlights a thoughtful perspective. However, without full text, the confidence is medium. | Gemini: The 4/5 rating and the sympathetic view suggest a positive recommendation, but the limited text makes it difficult to assess the strength of the recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 rating indicates strong positive recommendation, and the review text shows artistic appreciation for Wilder's perspective and emotional impact, though limited excerpt makes full assessment challenging. | GPT-4o: The original rating of 4/5 suggests a positive review. The excerpt indicates appreciation for the production's perspective and tone, aligning with a positive but not overly enthusiastic recommendation. | Gemini: Given the 4/5 rating and the positive tone of the excerpt, it's likely a positive review. The excerpt suggests a sympathetic but detached perspective, implying a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -110,13 +110,13 @@
     }
   },
   "ensembleData": {
-    "claudeScore": 80,
+    "claudeScore": 78,
     "openaiScore": 79,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

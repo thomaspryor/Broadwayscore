@@ -57,7 +57,7 @@ import { ReviewTextFile, ScoringPipelineOptions, PipelineRunSummary } from './ty
 
 // Import content quality module for garbage detection
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { assessTextQuality } = require('../lib/content-quality.js');
+const { assessTextQuality, detectGarbageFromReasoning } = require('../lib/content-quality.js');
 
 import { detectMultiShow } from './multi-show-detector';
 import { PROMPT_VERSION } from './config';
@@ -567,6 +567,21 @@ async function main(): Promise<void> {
         if (scoredAny.needsRescore) {
           delete scoredAny.needsRescore;
           scoredAny.rescoreCompletedAt = new Date().toISOString();
+        }
+
+        // Post-scoring garbage detection: check if LLM reasoning indicates
+        // the text was not an actual review (closes the feedback loop)
+        const llmResult = result.scoredFile.llmScore;
+        if (llmResult) {
+          const garbageCheck = detectGarbageFromReasoning(
+            llmResult.reasoning,
+            llmResult.confidence
+          );
+          if (garbageCheck.isGarbage) {
+            scoredAny.contentTier = 'needs-rescrape';
+            scoredAny.garbageReasoningDetected = garbageCheck.matchedPattern;
+            scoredAny.garbageReasoningFlaggedAt = new Date().toISOString();
+          }
         }
 
         if (!options.dryRun) {

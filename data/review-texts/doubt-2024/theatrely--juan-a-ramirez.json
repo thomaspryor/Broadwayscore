@@ -9,64 +9,55 @@
   "bwwExcerpt": "It’s tempting to chalk this up to Ryan’s last-minute substitution for Tyne Daly, who bowed out as the production began previews. And though, perhaps, some time will benefit the production, it seems impossible to fault Ryan, who is soul-shakingly effective. Her Sister Aloysius is stoney and near-monotone, as if registering emotion would seem to her ungodly or, worse, unproductive. The actor makes an art out of frozenness: her physical rigidity — at times cutting a monolithic silhouette in her nun",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 76,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 74,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 88,
+      "book": null,
       "music": null,
-      "performances": 87,
-      "direction": 58
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "what most emerges from this revival is the brilliance of the material",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Scott Ellis' direction is slack where suffocating tension is demanded",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "If this Doubt leaves room for growth, there is still none left as to the play's intense brilliance",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic praises the brilliant material and exceptional performances (especially Amy Ryan) but significantly criticizes the direction for lacking necessary tension, resulting in a qualified positive recommendation. | GPT-4o-mini: The review expresses strong praise for the performances and the script, but notes significant issues with direction, leading to a positive recommendation overall.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises the material's brilliance, Ryan's soul-shaking performance, and strong casting while noting directorial issues. The final assessment affirms the play's worth despite noted shortcomings. | Gemini: The review praises the performances and the brilliance of the play itself, but criticizes the direction as being somewhat slack. Overall, the review leans towards a positive recommendation, albeit with reservations about the direction.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:49:32.563Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:31:20.386Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 73,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "bwwThumb": "Up",
   "dtliExcerpt": "She’s matched by her castmates, as well as David Rockwell’s exquisite church set, which rotates to fold in on itself even as its cloistered garden provides a glimmer of hopeful ascent. If this Doubt leaves room for growth, there is still none left as to the play’s intense brilliance.",

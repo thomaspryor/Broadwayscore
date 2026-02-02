@@ -9,71 +9,56 @@
   "bwwExcerpt": "Between the two of them, you can’t really fail to enjoy an evening of theater, bumpy as the road may be at points. Farrow, especially, shines in a brisk yet moving conclusion that underscores the power of fleeting relationships to alter the trajectory or our lives. The Roommate, as with a real, solid house-sharing arrangement, is neither disastrous nor perfect. It entails moments of awkwardness and adjustment, some settling in and some compromises, to find the best of it.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 72,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 55,
+      "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 60
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Between the two of them, you can't really fail to enjoy an evening of theater, bumpy as the road may be at points",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The Roommate, as a play, has an odd, somewhat confounding pacing, ambling about in its first act, an awkward getting-to-know-you stage that leans into stock, to the point of near boredom",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The Roommate, as with a real, solid house-sharing arrangement, is neither disastrous nor perfect",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic finds significant flaws in the script and pacing but strongly praises the legendary performances of LuPone and Farrow, ultimately concluding that the stars make it worth seeing despite the play's weaknesses.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly recommends seeing the show primarily for LuPone and Farrow's performances, acknowledging the script's unevenness but emphasizing the enjoyable theatrical experience they provide together. | GPT-4o: The review highlights the strong performances of LuPone and Farrow as the main reason to see the play, despite its uneven pacing and script. The critic ultimately suggests that the performances make the play worth seeing. | Gemini: The review acknowledges the play's unevenness but ultimately suggests it's worth seeing for the performances of LuPone and Farrow. The phrase 'you can't really fail to enjoy an evening of theater' indicates a positive, though not rave, recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:24:26.538Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3837,
-    "outputTokens": 408,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:13:09.049Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 68,
-    "openaiScore": 70,
-    "scoreDelta": 2,
+    "claudeScore": 73,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Meh",
   "dtliExcerpt": "Between the two of them, you can’t really fail to enjoy an evening of theater, bumpy as the road may be at points. Farrow, especially, shines in a brisk yet moving conclusion that underscores the power of fleeting relationships to alter the trajectory or our lives. The Roommate, as with a real, solid house-sharing arrangement, is neither disastrous nor perfect. It entails moments of awkwardness and adjustment, some settling in and some compromises, to find the best of it.",

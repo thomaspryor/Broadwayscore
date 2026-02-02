@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses positive descriptors like 'raucous, ridiculous romp' and explicitly states the show 'works,' indicating a clear recommendation despite the irreverent tone. | GPT-4o: The review highlights the show's irreverent comedy and successful execution, indicating a strong positive recommendation. | Gemini: The review uses positive language like \"raucous,\" \"ridiculous,\" and states that the show \"works,\" indicating a recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly states the show 'works' and uses positive descriptors like 'raucous' and 'ridiculous' in an approving context, indicating a solid recommendation. | GPT-4o: The review uses positive language to describe the show as a successful comedy, indicating a strong recommendation. | Gemini: The review uses positive language like \"raucous, ridiculous romp\" and states that the show \"works,\" indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,20 +43,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T13:58:56.632Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:05:01.518Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 82,
+    "openaiScore": 81,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

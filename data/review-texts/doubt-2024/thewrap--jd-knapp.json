@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "“Doubt: A Parable” sets up a fascinating power play between two very unequal forces, and it’s thrilling to watch Amy Ryan’s nun and Liev Schreiber’s priest duke it out for 90 minutes on stage. A feisty revival of John Patrick Shanley’s play opened Thursday at the Roundabout’s Todd Haimes Theatre.",
@@ -19,60 +19,52 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 85,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 93
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 89,
-      "direction": 83
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the first production into the newly renamed theater is a real winner",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "it's thrilling to watch Amy Ryan's nun and Liev Schreiber's priest duke it out for 90 minutes on stage",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "her take-down of him is all the more stunning",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic calls it 'a real winner' and finds the central performances 'thrilling' and 'stunning,' with consistent praise for the leads and direction throughout. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and direction, highlighting the engaging nature of the production while offering only minor caveats.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic explicitly calls the production 'a real winner' and praises the performances, particularly the dynamic between Ryan and Schreiber. Despite some comparative commentary, the overall assessment is clearly positive. | GPT-4o: The review is highly enthusiastic about the production, praising the performances, direction, and humor. The critic describes it as a 'real winner' and highlights the thrilling dynamic between the lead actors, indicating a strong recommendation. | Gemini: The review explicitly calls the production \"a real winner\" and praises the performances, indicating a positive recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:49:38.440Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:31:31.493Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 88,
-    "scoreDelta": 6,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 82,

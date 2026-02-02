@@ -10,67 +10,59 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 81,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 87
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 70,
-      "music": 85,
-      "performances": 80,
-      "direction": 83
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Lin-Manuel Miranda's 'In the Heights' may have been a hit — but his 'Hamilton' is a phenomenon",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Thomas Kail's direction and Andy Blankenbuehler's choreography is inventive and kinetic",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Less effective is the history-with-a-capital-H stuff... Hamilton's big-picture importance is diluted",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Despite some reservations about the book and Miranda's acting, the critic calls it a 'phenomenon' with strong praise for the music, direction, choreography, and supporting performances, predicting a successful run. | GPT-4o-mini: The review expresses strong praise for the music and performances while noting some limitations in the script and historical depth, leading to a solid positive recommendation overall.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows appreciation for the production's energy, direction, and choreography, though notes it's not revolutionary. The single excerpt limitation requires conservative scoring within the positive range. | GPT-4o: The review highlights the energetic and inventive direction and choreography, indicating a positive reception. However, it notes that the show is not 'revolutionary', suggesting some reservations. The overall tone leans towards a positive recommendation. | Gemini: The review expresses \"a lot of love\" for the show and praises the direction and choreography, but also states it's not \"revolutionary\" and is \"warmly reassuring.\" This suggests a positive but not overwhelmingly enthusiastic recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:58:05.986Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:01:20.333Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 81,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 73,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,

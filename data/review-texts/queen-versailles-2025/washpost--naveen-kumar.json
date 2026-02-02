@@ -9,7 +9,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 30,
+  "assignedScore": 41,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "But the new show from “Wicked” composer Stephen Schwartz and playwright Lindsey Ferrentino is both overdone and undercooked: Rather than decide whether to romanticize or satirize its subjects, the musical ventures a gaudy and confused mix of both without a coherent point of view.",
@@ -19,67 +19,58 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 30,
+    "score": 41,
     "confidence": "medium",
     "range": {
-      "low": 20,
-      "high": 40
+      "low": 36,
+      "high": 46
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 20,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "ostentatious token of excess that ultimately proves hollow",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "these particular horrors of capitalism potential ticket buyers have the option to escape",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "settles for nipping them on the nose with all the ferocity of Jackie's cuddly white Pomeranian",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review uses harsh metaphors comparing the musical to an unfinished hollow estate and explicitly suggests audiences should 'escape' this production rather than see it. | GPT-4o-mini: The review expresses strong criticism of the musical's approach and effectiveness, indicating a clear negative sentiment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic finds the show 'both overdone and undercooked' with 'no coherent point of view' and compares it to a 'hollow' display of excess, ending with advice that ticket buyers have 'the option to escape' these 'horrors.' | GPT-4o: The review criticizes the musical for being both overdone and undercooked, lacking a coherent point of view, and ultimately being hollow. The language used suggests a negative assessment, recommending potential ticket buyers to escape these 'horrors of capitalism.' | Gemini: The review is mixed, describing the show as \"overdone and undercooked\" and lacking a coherent point of view. The final sentence suggests that it's escapable, implying it's not a must-see, but not a complete disaster either.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:45:52.563Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:30:40.300Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 30,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 35,
-    "scoreDelta": 10,
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "garbageFullText": "But the new show from “Wicked” composer Stephen Schwartz and playwright Lindsey Ferrentino is both overdone and undercooked: Rather than decide whether to romanticize or satirize its subjects, the musical ventures a gaudy and confused mix of both without a coherent point of view.",
   "garbageReason": "Show title \"queen versailles\" not mentioned",
   "garbageFixedAt": "2026-01-29T22:45:23.140Z",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 30,
   "fullText": "Democracy Dies in DarknessReview by Naveen KumarNEW YORK — There is a moment in the new musical “The Queen of Versailles” when the 2012 documentary that it’s based on gets released at the Sundance Film Festival. Kristin Chenoweth’s Jackie Siegel, an unduly naive “Real Housewives” type, waves off whether the crowd is laughing with her or at her. “Doesn’t matter!” she chirps. “We’re a hit.”\n\n24 CommentsMost ReadOpinionMichael ShermerI’ve reported on UFO sightings for decades — and come to this conclusionJanuary 29, 2026Salvador RizzoDOJ misconduct complaint against D.C. federal judge dismissedEarlier todayOpinionEditorial BoardTrump’s tariffs can’t cover a bill this staggeringJanuary 26, 2026NewsletterFridaysBook ClubOur weekly selection of book reviews and recommendations from Book World editor Ron Charles.Sign up\n\nAs a California consumer, you have the right to opt-out from the sale or sharing of your personal information at any time across business platform, services, businesses and devices. You can opt-out of the sale and sharing of your personal information by using this toggle switch. As a Virginia, Utah, Colorado and Connecticut consumer, you have the right to opt-out from the sale of your personal data and the processing of your personal data for targeted advertising. You can opt-out of the sale of your personal data and targeted advertising by using this toggle switch. For more information on your rights as a United States consumer see our privacy notice.",
@@ -115,5 +106,6 @@
   "sourceMethod": "scrapingbee",
   "textIssues": [
     "Word count too low: 227 (min: 300)"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-02T00:30:40.301Z"
 }

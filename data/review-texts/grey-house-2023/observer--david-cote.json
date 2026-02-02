@@ -10,77 +10,55 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 25,
+    "score": 44,
     "confidence": "high",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 15,
+      "book": null,
       "music": null,
-      "performances": 55,
-      "direction": 80
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Here, there's only the mounting dread that you're trapped in a pretentious trauma-drama using horror tropes to diminishing effect",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "audiences who pay for his pretentious pulp? Not so much",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "the real star is the design team; their work is mysterious and spooky, and altogether ooky",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic delivers a scathing review calling the play 'pretentious pulp' with fundamental flaws in logic and storytelling, praising only the design work while warning audiences away.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The critic clearly does not recommend the show, calling it 'pretentious pulp,' 'tedious,' and 'whimsical and incoherent,' while criticizing the writing as derivative and lacking internal logic. | Gemini: The review is overwhelmingly negative, criticizing the play's writing, plot, and overall effectiveness. While praising the design elements, the core assessment is that the play is pretentious and incoherent, leading to a negative recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T19:59:41.002Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3580,
-    "outputTokens": 364,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:25:21.055Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 40,
-    "geminiScore": 60,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 20,
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Negative"
   },
   "dateUnknown": true,
   "dateSource": "historical-review",

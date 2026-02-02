@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"'The Lion King' was astonishing, in the jaw-dropping manner of speaking. And today, 21 years later, it still is...Taymor, the avant-garde director to whom Disney entrusted the piece, outdid herself...Everything still looks wonderful, and looks practically brand new, too. One of the stunning elements for me, this time through, was the realization of how brilliantly this show moves...The hard-working ensemble is well-drilled and exceptional.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-lion-king",
   "originalScore": "5 stars",
-  "assignedScore": 95,
+  "assignedScore": 94,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 95,
+    "score": 94,
     "confidence": "high",
     "range": {
-      "low": 90,
-      "high": 98
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -25,55 +25,40 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 95
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "★★★★★ Long-Run Lookback: Disney's Tale of Simba Remains Awe-Inspiring",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The Lion King was altogether awe-inspiring when it first stormed the Broadway savanna in 1997... And today, 21 years later, it still is.",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "was astonishing, in the jaw-dropping manner of speaking",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Five-star review with superlative language ('awe-inspiring', 'astonishing', 'jaw-dropping') that explicitly states the show remains as powerful after 21 years, indicating unqualified enthusiasm.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The 5-star rating combined with superlative language like 'awe-inspiring,' 'astonishing,' 'jaw-dropping,' and 'outdid herself' clearly indicates an enthusiastic recommendation for this long-running production. | GPT-4o: The review is overwhelmingly positive, emphasizing the show's awe-inspiring nature and the exceptional work of the director and ensemble. The original 5-star rating further supports a 'Rave' classification. | Gemini: The critic uses extremely positive language like \"awe-inspiring\", \"stunned\", \"astonishing\", and \"breathtaking\". The critic also states that the show is still amazing 21 years later. The 5-star rating confirms the rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:19:08.900Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2669,
-    "outputTokens": 387,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:58:36.330Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 95,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "sources": [
     "show-score",

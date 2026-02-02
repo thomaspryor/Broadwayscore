@@ -9,7 +9,7 @@
   "showScoreExcerpt": "âIn a year when Broadway has given us genuinely ambitious work grappling with what it means to be American, \"The Queen of Versailles\" offers only spectacle without insight, a palace with no one home. What were they thinking?â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-queen-of-versailles-broadway",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 42,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/queen-versailles-2025/theatre-reviews-limited--david-roberts_2026-01-27.html",
@@ -29,33 +29,22 @@
   ],
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 25,
+    "score": 42,
     "confidence": "high",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 37,
+      "high": 47
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 20,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 25
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "spectacle without insight, a palace with no one home",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "What were they thinking?",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review is a clear pan that criticizes the show as empty spectacle lacking substance, with the rhetorical question 'What were they thinking?' expressing bewilderment at the production's failures.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic explicitly criticizes the show as lacking insight and substance, using the metaphor 'palace with no one home' to suggest emptiness despite spectacle. However, given this is a single excerpt with potential for cherry-picking, scoring conservatively within negative range. | GPT-4o: The critic describes the show as lacking substance and insight, suggesting it is not worth seeing. However, due to the single excerpt warning, the score is placed conservatively in the middle of the negative range. | Gemini: The review excerpt is strongly negative, criticizing the show for lacking insight and substance. The question \"What were they thinking?\" further emphasizes the reviewer's disappointment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -64,27 +53,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:58:46.785Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2354,
-    "outputTokens": 288,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:30:04.690Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 15,
-    "scoreDelta": 10,
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 20,

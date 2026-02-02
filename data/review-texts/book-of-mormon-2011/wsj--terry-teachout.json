@@ -7,18 +7,18 @@
   "publishDate": "2011-03-24",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 64,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "Trey Parker and Matt Stone, the naughty boys of \"South Park,\" have teamed up with Robert Lopez, one of the co-creators of \"Avenue Q,\" and the results of their collaboration are pretty much what you'd expect: slick and smutty. \"The Book of Mormon\" is the first musical to open on Broadway since \"La Ca...",
   "sourceMethod": "stub",
   "scoreSource": null,
   "llmScore": {
-    "score": 63,
+    "score": 64,
     "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The truncated text shows mixed descriptors ('slick' could be positive, 'smutty' more neutral/negative) without revealing the critic's ultimate verdict or recommendation. | GPT-4o: The review text is truncated and lacks a clear verdict. The description 'slick and smutty' suggests a mixed impression, but without the full context, it's unclear if this is positive or negative. The confidence is low due to the lack of explicit recommendation or discouragement. | Gemini: The review excerpt describes the musical as \"slick and smutty,\" which suggests a positive but potentially controversial experience. Without the full review, it's difficult to determine the exact level of enthusiasm, but the description implies a recommendation with reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The excerpt describes the show as 'slick and smutty' which could be either praise or criticism depending on context. With only a truncated excerpt available, I'm scoring conservatively in the mixed range due to insufficient evidence of clear recommendation either way. | GPT-4o: The review describes the show as 'slick and smutty,' which suggests a mixed tone, highlighting both production quality and potentially divisive content. The lack of a full verdict and the single excerpt warning suggest a conservative score within the mixed range. | Gemini: The review excerpt describes the show as \"slick and smutty,\" which suggests a generally positive, albeit potentially controversial, experience. Given the limited text, a score in the lower end of the positive range is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,20 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T14:53:09.473Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:48:49.125Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 63,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
+    "claudeScore": 62,
     "openaiScore": 65,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

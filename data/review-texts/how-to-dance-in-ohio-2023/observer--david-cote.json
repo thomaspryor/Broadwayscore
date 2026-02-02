@@ -8,71 +8,56 @@
   "bwwExcerpt": "Generically staged by Sammi Cannold, How to Dance in Ohio was clearly made with love and will touch some hearts—on the spectrum or not—but feels synthetic and patchy when not outright tacky. Even the triumphant final fête, in which our heroes get to strut their stuff, is overshadowed by a head-scratching design choice (sets by Robert Brill). Drew, tasked with organizing the “Second Chance Dance” in a day (!) unveils and hangs a jumbo disco ball which he somehow had time to decorate. The giant or",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 38,
-    "confidence": "high",
+    "score": 62,
+    "confidence": "medium",
     "range": {
-      "low": 35,
-      "high": 42
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 25,
-      "music": 35,
-      "performances": 75,
-      "direction": 30
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "How to Dance falls, I'm afraid, at the latter end of the range",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "feels synthetic and patchy when not outright tacky",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "the actors all perform with tremendous charm and skill",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Despite praising the neurodivergent cast performances, the critic finds the musical fundamentally flawed with a 'scattershot' book, 'bland' score, and 'synthetic' overall feel, comparing it unfavorably to successful examples in the genre.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges the show's good intentions and praises the autistic actors' performances, but finds significant structural and creative flaws that prevent a recommendation. The review balances positive elements with substantial criticisms. | GPT-4o: The review acknowledges the good intentions and charm of the actors but criticizes the production for being scattershot and synthetic. The critic finds the musical to have mixed results, with some touching moments but overall lacking focus and coherence. | Gemini: The review highlights both positive and negative aspects. While praising the actors and some songs, it criticizes the overall execution, writing, and staging, resulting in a mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:38:37.306Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3685,
-    "outputTokens": 354,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:55:20.439Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 38,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 45,
-    "scoreDelta": 3,
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "showScoreExcerpt": "“Generically staged by Sammi Cannold, ‘How to Dance in Ohio’ was clearly made with love and will touch some hearts—on the spectrum or not—but feels synthetic and patchy when not outright tacky.”",

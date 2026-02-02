@@ -8,45 +8,29 @@
   "dtliExcerpt": "By design, clearly. You don’t need to be a Black woman with braids to enjoy this play. Heck, it might teach you something about the intricacies of a craft you only have observed from afar. But this play is also trying to reach a Black popular audience, long ignored by Broadway.",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 75,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": "“ ‘Jaja’s’ is a comedy about life as it is lived in this place, about community, aspiration and entrepreneurship. Mostly, though, it’s a show about immigrants getting the job done, and having fun doing it, one braid at a time.”",
   "bwwExcerpt": null,
   "bwwThumb": null,
   "llmScore": {
-    "score": 68,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 60.5,
-      "high": 75.5
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "You don't need to be a Black woman with braids to enjoy this play",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "it might teach you something about the intricacies of a craft",
-        "sentiment": "positive",
-        "strength": 2
-      },
-      {
-        "quote": "this play is also trying to reach a Black popular audience, long ignored by Broadway",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: This excerpt suggests the play has educational value and broad appeal, but lacks clear evaluative language or explicit recommendation, making it difficult to assess the critic's actual enthusiasm. | GPT-4o-mini: The review suggests a positive outlook on the play's intent and potential impact, but lacks strong enthusiasm or specific praise for its execution.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review emphasizes positive themes like community, aspiration, and characters 'having fun' which suggests an appreciative tone, though the excerpt is too brief to determine the strength of recommendation. | GPT-4o: The review highlights the show's themes and presents it as an enjoyable portrayal of immigrant life. The tone suggests a positive view, but without explicit strong praise, leading to a moderate positive score. | Gemini: The review excerpt highlights the positive aspects of the show, focusing on its comedic portrayal of community, aspiration, and the immigrant experience, suggesting a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,20 +39,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T06:37:10.720Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:52:05.385Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 68,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 70,
-    "scoreDelta": 5,
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

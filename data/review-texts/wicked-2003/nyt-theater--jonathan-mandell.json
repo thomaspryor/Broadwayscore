@@ -15,10 +15,10 @@
   "scoreSource": "extracted-strong-positive",
   "llmScore": {
     "score": 75,
-    "confidence": "low",
+    "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 85
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,21 +26,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 75
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Everything looks so tangible, touchable",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "an argument for live theater",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The excerpt praises the production's tangible quality and frames it as validating live theater's value, suggesting positive recommendation despite extremely limited text.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The quote suggests appreciation for the production's theatrical qualities, but with only one cherry-picked excerpt available, I'm scoring conservatively in the lower positive range due to insufficient context. | GPT-4o: The excerpt suggests a positive view of the production's visual and experiential qualities, indicating a recommendation to see it. However, the lack of a full review and the single excerpt warning suggest a conservative score within the Positive range. | Gemini: The quote is positive, suggesting the production is a good example of live theater. However, with only one excerpt available, it's difficult to gauge the overall sentiment and any potential reservations, so I've scored it conservatively within the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -49,27 +38,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:37:34.463Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2316,
-    "outputTokens": 277,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:44:02.116Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 72,
+    "openaiScore": 77,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/wicked-2003/new-york-theater--jonathan-mandell_2026-01-26.html",
   "textFetchedAt": "2026-01-26T23:28:27.061Z",

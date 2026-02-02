@@ -7,67 +7,59 @@
   "publishDate": "July 13, 2015",
   "showScoreExcerpt": "\"You will never enjoy a story of the American Revolution more than this one as written and told by Lin-Manuel Miranda...This was not so much about the story for me as it was about how the story was told by this beautifully sculpted and colorful; mainly African-American and Latino cast...This production is truly masterful, and brings a modern twist to nearly 300-year-old history...This show fills the stage, and will fill every one of your senses.\"",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 91,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 94,
+    "score": 91,
     "confidence": "high",
     "range": {
-      "low": 87.5,
-      "high": 100
+      "low": 86,
+      "high": 96
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": null,
       "music": null,
-      "performances": 95,
-      "direction": 92
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "You will never enjoy a story of the American Revolution more than this one",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "This production is truly masterful",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "This show fills the stage, and will fill every one of your senses",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Unqualified superlatives like 'masterful,' 'never enjoy...more,' and 'fills every one of your senses' indicate a rave review with no reservations. | GPT-4o-mini: The review expresses unqualified enthusiasm and praise for the production, indicating it is a must-see experience.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Despite being a single excerpt, the language is unambiguously enthusiastic with multiple superlatives ('never enjoy...more', 'truly masterful', 'fills every one of your senses') indicating a strong rave recommendation. | GPT-4o: The excerpt uses strong positive language, describing the production as 'truly masterful' and highlighting its sensory impact. Despite the text quality warning, the language suggests a highly enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"masterful\" and \"will fill every one of your senses,\" indicating a rave review. The critic clearly enjoyed the production and its modern twist on history.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:22:24.815Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:03:13.035Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 94,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": 95,
-    "scoreDelta": 3,
+    "openaiScore": 90,
+    "geminiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/hamilton-2015/thisbroadsway--sandra-mcfarland_2026-01-26.html",
   "textFetchedAt": "2026-01-26T22:38:22.407Z",

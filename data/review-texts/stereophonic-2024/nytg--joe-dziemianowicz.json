@@ -9,7 +9,7 @@
   "showScoreExcerpt": "âThereâs a lot to admire about 'Stereophonic.' The cast gives feel-real performances under the thoughtful direction of Daniel Aukin.â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/stereophonic",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 75,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/stereophonic-2024/nytg--joe-dziemianowicz_2026-01-27.html",
@@ -31,67 +31,52 @@
   "scoreConfidence": "medium",
   "extractedPhrase": "avoid",
   "llmScore": {
-    "score": 68,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 72
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 55,
-      "music": 78,
-      "performances": 82,
-      "direction": 80
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "a worthwhile yet long-winded theatrical reminder",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "There's a lot to admire about Stereophonic. The cast gives feel-real performances under the thoughtful direction of Daniel Aukin",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "In terms of fresh ideas about the creative process, the play doesn't deliver an LP's worth of insights. In the end, it feels like a song we've heard before",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic praises technical elements, performances, and production values but finds the material overly familiar and lacking fresh insights, resulting in a qualified recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic calls it 'worthwhile' and highlights strong performances, direction, and design elements, though notes it feels familiar and overly long. The positive elements outweigh the reservations. | GPT-4o: The review highlights strong performances, convincing music, and effective direction, while noting some lack of originality in the play's ideas. Despite these reservations, the overall tone suggests it is worth seeing. | Gemini: The review highlights several positive aspects of the production, including the performances, direction, set design, and costumes. While it notes that the play doesn't offer groundbreaking insights, the overall tone suggests a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:11:44.484Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3106,
-    "outputTokens": 364,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:07:10.413Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 68,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 70,
+    "claudeScore": 73,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "designation": "Recommended",
   "rescoreReason": "scored on brief excerpt, now has fullText",

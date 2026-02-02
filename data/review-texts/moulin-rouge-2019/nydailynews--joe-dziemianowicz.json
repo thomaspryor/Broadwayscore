@@ -8,7 +8,7 @@
   "fullText": null,
   "bwwExcerpt": "ducing 70 songs, flashy can-can dancers and bohemian ideals, the fantasy is forced to be grounded in reality and loses some of the film's spectacular spectacular-ness in the process. Chris Jones, The New York Daily News : These days, most Broadway theatergoers don't so much want to see a show as take a warm bath inside of one. We crave relief from our growing terror of physical intimacy and our technology-fueled loneliness. What used to pass as immersive theatrical entertainment is, as we end this panicked second decade of the 21st century, no longer immersive enough. The bar has risen. Ergo, \"Moulin Rouge! The Musical.\" Yes, baby, you're a firework. Tim Teeman, The Daily Beast : Not that the thumping, pumping Moulin Rouge allows you to dwell on its misogyny. This is musical as spectacle, so if you don't exactly feel the peril and passion of Christian and Satine's doomed romance, then no matter, because another visual bonbon will be thrown at you soon enough. Alexis Soloski, The Guardi",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOULIN-ROUGE-Opens-On-Broadway-See-What-The-Critics-Think-20190725",
@@ -16,11 +16,11 @@
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 85,
-    "confidence": "low",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 90
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,43 +28,41 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 85
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "dazzling, decadent live translation",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "live translation of 2001 movie",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Strong positive adjectives 'dazzling' and 'decadent' suggest enthusiastic praise for the production, but extremely brief review limits confidence in score assessment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The descriptors 'dazzling' and 'decadent' are clearly positive, suggesting the critic found the production impressive and entertaining, though the brevity of the excerpt limits confidence in the full assessment. | GPT-4o: The description 'dazzling, decadent' suggests a visually impressive and indulgent production, indicating a strong recommendation. However, the lack of full context makes the confidence medium. | Gemini: The review excerpt uses positive adjectives like \"dazzling\" and \"decadent\" to describe the musical, indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:41:42.906Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2337,
-    "outputTokens": 280,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:31:40.525Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "5.0.0"
   },
-  "ensembleData": null,
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
   "showScoreExcerpt": "\"Broadwayâs âMoulin Rouge! The Musicalâ is dazzling, decadent live translation of 2001 movie.\"",
   "contentTier": "excerpt",
   "wordCount": 0,

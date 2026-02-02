@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges it's 'not exactly the feel-good comedy of the year' but still finds value in its ability to make audiences laugh and think, suggesting a qualified recommendation despite some reservations. | GPT-4o: The review suggests that the play is thought-provoking and humorous, indicating a positive experience despite not being the 'feel-good comedy of the year'. The recommendation to consider the play's themes and its ability to provoke thought and laughter suggests a positive verdict with some reservations. | Gemini: The review indicates that the play is funny and thought-provoking, suggesting a positive experience despite not being a 'feel-good comedy'. The phrase 'make you laugh' leans towards a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges it's not the strongest comedy but still recommends it for its entertainment value and thoughtful content. The positive elements (laughs, making you think) outweigh the mild caveat. | GPT-4o: The review suggests that while the show may not be the top comedy of the year, it is engaging enough to provoke laughter and thought, indicating a positive experience overall. | Gemini: The review states that the play will \"make you laugh\" and \"think a little harder,\" indicating a positive experience, but the caveat that it's \"not exactly the feel-good comedy of the year\" suggests reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,13 +36,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:55:12.493Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:14:23.304Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 74,
+    "claudeScore": 76,
     "openaiScore": 75,
     "geminiScore": 75,
     "claudeBucket": "Positive",

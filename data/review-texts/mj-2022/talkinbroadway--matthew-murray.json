@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "MJ succeeds most when it focuses on Jackson's artistry and the creative process, allowing audiences to witness the meticulous craft behind his legendary performances.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,54 +18,53 @@
   "showScoreExcerpt": "MJ succeeds most when it focuses on Jackson's artistry and the creative process, allowing audiences to witness the meticulous craft behind his legendary performances.",
   "needsScoring": true,
   "llmScore": {
-    "score": 62,
-    "confidence": "low",
+    "score": 75,
+    "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 70
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 75,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "MJ succeeds most when it focuses on Jackson's artistry and the creative process",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "succeeds most when",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The phrase 'succeeds most when' implies the show doesn't always succeed, suggesting mixed quality with highlights in specific areas.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review highlights where the show succeeds and emphasizes Jackson's artistry and creative process as strengths, indicating a positive assessment though the truncated nature suggests there may be reservations. | GPT-4o: The review highlights the success of the show in capturing Jackson's artistry, suggesting a positive experience, but the lack of a broader context or additional praise indicates some reservations. | Gemini: The review highlights the show's success in portraying Jackson's artistry, suggesting a positive experience, but the use of \"most\" implies that other aspects may not be as strong, indicating a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:06:06.525Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2333,
-    "outputTokens": 275,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:24:20.342Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -1,22 +1,22 @@
 {
   "_meta": {
     "description": "Critic reviews - raw input data",
-    "lastUpdated": "2026-02-01",
+    "lastUpdated": "2026-02-02",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 2007,
-      "skippedNoScore": 96,
+      "totalReviews": 2000,
+      "skippedNoScore": 90,
       "skippedDuplicate": 5,
       "skippedWrongProduction": 17,
       "scoreSources": {
         "explicit-stars": 115,
         "explicit-outOf": 3,
-        "explicit-slash": 5,
-        "explicit-letterGrade": 94,
+        "explicit-slash": 6,
+        "explicit-letterGrade": 96,
         "originalScore-priority0": 110,
-        "llmScore": 1454,
+        "llmScore": 1442,
         "thumb-override-llm": 20,
-        "llmScore-lowconf": 126,
+        "llmScore-lowconf": 128,
         "llmScore-review": 80,
         "assignedScore": 0,
         "originalScore": 0,
@@ -3908,7 +3908,8 @@
       "originalRating": null,
       "pullQuote": "Tracy Letts' excellent, itchy Bug on Broadway",
       "dtliThumb": "Up",
-      "bwwThumb": null
+      "bwwThumb": null,
+      "designation": "Recommended"
     },
     {
       "showId": "bug-2026",
@@ -12055,22 +12056,6 @@
     },
     {
       "showId": "here-lies-love-2023",
-      "outletId": "variety",
-      "outlet": "Variety",
-      "assignedScore": 65,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Peter Marks",
-      "url": "https://variety.com/2023/legit/reviews/here-lies-love-review-broadway-1235672953/",
-      "publishDate": "July 20, 2023",
-      "originalRating": null,
-      "pullQuote": "The immersive musical about Imelda Marcos is a dazzling spectacle that transforms the Broadway Theatre into a disco-era dance club, though the show's political complexities sometimes get lost in the party atmosphere.",
-      "dtliThumb": null,
-      "bwwThumb": null
-    },
-    {
-      "showId": "here-lies-love-2023",
       "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 56,
@@ -14711,22 +14696,6 @@
     },
     {
       "showId": "lempicka-2024",
-      "outletId": "variety",
-      "outlet": "Variety",
-      "assignedScore": 58,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Peter Marks",
-      "url": "https://variety.com/2024/legit/reviews/lempicka-review-broadway-musical-1235967890/",
-      "publishDate": "April 15, 2024",
-      "originalRating": null,
-      "pullQuote": "The musical about Polish Art Deco painter Tamara de Lempicka is a visually stunning production that struggles to find its emotional core despite strong performances from Eden Espinosa and Amber Iman.",
-      "dtliThumb": null,
-      "bwwThumb": null
-    },
-    {
-      "showId": "lempicka-2024",
       "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 42,
@@ -17296,22 +17265,6 @@
       "showId": "merrily-we-roll-along-2023",
       "outletId": "variety",
       "outlet": "Variety",
-      "assignedScore": 88,
-      "scoreSource": "llmScore",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Peter Marks",
-      "url": "https://variety.com/2023/legit/reviews/merrily-we-roll-along-review-broadway-1235822943/",
-      "publishDate": "December 1, 2023",
-      "originalRating": null,
-      "pullQuote": "The production, directed by Maria Friedman, is a triumph of casting and conception that makes the case for this Sondheim musical more persuasively than any previous incarnation.",
-      "dtliThumb": null,
-      "bwwThumb": null
-    },
-    {
-      "showId": "merrily-we-roll-along-2023",
-      "outletId": "variety",
-      "outlet": "Variety",
       "assignedScore": 52,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Negative",
@@ -19353,7 +19306,7 @@
       "url": "https://www.interestedbystander.com/2024/07/broadway-review-cole-escolas-irreverent.html",
       "publishDate": "July 11, 2024",
       "originalRating": null,
-      "pullQuote": null,
+      "pullQuote": "\"Oh, Mary!\" (c) Emilio Madrid Theater: “Oh, Mary!” On Broadway at the Lyceum Theatre Premise: Actor and comedian Cole Escola has created some truly memorable characters on TV and YouTube (including Jesus’ sister Jessica Christ, Bernadette Peters doing her taxes and the spoiled Chassie from At Home with Any Sedaris), and now they have turned thei...",
       "dtliThumb": null,
       "bwwThumb": null
     },
@@ -19649,22 +19602,6 @@
     },
     {
       "showId": "once-upon-a-one-more-time-2023",
-      "outletId": "broadwaynews",
-      "outlet": "Broadway News",
-      "assignedScore": 80,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Unknown",
-      "url": "https://www.broadwaynews.com/review-once-upon-a-one-more-time-thrillingly-weds-fairy-tale-princesses-and-pop/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "a thoroughly enjoyable, relentlessly watchable and genuinely funny good time\"Deadline: \"Smart, funny, splendid to look at and all with a beat you can dance to, this tribute (to) the indomitable Ms.",
-      "dtliThumb": null,
-      "bwwThumb": null
-    },
-    {
-      "showId": "once-upon-a-one-more-time-2023",
       "outletId": "broadwayworld",
       "outlet": "BroadwayWorld",
       "assignedScore": 68,
@@ -19679,6 +19616,22 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "designation": "Recommended"
+    },
+    {
+      "showId": "once-upon-a-one-more-time-2023",
+      "outletId": "cititour",
+      "outlet": "Cititour",
+      "assignedScore": 69,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Brian Lipton",
+      "url": "https://cititour.com/NYC_Broadway/Once-Upon-A-One-More-Time/1154",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "NYC Events, Restaurants, Music, & Nightlife\n\nCititour.com Review\n The illegitimate love child of “Bad Cinderella” and “&Juliet” – with a little bit of the theatrical sperm of “Into the Woods” thrown in for fertilization – the ultra-splashy musical “Once Upon a One More Time,” now at the Marquis Theatre, is the latest Broadway fable screaming at ...",
+      "dtliThumb": null,
+      "bwwThumb": null
     },
     {
       "showId": "once-upon-a-one-more-time-2023",
@@ -19806,6 +19759,23 @@
       "originalRating": null,
       "pullQuote": "Once Upon a One More Time an irresistible party. And quite frankly, that's what I want from a Britney Spears musical more than anything else.",
       "dtliThumb": "Up",
+      "bwwThumb": null,
+      "designation": "Recommended"
+    },
+    {
+      "showId": "once-upon-a-one-more-time-2023",
+      "outletId": "observer",
+      "outlet": "Observer",
+      "assignedScore": 67,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "David Cote",
+      "url": "https://observer.com/2023/06/review-once-upon-a-one-more-time-wont-leave-britney-alone/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Once Upon a One More Time | 2hrs 30mins. | Marquis Theatre | 210 West 46th Street | 212-307-4100 By clicking submit, you agree to our <a href=\"http://observermedia.com/terms\">termsice</a> and acknowledge we may use your information to send you emails, product samples, and promotions on this website and other properties.",
+      "dtliThumb": null,
       "bwwThumb": null,
       "designation": "Recommended"
     },
@@ -19982,22 +19952,6 @@
       "publishDate": "June 23, 2023",
       "originalRating": null,
       "pullQuote": "This jukebox musical built around Britney Spears songs is a colorful, energetic and surprisingly sweet confection that delivers exactly what it promises.",
-      "dtliThumb": null,
-      "bwwThumb": null
-    },
-    {
-      "showId": "once-upon-a-one-more-time-2023",
-      "outletId": "variety",
-      "outlet": "Variety",
-      "assignedScore": 82,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Unknown",
-      "url": "https://variety.com/2023/legit/reviews/once-upon-a-one-more-time-review-britney-spears-musical-1235649922/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "While it is debatable that the life of the newly emancipated Britney Spears is a fairy tale at present, the singer's catalog of hits surely has the feel of a fable with feminist-forward empowerment.",
       "dtliThumb": null,
       "bwwThumb": null
     },
@@ -20484,7 +20438,8 @@
       "originalRating": null,
       "pullQuote": "top-notch director who has done recent work that is both more exhilarating (Purlie Victorious) and more revelatory (Home)",
       "dtliThumb": null,
-      "bwwThumb": "Up"
+      "bwwThumb": "Up",
+      "designation": "Recommended"
     },
     {
       "showId": "our-town-2024",
@@ -20838,7 +20793,8 @@
       "originalRating": null,
       "pullQuote": "Despite the random contemporary touches",
       "dtliThumb": null,
-      "bwwThumb": null
+      "bwwThumb": null,
+      "designation": "Recommended"
     },
     {
       "showId": "our-town-2024",
@@ -20950,7 +20906,8 @@
       "originalRating": null,
       "pullQuote": "Michael Stuhlbarg delivers a powerhouse performance as Boris Berezovsky in this gripping political drama that feels unnervingly relevant to today's world. The production crackles with tension and intelligence.",
       "dtliThumb": null,
-      "bwwThumb": null
+      "bwwThumb": null,
+      "designation": "Recommended"
     },
     {
       "showId": "patriots-2024",
@@ -21752,22 +21709,6 @@
       "showId": "prayer-for-the-french-republic-2024",
       "outletId": "variety",
       "outlet": "Variety",
-      "assignedScore": 62,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Charles Isherwood",
-      "url": "https://variety.com/2024/legit/reviews/prayer-for-the-french-republic-review-broadway-1235853842/",
-      "publishDate": "February 9, 2024",
-      "originalRating": null,
-      "pullQuote": "Joshua Harmon's ambitious family drama spans decades to explore the persistence of antisemitism in France, but the play's sprawling scope sometimes works against its emotional impact.",
-      "dtliThumb": null,
-      "bwwThumb": null
-    },
-    {
-      "showId": "prayer-for-the-french-republic-2024",
-      "outletId": "variety",
-      "outlet": "Variety",
       "assignedScore": 65,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
@@ -21827,6 +21768,22 @@
       "pullQuote": "is a knockout show, as hilarious as it is cutting and as emotionally warmhearted as it is politically potent",
       "dtliThumb": null,
       "bwwThumb": "Up"
+    },
+    {
+      "showId": "purlie-victorious-2023",
+      "outletId": "cititour",
+      "outlet": "Cititour",
+      "assignedScore": 50,
+      "scoreSource": "explicit-slash",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Brian Scott Lipton",
+      "url": "https://cititour.com/NYC_Broadway/Purlie-Victorious/1169",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "NYC Events, Restaurants, Music, & Nightlife\n\nVisit the Sitehttp://purlievictorious.com/Open/Close DatesOpening 9/27/2023Closing 2/4/2024\nTheatre Info\nMusic Box Theatre239 West 45th StreetNew York, NY 10036 Map\n\nCititour.com is your guide to interesting places throughout New York City.",
+      "dtliThumb": null,
+      "bwwThumb": null
     },
     {
       "showId": "purlie-victorious-2023",
@@ -22639,22 +22596,6 @@
     },
     {
       "showId": "ragtime-2025",
-      "outletId": "amny",
-      "outlet": "amNewYork",
-      "assignedScore": 85,
-      "scoreSource": "explicit-letterGrade",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Shania Russell",
-      "url": "https://www.amny.com/entertainment/broadway/review-divided-america-ragtime-strikes-defiant-chord/",
-      "publishDate": "2025-10-16T23:01:45-04:00",
-      "originalRating": "B",
-      "pullQuote": "More than a revival, this 'Ragtime' feels like a reckoning—urgent, elegant, and profoundly alive",
-      "dtliThumb": "Up",
-      "bwwThumb": "Up"
-    },
-    {
-      "showId": "ragtime-2025",
       "outletId": "chicagotribune",
       "outlet": "Chicago Tribune",
       "assignedScore": 72,
@@ -22729,9 +22670,10 @@
       "url": "https://deadline.com/2025/10/ragtime-broadway-review-1236583715/",
       "publishDate": "October 16, 2025",
       "originalRating": null,
-      "pullQuote": "But whatever its faults and near-misses, Ragtime has always been, like its ’90s contemporaries Titanic and Parade, an opportunity for rediscovery.",
+      "pullQuote": "Get our Breaking News Alerts and Keep your inbox happy. I absolutely loved the review of ‘Ragtime’!",
       "dtliThumb": "Meh",
-      "bwwThumb": "Up"
+      "bwwThumb": "Up",
+      "designation": "Recommended"
     },
     {
       "showId": "ragtime-2025",
@@ -23269,15 +23211,15 @@
       "showId": "real-women-have-curves-2025",
       "outletId": "ew",
       "outlet": "Entertainment Weekly",
-      "assignedScore": 81,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
+      "assignedScore": 95,
+      "scoreSource": "explicit-letterGrade",
+      "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Unknown",
       "url": "https://ew.com/real-women-have-curves-review-musical-broadway-11722804",
       "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "The show is an absolute joy to witness with its vibrant scenery and lively choreography. It also pulls off a crucial balancing act, immersing us in the real, textured world of their Angeles locale, leaning into the detail and intimate moments, and then, in the right moments, embracing fantasy by whisking us into the character's minds and letting...",
+      "originalRating": "A",
+      "pullQuote": "​ \n\n \n\n \n\n \n\n \n\n \n\n \n\n \n\n \n\n \n\n \n\nTop Stories\n\nWhite House lashes out at 'South Park'\n\nAnne Burrell's death ruled a suicide\n\nHulk Hogan dies at 71\n\nGloRilla arrested on drug possession charges\n\nReal Women Have Curves review: The beloved movie gets bolder and brighter as a crowd-pleasing Broadway musical\nLike America Ferrera before her, Tatianna ...",
       "dtliThumb": null,
       "bwwThumb": null
     },
@@ -23567,7 +23509,7 @@
       "url": "https://www.thewrap.com/real-women-have-curves-broadway-review-latinas-take-cover-to-break-free/",
       "publishDate": null,
       "originalRating": null,
-      "pullQuote": "In scene after scene, Lisa Loomer and Nell Benjamin's book for the new musical \"Real Women Have Curves\" is a vast improvement on George LaVoo and Josefina Lopez's screenplay, which is based on Lopez's play.",
+      "pullQuote": "The star of this show is a mummy that goes on a most twisted, tune-filled journey The makers of the outrageous new musical “Dead Outlaw” give us the equivalent of what Alfred Hitchcock did in “Psycho” when his star Janet Leigh gets killed 40 minutes into the movie.",
       "dtliThumb": null,
       "bwwThumb": null
     },
@@ -23811,23 +23753,8 @@
       "originalRating": null,
       "pullQuote": "There was a palpable feeling of deflation after the first number",
       "dtliThumb": "Down",
-      "bwwThumb": null
-    },
-    {
-      "showId": "redwood-2025",
-      "outletId": "guardian",
-      "outlet": "The Guardian",
-      "assignedScore": 23,
-      "scoreSource": "llmScore",
-      "bucket": "Pan",
-      "thumb": "Down",
-      "criticName": "Adrian",
-      "url": "https://www.theguardian.com/stage/2025/feb/13/redwood-review-idina-menzel",
-      "publishDate": "February 13, 2025",
-      "originalRating": null,
-      "pullQuote": "There was a palpable feeling of deflation after the first number, a sense of trepidation that did not ease for the remainder of the show.",
-      "dtliThumb": "DOWN",
-      "bwwThumb": null
+      "bwwThumb": null,
+      "designation": "Recommended"
     },
     {
       "showId": "redwood-2025",
@@ -24508,22 +24435,6 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "designation": "Recommended"
-    },
-    {
-      "showId": "six-2021",
-      "outletId": "variety",
-      "outlet": "Variety",
-      "assignedScore": 91,
-      "scoreSource": "llmScore",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Aramide Tinubu",
-      "url": "https://variety.com/2021/legit/reviews/six-review-broadway-1235086915/",
-      "publishDate": "October 4, 2021",
-      "originalRating": null,
-      "pullQuote": "The Broadway iteration of 'Six' is a triumphant celebration of sisterhood that cleverly reimagines the wives of Henry VIII as modern-day pop stars.",
-      "dtliThumb": null,
-      "bwwThumb": null
     },
     {
       "showId": "six-2021",
@@ -25672,7 +25583,8 @@
       "originalRating": null,
       "pullQuote": "\"the play turns into something altogether fresh and, in this play-with-music hybrid form\"",
       "dtliThumb": "Up",
-      "bwwThumb": "Up"
+      "bwwThumb": "Up",
+      "designation": "Recommended"
     },
     {
       "showId": "stereophonic-2024",
@@ -27342,22 +27254,6 @@
       "showId": "the-great-gatsby-2024",
       "outletId": "variety",
       "outlet": "Variety",
-      "assignedScore": 63,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Aramide Tinubu",
-      "url": "https://variety.com/2024/legit/reviews/the-great-gatsby-review-broadway-musical-jeremy-jordan-1235981841/",
-      "publishDate": "April 26, 2024",
-      "originalRating": null,
-      "pullQuote": "While the show boasts stunning visuals and impressive performances, particularly from Jeremy Jordan as Jay Gatsby and Eva Noblezada as Daisy Buchanan, the musical struggles to capture the tragic essence of Fitzgerald's masterpiece.",
-      "dtliThumb": null,
-      "bwwThumb": null
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "outletId": "variety",
-      "outlet": "Variety",
       "assignedScore": 40,
       "scoreSource": "llmScore",
       "bucket": "Negative",
@@ -27753,7 +27649,8 @@
       "originalRating": null,
       "pullQuote": "\"You will be bombarded by some of the most beautiful and spectacular sights theater can offer from before and behind, so eyes in the back of the head will come in handy.",
       "dtliThumb": "Meh",
-      "bwwThumb": null
+      "bwwThumb": null,
+      "designation": "Recommended"
     },
     {
       "showId": "the-notebook-2024",
@@ -29312,9 +29209,9 @@
       "showId": "the-roommate-2024",
       "outletId": "variety",
       "outlet": "Variety",
-      "assignedScore": 76,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
+      "assignedScore": 95,
+      "scoreSource": "explicit-letterGrade",
+      "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Charles Isherwood",
       "url": "https://variety.com/2024/legit/reviews/the-roommate-review-broadway-mia-farrow-patti-lupone-1236129890/",
@@ -29322,7 +29219,8 @@
       "originalRating": null,
       "pullQuote": "Farrow and LuPone make an odd and oddly affecting pair in this tender two-hander about friendship, loneliness and the courage to change.",
       "dtliThumb": null,
-      "bwwThumb": null
+      "bwwThumb": null,
+      "designation": "Recommended"
     },
     {
       "showId": "the-roommate-2024",
@@ -30268,9 +30166,9 @@
       "showId": "the-whos-tommy-2024",
       "outletId": "variety",
       "outlet": "Variety",
-      "assignedScore": 78,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
+      "assignedScore": 95,
+      "scoreSource": "explicit-letterGrade",
+      "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Charles Isherwood",
       "url": "https://variety.com/2024/legit/reviews/the-whos-tommy-broadway-review-1235953576/",
@@ -30278,7 +30176,8 @@
       "originalRating": null,
       "pullQuote": "The new Broadway revival of 'The Who's Tommy' is a sensory overload that succeeds in translating Pete Townshend's rock opera into a thrilling theatrical experience.",
       "dtliThumb": null,
-      "bwwThumb": null
+      "bwwThumb": null,
+      "designation": "Recommended"
     },
     {
       "showId": "the-whos-tommy-2024",

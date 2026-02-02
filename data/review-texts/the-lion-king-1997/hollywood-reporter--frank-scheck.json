@@ -8,18 +8,18 @@
   "fullText": null,
   "showScoreExcerpt": "\"The Lion King is a spectacular rendition of the animated film, a brilliant theatrical adaptation that stands on its own...Taymor has risen to the challenge, translating the physically complex tale to the stage with an endlessly clever, visually stunning use of masks, puppetry, costumes and scenic effects; the stage show has the delighted audience firmly in its grip.\"",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 89,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "sourceMethod": "stub",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 92,
+    "score": 89,
     "confidence": "medium",
     "range": {
-      "low": 83.5,
-      "high": 100
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -27,48 +27,40 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 93
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "brilliant theatrical adaptation that stands on its own",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "endlessly clever, visually stunning use of masks, puppetry, costumes and scenic effects",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the stage show has the delighted audience firmly in its grip",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Unqualified praise for Taymor's direction and visual spectacle with superlatives like 'brilliant,' 'spectacular,' and 'visually stunning,' indicating strong recommendation despite being a brief excerpt. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production's visual and theatrical qualities, indicating a strong recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The excerpt uses strong positive language like 'spectacular,' 'brilliant,' and 'visually stunning,' indicating enthusiastic praise, though confidence is medium due to single excerpt warning. | GPT-4o: The review uses highly positive language such as 'spectacular', 'brilliant', and 'visually stunning', indicating a strong recommendation. However, due to the single excerpt warning, the confidence is medium. | Gemini: The review uses strong positive language like \"spectacular rendition\" and \"brilliant theatrical adaptation,\" indicating a positive recommendation. The description of the staging as \"endlessly clever, visually stunning\" further supports this classification.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:55:12.059Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:58:18.024Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 95,
-    "scoreDelta": 7,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "mergedFrom": [
     {

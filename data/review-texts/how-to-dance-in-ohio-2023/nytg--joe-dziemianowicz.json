@@ -9,69 +9,56 @@
   "bwwExcerpt": "Characters have been invented, as have subplots about divorce, deaths, career dilemmas, and college acceptances. Anxiety is in the air as the group prepares for the prom and deals with daily life — from hygiene to personal safety to decisions about college. A countdown clock ticks down days on the set, where letters are scattered, alphabet soup-style. Presumably, it’s a peek at neurodiverse brains. Some of the narrative embroidery works, and some gets knotted. Average Rating: 68.2% { \"@",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 63,
-    "confidence": "low",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 53,
-      "high": 73
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 60,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 60
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Some of the narrative embroidery works, and some gets knotted",
-        "sentiment": "neutral",
-        "strength": 4
-      },
-      {
-        "quote": "Average Rating: 68.2%",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "Anxiety is in the air",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The review presents a balanced but lukewarm assessment, noting that some elements work while others don't, with the explicit average rating of 68.2% reinforcing a middle-ground position. | GPT-4o-mini: The review indicates a mix of effective and ineffective elements, suggesting a qualified recommendation rather than a strong endorsement.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic calls it 'wonderfully performed but uneven' and 'worthwhile,' praising the cast performances while noting narrative issues, ultimately concluding positively that it 'finds the steps to an upbeat last dance.' | GPT-4o: The review acknowledges the musical's unevenness and some narrative issues, but ultimately describes it as 'worthwhile' and highlights the strong performances and music, indicating a positive recommendation despite some flaws. | Gemini: The review is generally positive, highlighting the strong performances and touching story, but also points out some unevenness and miscalibrated elements. The final verdict is that it's a 'worthwhile musical,' placing it in the positive bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
-    },
-    "humanReviewOverride": {
-      "previousConfidence": "medium",
-      "reason": "Both thumbs Up but current score 63. Override to thumb-based 80.",
-      "appliedAt": "2026-02-01T17:37:53.686Z"
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:16:43.035Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:55:08.094Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 63,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 68,
-    "scoreDelta": 10,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "“At the heart of the wonderfully performed but uneven musical ‘How to Dance in Ohio’ beats a reality for its key characters that is at once simple and profound...in the end, this worthwhile musical finds the steps to an upbeat last dance.”",

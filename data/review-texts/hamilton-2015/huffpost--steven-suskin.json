@@ -10,67 +10,59 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 97,
+  "assignedScore": 94,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 97,
+    "score": 94,
     "confidence": "high",
     "range": {
-      "low": 90.5,
-      "high": 100
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 94,
-      "music": 98,
-      "performances": 97,
-      "direction": 93
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "I--and I expect just about all my critical colleagues--would tell you to stop reading right now and get yer tickets",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Hamilton is not just an excellent and rousing musical; it brings something new to the musical theatre, and does it so very compellingly that superlatives are in order",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Miranda's demonstration of talent, skill and savvy earn him a well-deserved gold star, and a goldmine too",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: This is an unqualified rave with explicit recommendation to buy tickets immediately, calling it an 'instant classic' with 'superlatives in order' and praising every aspect from performances to innovation. | GPT-4o-mini: The review is overwhelmingly positive, with numerous superlatives and a strong recommendation to see the show, indicating it is a must-see experience.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Despite truncation warning, the review is overwhelmingly positive throughout with phrases like 'instant classic,' 'absolute bull's-eye,' and explicit recommendation to 'get yer tickets.' The BWW excerpt confirms the rave verdict with 'well-deserved gold star.' | GPT-4o: The review is overwhelmingly positive, praising the show as an 'instant-megahit' and 'instant classic' with 'excellent work' from all involved. The critic urges readers to get tickets immediately, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"instant-megahit,\" \"absolute bull's-eye,\" and \"instant classic.\" The critic clearly believes the show is exceptional and groundbreaking, meriting a Rave score.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:57:28.295Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:00:37.430Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 97,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 95,
-    "openaiScore": 98,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 91,

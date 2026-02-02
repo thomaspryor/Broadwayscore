@@ -10,64 +10,56 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Up",
   "originalScore": "B",
-  "assignedScore": 79,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 79,
-    "confidence": "high",
+    "score": 75,
+    "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 70,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 80
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Those who are drawn to its call should definitely pay Grey House a visit",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "bold, original, and unapologetically eerie play that will continue to haunt theatergoers",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "its overall message may be clouded amid the hazy supernatural storyline",
-        "sentiment": "negative",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: A B grade with explicit recommendation to 'definitely' visit, praising the play as 'bold' and 'original' despite minor script clarity issues, indicates clear positive endorsement. | GPT-4o-mini: The review expresses strong positive sentiments about the originality and eerie nature of the play, while acknowledging some confusion in the storyline, leading to a solid recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review text is severely truncated, showing only website navigation elements. However, the critic's original B rating suggests a mixed-to-positive assessment, placing it in the lower mixed range. | GPT-4o: The original rating of 'B' from the critic suggests a positive review with some reservations. However, the review text provided is truncated and does not contain evaluative content, leading to a medium confidence level. | Gemini: The critic gave the show a 'B' rating, which translates to a positive, but not rave, review. This indicates a recommendation with some reservations.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:17:27.764Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:24:29.856Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 60,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "dtliExcerpt": "While the eerie beginning may draw inspiration from tried-and-true horror tropes, Grey House, which recently opened at the Lyceum Theatre on Broadway, succeeds in subverting both the genre and audience expectations by weaving together a haunting story of horror and heart. Unfortunately, Holloway's puzzle-box mystery doesn't give viewers all the clues they need to fully comprehend the tragic tale it's trying to tell.",
   "sources": [

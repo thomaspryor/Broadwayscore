@@ -5,8 +5,8 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.usatoday.com/story/entertainment/theater/2024/04/18/stereophonic-broadway-review/73362737007/",
   "publishDate": "April 18, 2024",
-  "fullText": "This ambitious musical about a rock band recording an album in the 1970s is a triumph of theatrical storytelling that captures the creative process in all its messy, exhilarating glory.",
-  "isFullReview": false,
+  "fullText": "HEALTHCAREDrug Enforcement AdministrationAdd TopicWhere you can safely dispose unused prescription medication in Lane County Sydney WyattSalem Statesman JournalUpdated April 23, 2024, 1:36 p.m. ETThe Oregon Health Authority encourages anyone with unused or expired prescription medications to seek safe disposal options, such as returning them to permanent collection sites, at Drug Take Back Day events, or to authorized pharmacies or hospitals.\n\nSafe disposal of unused drugs regardless of type is important to prevent others from using them intentionally or unintentionally.\n\nImproperly disposed medications also can pose significant risks to water quality because they can get into water systems. You should never flush unused medications down the toilet or drain.\n\nDrug collection sites do not accept herbal remedies, vitamins, supplements, medical devices, batteries, mercury-containing thermometers, sharps or illicit drugs.\n\nThese are the options for safe medication disposal prescription medications in Lane County:\n\nThe Drug Enforcement Administration (DEA) holds a National Prescription Drug Take Back Day in April and October.\n\nDuring the 25th Drug Take Back Day in October, 2,995 pounds of unused medications were collected at 17 sites across Oregon, according to the DEA.\n\nThe first national event in 2024 will be held April 27. Pharmacy and police department staff will be on-site to assist in safe disposal of unused prescription medications at the following locations\n\nThese are year-round collection sites in Lane County. Some allow drop-off of unused medication. Others offer free mail-back services.\n\nVisit medtakebackoregon.org and enter your ZIP code for a full list of prescription drug collection sites, their location and hours. For more information or to order mail-back supples, call (844) 482-5322.\n\nThis is a partial list of collection sites in Lane County:\n\nSydney Wyatt covers healthcare inequities in the Mid-Willamette Valley. Send comments, questions, and tips to her atSWyatt@gannett.com or (503) 399-6613\n\nWyatt's coverage of healthcare inequities is funded in part by theM.J. Murdock Charitable Trust, which seeks to strengthen the cultural, social, educational, and spiritual base of the Pacific Northwest through capacity-building investments in the nonprofit sector.",
+  "isFullReview": true,
   "dtliExcerpt": "This ambitious musical about a rock band recording an album in the 1970s is a triumph of theatrical storytelling that captures the creative process in all its messy, exhilarating glory.",
   "originalScore": null,
   "assignedScore": 92,
@@ -65,5 +65,46 @@
     "modelAgreement": "All 3 models agree: Rave"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (30 words)"
+  "contentTierReason": "Short text (30 words)",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 92,
+  "textWordCount": 331,
+  "archivePath": "data/archives/reviews/stereophonic-2024/usatoday--charles-isherwood_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:44:52.840Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Paywall detected - login may have failed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true
 }
