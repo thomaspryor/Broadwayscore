@@ -1,63 +1,83 @@
 {
-  "runDate": "2026-02-02T23:30:22.039Z",
+  "runDate": "2026-02-02T23:33:22.948Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "queen-versailles-2025",
+    "showFilter": "the-shark-is-broken-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
+    "processed": 6,
     "failed": 2,
     "skipped": 0,
-    "successRate": "33.3%"
+    "successRate": "75.0%"
   },
   "tierBreakdown": {
     "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 0
+    "brightdata": 1,
+    "archive": 4
   },
   "statistics": {
     "tier1Attempts": 2,
     "tier1Success": 1,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier4Attempts": 1,
-    "tier4Success": 1,
-    "totalFailed": 1,
-    "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier4Attempts": 9,
+    "tier4Success": 5,
+    "totalFailed": 2,
+    "scrapingBeeCreditsUsed": 11,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.3,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "queen-versailles-2025/theatre-reviews-limited--david-roberts.json"
+    "the-shark-is-broken-2023/variety--trish-deitch.json",
+    "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json",
+    "the-shark-is-broken-2023/deadline--greg-evans.json",
+    "the-shark-is-broken-2023/theatermania--jesse-green.json",
+    "the-shark-is-broken-2023/wsj--charles-isherwood.json",
+    "the-shark-is-broken-2023/talkinbroadway--howard-miller.json"
   ],
   "failed": [
-    "queen-versailles-2025/variety--aramide-tinubu.json",
-    "queen-versailles-2025/timeout--adam-feldman.json"
+    "the-shark-is-broken-2023/guardian--adrian-horton.json",
+    "the-shark-is-broken-2023/timeout--adam-feldman.json"
   ],
   "tierDetails": {
     "playwright": [
-      "queen-versailles-2025/theatre-reviews-limited--david-roberts.json"
+      "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
-    "archive": []
+    "brightdata": [
+      "the-shark-is-broken-2023/theatermania--jesse-green.json"
+    ],
+    "archive": [
+      "the-shark-is-broken-2023/variety--trish-deitch.json",
+      "the-shark-is-broken-2023/deadline--greg-evans.json",
+      "the-shark-is-broken-2023/wsj--charles-isherwood.json",
+      "the-shark-is-broken-2023/talkinbroadway--howard-miller.json"
+    ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Guardian": {
+      "count": 1,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
