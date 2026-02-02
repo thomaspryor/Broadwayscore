@@ -3,7 +3,7 @@
 import { useMemo, memo, useCallback, Suspense } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { getAllShows, ComputedShow, getDataStats, getUpcomingShows, getAudienceBuzz } from '@/lib/data';
+import { getAllShows, ComputedShow, getDataStats, getUpcomingShows, getAudienceBuzz, getAudienceGrade } from '@/lib/data';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import ScoreTooltip from '@/components/ScoreTooltip';
@@ -254,27 +254,16 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
   let score: number | null | undefined;
   let label: string | undefined;
   let tier: typeof SCORE_TIERS.mustSee | null = null;
-  let audienceIcon: string | null = null;
+  let audienceGrade: ReturnType<typeof getAudienceGrade> | null = null;
 
   if (scoreMode === 'audience') {
     const audienceBuzz = getAudienceBuzz(show.id);
-    if (audienceBuzz) {
-      score = audienceBuzz.combinedScore;  // Used for sorting only, never displayed
-      label = audienceBuzz.designation;
-      // Map audience designation to colors and emojis
-      if (audienceBuzz.designation === 'Loving') {
-        tier = { label: 'Loving It', color: '#22c55e', tooltip: 'Audiences love it', range: '', glow: false };
-        audienceIcon = '🔥';
-      } else if (audienceBuzz.designation === 'Liking') {
-        tier = { label: 'Liking It', color: '#14b8a6', tooltip: 'Audiences like it', range: '', glow: false };
-        audienceIcon = '👍';
-      } else if (audienceBuzz.designation === 'Shrugging') {
-        tier = { label: 'Shrugging', color: '#f59e0b', tooltip: 'Mixed audience reaction', range: '', glow: false };
-        audienceIcon = '🤷';
-      } else if (audienceBuzz.designation === 'Loathing') {
-        tier = { label: 'Loathing It', color: '#ef4444', tooltip: 'Audiences dislike it', range: '', glow: false };
-        audienceIcon = '💩';
-      }
+    if (audienceBuzz && show.status !== 'previews') {
+      score = audienceBuzz.combinedScore;  // Used for sorting only
+      const grade = getAudienceGrade(audienceBuzz.combinedScore);
+      audienceGrade = grade;
+      label = grade.grade;
+      tier = { label: grade.grade, color: grade.color, tooltip: grade.tooltip, range: '', glow: false };
     }
   } else {
     score = show.criticScore?.score;
@@ -339,27 +328,29 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
       {/* Score Badge */}
       <div className="flex-shrink-0 flex flex-col items-center gap-1.5 w-20 sm:w-24">
         {scoreMode === 'audience' ? (
-          // Audience mode: Show designation badge with emoji (no numeric score)
-          tier && audienceIcon && (
+          // Audience mode: Show letter grade badge
+          audienceGrade ? (
             <div className="flex flex-col items-center gap-1.5 w-full">
               <div
-                className="text-5xl sm:text-6xl leading-none flex items-center justify-center"
-                aria-hidden="true"
+                className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl flex items-center justify-center"
+                style={{ backgroundColor: `${audienceGrade.color}20`, border: `2px solid ${audienceGrade.color}40` }}
+                title={audienceGrade.tooltip}
               >
-                {audienceIcon}
+                <span
+                  className="text-2xl sm:text-3xl font-black leading-none"
+                  style={{ color: audienceGrade.color }}
+                >
+                  {audienceGrade.grade}
+                </span>
               </div>
-              <span
-                className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider whitespace-nowrap px-2.5 py-1 rounded-md text-center w-full"
-                style={{
-                  color: tier.color,
-                  backgroundColor: `${tier.color}20`,
-                }}
-                title={tier.tooltip}
-              >
-                {tier.label}
-              </span>
             </div>
-          )
+          ) : show.status === 'previews' ? (
+            <div className="flex flex-col items-center gap-1.5 w-full">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl flex items-center justify-center bg-gray-500/10 border-2 border-gray-500/20">
+                <span className="text-sm font-semibold text-gray-500">TBD</span>
+              </div>
+            </div>
+          ) : null
         ) : (
           // Critics mode: Show tier label + numeric score badge
           <>
@@ -837,7 +828,7 @@ function HomePageInner() {
       {/* Score Column Header */}
       <div className="flex justify-end items-center pr-4 sm:pr-5 mb-2">
         <span className="text-xs sm:text-sm font-semibold text-gray-400 tracking-wide">
-          {scoreMode === 'audience' ? 'Audience Buzz' : "Critics\u2019 Score"}
+          {scoreMode === 'audience' ? 'Audience Grade' : "Critics\u2019 Score"}
         </span>
       </div>
 
