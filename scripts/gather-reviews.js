@@ -1213,7 +1213,7 @@ function createReviewFile(showId, reviewData) {
     fullText: cleanText(reviewData.excerpt) || null,
     isFullReview: false,
     dtliExcerpt: cleanText(reviewData.dtliExcerpt || reviewData.excerpt) || null,
-    originalScore: reviewData.originalRating ? parseRating(reviewData.originalRating) : null,
+    originalScore: reviewData.originalRating ? parseRating(reviewData.originalRating, normalizedOutletId) : null,
     assignedScore: null,
     source: reviewData.source || 'gather-reviews',
     dtliThumb: reviewData.dtliThumb || null,
@@ -1261,20 +1261,25 @@ function createReviewFile(showId, reviewData) {
 /**
  * Parse a rating string into a 0-100 score
  */
-function parseRating(rating) {
+// Outlets that use letter grade scoring (from src/config/scoring.ts scoreFormat: 'letter').
+// Letter grades from other outlets are rejected to prevent cross-contamination
+// (e.g., BWW roundup leaking EW's grade into a text_bucket outlet like NYDN).
+const LETTER_GRADE_OUTLETS = new Set(['ew']);
+
+function parseRating(rating, outletId) {
   if (!rating) return null;
 
   const r = rating.toLowerCase().trim();
 
-  // Star ratings out of 5
+  // Star ratings out of 5 — accepted for any outlet
   const stars5 = r.match(/([\d.]+)\s*(?:\/|\s*out of\s*)?\s*5/);
   if (stars5) return Math.round((parseFloat(stars5[1]) / 5) * 100);
 
-  // Star ratings out of 4
+  // Star ratings out of 4 — accepted for any outlet
   const stars4 = r.match(/([\d.]+)\s*(?:\/|\s*out of\s*)?\s*4/);
   if (stars4) return Math.round((parseFloat(stars4[1]) / 4) * 100);
 
-  // Letter grades
+  // Letter grades — only for outlets that use letter grade scoring
   const grades = {
     'a+': 100, 'a': 95, 'a-': 92,
     'b+': 88, 'b': 83, 'b-': 78,
@@ -1282,7 +1287,13 @@ function parseRating(rating) {
     'd+': 58, 'd': 53, 'd-': 48,
     'f': 35
   };
-  if (grades[r]) return grades[r];
+  if (grades[r]) {
+    if (outletId && !LETTER_GRADE_OUTLETS.has(outletId)) {
+      console.warn(`⚠️  Rejecting letter grade "${rating}" for ${outletId} (not a letter-grade outlet)`);
+      return null;
+    }
+    return grades[r];
+  }
 
   return null;
 }
