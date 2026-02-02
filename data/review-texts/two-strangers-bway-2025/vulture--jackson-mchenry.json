@@ -9,73 +9,57 @@
   "dtliExcerpt": "When the show’s creators zero in on those feelings, something a lot more specific and wistful than a love story between two strangers, the piece comes alive. If only it stayed there.",
   "showScoreExcerpt": "\"This cake isn’t fully baked...For its staging at the Longacre, with an unnecessary intermission that slams the brakes on the action, the director Tim Jackson has slathered the thing in the icing of sentiment and popped his cork\"",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "Meh",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-Opens-On-Broadway-20250109",
   "needsFullText": false,
   "llmScore": {
-    "score": 65,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 55,
-      "music": 45,
-      "performances": 75,
-      "direction": 50
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "In execution, however, this cake isn't fully baked",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "When Two Strangers does do that, it does achieve something magical, and those moments make you see what a smaller-scale musical can do successfully",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Barne and Buchan's contemporary-pop score lacks distinctiveness, and it treads closely in the footsteps of other musical theater",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic finds genuine moments of magic and praises the performances, particularly Pitts and Tutty, but consistently critiques the score's lack of distinctiveness, lyrical imprecision, and execution issues that prevent the show from fully succeeding despite its promising premise.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges the show's promising premise and magical moments, particularly praising individual performances and the second act, but identifies significant flaws in execution, writing, and staging that prevent it from fully succeeding. | Gemini: The review praises the premise and some moments, particularly in the second act, but criticizes the score, lyrical imprecision, and character writing for Robin. The overall assessment is lukewarm, suggesting it has potential but falls short in execution.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:33:43.525Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4476,
-    "outputTokens": 387,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:42:32.892Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 55,
-    "scoreDelta": 10,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "sourceMethod": "archive",
   "archivePath": "data/archives/reviews/two-strangers-bway-2025/vulture--jackson-mchenry_2026-01-27.html",

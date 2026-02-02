@@ -9,37 +9,26 @@
   "showScoreExcerpt": "“Most of characters come off as fairly hackneyed — the rabbi, the doctor, the whorehouse piano player — but all the voices are beautiful. Manilow can write a good love song, and there are a few.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/harmony-broadway",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 61,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 50,
-    "confidence": "low",
+    "score": 61,
+    "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 60
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": 65,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "played ably by Chip Zien",
-        "sentiment": "positive",
-        "strength": 2
-      },
-      {
-        "quote": "tells the true story of six young men in Berlin who formed a comedic singing group",
-        "sentiment": "neutral",
-        "strength": 1
-      }
-    ],
-    "reasoning": "This appears to be only a plot summary excerpt with minimal critical evaluation, offering only mild praise for one performance with 'ably' - insufficient content to determine the critic's actual recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges significant character flaws calling them 'hackneyed' but balances this with praise for the vocal performances and Manilow's songwriting ability, indicating a mixed assessment. | GPT-4o: The review highlights some positive aspects, such as the beautiful voices and Manilow's ability to write a good love song, but criticizes the characters as hackneyed. This suggests a mixed reception with some redeeming qualities. | Gemini: The review highlights both positive and negative aspects, such as beautiful voices but hackneyed characters, indicating a mixed overall impression.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,27 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:05:37.079Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2423,
-    "outputTokens": 292,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:11:55.131Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 50,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 55,
-    "scoreDelta": 3,
+    "claudeScore": 62,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 50,
@@ -86,10 +76,9 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251205000834",
   "archiveOrgUrl": "http://web.archive.org/web/20251205000834/https://variety.com/2023/legit/reviews/harmony-review-barry-manilow-broadway-1235790164/",
-  "rescoreCompletedAt": "2026-02-01T15:05:37.079Z",
+  "rescoreCompletedAt": "2026-02-02T00:11:55.131Z",
   "contentTier": "complete",
   "wordCount": 483,
-  "needsRescore": true,
   "isFullReview": false,
   "textWordCount": 86,
   "textQuality": "excerpt",

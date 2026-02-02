@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 78,
+  "assignedScore": 77,
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt shows clear enthusiasm with positive descriptors like 'vivid dancers and magnificent singers' and 'heck of a block party', but limited text prevents full confidence in the overall verdict. | GPT-4o: The review uses very positive language, describing the show as having the 'right recipe' and 'magnificent singers', culminating in a 'heck of a block party', which suggests a highly enthusiastic recommendation. | Gemini: The review excerpt uses positive language like \"right recipe\", \"vivid dancers\", \"magnificent singers\", and \"heck of a block party\", indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt uses enthusiastic language praising the creative team for finding 'the right recipe' and celebrating the performers, but with only one curated quote available, I'm scoring conservatively within the positive range. | GPT-4o: The review praises the collaboration of the playwright, director, and choreographer, and describes the production as a 'heck of a block party', suggesting a positive experience. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The review excerpt uses positive language like \"right recipe,\" \"vivid dancers,\" and \"magnificent singers,\" suggesting a positive recommendation. However, due to the single excerpt, I'm scoring conservatively within the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:47:23.089Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:02:26.415Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 75,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

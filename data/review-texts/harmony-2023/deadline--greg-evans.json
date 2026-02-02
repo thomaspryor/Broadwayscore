@@ -6,42 +6,26 @@
   "url": "https://deadline.com/2023/11/harmony-danny-and-the-deep-blue-sea-reviews-1235600743/",
   "publishDate": "November 13, 2023",
   "originalScore": null,
-  "assignedScore": 71,
+  "assignedScore": 75,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 71,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 77
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "steadily compelling and not infrequently stirring",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "takes fewer chances than one might hope",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Manilow-Sussman craftsmanship",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The review praises the show as 'compelling' and 'stirring' while acknowledging structural limitations, suggesting a qualified positive recommendation with notable reservations. | GPT-4o-mini: The review indicates a generally positive experience with some reservations about the show's ambition, leading to a mixed-positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review indicates the musical 'accomplishes that goal handily' and is 'steadily compelling and not infrequently stirring,' with more soaring than stumbling moments, suggesting a positive recommendation despite some reservations. | GPT-4o: The review acknowledges both strengths and weaknesses, but emphasizes that the positive aspects outweigh the negative. The use of 'steadily compelling' and 'not infrequently stirring' suggests a generally favorable view, despite some reservations. | Gemini: The review states the musical \"accomplishes that goal handily\" and is \"steadily compelling and not infrequently stirring,\" indicating a positive recommendation despite acknowledging some flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,20 +34,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:10:08.604Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:08:56.195Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 71,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 70,
-    "scoreDelta": 2,
+    "claudeScore": 73,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwExcerpt": "Manilow and his longtime writing partner and collaborator Bruce Sussman have set out to answer that very question, and Harmony accomplishes that goal handily. As a musical, Harmony occasionally soars, occasionally stumbles, but the former more often than the latter. With a structure that takes fewer chances than one might hope, Harmony is nonetheless steadily compelling and not infrequently stirring, attributes that speak as much to the Manilow-Sussman craftsmanship as to an intriguing tale long",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",

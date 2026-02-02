@@ -10,71 +10,55 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MAMMA-MIA-Returns-To-Broadway-20250814",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 85,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 82,
-      "high": 88
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 88,
-      "music": 85,
-      "performances": 75,
-      "direction": 90
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "flamboyantly worth the wait",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "offers one of those nights when you sit back and let a nutty kind of joy just sweep over you",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "you'll be so happy you'll think you've just become a grandparent",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Strong enthusiastic language throughout with phrases like 'flamboyantly worth the wait', 'nutty kind of joy', and 'rock-solid hit', despite some minor criticisms of individual performances.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic uses strong positive language like 'flamboyantly worth the wait,' 'rock-solid hit,' and 'dazzlingly fast' while praising the book, staging, and overall experience. Some reservations about specific casting choices prevent this from being a rave. | Gemini: The review is overwhelmingly positive, praising the music, story, and staging. While there are minor criticisms of some performances, the overall tone is enthusiastic and recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:29:30.021Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3091,
-    "outputTokens": 348,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:27:01.457Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "showScoreExcerpt": "\"Mamma Mia! offers one of those nights when you sit back and let a nutty kind of joy just sweep over you. The score is a nostalgic parade of 22 songs from the alphabetically challenged Swedish pop group of the ’70s. And when you get to the coda finale keep your seats, it ain’t over till it’s over, you’ll be so happy you’ll think you’ve just become a grandparent.\"",
   "sources": [

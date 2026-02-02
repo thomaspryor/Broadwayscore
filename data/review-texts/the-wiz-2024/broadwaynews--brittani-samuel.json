@@ -5,73 +5,57 @@
   "criticName": "Brittani Samuel",
   "url": "https://www.broadwaynews.com/the-broadway-review-a-busy-revival-of-the-wiz-still-doles-out-verifiable-fun/",
   "publishDate": "April 18, 2024",
-  "fullText": "Schele Williams beckons the Black theater staple back to Broadway for a directorially untethered but reliably good time. Good morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “The Wiz.” While the original Broadway production of “The Wiz” was a landmark achievement and hit with audiences, subsequent productions garnered mixed reviews — with the first major revival fizzling out in less than a month and Sidney Lumet’s 1978 film currently rotting around 44 percent on Rotten Tomatoes’ critics scale. But “The Wiz” never longed for approval from anyone but the people it glorifies. And in Black homes, the musical is canon. In this second major Broadway revival, the show’s extravagant display of Black magical realism and its persistent humor blaze over the technical challenges. The script — updated by comedian and Tony Award-nominated scribe Amber Ruffin — maintains its timeless charm even as it lurches (rather than eases) us through Dorothy’s fantastical journey. Major happenings — landing in Oz, meeting the Scarecrow (Avery Wilson), Tinman (Phillip Johnson Richardson) and Lion (Kyle Ramar Freeman), arriving at Emerald City — sweep in at tornado pace, jerking us from one scene to the next.",
+  "fullText": "Schele Williams beckons the Black theater staple back to Broadway for a directorially untethered but reliably good time.\n\nGood morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “The Wiz.”\n\nWhile the original Broadway production of “The Wiz” was a landmark achievement and hit with audiences, subsequent productions garnered mixed reviews — with the first major revival fizzling out in less than a month and Sidney Lumet’s 1978 film currently rotting around 44 percent on Rotten Tomatoes’ critics scale. But “The Wiz” never longed for approval from anyone but the people it glorifies. And in Black homes, the musical is canon. In this second major Broadway revival, the show’s extravagant display of Black magical realism and its persistent humor blaze over the technical challenges. The script — updated by comedian and Tony Award-nominated scribe Amber Ruffin — maintains its timeless charm even as it lurches (rather than eases) us through Dorothy’s fantastical journey. Major happenings — landing in Oz, meeting the Scarecrow (Avery Wilson), Tinman (Phillip Johnson Richardson) and Lion (Kyle Ramar Freeman), arriving at Emerald City — sweep in at tornado pace, jerking us from one scene to the next.",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 77,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 72,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
+      "book": null,
       "music": null,
-      "performances": 75,
-      "direction": 60
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "reliably good time",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "directorially untethered",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "the show's extravagant display of Black magical realism and its persistent humor blaze over the technical challenges",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The reviewer acknowledges significant technical and directorial flaws but emphasizes that the show's inherent strengths and cultural significance overcome these issues, suggesting a qualified positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic acknowledges directorial and pacing issues but ultimately concludes it's a 'certifiable, soulful great time' and celebrates its return to Broadway, indicating clear recommendation despite reservations. | Gemini: Despite mentioning some issues with pacing and script updates, the reviewer ultimately states that the show is a \"certifiable, soulful great time\" and that it's \"back home,\" indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:30:31.643Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2610,
-    "outputTokens": 335,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:42:54.884Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "dtliExcerpt": "Still, these missteps can’t smudge out a defining truth: “The Wiz” is a certifiable, soulful great time. And thankfully, it’s back home.",
   "sources": [
@@ -82,31 +66,30 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 82,
-  "archivePath": "data/archives/reviews/the-wiz-2024/broadwaynews--brittani-samuel_2026-01-30.html",
-  "textFetchedAt": "2026-01-30T19:59:23.387Z",
-  "fetchMethod": "playwright",
+  "archivePath": "data/archives/reviews/the-wiz-2024/broadwaynews--brittani-samuel_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:32:20.156Z",
+  "fetchMethod": "archive",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
-      "success": false,
-      "error": "No archive snapshot available"
-    },
-    {
-      "tier": 1,
-      "method": "playwright",
       "success": true
     }
   ],
-  "fetchTier": 1,
-  "sourceMethod": "playwright",
+  "fetchTier": 4,
+  "sourceMethod": "archive",
   "textIssues": [
-    "Word count too low: 220 (min: 300)",
+    "Word count too low: 214 (min: 300)",
     "Show title not found in text"
   ],
   "rescoreCompletedAt": "2026-02-01T16:30:31.643Z",
   "archiveOrgTimestamp": "20260129162952",
   "archiveOrgUrl": "http://web.archive.org/web/20260129162952/https://www.broadwaynews.com/the-broadway-review-a-busy-revival-of-the-wiz-still-doles-out-verifiable-fun/",
   "contentTier": "truncated",
-  "wordCount": 208
+  "wordCount": 208,
+  "isFullReview": false,
+  "textWordCount": 208,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete"
 }

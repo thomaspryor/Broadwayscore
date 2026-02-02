@@ -9,71 +9,55 @@
   "showScoreExcerpt": "“This production faces a typical problem for immersive adaptations of literary works: how to translate a beloved text via a format that is better served by a de-emphasis on the text.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-great-gatsby-musical",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 62,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 52,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 48,
-      "high": 56
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 35,
+      "book": null,
       "music": null,
-      "performances": 65,
-      "direction": 45
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "never, in its lagging two-and-a-half-hour running time, truly rises above the status of a mere attraction",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The writing of the characters' dialogue is often shaky, and noticeably weaker when it gets too far from Fitzgerald's pared-down style",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Casey Jay Andrews's exquisite set design, Vanessa Leuck's stylish costumes and the ever-shifting mood ring effect of Jeff Croiter's lighting beautifully coalesce into a vivid, comprehensive vision of 1920s New York. And it's a feat to behold.",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic acknowledges impressive production values and some strong performances but consistently criticizes the adaptation's fundamental flaws, stretched material, weak writing, and failure to capture the source material's deeper meaning, resulting in a qualified mixed response that leans slightly negative.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges the production's visual splendor and some strong performances but consistently critiques fundamental flaws in adaptation, pacing, and substance, concluding it lacks the deeper meaning of Fitzgerald's work. | Gemini: The review highlights both positive and negative aspects. It praises the set design, costumes, and some performances, but criticizes the stretched plot, shaky dialogue, and lack of nuance in direction. The overall impression is that it's an enjoyable experience but doesn't fully capture the essence of the source material.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:18:18.476Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3738,
-    "outputTokens": 433,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:21:11.679Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 52,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 50,
-    "scoreDelta": 5,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "designation": "Critics_Pick",
   "rescoreReason": "fullText added after excerpt-based scoring",

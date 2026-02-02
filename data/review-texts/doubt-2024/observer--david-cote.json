@@ -8,71 +8,55 @@
   "bwwExcerpt": "Also unexpected, from Shanley: Doubt is not an urban love story or whimsical mediation on the courtship rituals of men and women. Let me qualify that last point. Doubt is very much about female agency in a male-dominated institution, and how, while trying to fight an injustice you know is real, you may perpetuate evil. It would be absurd if it weren’t so tragic.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 86,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 86,
+    "confidence": "low",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 81,
+      "high": 91
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 92,
+      "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 87
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Not only is Doubt in the top ten American dramas of this century, but Sister Aloysius is one of the greatest stage characters in decades",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Classically balanced, fiendishly focused, lean and eloquent, the play keeps you guessing until that shocking ending",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Scott Ellis's faithful and beautifully designed revival is the inaugural production",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Critic declares this play among the top ten American dramas of the century with superlative praise for the script, performances, and production values, despite minor quibbles about casting choices.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The critic declares this one of the top ten American dramas of the century, calls it Shanley's finest work, praises the casting as 'spot on', and describes the production as 'classically balanced, fiendishly focused, lean and eloquent' with an 'impressive revival'. | Gemini: The review is largely positive, praising the performances and design. While it notes some minor issues, the overall tone suggests a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:35:25.945Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3818,
-    "outputTokens": 376,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:30:48.888Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 90,
-    "scoreDelta": 5,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 91,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "fullText added after excerpt-based scoring",

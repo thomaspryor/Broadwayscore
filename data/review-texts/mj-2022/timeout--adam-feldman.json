@@ -7,66 +7,57 @@
   "publishDate": "February 1, 2022",
   "showScoreExcerpt": "\"The dancers and singers of the ensemble, who double as secondary characters, are first-rate, and Wheeldon gives them a lot to do. Most of the songs are performed as rehearsals or flashbacks, which is to say as full-on production numbers. (Tracks from Jacksonâs 1995 album HIStory are cannily placed by Nottage as character moments.) Like Summer and The Cher Show before it, MJ uses three actors to play its central character at different ages. As the 1992 incarnation, Frost carries the bulk of the role, and not only nails Jacksonâs signature sound and movesâyes, of course thereâs a moonwalkâbut also his otherworldly affect: his diffident grandiosity, his mixture of grievance and mischief, his high and breathy way of talking (at once floaty and determined, like Diana Rossâs spoken-word section of âAinât No Mountain High Enoughâ).\"",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 76,
   "source": "dtli",
   "dtliThumb": "Meh",
   "scrapedAt": "2026-01-23T22:45:00.000Z",
   "bwwExcerpt": "When the song is done, Michael speaks with an MTV reporter (Whitney Bashor) who has landed a rare interview with him. \"With respect, I wanna keep this about my music,\" he says. \"Is it really possible to separate your life from your music?\" she asks, preempting a question on many minds, and his reply is a slice of \"Tabloid Junkie\": \"Just because you read it in a magazine / Or see it on a TV screen, don't make it factual.\" And that, more or less, is that. Expertly directed and choreographed by",
   "llmScore": {
-    "score": 74,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
-      "music": 85,
-      "performances": 86,
-      "direction": 79
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "In and of itself, it is a deftly crafted jukebox nostalgia trip",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "I left the theater entertained, but not convinced I had really seen the man in the smoke and mirrors",
-        "sentiment": "neutral",
-        "strength": 4
-      },
-      {
-        "quote": "The music and the dancing are sensational",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic acknowledges significant artistic achievements (performances, music, choreography) and entertainment value while expressing reservations about the show's evasive approach to Jackson's controversies and sanitized portrayal. | GPT-4o-mini: The review expresses clear enjoyment of the music and performances while noting some reservations about the script and the handling of Jackson's complex legacy.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The excerpt focuses on praising the ensemble, choreography, and lead performance, particularly highlighting the actor's skill in capturing Jackson's essence. Despite the aggregator noting 'Flat,' the available text is consistently positive about the production elements. | Gemini: The review excerpt focuses on the positive aspects of the production, particularly the performances of the ensemble and the lead actor. While the aggregator suggests a 'flat' response, the provided text leans towards a positive, albeit potentially reserved, recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:12:46.781Z",
-    "promptVersion": "2.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:25:06.772Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "2.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "sourceMethod": "playwright",
   "sources": [

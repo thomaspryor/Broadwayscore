@@ -20,57 +20,49 @@
     "score": 81,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 87
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 75
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "has been given an undeniably powerful if somewhat imperfect staging",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "when it does, you'll be ready glad you've come to Cabaret at the Kit Kat Club",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "★★★★☆",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The 4/5 star rating combined with praise for lead performances, clear recommendation in the conclusion, and calling the staging 'undeniably powerful' outweighs the noted imperfections in concept and casting. | GPT-4o-mini: The review expresses strong praise for the performances, particularly Redmayne and Neuwirth, while noting some conceptual flaws, leading to a solid recommendation overall.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and positive conclusion clearly recommend the show despite noting several flaws including one weak lead performance and imperfect staging concepts. | GPT-4o: The review is largely positive, highlighting strong performances and an impressive production despite some imperfections. The original 4/5 rating supports a high positive score. | Gemini: The critic gives the production 4 out of 5 stars and ultimately recommends seeing it, despite some reservations about the conceptual staging and one of the performances. The positive aspects, especially the lead performances and the powerful moments when it gets down to basics, outweigh the negatives.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:42:09.461Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:33:37.084Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 81,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 80,
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "sources": [

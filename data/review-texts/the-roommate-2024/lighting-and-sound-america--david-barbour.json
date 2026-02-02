@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"...a pleasant excuse for stargazing\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-roommate-broadway",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 63,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/the-roommate-2024/lighting-sound-america--david-barbour_2026-01-27.html",
@@ -28,67 +28,52 @@
   ],
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 45,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 35,
+      "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 60
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "is the high point of the evening",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Silverman's play offers little more than an oddball pairing of sensibilities",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Of course, the audience goes wild",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic clearly states the opening applause 'is the high point of the evening' and dismisses the play as offering 'little more than an oddball pairing,' indicating the material fails to live up to the star power.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly states the opening curtain call is 'the high point of the evening' and describes the play as offering 'little more than an oddball pairing,' indicating disappointment with the material despite acknowledging the star power. | GPT-4o: The review highlights a strong opening moment but suggests that the play doesn't offer much beyond an odd pairing of characters. The tone is neither fully positive nor negative, indicating a mixed reception. | Gemini: The review highlights a promising start but suggests the play doesn't quite live up to it, indicating a mixed experience overall. The critic points out the odd pairing of sensibilities, suggesting the play has its flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:24:33.224Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2968,
-    "outputTokens": 339,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:13:21.189Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 45,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 64,

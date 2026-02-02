@@ -9,66 +9,56 @@
   "bwwExcerpt": "Scott Ellis’ much-anticipated revival of John Patrick Shanley’s Pulitzer Prize-winning 2004 work “Doubt: A Parable,” now at the Roundabout Theatre Company’s recently renamed Todd Haimes Theatre, checks off all the previous boxes, for better and worse. Most importantly, though, it proves the case – beyond any doubt – what a well-structured theatrical work Shanley crafted.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 69,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 60.5,
-      "high": 77.5
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 83,
+      "book": null,
       "music": null,
-      "performances": 69,
-      "direction": 73
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "it proves the case – beyond any doubt – what a well-structured theatrical work Shanley crafted",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Schreiber proves to be somewhat miscast here",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "a superb Amy Ryan",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Strong praise for the play's structure and Amy Ryan's performance, but significant criticism of Schreiber's casting creates a mixed-positive recommendation that acknowledges both strengths and notable flaws. | GPT-4o-mini: The review presents a balanced view with praise for the script and some performances, but significant reservations about the casting and overall impact, leading to a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the play as 'well-structured' and notes it 'checks off all the previous boxes,' but the qualifier 'for better and worse' suggests some reservations. Single excerpt limits confidence. | GPT-4o: The review acknowledges both positive and negative aspects but ultimately emphasizes the strength of the play's structure, suggesting a positive recommendation. The lack of full context and single excerpt warning suggest a conservative score within the Positive range. | Gemini: The review excerpt indicates that the production proves the value of the play, suggesting a positive but not overwhelmingly enthusiastic recommendation. The phrase \"checks off all the previous boxes, for better and worse\" implies some reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:48:11.495Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:28:57.932Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 69,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 72,
-    "openaiScore": 65,
-    "scoreDelta": 7,
-    "thumbsMatch": false,
-    "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (69 → Flat) conflicts with aggregator thumbs (Up)"
-    ]
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "fullText added after excerpt-based scoring",

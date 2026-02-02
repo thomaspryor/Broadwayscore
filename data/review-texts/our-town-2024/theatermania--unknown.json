@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 62,
+  "assignedScore": 67,
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 67,
+    "confidence": "low",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 62,
+      "high": 72
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This excerpt is purely descriptive with no evaluative language or recommendation. Given the truncated nature and lack of critical assessment, I cannot determine the reviewer's actual verdict. | GPT-4o: The excerpt highlights Jim Parsons' performance and suggests a different take on the characters, which implies a unique interpretation. However, without a clear positive or negative recommendation, it suggests a mixed impression. | Gemini: The review excerpt focuses on Jim Parsons' performance and notes that the characters may appear differently than expected. Without a clear recommendation or discouragement, it's classified as mixed.",
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: This single excerpt provides only neutral description of Parsons' performance without any clear evaluative language or recommendation. The phrase about characters appearing 'a little differently' is descriptive rather than judgmental. | Gemini: The excerpt focuses on a positive aspect of the production (Jim Parsons' performance). Given the single excerpt and lack of explicit recommendation, a mildly positive score is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:52:01.940Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:37:56.761Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 65,
-    "geminiScore": 60,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 72,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 5,
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

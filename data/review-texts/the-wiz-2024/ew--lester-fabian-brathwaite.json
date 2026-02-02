@@ -13,72 +13,52 @@
   "source": "show-score",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 42,
-    "confidence": "low",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 38,
-      "high": 46
+      "low": 73,
+      "high": 83
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 35,
-      "music": 65,
+      "book": null,
+      "music": null,
       "performances": null,
-      "direction": 40
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "goes too far",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "there is something more essential that's missing from this reworked Wiz",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "there's little sense of ease",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic systematically catalogs major problems with this revival - removing iconic elements and losing the essential spirit of the show - with only historical praise for the original music offering any positive element.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening concerns about missing iconic elements, the critic concludes this 'may be the best version of The Wiz to date' and emphasizes the show's uplifting message that 'rings loud and clear,' indicating a positive recommendation. | GPT-4o: Despite initial concerns about changes, the critic ultimately praises the revival as potentially the best version of 'The Wiz' to date, highlighting its uplifting message and successful updates. | Gemini: Despite some initial reservations about changes, the reviewer ultimately states that this revival \"may be the best version of The Wiz to date,\" indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
-    },
-    "humanReviewOverride": {
-      "previousConfidence": "high",
-      "reason": "Both thumbs Up but current score 42. Override to thumb-based 80.",
-      "appliedAt": "2026-02-01T17:37:53.694Z"
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:30:50.564Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2605,
-    "outputTokens": 322,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:43:24.375Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 76,
+    "openaiScore": 88,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "dtliExcerpt": "The new revival of the 1975 musical by Charlie Smalls (et al) and William F. Brown updates some references (with the help of Amber Ruffin, fresh off her success with Some Like It Hot) and takes what worked from the 1978 movie (namely the Michael Jackson-as-Scarecrow solo “You Can’t Win”) and the popular TV musical (the swag, my god, the swag) to produce what may be the best version of The Wiz to date.",
   "sources": [

@@ -7,64 +7,56 @@
   "publishDate": "March 8, 2024",
   "fullText": "Ellis’ staging of this tense drama begs for more traction, energy and, ultimately, direction. Good morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Doubt: A Parable.” The script of John Patrick Shanley’s triumphant religious drama “Doubt: A Parable'' overwhelms audiences with heartbreak. There is the ache of Sister Aloysius, a guarded older nun at St. Nicholas Catholic School, who suspects wrongdoing but has little autonomy to stop it. There is the unseen, but much-discussed ache of young Donald Muller, the first Black student at St. Nicholas who is often beaten by his father. There is even the ache of Father Flynn, a parish priest accused of misconduct, so confounded by desire and despair that he yearns for God's direction in his life. Now, too, is the pain of watching such a quietly captivating and complex play yearn for theatrical direction in Roundabout Theatre Company’s lifeless revival. There is little physical action in Shanley’s parable — characters don’t do much aside from talking and strolling the melancholic mid-century Catholic school grounds. The only activity of the play is the act of accusation, so we rely on an ensemble — preferably a tighter one more committed to relaying the play’s high stakes than director Scott Ellis gathers here — to guide us through all of Shanley’s nefarious themes. To be fair, this “Doubt” is up against grave odds — namely the hospitalization of its original leading actor, Tyne Daly, and the hasty substitution of actor Amy Ryan as Sister Aloysius. Ryan’s rapid assumption of the role is evident. And while her use of a teleprompter under these circumstances is plenty forgivable, her lack of intimidation and ferociousness (key elements to the character’s multidimensionality when married with her radical empathy for the alleged victims) is not. Perhaps, with more time for Ryan to settle into the habit, I could write a very different review. But until then, this play about faith will continue to commit the ultimate theatrical sin — boredom.",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 42,
   "dtliThumb": "Down",
   "source": "dtli",
   "llmScore": {
-    "score": 38,
+    "score": 42,
     "confidence": "high",
     "range": {
-      "low": 30.5,
-      "high": 45.5
+      "low": 37,
+      "high": 47
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 73,
+      "book": null,
       "music": null,
-      "performances": 38,
-      "direction": 25
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "this play about faith will continue to commit the ultimate theatrical sin — boredom",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Ellis' staging of this tense drama begs for more traction, energy and, ultimately, direction",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "lifeless revival",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Despite praising Shanley's script as 'triumphant' and 'quietly captivating,' the critic condemns this production as 'lifeless' and 'boring,' criticizing both the direction and lead performance while acknowledging extenuating circumstances. | GPT-4o-mini: The review expresses significant disappointment in the direction and overall execution, leading to a strong recommendation against seeing the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The review explicitly calls the revival 'lifeless' and concludes with the damning assessment that it commits 'the ultimate theatrical sin — boredom.' Despite acknowledging extenuating circumstances with the lead actor substitution, the critic finds the production fundamentally disappointing. | GPT-4o: The review criticizes the lack of energy and direction in the production, the performance of the lead actor, and ultimately concludes that the play is boring, indicating a negative recommendation. | Gemini: The review expresses disappointment with the production, citing issues with direction, casting, and overall engagement. The critic explicitly states the play commits the \"ultimate theatrical sin - boredom,\" indicating a negative assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:48:05.016Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:28:53.623Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 38,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 35,
+    "claudeScore": 42,
     "openaiScore": 40,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
     "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "dtliExcerpt": "Perhaps, with more time for Ryan to settle into the habit, I could write a very different review. But until then, this play about faith will continue to commit the ultimate theatrical sin — boredom.",
   "sources": [

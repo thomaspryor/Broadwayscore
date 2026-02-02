@@ -23,64 +23,48 @@
     "score": 62,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 66
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 55,
-      "music": 58,
-      "performances": 75,
-      "direction": 70
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "efficient if formulaic",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "the novelty wears thin, quickly",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "That is an alarm this earnest musical does manage to raise, potently",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review acknowledges the show's earnest intentions and strong performances but criticizes the central musical act as lacking appeal and the material as formulaic, resulting in a qualified mixed assessment.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The review acknowledges professional execution and raises important themes, but criticizes the central appeal of the Harmonists themselves and notes that 'the novelty wears thin, quickly.' The critic finds merit in individual elements but significant structural problems. | Gemini: The review acknowledges the show's historical importance and some strong elements (cast, costumes, one particular song), but ultimately finds the core entertainment value lacking, especially the Harmonists' stage personas. This suggests a mixed experience with notable flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:05:49.567Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3503,
-    "outputTokens": 323,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:12:25.350Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 60,
-    "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 61,

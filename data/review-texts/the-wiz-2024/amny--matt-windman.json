@@ -7,7 +7,7 @@
   "publishDate": "April 17, 2024",
   "fullText": "“Can’t you feel a brand new day?” Actually, no, I’m not really feeling it. Not this time.\nIs this the long-awaited revival of “The Wiz,” the “super soul,” historically groundbreaking, all-Black retelling of “The Wizard of Oz” with a distinctive R&B-funk-pop-gospel score by Charlie Smalls, which became a surprise Broadway smash in 1974? How did this happen?\n\nReimagining “The Wiz” for a contemporary audience while maintaining the magic of the spectacular original production is no easy feat, as seen in multiple failed revivals, including a flop 1984 Broadway revival and an underwhelming 2009 City Center production, not to mention the overblown and misconstrued 1978 film adaptation. But it can be done, as demonstrated by the starry and stunning 2015 live television version, which was helmed by Broadway’s Kenny Leon and really ought to have served as the basis for the Broadway revival.\n\nThis rendition of “The Wiz,” which arrives on Broadway following short engagements in multiple cities and is directed by Schele Williams (“The Notebook”), has the look and feel of a second-rate, low-budget touring production, with tacky, Halloween-quality costumes, limited scenic design (relying heavily on projections), and surprisingly uninspired and generic dance choreography. More thought seems to have gone into the alcoholic drinks available at intermission, including a green-colored frozen margarita.\n\nMost problematic are the endless revisions of William F. Brown’s original book by comic Amber Ruffin (“Some Like It Hot”), whose attempts to add backstories for the characters and various silly gags do little more than add to the running time and drain momentum.\n\nNichelle Lewis, who is making her Broadway debut as Dorothy and is best known as a TikTok celeb, sings beautifully but offers little in the way of characterization, coming off as self-involved, mopey, and too focused on vocal riffing. As her companions down the Yellow Brick Road, Avery Wilson (Scarecrow), Phillip Johnson Richardson (Tinman), and Kyle Ramar Freeman (Lion) deliver nice turns, with Richardson standing out with a streak of boldness.\n\nAs Glinda, Deborah Cox does little more than enter and exit in a flash for each of her two songs and look like a moving disco ball. Wayne Brady is appropriately sleazy and smug as the title character but too laid back and restrained to make an impact. (By comparison, listen to the unparalleled excitement conjured by André De Shields as the Wiz on the original cast album.)\n\nThe unexpected highlight of this production comes early on, when Melody Betts (who doubles as both Aunt Em and the wicked witch Evillene) sings “The Feeling We Once Had” with a raw, sincere emotionality.\n\nAt its best, “The Wiz” is spectacular and joyful. No less than Stephen Sondheim described it as “the one show which makes you feel better when you come out of it than you did when you walked in.” This production, which is the equivalent of a disco-themed karaoke party, just makes me feel disappointed.\n\nMarquis Theatre, 1535 Broadway, wizmusical.com.",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 42,
   "dtliThumb": "Down",
   "source": "dtli",
   "dtliExcerpt": "This production, which is the equivalent of a disco-themed karaoke party, just makes me feel disappointed.",
@@ -15,67 +15,52 @@
   "bwwExcerpt": "This rendition of “The Wiz,” which arrives on Broadway following short engagements in multiple cities and is directed by Schele Williams (“The Notebook”), has the look and feel of a second-rate, low-budget touring production, with tacky, Halloween-quality costumes, limited scenic design (relying heavily on projections), and surprisingly uninspired and generic dance choreography. More thought seems to have gone into the alcoholic drinks available at intermission, including a green-colored frozen",
   "bwwThumb": "Down",
   "llmScore": {
-    "score": 25,
+    "score": 42,
     "confidence": "high",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 37,
+      "high": 47
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 20,
+      "book": null,
       "music": null,
-      "performances": 45,
-      "direction": 15
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "has the look and feel of a second-rate, low-budget touring production, with tacky, Halloween-quality costumes",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "This production, which is the equivalent of a disco-themed karaoke party, just makes me feel disappointed",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "The unexpected highlight of this production comes early on, when Melody Betts...sings 'The Feeling We Once Had' with a raw, sincere emotionality",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic delivers a scathing review calling it 'second-rate,' 'tacky,' and disappointing compared to the original, with only isolated praise for individual moments.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic systematically criticizes nearly every aspect of the production - direction, costumes, choreography, performances, and book revisions - concluding with explicit disappointment and unfavorable comparisons to previous versions. | GPT-4o: The review is predominantly negative, highlighting issues with the production's quality, costumes, choreography, and revisions to the original book. The critic expresses disappointment and does not recommend the show. | Gemini: The review is largely negative, criticizing the costumes, scenic design, choreography, book revisions, and some of the performances. The critic explicitly states disappointment, indicating a negative recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:30:20.072Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3037,
-    "outputTokens": 380,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:42:40.580Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 30,
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
     "scoreDelta": 5,
-    "thumbsMatch": true,
-    "expectedThumb": "Down",
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "archivePath": "data/archives/reviews/the-wiz-2024/amny--matt-windman_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:34:29.319Z",

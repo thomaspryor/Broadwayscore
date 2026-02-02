@@ -9,7 +9,7 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 66,
+  "assignedScore": 74,
   "llmScore": {
     "score": 74,
     "confidence": "medium",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review acknowledges flaws ('bumpy road', 'awkwardness') but clearly states audiences 'can't really fail to enjoy' the show and praises key performances, indicating a positive but cautious recommendation. | GPT-4o: The review acknowledges both positive and negative aspects, highlighting enjoyable moments despite some bumps. It suggests a balanced experience with neither a strong recommendation nor discouragement. | Gemini: The review suggests enjoyment despite imperfections, leaning towards a positive but not rave recommendation. The phrase \"can't really fail to enjoy\" indicates a positive experience, while \"bumpy as the road may be\" suggests reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review explicitly states audiences will enjoy the evening despite acknowledging imperfections ('bumpy road', 'neither disastrous nor perfect'). The positive language about Farrow's performance and the metaphor comparing it to a 'real, solid house-sharing arrangement' suggests a qualified recommendation. | GPT-4o: The review acknowledges both positive and negative aspects, suggesting an uneven experience. The phrase 'you can't really fail to enjoy' indicates some level of enjoyment despite the 'bumpy' nature, leading to a mixed classification. | Gemini: The review suggests enjoyment despite some flaws, indicating a positive but not rave recommendation. The phrase 'bumpy as the road may be' suggests reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,13 +36,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:54:58.971Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:13:13.157Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 66,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
+    "claudeScore": 73,
     "openaiScore": 65,
     "geminiScore": 75,
     "claudeBucket": "Positive",

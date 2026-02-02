@@ -7,7 +7,7 @@
   "publishDate": "March 15, 2024",
   "dtliExcerpt": "A show this steeped in grief and heartbreak has never felt so damn good.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "Up",
   "archivePath": "data/archives/reviews/the-notebook-2024/broadwaynews--brittani-samuel_2026-01-30.html",
@@ -15,11 +15,11 @@
   "sourceMethod": "archive",
   "showScoreExcerpt": "\"The Notebook is leaping off the page and onto the stage...its finest adaptation yet.\"",
   "llmScore": {
-    "score": 88,
-    "confidence": "low",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 95
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,48 +29,38 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "leaping off the page and onto the stage",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "its finest adaptation yet",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The phrase 'finest adaptation yet' suggests strong recommendation despite the extremely brief excerpt.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is consistently positive throughout, praising performances as 'sensational,' direction as 'artful,' and concluding with strong endorsement. Despite some confusion about casting choices, the critic clearly recommends the production. | GPT-4o: The review is overwhelmingly positive, praising the performances, direction, and emotional impact of the production. The critic describes the show as 'sensationally acted' and highlights its ability to evoke strong emotions, indicating a strong recommendation. | Gemini: The review is overall positive, highlighting the performances, direction, and emotional impact of the show. While the critic notes some confusing creative choices, they ultimately conclude that the show is enjoyable and worth seeing.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:19:42.882Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2321,
-    "outputTokens": 258,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:45:53.059Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 88,
-    "scoreDelta": 6,
+    "claudeScore": 78,
+    "openaiScore": 92,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "sources": [
     "dtli"

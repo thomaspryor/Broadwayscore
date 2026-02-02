@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 91,
+  "assignedScore": 89,
   "llmScore": {
-    "score": 91,
+    "score": 89,
     "confidence": "high",
     "range": {
-      "low": 86,
-      "high": 96
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The superlative language ('riotous') and the comparison stating it's funnier than multiple other Broadway comedies combined indicates an extremely positive, enthusiastic recommendation. | GPT-4o: The review uses superlative language to describe the comedy as 'riotous' and compares it favorably to other Broadway shows, indicating a strong recommendation. | Gemini: The review uses strong positive language like \"riotous\" and claims it's funnier than other Broadway comedies, indicating a rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language ('riotous') and explicitly states this show is funnier than multiple other Broadway comedies combined, indicating strong enthusiasm and clear recommendation. | GPT-4o: The excerpt describes the show as 'riotous' and suggests it surpasses other comedies on Broadway in terms of humor, indicating a strong recommendation. However, due to the single excerpt warning, the confidence is medium. | Gemini: The review uses extremely strong positive language, comparing the show favorably to multiple other comedies on Broadway. This indicates a 'Rave' classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,15 +36,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:51:05.603Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:04:22.179Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 91,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 88,
     "openaiScore": 90,
-    "geminiScore": 92,
+    "geminiScore": 90,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",

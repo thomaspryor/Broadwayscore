@@ -9,74 +9,59 @@
   "dtliExcerpt": "In answer to the question of whether it’s possible to separate the art from the artist, “MJ” performs a slick, crotch-grabbing sidestep. Packed with nearly 40 hits from Michael Jackson’s irresistible catalogue, the Broadway production from director and choreographer Christopher Wheeldon is not so much a biomusical as a high-shine and surface-skimming rehabilitation tour for its late subject, flattening rather than reckoning with his complex legacy.",
   "showScoreExcerpt": "\"In answer to the question of whether itâs possible to separate the art from the artist, âMJâ performs a slick, crotch-grabbing sidestep. Packed with nearly 40 hits from Michael Jacksonâs irresistible catalogue, the Broadway production from director and choreographer Christopher Wheeldon is not so much a biomusical as a high-shine and surface-skimming rehabilitation tour for its late subject, flattening rather than reckoning with his complex legacy.\"",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 64,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:05:16.048Z",
   "dtliThumb": "Meh",
   "bwwExcerpt": "The demons that Jackson battles in \"MJ,\" his father and the media, are figured as monstrous. But if there was darkness behind the angelic falsetto, a mix of light and shadow that made Michael Jackson a singular artist, \"MJ\" enacts a sleight of hand, insisting it didn't belong to him. It's a renouncement worthy enough of a smooth criminal.",
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 66
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
-      "music": 85,
-      "performances": 75,
-      "direction": 70
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Packed with nearly 40 hits from Michael Jackson's irresistible catalogue",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "not so much a biomusical as a high-shine and surface-skimming rehabilitation tour for its late subject, flattening rather than reckoning with his complex legacy",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Myles Frost, impressive in perhaps an impossible role",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Mixed review that praises the music and lead performance but criticizes the show for avoiding meaningful examination of Jackson's legacy and relying on surface spectacle rather than substance.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic clearly disapproves of the show's approach, describing it as a 'sidestep' and 'surface-skimming rehabilitation tour' that 'flattens rather than reckoning' with Jackson's legacy. The language is consistently critical of the production's substance. | GPT-4o: The review acknowledges the impressive musical numbers and Myles Frost's performance but criticizes the production for avoiding deeper engagement with Jackson's complex legacy. The tone is mixed, highlighting both strengths and significant shortcomings. | Gemini: The review acknowledges the impressive musical catalogue and performance but criticizes the show's handling of Jackson's legacy, suggesting a superficial and rehabilitative approach. This indicates a mixed assessment, neither strongly recommending nor discouraging.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:38:43.317Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2557,
-    "outputTokens": 366,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:25:28.578Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 45,
-    "openaiScore": 45,
-    "scoreDelta": 0,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "textIssue": "too_short",
   "sourceMethod": "archive",

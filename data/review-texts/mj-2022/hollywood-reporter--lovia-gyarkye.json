@@ -8,44 +8,28 @@
   "fullText": "Michael Jackson knew how to tell a story. He could channel regret with the mournful sorrow of an old man or playfully disclose his romantic desires with the youthfulness of first love. He experimented with vocal intonations, body movements and facial expressions to become the heartthrob of fantasies and the ghoulish figure of nightmares. Jackson relinquished himself to the narrative. He was a wizard, and every song, video and live performance was an opportunity to transform.\n\nSuch ease with shape-shifting comes at a cost. The King of Pop transported his devotees to fantastical places, but he remained relatively inscrutable. The real Michael Jackson was shrouded in mystery. For a while it didn't matter — the message was in the music. But then his facial features changed, his skin lightened and investigations accusing him of sexual abuse were opened. Contradictions began to pile up. Who was Michael Jackson? That question was difficult to answer when he was alive and is even more so now after his death.",
   "showScoreExcerpt": "\"During a preview I attended, an audience member rose to her feet and waved her hands in the air, as if she had caught the Holy Spirit: an affirmation that to be in Jacksonâs presence â even if only through gifted performers â is to experience a spiritual rapture. \n\nMJ, like its subject, is captivating and hard to shake. The musical takes audiences through Jacksonâs life and catalog with impressive ease, expertly chronicling major milestones.\"",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 77,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:04:30.736Z",
   "bwwExcerpt": "MJ, like its subject, is captivating and hard to shake. The musical takes audiences through Jackson's life and catalog with impressive ease, expertly chronicling major milestones. After breaking up with Motown records, Michael goes to Epic, where he works with Quincy Jones to produce Off the Wall and Thriller. His vision and work ethic become more exacting, his drive to best himself at once breathtaking and worrisome.",
   "llmScore": {
-    "score": 25,
-    "confidence": "low",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 15,
-      "high": 35
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Pan",
-    "thumb": "Down",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The real Michael Jackson was shrouded in mystery",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Contradictions began to pile up",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "That question was difficult to answer when he was alive and is even more so now after his death",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "This appears to be a biographical/contextual piece about Michael Jackson rather than an actual theater review, with heavy focus on the problematic aspects of his legacy and unanswered questions about his identity.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening with biographical context about Michael Jackson's controversies, the review clearly praises the Broadway production as 'remarkable,' 'captivating,' and executed with 'impressive ease,' indicating a positive recommendation. | GPT-4o: The review is highly positive, describing the musical as 'captivating and hard to shake' and highlighting its impressive storytelling and production quality. The critic's language suggests a strong recommendation to see the show. | Gemini: The review states the musical is \"captivating and hard to shake\" and \"expertly chronicling major milestones\", indicating a positive recommendation despite the complex subject matter.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,27 +38,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:37:42.053Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2521,
-    "outputTokens": 331,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:23:15.625Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "textIssue": "truncated",
   "sourceMethod": "archive",

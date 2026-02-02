@@ -14,59 +14,51 @@
   "dtliThumb": null,
   "llmScore": {
     "score": 89,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 82,
-      "music": 85,
-      "performances": 90,
-      "direction": 89
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "something that absolutely should not be missed",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "At the very least, Chicago is as good now as it's ever been. It remains a heartening experience, a life-affirming dedication to the magic and art of theatre",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the production - much like its corps of superb actors, singers, and dancers - is in terrific shape",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic delivers an unqualified recommendation with explicit 'should not be missed' language, praising the production as 'terrific,' performances as 'superb,' and calling it 'life-affirming' despite minor reservations about two performers. | GPT-4o-mini: The review expresses strong enthusiasm for the production, praising the performances and overall experience, indicating it is a must-see.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses highly positive language like 'sensational' and 'show-stopping numbers' while emphasizing the fun and quality of performances, indicating strong enthusiasm for the production. | GPT-4o: The review highlights the sensational aspects of the production, emphasizing the talented performers and the engaging nature of the show, suggesting a strong recommendation. | Gemini: The review highlights the sensational dancing, singing, and acting, indicating a positive experience, even if it's a revival.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:44:51.630Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:56:21.797Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 90,
-    "scoreDelta": 2,
+    "geminiScore": 78,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "dtliExcerpt": "\"What it's all about: 'murder, greed, corruption, violence, exploitation, adultery and treachery.' Of course what it's also about is sensational dancing, singing, acting...and, fun! No razzle-dazzle mechanical props, just the razzle-dazzle of a company of gifted performers delivering two hours and twenty minutes of show-stopping numbers.\"\n\nRead more",
   "mergedFrom": [

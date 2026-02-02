@@ -5,13 +5,13 @@
   "criticName": "Ann Treneman",
   "url": "https://www.thetimes.co.uk/article/theatre-review-harry-potter-and-the-cursed-child-i-and-ii-at-the-lyric-theatre-new-york-jsc7khbbf",
   "publishDate": "2018-04-22T20:11:20-04:00",
-  "fullText": "★★★★★You would think that Jo Rowling would assume that Broadway was in the bag. After all, this mega-play, the latest instalment of the Harry Potter story, has been running in the West End to sell-out audiences since July 2016. Cursed Child? Try Blessed. The Muggles have gone mad for it and so, surely, taking it to New York was something of a foregone conclusion.\n\nBut it seems Rowling didn’t think that at all. “Broadway is a scary place,” she told The New York Times earlier this year, as she and her co-creators, the director John Tiffany and playwright Jack Thorne (credited with the actual play script), adopted the brace position. London was one thing, not least home turf. Broadway is another thing entirely.",
+  "fullText": "Challenge yourself with today’s puzzles. ★★★★★You would think that Jo Rowling would assume that Broadway was in the bag. After all, this mega-play, the latest instalment of the Harry Potter story, has been running in the West End to sell-out audiences since July 2016. Cursed Child? Try Blessed. The Muggles have gone mad for it and so, surely, taking it to New York was something of a foregone conclusion. But it seems Rowling didn’t think that at all. “Broadway is a scary place,” she told The New York Times earlier this year, as she and her co-creators, the director John Tiffany and playwright Jack Thorne (credited with the actual play script), adopted the brace position. London was one thing, not least home turf. Broadway is another thing entirely.",
   "bwwExcerpt": "This play, in two parts and at five hours plus, centres on the perils of childhood, particularly when there is a lack of love. Friendship, loyalty, betrayal, fear, evil. It's all kicking off in Potterland. The pacing is slow but as all Rowling fans know, she won't be hurried. Thankfully, the plot is ingenious, the characters superb and the set by Christine Jones atmospheric. The magic is well beyond abracadabra levels. (Aladdin, playing just a few streets away here, eat your heart out.) The stagecraft is out of this world, literally.",
   "originalScore": "5/5 stars",
   "assignedScore": 84,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
-  "sourceMethod": "archive",
+  "sourceMethod": "playwright",
   "scoreSource": "unicode-stars",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -70,23 +70,36 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "archivePath": "data/archives/reviews/harry-potter-2021/the-times--ann-treneman_2026-01-31.html",
-  "textFetchedAt": "2026-01-31T23:24:17.360Z",
+  "archivePath": "data/archives/reviews/harry-potter-2021/the-times--ann-treneman_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:39:48.204Z",
   "originalScoreNormalized": 100,
-  "fetchMethod": "archive",
+  "fetchMethod": "playwright",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 1,
   "archiveOrgTimestamp": "20240602140134",
   "archiveOrgUrl": "http://web.archive.org/web/20240602140134/https://www.thetimes.co.uk/article/theatre-review-harry-potter-and-the-cursed-child-i-and-ii-at-the-lyric-theatre-new-york-jsc7khbbf",
   "textIssues": [
-    "Word count too low: 123 (min: 300)"
+    "Word count too low: 128 (min: 300)"
   ],
   "contentTier": "truncated",
-  "wordCount": 123
+  "wordCount": 123,
+  "isFullReview": false,
+  "textWordCount": 128,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "shorter_than_excerpt"
+  ],
+  "textStatus": "truncated"
 }

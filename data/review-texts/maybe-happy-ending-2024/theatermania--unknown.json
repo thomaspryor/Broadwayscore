@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 79,
+  "assignedScore": 77,
   "llmScore": {
-    "score": 79,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the show's charm, warmth, originality, and emotional depth, clearly positioning it favorably against other Broadway musicals with positive descriptors like 'refreshingly original' and 'poignant celebration.' | GPT-4o: The review highlights the show's charm, warmth, and originality, suggesting a strong positive impression. The use of 'undeniable' and 'poignant celebration' indicates a clear recommendation. | Gemini: The review highlights the show's charm and warmth, calling it \"refreshingly original\" and a \"poignant celebration.\" This indicates a positive, though not ecstatic, recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the show's charm, originality, and emotional depth, positioning it favorably against other Broadway musicals. However, with only one excerpt available, I'm scoring conservatively within the positive range. | GPT-4o: The review highlights the show's charm, warmth, and originality, suggesting a positive experience. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Positive range. | Gemini: The review highlights the show's charm and originality, calling it a \"poignant celebration.\" While positive, the single excerpt and lack of explicit recommendation language suggest a score in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,15 +36,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:50:50.965Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:17:18.736Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 81,
-    "geminiScore": 78,
+    "openaiScore": 77,
+    "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",

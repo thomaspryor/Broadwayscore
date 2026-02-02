@@ -8,7 +8,7 @@
   "fullText": "It seems we can't find what you're looking for. Perhaps searching can help.\n\n Search for:\n \n \n \n \n\n \n\n \n\n \n \n\n \n\n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n Latest Videos\n \n \n \n \n \n \n\n \n \n \n \n \n \n \n Watch Jessica Vosk and Kelli Barrett Sing a Song From the Upcoming Broadway Musical Beaches \n \n \n Broadway performances start on March 27 at the Majestic Theatre.",
   "dtliExcerpt": "Cole Escola's unhinged comedy about Mary Todd Lincoln is a hilarious exercise in theatrical anarchy that manages to be both completely ridiculous and surprisingly touching.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "contentTier": "truncated",
   "wordCount": 25,
   "llmScore": {
-    "score": 79,
+    "score": 61,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 56,
+      "high": 66
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review uses strongly positive language like 'hilarious' and 'surprisingly touching', indicating clear recommendation despite the comedic chaos being described. | GPT-4o: The review uses strong positive language such as 'hilarious' and 'surprisingly touching', indicating a highly enthusiastic recommendation. | Gemini: The review uses positive language like \"hilarious\" and \"touching\" to describe the show, indicating a recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This appears to be an error message rather than an actual review text, making it impossible to determine the critic's recommendation or assessment of the show. | GPT-4o: The review text is not available, providing no evaluative content. This results in a low confidence score and a mixed classification due to lack of clear recommendation or criticism. | Gemini: The review text indicates that the reviewer was unable to find anything positive to say about the show, suggesting a negative assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,26 +43,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T13:58:59.307Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:06:30.559Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 80,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "claudeScore": 60,
+    "openaiScore": 62,
+    "geminiScore": 40,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "isFullReview": false,
   "textWordCount": 42,

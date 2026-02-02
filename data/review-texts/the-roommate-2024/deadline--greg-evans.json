@@ -8,66 +8,58 @@
   "dtliExcerpt": "And those aren’t the only flaws in this awkwardly paced, abruptly mood-shifting tale of two very different women on the verge of old age looking to outrun their pasts and stake new claims on the future. Not even the ever-reliable director Jack O’Brien can get a firm grasp on this squiggly story, but at least he doesn’t have to make the effort alone: Who wouldn’t want Farrow and LuPone on their team?",
   "showScoreExcerpt": "\"The Roommate has Farrow and LuPone to lean into, and their appeal is not small.\"",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "Down",
   "bwwExcerpt": "If The Roommate would have us believe that this Grace & Frankie could become Bonnie & Clyde in the blink of an eye, it at least does so with enough good humor and easy charm to keep our eye-rolling in relative check.",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 52,
-    "confidence": "medium",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 40.5,
-      "high": 63.5
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 38,
+      "book": null,
       "music": null,
-      "performances": 74,
-      "direction": 48
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "those aren't the only flaws in this awkwardly paced, abruptly mood-shifting tale",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Not even the ever-reliable director Jack O'Brien can get a firm grasp on this squiggly story",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Who wouldn't want Farrow and LuPone on their team?",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic identifies multiple structural flaws and directorial struggles but clearly appreciates the star performers, creating a mixed recommendation that leans slightly positive due to the casting appeal. | GPT-4o-mini: The review highlights significant flaws in pacing and direction while only offering mild praise for the performances, leading to a negative overall recommendation. | Note: Models differed by 13 points.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt suggests the show relies heavily on star power rather than its own merits, indicating a lukewarm assessment. However, with only one curated line available, confidence is low. | GPT-4o: The mention of the appeal of Farrow and LuPone suggests some positive aspects, but the lack of a strong recommendation and the aggregator context indicating a 'down' and 'flat' response suggest a mixed review. | Gemini: The review excerpt acknowledges the appeal of the performers but doesn't offer a strong recommendation. The aggregator verdicts also suggest a mixed or negative reception.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:58:23.160Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:13:01.401Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 52,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 45,
-    "scoreDelta": 13,
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "archivePath": "data/archives/reviews/the-roommate-2024/deadline--greg-evans_2026-01-27.html",
   "textFetchedAt": "2026-01-27T04:26:10.050Z",

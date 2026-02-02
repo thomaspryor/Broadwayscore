@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 43,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "Because I must unfortunately report that the new revival of that musical, which opened Wednesday night at the Marquis Theatre, is not the dazzler that fans have waited so long for. Quite the contrary. And that’s bad news, indeed.",
@@ -40,11 +40,11 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 42,
-    "confidence": "medium",
+    "score": 43,
+    "confidence": "high",
     "range": {
-      "low": 35,
-      "high": 50
+      "low": 38,
+      "high": 48
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -54,43 +54,38 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "is not the dazzler that fans have waited so long for",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic explicitly states this revival fails to meet the high expectations fans had, using 'not the dazzler' to convey disappointment with the production quality.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic explicitly states this revival fails to meet expectations that fans had for it, indicating disappointment and lack of recommendation. The aggregator context supports this negative assessment. | GPT-4o: The review suggests that the revival does not meet expectations, indicating disappointment. The lack of enthusiasm and the aggregator context suggest a negative assessment. | Gemini: The review excerpt explicitly states the revival is not a 'dazzler,' indicating a negative assessment. The aggregator verdicts also point towards a negative reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:30:55.098Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2321,
-    "outputTokens": 255,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:43:46.476Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 42,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 45,
-    "scoreDelta": 7,
-    "thumbsMatch": true,
-    "expectedThumb": "Down",
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "showScoreExcerpt": "\"...the new revival...is not the dazzler that fans have waited so long for.\"",
   "contentTier": "complete",

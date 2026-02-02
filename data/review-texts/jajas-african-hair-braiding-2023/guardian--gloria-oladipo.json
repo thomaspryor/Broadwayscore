@@ -9,71 +9,55 @@
   "bwwExcerpt": "Make no mistake, Jaja’s African Hair Braiding is wildly entertaining. Bioh’s comedic skills are masterful, ballooned further by a talented ensemble. Mensah, in particular, brings a bracing dry humor, an excellent complement to the cast’s energetic antics. But the urge to sink into drama, particularly in the play’s last moments, is unnecessary. Bioh’s commitment to showing levity is refreshing. It’s a needed counterbalance to African stories that reek of debasement (often puppeteered by white peo",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 68,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 72
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 55,
+      "book": null,
       "music": null,
-      "performances": 78,
-      "direction": 65
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Jaja's African Hair Braiding is wildly entertaining. Bioh's comedic skills are masterful, ballooned further by a talented ensemble.",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "But the play, making its world premiere, is crammed full... It's a whiplash that refuses to fully commit to any particular plot or person, leaving the play feeling unfinished.",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Make no mistake, Jaja's African Hair Braiding is wildly entertaining",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic finds the show 'wildly entertaining' with 'masterful' comedy and strong performances, but criticizes its overcrowded plot structure and tonal inconsistencies, resulting in qualified appreciation rather than clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic clearly states the show is 'wildly entertaining' and 'delightful' while acknowledging it tries to cover too much ground. Despite structural criticisms, the overall assessment is positive with praise for performances, design, and comedic elements. | Gemini: The review is largely positive, highlighting the play's comedic elements, visual appeal, and talented ensemble. However, it also notes that the play tries to cover too much ground, leading to a somewhat unfocused and unfinished feel. Therefore, it is a positive review with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:20:51.569Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3901,
-    "outputTokens": 394,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:52:02.555Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 68,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 73,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "bwwThumb": "Up",
   "dateUnknown": true,

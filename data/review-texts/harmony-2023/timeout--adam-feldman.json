@@ -9,7 +9,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Meh",
   "originalScore": "3/5",
-  "assignedScore": 64,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "originalScoreNormalized": 60,
@@ -24,60 +24,52 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 64,
-    "confidence": "high",
+    "score": 62,
+    "confidence": "medium",
     "range": {
-      "low": 57.5,
-      "high": 70.5
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 50,
-      "music": 71,
-      "performances": 77,
+      "book": null,
+      "music": null,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "blend together beautifully without disappearing into anonymity",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "it doesn't make the case that, among all that we must never forget, the Comedian Harmonists merit quite this degree of remembrance",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "As enjoyable and affecting as 'Harmony' is",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic acknowledges the show is 'enjoyable and affecting' with strong performances and attractive music, but expresses fundamental doubts about whether the material justifies a Broadway musical, indicating qualified appreciation rather than recommendation. | GPT-4o-mini: The review highlights strong performances and enjoyable music but notes significant limitations in the book, leading to a mixed-positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges the show is 'enjoyable and affecting' but identifies fundamental structural problems and questions whether the subject merits this treatment. The 3/5 rating and mixed aggregator verdicts support this classification. | GPT-4o: The critic acknowledges the show's enjoyable and affecting qualities but ultimately questions its overall impact and necessity. The original rating of 3/5 aligns with a mixed review. | Gemini: The review acknowledges enjoyable and affecting aspects but ultimately questions the necessity of remembering the subject matter to this degree, indicating a mixed assessment. The 3/5 rating also suggests a middle-ground opinion.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:23:11.188Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:11:45.494Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 64,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
+    "claudeScore": 58,
     "openaiScore": 65,
-    "scoreDelta": 3,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 64,

@@ -6,7 +6,7 @@
   "url": "https://ew.com/maybe-happy-ending-review-broadway-darren-criss-brings-charm-robot-love-story-8743079?srsltid=AfmBOor9EMf_NaIsXGNTY-n_PoPfgb0Ep1uECcEzEAB7LKnSRo3_hWeT",
   "publishDate": "2024-11-12",
   "originalScore": "B",
-  "assignedScore": 85,
+  "assignedScore": 79,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "Alas, charm goes a long way. Criss is often his most compelling when given a character with edge (his stint as the titular East German rocker in Hedwig and the Angry Inch or his Emmy-winning turn in The Assassination of Gianni Versace: American Crime Story) but here he is charming, spirited and wond...",
@@ -18,18 +18,13 @@
   "dtliExcerpt": "Maybe Happy Ending dazzles with its love story and astounds with its visual accomplishments. There’s nothing robotic about this production: it wears its heart on its sleeve and on charm alone, succeeds.",
   "dtliThumb": "Up",
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:33:42.302Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2346,
-    "outputTokens": 329,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "dtliExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated DTLI excerpt with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:15:55.157Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "5.0.0"
   },
   "showScoreExcerpt": null,
   "bwwThumb": null,
@@ -90,59 +85,43 @@
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "llmScore": {
-    "score": 85,
-    "confidence": "medium",
+    "score": 79,
+    "confidence": "high",
     "range": {
-      "low": 82,
-      "high": 88
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 88
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "dazzles with its love story and astounds with its visual accomplishments",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "it wears its heart on its sleeve and on charm alone, succeeds",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "There's nothing robotic about this production",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Strong positive language including 'dazzles,' 'astounds,' and explicit statement that the production 'succeeds' indicates clear recommendation despite brief format.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses strong positive language like 'dazzles' and 'astounds' and concludes that the production 'succeeds,' indicating a clear recommendation despite limited text. | GPT-4o: The review highlights the production's charm and emotional impact, with phrases like 'dazzles' and 'astounds' indicating a strong positive impression. The original rating of B aligns with a positive recommendation. | Gemini: The review uses positive language like \"dazzles\" and \"succeeds\" and the overall tone is favorable, suggesting a positive recommendation despite the truncated text.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 90,
-    "geminiScore": 80,
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreCompletedAt": "2026-02-01T15:33:42.302Z",
   "contentTier": "excerpt",

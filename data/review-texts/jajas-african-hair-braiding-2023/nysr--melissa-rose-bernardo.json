@@ -12,13 +12,13 @@
     "nysr-api"
   ],
   "originalScore": "4/5 stars",
-  "assignedScore": 79,
+  "assignedScore": 78,
   "llmScore": {
-    "score": 79,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and consistently positive language throughout praising the characters, performances, and craft elements indicate a strong recommendation despite the truncated text. | GPT-4o: The review is largely positive, highlighting the well-drawn characters and the celebratory nature of the play. The original rating of 4/5 stars suggests a strong recommendation, despite the truncated text warning. | Gemini: The review describes the characters and setting in a positive light, highlighting the strength and depth of the female characters. While the text is truncated, the overall tone suggests a recommendation, especially given the 4/5 star rating.",
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The 4/5 star rating combined with celebratory language, detailed character praise ('formidable and well-drawn'), and the concluding statement that it's 'a celebration' clearly indicates a positive recommendation despite the truncated text. | Gemini: The review is mostly descriptive but positive, highlighting the well-drawn characters and celebration of the craft. The 4/5 star rating also suggests a positive recommendation, but the truncated text makes it difficult to assess the overall strength of the recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,25 +39,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T14:55:30.150Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:52:31.610Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 82,
-    "geminiScore": 78,
+    "claudeScore": 80,
+    "openaiScore": null,
+    "geminiScore": 75,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "contentTier": "complete",
   "contentTierReason": "Full review text"

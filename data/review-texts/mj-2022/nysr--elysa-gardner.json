@@ -12,13 +12,13 @@
     "nysr-api"
   ],
   "originalScore": "3/5 stars",
-  "assignedScore": 77,
+  "assignedScore": 76,
   "llmScore": {
-    "score": 77,
-    "confidence": "medium",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The 3/5 rating and review content indicate a positive recommendation that acknowledges significant flaws in the book but praises the performances, choreography, and musical numbers. The critic finds it 'winning' when focused on song and dance. | GPT-4o: The review acknowledges the challenges of the production but ultimately credits the cast and crew for delivering a joyful experience. However, it also highlights significant flaws in the book and setup, leading to a mixed overall impression. | Gemini: The review is generally positive, highlighting the talent of the cast and the quality of the musical numbers. While acknowledging the challenges of portraying Jackson's life and the limitations of the book, the critic ultimately finds the show enjoyable and worth seeing, especially for fans of Jackson's music. The 3/5 star rating also supports a positive classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 3/5 star rating and review tone indicate a solid positive recommendation. The critic praises the performances, choreography, and musical numbers while acknowledging the show's limitations in handling Jackson's controversial aspects. | GPT-4o: The review acknowledges the challenges and some shortcomings of the production, particularly in the book and certain roles, but ultimately highlights the joy and talent in the performances, especially Myles Frost's portrayal of Michael Jackson. The original 3/5 star rating suggests a positive but not overwhelmingly enthusiastic recommendation. | Gemini: The review is generally positive, highlighting the talent of the cast, particularly Myles Frost, and the effective use of Jackson's music. While acknowledging the challenges of portraying Jackson's life and the limitations of the book, the critic ultimately finds the production enjoyable and worth seeing, especially for its musical and dance numbers.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,25 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T14:56:38.989Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:23:37.943Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 75,
-    "openaiScore": 65,
+    "openaiScore": 74,
     "geminiScore": 78,
     "claudeBucket": "Positive",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "complete",
   "contentTierReason": "Full review text"

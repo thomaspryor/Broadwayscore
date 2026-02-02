@@ -8,44 +8,28 @@
   "fullText": "Oh, Mary! on Broadway was possibly the most fun I’ve had in a theater ever in my life— a compliment I don’t give lightly. The writing, the performances, and the brutal honesty had me laughing the whole way through. Cole Escola (Mary) has an incredible gift for wordplay, and I was impressed with the depth and complexity with which they switched from formal to crass language in ways that didn’t feel anachronistic or gimmicky. The only frame of reference I have for this stylistic blend is when people modernize parts of a Shakespearean play but not all of it— often unsuccessfully. Escola’s creation was genuine and provocative and real. For a comedy, it was beautiful and profoundly sad. When I think about describing this story afterwards, the plot points and thematic acknowledgment of the pain of queer identities are actually quite solemn. Escola’s gift is allowing us the space to laugh at them. In a way, it makes us all okay with our own repressed queerness and embracing the idea that society has, in fact, made considerable progress towards inclusivity and destigmatization. The way Escola and the rest of the cast code switch between the antiquated and the updated is refreshing, bold, and innovative. It was simultaneously sacrilegious and wholesome in its authenticity. I’m full of adjectives, but I always have to pair them with other adjectives, because the coexistence of contradictory ideas quite literally defies description. The vagueness, the specificity! My favorite scene was the one about subtext, because, ironically, that’s the one thing this show lacked. The only real subtextual element was Cole Escola’s personal assigned gender at birth. But when I saw this show, I reveled in Escola’s nonbinary identity. They seemed so themself on stage— so comfortable in a dress, in a queer show, in a cabaret moment, making an absolute mockery of gender. In this show, they portrayed a woman with sincere femininity and ferocity. I give Escola the highest compliment one can give an actor, which is that I did not see Cole Escola on stage— I saw Mary Todd. I saw a character who was female and did no wondering about how much of the actor’s actual identity might not be. As a nonbinary person myself, it was personally powerful and empowering to see someone celebrate and embrace the parts of them that are outside societal norms and prove that we are no different. A queer actor shouldn’t only play gay roles or drag roles, or be restricted to quirky side kicks. Escola celebrates their femininity in a way that is authentic and beautiful. The metatheatricality was spot on and the absurd truth of Escola’s understanding of the human condition was an absolute delight— like a vanilla ice cream cone on a hot summer’s day. No, wait! Make it strawberry! I did not attend this performance on a press pass.",
   "showScoreExcerpt": "The coexistence of contradictory ideas quite literally defies description!",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 94,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/oh-mary-broadway",
   "sourceMethod": "playwright",
   "scoreSource": null,
   "llmScore": {
-    "score": 92,
+    "score": 94,
     "confidence": "high",
     "range": {
-      "low": 88,
-      "high": 95
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": null,
       "music": null,
-      "performances": 95,
-      "direction": 88
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "possibly the most fun I've had in a theater ever in my life— a compliment I don't give lightly",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The writing, the performances, and the brutal honesty had me laughing the whole way through",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "I give Escola the highest compliment one can give an actor, which is that I did not see Cole Escola on stage— I saw Mary Todd",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Reviewer expresses extraordinary enthusiasm with superlatives like 'most fun ever' and 'highest compliment,' praising every aspect from writing to performances with deep analysis and personal connection.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: This is an unabashedly enthusiastic review filled with superlatives and personal connection. The critic calls it possibly the most fun they've ever had in theater, praises the writing and performances extensively, and demonstrates deep appreciation for the artistic achievement. | GPT-4o: The review is overwhelmingly positive, with high praise for the writing, performances, and innovative style. The critic describes the show as fun, beautiful, and profoundly sad, indicating a deeply impactful experience. The language used suggests a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, using phrases like \"most fun I've had in a theater ever\" and praising the writing, performances, and honesty. The critic clearly recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,27 +38,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:44:43.580Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2944,
-    "outputTokens": 372,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:06:24.322Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 50,
-    "openaiScore": 50,
-    "scoreDelta": 0,
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/oh-mary-2024/pages-on-stages--mason-pilevsky_2026-01-27.html",
   "textFetchedAt": "2026-01-27T01:48:20.533Z",

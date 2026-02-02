@@ -9,15 +9,15 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 77,
+  "assignedScore": 88,
   "llmScore": {
-    "score": 77,
+    "score": 88,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 83,
+      "high": 93
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review describes it as an 'enchanting new musical classic' which is clearly positive language, though with only an excerpt available, the full verdict may contain reservations or additional context. | GPT-4o: The review describes the musical as 'an enchanting new musical classic', indicating a strong, enthusiastic recommendation. The language suggests it is a standout production with a timeless quality. | Gemini: The review excerpt uses positive language like \"enchanting\" and \"classic,\" suggesting a recommendation. However, without the full review, it's difficult to gauge the strength of the recommendation, so a score in the lower end of the 'Positive' bucket is appropriate.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic explicitly calls this an 'enchanting new musical classic' and frames it as a rare, special occurrence, indicating strong enthusiasm despite limited text available. | GPT-4o: The phrase 'an enchanting new musical classic' suggests a highly positive view, indicating a strong recommendation. However, due to the single excerpt warning, the confidence is medium. | Gemini: The review excerpt uses positive language like \"enchanting new musical classic\" and describes the show as a \"modern musical romance.\" Given the single excerpt warning, a score in the middle of the positive range is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,16 +36,18 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:56:26.098Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:39:50.441Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 88,
+    "claudeScore": 88,
+    "openaiScore": 87,
     "geminiScore": 75,
-    "claudeBucket": "Positive",
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "scoreDelta": 13,
@@ -54,7 +56,7 @@
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

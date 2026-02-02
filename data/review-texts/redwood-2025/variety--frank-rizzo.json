@@ -7,73 +7,58 @@
   "publishDate": "February 13, 2025",
   "fullText": "There’s a powerful appeal to the idea of leaving behind the turbulence of the personal — or for that matter, the political — and escaping to a place of beauty, safety and solace.\n\nA separate peace within a natural sanctuary is just what the troubled character of Jesse, played with captivating ease and intensity by Idina Menzel, finds in the new musical \"Redwood,\" now on Broadway following its run last spring at La Jolla Playhouse. Others, too, might welcome that sense of comfort in a production of grandeur and heart, telling a story of grief, healing and wonder.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": "\"...you could call “Redwood” a musical chamber piece with monumentality\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/redwood-broadway",
   "llmScore": {
-    "score": 78,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 83
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
-      "performances": 82,
-      "direction": 80
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "played with captivating ease and intensity by Idina Menzel",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "a production of grandeur and heart, telling a story of grief, healing and wonder",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "powerful appeal to the idea of leaving behind the turbulence",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Review uses consistently positive language praising Menzel's performance and the production's emotional impact, with descriptors like 'grandeur and heart' and 'captivating' suggesting clear recommendation despite being an excerpt.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the production's 'grandeur and heart' and suggests audiences will welcome its comfort, with strong praise for Menzel's performance and the show being 'tailor-made to the star's strengths.' | GPT-4o: The review uses highly positive language, praising the production's grandeur and heart, and highlights Idina Menzel's captivating performance. The overall tone suggests a strong recommendation. | Gemini: The review highlights the show's appeal and the star's performance, suggesting it's worth seeing for those seeking comfort and a story of healing.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:05:53.435Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2434,
-    "outputTokens": 347,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:50:39.178Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "dtliExcerpt": "It’s a show tailor-made to the star’s strengths as an actress, a vocalist, and a defier of gravity as here she scales, swings and sings from the heights.",
   "sources": [

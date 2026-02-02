@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 78,
+  "assignedScore": 77,
   "llmScore": {
-    "score": 78,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The language is clearly positive ('splendidly nasty', successful transfer from sold-out run), though limited excerpt prevents full assessment of any reservations. | GPT-4o: The review uses positive language such as 'splendidly' and notes the show's success in a previous run, indicating a recommendation. However, the lack of a full review text and explicit recommendation language lowers confidence slightly. | Gemini: The phrase \"splendidly nasty\" and the fact that it moved from a sold-out run to Broadway suggests a positive, though perhaps unconventional, recommendation. The phrase \"goosing a sleepy Broadway summer\" implies that it is a welcome addition.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'splendidly nasty' is clearly positive praise, and describing it as goosing a sleepy Broadway summer suggests it's bringing energy and excitement. However, with only one excerpt available, I'm scoring conservatively within the positive range. | GPT-4o: The excerpt describes the show as 'splendidly nasty' and notes its successful transition from a sold-out run, suggesting a positive reception. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Positive range. | Gemini: The phrase \"splendidly nasty\" and the mention of a sold-out run suggest a positive, though perhaps not rave, review. The phrase \"goosing a sleepy Broadway summer\" further implies that the show is a welcome and enjoyable addition.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:51:21.101Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:06:20.819Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 80,
+    "openaiScore": 77,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

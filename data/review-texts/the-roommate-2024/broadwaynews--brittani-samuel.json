@@ -7,74 +7,59 @@
   "publishDate": "September 13, 2024",
   "dtliExcerpt": "So my disappointment in the play is not due to some casualty of heart or humanity — the show’s got well-enough doses of both — but rather its missing sense of deeper purpose.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 59,
   "source": "dtli",
   "dtliThumb": "Meh",
-  "archivePath": "data/archives/reviews/the-roommate-2024/broadwaynews--brittani-samuel_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T14:03:39.473Z",
+  "archivePath": "data/archives/reviews/the-roommate-2024/broadwaynews--brittani-samuel_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:28:56.144Z",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 62,
-    "confidence": "medium",
+    "score": 59,
+    "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 68
+      "low": 54,
+      "high": 64
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
-      "performances": 80,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Megawatt performers Patti LuPone and Mia Farrow sprinkle stardust on playwright Jen Silverman's hollow comedy",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "less a bold, blockbuster-worthy event and more a slow-burn play",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "employs a familiar structure: two actors, one act, zero frills",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Strong praise for star performers contrasted with criticism of the script as 'hollow' and the production as less than 'blockbuster-worthy', suggesting the stars elevate weak material.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly expresses disappointment and finds the comedy 'hollow' while acknowledging it has 'heart or humanity.' The critique centers on missing deeper purpose rather than outright failure. | GPT-4o: The review acknowledges the star power and some positive elements but ultimately expresses disappointment due to a lack of deeper purpose, indicating a mixed reception. | Gemini: The review highlights the star power but ultimately finds the play lacking a deeper purpose, suggesting a mixed experience. The phrase \"less a bold, blockbuster-worthy event and more a slow-burn play\" indicates a lack of strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:24:08.164Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2521,
-    "outputTokens": 363,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:12:32.639Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 55,
-    "scoreDelta": 10,
+    "claudeScore": 58,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "sources": [
     "dtli"

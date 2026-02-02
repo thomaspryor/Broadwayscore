@@ -22,59 +22,51 @@
   ],
   "llmScore": {
     "score": 64,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
-      "low": 57.5,
-      "high": 70.5
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 53,
+      "book": null,
       "music": null,
-      "performances": 75,
-      "direction": 55
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "it is a welcome change that the seven autistic characters in 'How to Dance in Ohio' are presented, without condescension, as young adults a lot like most others",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the production is otherwise very conventional, sometimes dispiritingly so",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "though the result is sometimes uplifting, the uplift comes at the expense of the depth and complexity the show might have achieved",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic praises the groundbreaking representation and authentic casting but finds the musical disappointingly conventional and lacking depth, resulting in qualified appreciation rather than strong recommendation. | GPT-4o-mini: The review acknowledges the positive representation of autistic characters but criticizes the conventional approach of the production, leading to a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges the show as a milestone for autistic representation but criticizes it as 'very conventional, sometimes dispiritingly so' and lacking the depth it could have achieved, resulting in a qualified assessment that neither strongly recommends nor discourages. | GPT-4o: The review acknowledges the groundbreaking representation and authenticity of the cast, but criticizes the production for being conventional and lacking depth. The tone suggests a balance of positive and negative elements, leading to a mixed verdict. | Gemini: The review acknowledges the show's groundbreaking representation but notes its conventional and somewhat shallow execution. It is recommended as a welcome change, but with reservations about its depth.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T05:49:33.601Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:55:16.294Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 64,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "scoreDelta": 3,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "archivePath": "data/archives/reviews/how-to-dance-in-ohio-2023/nytimes--jesse-green_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:36:27.299Z",

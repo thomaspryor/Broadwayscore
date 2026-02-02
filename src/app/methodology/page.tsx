@@ -111,7 +111,7 @@ const faqSchema = {
       name: 'What is Audience Buzz?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Audience Buzz aggregates theatergoer sentiment from Show Score, Mezzanine, and Reddit into four designations: Loving It (88+), Liking It (78-87), Shrugging (68-77), and Loathing It (0-67). Sources are weighted dynamically based on sample size, with Reddit capturing buzz at 20% and Show Score/Mezzanine splitting the remaining 80% proportionally.',
+        text: 'Audience Buzz aggregates theatergoer sentiment from Show Score, Mezzanine, and Reddit into letter grades from A+ (93-100) through F (below 48). The scale includes A/A- for strong reception, B+/B/B- for solid to mixed reception, and C+/C/C-/D for below-average to poor reception. Sources are weighted dynamically based on sample size, with Reddit at 20% and Show Score/Mezzanine splitting the remaining 80% proportionally.',
       },
     },
     {
@@ -340,39 +340,35 @@ export default function MethodologyPage() {
             Audience Buzz captures what theatergoers are actually saying about shows, combining audience ratings from multiple platforms into a single sentiment designation.
           </p>
 
-          <h3 className="text-base font-semibold text-white mt-6 mb-3">Designations</h3>
+          <h3 className="text-base font-semibold text-white mt-6 mb-3">Grade Scale</h3>
           <p className="text-gray-300 text-sm mb-4">
-            Shows are assigned one of four designations based on aggregated audience scores:
+            Shows receive a letter grade based on their aggregated audience score:
           </p>
-          <div className="space-y-3">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-              <div className="flex items-center gap-2 w-40 flex-shrink-0">
-                <span className="text-2xl">❤️</span>
-                <span className="text-white font-medium">Loving It</span>
+          <div className="space-y-2">
+            {[
+              { grade: 'A+', range: '93-100', color: '#22c55e', desc: 'Audiences love it' },
+              { grade: 'A', range: '88-92', color: '#16a34a', desc: 'Audiences love it' },
+              { grade: 'A-', range: '83-87', color: '#14b8a6', desc: 'Strong audience reception' },
+              { grade: 'B+', range: '78-82', color: '#0ea5e9', desc: 'Solid audience reception' },
+              { grade: 'B', range: '73-77', color: '#f59e0b', desc: 'Mixed-positive reception' },
+              { grade: 'B-', range: '68-72', color: '#f97316', desc: 'Mixed audience reception' },
+              { grade: 'C+', range: '63-67', color: '#ef4444', desc: 'Below-average reception' },
+              { grade: 'C', range: '58-62', color: '#dc2626', desc: 'Weak audience reception' },
+              { grade: 'C-', range: '53-57', color: '#b91c1c', desc: 'Poor audience reception' },
+              { grade: 'D', range: '48-52', color: '#991b1b', desc: 'Very poor reception' },
+              { grade: 'F', range: '<48', color: '#6b7280', desc: 'Audiences dislike it' },
+            ].map(g => (
+              <div key={g.grade} className="flex items-center gap-3">
+                <span
+                  className="inline-flex items-center justify-center w-9 h-6 rounded text-xs font-bold flex-shrink-0"
+                  style={{ color: g.color, backgroundColor: `${g.color}20` }}
+                >
+                  {g.grade}
+                </span>
+                <span className="text-gray-500 text-sm w-16 flex-shrink-0">{g.range}</span>
+                <span className="text-gray-400 text-sm">{g.desc}</span>
               </div>
-              <div className="text-gray-500 text-sm">88+ score — Audiences rave about it</div>
-            </div>
-            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-              <div className="flex items-center gap-2 w-40 flex-shrink-0">
-                <span className="text-2xl">👍</span>
-                <span className="text-white font-medium">Liking It</span>
-              </div>
-              <div className="text-gray-500 text-sm">78-87 score — Strong positive reception</div>
-            </div>
-            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-              <div className="flex items-center gap-2 w-40 flex-shrink-0">
-                <span className="text-2xl">🤷</span>
-                <span className="text-white font-medium">Shrugging</span>
-              </div>
-              <div className="text-gray-500 text-sm">68-77 score — Mixed audience response</div>
-            </div>
-            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-              <div className="flex items-center gap-2 w-40 flex-shrink-0">
-                <span className="text-2xl">💩</span>
-                <span className="text-white font-medium">Loathing It</span>
-              </div>
-              <div className="text-gray-500 text-sm">0-67 score — Audiences disappointed</div>
-            </div>
+            ))}
           </div>
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">Sources</h3>

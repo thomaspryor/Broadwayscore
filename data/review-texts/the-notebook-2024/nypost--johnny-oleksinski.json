@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "Because as elegantly staged as “The Notebook” is by co-directors Michael Greif and Schele Williams, and despite boasting an appealing cast, the show amounts to a series of un-involving pencil sketches rather than a layered portrait of a decades-long love.",
@@ -34,69 +34,52 @@
   "archiveOrgTimestamp": "20240924205520",
   "archiveOrgUrl": "http://web.archive.org/web/20240924205520/https://nypost.com/2024/03/14/entertainment/the-notebook-review-broadway-musical-doesnt-match-films-sweep/",
   "llmScore": {
-    "score": 45,
-    "confidence": "high",
+    "score": 60,
+    "confidence": "medium",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 55,
+      "high": 65
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 35,
+      "book": null,
       "music": null,
-      "performances": 65,
-      "direction": 70
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the show amounts to a series of un-involving pencil sketches rather than a layered portrait",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Not a single change book writer Bekah Brunstetter has made improves the simple story's effectiveness",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "as elegantly staged as 'The Notebook' is by co-directors Michael Greif and Schele Williams, and despite boasting an appealing cast",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic praises the staging and cast but fundamentally finds the show uninvolving and criticizes the book adaptation as ineffective, suggesting the emotional response comes from nostalgia rather than the actual production quality.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges elegant staging and appealing cast but finds the show uninvolving and inferior to its source material, describing it as 'merely pleasant' rather than emotionally effective. | GPT-4o: The review criticizes the production for being uninvolving and failing to improve upon the original story, suggesting that it is not worth seeing despite some positive aspects like staging and cast. | Gemini: The review acknowledges the elegant staging and appealing cast but ultimately finds the show uninvolving and less effective than the source material. This indicates a mixed reaction, neither strongly recommending nor discouraging.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:20:07.642Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2689,
-    "outputTokens": 380,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:46:34.198Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 45,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 58,
-    "openaiScore": 55,
-    "scoreDelta": 3,
-    "thumbsMatch": false,
-    "expectedThumb": "Down",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (57 → Flat) conflicts with aggregator thumbs (Down)"
-    ]
+    "openaiScore": 50,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "showScoreExcerpt": "\"...the alterations dull its punch and turn it into a wispy memory play\"",
   "contentTier": "complete",

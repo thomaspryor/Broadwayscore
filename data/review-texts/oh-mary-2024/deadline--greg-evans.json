@@ -7,67 +7,59 @@
   "publishDate": "July 11, 2024",
   "dtliExcerpt": "There’s funny, there’s very funny, and then there’s Oh, Mary!, Cole Escola’s riotous new comedy that brings more laughs to Broadway than all the Gutenberg!s, Edelmans and Birbiglias combined. You can throw in Shucked for good measure.",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 74,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:07:05.283Z",
   "dtliThumb": "Up",
   "bwwExcerpt": "There’s funny, there’s very funny, and then there’s Oh, Mary!, Cole Escola’s riotous new comedy that brings more laughs to Broadway than all the Gutenberg!s, Edelmans and Birbiglias combined. You can throw in Shucked for good measure.",
   "llmScore": {
-    "score": 92,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 83.5,
-      "high": 100
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "riotous new comedy that brings more laughs to Broadway than all the Gutenberg!s, Edelmans and Birbiglias combined",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "There's funny, there's very funny, and then there's Oh, Mary!",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Cole Escola’s riotous new comedy that brings more laughs to Broadway",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: Strong superlative language positioning the show as exceptionally funny and superior to multiple other Broadway comedies indicates enthusiastic recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm for the comedy, indicating it is a must-see with no reservations.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'deliriously campy' suggests enthusiastic enjoyment, and aggregator verdicts indicate positive reception, but the excerpt is too brief to determine the full critical assessment. | GPT-4o: The description of the show as 'deliriously campy' suggests a positive and entertaining experience. The aggregator context supports a positive verdict, but the lack of full review text limits certainty. | Gemini: The phrase \"deliriously campy\" suggests an enjoyable and positive experience, indicating a recommendation. The aggregator context also suggests a positive reception.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:18:08.084Z",
-    "promptVersion": "2.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:04:17.003Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "2.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 95,
-    "scoreDelta": 7,
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "sourceMethod": "archive",
   "archivePath": "data/archives/reviews/oh-mary-2024/deadline--greg-evans_2026-01-27.html",

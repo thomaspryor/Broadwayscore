@@ -10,7 +10,7 @@
   "dtliExcerpt": null,
   "bwwExcerpt": null,
   "originalScore": "3/5 stars",
-  "assignedScore": 69,
+  "assignedScore": 74,
   "source": "show-score",
   "notes": "Mixed review. Noted the show 'traces the early years of Grammy-winning artist Alicia Keys, but it only scratches at the surface' and offers 'a sanitized version of young adult life instead of a gritty retelling with a bit more substance.' Praised Kecia Lewis's performance and the orchestrations by Adam Blackstone and Tom Kitt.",
   "sourceMethod": "archive",
@@ -46,60 +46,51 @@
   "archiveOrgTimestamp": "20241204234326",
   "archiveOrgUrl": "http://web.archive.org/web/20241204234326/https://www.metroweekly.com/2024/05/alicia-keys-makes-broadway-magic-with-hells-kitchen-review/",
   "llmScore": {
-    "score": 69,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 62.5,
-      "high": 75.5
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 50,
-      "music": 80,
-      "performances": 85,
-      "direction": 70
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Lewis's performance (also nominated) alone is worth the price of a ticket",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The dearth of dramatic tension makes it seem like a sanitized version of young adult life instead of a gritty retelling with a bit more substance",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "It's one of the few shows on Broadway with consistently phenomenal voices from stage veterans and debut makers alike",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Three-star review that praises exceptional performances and vocals while criticizing a weak, sanitized book that lacks dramatic substance. | GPT-4o-mini: The review highlights strong performances and music but criticizes the book for lacking depth, leading to a mixed-positive recommendation overall.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic gives 3/5 stars and explicitly states the show is 'worth the price of a ticket' despite criticizing the thin plot. Praises the phenomenal voices, standout performances, and notes it's the most Tony-nominated musical of the season. | Gemini: The critic gives the show 3/5 stars and states that a performance is worth the ticket price. While they note some shortcomings in the story, the overall tone is positive.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T03:02:10.591Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T23:59:37.819Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 69,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 67,
-    "openaiScore": 70,
-    "scoreDelta": 3,
+    "claudeScore": 73,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "contentTier": "complete",
   "wordCount": 1484

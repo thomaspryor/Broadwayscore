@@ -8,67 +8,59 @@
   "dtliExcerpt": "Even the most decadent denizens of Berlin in the Weimar era—such as a sinewy androgyne presiding as the Emcee at a nightclub where anything goes, sexually speaking—prove to be susceptible to the poisonous seductions of the ascendant Nazis in the theatrically sizzling if emotionally tepid Broadway revival of “Cabaret.”",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": 59,
+  "assignedScore": 63,
   "dtliThumb": "Meh",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": "Among Ms. Frecknall’s innovations is an emphasis on dance, with Julia Cheng’s choreography making inventive use of the stage space as the club performers romp, stomp and shimmy around Mr. Redmayne, engaging in ribald movement that at one point includes such unlikely sexually tinged props as a whisk and a toilet plunger. Their thickly applied makeup, skimpy costumes—a green macramé bikini?—and multicolored hair are suggestive more of “RuPaul’s Drag Race” than a seedy European club of the period,",
   "bwwThumb": "Meh",
   "llmScore": {
-    "score": 59,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 50.5,
-      "high": 67.5
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": 70,
-      "direction": 63
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "theatrically sizzling if emotionally tepid",
-        "sentiment": "neutral",
-        "strength": 4
-      },
-      {
-        "quote": "making inventive use of the stage space",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "emotionally tepid",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review acknowledges theatrical effectiveness and innovative staging but criticizes the production for being 'emotionally tepid,' suggesting a mixed reception that leans slightly positive. | GPT-4o-mini: The review indicates a mixed experience, praising the choreography while criticizing the emotional impact of the production.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic uses the contrasting phrase 'theatrically sizzling if emotionally tepid' which suggests visual/theatrical strengths but emotional weaknesses, indicating a mixed assessment rather than clear recommendation. | GPT-4o: The review describes the production as 'theatrically sizzling' but 'emotionally tepid,' indicating a mixed assessment. The use of 'sizzling' suggests some positive elements, but 'tepid' tempers the enthusiasm, leading to a mixed verdict. | Gemini: The review uses contrasting language, describing the production as \"theatrically sizzling\" but \"emotionally tepid,\" suggesting a mixed experience. The aggregator verdicts also indicate a flat or mixed reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:03:41.864Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:35:53.399Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 59,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 55,
-    "scoreDelta": 7,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "contentTier": "excerpt",
   "wordCount": 0

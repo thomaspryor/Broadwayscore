@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 78,
+  "assignedScore": 76,
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review calls the production 'a smash' and emphasizes it succeeds as 'fun, silly, nonsensical laugh' - clearly positive language recommending the show as entertaining. | GPT-4o: The review uses very positive language, describing the production as a 'smash' and emphasizing its fun and joyful nature, which suggests a strong recommendation. | Gemini: The review describes the production as a \"smash\" and \"fun, silly, nonsensical laugh,\" indicating a positive recommendation. While it doesn't reach \"rave\" status, it's clearly positive.",
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic calls it 'such a smash' and describes it positively as achieving its intended goals of being fun and entertaining, but this is only one excerpt so the full verdict may be more nuanced. | Gemini: The review excerpt indicates that the production is a \"smash\" and a \"fun, silly, nonsensical laugh,\" suggesting a positive recommendation. However, because it is a single excerpt, the score is placed in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:46:30.805Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:10:46.040Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 78,
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "wrongShow": true,
   "wrongShowNote": "Excerpt is from a Pirates of Penzance review, not Harmony",

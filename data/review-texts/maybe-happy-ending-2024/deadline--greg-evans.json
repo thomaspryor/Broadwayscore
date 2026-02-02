@@ -17,57 +17,49 @@
     "score": 79,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 80,
-      "performances": 82,
-      "direction": 78
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "buoyed not only by the endearing performances but by a score",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "effectively makes a case that the genre known as Contemporary Musical Theater still has plenty of joy and pleasures to offer",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "showing a flare for comedy and lightheartedness-amid-the-desolation",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Clear positive recommendation with praise for performances, score, and direction, though lacking superlative language that would push it into rave territory. | GPT-4o-mini: The review expresses strong praise for the performances and music while highlighting the director's effective approach, indicating a clear recommendation despite a lack of explicit endorsement.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the direction, performances, and score, positioning the show as evidence that contemporary musicals can still provide joy and pleasure. The positive language and endorsement of the production's strengths indicate a clear recommendation. | GPT-4o: The review highlights the director's skill, endearing performances, and a joyful score, indicating a strong positive impression of the production. The language used suggests a clear recommendation to see the show. | Gemini: The review highlights endearing performances and a joyful score, indicating a positive experience and recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:10:53.382Z",
-    "promptVersion": "2.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:15:48.260Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "2.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "sourceMethod": "archive",
   "archivePath": "data/archives/reviews/maybe-happy-ending-2024/deadline--greg-evans_2026-01-27.html",

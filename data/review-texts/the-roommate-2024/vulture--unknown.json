@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 44,
+  "assignedScore": 46,
   "llmScore": {
-    "score": 44,
-    "confidence": "high",
+    "score": 46,
+    "confidence": "medium",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 41,
+      "high": 51
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The review acknowledges some positive elements (glossy sheen, good punch lines) but concludes with a fundamentally negative assessment that questions the show's purpose and leaves audiences unsatisfied. | GPT-4o: The review suggests that despite some positive elements, the overall experience was unsatisfying, leaving the audience questioning the applause. This indicates a negative impression. | Gemini: The review excerpt clearly indicates a negative experience, suggesting the reviewer was left wondering what they were clapping for, implying the show was not enjoyable or impactful.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: Despite acknowledging some positive elements (glossy sheen, good punch lines), the critic concludes audiences leave confused and unsatisfied about why they applauded, indicating a recommendation against seeing it. | GPT-4o: The review excerpt suggests a lack of fulfillment or satisfaction with the production, indicating a negative impression. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Negative range. | Gemini: The review excerpt suggests a lack of clear purpose or satisfaction, indicating a mixed or neutral reaction rather than a positive or negative one. The phrase 'dull sensation' implies a lack of strong positive or negative feelings.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:55:24.788Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:15:33.072Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 44,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 45,
-    "geminiScore": 45,
+    "openaiScore": 50,
+    "geminiScore": 62,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "scoreDelta": 3,
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

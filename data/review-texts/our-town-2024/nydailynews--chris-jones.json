@@ -9,43 +9,27 @@
   "bwwExcerpt": "Revival of Thornton Wilder’s ‘Our Town’ is moving, emotionally stirring production. Kenny Leon’s emotionally charged revival at the Ethel Barrymore Theatre has opened with an engaging if stylistically varied cast and a swift pacing that boils a three-act play down to an intermission-less 105 minutes.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 79,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 75,
-      "direction": 80
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "moving, emotionally stirring production",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "emotionally charged revival",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "engaging if stylistically varied cast",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Strong positive language about the production being 'moving' and 'emotionally stirring' with praise for direction and pacing, though 'stylistically varied cast' suggests minor reservations about performance consistency. | GPT-4o-mini: The review expresses strong positive sentiments about the emotional impact and pacing of the production, indicating a clear recommendation to see it.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises the casting approach as improving the play's representation, suggesting a positive view. However, with only one curated quote available and aggregator context showing 'Up', the full verdict remains unclear. | GPT-4o: The excerpt highlights a positive aspect of the production, specifically the inclusive casting, which suggests a recommendation. However, due to the limited text and lack of explicit recommendation language, the confidence is medium. | Gemini: The quote suggests a positive aspect of the production, indicating a recommendation, though the limited text makes it difficult to assess the strength of the recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,20 +38,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:00.452Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:36:41.707Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "sources": [
     "bww-roundup"

@@ -10,64 +10,55 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209",
   "bwwThumb": "Meh",
   "originalScore": "3/5 stars",
-  "assignedScore": 50,
+  "assignedScore": 61,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 50,
-    "confidence": "medium",
+    "score": 61,
+    "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 60
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 38,
-      "music": 45,
-      "performances": 70,
+      "book": null,
+      "music": null,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "good intentions alone, alas, do not a compelling musical make",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "a score that is little more than functional",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "a book that devolves into flimsy musical comedy style",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Despite praising performances and acknowledging good intentions, the critic finds fundamental flaws in the score and book that prevent recommending the show. | GPT-4o-mini: The review indicates mixed feelings, praising performances but criticizing the score and book, leading to a conditional recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic gives 3/5 stars and explicitly calls it 'moderate entertainment,' praising the authentic casting and some performances while criticizing the score as 'functional' and the book as 'flimsy musical comedy style.' | Gemini: The review highlights both positive and negative aspects. While praising the performers and the message, it criticizes the score and book, ultimately concluding that the show offers only \"moderate entertainment.\" The 3/5 star rating also indicates a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:20:48.607Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:55:00.318Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 50,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 55,
-    "scoreDelta": 10,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "claudeScore": 60,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 50,

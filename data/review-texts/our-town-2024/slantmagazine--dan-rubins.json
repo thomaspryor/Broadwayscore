@@ -10,76 +10,58 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 75,
+    "score": 77,
     "confidence": "high",
     "range": {
       "low": 72,
-      "high": 78
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 80,
+      "book": null,
       "music": null,
-      "performances": 78,
-      "direction": 70
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The Hills of California is a new spellbinding play",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "it's a stunning Janus-like dual performance",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Leon allows a little too much languidity that drifts toward blandness in some of the performances",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic clearly recommends both productions despite specific criticisms, praising The Hills of California as 'spellbinding' with 'stunning' performances, while finding Our Town's final scene delivers 'blistering force' despite pacing issues.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review gives strong praise to The Hills of California (calling it 'spellbinding' with 'stunning' performances) and finds Our Town successful in its final impact despite criticizing pacing and some performances in the first half. | Gemini: The review is generally positive, highlighting the strengths of the performances and the production's ambition. While there are some reservations about pacing in Our Town, the overall assessment leans towards recommending the show.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:49:52.842Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4118,
-    "outputTokens": 362,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:37:39.787Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
-    "scoreDelta": 0,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (85 → Up) conflicts with aggregator thumbs (Flat)"
-    ]
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 85,

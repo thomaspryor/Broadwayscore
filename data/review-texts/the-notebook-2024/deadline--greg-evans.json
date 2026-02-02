@@ -8,69 +8,59 @@
   "dtliExcerpt": "Based on Nicholas Sparks’ 1996 bestseller about a young – then older, then much older – couple who survive a lifetime of tribulations (until they don’t), the musical opening tonight at the Schoenfeld Theatre is the theatrical equivalent of muzak, comforting in its unapologetically manipulative way and unabashed in its disregard for anything approaching the grit of the real world.",
   "bwwExcerpt": "Played out mostly on a nursing home set by David Zinn and Brett J. Banakis that manages to be both attractive and suitably off-putting (Noah’s renovated antibellum farmhouse hits nostalgic notes without summoning unwelcome ghosts), The Notebook gets to its final pages – or very nearly so - without letting its manipulations become too overbearing (more about that “nearly so” in a moment), yet it never approaches the finer works of nearly everyone involved (director Greif gave us Next To Normal and Dear Evan Hansen). The wonderful Plunkett nails the confusion and panic of dementia from the get-go, meaning she has little place to go. Woods, as Middle Ally, breaks through the musical sameness with the production’s unequivocal showstopper (“My Days”), though her musical theater brassiness seems to have no counterpart in either the character’s younger and older versions.",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 60,
   "source": "dtli",
   "bwwThumb": "Meh",
   "bwwUrl": "https://deadline.com/2024/03/the-notebook-broadway-review-1235857614/",
   "dtliThumb": "Meh",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 32,
+    "score": 60,
     "confidence": "medium",
     "range": {
-      "low": 20.5,
-      "high": 43.5
+      "low": 55,
+      "high": 65
     },
-    "bucket": "Pan",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 28,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "theatrical equivalent of muzak",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "comforting in its unapologetically manipulative way",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "unabashed in its disregard for anything approaching the grit of the real world",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic dismisses the musical as shallow and manipulative 'muzak' that lacks authentic emotional depth, with predominantly negative language despite acknowledging it might be 'comforting' to some. | GPT-4o-mini: The review expresses strong negative sentiments about the show's lack of depth and originality, indicating a clear rejection of the production. | Note: Models differed by 13 points.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic directly compares the musical to 'muzak' and criticizes it for being 'manipulative' and having 'disregard for anything approaching the grit of the real world,' which are clear negative assessments of the production's quality. | GPT-4o: The review describes the musical as 'comforting' and 'unapologetically manipulative,' suggesting it has some appeal but lacks depth or realism. The tone is neither fully positive nor negative, aligning with a mixed verdict. | Gemini: The review describes the musical as \"comforting\" but also \"manipulative\" and lacking \"grit.\" This suggests a mixed reaction, neither strongly recommending nor discouraging seeing it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:55:34.074Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:45:56.100Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 38,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 25,
-    "scoreDelta": 13,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (32 → Down) conflicts with aggregator thumbs (Flat)"
-    ]
+    "claudeScore": 42,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "archivePath": "data/archives/reviews/the-notebook-2024/deadline--greg-evans_2026-01-27.html",
   "textFetchedAt": "2026-01-27T05:15:07.123Z",

@@ -9,7 +9,7 @@
   "bwwExcerpt": "This compelling conceit gets weakened by a flat book and lyrics. Brunstetter and Michaelson aim for simplicity, but lyrics like a repeated “sadness and joy” fail to illuminate Noah and Allie's depth of character. The Notebook: The Musical can only compensate so much with Michaelson's strumming music, with repetitions that are pleasant but melt together, and some songs become indistinguishable from each other. Occasionally, a flourish in John Clancy and Carmel Dean's orchestrations grabs the attention.",
   "showScoreExcerpt": "\"a trip down memory lane on stage and off\"",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "bwwThumb": "Meh",
   "bwwUrl": "https://www.newyorktheatreguide.com/reviews/the-notebook-broadway-review-ingrid-michaelson",
@@ -17,67 +17,52 @@
   "textFetchedAt": "2026-01-25T04:18:23.384Z",
   "sourceMethod": "bww-roundup",
   "llmScore": {
-    "score": 45,
+    "score": 64,
     "confidence": "medium",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 59,
+      "high": 69
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 35,
-      "music": 40,
+      "book": null,
+      "music": null,
       "performances": null,
-      "direction": 65
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "This compelling conceit gets weakened by a flat book and lyrics",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "lyrics like a repeated 'sadness and joy' fail to illuminate Noah and Allie's depth of character",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Brunstetter and Michaelson aim for simplicity",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "While the critic praises the directorial concept as 'compelling,' the review is dominated by criticism of the book and lyrics as 'flat' and failing to illuminate character depth, with no clear recommendation to see the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges the show's appeal and highlights Joy Woods's standout performance, but criticizes the flat book, weak lyrics, and repetitive music. The Hallmark card comparison suggests pleasant but shallow entertainment. | GPT-4o: The review acknowledges the musical's compelling conceit and highlights a standout performance, but criticizes the flat book and lyrics, suggesting a mixed experience overall. | Gemini: The review acknowledges flaws in the book and lyrics but ultimately suggests the romance is compelling enough to make it worth seeing, especially highlighting Joy Woods' performance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:20:39.845Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2656,
-    "outputTokens": 328,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:47:13.503Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 60,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 70,
-    "scoreDelta": 5,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "designation": "Recommended",
   "sources": [

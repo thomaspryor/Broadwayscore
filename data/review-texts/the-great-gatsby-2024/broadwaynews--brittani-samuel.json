@@ -7,72 +7,57 @@
   "publishDate": "April 26, 2024",
   "dtliExcerpt": "On the surface, it’s alluring, but it’s nothing more than a modish echo of an over-romanticized time period. Ironically, the same romantic idealism that portends Gatsby’s demise runs amok in this lustrous, but lackluster production.",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 44,
   "source": "dtli",
   "dtliThumb": "Down",
   "scrapedAt": "2026-01-23T22:02:30.594Z",
   "llmScore": {
-    "score": 38,
-    "confidence": "high",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 35,
-      "high": 42
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 35,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 65
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Beyond pageantry, the musical adaptation of 'The Great Gatsby' at the Broadway Theatre has none",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "disappointing emotionless two and a half hours",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "All of dePoo's brassy, geometric shapes and gorgeous jewel-toned set pieces... while visually seductive, are sinister distractions",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Despite praising the visual production elements, the critic fundamentally criticizes the adaptation as lacking purpose and being 'disappointingly emotionless,' indicating this is not recommended viewing.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic explicitly calls it 'disappointing' and 'emotionless,' criticizing that beyond pageantry the production 'has none' of the new purpose they seek. While acknowledging visual splendor, the overall assessment is clearly negative. | GPT-4o: The review criticizes the production for being visually appealing but lacking emotional impact, describing it as 'disappointingly emotionless.' This suggests a negative verdict, indicating the show is not recommended. | Gemini: The review praises the visual elements but criticizes the lack of emotional impact and purpose, suggesting a mixed experience. While the reviewer acknowledges the dazzling visuals, they ultimately find the production disappointingly emotionless.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:17:35.534Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2686,
-    "outputTokens": 360,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:18:55.228Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 38,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 35,
-    "scoreDelta": 3,
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "archivePath": "data/archives/reviews/the-great-gatsby-2024/broadwaynews--brittani-samuel_2026-01-30.html",
   "textFetchedAt": "2026-01-30T19:36:41.066Z",

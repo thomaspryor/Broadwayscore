@@ -10,5 +10,43 @@
     "playbill-verdict"
   ],
   "contentTier": "stub",
-  "contentTierReason": "No text content"
+  "contentTierReason": "No text content",
+  "fullText": "NYC Events, Restaurants, Music, & Nightlife\n\nReview: Titanique Floats a Fun-lover’s Boat\n June 23, 2022, 11:48.20 pm ET\n\nBy Brian Scott LiptonWith so much of today's theater forcing us to reflect on our current-day society and its moral problems, no one can blame audiences for seeking a pure escape – perhaps just like the millionaires of 1912 who went aboard the maiden voyage of the Titanic.Fortunately, we can now hop aboard \"Titanique,\" the alternately clever and kooky-send up of both James Cameron's 1997 blockbuster film \"Titanic\" and the French-Canadian superstar Celine Dion, who sang the movie's Oscar-winning theme song \"My Heart Will Go On.\" It's the perfect vehicle in which to pass 90 minutes in the basement of a Gristedes (aka The Asylum Theater in Chelsea) and forget about the outside world. Continue Reading\n\nCititour.com is your guide to interesting places throughout New York City. Use our listings to locate restaurants, exciting clubs and nightlife, bars and pubs, shopping destinations, landmarks and parks; and shows, concerts, and other events too.",
+  "isFullReview": false,
+  "textWordCount": 170,
+  "archivePath": "data/archives/reviews/titanique-2026/cititour--brian-scott-lipton_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:09:05.215Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_read_more_prompt"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 178 (min: 300)"
+  ],
+  "misattributedFullText": true,
+  "extractedByline": "Brian Scott",
+  "expectedCritic": "Brian Scott Lipton"
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 63,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -35,7 +35,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review highlights theatrical strengths ('sizzling') but significant emotional weaknesses ('tepid'), suggesting a mixed assessment. However, the severely truncated text limits confidence in this classification. | GPT-4o: The review describes the production as 'theatrically sizzling', indicating some positive aspects, but 'emotionally tepid' suggests significant reservations, leading to a mixed assessment. | Gemini: The review uses contrasting descriptions, \"theatrically sizzling\" (positive) but \"emotionally tepid\" (negative), indicating a mixed reaction. This suggests the production has some strong elements but is ultimately uneven.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt shows mixed assessment - praising theatrical elements while criticizing emotional depth. Single excerpt warning requires conservative scoring within Mixed range. | GPT-4o: The review suggests a strong theatrical presentation but lacks emotional depth, indicating a mixed reception. The single excerpt and text quality warning suggest caution, leading to a mid-range mixed score. | Gemini: The phrase \"theatrically sizzling if emotionally tepid\" suggests a mixed reaction, with some aspects of the production being strong while others are weak. The \"if\" construction indicates a balance between positive and negative elements.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,20 +45,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:29:15.088Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:35:24.345Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 63,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
+    "openaiScore": 62,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

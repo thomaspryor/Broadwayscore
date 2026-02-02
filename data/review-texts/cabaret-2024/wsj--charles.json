@@ -8,7 +8,7 @@
   "fullText": null,
   "dtliExcerpt": "",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -19,62 +19,52 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 74,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
-    "thumb": "Up",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": 75,
-      "direction": 73
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "making inventive use of the stage space",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "suggestive more of 'RuPaul's Drag Race' than a seedy European club of the period",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "undoubtedly add to the show's arresting visual allure",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: This excerpt shows mixed sentiment - praising choreographic innovation and visual appeal while questioning period authenticity, with no clear overall recommendation. | GPT-4o-mini: The review highlights innovative choreography and visual appeal, indicating a positive recommendation despite not explicitly urging attendance.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Single excerpt describes innovative choreography and visual elements with both criticism (anachronistic styling) and praise (arresting visual allure). Given truncation warning and 'Flat' aggregator context, scoring conservatively in mixed range. | GPT-4o: The review highlights innovative choreography and visual allure, suggesting some positive elements. However, the comparison to 'RuPaul’s Drag Race' and the mention of unlikely props imply a departure from the expected setting, indicating a mixed reception. | Gemini: The review excerpt describes striking visuals and inventive choreography, but also notes a disconnect from the intended historical setting. The overall tone is observational with both positive and negative aspects, suggesting a mixed reaction.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:03:47.542Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:36:01.423Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (74 → Up) conflicts with aggregator thumbs (Flat)"
-    ]
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "contentTier": "excerpt",
   "wordCount": 0

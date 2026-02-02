@@ -80,23 +80,40 @@
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 25,
-  "archivePath": "data/archives/reviews/the-cottage-2023/variety--naveen-kumar_2026-01-29.html",
-  "textFetchedAt": "2026-01-29T06:32:09.244Z",
-  "fetchMethod": "archive",
+  "archivePath": "data/archives/reviews/the-cottage-2023/variety--naveen-kumar_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T23:48:20.005Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
-      "tier": 0,
-      "method": "archive-first",
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 4,
-  "sourceMethod": "archive",
+  "fetchTier": 3,
+  "sourceMethod": "brightdata",
   "archiveOrgTimestamp": "20240613035649",
   "archiveOrgUrl": "http://web.archive.org/web/20240613035649/https://variety.com/2023/legit/reviews/the-cottage-review-broadway-1235678930/",
   "rescoreCompletedAt": "2026-02-01T16:17:23.756Z",
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",
-  "wordCount": 588
+  "wordCount": 588,
+  "isFullReview": false,
+  "textWordCount": 132,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial"
 }

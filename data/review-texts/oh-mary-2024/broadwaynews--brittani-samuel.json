@@ -7,73 +7,58 @@
   "publishDate": "July 11, 2024",
   "dtliExcerpt": "By the play's end, we're no wiser to the qualms of the mid-19th century (though that was hardly the point), but we are relaxed by the exercise of laughing for 75 minutes in our own beleaguered world.",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 76,
   "source": "dtli",
   "dtliThumb": "Up",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
   "needsFullText": false,
   "llmScore": {
-    "score": 72,
-    "confidence": "medium",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 70,
+      "book": null,
       "music": null,
-      "performances": 75,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "delirious, deranged and undeniable fun",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "a relief for anyone looking to have an intellect-less evening in the theater",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "less satisfying for those who demand their comedy sit higher up the brow",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review celebrates the show's silliness and entertainment value while acknowledging it won't satisfy all tastes, suggesting a qualified positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review describes the show as providing 'undeniable fun' and being 'a relief' that leaves audiences 'relaxed by the exercise of laughing for 75 minutes.' While noting it's less satisfying for those wanting highbrow comedy, the overall assessment is positive for its intended audience. | GPT-4o: The review describes the play as 'delirious, deranged and undeniable fun' and a 'relief' for those seeking light entertainment, indicating a positive recommendation despite noting it may not satisfy those seeking highbrow comedy. | Gemini: The review highlights the show's silliness and ability to provide laughter, suggesting a positive experience for those seeking light entertainment, despite acknowledging it may not satisfy those seeking more intellectual comedy.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:43:44.464Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2624,
-    "outputTokens": 331,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:03:22.727Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 65,
-    "scoreDelta": 7,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/oh-mary-2024/broadwaynews--brittani-samuel_2026-02-01.html",
   "textFetchedAt": "2026-02-01T23:41:18.543Z",

@@ -15,12 +15,12 @@
   "bwwThumb": "Up",
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T04:05:49.816Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:29:22.393Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
-    "previousVersion": "3.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "sources": [
     "dtli",
@@ -98,7 +98,7 @@
   "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available",
   "llmScore": {
     "score": 75,
-    "confidence": "medium",
+    "confidence": "low",
     "range": {
       "low": 70,
       "high": 80
@@ -112,28 +112,30 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The fragment suggests appreciation for the work's artistic merit and relevance, and aggregator consensus indicates positive reception, but the severely truncated text makes definitive classification difficult. | GPT-4o: The phrase 'timely and now seemingly timeless piece of art' suggests a strong positive impression, indicating the critic views the production as significant and impactful. The aggregator context supports a positive verdict. | Gemini: The phrase \"timeless piece of art that shed light\" suggests a positive recommendation, though the lack of full context makes it difficult to assess the strength of the recommendation.",
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: The excerpt is too brief to determine a clear verdict. While 'timeless piece of art' suggests some appreciation, the fragment doesn't contain explicit recommendation language or clear evaluative stance. | GPT-4o: The phrase 'a timely and now seemingly timeless piece of art' suggests a strong positive impression, indicating the production is highly regarded and impactful. The aggregator context supports a positive verdict. | Gemini: The review excerpt describes the show as a \"timely and now seemingly timeless piece of art,\" indicating a positive assessment and recommendation. | Buckets: claude=Mixed, openai=Rave, gemini=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 87,
+    "claudeScore": 60,
+    "openaiScore": 88,
     "geminiScore": 75,
-    "claudeBucket": "Positive",
+    "claudeBucket": "Mixed",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 28,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "needsReview": true,
+    "needsReviewReasons": [
+      "3-way bucket disagreement"
+    ],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "No bucket consensus - using median score"
   },
   "rescoreCompletedAt": "2026-02-01T04:05:49.816Z",
   "contentTier": "excerpt",

@@ -9,71 +9,55 @@
   "bwwExcerpt": "this new production, directed by Scott Ellis and starring Schreiber and Amy Ryan, stands on its own. Like its forebears, the revival, which runs through mid-April, keeps things simple – four well-acted performances with a powerful alchemy of faith and righteousness, judicious costumes by Linda Cho, a set by David Rockwell that economically transforms from principal’s office, exterior walled garden and spare pulpit at St Nicholas’s parish in the Bronx, 1964. The stage version carries the subtitle",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 82,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 85
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 80
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "this new production, directed by Scott Ellis and starring Schreiber and Amy Ryan, stands on its own",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "It's a testament to the magnetism of the performances and the play itself – its pared-down structure, its tension of agendas at odds – that the 90-minute show breezes by in what feels like half that",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Little in this story, as in life, is certain, though it's no doubt fascinating to watch",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic praises the production as standing on its own despite heavy precedent, highlights compelling performances and magnetism that makes time fly by, and calls it 'fascinating to watch' with clear admiration for the craft.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises the performances as 'note-perfect' and 'well-acted', says the show 'stands on its own' despite heavy precedent, and describes it as 'provocative and absorbing' with 'magnetism' that makes 90 minutes feel like half that. Despite some reservations about the discomfiting tone and subject matter context, the overall assessment is clearly positive. | Gemini: The review acknowledges the weight of the subject matter and previous productions, but ultimately praises the performances and the play itself, indicating a positive, though not rave, recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:35:08.308Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3898,
-    "outputTokens": 395,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:29:15.355Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 80,
-    "scoreDelta": 8,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "bwwThumb": "Up",
   "dateUnknown": true,

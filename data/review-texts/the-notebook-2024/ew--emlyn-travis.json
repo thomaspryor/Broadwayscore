@@ -9,73 +9,57 @@
   "bwwExcerpt": "Everyone's heard of The Notebook. Whether it’s through reading Nicholas Sparks’ best-selling debut novel or its 2004 blockbuster adaptation starring Ryan Gosling and Rachel McAdams, most can recall some semblance of Noah and Allie’s whirlwind romance — or, at the very least, their propensity for arguing and dramatic kisses in the rain. Now, The Notebook is leaping off the page and onto the stage in a poignant new musical that is, without a doubt, its finest adaptation yet.",
   "showScoreExcerpt": "\"The Notebook is leaping off the page and onto the stage...its finest adaptation yet.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 85,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://ew.com/the-notebook-musical-review-nicholas-sparks-broadway-8609026",
   "sourceMethod": "scrapingbee",
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 85,
+    "confidence": "low",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 80,
+      "high": 90
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 82,
-      "music": 87,
-      "performances": 92,
-      "direction": 85
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "without a doubt, its finest adaptation yet",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The Notebook succeeds in delivering a fresh spin on its original material while also making sure that Noah and Allie's story is never truly forgotten",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "dazzling performances by every version of Noah and Allie",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review gives an A- grade and consistently praises performances, music, and production while acknowledging some formulaic elements but ultimately declaring success in delivering what audiences want.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The review gives an A- grade and consistently praises every aspect of the production, from performances to music to staging, calling it 'its finest adaptation yet' and noting it 'succeeds in delivering a fresh spin' while achieving all audience expectations. | Gemini: Despite being truncated, the review is overwhelmingly positive, praising the performances, songs, and stage direction. The aggregator excerpts and the A- grade further support a positive classification.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:19:48.416Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3975,
-    "outputTokens": 344,
-    "textSource": {
-      "type": "fullText",
-      "status": "truncated",
-      "field": "fullText",
-      "confidence": "low",
-      "reasoning": "Truncated text - may be missing final verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:46:10.503Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 90,
-    "scoreDelta": 5,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 88,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
   "archivePath": "data/archives/reviews/the-notebook-2024/ew--emlyn-travis_2026-01-27.html",
   "textFetchedAt": "2026-01-27T04:26:14.454Z",
