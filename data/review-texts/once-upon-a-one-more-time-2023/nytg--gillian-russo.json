@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges story weaknesses but enthusiastically praises the dancing, music, and performances, concluding audiences will 'have a fantastic time' and calling it 'worth the price of admission.' | GPT-4o: The review praises the musical as an 'irresistible party' with 'impeccable dancing' and highlights the enjoyment and fun it delivers. The critic acknowledges some outdated feminist elements but ultimately finds the show highly entertaining and worth the price of admission. | Gemini: The review highlights the fun and irresistible nature of the musical, particularly praising the dance and music. While acknowledging some shortcomings in the feminist narrative, the reviewer ultimately recommends seeing it, making it a positive but not rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly recommends the show as fun entertainment despite noting its feminist themes are dated, emphasizing the excellent dancing and performances make it 'worth the price of admission.' | GPT-4o: The review highlights the fun and energetic nature of the musical, praising the choreography and music as making it 'worth the price of admission.' Despite some reservations about the feminist narrative, the overall tone is highly positive, emphasizing the enjoyment and entertainment value of the production. | Gemini: The review acknowledges the show's flaws but ultimately recommends it, highlighting the dancing and performances as worth seeing. The reviewer explicitly states the show is 'worth the price of admission.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,12 +40,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:44:11.937Z",
+    "scoredAt": "2026-02-02T18:47:54.089Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
