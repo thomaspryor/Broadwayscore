@@ -1,19 +1,52 @@
 {
   "processed": [
-    "chicago-1996/time--.json"
+    "an-enemy-of-the-people-2024/variety--daniel-daddario.json",
+    "an-enemy-of-the-people-2024/deadline--greg-evans.json",
+    "an-enemy-of-the-people-2024/washpost--naveen-kumar.json"
   ],
-  "failed": [],
+  "failed": [
+    "an-enemy-of-the-people-2024/guardian--adrian-horton.json",
+    "an-enemy-of-the-people-2024/nydailynews--chris-jones.json",
+    "an-enemy-of-the-people-2024/timeout--adam-feldman.json",
+    "an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
+    "an-enemy-of-the-people-2024/wsj--unknown.json",
+    "an-enemy-of-the-people-2024/talkinbroadway--matthew-murray.json",
+    "an-enemy-of-the-people-2024/washpost--peter-marks.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
-    "browserbase": [],
+    "playwright": [
+      "an-enemy-of-the-people-2024/washpost--naveen-kumar.json"
+    ],
+    "browserbase": [
+      "data/review-texts/an-enemy-of-the-people-2024/nydailynews--chris-jones.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "chicago-1996/time--.json"
+      "an-enemy-of-the-people-2024/variety--daniel-daddario.json",
+      "an-enemy-of-the-people-2024/deadline--greg-evans.json"
     ]
   },
-  "startTime": "2026-02-02T23:11:26.492Z",
-  "lastProcessed": "chicago-1996/time--.json",
-  "log": []
+  "startTime": "2026-02-02T23:11:31.865Z",
+  "lastProcessed": "an-enemy-of-the-people-2024/washpost--peter-marks.json",
+  "log": [
+    {
+      "t": "2026-02-02T23:11:52.109Z",
+      "event": "bb-session",
+      "session": "2b40aa69",
+      "url": "https://www.nydailynews.com/2024/03/18/broadway-review-enemy-of-the-people-is-li"
+    },
+    {
+      "t": "2026-02-02T23:14:49.198Z",
+      "event": "bb-session",
+      "session": "e490e3b3",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/03/18/enemy-people-broadway-re"
+    },
+    {
+      "t": "2026-02-02T23:14:51.179Z",
+      "event": "bb-login-uncertain",
+      "domain": "washingtonpost.com"
+    }
+  ]
 }
