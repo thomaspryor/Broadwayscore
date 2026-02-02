@@ -19,7 +19,7 @@
   "needsScoring": true,
   "textWordCount": 196,
   "archivePath": "data/archives/reviews/book-of-mormon-2011/variety--marilyn-stasio_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T15:47:10.685Z",
+  "textFetchedAt": "2026-02-02T17:37:07.165Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -32,7 +32,7 @@
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "page.goto: Target page, context or browser has been closed\nCall log:\n\u001b[2m  - navigating to \"https://variety.com/2011/legit/reviews/the-book-of-mormon-1117944828/\", waiting until \"domcontentloaded\"\u001b[22m\n"
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
     },
     {
       "tier": 2,
