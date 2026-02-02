@@ -97,15 +97,13 @@ function extractScoreFromText(text, options = {}) {
   }
 
   // Letter grades - VERY STRICT to avoid false positives
-  // Only match: "Grade: A", "gives it a B+", "rates it a C", etc.
-  // NOT: "A Whole New World", "has a certain...", etc.
+  // Only match: "Grade: A", "Rating: B+", etc.
+  // "grade" requires colon — "Grade B" is an idiom meaning "mediocre"
+  // Removed "gives a X" / "rates a X" / "X grade" / "score X" — all capture article "a" as grade "A"
   const strictGradePatterns = [
-    /\bgrade[:\s]+([A-D][+-]?|F)\b/i,          // "Grade: B", "Grade A"
-    /\bgives?\s+(?:it\s+)?(?:a\s+)?([A-D][+-]?|F)\b/i,  // "gives it a B"
-    /\brates?\s+(?:it\s+)?(?:a\s+)?([A-D][+-]?|F)\b/i,  // "rates it a B"
-    /\b([A-D][+-]?)\s+grade\b/i,               // "B grade"
+    /\b(?:grade:\s*|rating[:\s]+)([A-D][+-]?|F)(?!\w)/i,  // "Grade: B", "Rating: A-"
     /[.!?]\s+([A-D][+-]?|F)\s*$/,              // Ends with letter grade after punctuation
-    /\breview[:\s]+([A-D][+-]?|F)\b/i,         // "Review: B"
+    /\breview:\s*([A-D][+-]?|F)(?!\w)/i,       // "Review: B"
   ];
 
   for (const pattern of strictGradePatterns) {
