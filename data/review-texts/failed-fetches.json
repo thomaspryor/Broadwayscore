@@ -5020,54 +5020,6 @@
     "timestamp": "2026-02-01T19:17:13.072Z"
   },
   {
-    "reviewId": "heart-of-rock-and-roll-2024/the-new-york-sun--elysa-gardner.json",
-    "showId": "heart-of-rock-and-roll-2024",
-    "outlet": "The New York Sun",
-    "critic": "Elysa Gardner",
-    "url": "https://www.nysun.com/article/a-jukebox-musical-the-heart-of-rock-and-roll-wins-by-not-trying-too-hard",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
-    "textLength": 657,
-    "timestamp": "2026-02-01T19:20:42.197Z"
-  },
-  {
-    "reviewId": "heart-of-rock-and-roll-2024/timeout--regina-robbins.json",
-    "showId": "heart-of-rock-and-roll-2024",
-    "outlet": "Time Out New York",
-    "critic": "Regina Robbins",
-    "url": "https://www.timeout.com/newyork/theater/the-heart-of-rock-and-roll-broadway-musical-review-huey-lewis",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 6515,
-    "timestamp": "2026-02-01T19:20:49.944Z"
-  },
-  {
-    "reviewId": "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
-    "showId": "hells-kitchen-2024",
-    "outlet": "Chelsea Community News",
-    "critic": "Michael Musto",
-    "url": "https://chelseacommunitynews.com/2024/04/20/review-hells-kitchen-is-a-coming-of-age-musical-thats-in-all-the-right-alicia-keys/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Paywall/subscription prompt: \"paywall\"",
-    "textLength": 6173,
-    "timestamp": "2026-02-01T19:21:26.111Z"
-  },
-  {
-    "reviewId": "hells-kitchen-2024/timeout--adam-feldman.json",
-    "showId": "hells-kitchen-2024",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/hells-kitchen-musical-broadway-review-alicia-keys",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 6895,
-    "timestamp": "2026-02-01T19:22:25.183Z"
-  },
-  {
     "reviewId": "here-lies-love-2023/deadline--greg-evans.json",
     "showId": "here-lies-love-2023",
     "outlet": "Deadline",
@@ -6122,5 +6074,53 @@
     "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
     "textLength": 1027,
     "timestamp": "2026-02-02T00:00:39.532Z"
+  },
+  {
+    "reviewId": "heart-of-rock-and-roll-2024/the-new-york-sun--elysa-gardner.json",
+    "showId": "heart-of-rock-and-roll-2024",
+    "outlet": "The New York Sun",
+    "critic": "Elysa Gardner",
+    "url": "https://www.nysun.com/article/a-jukebox-musical-the-heart-of-rock-and-roll-wins-by-not-trying-too-hard",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
+    "textLength": 657,
+    "timestamp": "2026-02-02T00:02:32.951Z"
+  },
+  {
+    "reviewId": "heart-of-rock-and-roll-2024/timeout--regina-robbins.json",
+    "showId": "heart-of-rock-and-roll-2024",
+    "outlet": "Time Out New York",
+    "critic": "Regina Robbins",
+    "url": "https://www.timeout.com/newyork/theater/the-heart-of-rock-and-roll-broadway-musical-review-huey-lewis",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 6640,
+    "timestamp": "2026-02-02T00:02:36.503Z"
+  },
+  {
+    "reviewId": "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
+    "showId": "hells-kitchen-2024",
+    "outlet": "Chelsea Community News",
+    "critic": "Michael Musto",
+    "url": "https://chelseacommunitynews.com/2024/04/20/review-hells-kitchen-is-a-coming-of-age-musical-thats-in-all-the-right-alicia-keys/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"paywall\"",
+    "textLength": 6173,
+    "timestamp": "2026-02-02T00:02:42.966Z"
+  },
+  {
+    "reviewId": "hells-kitchen-2024/timeout--adam-feldman.json",
+    "showId": "hells-kitchen-2024",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/hells-kitchen-musical-broadway-review-alicia-keys",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 6895,
+    "timestamp": "2026-02-02T00:03:46.011Z"
   }
 ]
