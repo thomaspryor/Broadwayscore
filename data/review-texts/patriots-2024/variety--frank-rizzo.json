@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"...characters are broadly outlined, psychologically shallow and simplistically played.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/patriots-broadway",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 44,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 42,
-    "confidence": "high",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 37,
-      "high": 47
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic explicitly calls the play 'disappointing' and criticizes the characters as 'charmless,' 'broadly outlined,' 'psychologically shallow and simplistically played,' indicating clear dissatisfaction with the production quality. | GPT-4o: The critic describes the play as 'disappointing' and criticizes the characters as 'broadly outlined, psychologically shallow and simplistically played,' indicating a negative assessment of the production. | Gemini: The review explicitly states the play is \"disappointing\" and that the characters are \"psychologically shallow and simplistically played,\" indicating a negative assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The review calls the play 'disappointing' in the opening line and consistently criticizes the writing, direction, and performances throughout, with few positive elements mentioned. | GPT-4o: The review highlights significant flaws in the play's direction, character depth, and overall execution, suggesting it does not meet expectations set by Morgan's previous works. The tone is largely critical, indicating a recommendation to skip the production. | Gemini: The review highlights several flaws, including unsubtle direction, thin psychology, and a disjointed plot. While some performances are praised, the overall assessment suggests a production with significant shortcomings, placing it in the 'Mixed' category.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:20:47.646Z",
+    "scoredAt": "2026-02-02T18:52:40.272Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 38,
-    "previousVersion": "5.0.0"
+    "previousScore": 42,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 40,
-    "geminiScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "scoreDelta": 5,
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 32,

@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic appreciates the intellectual merits and performances but criticizes the play's emotional detachment and questions whether it achieves meaningful impact beyond being an 'exercise' in personal interactions. | GPT-4o: The review acknowledges the intellectual and witty aspects of the play but criticizes its detachment and lack of psychological or ethical impact. The overall tone suggests that while there are interesting elements, the production does not fully succeed in engaging the audience on a deeper level. | Gemini: The review highlights intellectual pleasures and interesting aspects of the play, but also notes a 'cool' detachment and stylistic choices that don't fully serve the story's stakes. This suggests a recommendation with reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges the play's intellectual merits and strong performances but ultimately finds it stylishly detached and questions whether it could have been more impactful. The review neither recommends nor discourages attendance. | GPT-4o: The review acknowledges the intellectual engagement and wit of the play but criticizes its detachment and lack of emotional impact. The tone is neither fully positive nor negative, indicating a mixed reception. | Gemini: The review highlights intellectual pleasures and interesting paradoxes, but also notes a \"cool\" detachment and stylistic choices that detract from the play's impact. This suggests a qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,12 +38,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:20:54.475Z",
+    "scoredAt": "2026-02-02T18:52:47.580Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,

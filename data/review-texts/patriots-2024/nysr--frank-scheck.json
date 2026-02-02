@@ -8,18 +8,18 @@
   "dtliExcerpt": "Featuring brilliant performances by Michael Stuhlbarg as Russian-Jewish businessman Boris Berezovsky and Will Keen, repeating his Olivier Award-winning London performance, as Putin, Patriots is the sort of gripping real-life drama that only makes you want to learn more.",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 82,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
   "llmScore": {
-    "score": 77,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the performances as 'brilliant' and describes the show as 'gripping,' indicating a positive recommendation. However, with only one excerpt available, I'm scoring conservatively within the positive range. | GPT-4o: The review excerpt praises the performances and describes the play as a 'gripping real-life drama,' suggesting a positive recommendation. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Positive range. | Gemini: The review highlights 'brilliant performances' and describes the play as a 'gripping real-life drama,' suggesting a positive experience. However, due to the limited text and single excerpt, a score in the middle of the 'Positive' bucket is appropriate.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows strong praise with 'brilliant performances' and calls it a 'gripping real-life drama' that engages audiences, indicating a solid positive recommendation despite limited text. | GPT-4o: The excerpt highlights 'brilliant performances' and describes the play as a 'gripping real-life drama,' suggesting a strong positive recommendation. The use of 'only makes you want to learn more' indicates an engaging and compelling production. | Gemini: The review highlights 'brilliant performances' and describes the play as a 'gripping real-life drama,' indicating a positive recommendation. The aggregator context also suggests a positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:19:42.352Z",
+    "scoredAt": "2026-02-02T18:52:06.147Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 83,
-    "previousVersion": "3.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 79,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

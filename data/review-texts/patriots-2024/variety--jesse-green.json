@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Michael Stuhlbarg delivers a powerhouse performance as Boris Berezovsky in this gripping political drama that traces the oligarch's rise and fall in Putin's Russia.",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "Michael Stuhlbarg delivers a powerhouse performance as Boris Berezovsky in this gripping political drama that traces the oligarch's rise and fall in Putin's Russia.",
   "needsScoring": true,
   "llmScore": {
-    "score": 45,
+    "score": 44,
     "confidence": "medium",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The review clearly states the play is 'disappointing' in the headline and opening, criticizes shallow characterization, unsubtle direction, and concludes audiences 'may simply not buy' the central premise. Despite some praise for individual performances, the overall assessment is negative. | GPT-4o: The review consistently describes the play as disappointing and lacking depth, with criticisms of the direction, character portrayal, and overall execution. The critic does not recommend the play, highlighting its shortcomings more than any redeeming qualities. | Gemini: The review uses the word \"disappointing\" in the first sentence and describes the characters as \"charmless\" and \"psychologically shallow.\" The direction is called \"unsubtle,\" and the play is deemed better suited for a TV mini-series. Overall, the review is negative.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic calls the play 'disappointing' in the opening line and systematically criticizes shallow characters, unsubtle direction, and structural problems, with only minor praise for individual performances. | GPT-4o: The review consistently highlights the play's shortcomings, such as its 'disappointing' nature, 'charmless characters,' and 'thin psychology,' while also criticizing the direction and performances. The overall tone suggests the play falls short of expectations, leading to a negative recommendation. | Gemini: The review points out several flaws in the play, including charmless characters, unsubtle direction, and a disjointed plot. However, it also praises some of the performances, particularly Will Keen's portrayal of Putin, indicating that the play has some redeeming qualities but is ultimately uneven.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,29 +43,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:24:26.089Z",
+    "scoredAt": "2026-02-02T18:52:44.003Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 45,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "complete",
+  "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
   "ensembleData": {
     "claudeScore": 42,
     "openaiScore": 45,
-    "geminiScore": 48,
+    "geminiScore": 62,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "scoreDelta": 6,
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "previousUrl": "https://variety.com/2024/legit/reviews/patriots-review-broadway-michael-stuhlbarg-1235996748/",
   "urlDiscoveredAt": "2026-02-02T05:10:29.484Z",
@@ -74,7 +74,7 @@
   "previousLlmScore": 78,
   "textWordCount": 945,
   "archivePath": "data/archives/reviews/patriots-2024/variety--jesse-green_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:44:08.510Z",
+  "textFetchedAt": "2026-02-02T17:02:04.027Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -85,12 +85,11 @@
   ],
   "fetchTier": 4,
   "textQuality": "full",
+  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "archive",
   "duplicateTextOf": "variety--frank-rizzo.json",
   "rescoreCompletedAt": "2026-02-02T14:24:26.089Z",
   "archiveOrgTimestamp": "20250415144038",
-  "archiveOrgUrl": "http://web.archive.org/web/20250415144038/https://variety.com/2024/legit/reviews/patriots-review-broadway-peter-morgan-play-1235978407/",
-  "wordCount": 945,
-  "tierReason": "Full review text"
+  "archiveOrgUrl": "http://web.archive.org/web/20250415144038/https://variety.com/2024/legit/reviews/patriots-review-broadway-peter-morgan-play-1235978407/"
 }

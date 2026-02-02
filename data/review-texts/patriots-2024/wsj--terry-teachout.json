@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Michael Stuhlbarg gives a commanding performance as Boris Berezovsky, the Russian oligarch whose relationship with Vladimir Putin is at the center of Peter Morgan's fact-based drama.",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "showScoreExcerpt": "Michael Stuhlbarg gives a commanding performance as Boris Berezovsky, the Russian oligarch whose relationship with Vladimir Putin is at the center of Peter Morgan's fact-based drama.",
   "needsScoring": true,
   "llmScore": {
-    "score": 63,
+    "score": 75,
     "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This appears to be a truncated excerpt focusing only on one positive performance element, with no overall assessment or recommendation provided about the production as a whole. | GPT-4o: The review highlights a strong performance but lacks a clear overall recommendation or critique of the production. The absence of a broader evaluative context makes the verdict ambiguous. | Gemini: The review highlights a strong performance, suggesting a positive experience, but lacks broader commentary to indicate a rave review. It's a recommendation based on the acting.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: This appears to be a truncated excerpt highlighting one positive element (Stuhlbarg's performance) but provides no overall verdict or recommendation about the show itself. | GPT-4o: The review highlights a strong performance by Michael Stuhlbarg, suggesting a positive view of the production. However, the limited text does not provide a comprehensive assessment, resulting in a medium confidence level. | Gemini: The review highlights a strong performance, suggesting a positive experience overall.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,21 +43,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:21:20.880Z",
+    "scoredAt": "2026-02-02T18:52:57.410Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
   "ensembleData": {
     "claudeScore": 60,
-    "openaiScore": 65,
+    "openaiScore": 75,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "scoreDelta": 15,
     "thumbsMatch": null,
@@ -65,6 +65,6 @@
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "2/3 models agree: Positive"
   }
 }

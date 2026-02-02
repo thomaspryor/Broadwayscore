@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The phrase 'most gripping' suggests engagement and quality, but with only one curated excerpt available, this could be cherry-picked from a more mixed review. Scoring conservatively in lower positive range. | Gemini: The phrase \"most gripping\" suggests a positive experience, but the limited excerpt and single quote necessitate a score in the lower-middle of the 'Positive' bucket.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Single excerpt describes when the show works well ('most gripping'), suggesting positive assessment, but limited text and potential cherry-picking warrants caution and lower-end positive scoring. | GPT-4o: The excerpt suggests that the production has compelling moments, particularly when focusing on the character's development. However, the lack of a full review and the single excerpt warning suggest some reservations, leading to a lower score within the Positive range. | Gemini: The single excerpt suggests a positive aspect of the show, but without more context, it's difficult to gauge the overall recommendation strength. I'm placing it in the lower end of the Positive bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:21:08.767Z",
+    "scoredAt": "2026-02-02T18:52:51.044Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": null,
-    "geminiScore": 75,
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 74,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 68,

@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges strong elements like Stuhlbarg's 'excellent' performance and effective staging, but the concluding assessment describes the play as 'unwieldy in its ambitions,' suggesting structural problems that prevent a full recommendation. | GPT-4o: The review highlights strong performances and evocative set design but also notes that the play can feel unwieldy in its ambitions, suggesting a mixed but somewhat positive reception. | Gemini: The review highlights an excellent performance and anchors the play, but also notes that it can feel unwieldy, suggesting a positive but not rave recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The excerpt suggests the show has strong character relationships but suffers from structural problems, indicating a mixed assessment. However, with only one excerpt available, the full verdict remains unclear. | GPT-4o: The excerpt suggests a mixed review, highlighting both a positive aspect (the ties among the men) and a negative one (the unwieldy ambitions). The lack of a full review or additional context makes it difficult to determine the overall tone, but the mention of unwieldy ambitions suggests some reservations. | Gemini: The review highlights a positive aspect ('anchor Patriots') but also points out a significant flaw ('can sometimes feel too unwieldy'). Given the single excerpt and aggregator context, it leans slightly positive but with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,21 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:19:03.202Z",
+    "scoredAt": "2026-02-02T18:51:46.927Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 58,
-    "previousVersion": "3.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 75,
+    "geminiScore": 72,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

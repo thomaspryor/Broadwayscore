@@ -19,7 +19,7 @@
   "bwwThumb": null,
   "llmScore": {
     "score": 44,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 39,
       "high": 49
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The review consistently criticizes the play's fundamental flaws - unclear intentions, lack of character development, unsatisfying plot threads, and concludes with a damning summary that it fails as a character study. While acknowledging some technical merits, the overall assessment is clearly negative. | GPT-4o: The review highlights several shortcomings, such as unclear intentions, lack of character development, and unsatisfactory exploration of plot threads. The overall tone suggests the production falls short of expectations. | Gemini: The review highlights both positive and negative aspects of the play. While praising Stuhlbarg's performance and the set design, it criticizes the lack of character development and unclear intentions, ultimately leading to a mixed assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic clearly finds the play disappointing, calling it dramatically unfocused with a protagonist who has 'nowhere to go' and criticizing the lack of character development and narrative clarity throughout. | GPT-4o: The review criticizes the play for its lack of detail and focus, and describes it as a character study without depth. The critic highlights issues with the narrative and character development, leading to a negative recommendation. | Gemini: The review is largely negative, citing unclear intentions, lack of character development, and unsatisfactorily explored threads. The critic concludes that the play lacks detail and focus.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,27 +43,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:20:31.595Z",
+    "scoredAt": "2026-02-02T18:52:28.052Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 38,
-    "previousVersion": "5.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
     "openaiScore": 45,
-    "geminiScore": 62,
+    "geminiScore": 45,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 20,
+    "geminiBucket": "Negative",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "contentTier": "complete",
   "wordCount": 537,

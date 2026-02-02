@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This appears to be a press release or announcement rather than a critical review, containing only biographical information and quotes from Chenoweth herself with no evaluative content about the performance quality or recommendation. | GPT-4o: The review primarily provides biographical and event information without a clear evaluative verdict on the performance itself. The text does not contain explicit recommendation or criticism, leading to a mixed classification with low confidence. | Gemini: The review is a press release about Kristin Chenoweth's upcoming concert. It highlights her excitement and the special nature of the event, implying a positive experience for attendees.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This appears to be a press release or announcement rather than a theater review, containing only biographical information and promotional quotes with no critical assessment of the performance. | GPT-4o: The review primarily provides biographical and event information about Kristin Chenoweth's upcoming concert without offering a clear evaluative judgment or recommendation about the performance itself. The lack of explicit critical assessment results in a mixed classification. | Gemini: The review is positive, highlighting Chenoweth's excitement and the opportunity to see her perform at the Met. While it's mostly promotional, the enthusiasm suggests a worthwhile experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,14 +43,14 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:24:20.589Z",
+    "scoredAt": "2026-02-02T18:52:20.913Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
+    "previousScore": 58,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "complete",
+  "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
   "ensembleData": {
     "claudeScore": 60,
@@ -71,8 +71,8 @@
   "previousLlmScore": 77,
   "textWordCount": 414,
   "archivePath": "data/archives/reviews/patriots-2024/theatermania--jesse-green_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:45:12.280Z",
-  "fetchMethod": "scrapingbee",
+  "textFetchedAt": "2026-02-02T17:29:16.597Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 0,
@@ -89,18 +89,25 @@
     {
       "tier": 2,
       "method": "scrapingbee",
+      "success": false,
+      "error": "Parse Error: Header overflow"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 2,
+  "fetchTier": 3,
   "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
   "textStatus": "truncated",
-  "sourceMethod": "scrapingbee",
+  "sourceMethod": "brightdata",
   "textIssues": [
     "Show title not found in text"
   ],
   "showNotMentioned": true,
-  "rescoreCompletedAt": "2026-02-02T14:24:20.589Z",
-  "wordCount": 414,
-  "tierReason": "Full review text"
+  "rescoreCompletedAt": "2026-02-02T14:24:20.589Z"
 }

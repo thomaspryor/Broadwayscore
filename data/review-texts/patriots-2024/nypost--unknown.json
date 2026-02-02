@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 43,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 43,
+    "score": 44,
     "confidence": "medium",
     "range": {
-      "low": 38,
-      "high": 48
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The excerpt describes failed comedy with silent audience reception, suggesting poor execution. However, this is only one curated quote and may not represent the full review verdict, so I'm scoring conservatively within the negative range. | GPT-4o: The excerpt suggests that the comedic elements of the show are not landing with the audience, which is a significant issue for a production that relies on humor. The lack of laughter indicates a failure to engage the audience, leading to a negative assessment. | Gemini: The excerpt suggests the comedic elements of the play are not landing well with the audience, indicating a mixed reception. The silence following jokes suggests a lack of engagement or enjoyment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic delivers consistent negative judgments throughout, calling it 'one of the season's longest sits', 'tedium', and suggesting the audience will 'press the snooze button', clearly not recommending the show. | GPT-4o: The review is overwhelmingly negative, criticizing the play's pacing, writing, and performances. The critic describes it as tedious and lacking drama, with attempts at humor falling flat, suggesting a strong recommendation to avoid the show. | Gemini: The review uses negative language such as \"slow and frigid\", \"pulverizes any actual drama\", \"animatronic and hackneyed\", and \"impenetrable regurgitation of events\". The final line indicates a lack of engagement, solidifying the negative assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,30 +46,28 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:20:44.732Z",
+    "scoredAt": "2026-02-02T18:51:58.996Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 35,
-    "previousVersion": "5.0.0"
+    "previousScore": 43,
+    "previousVersion": "5.1.0"
   },
-  "contentTier": "complete",
+  "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 40,
-    "geminiScore": 58,
+    "claudeScore": 42,
+    "openaiScore": 20,
+    "geminiScore": 45,
     "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 18,
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "scoreDelta": 25,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Negative"
-  },
-  "wordCount": 569,
-  "tierReason": "Full review text"
+  }
 }

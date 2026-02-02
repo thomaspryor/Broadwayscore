@@ -8,15 +8,15 @@
   "showScoreExcerpt": "3/5 Stars. The play's not the thing here...Stuhlbarg and Keen are the crème de la Kremlin.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/patriots-broadway",
   "originalScore": "3/5",
-  "assignedScore": 74,
+  "assignedScore": 75,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 74,
+    "score": 75,
     "confidence": "medium",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The 3/5 rating and praise for the lead performances indicate a positive but not enthusiastic recommendation, though the single excerpt limits confidence in the full verdict. | GPT-4o: The original rating of 3/5 suggests a mixed review. The quote indicates that while the play itself may not be strong, the performances by Stuhlbarg and Keen are noteworthy, suggesting some redeeming qualities. | Gemini: The 3/5 star rating suggests a positive but not rave review. The positive comment about the actors supports this classification.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The 3/5 rating and praise for the lead performances suggest a positive but qualified recommendation, though the comment about 'the play's not the thing' indicates structural issues with the production itself. | GPT-4o: The original rating of 3/5 suggests a mixed review, and the excerpt highlights strong performances by Stuhlbarg and Keen, indicating some positive elements. However, the phrase 'The play's not the thing here' implies that the production as a whole may not be fully successful. | Gemini: The 3/5 star rating indicates a positive but not rave review. The quote suggests strong performances, but the first sentence implies the play itself has weaknesses, leading to a 'recommended with reservations' verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,21 +37,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:20:41.332Z",
+    "scoredAt": "2026-02-02T18:52:35.848Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 63,
-    "previousVersion": "3.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 62,
+    "claudeScore": 74,
+    "openaiScore": 69,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
