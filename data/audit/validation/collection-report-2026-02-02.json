@@ -1,81 +1,88 @@
 {
-  "runDate": "2026-02-02T17:46:53.960Z",
+  "runDate": "2026-02-02T17:49:56.136Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "oh-mary-2024",
+    "showFilter": "our-town-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 6,
+    "processed": 6,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "53.8%"
+    "successRate": "54.5%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 3,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 2,
     "brightdata": 1,
-    "archive": 6
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 1,
+    "tier1Attempts": 6,
+    "tier1Success": 4,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 5,
-    "tier2Success": 0,
-    "tier3Attempts": 3,
-    "tier3Success": 2,
-    "tier4Attempts": 18,
-    "tier4Success": 9,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 23,
+    "tier2Success": 2,
+    "tier3Attempts": 2,
+    "tier3Success": 1,
+    "tier4Attempts": 11,
+    "tier4Success": 2,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 42,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 3,
-    "urlDiscoverySuccess": 3,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "oh-mary-2024/hollywood-reporter--angie-han.json",
-    "oh-mary-2024/hollywood-reporter--david-rooney.json",
-    "oh-mary-2024/nytimes--jesse-green.json",
-    "oh-mary-2024/variety--aramide-tinubu.json",
-    "oh-mary-2024/broadwaynews--brittani-samuel.json",
-    "oh-mary-2024/deadline--greg-evans.json",
-    "oh-mary-2024/theatermania--adam-feldman.json"
+    "our-town-2024/ew--shania-russell.json",
+    "our-town-2024/nypost--johnny-oleksinski.json",
+    "our-town-2024/theatermania--jesse-green.json",
+    "our-town-2024/thewrap--robert-hofler.json",
+    "our-town-2024/wsj--charles-isherwood.json",
+    "our-town-2024/washpost--peter-marks.json"
   ],
   "failed": [
-    "oh-mary-2024/vulture--helen-shaw.json",
-    "oh-mary-2024/guardian--adrian-horton.json",
-    "oh-mary-2024/nydailynews--chris-jones.json",
-    "oh-mary-2024/observer--david-cote.json",
-    "oh-mary-2024/timeout--adam-feldman.json",
-    "oh-mary-2024/wsj--charles-isherwood.json"
+    "our-town-2024/hollywood-reporter--angie-han.json",
+    "our-town-2024/deadline--greg-evans.json",
+    "our-town-2024/ny-sun--elysa-gardner.json",
+    "our-town-2024/nydailynews--chris-jones.json",
+    "our-town-2024/timeout--adam-feldman.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "our-town-2024/ew--shania-russell.json",
+      "our-town-2024/deadline--greg-evans.json",
+      "our-town-2024/washpost--peter-marks.json"
+    ],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "our-town-2024/nypost--johnny-oleksinski.json",
+      "our-town-2024/thewrap--robert-hofler.json"
+    ],
     "brightdata": [
-      "oh-mary-2024/theatermania--adam-feldman.json"
+      "our-town-2024/theatermania--jesse-green.json"
     ],
     "archive": [
-      "oh-mary-2024/hollywood-reporter--angie-han.json",
-      "oh-mary-2024/hollywood-reporter--david-rooney.json",
-      "oh-mary-2024/nytimes--jesse-green.json",
-      "oh-mary-2024/variety--aramide-tinubu.json",
-      "oh-mary-2024/broadwaynews--brittani-samuel.json",
-      "oh-mary-2024/deadline--greg-evans.json"
+      "our-town-2024/wsj--charles-isherwood.json"
     ]
   },
   "failuresByOutlet": {
+    "The Hollywood Reporter": {
+      "count": 1,
+      "domain": "hollywoodreporter.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
     "New York Daily News": {
       "count": 1,
       "domain": "nydailynews.com",
@@ -86,19 +93,9 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "oh-mary-2024/vulture--helen-shaw.json",
-      "oldUrl": "https://www.vulture.com/article/oh-mary-broadway-review.html",
-      "newUrl": "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-transfer.html"
-    },
-    {
-      "reviewId": "oh-mary-2024/guardian--adrian-horton.json",
-      "oldUrl": "https://www.theguardian.com/stage/2024/jul/11/oh-mary-broadway-review",
-      "newUrl": "https://www.theguardian.com/stage/article/2024/jul/11/oh-mary-review-cole-escola-broadway"
-    },
-    {
-      "reviewId": "oh-mary-2024/nydailynews--chris-jones.json",
-      "oldUrl": "https://www.nydailynews.com/2024/07/11/oh-mary-broadway-review/",
-      "newUrl": "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-oh-mary-is-hilarious-take-on-controversial-first-lady/"
+      "reviewId": "our-town-2024/washpost--peter-marks.json",
+      "oldUrl": "https://www.washingtonpost.com/theater-dance/2024/10/11/our-town-broadway-review/",
+      "newUrl": "https://www.washingtonpost.com/entertainment/theater_dance/theater-review-our-town-at-fords-theatre/2013/01/31/3f0ad3cc-6be4-11e2-8f4f-2abd96162ba8_story.html"
     }
   ]
 }
