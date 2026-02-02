@@ -8,17 +8,17 @@
   "fullText": null,
   "showScoreExcerpt": "\"A dazzling spectacle that brings magic to life on stage.\"",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 82,
   "source": "show-score",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 75,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The quote uses clearly positive language ('dazzling spectacle', 'brings magic to life') indicating recommendation, but given this is only a single curated excerpt with no full review context, I'm scoring conservatively in the positive range. | GPT-4o: The phrase 'a dazzling spectacle that brings magic to life on stage' strongly suggests a highly positive view of the production, indicating an enthusiastic recommendation. However, due to the single excerpt warning, the confidence is medium, and the score is conservatively placed toward the middle of the rave range. | Gemini: The phrase \"dazzling spectacle\" suggests a positive experience, indicating a recommendation. Given the limited text and single excerpt warning, the score is placed in the middle of the positive range.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The language is enthusiastic and celebratory with 'dazzling spectacle' and 'brings magic to life,' indicating strong praise. However, confidence is medium due to single excerpt warning - this could be cherry-picked from a more nuanced review. | GPT-4o: The excerpt uses strong positive language such as 'dazzling spectacle' and 'brings magic to life,' indicating a highly enthusiastic recommendation. Given the single excerpt warning, the score is placed at the lower end of the Rave bucket. | Gemini: The phrase \"dazzling spectacle that brings magic to life on stage\" is very positive and indicates a strong recommendation. Given the single excerpt warning, the score is placed at the higher end of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:01:00.741Z",
+    "scoredAt": "2026-02-02T16:28:30.347Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 86,
-    "previousVersion": "3.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 90,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 86,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

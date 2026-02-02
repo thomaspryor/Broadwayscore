@@ -45,42 +45,42 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "brightdata",
-  "assignedScore": 42,
+  "assignedScore": 58,
   "llmScore": {
-    "score": 42,
-    "confidence": "medium",
+    "score": 58,
+    "confidence": "high",
     "range": {
-      "low": 35,
-      "high": 48
+      "low": 55,
+      "high": 62
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 45,
+      "music": 70,
+      "performances": 65,
+      "direction": 72
     },
     "keyPhrases": [
       {
-        "quote": "If, like this critic, you think there's something ineffably cringey about it",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "you may not find yourself on the wavelength of a show defined by its strenuousness",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "If you think it's a clever, charming wink... then you may very well be along for the ride",
+        "quote": "The show is well worth watching in many particulars, but it may elicit more nods of appreciation for what it mimics well than standing ovations for how it transcends",
         "sentiment": "neutral",
-        "strength": 2
+        "strength": 4
+      },
+      {
+        "quote": "what's missing from Schmigadoon, and from 'Schmigadoon!,' is real idiosyncracy",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "The songs of 'Schmigadoon!' are genuinely impressive but rarely involving",
+        "sentiment": "neutral",
+        "strength": 3
       }
     ],
-    "reasoning": "The critic expresses clear personal distaste for the show's fundamental approach, calling it 'cringey' and 'strenuous,' while acknowledging others might enjoy it but making no recommendation themselves.",
+    "reasoning": "The critic finds technical merit and craftsmanship but lacks enthusiasm for the show's core concept and execution, offering qualified appreciation rather than genuine recommendation.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": true
@@ -88,10 +88,10 @@
   },
   "llmMetadata": {
     "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:13:58.015Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2441,
-    "outputTokens": 359,
+    "scoredAt": "2026-02-02T16:25:57.155Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 3851,
+    "outputTokens": 370,
     "textSource": {
       "type": "fullText",
       "status": "complete",

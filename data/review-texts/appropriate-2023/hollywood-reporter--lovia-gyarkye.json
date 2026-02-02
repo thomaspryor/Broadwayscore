@@ -9,61 +9,61 @@
   "showScoreExcerpt": "“...funny and sophisticated. The jokes are biting and some lines are impressively abrasive. But it edges away from the satire. Neugebauer’s fine direction instead leans into the acid drama of fraught sibling relationships. The play treats each character’s plight with an earnest consideration. There’s a more reflective, tragicomic stance as it considers what happens to families afraid to confront the past.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/appropriate-broadway",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 78,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 50,
-    "confidence": "low",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 40,
-      "high": 60
+      "low": 75,
+      "high": 82
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 82,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 85,
+      "direction": 75
     },
     "keyPhrases": [
       {
-        "quote": "caustic family drama",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "It's still funny and sophisticated. The jokes are biting and some lines are impressively abrasive.",
+        "sentiment": "positive",
+        "strength": 4
       },
       {
-        "quote": "blistering reunion of his heirs",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "The first-rate cast plunges into the depths of the Lafayettes' psychic damage with performances that highlight, with subtle heart, the desperation brought on by collective delusion.",
+        "sentiment": "positive",
+        "strength": 5
       },
       {
-        "quote": "The production is the first of Jacobs-Jenkins' original works to be on Broadway",
-        "sentiment": "neutral",
-        "strength": 1
+        "quote": "Neugebauer's fine direction instead leans into the acid drama of fraught sibling relationships.",
+        "sentiment": "positive",
+        "strength": 3
       }
     ],
-    "reasoning": "This excerpt appears to be primarily plot summary and background information without any clear evaluative language or recommendation signals.",
+    "reasoning": "The critic consistently praises the performances as 'first-rate,' calls the writing 'sophisticated,' and appreciates the direction as 'fine,' with only minor reservations about the shift away from satire.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:31:07.298Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2493,
-    "outputTokens": 306,
+    "scoredAt": "2026-02-02T16:24:35.876Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 4358,
+    "outputTokens": 355,
     "textSource": {
       "type": "fullText",
-      "status": "complete",
+      "status": "truncated",
       "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
     }
   },
   "ensembleData": {

@@ -9,7 +9,7 @@
   "bwwExcerpt": "For this slyly manipulative production knows exactly how, and how hard, to push the tenderest spots of most people's emotional makeups. By that I mean the ever-fraught relationships between parents and children, connections that persist, often unresolved, beyond death. Time-bending, it turns out, has its own special tools of catharsis in this regard. In the multiple worlds summoned here, it is possible for kids to instantly become their grown-up mentors, and for a son to encounter his forbidding father when dad was still a vulnerable sapling. \"I am paint and memory,\" a talking portrait of the long-dead wizard Dumbledore (Edward James Hyland) says to his former star pupil, Harry. Well, that's art, isn't it? Substitute theatrical showmanship for paint, and you have this remarkable production's elemental recipe for all-consuming enchantment.",
   "showScoreExcerpt": "\"Five hours of performance pass in a wizardly wink of an eye...Everything that happens onstage seems as improbably fluid as, well, time itself. It helps that what happens includes some of the most eye-boggling illusions you’ll ever witness...The new gold standard for fantasy franchise entertainment on Broadway...This slyly manipulative production knows exactly how, and how hard, to push the tenderest spots of most people’s emotional makeups.\"",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 93,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "urlSource": "show-score",
@@ -18,11 +18,11 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 92,
-    "confidence": "high",
+    "score": 93,
+    "confidence": "medium",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 88,
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: Brantley delivers unqualified praise throughout, calling it 'enthralling,' 'inspired,' and 'the new gold standard for fantasy franchise entertainment on Broadway' with 'all-consuming enchantment.' | Gemini: The review is overwhelmingly positive, using phrases like \"enthralling,\" \"inspired team,\" \"wizardly wink of an eye,\" and \"new gold standard.\" The critic clearly recommends seeing the show, placing it firmly in the Rave bucket.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Brantley delivers effusive praise throughout, calling it 'enthralling,' 'inspired,' and declaring it sets 'the new gold standard.' His language is consistently rapturous with no meaningful reservations. | GPT-4o: The review is overwhelmingly positive, praising the production's imagination, execution, and emotional impact. It describes the show as a new gold standard for fantasy entertainment on Broadway, with no significant reservations. | Gemini: The review is overwhelmingly positive, using words like \"enthralling,\" \"inspired,\" and \"remarkable.\" While acknowledging the plot's complexity, the critic ultimately recommends the show, highlighting its magical elements and emotional resonance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,26 +43,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:03:21.982Z",
+    "scoredAt": "2026-02-02T16:29:45.446Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": null,
-    "geminiScore": 92,
+    "claudeScore": 91,
+    "openaiScore": 95,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 0,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/nytimes--ben-brantley_2026-01-26.html",
   "textFetchedAt": "2026-01-26T15:38:56.517Z",

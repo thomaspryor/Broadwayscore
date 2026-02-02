@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges excellent production values and cast but finds the plot convoluted and repetitious, ultimately expressing qualified satisfaction rather than a clear recommendation. | GPT-4o: The review acknowledges the impressive production elements and cast but criticizes the plot as convoluted and repetitious, ultimately not holding the critic's interest. The critic is not entirely negative, expressing some enjoyment, but the overall tone is mixed. | Gemini: The reviewer acknowledges the show's flaws (convoluted plot, length, accents) but ultimately states they are not sorry they saw it, indicating a positive but not enthusiastic recommendation. The review highlights several positive aspects like the cast, set design, and illusions.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic explicitly states 'I am not sorry I saw the show' but follows with major criticisms about length, confusion, and repetitive plot. The B- grade and mixed tone place this in qualified territory rather than positive recommendation. | GPT-4o: The review highlights both positive aspects, such as the cast and production quality, and significant criticisms, particularly regarding the plot's complexity and length. The critic expresses a lack of regret in seeing the show but suggests it was overly long, indicating a mixed recommendation. | Gemini: The review expresses enjoyment and appreciation for many aspects of the production (cast, set, illusions), but criticizes the convoluted and repetitive plot, ultimately concluding that it was worth seeing but could have been better.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:01:03.754Z",
+    "scoredAt": "2026-02-02T16:28:36.096Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
-    "previousVersion": "5.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 75,
+    "geminiScore": 74,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

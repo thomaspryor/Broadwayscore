@@ -9,15 +9,15 @@
   "dtliExcerpt": "Come to The Lion King with two pairs of eyes, one ear, and half a brain. You will be bombarded by some of the most beautiful and spectacular sights theater can offer from before and behind, so eyes in the back of the head will come in handy. You will be harangued by second-rate standard-show music and lyrics by Elton John and Tim Rice, and also by Lebo Mï's stirring African chants and ululations, to which your active ear should be cocked. Finally, you will be subjected to a well-worn, simplistic children's tale about a lion cub's hard road to adulthood and the throne of the animal kingdom, usurped by his wicked uncle in cahoots with some murderously laughing hyenas.",
   "showScoreExcerpt": "\"You will be bombarded by some of the most beautiful and spectacular sights theater can offer from before and behind, so eyes in the back of the head will come in handy.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 76,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 75,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite criticizing the music as 'second-rate' and story as 'simplistic', the critic clearly states adults will 'feast on' the show due to Taymor's spectacular design work, indicating a recommendation based on visual merit. | GPT-4o: The review highlights the visual spectacle and imaginative design of the production, suggesting it's worth seeing for these elements despite criticisms of the music and story. The truncated text warning and flat aggregator verdict suggest some reservations, but the positive aspects are emphasized. | Gemini: Despite some reservations about the music and story, the review praises the visual spectacle and Julie Taymor's direction, suggesting it's worth seeing, especially for adults. The truncated text makes it difficult to be more confident.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite criticizing the music as 'second-rate' and story as 'simplistic,' Simon clearly recommends the show for adults due to Taymor's spectacular visual direction and design. The truncated text suggests a positive overall assessment. | GPT-4o: The review highlights the visual spectacle and imaginative design as major strengths, suggesting a positive experience despite criticisms of the music and story. The truncated nature of the text and mixed aggregator context suggest some reservations, leading to a medium confidence level. | Gemini: Despite some reservations about the music and story, the review praises the visual spectacle and Julie Taymor's direction, suggesting a positive overall experience, especially for adults. The truncated text makes it difficult to assess the final verdict with complete certainty, but the positive aspects are emphasized.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:25:48.766Z",
+    "scoredAt": "2026-02-02T16:34:41.685Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
+    "claudeScore": 76,
     "openaiScore": 78,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

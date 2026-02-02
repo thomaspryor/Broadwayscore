@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"Humor and brightness is what fuels this engine\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-heart-of-rock-and-roll-broadway",
   "originalScore": null,
-  "assignedScore": 70,
+  "assignedScore": 72,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/heart-of-rock-and-roll-2024/variety--frank-rizzo_2026-02-02.html",
@@ -45,19 +45,19 @@
   "archiveOrgTimestamp": "20250104073859",
   "archiveOrgUrl": "http://web.archive.org/web/20250104073859/https://variety.com/2024/legit/reviews/the-heart-of-rock-and-roll-review-huey-lewis-musical-broadway-1235976855/",
   "llmScore": {
-    "score": 70,
+    "score": 72,
     "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 75
+      "low": 68,
+      "high": 76
     },
     "bucket": "Mixed",
     "thumb": "Up",
     "components": {
-      "book": 58,
-      "music": 68,
-      "performances": 75,
-      "direction": 74
+      "book": 65,
+      "music": 70,
+      "performances": 78,
+      "direction": 75
     },
     "keyPhrases": [
       {
@@ -66,9 +66,9 @@
         "strength": 4
       },
       {
-        "quote": "pleasant middle which neither offends nor inspires, just entertains",
-        "sentiment": "neutral",
-        "strength": 3
+        "quote": "unpretentious, silly and, in the end, rather fun show",
+        "sentiment": "positive",
+        "strength": 4
       },
       {
         "quote": "it doesn't really matter that it thinks inside the box. After all, cardboard has its uses",
@@ -76,20 +76,27 @@
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The critic finds genuine entertainment value in this 'unpretentious, silly and rather fun show' despite acknowledging its formulaic nature and thin plotting, ultimately endorsing it as effective crowd-pleasing entertainment. | GPT-4o-mini: The review indicates a generally entertaining experience with some fun moments, but also highlights significant weaknesses in the plot and music, leading to a mixed-positive recommendation.",
+    "reasoning": "The critic finds the show genuinely entertaining despite acknowledging its formulaic nature and thin plot, praising the performances, direction, and the production's self-aware embrace of its modest ambitions.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": false
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T15:45:43.185Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-02T16:25:20.905Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 3481,
+    "outputTokens": 354,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 70,

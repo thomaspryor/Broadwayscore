@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges the show as a 'crowd-pleaser' but criticizes its 'charmless agenda,' with Menzel's performance being the primary saving grace that prevents it from being a complete failure. | GPT-4o: The review acknowledges the show's appeal as a crowd-pleaser but criticizes its lack of charm in its political messaging. The performance of Idina Menzel is highlighted as a saving grace, indicating a mixed but somewhat positive view. | Gemini: Despite the critic's reservations about the show's plot and message, the review indicates that Idina Menzel's performance is strong enough to make the show worth seeing. This suggests a positive, but not rave, recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges crowd-pleasing moments and praises Menzel's performance, but criticizes the show's 'charmless agenda' and notes that 'magic fades' much of the time, suggesting mixed feelings overall. | GPT-4o: The review acknowledges the show's appeal as a crowd-pleaser but criticizes its lack of charm in its storytelling. However, Idina Menzel's performance is highlighted as a redeeming factor, indicating a mixed but somewhat positive view. | Gemini: The review acknowledges flaws but ultimately suggests the show is worth seeing due to Idina Menzel's performance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,12 +40,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:45:38.216Z",
+    "scoredAt": "2026-02-02T16:36:24.636Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 57,
-    "previousVersion": "3.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,

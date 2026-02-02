@@ -71,20 +71,20 @@
   "previousLlmScore": 60,
   "textWordCount": 419,
   "archivePath": "data/archives/reviews/how-to-dance-in-ohio-2023/theatermania--david-finkle_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T05:04:38.423Z",
+  "textFetchedAt": "2026-02-02T16:22:33.299Z",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
     {
       "tier": 1,
       "method": "playwright",
       "success": false,
       "error": "Skipped - known blocked site"
-    },
-    {
-      "tier": 1.5,
-      "method": "browserbase",
-      "success": false,
-      "error": "Insufficient text: 0 chars"
     },
     {
       "tier": 2,

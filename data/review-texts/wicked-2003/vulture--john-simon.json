@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"Two of the producers of the musical Wicked bear the name Platt, which (in German) means flat, and one the name Stone, which (in English) means heavy. Why not also one called Long, although it is too much to ask for one called Boring, all of which apply to the show.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/wicked",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 40,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 35,
-    "confidence": "low",
+    "score": 40,
+    "confidence": "medium",
     "range": {
-      "low": 30,
-      "high": 40
+      "low": 35,
+      "high": 45
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Pan, gemini=Negative | Claude: The critic systematically dismantles every aspect of Wicked with harsh language like 'flat', 'boring', 'lost it', 'worthless songs', 'all in vain', and concludes it's 'more withered than wicked' - a clear pan. | Gemini: The review is largely negative, criticizing the score, lyrics, book, and direction. While the scenery is praised, the overall assessment is unfavorable, leading to a negative classification.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic delivers a scathing review calling Wicked flat, heavy, long, and boring, criticizing nearly every aspect from the score to direction while offering no genuine praise for the production. | GPT-4o: The review is overwhelmingly negative, criticizing the music, lyrics, direction, and performances, with only minor praise for the set design. The critic suggests the show is not worth seeing. | Gemini: The review is overwhelmingly negative, criticizing the score, lyrics, book, direction, and choreography. While praising some performances and the set design, the overall assessment is that the show is a failure.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:45:35.567Z",
+    "scoredAt": "2026-02-02T16:36:21.270Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 25,
-    "previousVersion": "5.0.0"
+    "previousScore": 35,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": null,
-    "geminiScore": 45,
+    "claudeScore": 20,
+    "openaiScore": 40,
+    "geminiScore": 40,
     "claudeBucket": "Pan",
+    "openaiBucket": "Negative",
     "geminiBucket": "Negative",
     "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Pan, gemini=Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 13,

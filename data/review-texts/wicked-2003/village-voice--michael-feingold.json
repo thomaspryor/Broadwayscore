@@ -7,18 +7,18 @@
   "publishDate": "November 4, 2003",
   "showScoreExcerpt": "\"Wicked, a hideous mess of a musical that wants to be many different things, and rarely succeeds in being any of them. All this from a creative team that, aesthetically speaking, seems barely able to walk and chew gum at the same time.\"",
   "originalScore": null,
-  "assignedScore": 22,
+  "assignedScore": 12,
   "source": "show-score",
   "needsFullText": true,
   "sourceMethod": "archive",
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 22,
+    "score": 12,
     "confidence": "high",
     "range": {
-      "low": 17,
-      "high": 27
+      "low": 7,
+      "high": 17
     },
     "bucket": "Pan",
     "thumb": "Down",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Pan | Claude: The critic uses extremely harsh language ('hideous mess') and explicitly states the show 'rarely succeeds' at anything it attempts, with additional criticism of the creative team's basic competence. | GPT-4o: The critic describes the musical as a 'hideous mess' and criticizes the creative team harshly, indicating a strong negative sentiment. The language used is unambiguously critical, suggesting a strong recommendation to avoid the show. | Gemini: The review excerpt uses extremely negative language like \"hideous mess\" and indicates a complete failure of the musical, placing it firmly in the 'Pan' category.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Pan | Claude: The critic uses extremely harsh language calling it a 'hideous mess' and says the creative team 'seems barely able to walk and chew gum at the same time', indicating strong negative recommendation. | GPT-4o: The excerpt is strongly negative, describing the musical as a 'hideous mess' and criticizing the creative team's abilities. This indicates a strong recommendation to avoid the show. | Gemini: The review uses extremely negative language like \"hideous mess\" and criticizes the creative team's abilities, indicating a strong pan.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,17 +39,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:45:21.188Z",
+    "scoredAt": "2026-02-02T16:36:17.698Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 15,
-    "previousVersion": "5.0.0"
+    "previousScore": 22,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 20,
-    "geminiScore": 20,
+    "claudeScore": 15,
+    "openaiScore": 10,
+    "geminiScore": 10,
     "claudeBucket": "Pan",
     "openaiBucket": "Pan",
     "geminiBucket": "Pan",

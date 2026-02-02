@@ -10,15 +10,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 78,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises the theatrical spectacle, performances, and production values extensively, calling it 'thrilling' and 'stunners,' while acknowledging script weaknesses. The overall assessment is positive despite reservations about plot and gender representation. | Gemini: The review praises the production design and theatricality, while acknowledging plot weaknesses. The truncated nature of the text makes it difficult to assess the overall recommendation with high confidence, but the positive elements outweigh the criticisms.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite criticisms of the plot and script ('leans on its metaphors...heavily', 'very much a Boy's Own Story'), Soloski clearly recommends the production for its 'dazzling' theatricality, 'you-won't-believe-your-eyes stunners' magic, and strong performances, calling it a 'triumphal entry onto Broadway'. | GPT-4o: The review highlights the audacious production design, crowd-pleasing elements, and exceptional theatrical presentation. Despite some criticisms of the plot and gender representation, the overall tone is highly positive, emphasizing the show's theatrical magic and appeal to fans. | Gemini: The review praises the production design and theatricality, but notes plot weaknesses and gender imbalances. Given the truncated text warning, it's safer to assume a 'Positive' rather than 'Mixed' score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:01:18.181Z",
+    "scoredAt": "2026-02-02T16:28:41.550Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 78,
+    "claudeScore": 77,
+    "openaiScore": 82,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dateUnknown": true,
   "dateSource": "historical-review",

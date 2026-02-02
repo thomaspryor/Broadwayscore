@@ -15,7 +15,7 @@
   "scoreConfidence": "medium",
   "llmScore": {
     "score": 82,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 77,
       "high": 87
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review is overwhelmingly positive with strong language like 'pure magic,' 'astonishing thrill ride,' 'triumph of stagecraft,' and explicitly states the expensive experience is 'well-worth it.' Despite minor reservations about sentimentality, the critic clearly enthusiastically recommends the show. | Gemini: The review is overwhelmingly positive, highlighting the show's thrilling entertainment and expert execution. The critic explicitly states the experience is \"well-worth it,\" indicating a strong recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong praise throughout with phrases like 'pure magic,' 'triumph of stagecraft,' and 'well-worth it.' Despite acknowledging it's not 'high art,' the critic clearly recommends it as 'spectacularly thrilling entertainment expertly executed like no other.' | GPT-4o: The review is overwhelmingly positive, praising the production's stagecraft, storytelling, and ability to capture the essence of the Harry Potter series. The critic describes the experience as special and unforgettable, indicating a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, praising the stagecraft, performances, and overall experience. The critic explicitly states the show is \"well-worth it.\"",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:04:00.951Z",
+    "scoredAt": "2026-02-02T16:30:05.128Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 82,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": null,
+    "openaiScore": 95,
     "geminiScore": 82,
     "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/stage-left--robert-russo_2026-01-26.html",
   "textFetchedAt": "2026-01-26T22:36:43.317Z",

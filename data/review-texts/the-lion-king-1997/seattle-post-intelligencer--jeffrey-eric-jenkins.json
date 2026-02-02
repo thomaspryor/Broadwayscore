@@ -8,17 +8,17 @@
   "fullText": null,
   "showScoreExcerpt": "\"A theatrical experience unlike any other, thanks to director Julie Taymor...\"",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 82,
   "source": "show-score",
   "designation": null,
   "sourceMethod": "showscore",
   "scoreSource": null,
   "llmScore": {
-    "score": 74,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The phrase 'unlike any other' suggests distinctiveness and innovation which is typically positive, but with only one curated excerpt available, the full verdict remains unclear. | GPT-4o: The phrase 'a theatrical experience unlike any other' suggests a highly positive and unique experience, indicative of a rave review. However, due to the single excerpt warning, the confidence is medium, and the score is set conservatively within the rave range. | Gemini: The quote suggests a positive experience, but without more context, it's difficult to gauge the strength of the recommendation. I'm placing it in the positive bucket with a score in the middle range due to the limited information.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The phrase 'unlike any other' combined with specific praise for the director suggests strong positive assessment, but single excerpt limits confidence in full review sentiment. | GPT-4o: The phrase 'a theatrical experience unlike any other' suggests a highly positive and unique experience, indicative of a strong recommendation. However, due to the single excerpt warning, the confidence is medium. | Gemini: The single excerpt is highly positive, praising the theatrical experience and director Julie Taymor. Given the limited text, I'm placing it in the upper range of 'Positive'.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:59:00.030Z",
+    "scoredAt": "2026-02-02T16:34:14.106Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 84,
-    "previousVersion": "3.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 90,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 87,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 18,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

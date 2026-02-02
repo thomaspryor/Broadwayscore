@@ -6,7 +6,7 @@
   "url": "https://apnews.com/article/aladdin-broadway-review-2014",
   "publishDate": "2014-03-20",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 79,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "It's spritely directed and choreographed by Casey Nicholaw, well sung by a huge 35-person cast wearing an alarming number of harem pants, and hits that sweet spot Disney Theatrical Productions do so well, a saccharine fairy tale for the kids cut by some sly, vinegary quips for their parents......",
@@ -80,11 +80,11 @@
   },
   "contentTierReason": "AP news feed (Pakistan/sports headlines) instead of review",
   "llmScore": {
-    "score": 75,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -95,7 +95,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt contains positive language about direction, choreography, and vocals, with recognition that the show achieves Disney's typical balance of family appeal. However, with only one curated excerpt available, I'm scoring conservatively within the positive range. | GPT-4o: The review highlights positive aspects such as spritely direction, choreography, and a well-sung cast, indicating a generally favorable impression. The mention of Disney's 'sweet spot' suggests it meets expectations for its target audience, though the tone is not overly enthusiastic. | Gemini: The review highlights positive aspects like direction, choreography, and cast performance, suggesting it's enjoyable. However, the 'saccharine fairy tale' comment implies it might not be for everyone, indicating a recommendation with reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses positive language like 'spritely directed' and acknowledges the show succeeds at Disney's formula, but the single excerpt limits confidence in the overall verdict. | GPT-4o: The review praises the direction, choreography, and cast performance, noting the production's appeal to both children and adults, which suggests a strong positive recommendation. | Gemini: The review highlights positive aspects like direction, choreography, and singing, but the 'saccharine fairy tale' comment suggests it might not appeal to everyone, indicating a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -105,20 +105,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:21:31.642Z",
+    "scoredAt": "2026-02-02T16:36:35.668Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 76,
-    "geminiScore": 75,
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

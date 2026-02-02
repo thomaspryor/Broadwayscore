@@ -8,58 +8,65 @@
   "dtliExcerpt": "Ideal fodder, then, for a modestly scaled and warm-hearted jukebox show that might prove to be one of the sleeper hits of the season. That’s thanks to an inestimably witty book with plenty of hard laughs and a suite of winning lead performances under director Gordon Greenberg.",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 75,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": "\"...funny, unpretentious ’80s fun\"",
   "bwwExcerpt": "Ideal fodder, then, for a modestly scaled and warm-hearted jukebox show that might prove to be one of the sleeper hits of the season. That’s thanks to an inestimably witty book with plenty of hard laughs and a suite of winning lead performances under director Gordon Greenberg.",
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 79,
-    "confidence": "high",
+    "score": 75,
+    "confidence": "low",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 65,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 84,
+      "book": null,
       "music": null,
-      "performances": 80,
-      "direction": 79
+      "performances": null,
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "sleeper hits of the season",
+        "quote": "funny",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 3
       },
       {
-        "quote": "inestimably witty book with plenty of hard laughs",
+        "quote": "unpretentious",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 3
       },
       {
-        "quote": "suite of winning lead performances",
+        "quote": "'80s fun",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review uses consistently positive language praising the book's wit, performances, and predicts commercial success, indicating a clear recommendation despite being an excerpt. | GPT-4o-mini: The review indicates strong praise for the book and performances, suggesting a clear recommendation despite not being overly enthusiastic.",
+    "reasoning": "Three positive descriptors suggest a clear recommendation, but the brief excerpt provides minimal context for confidence.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T06:35:51.790Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-02T16:25:15.183Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 2313,
+    "outputTokens": 255,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,

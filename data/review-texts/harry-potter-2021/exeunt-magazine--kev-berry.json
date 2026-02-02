@@ -8,16 +8,16 @@
   "fullText": null,
   "showScoreExcerpt": "\"A theatrical achievement...The production design is impeccable.\"",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 82,
   "source": "show-score",
   "sourceMethod": "showscore",
   "scoreSource": null,
   "llmScore": {
-    "score": 74,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Single curated excerpt with positive language about achievement and impeccable design suggests recommendation, but extremely limited text requires conservative scoring within positive range. | GPT-4o: The phrase 'a theatrical achievement' suggests a high level of praise, indicating a strong recommendation. The mention of 'impeccable' production design further supports this positive assessment. However, due to the single excerpt warning, the confidence is medium. | Gemini: The quote indicates a positive assessment of the production, but without more context, it's difficult to gauge the overall enthusiasm. I'm placing it in the positive bucket with a score in the middle range due to the limited excerpt.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The phrases 'theatrical achievement' and 'impeccable' production design are strong positive indicators, but with only one excerpt available, I'm placing this in the upper range of Positive rather than Rave territory. | GPT-4o: The phrase 'a theatrical achievement' suggests a high level of praise, and 'impeccable' indicates exceptional quality. Despite the single excerpt warning, the language used is strong enough to suggest a rave review. | Gemini: The excerpt uses strong positive language like \"theatrical achievement\" and \"impeccable,\" indicating a positive recommendation. Since it's a single excerpt, I'm placing it at the higher end of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:00:30.079Z",
+    "scoredAt": "2026-02-02T16:28:10.616Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "3.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 90,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 86,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 18,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

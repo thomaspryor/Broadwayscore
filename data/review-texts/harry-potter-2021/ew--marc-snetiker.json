@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review enthusiastically praises the lead performances as 'exceptional' and 'meteoric,' comparing them to successful Broadway shows, but this is only an excerpt focusing on the actors rather than a full assessment of the production. | GPT-4o: The review highlights the exceptional performances of the leads and their chemistry, indicating a strong recommendation. The language is enthusiastic and focuses on the positive aspects of the actors' portrayals, suggesting a high score within the Positive bucket. | Gemini: The review focuses heavily on the positive performances of the two leads, describing them as \"exceptional\" and highlighting their dynamic chemistry. The aggregator also indicates a positive reception.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for the lead performances with enthusiastic language like 'meteoric together' and 'formidable individually,' comparing them favorably to other Broadway hits, indicating solid recommendation despite being excerpted text. | GPT-4o: The review praises the lead actors as exceptional and highlights their dynamic chemistry, suggesting a strong recommendation. The tone is enthusiastic and focuses on the actors' performances as a key strength of the show. | Gemini: The review praises the leads and their chemistry, highlighting their exceptional performances. The enthusiastic tone and positive descriptions suggest a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,17 +40,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:00:21.270Z",
+    "scoredAt": "2026-02-02T16:28:06.912Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "5.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
     "openaiScore": 82,
-    "geminiScore": 80,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",

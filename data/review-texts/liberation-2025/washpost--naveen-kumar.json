@@ -73,7 +73,7 @@
   "isFullReview": false,
   "textWordCount": 80,
   "archivePath": "data/archives/reviews/liberation-2025/washpost--naveen-kumar_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T00:22:13.145Z",
+  "textFetchedAt": "2026-02-02T16:39:09.987Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -94,7 +94,7 @@
     "shorter_than_excerpt"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "scrapingbee",
+  "sourceMethod": "playwright",
   "rescoreCompletedAt": "2026-02-01T15:28:47.241Z",
   "_removedDesignation": {
     "designation": "Recommended",
@@ -103,5 +103,8 @@
     "hadPositiveThumb": true,
     "dtliThumb": "Up",
     "bwwThumb": "none"
-  }
+  },
+  "textIssues": [
+    "Word count too low: 80 (min: 300)"
+  ]
 }

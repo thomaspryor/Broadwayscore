@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Reed calls Wicked 'irresistible' and praises every element - score, sets, staging, book, and performances. His enthusiasm builds throughout with superlatives like 'sensational singing' and 'wonderful cast,' concluding with a strong recommendation to see it. | GPT-4o: The review is overwhelmingly positive about 'Wicked,' describing it as an 'irresistible extravaganza' and praising various aspects like the score, sets, and performances. The critic's enthusiasm and strong recommendation make it a clear 'Rave.' | Gemini: The review is mixed, praising some aspects like the period details and nautical research, but criticizing the story, accents, and Russell Crowe's performance. The reviewer ultimately gives a qualified recommendation, suggesting it might appeal to a specific audience.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite the lengthy film review opening, Reed delivers an overwhelmingly positive assessment of Wicked, calling it 'irresistible' and praising all elements from score to performances to staging, with enthusiastic language throughout. | GPT-4o: The review is overwhelmingly positive, describing 'Wicked' as an 'irresistible extravaganza' and praising its music, magic, artistry, and enchantment. The critic is clearly enthusiastic and recommends it as a must-see for fans of the original Oz stories. | Gemini: The review is mixed. While acknowledging some positive aspects like the period details and nautical research, the critic also points out flaws such as the mumbling, lack of story, and over-the-top nature of the film. The recommendation is qualified, suggesting it's only for a specific audience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,11 +38,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:26:52.873Z",
+    "scoredAt": "2026-02-02T16:35:42.985Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
+    "previousScore": 92,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {

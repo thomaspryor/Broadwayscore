@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Both critics clearly recommend the show despite acknowledging it's not groundbreaking. They praise its entertainment value, broad appeal, and memorable moments, particularly the Act 1 finale which one calls 'unforgettable.' | GPT-4o: Despite the truncated text warning, the review is overwhelmingly positive, highlighting the show's charm, catchy score, and broad appeal. The critic expresses a personal fondness for the production and recommends it for a quintessential Broadway experience, indicating a strong positive recommendation. | Gemini: Both critics recommend the show, particularly for those looking for a classic Broadway experience. Dan explicitly states he enjoyed it both times he saw it and would happily see it again.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Both critics clearly recommend the show despite acknowledging it's not groundbreaking, praising its entertainment value, broad appeal, and calling it a 'must-see' Broadway experience. | GPT-4o: The review is highly positive, highlighting the show's charm, catchy score, and broad appeal. The critic recommends it for a quintessential Broadway experience and praises its dramatic spectacle and character development. | Gemini: Both critics recommend the show, with Dan Dinero explicitly stating he would recommend it over several other popular musicals. While not a rave, it's a solid positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,17 +40,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:44:48.742Z",
+    "scoredAt": "2026-02-02T16:35:58.412Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
     "openaiScore": 82,
-    "geminiScore": 80,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",

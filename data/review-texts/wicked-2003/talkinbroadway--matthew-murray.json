@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The review is consistently critical throughout, calling the show 'muddled, unfocused,' criticizing the direction, book, and score as negligible, while acknowledging only the visual design has merit. The critic clearly does not recommend seeing it. | GPT-4o: The review consistently criticizes the lack of vision, poor direction, forgettable score, and underwhelming performances, suggesting the production fails to deliver a compelling experience. | Gemini: The review is overwhelmingly negative, criticizing the direction, book, score, and performances. While praising the visual aspects, the overall assessment is that the show is a \"muddled, unfocused enterprise\" and fails to deliver on its potential.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic systematically dismantles nearly every aspect of the production, calling it 'muddled,' 'unfocused,' and criticizing the direction, book, score, and performances. Despite praise for the visual design, the overall verdict is clearly negative. | GPT-4o: The review criticizes the lack of a singular vision, poor direction, forgettable score, and underwhelming performances, suggesting that the production fails to deliver a compelling experience. | Gemini: The review is overwhelmingly negative, criticizing the direction, book, score, and performances. While praising the visual aspects, the overall assessment is that the show is a \"muddled, unfocused enterprise\" and a \"whitewashed example\" of a musical failing to pander.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,11 +40,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:43:57.986Z",
+    "scoredAt": "2026-02-02T16:35:47.276Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 23,
+    "previousScore": 44,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {

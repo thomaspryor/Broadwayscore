@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite the single excerpt warning and 'Down' aggregator context, the critic explicitly calls this 'a superb revival' which is clear positive language. The extensive analytical discussion of Williams and the play suggests deep engagement and appreciation. | GPT-4o: The review excerpt describes the revival as 'superb,' indicating a strong recommendation. Despite the focus on Tennessee Williams' history, the positive language about the current production suggests a rave review. | Gemini: The review describes the revival as \"superb,\" which indicates a positive assessment. However, the focus on the play's themes and Williams's personal struggles suggests a more academic or analytical approach rather than an enthusiastic endorsement, thus a score in the lower end of the positive range.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic explicitly calls this a 'superb revival' and provides deep, engaged analysis of the work's literary merit, indicating strong appreciation for both the play and this production. | GPT-4o: The excerpt describes the revival as 'superb,' suggesting a strong positive recommendation. Despite the limited context, the language used indicates a high level of praise for the production. | Gemini: Despite the negative aggregator verdict, the review excerpt uses the phrase \"superb revival\" which indicates a strong positive recommendation. The rest of the excerpt provides context for the play itself, not a direct critique of the current production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,20 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:54:54.695Z",
+    "scoredAt": "2026-02-02T16:35:14.909Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 88,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 88,
-    "geminiScore": 75,
+    "openaiScore": 87,
+    "geminiScore": 81,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

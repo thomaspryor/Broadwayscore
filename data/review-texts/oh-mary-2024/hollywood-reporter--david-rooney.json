@@ -60,33 +60,21 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Rave"
   },
-  "sourceMethod": "brightdata",
+  "sourceMethod": "archive",
   "bwwExcerpt": "In its original extended run at the Lortel Theatre earlier this year, Oh, Mary! drew packed houses that one night included Steven Spielberg, Sally Field and Tony Kushner, respectively the director, co-star and screenwriter of Lincoln. The widely circulated backstage photo of the group with Escola in...",
   "archivePath": "data/archives/reviews/oh-mary-2024/hollywood-reporter--david-rooney_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T06:36:25.601Z",
-  "fetchMethod": "brightdata",
+  "textFetchedAt": "2026-02-02T16:58:27.578Z",
+  "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "page.waitForTimeout: Target page, context or browser has been closed"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
-  "fetchTier": 3,
-  "archiveOrgTimestamp": "20251010183659",
-  "archiveOrgUrl": "http://web.archive.org/web/20251010183659/https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/",
+  "fetchTier": 4,
+  "archiveOrgTimestamp": "20260201192224",
+  "archiveOrgUrl": "http://web.archive.org/web/20260201192224/https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/",
   "bwwThumb": "Up",
   "sources": [
     "dtli",

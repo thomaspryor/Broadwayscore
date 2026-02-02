@@ -9,15 +9,15 @@
   "bwwExcerpt": "Without a word of spoken dialogue, the show pulls us into late adolescence, a time when love, anguish and everything in between are felt perhaps with the greatest intensity. The book co-written by director-choreographer Peck and Drury (who won the 2019 Pulitzer Prize for Drama with her brilliant meta-theatrical race inquiry, Fairview) is skillfully shaped yet invisible in the best sense of undiluted physical, sensorial and elemental storytelling.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ILLINOISE-2024",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 84,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 77.5,
-      "high": 90.5
+      "low": 78,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -25,26 +25,26 @@
       "book": 85,
       "music": null,
       "performances": null,
-      "direction": 84
+      "direction": 80
     },
     "keyPhrases": [
       {
-        "quote": "skillfully shaped yet invisible in the best sense",
+        "quote": "pulls us into late adolescence, a time when love, anguish and everything in between are felt perhaps with the greatest intensity",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "undiluted physical, sensorial and elemental storytelling",
+        "quote": "skillfully shaped yet invisible in the best sense of undiluted physical, sensorial and elemental storytelling",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
-        "quote": "pulls us into late adolescence",
+        "quote": "Without a word of spoken dialogue, the show pulls us into",
         "sentiment": "positive",
         "strength": 3
       }
     ],
-    "reasoning": "Claude: The review offers consistent praise for the book's craftsmanship and the production's emotional impact, using sophisticated positive language like 'skillfully shaped' and 'undiluted storytelling' without any negative caveats. | GPT-4o-mini: The review highlights the skillful storytelling and emotional depth of the production, indicating a strong recommendation.",
+    "reasoning": "The review uses sophisticated praise like 'skillfully shaped' and 'undiluted physical, sensorial and elemental storytelling' with no negative elements, indicating strong appreciation for the craft and emotional impact.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,11 +53,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:35:10.945Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-02T16:25:37.375Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 2405,
+    "outputTokens": 333,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 82,
@@ -89,7 +96,7 @@
   "isFullReview": true,
   "textWordCount": 1414,
   "archivePath": "data/archives/reviews/illinoise-2024/hollywood-reporter--david-rooney_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T15:06:04.962Z",
+  "textFetchedAt": "2026-02-02T16:32:29.544Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {

@@ -8,17 +8,17 @@
   "fullText": "newsfast on January 2, 2026 The University of Warwick has announced the launch of a new spin-out company, VerIQ Limited, to transform how medical device and health technology clinical trials are designed, initiated and delivered across the UK. Formed in partnership with University Hospitals Coventry and Warwickshire (UHCW) NHS Trust, VerIQ will combine Warwick Medical School’s world-leading academic and clinical research expertise, providing an integrated national clinical trial platform that enables faster, higher-quality, and more cost-efficient evaluation of novel medical technologies. “VerIQ harnesses the success and strength of our scientific leadership and showcases the impact that academic–industry collaboration can achieve,” said Dr Tim Hart, Director of Warwick Innovations. “By enabling this new company to commercially leverage Warwick’s existing capabilities and expertise, we can help position the region and UK at the forefront of global Medtech innovation and evidence generation.” The launch of VerIQ supports the UK governments’ ambitions to make the UK the destination of choice for health technology development and evaluation, accelerating the pathway for innovation adoption within the NHS and improving patient outcomes. “When having surgery, our patients want access to the best technology available,” added Warwick Medical School Professor and UHCW orthopaedic surgeon Andy Metcalfe, Chief Medical Officer at VerIQ. “We need to deliver world-class studies that makes the UK the first place to come to for medical innovation. VerIQ will deliver efficient, high-quality medical research to ensure that patients get access to new technologies quickly and safely, improving their care and outcomes.” The spin-out will create an integrated clinical ecosystem that supports Medtech innovators – from early-stage start-ups to established multinational manufacturers – to design, launch, and execute clinical studies with unprecedented speed and scientific rigour. “The UK has the talent, infrastructure, and regulatory framework to lead the world in Medtech innovation,” said Dr Joe Dupere, Chief Executive Officer of VerIQ Limited. “VerIQ Limited will transform proven research excellence into an agile commercial platform, helping to ensure that life-changing technologies reach patients faster, without compromising scientific integrity.” Warwick brings extensive experience in translational research and clinical trial design, supported by strong partnerships with NHS Trusts and national health technology evaluation programmes. Initial work through VerIQ will focus on orthopaedics and wider Medtech trials, combining Warwick’s academic leadership with the new spin-out’s dedicated operational capacity to streamline trial start-up, accelerate participant recruitment, and deliver consistent, high-quality data. For more information please contact: About the University of Warwick Founded in 1965, the University of Warwick is a world-leading institution known for its commitment to era-defining innovation across research and education. A connected ecosystem of staff, students and alumni, the University fosters transformative learning, interdisciplinary collaboration and bold industry partnerships across state-of-the-art facilities in the UK and global satellite hubs. Here, spirited thinkers push boundaries, experiment and challenge convention to create a better world. VerIQ Limited is a UK-based Medtech clinical trial accelerator built to unlock faster, higher-quality clinical research. Through a coordinated network of pre-qualified trial sites, research nurses, and clinical investigators, VerIQ enables rapid study set-up, accelerated recruitment, and consistent data quality. Backed by a leadership team with deep expertise in complex and innovative trials, VerIQ partners with Medtech developers — from early innovators to global multinationals — to design and deliver clinical studies on time and on budget",
   "showScoreExcerpt": "\"Amazing bursts of magic that dazzle in the darkness, distinctive characterizations of a host of eccentric, endearing, and evil personalities by an enthralling cast...Under Tiffany's masterful direction, the depth and richness of the characters' emotions and psychology are never lost amidst the captivating spectacle. There is a fine balance between surreal fantasy and universal feelings...unsurpassed production values...truly superlative work.\"",
   "originalScore": null,
-  "assignedScore": 58,
+  "assignedScore": 60,
   "source": "show-score",
   "sourceMethod": "playwright",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 58,
+    "score": 60,
     "confidence": "medium",
     "range": {
-      "low": 53,
-      "high": 63
+      "low": 55,
+      "high": 65
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -29,37 +29,35 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This is a press release about a medical technology company, not a Broadway theater review at all. | GPT-4o: The text provided is not a theater review but rather an announcement about a new company in the medical field. Given the lack of relevant content, a mixed score is assigned due to the inability to assess the actual review content. | Gemini: This review is about a medical company, not a play. Therefore, it is neither positive nor negative, but mixed.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This appears to be a news article about a medical technology company launch, not a Broadway theater review. The content discusses clinical trials and medical device research with no mention of theater, performance, or Broadway. | GPT-4o: The text appears to be unrelated to a Broadway review, instead discussing a medical technology company. Without relevant content, a mixed score is assigned with low confidence. | Gemini: This appears to be a press release about a medical company, not a review of a theatrical production. Therefore, it is a negative review as it does not recommend seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:59:37.073Z",
+    "scoredAt": "2026-02-02T16:27:45.732Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 94,
-    "previousVersion": "3.0.0"
+    "previousScore": 58,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 0,
+    "claudeScore": 60,
     "openaiScore": 60,
-    "geminiScore": 55,
-    "claudeBucket": "Pan",
+    "geminiScore": 40,
+    "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 60,
+    "geminiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Outlier claude chose Pan, 2+ buckets from majority"
-    ],
+    "needsReview": false,
+    "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Mixed"
   },

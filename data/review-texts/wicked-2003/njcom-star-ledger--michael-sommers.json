@@ -8,20 +8,20 @@
   "fullText": null,
   "showScoreExcerpt": "\"A marvel of organization and inventiveness. Lusciously composed, smartly written and beautifully staged, 'Wicked' is one of the rare shows in town that justifies a $100 ticket. The cost is easily paid back in memories alone.\"",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 91,
   "source": "show-score",
   "needsFullText": true,
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 84,
-    "confidence": "low",
+    "score": 91,
+    "confidence": "medium",
     "range": {
-      "low": 79,
-      "high": 89
+      "low": 86,
+      "high": 96
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The excerpt contains strongly positive language like 'marvel' and 'lusciously composed' with an explicit value recommendation about justifying the high ticket price, but confidence is medium due to single excerpt warning. | Gemini: The review excerpt strongly suggests a positive recommendation, highlighting the show's inventiveness and value for money. While it's only one excerpt, the language used is quite enthusiastic.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review uses superlative language ('marvel', 'lusciously', 'beautifully') and explicitly states the show justifies premium ticket prices, indicating strong enthusiasm despite being a single excerpt. | GPT-4o: The review uses highly positive language, describing the show as a 'marvel' and 'beautifully staged', and justifies the high ticket price, indicating a strong recommendation. | Gemini: The review excerpt uses very positive language and explicitly states the show is worth the ticket price, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,26 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:43:52.613Z",
+    "scoredAt": "2026-02-02T16:35:18.761Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 94,
-    "previousVersion": "3.0.0"
+    "previousScore": 84,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "contentTier": "excerpt",
   "wordCount": 0

@@ -7,18 +7,18 @@
   "publishDate": "September 21, 2015",
   "showScoreExcerpt": "\"There have been moments in the history of musical theater when, like a twister, the sheer talent and whirling spectacle of a production have flattened any negative criticism that stood to get in its way...The latest incarnation of this impeccably oiled entertainment machine finds a new gear courtesy of a British import.\"",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 80,
   "source": "show-score",
   "needsFullText": true,
   "sourceMethod": "playwright",
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 78,
+    "score": 80,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is consistently positive throughout, praising performances, design, and the production's entertainment value, with no significant reservations expressed. | GPT-4o: The review is filled with praise for the performances, choreography, and production elements, indicating a strong recommendation. The critic describes the show as an 'impeccably oiled entertainment machine' and highlights the exceptional performances, suggesting a must-see experience. | Gemini: The review highlights strong performances and enjoyable aspects of the production, indicating a positive overall experience, but doesn't reach the level of a rave.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is filled with praise for performances, particularly Rachel Tucker who 'nearly blows the roof off' and other cast members who 'ace' their roles. The critic appreciates the production elements and finds meaningful depth in the show's themes. | GPT-4o: The review is filled with praise for the performances, choreography, and production elements, highlighting the show's ability to captivate and entertain. The critic draws parallels to the show's successful history and emphasizes the current production's strengths, indicating a strong recommendation. | Gemini: The review is generally positive, highlighting strong performances and aspects of the production. While not a rave, it clearly recommends seeing the show, particularly praising Rachel Tucker's performance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,15 +39,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:43:38.290Z",
+    "scoredAt": "2026-02-02T16:35:08.667Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 81,
     "openaiScore": 90,
     "geminiScore": 78,
     "claudeBucket": "Positive",

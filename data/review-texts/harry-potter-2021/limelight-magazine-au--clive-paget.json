@@ -7,17 +7,17 @@
   "publishDate": "April 23, 2018",
   "showScoreExcerpt": "\"The design team has created a magical space...Compelling storytelling...thrillingly inventive staging...For all its magic and mayhem, at the heart of the play lie universal themes of friendship, loyalty, trust and the old truism that history has a habit of repeating itself...A fast-paced Rubik's cube type affair with the kind of reveals that make Potter aficionados gasp out loud...A play with great heart and many lessons to teach.\"",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 79,
   "source": "show-score",
   "sourceMethod": "scrapingbee",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 75,
-    "confidence": "low",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,42 +28,40 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: The review is heavily truncated after describing the lavish production design as 'breath-taking' and calling the show 'just as magical', but the full verdict and recommendation are cut off, making a complete assessment impossible. | GPT-4o: The review highlights the impressive transformation of the theater and describes the production as 'just as magical' as the original, suggesting a strong recommendation despite the truncated text. | Gemini: The review describes the show as \"magical\", but the text is truncated, so it's hard to determine the full extent of the recommendation. The phrase \"Grab a ticket while you can can can!\" suggests a positive recommendation. | Buckets: claude=Mixed, openai=Rave, gemini=Positive",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is severely truncated after describing impressive production design elements, cutting off mid-sentence. The visible content shows appreciation for the theater renovation and design but provides no complete critical assessment of the show itself. | GPT-4o: The review highlights the impressive production design and the magical experience of the show, suggesting a strong recommendation. The tone is enthusiastic, despite the lack of detailed evaluative content due to truncation. | Gemini: The review describes the theater as \"breath-taking\" and the production as \"just as magical\" as the original, indicating a positive experience, but the truncated nature of the review prevents a higher score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:01:44.263Z",
+    "scoredAt": "2026-02-02T16:28:58.138Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 25,
-    "previousVersion": "5.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,
-    "openaiScore": 90,
+    "openaiScore": 82,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 30,
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "3-way bucket disagreement"
-    ],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "No bucket consensus - using median score"
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
-  "archivePath": "data/archives/reviews/harry-potter-2021/limelight-magazine-au--clive-paget_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T15:11:13.439Z",
+  "archivePath": "data/archives/reviews/harry-potter-2021/limelight-magazine-au--clive-paget_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T16:23:13.480Z",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {

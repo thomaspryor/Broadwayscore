@@ -3,9 +3,9 @@
   "outletId": "wsj",
   "outlet": "The Wall Street Journal",
   "criticName": "Terry Teachout",
-  "url": "https://www.wsj.com/articles/hadestown-review-a-musical-of-mythic-proportions-11556144400",
+  "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-11555547401?gaa_at=eafs&gaa_n=AWEtsqeHdkIicxa0s5DwSUBuEJ_PdwqJ8crNpCPk1EOvUNsy_V4qfpV9b-iE&gaa_ts=6980ce9f&gaa_sig=bm8zlAgni-hDSNBNBLn87IikD9psfA_sC0t7PqNM4dBDYLEtvI31u1dWRoYvSHia0yyGWpYUpvBfIjLsvwgLxA%3D%3D",
   "publishDate": "April 24, 2019",
-  "fullText": "The result is a show that sounds like no other musical on or off Broadway, one whose score has the craggy authenticity of American folk music at its most uncompromising.",
+  "fullText": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-11555547401\n\nShareResizeAmber Gray and the Broadway cast of ‘Hadestown’ Matthew MurphyNew York\n\nDoes the Broadway musical have a future? Only if a new generation of artists walks away from the old-hit-movie-into-stale-new-stage-show model and starts creating musicals that are conceptually more ambitious. “The Band’s Visit” and “Be More Chill,” which also broke free from the twin strangleholds of by-the-numbers pop-rock and synthetic Disneypop, both filled the bill in their very different ways. So, too, does Anaïs Mitchell’s “Hadestown,” which has transferred to Broadway after highly acclaimed runs at New York Theatre Workshop and London’s Royal National Theatre. “Hadestown” isn’t perfect, but it’s so fresh that you’ll gladly look past its forgivable flaws and savor the kaleidoscopic stylistic variety of Ms. Mitchell’s score.",
   "isFullReview": false,
   "dtliExcerpt": "The result is a show that sounds like no other musical on or off Broadway, one whose score has the craggy authenticity of American folk music at its most uncompromising.",
   "originalScore": null,
@@ -65,5 +65,48 @@
     "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (30 words)"
+  "contentTierReason": "Short text (30 words)",
+  "previousUrl": "https://www.wsj.com/articles/hadestown-review-a-musical-of-mythic-proportions-11556144400",
+  "urlDiscoveredAt": "2026-02-02T16:04:56.547Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 75,
+  "textWordCount": 121,
+  "archivePath": "data/archives/reviews/hadestown/wsj--terry-teachout_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T16:04:56.548Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 170 (min: 300)"
+  ]
 }

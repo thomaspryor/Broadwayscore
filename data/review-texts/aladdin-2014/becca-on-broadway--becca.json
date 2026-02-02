@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges the show is enjoyable and entertaining, but expresses significant disappointment with missed opportunities and lack of heart, resulting in a lukewarm recommendation. | GPT-4o: The review expresses several criticisms about the production, such as lacking heart and missed opportunities, but acknowledges that it is fun and entertaining for its target audience. The critic highlights specific positives like the performance of the Genie and the 'Friend Like Me' number, suggesting a mixed but somewhat enjoyable experience. | Gemini: The review is mixed, but ultimately leans positive. While the critic points out several flaws and missed opportunities, they also state that the audience will enjoy the show and that the Genie's performance is a reason to buy a ticket.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges the show is fun and entertaining but has significant reservations about its lack of heart, missed opportunities, and changes from the source material. The recommendation is qualified - audiences will enjoy it but it's not particularly strong praise. | GPT-4o: The review acknowledges that the show is fun and entertaining, particularly praising the performance of the Genie, but criticizes it for lacking heart and having missed opportunities. The critic's tone suggests enjoyment but with significant reservations, placing it in the Mixed category. | Gemini: The review concludes that the show is enjoyable, despite its flaws and missed opportunities. The reviewer highlights the Genie's performance as a major draw, indicating a positive, albeit qualified, recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,12 +43,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:04:17.710Z",
+    "scoredAt": "2026-02-02T16:36:39.832Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 64,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,

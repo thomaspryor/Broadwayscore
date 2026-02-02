@@ -9,17 +9,17 @@
   "showScoreExcerpt": "\"A stunning stage event. Combining a graceful horde of actors, singers and dancers with a stylized world of fantastic puppets and theatrical wonderment.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-lion-king",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 90,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 78,
+    "score": 90,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 85,
+      "high": 95
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The language is clearly positive with 'stunning' and 'theatrical wonderment', but as a single curated excerpt, it may not represent the full review's verdict, so I'm scoring conservatively within the positive range. | GPT-4o: The excerpt uses highly enthusiastic language, describing the production as 'stunning' and full of 'theatrical wonderment', which suggests a strong recommendation. However, due to the single excerpt warning, the confidence is medium. | Gemini: The excerpt uses very positive language (\"stunning,\" \"graceful,\" \"fantastic,\" \"wonderment\") suggesting a positive recommendation. Given the single excerpt warning, I'm scoring in the middle of the positive range.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The language is highly enthusiastic with superlatives like 'stunning' and 'fantastic' combined with words of wonderment, indicating a strong recommendation despite being a single excerpt. | GPT-4o: The excerpt uses highly enthusiastic language such as 'stunning stage event' and 'theatrical wonderment,' indicating a strong recommendation and a must-see verdict. | Gemini: The excerpt uses very positive language such as \"stunning\" and \"theatrical wonderment,\" indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:58:25.273Z",
+    "scoredAt": "2026-02-02T16:33:49.678Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
-    "previousVersion": "3.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 78,
-    "claudeBucket": "Positive",
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "sources": [
     "show-score"

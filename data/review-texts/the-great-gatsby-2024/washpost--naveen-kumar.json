@@ -8,7 +8,7 @@
   "fullText": "A new Broadway musical is all about Jay Gatsby’s decadence NEW YORK — The orgiastic delights of Jay Gatsby’s parties mostly lurk between the lines of F. Scott Fitzgerald’s clipped prose. But there is nothing coy about the extravagant stage musical that opened Thursday at the Broadway Theatre, where a cascade of visual splendors showers the eye like a fire hose. When actual sparks rain down on the first soiree, toss any hankering for subtlety out the window. Directed by Marc Bruni with the broadness of a 10-lane highway, “The Great Gatsby” is a grand, crowd-pleasing spectacle: Tourists, Jazz Age enthusiasts and fans of its vocal-powerhouse stars Eva Noblezada and Jeremy Jordan are already lining up outside the stage door. And there is something to be said for a splashy night out, even if it casts off the author’s intended message. To the likely dismay of your high school English teacher, any critique of material excess, social disparities or the American Dream that has made the book a classroom staple gets stripped here in deference to a swoony and ill-fated love story. This isn’t a high-society tragedy set against the dawn of modernity but a rom-com that nose-dives into overwrought melodrama. Midwestern fish-out-of-water Nick Carraway is a clear-eyed audience surrogate: Amid an assembly of mild caricatures, Noah J. Ricketts gives an admirable and firm-footed performance. The subjects of his narration, prose mostly lifted from Fitzgerald, all seem to know they are part of a Great Big Story, even as they appear to be plucked from a hodgepodge of genres. His cousin Daisy (Noblezada) is fluttering and giggly but vaguely unhappy when we meet her in a lofty drawing room with windows overlooking Long Island Sound (the elaborate, projection-enhanced Art Deco set is by Paul Tate dePoo III). “God, I’ve made it,” Daisy sings, draped in a cropped and diaphanous cotton-candy dress, “I’m so sophisticated.” (The lavish costumes are by Linda Cho.) The lyrics by Nathan Tysen generally relay backstory and circumstance, whether or not they’re tinged with emotion. Daisy’s husband Tom (John Zdrojeski), her ticket to this fabulous life, is the philandering brute she knows him to be. But the couple’s durable if brittle bond, forged in old-money breeding — so integral to the narrative’s structure — is imperceptible from the start. The audience is clearly meant to ask, “Why is she with this guy?” as a precursor to, “Now look at this dreamboat!” That would be the debonair Gatsby (Jordan), sapped of mystery and crooning in wistful high registers about the one who slipped through his fingers but is now within reach. Jason Howland’s music, serviceable Broadway pop without much distinct flavor (not even jazz, that low-hanging fruit), excels at soaring ballads, allowing both Jordan and Noblezada to demonstrate considerable vocal gymnastics. Book writer Kait Kerrigan exalts the central romance into a reunion of true loves torn apart by wartime, like something out of “The Notebook.” Characters and their motivations are fleshed out for the purpose of moralizing infidelities and making their tragic ends feel less random. Gatsby is so smitten he can hardly stand upright; Daisy has a song about longing to remain faithful until she’s drawn over the edge. Tom’s mistress Myrtle (Sara Chase) and her aggrieved husband George (Paul Whitty) are figured as cartoonish avatars of the working class with thick New Yawk accents whose fates are intertwined with the wealthy set by both love and money. There is even a juiced-up romantic plot between Nick and the steely Jordan Baker, played by Samantha Pauly (like Ricketts, another grounding presence). The two skeptics, vaguely queer-coded as in the novel, also can’t help but fall for each other. Sharp. Witty. Thoughtful. This revisionary attempt to turn “The Great Gatsby” into a clown car of passionate entanglements skids off the road when calamity is meant to strike. The second-act twists play out with the frenzy of a nighttime soap by Aaron Spelling, without any of the campy self-awareness. There is no ghastly reckoning with the follies of hedonism, just a rapid succession of abrupt ends. Fitzgerald’s chic but sobering cautionary tale has been bubbling up frequently onstage since entering the public domain in 2021: There was an immersive take in a Manhattan hotel last year, and a pre-Broadway tryout of “Gatsby,” with music by Florence Welch, begins performances in Boston next month. There’s never been a bad time for the author’s sidelong glance at capitalism and the single-minded pursuit of pleasure — provided one isn’t already blinded by them. The Great Gatsby, ongoing at the Broadway Theatre in New York. 2 hours, 30 minutes. broadwaygatsby.com.",
   "bwwExcerpt": "III, offer grandly scaled Art Deco instead. Linda Cho’s costumes are Vegas shiny for the party people and elegant for the monied types. The production wears excess on its sleeveless flapper dresses. Naveen Kumar, The Washington Post: This revisionary attempt to turn “The Great Gatsby” into a clown car of passionate entanglements skids off the road when calamity is meant to strike. The second-act twists play out with the frenzy of a nighttime soap by Aaron Spelling, without any of the campy self-awareness. There is no ghastly reckoning with the follies of hedonism, just a rapid succession of abrupt ends. Chris Jones, The New York Daily News: That said, this new musical, as penned by Kait Kerrigan with music composed by Jason Howland and lyrics by Nathan Dylan, makes you feel very little, except when Howland’s lush melodies are reaching their climax. Even then, the feelings that flow are more admiration for Howland’s craft than the kind of emotion that flows back into an embrace of stor",
   "originalScore": null,
-  "assignedScore": 37,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
@@ -16,51 +16,58 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 37,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 30.5,
-      "high": 43.5
+      "low": 58,
+      "high": 66
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 28,
-      "music": 60,
-      "performances": null,
-      "direction": 33
+      "book": 35,
+      "music": 55,
+      "performances": 75,
+      "direction": 45
     },
     "keyPhrases": [
       {
-        "quote": "makes you feel very little, except when Howland's lush melodies are reaching their climax",
-        "sentiment": "negative",
+        "quote": "grand, crowd-pleasing spectacle: Tourists, Jazz Age enthusiasts and fans of its vocal-powerhouse stars Eva Noblezada and Jeremy Jordan are already lining up outside the stage door",
+        "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "skids off the road when calamity is meant to strike",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "without any of the campy self-awareness",
-        "sentiment": "negative",
+        "quote": "there is something to be said for a splashy night out, even if it casts off the author's intended message",
+        "sentiment": "neutral",
         "strength": 3
+      },
+      {
+        "quote": "This revisionary attempt to turn 'The Great Gatsby' into a clown car of passionate entanglements skids off the road when calamity is meant to strike",
+        "sentiment": "negative",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Critics find the musical emotionally hollow with major structural problems in the second act, though they acknowledge some craft in the music and production design. | GPT-4o-mini: The review expresses significant disappointment with the adaptation and emotional impact, leading to a strong negative recommendation.",
+    "reasoning": "The critic acknowledges the show as a 'grand, crowd-pleasing spectacle' with strong performances but criticizes it for abandoning the source material's themes and turning into melodramatic soap opera, resulting in a qualified mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:53:51.359Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-02T16:26:03.015Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 3496,
+    "outputTokens": 414,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 38,
@@ -78,7 +85,6 @@
   "showScoreExcerpt": "\"...a grand, crowd-pleasing spectacle\"",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 37,
   "isFullReview": true,
@@ -102,5 +108,6 @@
   "fetchTier": 1,
   "textQuality": "full",
   "truncationSignals": [],
-  "textStatus": "complete"
+  "textStatus": "complete",
+  "rescoreCompletedAt": "2026-02-02T16:26:03.015Z"
 }

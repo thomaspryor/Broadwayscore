@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"'Wicked's' at its cleverest with the girl stuff; the streamlining of Maguire’s story – reducing a totalitarian allegory to an animal-rights flap – weakens the narrative logic. Catchy Stephen Schwartz songs compensate for a dreary opening number, but it’s the 'Wicked' witches who really make magic.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/wicked",
   "originalScore": "B",
-  "assignedScore": 77,
+  "assignedScore": 78,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 77,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B rating and concluding praise about the leads making 'magic' indicates a positive recommendation despite noted flaws in narrative logic and opening number. | GPT-4o: The original B rating suggests a positive but not overwhelming recommendation. The review highlights strong performances and catchy songs, despite some narrative weaknesses, indicating a generally positive impression. | Gemini: The critic gives a B grade and highlights the strengths of the performances and songs, while noting some weaknesses in the narrative. This indicates a positive but not rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B rating and overall positive tone recommend the show despite noted flaws in narrative logic and a weak opening number. The critic praises the performances, design, and key songs while acknowledging structural weaknesses. | GPT-4o: The review acknowledges some weaknesses in narrative logic but praises the performances and songs, indicating a positive recommendation overall. The original rating of 'B' aligns with a solid positive score. | Gemini: The critic gives the show a B rating and states that the witches \"really make magic,\" indicating a positive, but not rave, review. The critic also mentions that the streamlining of the story weakens the narrative logic, suggesting reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:43:26.598Z",
+    "scoredAt": "2026-02-02T16:35:01.822Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 71,
-    "previousVersion": "3.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
+    "claudeScore": 76,
     "openaiScore": 79,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

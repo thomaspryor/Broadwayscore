@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"Drury and Peck have crafted something cinematic\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/illinoise",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 65,
   "source": "show-score",
   "dtliThumb": null,
   "scoreSource": "manual-excerpt-positive",
@@ -54,19 +54,19 @@
   "wrongProduction": true,
   "wrongProductionNote": "Off-Broadway/pre-Broadway run at Park Avenue Armory. Reusable if off-Broadway show entry is created.",
   "llmScore": {
-    "score": 75,
+    "score": 65,
     "confidence": "low",
     "range": {
-      "low": 65,
-      "high": 85
+      "low": 55,
+      "high": 75
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 75
+      "direction": 70
     },
     "keyPhrases": [
       {
@@ -75,7 +75,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "The phrase 'crafted something cinematic' suggests skillful artistic achievement in direction/production, indicating a positive recommendation despite the extremely limited text.",
+    "reasoning": "Single positive phrase about craftsmanship suggests appreciation but lacks enthusiasm or clear recommendation strength.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -85,16 +85,16 @@
   },
   "llmMetadata": {
     "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:42:48.274Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T16:25:47.164Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 2315,
-    "outputTokens": 236,
+    "outputTokens": 227,
     "textSource": {
       "type": "excerpt",
       "status": "curated",
       "field": "showScoreExcerpt",
       "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
+      "reasoning": "Skipped fullText (wrongProduction flag). Curated Show Score excerpt"
     }
   },
   "showNotMentioned": true

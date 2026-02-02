@@ -8,19 +8,19 @@
   "fullText": "NYC Events, Restaurants, Music, & Nightlife\n\nReview: Harry Potter and the Cursed Child Casts a Winning Spell\n December 8, 2021, 12:38.10 am ET\n\nTwitter\nX\nPinterest\nThreads\nSnapchat\nWhatsApp\nMessage\nEmail\n\n \n Photo: Matthew Murphy\n\nBy Brian Scott LiptonYes, Virginia, there’s finally some real magic back on Broadway! Fear not, even in its “slimmed-down” one-part version, Jack Thorne’s “Harry Potter and the Cursed Child,” a continuation of J.K. Rowling’s multi-book saga, still has more than enough swooshing capes, waving wands and pyrotechnic tricks to keep both young ones and older viewers visually entertained. More importantly, though, the now 3 ½-hour play at the gorgeous Lyric Theatre has the sort of emotional heft missing from too many stage dramas. Read Full Review\n\nCititour.com is your guide to interesting places throughout New York City. Use our listings to locate restaurants, exciting clubs and nightlife, bars and pubs, shopping destinations, landmarks and parks; and shows, concerts, and other events too.",
   "showScoreExcerpt": "\"A breathtaking production...The illusions are unlike anything seen on Broadway before.\"",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 79,
   "source": "show-score",
   "sourceMethod": "scrapingbee",
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 89,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 74,
+      "high": 84
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The excerpt describes the production as 'breathtaking' and claims the illusions are unprecedented on Broadway, indicating strong enthusiasm and recommendation. | GPT-4o: The review uses strong, enthusiastic language such as 'breathtaking' and 'unlike anything seen on Broadway before,' indicating a highly positive assessment of the production. | Gemini: The review excerpt describes the production as \"breathtaking\" and praises the illusions, indicating a positive recommendation, although the full context is missing.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic enthusiastically recommends the show, calling it 'breathtaking' with 'real magic' and praising both its visual spectacle and emotional depth, though stops short of calling it a masterpiece. | GPT-4o: The review uses highly positive language, describing the show as having 'real magic' and 'emotional heft,' and praises the production as 'breathtaking' with 'illusions unlike anything seen on Broadway before.' This indicates a strong recommendation. | Gemini: The review explicitly states the show is visually entertaining and has emotional heft, indicating a positive recommendation. The additional context further emphasizes the breathtaking production and illusions.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,27 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:59:09.696Z",
+    "scoredAt": "2026-02-02T16:27:28.903Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 89,
-    "previousVersion": "3.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 78,
     "openaiScore": 90,
-    "geminiScore": 75,
-    "claudeBucket": "Rave",
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/harry-potter/cititour--brian-scott-lipton_2026-02-02.html",
   "textFetchedAt": "2026-02-02T15:23:42.036Z",

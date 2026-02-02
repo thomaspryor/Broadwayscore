@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Julie Taymor has created a theatrical experience that is at once primal and sophisticated, managing to honor both the Disney source material and the essentials of live theater.",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 95,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "Julie Taymor has created a theatrical experience that is at once primal and sophisticated, managing to honor both the Disney source material and the essentials of live theater.",
   "needsScoring": true,
   "llmScore": {
-    "score": 94,
-    "confidence": "high",
+    "score": 95,
+    "confidence": "medium",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 90,
+      "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'a marvel' and 'unrivaled theatrical achievement' while predicting it will 'run for years' and praising every aspect from performances to staging to music. | GPT-4o: The review is overwhelmingly positive, praising the production's visual artistry, storytelling, music, and performances. It describes the show as a theatrical achievement and a box office bonanza likely to run for years, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"marvel\", \"theatrical achievement unrivaled\", and stating the show \"improves upon nearly every aspect\" of the film. The critic clearly recommends seeing the show, even calling it a victory for Taymor.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'a marvel' and 'unrivaled,' praising virtually every aspect from performances to design, and explicitly states it will 'enchant children and adults in equal measure' while only mentioning minor quibbles that 'only a jackal would whine about.' | GPT-4o: The review is overwhelmingly positive, praising the production's visual artistry, storytelling, and music. It describes the show as a theatrical achievement and a victory for Taymor, with only minor criticisms that do not detract from the overall enthusiastic recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"marvel\", \"theatrical achievement unrivaled\", and stating it improves upon the original film. Despite minor flaws, the overall tone is extremely enthusiastic, meriting a Rave score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,21 +43,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:25:44.341Z",
+    "scoredAt": "2026-02-02T16:34:37.477Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 94,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": 95,
+    "openaiScore": 98,
     "geminiScore": 95,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

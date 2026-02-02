@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The word 'triumph' is a strong positive indicator typical of rave reviews, though the single excerpt warning requires conservative scoring within the rave range. | GPT-4o: The phrase 'a triumph of theatrical imagination' suggests a highly positive assessment, indicating a strong recommendation to see the show. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Rave range. | Gemini: The phrase \"triumph of theatrical imagination\" strongly indicates a rave review. The reinvention of a classic also suggests a high level of creativity and success.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The word 'triumph' signals strong praise and enthusiastic recommendation, placing this clearly in rave territory despite being a single excerpt. | GPT-4o: The excerpt describes the production as 'a triumph of theatrical imagination,' indicating a highly enthusiastic and positive assessment. This suggests a strong recommendation to see the show. | Gemini: The phrase \"A triumph of theatrical imagination\" clearly indicates a rave review, suggesting the show is exceptional and highly recommended.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,12 +40,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:58:03.167Z",
+    "scoredAt": "2026-02-02T16:33:28.026Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 88,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 87,

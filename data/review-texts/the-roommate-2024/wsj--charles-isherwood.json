@@ -8,7 +8,7 @@
   "bwwExcerpt": "The estimable Mr. O’Brien, who won a well-deserved Lifetime Achievement Tony Award just this year, calibrates the fluctuations in the women’s relationship with subtlety and grace, allowing these two superb actors to navigate the changes in the play’s tone and rhythm at their own pace, on a handsome set by Bob Crowley that hints at both possibility—those rich blue skies—and perhaps vulnerability.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
   "showScoreExcerpt": "\"...Jen Silverman’s funny, moving Broadway play\"",
@@ -31,51 +31,48 @@
     "Word count too low: 88 (min: 300)"
   ],
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "low",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 70,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": 78,
       "music": null,
-      "performances": 86,
+      "performances": null,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "find a lovely symbiosis, both for their characters and themselves",
+        "quote": "funny, moving Broadway play",
         "sentiment": "positive",
         "strength": 4
-      },
-      {
-        "quote": "bright, funny and delicately moving comedy",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "both the rich rewards and the perils of loneliness that it may bring",
-        "sentiment": "positive",
-        "strength": 3
       }
     ],
-    "reasoning": "Claude: The review uses consistently positive language ('lovely symbiosis', 'bright, funny and delicately moving') to describe both the performances and the play itself, indicating a clear recommendation despite being only a brief excerpt. | GPT-4o-mini: The review highlights strong performances and a positive overall tone, indicating a clear recommendation to see the show.",
+    "reasoning": "The critic describes the play as both 'funny' and 'moving', indicating positive sentiment, but the extremely brief excerpt provides insufficient context for higher confidence.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:36:52.971Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-02T16:26:16.975Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 2314,
+    "outputTokens": 237,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 78,

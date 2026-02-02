@@ -16,24 +16,24 @@
   "bwwExcerpt": "\"Hadestown\" triggered a lot of buzz when this wholly American show (which came to the stage by way of a concept album) premiered at Off Broadway's New York Theatre Workshop in 2016. Arriving on Broadway with its earthly delights more or less intact, this perfectly heavenly musical - with book, music and lyrics by Anaïs Mitchell - should stick around for a while.",
   "llmScore": {
     "score": 85,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
-      "low": 77,
-      "high": 93
+      "low": 82,
+      "high": 88
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
-      "music": 85,
-      "performances": 89,
+      "book": 82,
+      "music": 88,
+      "performances": 85,
       "direction": 83
     },
     "keyPhrases": [
       {
-        "quote": "this perfectly heavenly musical should stick around for a while",
+        "quote": "this perfectly heavenly musical — with book, music and lyrics by Anaïs Mitchell — should stick around for a while",
         "sentiment": "positive",
-        "strength": 4
+        "strength": 5
       },
       {
         "quote": "director Rachel Chavkin has done a super job of adapting this pretty thing for a proscenium stage",
@@ -41,25 +41,32 @@
         "strength": 4
       },
       {
-        "quote": "What it loses scenically it makes up for in other ways",
-        "sentiment": "neutral",
-        "strength": 2
+        "quote": "one memorable vision in a production full of striking images",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Claude: Clear positive recommendation with praise for adaptation, performances, and music, though acknowledges some scenic limitations from the venue change. | GPT-4o-mini: The review expresses strong enthusiasm for the production, praising its performances and direction, while acknowledging some minor losses in adaptation, leading to a clear recommendation.",
+    "reasoning": "The review is consistently enthusiastic with phrases like 'perfectly heavenly musical' and 'should stick around for a while,' praising virtually every element from performances to production design with only minor staging caveats.",
     "flags": {
       "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:55:25.769Z",
-    "promptVersion": "3.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-02T16:25:04.304Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 3149,
+    "outputTokens": 369,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 82,

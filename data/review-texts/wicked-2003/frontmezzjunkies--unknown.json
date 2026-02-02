@@ -21,7 +21,7 @@
   ],
   "llmScore": {
     "score": 89,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 84,
       "high": 94
@@ -35,7 +35,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic explicitly states they are 'in love with this show' and praises both the message and relevance, indicating strong enthusiasm despite only having a single excerpt available. | Gemini: The critic states they are \"in love with this show\" and its message, indicating a very strong positive recommendation. The show's relevance is also highlighted, further supporting a 'Rave' classification.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic explicitly states they are 'in love with this show' and praises both the production and its message, indicating strong enthusiasm and recommendation. | GPT-4o: The critic expresses strong affection for the show and its message, indicating a highly positive recommendation. | Gemini: The reviewer expresses strong positive feelings for the show, its message, and its relevance, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,26 +45,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:45:10.762Z",
+    "scoredAt": "2026-02-02T16:35:11.789Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 90,
-    "previousVersion": "5.0.0"
+    "previousScore": 89,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": null,
-    "geminiScore": 90,
+    "openaiScore": 90,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 2,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available"

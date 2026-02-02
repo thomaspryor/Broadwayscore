@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "SHE'S flying! She's actually flying!",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": "Down",
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "There are indeed wonders to behold in 'Wicked,' the new musical that opened last night at the Gershwin Theater. There are also enough saggy stretches, moral miscalculations and awkward plot convolutions to kill a lesser species of musical entertainment.",
   "llmScore": {
-    "score": 78,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Brantley gives a clearly positive assessment, praising the production's 'alarming vitality,' the cast's performances, and the play's ability to feel 'remarkably close to everyday life.' While he notes some structural issues in the ending, his overall recommendation is positive. | Gemini: The review is generally positive, highlighting the play's vitality and thought-provoking nature, but also notes some flaws like the tidying up in the last 10 minutes. The overall assessment leans towards a recommendation, albeit with reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Brantley finds genuine merit in the production beyond initial expectations, praising the ensemble performances, direction, and the play's ability to capture post-9/11 anxieties, though he notes some issues with the ending and character balance. | GPT-4o: The review praises the play's ability to blend tragedy and humor, its strong performances, and its insightful commentary on post-9/11 life, indicating a strong recommendation. | Gemini: The review is largely positive, highlighting the play's vitality and the cast's performances. While it notes some flaws, it ultimately recommends seeing the show for its unique and thought-provoking experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,26 +42,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:44:16.464Z",
+    "scoredAt": "2026-02-02T16:35:34.611Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
+    "openaiScore": 81,
     "geminiScore": 78,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "previousUrl": "https://www.nytimes.com/2003/10/31/theater/theater-review-there-s-a-girl-in-green-and-ooh-what-a-ceiling.html",
   "urlDiscoveredAt": "2026-02-01T14:04:38.023Z",

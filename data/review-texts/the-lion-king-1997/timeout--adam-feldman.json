@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The language is highly celebratory with terms like 'amazing menagerie', 'audacious staging', and 'pride of Broadway', indicating strong enthusiasm despite limited text available. | GPT-4o: The review uses highly positive language, describing the staging as 'amazing' and 'audacious', and elevates the production to 'the pride of Broadway', indicating a strong recommendation. | Gemini: The review excerpt praises the staging and overall production, indicating a positive recommendation. The language used suggests an enjoyable experience.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The language is highly celebratory with words like 'amazing,' 'audacious,' and 'pride of Broadway,' indicating strong enthusiasm for the production despite limited excerpt availability. | GPT-4o: The review uses highly positive language, describing the staging as 'amazing' and 'audacious', and elevates the production to 'the pride of Broadway', indicating a strong recommendation. | Gemini: The review excerpt praises the staging and overall impact of the production, suggesting a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,21 +37,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:59:11.321Z",
+    "scoredAt": "2026-02-02T16:34:23.730Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 89,
-    "previousVersion": "3.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 90,
-    "geminiScore": 78,
+    "geminiScore": 80,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

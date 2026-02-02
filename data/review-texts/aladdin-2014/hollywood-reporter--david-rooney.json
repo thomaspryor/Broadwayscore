@@ -7,17 +7,17 @@
   "publishDate": "March 20, 2014",
   "showScoreExcerpt": "\"While it doesn't rival the imagination or innovation of \"The Lion King,\" the show's ebullient comic spirit should make it a popular hit. It's not the most sophisticated entertainment, but the target demographic won't mind at all.\"",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 78,
   "source": "dtli",
   "needsFullText": false,
   "urlUpdated": "2026-01-23T05:30:05.962Z",
   "fetchedAt": "2026-01-23T05:23:06.420Z",
   "llmScore": {
-    "score": 77,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite acknowledging it's not the most sophisticated entertainment and lacks some Disney magic, the critic clearly recommends it as enjoyable family fare with strong performances, particularly praising Iglehart's energetic Genie and the spectacular production numbers. | GPT-4o: The review highlights the show's comic spirit and appeal to its target demographic, despite noting it lacks sophistication and emotional depth. The critic suggests it will be a popular hit, indicating a positive recommendation with some reservations. | Gemini: Despite some reservations about sentimentality and character depth, the review suggests the show is enjoyable and will be a hit, especially with families. The aggregator excerpts also point to a positive reception.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite acknowledging it's not sophisticated entertainment, the critic clearly recommends the show as 'sweet, silly fun' that will be a 'popular hit' and 'family-friendly hit.' The review praises performances, staging, and entertainment value while noting limitations. | GPT-4o: The review acknowledges that 'Aladdin' may not be the most sophisticated entertainment, but highlights its appeal as a family-friendly hit with 'sweet, silly fun.' The critic notes the show's strengths in its comic spirit and production numbers, suggesting a positive recommendation despite some reservations about its lack of sophistication and emotional depth. | Gemini: Despite some reservations about sentimentality and character depth, the review suggests the show is enjoyable and a family-friendly hit, indicating a positive recommendation. The aggregator excerpts also point towards a positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:21:23.350Z",
+    "scoredAt": "2026-02-02T16:37:15.605Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 77,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
+    "claudeScore": 76,
     "openaiScore": 78,
     "geminiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic's own 88 rating places this firmly in Rave territory, and the language ('smart', 'resilient', 'does honor') is clearly positive without any reservations expressed. | GPT-4o: The critic's original rating of 88 aligns with a 'Rave' classification, and the review text is highly positive, emphasizing the show's intelligence and respect for its source material. | Gemini: The review is positive, highlighting the show's intelligence and resilience. The critic's original rating of 88 also indicates a positive assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic's own 88 rating places this firmly in Rave territory, and the language 'smart, resilient show that does honor' conveys strong praise and clear recommendation. | GPT-4o: The critic's original rating of 88 and the positive language used in the review indicate a strong recommendation, fitting the Rave bucket. | Gemini: The review is overwhelmingly positive, highlighting the show's intelligence and resilience. The critic's own rating of 88 supports a score in the higher end of the Positive bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,21 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:43:30.451Z",
+    "scoredAt": "2026-02-02T16:35:04.822Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 88,
-    "geminiScore": 80,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

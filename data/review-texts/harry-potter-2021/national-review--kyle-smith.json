@@ -7,17 +7,17 @@
   "publishDate": "April 27, 2018",
   "showScoreExcerpt": "\"'Cursed Child' has broken the blood-brain barrier and created an unprecedented extravaganza out of a so-called straight play. It's like a colossal magic show with a story wrapped around it...The play is a marvel...The character development is thin, the dialogue bland...That isn't the point, though...'The Cursed Child' is a gargantuan entertainment extravaganza...It's not likely to be a gateway to Shakespeare or Ibsen for your children, but it'll surely captivate them.\"",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 81,
   "source": "show-score",
   "sourceMethod": "playwright",
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 76,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite acknowledging thin character development and bland dialogue, the critic emphasizes the show's marvel-like spectacle and calls it captivating entertainment, indicating a clear recommendation based on its theatrical merits. | GPT-4o: The review describes the play as a 'marvel' and an 'entertainment extravaganza,' suggesting a positive recommendation despite noting thin character development and bland dialogue. The emphasis on spectacle and entertainment value supports a positive classification. | Gemini: The review acknowledges flaws in character development and dialogue but ultimately calls the play a \"marvel\" and a \"gargantuan entertainment extravaganza,\" suggesting a positive but not rave recommendation. The caveat about Shakespeare and Ibsen reinforces the 'with reservations' aspect.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite noting thin character development and bland dialogue, the critic clearly positions these as secondary to the show's spectacular entertainment value, calling it a 'marvel' and 'unprecedented extravaganza' that will 'surely captivate' audiences. | GPT-4o: Despite noting thin character development and bland dialogue, the review praises the production as a 'marvel' and 'gargantuan entertainment extravaganza,' indicating a strong positive recommendation. | Gemini: The review calls the play a \"marvel\" and an \"entertainment extravaganza,\" but notes thin character development and bland dialogue, suggesting a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:02:03.760Z",
+    "scoredAt": "2026-02-02T16:29:13.327Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
-    "previousVersion": "3.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

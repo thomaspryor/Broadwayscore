@@ -8,17 +8,17 @@
   "fullText": null,
   "showScoreExcerpt": "\"Julie Taymor's staging is nothing short of miraculous...\"",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 87,
   "source": "show-score",
   "designation": null,
   "sourceMethod": "showscore",
   "scoreSource": "manual-override",
   "llmScore": {
-    "score": 89,
+    "score": 87,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 82,
+      "high": 92
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The phrase 'nothing short of miraculous' is extremely strong praise for the staging, indicating a rave review. However, confidence is medium due to having only one excerpt that could be cherry-picked from a more mixed review. | GPT-4o: The phrase 'nothing short of miraculous' suggests a highly positive view of the staging, indicating a strong recommendation. However, due to the single excerpt warning, the confidence is medium as the full context of the review is not available. | Gemini: The single quote praises the staging as \"miraculous,\" which suggests a positive experience, but without more context, it's difficult to gauge the overall recommendation strength. I'm placing it in the positive bucket with a middling score due to the limited information.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The phrase 'nothing short of miraculous' is extremely strong praise for the staging, indicating high enthusiasm, though limited to one excerpt reduces confidence in the overall review verdict. | GPT-4o: The excerpt uses strong, positive language to describe the staging as 'nothing short of miraculous,' suggesting a highly enthusiastic recommendation. However, due to the single excerpt warning, the confidence is medium. | Gemini: The single quote available is extremely positive, indicating a strong recommendation. Given the limited text, I'm placing it at the higher end of the 'Positive' bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:58:21.072Z",
+    "scoredAt": "2026-02-02T16:33:46.064Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 45,
-    "previousVersion": "5.0.0"
+    "previousScore": 89,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 90,
-    "geminiScore": 75,
+    "openaiScore": 86,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -7,15 +7,15 @@
   "publishDate": "June 18, 2014",
   "dtliExcerpt": "In the opening number of The Lion King, director Julie Taymor created one of the most transporting visions ever seen in a Broadway show. A procession of African beasts of all shapes and sizes—flocks of birds, leaping gazelles, and towering giraffes—moves through the aisles, all interpreted via gorgeous, minutely detailed costumes and puppetry. This long-running New York City musical is based on the 1994 Disney animated flick about a Hamletesque lion who must win back his kingdom from the clutches of his evil uncle. Featuring a catchy score by Elton John and Tim Rice, Taymor’s adaptation is infused with additional spectacle and songs inspired by African culture.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 80,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite the truncated text warning, the review contains clear praise throughout, calling it 'one of the best Broadway shows' with 'stunning celebration of color and movement' and describing Taymor's staging as 'audacious' and transformative. | GPT-4o: The review is overwhelmingly positive, highlighting the production's stunning visuals, innovative staging, and cultural celebration. The language used is enthusiastic and positions the show as a transformative experience, making it a must-see. | Gemini: Despite the truncated text, the review is overwhelmingly positive, praising the staging, music, and overall experience. The phrase 'one of the best Broadway shows for kids' and the description of the production as a 'stunning celebration' indicate a recommendation, though the truncation prevents a higher score.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite truncated text, the review is clearly positive throughout, praising Taymor's direction as creating 'one of the best Broadway shows' with 'stunning celebration of color and movement' and calling it audacious staging that elevates the material. | GPT-4o: The review is highly positive, praising the production's imaginative staging, stunning visuals, and cultural celebration. The critic's language is enthusiastic and highlights the show's long-running success and appeal to audiences of all ages. | Gemini: Despite the truncated text, the review is overwhelmingly positive, praising the staging, music, and overall spectacle. The aggregator excerpts confirm a positive reception, and the available text strongly suggests a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,21 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:41:37.864Z",
+    "scoredAt": "2026-02-02T16:34:27.804Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
+    "previousScore": 80,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 95,
-    "geminiScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 17,
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

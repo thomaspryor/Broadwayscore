@@ -7,18 +7,18 @@
   "publishDate": "October 31, 2003",
   "showScoreExcerpt": "\"The best moments in 'Wicked' come when the stage is least crowded. I'm done niggling. 'Wicked' is funny and touching and full of beans (not to mention child-friendly). It'll make a great movie one of these days, and it's going to make Kristin Chenoweth a star right this minute. Go.\"",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 82,
   "source": "show-score",
   "needsFullText": true,
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 78,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite opening criticisms about crowded staging, the critic concludes with clear positive language and an explicit 'Go' recommendation, indicating overall endorsement with some reservations. | GPT-4o: The review highlights positive aspects such as humor, emotional impact, and star-making performances, concluding with a clear recommendation to see the show. However, the mention of 'best moments' and 'niggling' suggests some reservations, leading to a mid-range positive score. | Gemini: The review concludes with a clear recommendation to \"Go,\" indicating a positive overall assessment despite any earlier \"niggling.\"",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite opening with minor criticism, the critic explicitly stops 'niggling' and delivers strong praise ('funny and touching and full of beans') followed by the clear imperative 'Go.' - a direct recommendation to see the show. | GPT-4o: The critic highlights the show's humor, emotional impact, and broad appeal, concluding with an enthusiastic 'Go,' indicating a strong recommendation. | Gemini: The review ends with a strong, positive recommendation to 'Go,' and describes the show as 'funny and touching,' indicating a positive experience despite any earlier reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:45:41.545Z",
+    "scoredAt": "2026-02-02T16:36:28.417Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 84,
-    "previousVersion": "3.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 79,
-    "geminiScore": 78,
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

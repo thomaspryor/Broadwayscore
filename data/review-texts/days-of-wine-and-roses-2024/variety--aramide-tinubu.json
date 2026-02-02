@@ -73,9 +73,15 @@
   "previousLlmScore": 79,
   "textWordCount": 873,
   "archivePath": "data/archives/reviews/days-of-wine-and-roses-2024/variety--aramide-tinubu_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T04:48:24.901Z",
+  "textFetchedAt": "2026-02-02T16:05:09.535Z",
   "fetchMethod": "browserbase",
   "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
     {
       "tier": 1,
       "method": "playwright",

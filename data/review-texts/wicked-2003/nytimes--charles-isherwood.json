@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"In retrospect, Wicked seems an early sign of the cultural clout which is to say buying power of a generation of girls (and now women) whose desire to see, read, and sing along with stories about female empowerment has become a snowballing trend.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/wicked",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 78,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 75,
+    "score": 78,
     "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges initial mixed reviews but emphasizes the show's remarkable staying power and successful casting strategy, presenting it as a sustained achievement worth experiencing. | GPT-4o: The review acknowledges the show's continued success and careful replication of its original appeal, suggesting a positive experience for audiences. However, the mention of mixed to negative initial reviews and the focus on replication rather than innovation introduces some reservations. | Gemini: The review indicates that the show is still enjoyable and well-produced, even if it doesn't reach the heights of the original cast. The producers have maintained the quality, making it worth seeing.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the production's consistency and quality of performances over its decade-long run, highlighting strong vocal performances and fresh touches from the current cast, though the tone is more appreciative than enthusiastic. | GPT-4o: The review highlights the show's continued success and praises the performances of the current cast, indicating a strong recommendation to see the production. | Gemini: The review indicates that the current production of Wicked is still enjoyable and well-executed, even if it's largely a replication of the original. The critic praises the performers and the overall experience, suggesting a positive, though not overwhelmingly enthusiastic, recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:44:19.763Z",
+    "scoredAt": "2026-02-02T16:35:38.391Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 78,
+    "claudeScore": 76,
+    "openaiScore": 82,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

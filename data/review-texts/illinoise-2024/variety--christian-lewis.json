@@ -14,18 +14,18 @@
   "dtliThumb": "Up",
   "llmScore": {
     "score": 85,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 82,
+      "high": 88
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": 80,
-      "performances": null,
-      "direction": 85
+      "book": 78,
+      "music": 88,
+      "performances": 87,
+      "direction": 83
     },
     "keyPhrases": [
       {
@@ -34,30 +34,30 @@
         "strength": 5
       },
       {
-        "quote": "often stirring and fascinating to listen to",
+        "quote": "Nothing about this is typical Broadway fare, but that's exactly what makes it so worth seeing",
         "sentiment": "positive",
         "strength": 4
       },
       {
-        "quote": "not an inherently logical choice for a narrative work of art",
-        "sentiment": "negative",
-        "strength": 3
+        "quote": "Despite some qualms with the occasional literalness of the choreography, Peck's work here is undeniably gorgeous and flawlessly executed",
+        "sentiment": "positive",
+        "strength": 4
       }
     ],
-    "reasoning": "Despite acknowledging the source material's narrative challenges, the critic declares this production will be 'indelibly remembered as one of the most singular productions in recent Broadway history,' which signals strong admiration and recommendation.",
+    "reasoning": "The critic calls it 'one of the most singular productions in recent Broadway history' and explicitly states 'that's exactly what makes it so worth seeing,' despite acknowledging some choreographic literalness issues.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": true
+      "comparesToPrevious": true,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:20:15.539Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2464,
-    "outputTokens": 338,
+    "scoredAt": "2026-02-02T16:25:42.679Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 4732,
+    "outputTokens": 370,
     "textSource": {
       "type": "fullText",
       "status": "complete",

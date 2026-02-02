@@ -8,18 +8,18 @@
   "fullText": null,
   "showScoreExcerpt": "\"The most visually stunning Broadway musical in years...\"",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 82,
   "source": "show-score",
   "designation": null,
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 77,
-    "confidence": "medium",
+    "score": 82,
+    "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Single excerpt with strong positive language about visual aspects, but lack of full review context and potential cherry-picking requires conservative scoring within positive range. | GPT-4o: The phrase 'most visually stunning Broadway musical in years' suggests a highly positive view of the production's visual elements, indicating a strong recommendation. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Rave range. | Gemini: The quote is positive, praising the visual aspects of the musical. However, due to the limited text and single excerpt, a score in the middle of the positive range is appropriate.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The superlative language 'most visually stunning...in years' indicates strong praise, but with only one excerpt available, confidence is tempered despite the clearly positive tone. | GPT-4o: The excerpt provides a strong positive statement about the visual elements of the musical, suggesting a high level of recommendation. However, due to the single excerpt warning, the confidence is medium. | Gemini: The provided quote is highly positive, praising the visual aspects of the musical. Given the single excerpt warning, I am placing it at the higher end of the positive bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,27 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:58:57.001Z",
+    "scoredAt": "2026-02-02T16:34:10.447Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "3.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 88,
-    "geminiScore": 78,
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

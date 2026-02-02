@@ -7,7 +7,7 @@
   "publishDate": "October 31, 2003",
   "showScoreExcerpt": "\"To begin with, it looks like a million dollars - or, to be more precise, like every dime of the $14 million that has been spent on it. Dare we say it? Here's a Broadway show where the ticket price doesn't seem inflated. You will actually feel that you got $100 worth of entertainment - and then some... The show and its many parts do coalesce to create a believable, and extremely thought-provoking, alternate universe, with music, sets, costumes and performances that simply take your breath away.\"",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 83,
   "source": "show-score",
   "needsFullText": true,
   "sourceMethod": "playwright",
@@ -75,13 +75,13 @@
   "contentTierReason": "LoHud weather/fire news article instead of review",
   "isFullReview": false,
   "llmScore": {
-    "score": 89,
+    "score": 83,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 78,
+      "high": 88
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -90,7 +90,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language like 'take your breath away' and explicitly states the high ticket price is justified, indicating strong enthusiasm for the production. | GPT-4o: The review excerpt is highly positive, praising the production's value and impact. The language used suggests a strong recommendation, though the single excerpt warning necessitates a conservative score within the 'Rave' bucket. | Gemini: The review states that the show is worth the ticket price and provides a thought-provoking experience, indicating a positive recommendation. Due to the limited text, the score is placed in the middle of the 'Positive' bucket.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong positive language praising production values, explicit statement about ticket value justification, and phrases like 'take your breath away' indicate enthusiastic recommendation despite being a single excerpt. | GPT-4o: The review excerpt is overwhelmingly positive, emphasizing the high production value and the immersive experience provided by the show. The critic's language suggests a strong recommendation, indicating a 'must-see' status. | Gemini: The review excerpt is overwhelmingly positive, praising the production value, entertainment value, and overall impact of the show. The phrase 'take your breath away' suggests a very strong positive reaction.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -100,17 +100,18 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:26:56.404Z",
+    "scoredAt": "2026-02-02T16:35:50.942Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 81
+    "previousScore": 89,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "geminiScore": 80,
-    "claudeBucket": "Rave",
+    "claudeScore": 83,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "scoreDelta": 10,
@@ -119,6 +120,6 @@
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "modelAgreement": "2/3 models agree: Positive"
   }
 }

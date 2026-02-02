@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite single excerpt warning, the explicit 'must-see' language and praise for 'brilliant' direction with 'It's unlike anything seen on Broadway before' clearly indicates strong recommendation. | GPT-4o: The review uses strong, enthusiastic language, calling the play 'a must-see' and highlighting its uniqueness on Broadway, which indicates a rave recommendation. | Gemini: The review uses the phrase \"must-see,\" which indicates a positive recommendation. However, the caveat about \"Muggles everywhere\" suggests a specific audience, indicating a reservation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The explicit 'must-see' language combined with praise for 'brilliant, creative direction' and 'unlike anything seen on Broadway before' clearly indicates an enthusiastic recommendation. | GPT-4o: The review excerpt describes the play as a 'must-see' and highlights the 'brilliant, creative direction' and 'inventive and exciting stage magic,' indicating a strong recommendation. | Gemini: The review excerpt uses the phrase \"must-see\" and praises the direction and stage design, indicating a strong positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:29:25.078Z",
+    "scoredAt": "2026-02-02T16:29:52.705Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
+    "previousScore": 89,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 90,
-    "geminiScore": 78,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

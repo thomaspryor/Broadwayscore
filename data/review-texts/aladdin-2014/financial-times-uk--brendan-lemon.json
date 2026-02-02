@@ -8,7 +8,7 @@
   "fullText": "Simply sign up to the Life & Arts myFT Digest -- delivered directly to your inbox. At last: a Disney tune that has wiped Frozen ‘s “Let It Go” from my brain. This magic feat required a D-day array of forces: composer Alan Menken, lyricists Howard Ashman and Tim Rice, book writer Chad Beguelin, and director/choreographer Casey Nicholaw, not to mention most of the cast of this group’s entertaining, though not especially memorable new Broadway creation: Aladdin, based on the hit 1992 animated film. If the production, with its sequin-heavy costumes and big-chested chorus members (of both sexes), seems stuck in the 1990s, at least the songs weren’t plucked from a book of pop standards. The tune in question is “Friend Like Me”, and it arrives at the end of act one. By then, Aladdin has decided to ditch his loveable-rogue ways to win the heart of Jasmine, the princess whose stern father will only let her marry another royal. Aladdin has accepted the help of Jafar, the sultan’s evil vizier, and sidekick Iago. Little do they know that, when they leave Aladdin for dead in the Cave of Wonders, the young hero will free a genie from the magic lamp, and the genie will grant the wish of all fervent theatregoers: he will stop the show. The crowd-pleasing “Friend Like Me” is the kind of boppy ditty that Menken and Ashman perfected in Beauty and the Beast, whose crowd scenes provide a template for the bazaar here. Bob Crowley, Gregg Barnes, and Natasha Katz are responsible for the orientalist-fantasy visuals, which include an ooh-inducing magic carpet. Neither does the “Friend Like Me”’s excitement stem from choreography: Nicholaw, who staged The Book of Mormon, is adept at keeping bodies in motion but the movement itself is Broadway-generic. No, “Friend Like Me” achieves delirium owing to the performance of James Monroe Iglehart as the genie. Unlike Adam Jacobs, the suave and effortless portrayer of Aladdin, or Courtney Reed, the sweet Jasmine, Iglehart is James Brown tinged with RuPaul. The flop sweat glistens. Iglehart’s camp line readings are more lawdy-mama than those of Robin Williams, who voiced the genie in the film, but his heart beats back to an earlier era: classic musical comedy. After a string of recent less-than-smashing Broadway adaptations, Disney wanted something it could market not only to the parents-with-children crowd but also to date-night couples looking for a few laughs. Wish granted.",
   "showScoreExcerpt": "\"Disney wanted something it could market not only to the parents-with-children crowd but also to date-night couples looking for a few laughs. Wish granted.\"",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 77,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textFetchedAt": "2026-01-25T13:40:09.916Z",
@@ -18,11 +18,11 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 76,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite noting flaws like being 'stuck in the 1990s' and 'Broadway-generic' choreography, the critic calls it 'entertaining' and praises standout performances, particularly Iglehart's show-stopping turn, concluding positively that Disney's wish for broad appeal was 'granted.' | Gemini: The review states the show is 'entertaining' and that Disney got what they wanted. However, it also says it's 'not especially memorable' and 'Broadway-generic', indicating reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic finds the show entertaining and praises key elements like Iglehart's show-stopping performance, while acknowledging it's not groundbreaking. The positive verdict comes through despite some reservations about memorability. | GPT-4o: The review acknowledges the show as entertaining and highlights standout performances, particularly by James Monroe Iglehart. However, it also notes that the production is not especially memorable, suggesting some reservations. | Gemini: The review is generally positive, highlighting the enjoyable aspects of the show, particularly the song \"Friend Like Me\" and James Monroe Iglehart's performance. However, it also notes that the production is not particularly memorable and somewhat generic, indicating a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,26 +43,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:05:17.412Z",
+    "scoredAt": "2026-02-02T16:37:07.317Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": null,
-    "geminiScore": 75,
+    "openaiScore": 78,
+    "geminiScore": 77,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 74,

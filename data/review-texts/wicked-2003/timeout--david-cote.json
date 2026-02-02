@@ -9,7 +9,7 @@
   "showScoreUrl": "https://www.show-score.com/broadway-shows/wicked",
   "originalScore": null,
   "_originalScoreRemoved": "Was '1/5' - incorrect, scraped wrong data. Excerpt says 'outstanding elements'.",
-  "assignedScore": 75,
+  "assignedScore": 82,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/wicked-2003/time-out-new-york--david-cote_2026-01-27.html",
@@ -34,11 +34,11 @@
   "scoreSource": "star-icon",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 75,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -49,7 +49,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'outstanding elements' suggests positive assessment, but with only one curated excerpt available, the full verdict remains unclear and may not represent the complete review sentiment. | GPT-4o: The excerpt highlights 'a combination of outstanding elements,' suggesting a positive view of the production. However, due to the single excerpt warning and lack of a full review, the score is conservatively placed in the middle of the Positive range. | Gemini: The review excerpt indicates a positive assessment, highlighting 'outstanding elements.' While limited, the phrase suggests a recommendation, placing it in the 'Positive' bucket.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'outstanding elements' is clearly positive praise, indicating the critic found multiple aspects of the production to be excellent, which suggests a strong positive recommendation. | GPT-4o: The excerpt highlights 'a combination of outstanding elements,' suggesting strong praise. The lack of full text and single excerpt warning introduce some uncertainty, but the positive language justifies a score on the higher end of the Positive range. | Gemini: The phrase \"outstanding elements\" suggests a strong positive assessment, placing it in the upper range of the Positive bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -59,21 +59,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:44:56.454Z",
+    "scoredAt": "2026-02-02T16:36:01.428Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 83,
-    "previousVersion": "3.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 77,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

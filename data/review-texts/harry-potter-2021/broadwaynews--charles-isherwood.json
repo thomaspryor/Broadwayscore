@@ -8,15 +8,15 @@
   "dtliExcerpt": "In any case, the immensely cheering if not altogether surprising news is that “Harry Potter and the Cursed Child” 2.0 (or do I mean “.5”?) is every bit as rewarding as the original version.",
   "showScoreExcerpt": "\"Every bit as rewarding as the original version. My lack of surprise derives from the theatrical expertise, on every level, evinced by the creators of the two-part version...Potterheads may notice where subplots have been trimmed or eliminated, but the many-tentacled narrative remains virtually the same...And the production retains virtually all of the original’s bedazzlements, from wand battles to levitating Dementors, to quicksilver character transformations.\"",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 80,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening concerns about the shortened format, the critic concludes the show is 'every bit as rewarding as the original' and calls it 'a theatrical accomplishment of a very rare order' with effects that are 'wonderfully executed.' | GPT-4o: The review is overwhelmingly positive, praising the production as a 'theatrical accomplishment of a very rare order' and highlighting the successful adaptation of the show into a single part without losing its essence. The critic's concerns were addressed, and the show is described as rewarding and expertly crafted. | Gemini: The review explicitly states the new version is \"every bit as rewarding as the original.\" While it notes some minor drawbacks like requiring more concentrated attention, the overall tone is positive and recommends seeing the show.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises this as 'a theatrical accomplishment of a very rare order' and emphasizes that the condensed version retains all the magic and emotional depth of the original, with strong performances and spectacular effects. | GPT-4o: The review is overwhelmingly positive, praising the production's imaginative and technical achievements, emotional depth, and successful adaptation into a shorter format. The critic's language is enthusiastic and indicates a strong recommendation. | Gemini: The review explicitly states the new version is \"every bit as rewarding as the original,\" indicating a strong positive recommendation. The critic also praises the theatrical expertise and emotional depth of the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,21 +37,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:58:46.215Z",
+    "scoredAt": "2026-02-02T16:27:13.649Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 83,
-    "previousVersion": "5.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": 90,
-    "geminiScore": 80,
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

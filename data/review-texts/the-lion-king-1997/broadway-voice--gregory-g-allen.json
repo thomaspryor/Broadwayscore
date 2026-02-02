@@ -8,18 +8,18 @@
   "fullText": null,
   "showScoreExcerpt": "\"The Lion King is a visual masterpiece that transports audiences to the African savanna...\"",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 82,
   "source": "show-score",
   "designation": null,
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 74,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Single curated excerpt describing the show as a 'visual masterpiece' suggests positive assessment, but without full context or clear recommendation language, scoring conservatively in lower positive range. | GPT-4o: The phrase 'visual masterpiece' strongly indicates a rave review, suggesting a high level of recommendation. However, due to the single excerpt warning, the confidence is medium, and the score is conservatively placed in the middle of the rave range. | Gemini: While the excerpt praises the visual aspects of the show, the lack of further context and the single excerpt warning suggest a conservative score within the positive range is appropriate. It's likely recommended, but potentially with reservations about other aspects not mentioned.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The phrase 'visual masterpiece' is strong praise indicating clear recommendation, but with only one excerpt available, the full critical verdict remains unclear. | GPT-4o: The excerpt describes the show as a 'visual masterpiece', which strongly suggests a highly positive assessment. Given the single excerpt warning, the score is at the lower end of the Rave bucket. | Gemini: The phrase \"visual masterpiece\" strongly suggests a positive recommendation, placing it in the upper range of the Positive bucket. However, since it's a single excerpt, there's a slight uncertainty.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:58:00.447Z",
+    "scoredAt": "2026-02-02T16:33:24.011Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "3.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 90,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 18,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

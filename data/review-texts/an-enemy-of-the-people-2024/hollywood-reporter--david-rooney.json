@@ -9,26 +9,37 @@
   "bwwExcerpt": "Unlike the lavish 1997 National Theatre production starring Ian McKellen, this staging is on the minimal side, with an effective revolving turntable set and a relatively small cast in which the understudies also play the townspeople in the pivotal climactic town hall meeting scene. Howard Shapiro, Philadelphia Inquirer: I couldn't help but think of an ATF agent named Peter Forcelli while I watched the super-charged Broadway revival of An Enemy of the People, Henrik Ibsen's play about a man who t",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-2024",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 72,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 75,
-    "confidence": "medium",
+    "score": 72,
+    "confidence": "low",
     "range": {
-      "low": 70,
+      "low": 60,
       "high": 80
     },
-    "bucket": "Positive",
+    "bucket": "Mixed",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": null
+      "direction": 72
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review focuses on praising the clever staging innovations and Strong's intense performance, but this appears to be an excerpt focused on one aspect rather than a complete assessment. | GPT-4o: The review highlights a clever staging trick and praises Jeremy Strong's intense performance, suggesting a positive experience. However, the lack of explicit recommendation language and the focus on the production's setup rather than its overall impact results in a medium confidence level. | Gemini: The review focuses on a specific staging element and Jeremy Strong's performance, but lacks an overall recommendation. The description of the play's events suggests a potentially engaging experience, but the absence of a clear verdict places it in the 'Mixed' category.",
+    "keyPhrases": [
+      {
+        "quote": "deftly underscores",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "parallels of our current ugly political divide",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "The word 'deftly' suggests skillful execution and the critic appreciates the production's contemporary relevance, but this extremely brief excerpt provides insufficient context for confident scoring.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,13 +48,18 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:13:58.963Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "3.0.0"
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-02T16:24:29.625Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 2320,
+    "outputTokens": 280,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
   },
   "ensembleData": {
     "claudeScore": 76,

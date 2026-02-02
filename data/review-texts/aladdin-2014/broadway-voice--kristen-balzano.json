@@ -8,18 +8,18 @@
   "fullText": null,
   "showScoreExcerpt": "\"Enchanting but not extreme, magical without unnecessary fireworks, jaw-dropping without having to fly over the audience.\"",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 81,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 76,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The language is clearly positive with words like 'enchanting', 'magical', and 'jaw-dropping', but the single excerpt warning requires conservative scoring within the positive range. | GPT-4o: The review excerpt suggests a positive experience, highlighting enchantment and magic, but also indicates a lack of extremes or unnecessary elements. This implies a recommendation with some reservations, fitting a positive bucket. | Gemini: The review uses positive language like \"enchanting,\" \"magical,\" and \"jaw-dropping,\" but the phrases \"not extreme\" and \"without unnecessary fireworks\" suggest a qualified recommendation. Given the single excerpt and aggregator context warning, I'm scoring conservatively in the middle of the 'Positive' range.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses strongly positive descriptors like 'enchanting,' 'magical,' and 'jaw-dropping' while praising the show's restraint and effectiveness. The tone suggests clear appreciation and recommendation. | GPT-4o: The excerpt uses positive descriptors like 'enchanting', 'magical', and 'jaw-dropping', indicating a strong recommendation. The lack of extreme elements is framed as a positive, suggesting the production is impressive without relying on gimmicks. | Gemini: The quote describes the show as \"enchanting,\" \"magical,\" and \"jaw-dropping,\" indicating a positive experience, but the qualifiers suggest a balanced and tasteful production, leading to a score on the higher end of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,17 +40,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:04:21.671Z",
+    "scoredAt": "2026-02-02T16:36:42.821Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 76,
-    "geminiScore": 75,
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",

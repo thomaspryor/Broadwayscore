@@ -5,22 +5,22 @@
   "criticName": "Elizabeth Bradley",
   "url": "https://www.broadwaynews.com/review-harry-potter-and-the-cursed-child-retains-its-magic-and-its-heart/",
   "publishDate": "April 22, 2018",
-  "fullText": "When it was announced that “Harry Potter and the Cursed Child” would open at the Lyric Theatre in 2018, I confidently expected that the, um, curse that seemed to doom all shows in the cavernous space to financial-flop status would finally be lifted.\n\nWhen it was announced that “Harry Potter and the Cursed Child” would open at the Lyric Theatre in 2018, I confidently expected that the, um, curse that seemed to doom all shows in the cavernous space to financial-flop status would finally be lifted. The show is a commercial juggernaut, after all, and all things Harry Potter remain a global obsession. Lines form daily outside the new merchandise store on Fifth Avenue.\n\nBut the producers’ decision to cut the original two-part show down to just one part seemed to suggest that finances were proving trickier on Broadway — despite the show’s acclaim and its best play Tony win. Although they cited the pandemic in the announcement of the new version, the London, Melbourne and Hamburg productions will continue to perform the original version, indicating that the higher costs of Broadway production, and perhaps Americans’ attention spans, might also factor into the decision.",
+  "fullText": "When it was announced that “Harry Potter and the Cursed Child” would open at the Lyric Theatre in 2018, I confidently expected that the, um, curse that seemed to doom all shows in the cavernous space to financial-flop status would finally be lifted. When it was announced that “Harry Potter and the Cursed Child” would open at the Lyric Theatre in 2018, I confidently expected that the, um, curse that seemed to doom all shows in the cavernous space to financial-flop status would finally be lifted. The show is a commercial juggernaut, after all, and all things Harry Potter remain a global obsession. Lines form daily outside the new merchandise store on Fifth Avenue. But the producers’ decision to cut the original two-part show down to just one part seemed to suggest that finances were proving trickier on Broadway — despite the show’s acclaim and its best play Tony win. Although they cited the pandemic in the announcement of the new version, the London, Melbourne and Hamburg productions will continue to perform the original version, indicating that the higher costs of Broadway production, and perhaps Americans’ attention spans, might also factor into the decision.",
   "showScoreExcerpt": "\"What Tiffany and his team have created is an experience like no other...Prepare to be amazed, whether you're a Potter fan or a Muggle. This production is truly magical.\"",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 89,
   "source": "show-score",
-  "sourceMethod": "archive",
+  "sourceMethod": "playwright",
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 79,
+    "score": 89,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 84,
+      "high": 94
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening with industry context about venue history and format changes, the additional excerpt shows clear positive recommendation with phrases like 'truly magical' and 'prepare to be amazed.' | GPT-4o: The review concludes with highly enthusiastic praise, describing the production as 'an experience like no other' and 'truly magical,' which strongly indicates a rave recommendation. | Gemini: Despite the initial discussion of financial concerns and changes to the show's format, the review concludes with a strong recommendation, calling the production \"truly magical\" and suggesting that audiences should \"prepare to be amazed.\"",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite opening context about venue concerns and production changes, the additional excerpt reveals enthusiastic praise calling it 'an experience like no other' and 'truly magical' with clear recommendation to be 'amazed.' | GPT-4o: The review concludes with strong praise for the production, describing it as 'truly magical' and an 'experience like no other,' which indicates a highly enthusiastic recommendation. | Gemini: Despite the initial discussion of financial concerns and changes to the show's format, the review concludes with a strong recommendation, calling the production \"truly magical\" and an \"experience like no other.\"",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,27 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:58:49.342Z",
+    "scoredAt": "2026-02-02T16:27:17.790Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 50,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 92,
-    "geminiScore": 80,
-    "claudeBucket": "Positive",
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "contentTier": "needs-rescrape",
   "wordCount": 0,
@@ -71,23 +71,29 @@
   "isFullReview": false,
   "textWordCount": 194,
   "archivePath": "data/archives/reviews/harry-potter-2021/broadwaynews--elizabeth-bradley_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T15:05:54.871Z",
-  "fetchMethod": "archive",
+  "textFetchedAt": "2026-02-02T16:14:11.441Z",
+  "fetchMethod": "playwright",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 1,
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "incomplete",
   "archiveOrgTimestamp": "20251116125520",
   "archiveOrgUrl": "http://web.archive.org/web/20251116125520/https://www.broadwaynews.com/review-harry-potter-and-the-cursed-child-retains-its-magic-and-its-heart/",
   "textIssues": [
-    "Word count too low: 200 (min: 300)"
+    "Word count too low: 206 (min: 300)"
   ],
   "rescoreCompletedAt": "2026-02-01T20:02:13.552Z",
   "garbageReasoningDetected": "industry-analysis",

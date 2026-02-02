@@ -37,7 +37,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review explicitly states 'Recommended' and praises performances and direction, but with only one excerpt available, I'm scoring conservatively in the positive range. | GPT-4o: The review excerpt highlights strong performances and effective direction, culminating in a clear recommendation. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Positive range. | Gemini: The review uses the explicit recommendation \"Recommended.\" and praises the direction and performances, indicating a positive but not rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review gives explicit recommendation at the end, praises the director, performances, and creative team, describing it as having 'far too much good stuff' and calling performances 'marvelously shaded' and 'excellent'. | GPT-4o: The review highlights strong performances, effective direction, and successful use of theatrical magic, culminating in a clear recommendation. | Gemini: The review concludes with a clear recommendation. While it describes the plot and some elements of the production, the final word is positive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -47,11 +47,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:55:32.486Z",
+    "scoredAt": "2026-02-02T16:28:01.952Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 5,
+    "previousScore": 78,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
@@ -70,7 +70,7 @@
     "modelAgreement": "All 3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/drama-queen-nyc--jonathan-warman_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T15:14:10.198Z",
+  "textFetchedAt": "2026-02-02T16:19:43.321Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -82,7 +82,7 @@
   "fetchTier": 4,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
-  "rescoreCompletedAt": "2026-02-02T03:28:58.637Z",
+  "rescoreCompletedAt": "2026-02-02T16:28:01.952Z",
   "contentTier": "complete",
   "wordCount": 711,
   "_removedDesignation": {
@@ -93,7 +93,6 @@
     "dtliThumb": "none",
     "bwwThumb": "none"
   },
-  "needsRescore": true,
   "fullText": "HARRY POTTER AND THE CURSED CHILD at New York’s Lyric Theatre\n\nThe title of this enormous theatrical adventure is a bit misleading. Sure, an adult Harry Potter is a significant part of this play, but it really belongs to his son Albus Potter and Albus’s best friend, Scorpius Malfoy (that’s right, a Potter and a Malfoy are best friends). And just who is that cursed child? At times it seems to be Scorpius, at others Albus himself, and at yet others somebody else entirely.\n\nAs for Harry, he’s a investigator for the Ministry of Magic, a husband, and the father of three school-age children – Albus is a middle child, and has all of the neuroses that go with that. Albus feels, arguably correctly, that his father has done serious wrong to some people in his battles with dark forces. Albus and Scorpius set out to correct those wrongs, but only succeed in making things worse. Right, that’s all the plot you’re going to get from me, there’s far too much good stuff that shouldn’t be spoiled.\n\nYou need somebody adept in theatrical magic to make this dazzle as it should, and director John Tiffany fits the bill perfectly. When wonder can be created using simple means, that’s the way he goes, but he isn’t shy about going big and high-tech when that’s the better path. Movement director Steve Hoggett, a frequent Tiffany collaborator, makes great fun working swirling capes for all they’re worth. Pop composer Imogen Heap is also an ideal choice for this material, since her work is always full of rich feeling and mysticism.\n\nAs Albus, Sam Clemmett gives a marvelously shaded performance, capturing both his pain and youthful sense of wonder. Scorpius is a much more colorful character, a witty but awkward nerd, and Anthony Boyle goes deliciously over-the-top (sometime to the point of unintelligibility) without ever losing this emotional thread of this lonely boy. Byron Jennings gives his usual excellent all to two surprising characters in part two. Recommended.\n\nTo learn about Jonathan Warman’s directing work, see jonathanwarman.com.\n\nFill in your details below or click an icon to log in:\n\nEmail (Address never made public)\n \n \n \n Name\n \n \n \n Website\n \n \n \n \n \n \n\n \n \n \n \n \n\n \n \n \n \n \n \n You are commenting using your WordPress.com account. \n ( Log Out / \n Change )\n\nYou are commenting using your Twitter account. \n ( Log Out / \n Change )\n\nYou are commenting using your Facebook account. \n ( Log Out / \n Change )\n\nNotify me of new comments via email.\n\nNotify me of new posts via email.\n\nThis site uses Akismet to reduce spam. Learn how your comment data is processed.",
   "isFullReview": true,
   "textWordCount": 429,

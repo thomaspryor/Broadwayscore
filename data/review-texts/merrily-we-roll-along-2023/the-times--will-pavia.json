@@ -70,7 +70,7 @@
   "isFullReview": false,
   "textWordCount": 139,
   "archivePath": "data/archives/reviews/merrily-we-roll-along-2023/the-times--will-pavia_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T00:55:50.785Z",
+  "textFetchedAt": "2026-02-02T16:44:48.548Z",
   "originalScoreNormalized": 80,
   "scoreSource": "unicode-stars",
   "fetchMethod": "playwright",
@@ -88,6 +88,9 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "scrapingbee",
-  "rescoreCompletedAt": "2026-02-01T15:36:18.787Z"
+  "sourceMethod": "playwright",
+  "rescoreCompletedAt": "2026-02-01T15:36:18.787Z",
+  "textIssues": [
+    "Word count too low: 139 (min: 300)"
+  ]
 }

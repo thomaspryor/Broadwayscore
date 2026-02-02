@@ -7,7 +7,7 @@
   "publishDate": "March 25, 2014",
   "showScoreExcerpt": "\"It has a flying carpet, a cave full of treasures and show-stopping songs, but...Disney's 'Aladdin' lacks the magic of the original Oscar-winning animated film.\"",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 64,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textFetchedAt": "2026-01-30T16:15:16.552Z",
@@ -17,11 +17,11 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 69,
-    "confidence": "low",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 64,
-      "high": 74
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: This is a roundup of multiple critic reviews showing divided opinions - some found it lacking compared to the film while others praised specific elements like Iglehart's performance. The overall tone suggests a show with moments of entertainment but significant reservations. | Gemini: The review is mixed, with some critics finding it lacking compared to the film, but others praising the performances, especially James Monroe Iglehart as the Genie. The overall tone suggests it's worth seeing, especially for families, despite its flaws.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This is a roundup of multiple critic reviews showing decidedly mixed reception - some found it lacking magic and heart compared to the film, while others praised specific performances like Iglehart's Genie and called it 'sweet, silly fun' that could become a family hit. | GPT-4o: The review highlights both positive and negative aspects, noting the show's fun elements and strong performances, particularly by James Monroe Iglehart, but also mentions it lacks the magic and emotional depth of the original film. | Gemini: The review is mixed, with some critics finding it lacking compared to the film, but others praising specific elements like the Genie's performance. Overall, the tone suggests it's worth seeing, especially for families, despite its flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,26 +42,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:05:00.186Z",
+    "scoredAt": "2026-02-02T16:36:59.817Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 64,
-    "previousVersion": "5.0.0"
+    "previousScore": 69,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
+    "openaiScore": 65,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
     "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 64,

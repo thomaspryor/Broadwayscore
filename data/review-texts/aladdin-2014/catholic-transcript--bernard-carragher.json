@@ -8,17 +8,17 @@
   "fullText": null,
   "showScoreExcerpt": "\"Mainly, this Aladdin is F-U-N because it was so craftily assembled. Aladdin is a treat for the eye and ear.\"",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 82,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "sourceMethod": "playwright",
   "scoreSource": null,
   "llmScore": {
-    "score": 76,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review emphasizes fun and entertainment value with positive descriptors like 'craftily assembled' and 'treat,' but with only one excerpt available, I'm scoring conservatively within the positive range. | GPT-4o: The review excerpt describes the production as fun and visually and aurally pleasing, indicating a positive experience. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The review excerpt uses positive language like \"F-U-N\" and \"treat for the eye and ear,\" indicating a positive recommendation. Given that it's a single excerpt, the score is placed in the middle of the positive range.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review emphasizes fun and describes the show as 'craftily assembled' and 'a treat,' indicating clear enjoyment and recommendation despite being a single excerpt. | GPT-4o: The excerpt highlights the production as fun and visually and aurally pleasing, suggesting a strong positive recommendation. The use of 'F-U-N' and 'treat' indicates enthusiasm, warranting a score at the higher end of the Positive range. | Gemini: The review excerpt uses strong positive language like \"F-U-N\" and \"a treat,\" indicating a positive recommendation. Given the single excerpt warning, I'm placing it at the higher end of the positive bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:04:29.368Z",
+    "scoredAt": "2026-02-02T16:36:47.358Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 77,
-    "geminiScore": 75,
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses consistently enthusiastic language throughout ('wildly theatrical and thrilling', 'eye-popping enchantment', 'wondrous') and concludes with a glowing metaphor, with only minor nitpicks that don't diminish the strong recommendation. | GPT-4o: The review is overwhelmingly positive, highlighting the show's thrilling spectacle, stunning stage magic, and overall enchantment. The critic describes it as a 'wildly theatrical and thrilling Broadway spectacle' and praises the direction, performances, and stagecraft, concluding with a strong endorsement. | Gemini: The review is overwhelmingly positive, using phrases like \"wildly theatrical and thrilling,\" \"casts a spell,\" and \"eye-popping enchantment.\" While it mentions a slightly shaggy ending, it dismisses this as nitpicking and concludes that the show \"gleams like a bolt of lightning.\"",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses enthusiastic language throughout ('wildly theatrical and thrilling', 'eye-popping enchantment', 'wondrous') and concludes the show 'gleams like a bolt of lightning' with only minor nitpicks about the ending. | GPT-4o: The review is overwhelmingly positive, describing the production as 'wildly theatrical and thrilling' with 'eye-popping enchantment.' The critic praises the direction, performances, and stagecraft, concluding with a strong endorsement that the show leaves 'vivid memories.' | Gemini: The review is overwhelmingly positive, using phrases like \"wildly theatrical and thrilling\" and \"casts a spell.\" While there's a minor critique about the ending, the overall tone is enthusiastic, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,11 +39,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:29:16.935Z",
+    "scoredAt": "2026-02-02T16:29:28.741Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 94,
+    "previousScore": 82,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {

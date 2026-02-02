@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the visual creativity and uniqueness but appears truncated, focusing only on spectacle without addressing other elements like story or performances. | GPT-4o: The review uses strong positive language, describing the production as a 'visual spectacular' and 'unlike anything else on Broadway,' indicating a highly enthusiastic recommendation. | Gemini: The review highlights the visual spectacle and uniqueness of the production, indicating a positive experience and recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the visual innovation and uniqueness but appears truncated, lacking discussion of other production elements that would indicate stronger recommendation. | GPT-4o: The review uses strong, enthusiastic language to describe the production as a unique and visually stunning experience, indicating a highly positive recommendation. | Gemini: The review praises the visual spectacle and uniqueness of the production, indicating a positive experience. While it doesn't explicitly say 'must-see,' the language suggests a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,11 +43,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T21:01:06.561Z",
+    "scoredAt": "2026-02-02T16:34:45.428Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 72,

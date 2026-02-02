@@ -8,17 +8,17 @@
   "fullText": null,
   "showScoreExcerpt": "\"The stagecraft is astonishing...Jamie Harrison's illusions are breathtaking...The play is long but never boring.\"",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 82,
   "source": "show-score",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-negative",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 74,
-    "confidence": "medium",
+    "score": 82,
+    "confidence": "high",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt shows clear praise for technical elements and entertainment value, suggesting a positive recommendation, but the single curated quote warning requires conservative scoring within the positive range. | GPT-4o: The review excerpt highlights the 'astonishing' stagecraft and 'breathtaking' illusions, suggesting a highly positive view. The comment that the play is 'long but never boring' further supports a strong recommendation. Despite the single excerpt warning, the language indicates a rave review. | Gemini: The review praises the stagecraft and illusions, and states the play is never boring, suggesting a positive experience, but the lack of a strong recommendation and the mention of length keeps it from being a rave.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses strong positive language like 'astonishing' and 'breathtaking' for key production elements, and explicitly states it's never boring despite length, indicating strong enthusiasm. | GPT-4o: The excerpt highlights the impressive stagecraft and engaging nature of the play, suggesting a strong recommendation. However, due to the single excerpt warning, the confidence is medium. | Gemini: The excerpt contains strong positive language about the stagecraft and illusions, and states the play is 'never boring,' suggesting a positive experience overall. Given it's a single excerpt, I'm placing it in the upper range of 'Positive.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,27 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:59:21.723Z",
+    "scoredAt": "2026-02-02T16:27:36.506Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "3.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 88,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic gives 3 stars and acknowledges the spectacular puppetry is 'worth it' while clearly stating the show 'feels a bit worn' with weak book and middling score. This is a classic mixed review that neither fully recommends nor discourages. | GPT-4o: The review acknowledges the spectacle of the puppetry and some strong performances, but criticizes the overall engagement and quality of the music and book. The 3-star rating aligns with a mixed verdict, highlighting both strengths and weaknesses. | Gemini: Despite some criticisms of the score and book, the review ultimately recommends seeing the show for its puppetry and visual spectacle, aligning with a 'Positive' bucket. The critic's own 3-star rating also supports this classification.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 3-star rating and review clearly acknowledge the spectacular puppetry while criticizing the worn feel, weak book, and middling score. The critic concludes 'You're here for the puppets. And they're worth it' - a qualified recommendation. | GPT-4o: The review acknowledges the spectacular puppetry and some lovely performances but criticizes the overall engagement and quality of the musical. The original 3-star rating suggests a mixed experience, with notable strengths but significant reservations. | Gemini: Despite some reservations about the score and book, the critic ultimately finds the puppetry and spectacle \"worth it,\" indicating a positive, but not rave, recommendation. The 3-star rating also supports this classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,11 +38,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:41:28.289Z",
+    "scoredAt": "2026-02-02T16:33:56.511Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 64,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {

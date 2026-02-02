@@ -8,18 +8,18 @@
   "fullText": null,
   "showScoreExcerpt": "\"Director Julie Taymor has fashioned a visual feast that is both dazzling and surprisingly intimate...\"",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 82,
   "source": "show-score",
   "designation": null,
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 75,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows clear praise for the direction and visual elements, but with only one curated quote available, I'm scoring conservatively in the lower positive range as the full verdict remains unclear. | GPT-4o: The excerpt praises the director's work as a 'visual feast' and 'dazzling', indicating a positive reception. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The review excerpt praises the visual aspects of the production, indicating a positive experience, but the lack of further context and the single excerpt warning suggest a conservative score within the positive range.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows clear praise for Taymor's direction with strong positive descriptors like 'visual feast,' 'dazzling,' and 'surprisingly intimate,' but limited to one excerpt creates some uncertainty about the full verdict. | GPT-4o: The excerpt praises the director's work as a 'visual feast' and uses strong positive language like 'dazzling' and 'intimate', suggesting a strong recommendation. However, due to the single excerpt warning, the confidence is medium. | Gemini: The excerpt uses highly positive language (\"dazzling\", \"intimate\", \"visual feast\") indicating a strong recommendation. Given the single excerpt warning, I am placing it at the higher end of the positive bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:58:06.601Z",
+    "scoredAt": "2026-02-02T16:33:31.813Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "3.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 77,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite acknowledging script problems and pacing issues, the critic is clearly impressed by the production's magic and stagecraft, describing it as 'spell-binding' and praising unprecedented special effects that overcome textual weaknesses. | GPT-4o: The review is overwhelmingly positive about the production's ability to create unprecedented stage magic, despite some minor script issues. The critic describes the experience as 'spell-binding' and emphasizes the transformative nature of the production, indicating a strong recommendation. | Gemini: Despite script issues, the reviewer indicates that the production's magic and music are strong enough to overcome the flaws, making it worth seeing.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges significant script and pacing issues but ultimately finds the production magic and music compelling enough to overcome these flaws, indicating a qualified positive recommendation. | GPT-4o: Despite acknowledging flaws in the script and pacing, the review emphasizes the production's magic and music, suggesting a strong recommendation. The use of 'spell-binding' and 'entirely new level' indicates a high level of enthusiasm, warranting a score at the upper end of the Positive range. | Gemini: The review acknowledges flaws in the script and choreography but praises the magic and music, suggesting an overall positive experience despite the issues.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,27 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:01:57.164Z",
+    "scoredAt": "2026-02-02T16:29:05.698Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 90,
-    "geminiScore": 78,
+    "claudeScore": 73,
+    "openaiScore": 82,
+    "geminiScore": 75,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0,
@@ -67,8 +67,8 @@
   "previousLlmScore": 74,
   "isFullReview": false,
   "textWordCount": 226,
-  "archivePath": "data/archives/reviews/harry-potter-2021/medium--christian-lewis_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T15:16:21.365Z",
+  "archivePath": "data/archives/reviews/harry-potter/medium--christian-lewis_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T16:15:48.507Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {

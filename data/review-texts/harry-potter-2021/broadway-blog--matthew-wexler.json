@@ -8,17 +8,17 @@
   "fullText": null,
   "showScoreExcerpt": "\"An unforgettable theatrical experience...The staging is simply magical.\"",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 90,
   "source": "show-score",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-mixed-positive",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 89,
+    "score": 90,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 85,
+      "high": 95
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite being a single excerpt, the language 'unforgettable' and 'magical' indicates strong enthusiasm, but conservatively scored within rave range due to limited text. | GPT-4o: The excerpt uses strong positive language, describing the experience as 'unforgettable' and the staging as 'magical,' indicating a highly enthusiastic recommendation. However, due to the single excerpt warning, the confidence is medium. | Gemini: The phrase \"unforgettable theatrical experience\" indicates a positive recommendation. Given that it's a single excerpt, I'm scoring it in the middle of the positive range.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The language 'unforgettable theatrical experience' and 'simply magical' indicates strong enthusiasm and recommendation, though single excerpt warning requires caution about representativeness. | GPT-4o: The excerpt uses strong positive language, describing the experience as 'unforgettable' and the staging as 'magical', indicating a highly enthusiastic recommendation. The single excerpt warning suggests caution, but the language is clearly in the 'Rave' category. | Gemini: The phrases \"unforgettable theatrical experience\" and \"simply magical\" indicate a strong positive recommendation, placing it in the upper range of the Positive bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:58:42.994Z",
+    "scoredAt": "2026-02-02T16:27:08.630Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 89,
-    "previousVersion": "3.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 89,
     "openaiScore": 90,
-    "geminiScore": 78,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
