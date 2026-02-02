@@ -3,7 +3,7 @@
   "outletId": "observer",
   "outlet": "Observer",
   "criticName": "David Cote",
-  "url": "https://observer.com/2015/08/hamilton-broadway-review/",
+  "url": "https://observer.com/2020/07/hamilton-disney-plus-review-streaming/",
   "publishDate": "2015-08-06",
   "bwwExcerpt": "s the same vibrant and youthful impression that it did downtown. Indeed, everybody in the show from the boss to the ushers exudes the confident air of show folk who know they've got themselves a hit. David Cote, Time Out NY : I love Hamilton. I love it like I love New York, or Broadway when it gets it right. And this is so right. A sublime conjunction of radio-ready hip-hop (as well as R&B, Britpop and trad showstoppers), under-dramatized American history and Miranda's uniquely personal focus as a son of immigrants and as an inexhaustible wordsmith, Hamilton hits multilevel culture buttons, hard...Miranda may be composer-lyricist and star, but the world he creates is vibrantly democratic. Hamilton is the center, but Burr is his equally weighted Judas and Javert-and more complexly drawn than either...Phillipa Soo, playing the betrayed but finally forgiving wife, Eliza, has some of the show's most heartbreaking music...As French ally Lafayette in the first act and a foppish, trash-talkin",
   "originalScore": null,
@@ -11,7 +11,7 @@
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAMILTON-Opens-on-Broadway-20150806",
-  "sourceMethod": "brightdata",
+  "sourceMethod": "browserbase",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -62,9 +62,9 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Rave"
   },
-  "archivePath": "data/archives/reviews/hamilton-2015/observer--david-cote_2026-01-29.html",
-  "textFetchedAt": "2026-01-29T02:51:13.812Z",
-  "fetchMethod": "brightdata",
+  "archivePath": "data/archives/reviews/hamilton-2015/observer--david-cote_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T23:17:40.366Z",
+  "fetchMethod": "browserbase",
   "fetchAttempts": [
     {
       "tier": 0,
@@ -76,25 +76,15 @@
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "CAPTCHA or access blocked"
+      "error": "Skipped - known blocked site"
     },
     {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee error (404): Request failed with status code 404"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
+      "tier": 1.5,
+      "method": "browserbase",
       "success": true
     }
   ],
-  "fetchTier": 3,
-  "textIssues": [
-    "Word count too low: 98 (min: 300)",
-    "Show title not found in text"
-  ],
+  "fetchTier": 1.5,
   "garbageTextRemoved": {
     "removedAt": "2026-01-29T02:00:00.000Z",
     "reason": "Ad blocker notice from Observer.com - not a review",
@@ -104,6 +94,21 @@
   "garbageFullText": "We noticed you're using an ad blocker.\n\t\t\tWe get it: you like to have control of your own internet experience. But advertising revenue helps support our journalism. To read our full stories, please turn off your ad blocker.We'd really appreciate it.\n\nBelow are steps you can take in order to whitelist Observer.com on your browser:\n\nClick the AdBlock button on your browser and select Don't run on pages on this domain.\n\nClick the AdBlock Plus button on your browser and select Enabled on this site.\n\nClick the AdBlock Plus button on your browser and select Disable on Observer.com.",
   "garbageReason": "/ad ?block(er)?/i",
   "garbageFixedAt": "2026-01-29T22:45:22.840Z",
-  "contentTier": "excerpt",
-  "wordCount": 0
+  "contentTier": "complete",
+  "wordCount": 626,
+  "previousUrl": "https://observer.com/2015/08/hamilton-broadway-review/",
+  "urlDiscoveredAt": "2026-02-02T23:17:40.363Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 93,
+  "fullText": "Feeling patriotic this Fourth of July? Police routinely murder innocent Black people. Senators prioritize tax cuts for the wealthy over a living wage. Tens of millions of Americans still support the most corrupt, immoral, flat-out delusional President in history. Oh, and Europe just banned our virus-spreading ass. Anyone for a sparkler? By clicking submit, you agree to our <a href=\"http://observermedia.com/terms\">terms of service</a> and acknowledge we may use your information to send you emails, product samples, and promotions on this website and other properties. You can opt out anytime. Still, such runaway injustice and inequality can inspire dreams of revolution and big structural reform—excitement about what the U.S. could be. Fanning the flames of that idealist ardor is a splendid multicamera capture of the Broadway juggernaut Hamilton, streaming at Disney+ starting Friday. For $7 a month, Mouse Plus isn’t as democratic as, say, free!, but cheaper than a ticket. (Come to think of it, what are tickets going to cost when Hamilton returns next year?) SEE ALSO: What You Need to Know to Watch ‘Hamilton’ on Disney+ Lin-Manuel Miranda’s über-earwormy, perfectly balanced hip-hop musical about a (formerly) neglected Founding Father, Hamilton has evergreen appeal across the political spectrum. It opened—at the Public Theater in 2015 and then Broadway in 2016—at a time when our country was basking in the reflected glow of a stable, popular Black president. When Thomas Kail—director of the stage production and the film—shot multiple performances for editing, we were five months away from electing…someone very different to Obama. Four years later we find ourselves in a pandemic, a recession and a Constitutional crisis. And Hamilton is just as timely. The parallels are scary obvious: the need to dump a deranged autocrat with weird hair; capitalists exploiting underpaid (or unpaid) labor; anti-immigrant bigotry; and a lot of anger in the street. So, how’s the film look? Despite the insane popularity of the brand, delivering an equally great small-screen Hamilton was never a slam dunk. And I wouldn’t oversell the work in terms of cinema. The eagerly awaited “Hamilfilm” is a first-rate capture of a Broadway show with smart camerawork and tactical closeups that enhance the storytelling. Hamilton on stage may have plenty to look at—due to choreographer Andy Blankenbuehler’s constantly morphing movement vocabulary ranging from breakdance to story-theater mime—but it’s a unit set and sung-through narrative for nearly three hours. True, that rhyme-drunk, info-packed, pyrotechnic score is what carries the show. We’re not here for eye-popping special effects. Even so, Kail’s framing of scenes and strategic use of closeups captures the swagger and swell of the live show admirably well. It doesn’t take long to sink into the experience and feel like you’re there on stage. I haven’t caught replacement casts at the Richard Rodgers Theatre or on tour, but anyone who saw the original ensemble justifiably count themselves among the blessed. They’re all here, at the top of their game: Renée Elise Goldsberry’s shrewd and romantically tragic Angelica; dulcet-voiced Phillipa Soo as her sister, Eliza, who marries Hamilton and suffers his infidelity; Daveed Diggs’ almost indecent charisma blast as Lafayette and Jefferson; and Leslie Odom Jr.’s cunning, conflicted Burr—Hamilton’s lifelong political shadow/rival/killer. (Odom is a powerhouse singer and dancer, but his nasal, overly affected speaking voice as Burr always made me think of a grown-up Urkel from Family Matters.) And then there’s Miranda in the title role, spitting rhymes and surfing sweet melodies expressly self-tailored, giving a historic performance of remarkable bravado and vulnerability all at once. Years from now we may get a big-budget, bona-fide Hollywood movie of the musical. In the meantime, we have this exceptional, joy-giving record. Let’s hope that when Hamilton: The Movie drops, we can actually go to the multiplex—and there’s no mad king in the White House.",
+  "isFullReview": true,
+  "textWordCount": 626,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "wrongProductionNote": "Auto-flagged: URL year 2020 differs from show opening 2015 by 5 years"
 }
