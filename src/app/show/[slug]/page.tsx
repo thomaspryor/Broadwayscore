@@ -810,35 +810,20 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           return <LotteryRushCard data={lotteryRush} showStatus={show.status} />;
         })()}
 
-        {/* Cast & Creative */}
-        {(show.cast || show.creativeTeam) && (
-          <div className="grid sm:grid-cols-2 gap-6 mb-8">
-            {show.cast && show.cast.length > 0 && (
-              <div className="card p-4 sm:p-5">
-                <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Cast</h2>
-                <ul className="space-y-2.5 sm:space-y-2">
-                  {show.cast.map((member, i) => (
-                    <li key={i} className="flex flex-col sm:flex-row sm:justify-between text-sm gap-0.5 sm:gap-2">
-                      <span className="text-white font-medium">{member.name}</span>
-                      <span className="text-gray-500 text-xs sm:text-sm">{member.role}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            {show.creativeTeam && show.creativeTeam.length > 0 && (
-              <div className="card p-4 sm:p-5">
-                <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Creative Team</h2>
-                <ul className="space-y-2.5 sm:space-y-2">
-                  {show.creativeTeam.map((member, i) => (
-                    <li key={i} className="flex flex-col sm:flex-row sm:justify-between text-sm gap-0.5 sm:gap-2">
-                      <span className="text-white font-medium">{member.name}</span>
-                      <span className="text-gray-500 text-xs sm:text-sm">{member.role}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+        {/* Creative Team */}
+        {show.creativeTeam && show.creativeTeam.length > 0 && (
+          <div className="mb-8">
+            <div className="card p-4 sm:p-5">
+              <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Creative Team</h2>
+              <ul className="space-y-2.5 sm:space-y-2">
+                {show.creativeTeam.map((member, i) => (
+                  <li key={i} className="flex flex-col sm:flex-row sm:justify-between text-sm gap-0.5 sm:gap-2">
+                    <span className="text-white font-medium">{member.name}</span>
+                    <span className="text-gray-500 text-xs sm:text-sm">{member.role}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         )}
 
