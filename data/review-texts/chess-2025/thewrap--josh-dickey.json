@@ -63,36 +63,30 @@
     "ensembleSource": "ensemble-no-consensus",
     "modelAgreement": "No bucket consensus - using median score"
   },
-  "sourceMethod": "archive",
-  "archivePath": "data/archives/reviews/chess-2025/thewrap--josh-dickey_2026-01-26.html",
-  "textFetchedAt": "2026-01-26T23:05:06.946Z",
-  "fetchMethod": "archive",
+  "sourceMethod": "brightdata",
+  "archivePath": "data/archives/reviews/chess/thewrap--josh-dickey_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T15:48:45.557Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "CAPTCHA or access blocked"
+      "error": "Skipped - known blocked site"
     },
     {
       "tier": 2,
       "method": "scrapingbee",
       "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
+      "error": "Parse Error: Header overflow"
     },
     {
       "tier": 3,
       "method": "brightdata",
-      "success": false,
-      "error": "Access blocked in Bright Data response"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 3,
   "archiveOrgTimestamp": "20260113042257",
   "archiveOrgUrl": "http://web.archive.org/web/20260113042257/https://www.thewrap.com/chess-broadway-review-abba-musical-lea-michele/",
   "showScoreExcerpt": null,
@@ -106,5 +100,8 @@
   "truncationSignals": [
     "no_ending_punctuation"
   ],
-  "isFullReview": false
+  "isFullReview": true,
+  "textWordCount": 881,
+  "textQuality": "partial",
+  "textStatus": "partial"
 }

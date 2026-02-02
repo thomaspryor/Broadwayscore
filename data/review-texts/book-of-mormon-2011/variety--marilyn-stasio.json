@@ -5,7 +5,7 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2011/legit/reviews/the-book-of-mormon-1117944828/",
   "publishDate": "March 24, 2011",
-  "fullText": "Read More About: BeIN Jump to Comments 0s & 1s Production: A YGK production in association with Alex Weiss, Andrew Schwartz, Shahrook Oomer, Assad Khan. (International sales: Eugene Kotlyarenko, Los Angeles.) Produced by Michael Shifflett. Executive producers, Schwartz, Oomer, Khan. Directed by Eugene Kotlyarenko. Screenplay, Kotlyarenko, Michael Shifflett, Morgan Krantz. Crew: Camera (color, HD), Marcus Gillis; editors, Drew King, Kotlyarenko; music supervisor, Dean Bein. Reviewed on DVD, New York, March 12, 2011. Running time: 83 MIN. With: With: Morgan Krantz, Ryan Reyes, Matthew Cardarople, Jeremy Blackman, Alexi Wasser, Ahna O'Reilly.",
+  "fullText": "Spectacular orchestration of visual elements seems wasted on a threadbare, inanely repetitive plotline.\n\nHigh-concept indie “0s & 1s” treats the image like a giant computer screen, which helmer Eugene Kotlyarenko and his special effects/animation team fill with competing graphics, as windows, text messages, alerts, chats and apps fractionalize, interrupt and deconstruct the ongoing action. But this spectacular orchestration of visual elements seems wasted on a threadbare, inanely repetitive plotline: The hero loses his computer and spends the rest of the film traipsing around asking people if they’ve stolen it. Opening March 18 at New York’s Gastropub Rerun Theater, pic could achieve cult status among only those for whom the medium is the message.\n\nTwenty-three-year-old James (Morgan Krantz) relates to his peers in two modes: outright hostility and forced pretense of interest in anyone but himself. Both attitudes ostensibly stem from his cyber-mediated lack of contact with other humans, but the actors seem alienated, never bothering to modulate their perfs. Kotlyarenko plays with format in an attempt to mitigate the boring sameness of James’ encounters, trusting, like too many indie auteurs, that the audience’s recognition of its own peculiar demographic reality precludes the need for a script.",
   "isFullReview": false,
   "dtliExcerpt": "This profane, scatological and bitingly satirical musical from the creators of 'South Park' is also sweet, generous and touching in all the right places.",
   "originalScore": null,
@@ -17,24 +17,42 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This profane, scatological and bitingly satirical musical from the creators of 'South Park' is also sweet, generous and touching in all the right places.",
   "needsScoring": true,
-  "textWordCount": 90,
+  "textWordCount": 196,
   "archivePath": "data/archives/reviews/book-of-mormon-2011/variety--marilyn-stasio_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T04:57:51.416Z",
-  "fetchMethod": "playwright",
+  "textFetchedAt": "2026-02-02T15:47:10.685Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
     {
       "tier": 1,
       "method": "playwright",
+      "success": false,
+      "error": "page.goto: Target page, context or browser has been closed\nCall log:\n\u001b[2m  - navigating to \"https://variety.com/2011/legit/reviews/the-book-of-mormon-1117944828/\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 1,
+  "fetchTier": 3,
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "incomplete",
-  "sourceMethod": "playwright",
+  "sourceMethod": "brightdata",
   "textIssues": [
-    "Word count too low: 90 (min: 300)",
+    "Word count too low: 196 (min: 300)",
     "Show title not found in text"
   ],
   "showNotMentioned": true,

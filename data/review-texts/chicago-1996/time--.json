@@ -6,7 +6,7 @@
   "url": "http://www.time.com/time/magazine/article/0,9171,985604,00.html",
   "publishDate": "April 22, 2014",
   "dtliExcerpt": "In that dicey district known as Broadway, there are no sure bets, but reviving a cherished old musical comes close. Find a Rodgers and Hammerstein gem that's been away for a while or dust off a fondly remembered piece of froth like A Funny Thing Happened on the Way to the Forum, and nostalgic theatergoers will probably beat a path to your stage door.",
-  "fullText": null,
+  "fullText": "In that dicey district known as Broadway, there are no sure bets, but reviving a cherished old musical comes close. Find a Rodgers and Hammerstein gem that's been away for a while or dust off a fondly remembered piece of froth like A Funny Thing Happened on the Way to the Forum, and nostalgic theatergoers will probably beat a path to your stage door.\n\nBut Chicago, the 1975 musical about a '20s nightclub floozy who becomes a celebrity after shooting her lover, doesn't really fall into that category. Artifacts from the '70s (the comeback of bell-bottoms notwithstanding) haven't aged long enough...\n \n\n To continue reading: or Log-In\n\n \n\n \n\n \n\n \n\n \n\n \n\n Vignette StoryServer 5.0 Tue May 28 18:18:48 2013 \n\n \n \n \n Sign In",
   "isFullReview": false,
   "originalScore": null,
   "assignedScore": 62,
@@ -58,5 +58,34 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Mixed"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 62,
+  "textWordCount": 116,
+  "archivePath": "data/archives/reviews/chicago-1996/time--unknown_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T15:54:51.635Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_paywall_text",
+    "has_read_more_prompt",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20130825005452",
+  "archiveOrgUrl": "http://web.archive.org/web/20130825005452/http://www.time.com/time/magazine/article/0,9171,985604,00.html",
+  "textIssues": [
+    "Word count too low: 180 (min: 300)"
+  ]
 }

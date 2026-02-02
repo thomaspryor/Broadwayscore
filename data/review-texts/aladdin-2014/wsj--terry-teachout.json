@@ -67,8 +67,8 @@
   "previousLlmScore": 64,
   "isFullReview": false,
   "textWordCount": 151,
-  "archivePath": "data/archives/reviews/aladdin-2014/wsj--terry-teachout_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T03:12:29.742Z",
+  "archivePath": "data/archives/reviews/aladdin/wsj--terry-teachout_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T15:23:36.819Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -84,10 +84,16 @@
       "error": "Skipped - known blocked site"
     },
     {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Insufficient text: 0 chars"
+    },
+    {
       "tier": 2,
       "method": "scrapingbee",
       "success": false,
-      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+      "error": "ScrapingBee error (500): Request failed with status code 500"
     },
     {
       "tier": 3,

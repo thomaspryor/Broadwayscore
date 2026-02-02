@@ -1,15 +1,86 @@
 {
-  "updatedAt": "2026-02-02T15:18:46.182Z",
-  "processed": 3,
-  "failed": 2,
-  "successRate": "60.0%",
+  "updatedAt": "2026-02-02T15:57:31.818Z",
+  "processed": 53,
+  "failed": 87,
+  "successRate": "37.9%",
   "tierBreakdown": {
-    "playwright": 1,
-    "browserbase": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 2
+    "playwright": 3,
+    "browserbase": 2,
+    "scrapingbee": 11,
+    "brightdata": 3,
+    "archive": 36
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 10,
+  "recentActivity": [
+    {
+      "t": "2026-02-02T15:19:49.098Z",
+      "event": "bb-session",
+      "session": "59cf8976",
+      "url": "https://nypost.com/2014/03/21/aladdin-review-a-whole-new-wonderful-world/"
+    },
+    {
+      "t": "2026-02-02T15:21:03.362Z",
+      "event": "bb-session",
+      "session": "e1f9c0e2",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/aladdin_70661.html"
+    },
+    {
+      "t": "2026-02-02T15:21:38.371Z",
+      "event": "bb-session",
+      "session": "ecc76d92",
+      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
+    },
+    {
+      "t": "2026-02-02T15:22:35.868Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-02T15:24:51.757Z",
+      "event": "bb-session",
+      "session": "c8624dbe",
+      "url": "https://nypost.com/2014/03/21/aladdin-review-a-whole-new-wonderful-world/"
+    },
+    {
+      "t": "2026-02-02T15:25:36.847Z",
+      "event": "bb-session",
+      "session": "8b642a47",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/aladdin_70661.html"
+    },
+    {
+      "t": "2026-02-02T15:26:11.698Z",
+      "event": "bb-session",
+      "session": "6efb0cb6",
+      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
+    },
+    {
+      "t": "2026-02-02T15:27:10.593Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-02T15:29:20.717Z",
+      "event": "bb-session",
+      "session": "2692351d",
+      "url": "https://www.nydailynews.com/2024/03/18/broadway-review-enemy-of-the-people-is-li"
+    },
+    {
+      "t": "2026-02-02T15:30:32.680Z",
+      "event": "bb-session",
+      "session": "6fdad511",
+      "url": "https://www.nydailynews.com/2024/03/18/broadway-review-enemy-of-the-people-is-li"
+    },
+    {
+      "t": "2026-02-02T15:31:12.983Z",
+      "event": "bb-session",
+      "session": "f5b8f7df",
+      "url": "https://www.theatermania.com/broadway/reviews/juliet-broadway-review_92586.html"
+    },
+    {
+      "t": "2026-02-02T15:31:48.565Z",
+      "event": "bb-session",
+      "session": "6feb7289",
+      "url": "https://www.thewrap.com/juliet-broadway-review-max-martin-jukebox-musical/"
+    }
+  ]
 }
