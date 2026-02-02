@@ -1,74 +1,50 @@
 {
   "processed": [
-    "moulin-rouge-2019/vulture--jesse-green.json",
-    "moulin-rouge-2019/theatermania--jesse-green.json",
-    "moulin-rouge-2019/wsj--terry-teachout.json",
-    "moulin-rouge-2019/nysr--jesse-oxfeld.json",
-    "moulin-rouge-2019/telegraph--diane-snyder.json",
-    "moulin-rouge-2019/washpost--peter-marks.json"
+    "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
+    "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
+    "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
+    "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json",
+    "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
   ],
   "failed": [
-    "moulin-rouge-2019/observer--david-cote.json",
-    "moulin-rouge-2019/observer--rex-reed.json",
-    "moulin-rouge-2019/timeout--adam-feldman.json",
-    "moulin-rouge-2019/amny--matt-windman.json",
-    "moulin-rouge-2019/dailybeast--tim-teeman.json"
+    "once-upon-a-one-more-time-2023/hollywood-reporter--angie-han.json",
+    "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
+    "once-upon-a-one-more-time-2023/timeout--adam-feldman.json",
+    "once-upon-a-one-more-time-2023/associated-press-mark-kennedy--mark-kennedy.json",
+    "once-upon-a-one-more-time-2023/thestage--lane-williamson.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "moulin-rouge-2019/nysr--jesse-oxfeld.json"
+      "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
     ],
     "browserbase": [],
     "scrapingbee": [
-      "moulin-rouge-2019/theatermania--jesse-green.json",
-      "moulin-rouge-2019/telegraph--diane-snyder.json"
+      "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
+      "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
+      "once-upon-a-one-more-time-2023/associated-press-mark-kennedy--mark-kennedy.json"
     ],
-    "brightdata": [
-      "moulin-rouge-2019/wsj--terry-teachout.json"
-    ],
+    "brightdata": [],
     "archive": [
-      "moulin-rouge-2019/vulture--jesse-green.json",
-      "moulin-rouge-2019/washpost--peter-marks.json"
+      "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
+      "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
+      "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json"
     ]
   },
-  "startTime": "2026-02-02T23:25:07.979Z",
-  "lastProcessed": "moulin-rouge-2019/washpost--peter-marks.json",
+  "startTime": "2026-02-02T23:21:39.822Z",
+  "lastProcessed": "once-upon-a-one-more-time-2023/thestage--lane-williamson.json",
   "log": [
     {
-      "t": "2026-02-02T23:25:19.014Z",
+      "t": "2026-02-02T23:23:39.570Z",
       "event": "bb-session",
-      "session": "19d1a1b4",
-      "url": "https://observer.com/2019/07/moulin-rouge-broadway-review/"
+      "session": "0fe2104c",
+      "url": "https://www.nytimes.com/2023/06/22/theater/once-upon-a-one-more-time-review.html"
     },
     {
-      "t": "2026-02-02T23:25:43.300Z",
-      "event": "bb-session",
-      "session": "b0632603",
-      "url": "https://www.theatermania.com/broadway/reviews/moulin-rouge-the-musical_88234.htm"
-    },
-    {
-      "t": "2026-02-02T23:26:14.417Z",
-      "event": "bb-session",
-      "session": "2ad10235",
-      "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11"
-    },
-    {
-      "t": "2026-02-02T23:26:58.762Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-02T23:27:23.924Z",
-      "event": "bb-session",
-      "session": "3336349c",
-      "url": "https://www.amny.com/entertainment/moulin-rouge-broadway-review/"
-    },
-    {
-      "t": "2026-02-02T23:27:49.569Z",
-      "event": "bb-session",
-      "session": "1ae4907f",
-      "url": "https://www.thedailybeast.com/moulin-rouge-broadway-review/"
+      "t": "2026-02-02T23:24:26.963Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770074633466\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA31GDP8xQu3cANCKmrw==&cid=bqsbw0s9DEVkp6WMMXm3iHPO~PmGp2HaPlRWDqWLbwKb6kDfNauqJQE12wG2cu3yxlKd6UlyRM4BBrAgrJKswVX60VADvjJaJ7wZMyAwIJXivXPET8SwxfEaAz9ha61E&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770074633466\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770074633466\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA31GDP8xQu3cANCKmrw==&cid=bqsbw0s9DEVkp6WMMXm3iHPO~PmGp2HaPlRWDqWLbwKb6kDfNauqJQE12wG2cu3yxlKd6UlyRM4BBrAgrJKswVX60VADvjJaJ7wZMyAwIJXivXPET8SwxfEaAz9ha61E&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770074633466\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    17 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770074633466\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA31GDP8xQu3cANCKmrw==&cid=bqsbw0s9DEVkp6WMMXm3iHPO~PmGp2HaPlRWDqWLbwKb6kDfNauqJQE12wG2cu3yxlKd6UlyRM4BBrAgrJKswVX60VADvjJaJ7wZMyAwIJXivXPET8SwxfEaAz9ha61E&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770074633466\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
     }
   ]
 }
