@@ -1,58 +1,50 @@
 {
   "processed": [
-    "here-lies-love-2023/hollywood-reporter--angie-han.json",
-    "here-lies-love-2023/broadwaynews--brittani-samuel.json",
-    "here-lies-love-2023/theatermania--adam-feldman.json",
-    "here-lies-love-2023/wsj--charles-isherwood.json",
-    "here-lies-love-2023/ap--mark-kennedy.json"
+    "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
+    "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
+    "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
+    "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json",
+    "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
   ],
   "failed": [
-    "here-lies-love-2023/nytimes--jesse-green.json",
-    "here-lies-love-2023/deadline--greg-evans.json",
-    "here-lies-love-2023/guardian--adrian-horton.json",
-    "here-lies-love-2023/timeout--adam-feldman.json",
-    "here-lies-love-2023/bergen-record--robert-feldberg.json"
+    "once-upon-a-one-more-time-2023/hollywood-reporter--angie-han.json",
+    "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
+    "once-upon-a-one-more-time-2023/timeout--adam-feldman.json",
+    "once-upon-a-one-more-time-2023/associated-press-mark-kennedy--mark-kennedy.json",
+    "once-upon-a-one-more-time-2023/thestage--lane-williamson.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "here-lies-love-2023/guardian--adrian-horton.json",
-      "here-lies-love-2023/ap--mark-kennedy.json"
+      "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
     ],
     "browserbase": [],
     "scrapingbee": [
-      "here-lies-love-2023/theatermania--adam-feldman.json"
+      "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
+      "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
+      "once-upon-a-one-more-time-2023/associated-press-mark-kennedy--mark-kennedy.json"
     ],
-    "brightdata": [
-      "here-lies-love-2023/nytimes--jesse-green.json",
-      "here-lies-love-2023/deadline--greg-evans.json"
-    ],
+    "brightdata": [],
     "archive": [
-      "here-lies-love-2023/hollywood-reporter--angie-han.json",
-      "here-lies-love-2023/broadwaynews--brittani-samuel.json",
-      "here-lies-love-2023/wsj--charles-isherwood.json"
+      "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
+      "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
+      "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json"
     ]
   },
-  "startTime": "2026-02-02T23:18:25.982Z",
-  "lastProcessed": "here-lies-love-2023/bergen-record--robert-feldberg.json",
+  "startTime": "2026-02-02T23:21:39.822Z",
+  "lastProcessed": "once-upon-a-one-more-time-2023/thestage--lane-williamson.json",
   "log": [
     {
-      "t": "2026-02-02T23:19:33.487Z",
+      "t": "2026-02-02T23:23:39.570Z",
       "event": "bb-session",
-      "session": "5e414556",
-      "url": "https://www.nytimes.com/2023/07/20/theater/here-lies-love-review-david-byrne.htm"
+      "session": "0fe2104c",
+      "url": "https://www.nytimes.com/2023/06/22/theater/once-upon-a-one-more-time-review.html"
     },
     {
-      "t": "2026-02-02T23:20:22.456Z",
+      "t": "2026-02-02T23:24:26.963Z",
       "event": "bb-login-fail",
       "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770074388936\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAdTAGyjAHPAcANA1qtA==&cid=0CY3ZhYJX1nWnkRGdUpkhkmABRQSNgbstgZn_korWoqT12C6r41Q0BkmM4xd3L3Gp48nzp7yBE8qZqkE5SF4m0PTHCRohx_c7nO3hf4MClNStKB2mik51EZNJdp0m~Jk&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770074388936\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770074388936\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAdTAGyjAHPAcANA1qtA==&cid=0CY3ZhYJX1nWnkRGdUpkhkmABRQSNgbstgZn_korWoqT12C6r41Q0BkmM4xd3L3Gp48nzp7yBE8qZqkE5SF4m0PTHCRohx_c7nO3hf4MClNStKB2mik51EZNJdp0m~Jk&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770074388936\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    15 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770074388936\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAdTAGyjAHPAcANA1qtA==&cid=0CY3ZhYJX1nWnkRGdUpkhkmABRQSNgbstgZn_korWoqT12C6r41Q0BkmM4xd3L3Gp48nzp7yBE8qZqkE5SF4m0PTHCRohx_c7nO3hf4MClNStKB2mik51EZNJdp0m~Jk&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770074388936\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n    - element is visible, enabled and stable\n    - scrolling into view if needed\n"
-    },
-    {
-      "t": "2026-02-02T23:27:44.451Z",
-      "event": "bb-session",
-      "session": "737e8881",
-      "url": "https://www.theatermania.com/broadway/reviews/here-lies-love_93847.html"
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770074633466\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA31GDP8xQu3cANCKmrw==&cid=bqsbw0s9DEVkp6WMMXm3iHPO~PmGp2HaPlRWDqWLbwKb6kDfNauqJQE12wG2cu3yxlKd6UlyRM4BBrAgrJKswVX60VADvjJaJ7wZMyAwIJXivXPET8SwxfEaAz9ha61E&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770074633466\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770074633466\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA31GDP8xQu3cANCKmrw==&cid=bqsbw0s9DEVkp6WMMXm3iHPO~PmGp2HaPlRWDqWLbwKb6kDfNauqJQE12wG2cu3yxlKd6UlyRM4BBrAgrJKswVX60VADvjJaJ7wZMyAwIJXivXPET8SwxfEaAz9ha61E&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770074633466\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    17 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770074633466\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA31GDP8xQu3cANCKmrw==&cid=bqsbw0s9DEVkp6WMMXm3iHPO~PmGp2HaPlRWDqWLbwKb6kDfNauqJQE12wG2cu3yxlKd6UlyRM4BBrAgrJKswVX60VADvjJaJ7wZMyAwIJXivXPET8SwxfEaAz9ha61E&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770074633466\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
     }
   ]
 }
