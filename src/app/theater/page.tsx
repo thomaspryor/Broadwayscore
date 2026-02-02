@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { getAllTheaters } from '@/lib/data';
 import { generateBreadcrumbSchema } from '@/lib/seo';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore-ayv17ggvd-thomaspryors-projects.vercel.app';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 export const metadata: Metadata = {
   title: 'Broadway Theaters - All NYC Theater Venues',
