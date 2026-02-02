@@ -1,39 +1,58 @@
 {
   "processed": [
-    "wicked-2003/nytimes--charles-isherwood.json",
-    "wicked-2003/variety--charles-isherwood.json",
-    "wicked-2003/ew--alice-king.json",
-    "wicked-2003/the-journal-news-lohud--jacques-le-sourd.json",
-    "wicked-2003/village-voice--michael-feingold.json",
-    "wicked-2003/washpost--peter-marks.json"
+    "the-notebook-2024/nytimes--jesse-green.json",
+    "the-notebook-2024/nytimes--unknown.json",
+    "the-notebook-2024/theatermania--jesse-green.json"
   ],
   "failed": [
-    "wicked-2003/newyorker--.json",
-    "wicked-2003/ew--lisa-schwarzbaum.json",
-    "wicked-2003/observer--rex-reed.json",
-    "wicked-2003/timeout--david-cote.json",
-    "wicked-2003/wsj--terry-teachout.json",
-    "wicked-2003/curtainup--elyse-sommer.json",
-    "wicked-2003/frontmezzjunkies--unknown.json",
-    "wicked-2003/njcom-star-ledger--michael-sommers.json"
+    "the-notebook-2024/hollywood-reporter--david-rooney.json",
+    "the-notebook-2024/vulture--helen-shaw.json",
+    "the-notebook-2024/deadline--greg-evans.json",
+    "the-notebook-2024/nydailynews--chris-jones.json",
+    "the-notebook-2024/timeout--adam-feldman.json",
+    "the-notebook-2024/wsj--charles-isherwood.json",
+    "the-notebook-2024/rollingstone--brittany-spanos.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "wicked-2003/the-journal-news-lohud--jacques-le-sourd.json",
-      "wicked-2003/washpost--peter-marks.json"
+    "playwright": [],
+    "browserbase": [
+      "data/review-texts/the-notebook-2024/nydailynews--chris-jones.json"
     ],
-    "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "the-notebook-2024/theatermania--jesse-green.json"
+    ],
     "brightdata": [],
     "archive": [
-      "wicked-2003/nytimes--charles-isherwood.json",
-      "wicked-2003/variety--charles-isherwood.json",
-      "wicked-2003/ew--alice-king.json",
-      "wicked-2003/village-voice--michael-feingold.json"
+      "the-notebook-2024/nytimes--jesse-green.json",
+      "the-notebook-2024/nytimes--unknown.json"
     ]
   },
-  "startTime": "2026-02-02T23:31:50.213Z",
-  "lastProcessed": "wicked-2003/washpost--peter-marks.json",
-  "log": []
+  "startTime": "2026-02-02T23:32:28.483Z",
+  "lastProcessed": "the-notebook-2024/rollingstone--brittany-spanos.json",
+  "log": [
+    {
+      "t": "2026-02-02T23:34:31.322Z",
+      "event": "bb-session",
+      "session": "39e44eb6",
+      "url": "https://www.vulture.com/article/the-notebook-broadway-review.html"
+    },
+    {
+      "t": "2026-02-02T23:34:33.649Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-02T23:38:06.833Z",
+      "event": "bb-session",
+      "session": "379023a1",
+      "url": "https://www.nydailynews.com/2024/03/14/broadway-review-the-notebook-is-an-unexpe"
+    },
+    {
+      "t": "2026-02-02T23:38:36.972Z",
+      "event": "bb-session",
+      "session": "f59074ef",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/the-notebook_93127.ht"
+    }
+  ]
 }

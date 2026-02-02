@@ -15,8 +15,8 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The Outsiders is a deeply felt, beautifully staged musical that honors its source material while finding its own theatrical voice.",
-  "contentTier": "truncated",
-  "wordCount": 20,
+  "contentTier": "complete",
+  "wordCount": 1803,
   "llmScore": {
     "score": 78,
     "confidence": "medium",
@@ -70,7 +70,7 @@
   "isFullReview": true,
   "textWordCount": 1803,
   "archivePath": "data/archives/reviews/the-outsiders-2024/theatermania--adam-feldman_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T15:07:35.355Z",
+  "textFetchedAt": "2026-02-02T23:33:40.614Z",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
@@ -86,6 +86,12 @@
       "error": "Skipped - known blocked site"
     },
     {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Insufficient text: 0 chars"
+    },
+    {
       "tier": 2,
       "method": "scrapingbee",
       "success": true
@@ -93,13 +99,12 @@
   ],
   "fetchTier": 2,
   "textQuality": "truncated",
-  "truncationSignals": [
-    "has_paywall_text"
-  ],
+  "truncationSignals": [],
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "textIssues": [
     "Show title not found in text"
   ],
-  "rescoreCompletedAt": "2026-02-02T14:26:01.378Z"
+  "rescoreCompletedAt": "2026-02-02T14:26:01.378Z",
+  "tierReason": "Full review text"
 }

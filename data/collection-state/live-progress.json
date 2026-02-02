@@ -1,15 +1,39 @@
 {
-  "updatedAt": "2026-02-02T23:34:42.686Z",
-  "processed": 6,
-  "failed": 8,
-  "successRate": "42.9%",
+  "updatedAt": "2026-02-02T23:39:24.037Z",
+  "processed": 3,
+  "failed": 7,
+  "successRate": "30.0%",
   "tierBreakdown": {
-    "playwright": 2,
-    "browserbase": 0,
-    "scrapingbee": 0,
+    "playwright": 0,
+    "browserbase": 1,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archive": 4
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-02-02T23:34:31.322Z",
+      "event": "bb-session",
+      "session": "39e44eb6",
+      "url": "https://www.vulture.com/article/the-notebook-broadway-review.html"
+    },
+    {
+      "t": "2026-02-02T23:34:33.649Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-02T23:38:06.833Z",
+      "event": "bb-session",
+      "session": "379023a1",
+      "url": "https://www.nydailynews.com/2024/03/14/broadway-review-the-notebook-is-an-unexpe"
+    },
+    {
+      "t": "2026-02-02T23:38:36.972Z",
+      "event": "bb-session",
+      "session": "f59074ef",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/the-notebook_93127.ht"
+    }
+  ]
 }
