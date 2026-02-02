@@ -1,97 +1,96 @@
 {
-  "runDate": "2026-02-02T05:11:23.491Z",
+  "runDate": "2026-02-02T05:15:15.556Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 10,
     "priority": "all",
-    "showFilter": "wicked-2003",
+    "showFilter": "uncle-vanya-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
+    "processed": 3,
     "failed": 7,
     "skipped": 0,
-    "successRate": "22.2%"
+    "successRate": "30.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 2,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 3
+    "brightdata": 1,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 1,
-    "tier1_5Attempts": 1,
+    "tier1Attempts": 7,
+    "tier1Success": 3,
+    "tier1_5Attempts": 5,
     "tier1_5Success": 1,
-    "tier2Attempts": 1,
+    "tier2Attempts": 5,
     "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 0,
-    "tier4Attempts": 10,
-    "tier4Success": 5,
+    "tier3Attempts": 3,
+    "tier3Success": 3,
+    "tier4Attempts": 5,
+    "tier4Success": 2,
     "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 12,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
-    "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 0,
+    "scrapingBeeCreditsUsed": 23,
+    "browserbaseSessionsUsed": 5,
+    "browserbaseMinutesUsed": 1.8,
+    "urlDiscoveryAttempts": 3,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "wicked-2003/nytimes--charles-isherwood.json",
-    "wicked-2003/ew--alice-king.json",
-    "wicked-2003/observer--rex-reed.json"
+    "uncle-vanya-2024/broadwaynews--brittani-samuel.json",
+    "uncle-vanya-2024/observer--rex-reed.json",
+    "uncle-vanya-2024/theatermania--jesse-green.json"
   ],
   "failed": [
-    "wicked-2003/variety--charles-isherwood.json",
-    "wicked-2003/ew--lisa-schwarzbaum.json",
-    "wicked-2003/timeout--david-cote.json",
-    "wicked-2003/wsj--terry-teachout.json",
-    "wicked-2003/curtainup--elyse-sommer.json",
-    "wicked-2003/frontmezzjunkies--unknown.json",
-    "wicked-2003/njcom-star-ledger--michael-sommers.json"
+    "uncle-vanya-2024/variety--bob-verini.json",
+    "uncle-vanya-2024/vulture--helen-shaw.json",
+    "uncle-vanya-2024/deadline--greg-evans.json",
+    "uncle-vanya-2024/new-york-sun--elysa-gardner.json",
+    "uncle-vanya-2024/thewrap--robert-hofler.json",
+    "uncle-vanya-2024/timeout--adam-feldman.json",
+    "uncle-vanya-2024/wsj--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "uncle-vanya-2024/broadwaynews--brittani-samuel.json"
+    ],
     "browserbase": [
-      "data/review-texts/wicked-2003/observer--rex-reed.json",
-      "wicked-2003/observer--rex-reed.json"
+      "data/review-texts/uncle-vanya-2024/observer--rex-reed.json",
+      "uncle-vanya-2024/observer--rex-reed.json"
     ],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "uncle-vanya-2024/theatermania--jesse-green.json"
+    ],
     "archive": [
-      "wicked-2003/nytimes--charles-isherwood.json",
-      "wicked-2003/ew--alice-king.json",
-      "wicked-2003/variety--charles-isherwood.json"
+      "uncle-vanya-2024/variety--bob-verini.json"
     ]
   },
   "failuresByOutlet": {
-    "Entertainment Weekly": {
+    "Vulture": {
       "count": 1,
-      "domain": "ew.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "CurtainUp": {
-      "count": 1,
-      "domain": "curtainup.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "NJ.com": {
-      "count": 1,
-      "domain": "wickedthemusical.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
+      "domain": "vulture.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "uncle-vanya-2024/variety--bob-verini.json",
+      "oldUrl": "https://variety.com/2024/legit/reviews/uncle-vanya-review-steve-carell-william-jackson-harper-1236207309/",
+      "newUrl": "https://variety.com/2024/legit/reviews/uncle-vanya-review-steve-carrell-broadway-1235980718/"
+    },
+    {
+      "reviewId": "uncle-vanya-2024/observer--rex-reed.json",
+      "oldUrl": "https://observer.com/2024/01/uncle-vanya-broadway-review-steve-carell-lincoln-center/",
+      "newUrl": "https://observer.com/2024/04/review-steve-carell-is-a-lovable-loser-in-a-fragmentary-uncle-vanya/"
+    }
+  ]
 }
