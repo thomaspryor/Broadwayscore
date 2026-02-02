@@ -1,22 +1,33 @@
 {
-  "updatedAt": "2026-02-02T02:42:11.317Z",
+  "updatedAt": "2026-02-02T02:50:40.660Z",
   "processed": 4,
-  "failed": 1,
-  "successRate": "80.0%",
+  "failed": 2,
+  "successRate": "66.7%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archive": 3
+    "archive": 2
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-02-02T02:41:47.160Z",
+      "t": "2026-02-02T02:49:17.003Z",
       "event": "bb-session",
-      "session": "f654b952",
+      "session": "c028c0e8",
       "url": "https://www.theatermania.com/new-york-city-theater/reviews/spamalot-broadway-st-"
+    },
+    {
+      "t": "2026-02-02T02:49:59.513Z",
+      "event": "bb-session",
+      "session": "14fb1a60",
+      "url": "https://www.wsj.com/articles/spamalot-review-king-arthur-monty-python-broadway-e"
+    },
+    {
+      "t": "2026-02-02T02:50:20.516Z",
+      "event": "bb-login-uncertain",
+      "domain": "wsj.com"
     }
   ]
 }
