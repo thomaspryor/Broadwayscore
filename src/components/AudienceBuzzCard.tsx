@@ -163,7 +163,7 @@ export default function AudienceBuzzCard({ buzz, showScoreUrl }: AudienceBuzzCar
             {grade.grade}
           </div>
           <div>
-            <div className={`text-lg font-bold ${colors.textClass}`}>{grade.tooltip}</div>
+            <div className={`text-lg font-bold ${colors.textClass}`}>{grade.label}</div>
             <div className="text-sm text-gray-400">
               Based on {formatReviewCount(
                 (showScore?.reviewCount || 0) + (mezzanine?.reviewCount || 0) + (reddit?.reviewCount || 0)
