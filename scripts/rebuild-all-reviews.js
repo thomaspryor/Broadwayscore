@@ -268,6 +268,12 @@ function cleanExcerpt(text, aggressive = false) {
 
   let cleaned = decodeHtmlEntities(text);
 
+  // Reject URLs masquerading as excerpts
+  if (/^https?:\/\//i.test(cleaned.trim())) return null;
+
+  // Strip "| Photo:" caption artifacts
+  cleaned = cleaned.replace(/^[^|]{0,80}\|\s*Photo\s*:\s*[A-Z][a-z]+(?:\s+(?:and\s+)?[A-Z][a-z]+)*(?:\s+[A-Z][a-z]+)*\s+/i, '');
+
   // Remove JavaScript/ad code patterns
   cleaned = cleaned.replace(/blogherads\.[^;]+;?/gi, '');
   cleaned = cleaned.replace(/\.defineSlot\([^)]+\)[^;]*;?/gi, '');
@@ -277,6 +283,7 @@ function cleanExcerpt(text, aggressive = false) {
   cleaned = cleaned.replace(/\.setClsOptimization\([^)]+\)[^;]*;?/gi, '');
   cleaned = cleaned.replace(/\.setSubAdUnitPath\([^)]+\)[^;]*;?/gi, '');
   cleaned = cleaned.replace(/googletag\.[^;]+;?/gi, '');
+  cleaned = cleaned.replace(/\(adsbygoogle\s*=\s*window\.adsbygoogle\s*\|\|\s*\[\]\)\.push\(\{[^}]*\}\);?\s*/g, '');
   cleaned = cleaned.replace(/\[\s*["']mid-article\d*["'][^\]]*\]/gi, '');
   cleaned = cleaned.replace(/Related Stories\s+[A-Z][^"]*$/gi, '');
 
@@ -289,11 +296,14 @@ function cleanExcerpt(text, aggressive = false) {
     cleaned = cleaned.substring(0, nextCriticMatch.index + 1);
   }
 
+  // Strip trailing "Read more" / "Continue reading" / "Read the full review"
+  cleaned = cleaned.replace(/\s*(Read more|Continue reading|Read the full review)\.?\s*$/i, '');
+
   // Normalize whitespace
   cleaned = cleaned.replace(/\s+/g, ' ').trim();
 
-  // Skip if starts mid-sentence (unless it's a quote)
-  if (/^[a-z]/.test(cleaned) && !cleaned.startsWith('"') && cleaned.length < 100) {
+  // Skip if starts mid-word/mid-sentence (unless it's a quote)
+  if (/^[a-z]/.test(cleaned) && !cleaned.startsWith('"')) {
     // Try to find the first complete sentence
     const sentenceStart = cleaned.search(/[.!?]\s+[A-Z]/);
     if (sentenceStart > 0 && sentenceStart < cleaned.length - 50) {
@@ -315,7 +325,7 @@ function cleanExcerpt(text, aggressive = false) {
   }
 
   // Final junk check
-  if (/defineSlot|setTargeting|blogherads|Plus Icon/i.test(cleaned)) {
+  if (/defineSlot|setTargeting|blogherads|Plus Icon|adsbygoogle|googletag/i.test(cleaned)) {
     return null;
   }
 
@@ -330,10 +340,64 @@ function extractExcerptFromFullText(fullText, showTitle) {
 
   let text = decodeHtmlEntities(fullText);
 
-  // Split into paragraphs/sentences
+  // Strip leading star ratings (★★★★☆, ⭐⭐⭐, etc.)
+  text = text.replace(/^[\s★☆⭐✩✪❤]+/, '');
+
+  // Strip leading metadata/boilerplate lines before the actual review
+  // Split on newlines first to skip header junk
+  const lines = text.split(/\n+/).map(l => l.trim()).filter(l => l.length > 0);
+  let startIdx = 0;
+  for (let i = 0; i < Math.min(lines.length, 10); i++) {
+    const line = lines[i];
+    // Skip: dates, bylines, categories, photo credits, "Theater review", metadata
+    if (/^(By|Photo|Posted in|Author:|Date:|Published|Reviews?\s+['''""]|Theater review|Read our review|Category:|Tags:)/i.test(line)) { startIdx = i + 1; continue; }
+    if (/^(Broadway|Off-Broadway|Theater Reviews?|Musical|Play)\s*[,|]/i.test(line)) { startIdx = i + 1; continue; }
+    if (/^\d{1,2}:\d{2}\s*(AM|PM)/i.test(line)) { startIdx = i + 1; continue; }
+    if (/^\w+\s+\d{1,2},\s+\d{4}/.test(line) && line.length < 50) { startIdx = i + 1; continue; }  // "November 20, 2025"
+    if (/^(Leave a Comment|Comments?:?\s*\d)/i.test(line)) { startIdx = i + 1; continue; }
+    if (line.length < 15) { startIdx = i + 1; continue; }  // Very short header fragments
+    // If line contains "Date:" or "Author:" mid-line, it's metadata
+    if (/\bDate:\s*\w+\s+\d/i.test(line) || /\bAuthor:\s*[A-Z]/i.test(line)) { startIdx = i + 1; continue; }
+    // Skip article subtitles like "'Title' is a ... (Broadway review)" or "(review)"
+    if (/\((?:Broadway |theater |play )?review\)/i.test(line)) { startIdx = i + 1; continue; }
+    // Skip lines with "\d+ Comments" (WordPress metadata)
+    if (/^\d+\s+Comments?\b/i.test(line)) { startIdx = i + 1; continue; }
+    // Skip "Share this:" and similar social media prompts
+    if (/^Share (this|on|via)/i.test(line)) { startIdx = i + 1; continue; }
+    // Skip photo caption lines (Theatrely format: "Name | Photo: Photographer")
+    if (/\|\s*Photo\s*:/i.test(line)) { startIdx = i + 1; continue; }
+    // Skip URL-only lines
+    if (/^https?:\/\//i.test(line) && line.length < 200) { startIdx = i + 1; continue; }
+    break;
+  }
+  text = lines.slice(startIdx).join(' ');
+
+  // Strip photo caption + credit at start (Theatrely: "Name | Photo: Photographer Review text...")
+  text = text.replace(/^[^|]{0,80}\|\s*Photo\s*:\s*[A-Z][a-z]+(?:\s+(?:and\s+)?[A-Z][a-z]+)*(?:\s+[A-Z][a-z]+)*\s+/i, '');
+  text = text.replace(/^[^.!?]*\bPhoto\s+(by|credit|courtesy)\b[^.]*\.\s*/i, '');
+  // Strip URLs at start of text
+  text = text.replace(/^https?:\/\/\S+\s*/i, '');
+
+  // Strip concatenated page title + metadata blobs (common on One-Minute Critic, CultureSauce, etc.)
+  // Pattern: "Reviews 'Title' <headline> <Author> <Date> <number> <Cast> in "Title"." Photo by X. Share this: By Author <actual review>"
+  text = text.replace(/^Reviews?\s+[''""'][^''"'""]+[''""'][^.]*\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\b[^.]*\.\s*(?:Photo\s+by\b[^.]*\.\s*)?(?:Share\s+this:[^.]*\.\s*)?(?:By\s+[A-Z][a-z]+\s+[A-Z][a-z]+\s+)?/i, '');
+
+  // Strip "Share this:" / "Share on:" social sharing prompts at start of text
+  text = text.replace(/^Share\s+(this|on|via)\s*:\s*/i, '');
+  // Strip "By Author Name" byline at start (after other stripping)
+  text = text.replace(/^By\s+[A-Z][a-z]+\s+[A-Z][a-z]+\s+/i, '');
+
+  // Strip "Things you buy through our links..." affiliate disclaimers
+  text = text.replace(/^Things you buy through our links[^.]*\.\s*/i, '');
+
+  // Strip inline ad injection code (adsbygoogle, googletag, etc.)
+  text = text.replace(/\(adsbygoogle\s*=\s*window\.adsbygoogle\s*\|\|\s*\[\]\)\.push\(\{[^}]*\}\);?\s*/g, '');
+  text = text.replace(/googletag\.cmd\.push\([^)]*\);?\s*/g, '');
+
+  // Split into sentences
   const sentences = text.split(/(?<=[.!?])\s+/);
 
-  // Find the first substantive sentence (skip bylines, photo credits)
+  // Find the first substantive sentence (skip bylines, photo credits, metadata)
   let excerpt = '';
   for (const sentence of sentences) {
     // Skip short fragments, bylines, photo credits
@@ -341,6 +405,22 @@ function extractExcerptFromFullText(fullText, showTitle) {
     if (/^By\s+[A-Z]/i.test(sentence)) continue;
     if (/^Photo:/i.test(sentence)) continue;
     if (/^\d{1,2}:\d{2}/i.test(sentence)) continue;
+    // Skip sentences that are mostly metadata
+    if (/\b(Published Date|Leave a Comment|Posted in)\b/i.test(sentence)) continue;
+    // Skip "Read more" / "Read our review" / "Continue reading"
+    if (/^Read (more|our review|the full)/i.test(sentence)) continue;
+    // Skip star ratings embedded in text
+    if (/^[★☆⭐✩✪❤\s]{3,}/.test(sentence)) continue;
+    // Skip sentences starting with site navigation ("Reviews 'Title'...", "Posted in...")
+    if (/^Reviews?\s+['''""]/i.test(sentence)) continue;
+    // Skip social sharing / boilerplate ("Share this: By Author...", "Share on Facebook...")
+    if (/^Share\s+(this|on|via)\b/i.test(sentence)) continue;
+    // Skip photo captions ("Sam Tutty and X in "Title"." or "Photo by X." or "Name | Photo: X")
+    if (/\bPhoto\s+(by|credit|courtesy)\b/i.test(sentence)) continue;
+    if (/\|\s*Photo\s*:/i.test(sentence)) continue;
+    if (/\bin\s+[""][^""]+[""]\s*\.\s*$/i.test(sentence) && sentence.length < 120) continue;
+    // Skip sentences with embedded metadata (author name + date + number concatenated)
+    if (/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2},\s+\d{4}\s+\d+\s+/i.test(sentence) && sentence.indexOf('Photo') !== -1) continue;
 
     excerpt += (excerpt ? ' ' : '') + sentence;
 
@@ -352,13 +432,33 @@ function extractExcerptFromFullText(fullText, showTitle) {
 
   if (excerpt.length < 50) return null;
 
+  // Strip trailing "Read more." or similar
+  excerpt = excerpt.replace(/\s*Read more\.?\s*$/i, '');
+
+  // Reject if excerpt is ad code, URL, or junk
+  if (/defineSlot|setTargeting|blogherads|adsbygoogle|googletag/i.test(excerpt)) return null;
+  if (/^https?:\/\//i.test(excerpt)) return null;
+
+  // Reject if starts mid-word (lowercase with no preceding context)
+  if (/^[a-z]/.test(excerpt)) {
+    const nextSentence = excerpt.search(/[.!?]\s+[A-Z]/);
+    if (nextSentence > 0 && nextSentence < excerpt.length - 50) {
+      excerpt = excerpt.substring(nextSentence + 2);
+    } else {
+      return null;
+    }
+  }
+
+  // Strip any remaining "| Photo:" artifacts
+  excerpt = excerpt.replace(/\|\s*Photo\s*:\s*[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\s*/g, '');
+
   // Truncate if needed
   if (excerpt.length > 350) {
     const truncAt = excerpt.lastIndexOf('.', 350);
     excerpt = truncAt > 100 ? excerpt.substring(0, truncAt + 1) : excerpt.substring(0, 347) + '...';
   }
 
-  return excerpt;
+  return excerpt.length > 50 ? excerpt : null;
 }
 
 /**
