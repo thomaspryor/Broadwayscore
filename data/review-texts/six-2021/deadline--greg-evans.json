@@ -66,15 +66,15 @@
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 82,
   "rescoreCompletedAt": "2026-02-01T16:06:24.984Z",
-  "contentTier": "truncated",
-  "wordCount": 169,
+  "contentTier": "complete",
+  "wordCount": 786,
   "truncationSignals": [
-    "has_footer_text"
+    "has_footer_junk"
   ],
   "isFullReview": true,
   "textWordCount": 786,
   "archivePath": "data/archives/reviews/six-2021/deadline--greg-evans_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T16:33:03.609Z",
+  "textFetchedAt": "2026-02-02T23:27:21.568Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -90,5 +90,6 @@
   "archiveOrgUrl": "http://web.archive.org/web/20230104022516/https://deadline.com/2021/10/six-broadway-review-musical-crowns-henrys-wives-royal-treatment-1234848186/",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "tierReason": "Full review text"
 }

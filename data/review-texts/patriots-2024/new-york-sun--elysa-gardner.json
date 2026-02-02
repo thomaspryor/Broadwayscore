@@ -62,14 +62,14 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Rave"
   },
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "complete",
+  "wordCount": 869,
   "isFullReview": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 84,
   "textWordCount": 869,
   "archivePath": "data/archives/reviews/patriots-2024/new-york-sun--elysa-gardner_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T16:34:12.844Z",
+  "textFetchedAt": "2026-02-02T23:31:53.985Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -81,11 +81,12 @@
   "fetchTier": 4,
   "textQuality": "partial",
   "truncationSignals": [
-    "has_footer_text"
+    "has_footer_junk"
   ],
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251116003046",
   "archiveOrgUrl": "http://web.archive.org/web/20251116003046/https://www.nysun.com/article/for-those-who-cant-get-enough-political-intrigue-patriots-offers-some-of-the-best-youll-see-on-stage",
-  "rescoreCompletedAt": "2026-02-02T18:51:51.141Z"
+  "rescoreCompletedAt": "2026-02-02T18:51:51.141Z",
+  "tierReason": "Full review text"
 }
