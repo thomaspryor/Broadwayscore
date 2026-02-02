@@ -109,6 +109,11 @@ export const DESIGNATION_BUMPS: Record<string, number> = {
   'Recommended': 2,       // Guardian Pick of the Week
 };
 
+// Minimum score floors for designations (applied after bump)
+export const DESIGNATION_FLOORS: Record<string, number> = {
+  'Critics_Pick': 70,     // NYT Critics' Pick cannot score below 70
+};
+
 // ===========================================
 // RATING NORMALIZATION MAPPINGS
 // ===========================================
