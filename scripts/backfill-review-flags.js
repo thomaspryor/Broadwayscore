@@ -127,10 +127,10 @@ for (const showId of showDirs) {
       }
 
       // 1B: Byline cross-check (exclude cast/creative names to avoid false positives)
-      const showForByline = showsData[showId];
+      const show = showsData[showId];
       const excludeNames = [
-        ...((showForByline && showForByline.cast) || []).map(c => c.name),
-        ...((showForByline && showForByline.creativeTeam) || []).map(c => c.name)
+        ...((show && show.cast) || []).map(c => c.name),
+        ...((show && show.creativeTeam) || []).map(c => c.name)
       ];
       const bylineResult = extractByline(fullText, { excludeNames });
       if (bylineResult.found) {
@@ -151,12 +151,6 @@ for (const showId of showDirs) {
           delete data.expectedCritic;
           modified = true;
         }
-      } else if (data.misattributedFullText) {
-        // No byline found at all — clear stale flag
-        delete data.misattributedFullText;
-        delete data.extractedByline;
-        delete data.expectedCritic;
-        modified = true;
       }
 
       // 1C: Content hash dedup
