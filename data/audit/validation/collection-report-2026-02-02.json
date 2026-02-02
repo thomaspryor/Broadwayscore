@@ -1,78 +1,81 @@
 {
-  "runDate": "2026-02-02T17:49:13.988Z",
+  "runDate": "2026-02-02T17:52:04.501Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "patriots-2024",
+    "showFilter": "suffs-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 6,
-    "failed": 7,
+    "processed": 7,
+    "failed": 8,
     "skipped": 0,
-    "successRate": "46.2%"
+    "successRate": "46.7%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 2,
     "browserbase": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archive": 3
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 2,
+    "tier1Attempts": 6,
+    "tier1Success": 3,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 4,
     "tier2Success": 1,
-    "tier3Attempts": 3,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier4Attempts": 17,
+    "tier4Attempts": 18,
     "tier4Success": 6,
-    "totalFailed": 7,
-    "scrapingBeeCreditsUsed": 21,
+    "totalFailed": 8,
+    "scrapingBeeCreditsUsed": 13,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "urlDiscoveryAttempts": 3,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "patriots-2024/variety--jesse-green.json",
-    "patriots-2024/broadwaynews--brittani-samuel.json",
-    "patriots-2024/deadline--pete-hammond.json",
-    "patriots-2024/new-york-sun--elysa-gardner.json",
-    "patriots-2024/theatermania--jesse-green.json",
-    "patriots-2024/washpost--peter-marks.json"
+    "suffs-2024/nytimes--jesse-green.json",
+    "suffs-2024/variety--aramide-tinubu.json",
+    "suffs-2024/vulture--helen-shaw.json",
+    "suffs-2024/ew--kristen-baldwin.json",
+    "suffs-2024/theatermania--jesse-green.json",
+    "suffs-2024/the-times--nancy-durrant.json",
+    "suffs-2024/washpost--peter-marks.json"
   ],
   "failed": [
-    "patriots-2024/deadline--greg-evans.json",
-    "patriots-2024/guardian--michael-billington.json",
-    "patriots-2024/timeout--raven-snook.json",
-    "patriots-2024/wsj--charles-isherwood.json",
-    "patriots-2024/wsj--terry-teachout.json",
-    "patriots-2024/nysr--frank-scheck.json",
-    "patriots-2024/talkinbroadway--matthew-murray.json"
+    "suffs-2024/chelsea-community-news--michael-musto.json",
+    "suffs-2024/guardian--adrian-horton.json",
+    "suffs-2024/observer--rex-reed.json",
+    "suffs-2024/timeout--adam-feldman.json",
+    "suffs-2024/timeout--regina-robbins.json",
+    "suffs-2024/wsj--charles-isherwood.json",
+    "suffs-2024/talkinbroadway--matthew-murray.json",
+    "suffs-2024/usatoday--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
-      "patriots-2024/deadline--pete-hammond.json",
-      "patriots-2024/washpost--peter-marks.json"
+      "suffs-2024/ew--kristen-baldwin.json",
+      "suffs-2024/the-times--nancy-durrant.json"
     ],
     "browserbase": [],
     "scrapingbee": [
-      "patriots-2024/theatermania--jesse-green.json"
+      "suffs-2024/theatermania--jesse-green.json"
     ],
     "brightdata": [],
     "archive": [
-      "patriots-2024/variety--jesse-green.json",
-      "patriots-2024/broadwaynews--brittani-samuel.json",
-      "patriots-2024/new-york-sun--elysa-gardner.json"
+      "suffs-2024/nytimes--jesse-green.json",
+      "suffs-2024/variety--aramide-tinubu.json",
+      "suffs-2024/vulture--helen-shaw.json",
+      "suffs-2024/washpost--peter-marks.json"
     ]
   },
   "failuresByOutlet": {
@@ -83,6 +86,13 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     },
+    "Observer": {
+      "count": 1,
+      "domain": "observer.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
     "The Wall Street Journal": {
       "count": 1,
       "domain": "wsj.com",
@@ -90,16 +100,16 @@
       "isPaywalled": true,
       "isKnownBlocked": true
     },
-    "New York Stage Review": {
+    "Talkin' Broadway": {
       "count": 1,
-      "domain": "didtheylikeit.com",
+      "domain": "talkinbroadway.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "Talkin' Broadway": {
+    "USA Today": {
       "count": 1,
-      "domain": "talkinbroadway.com",
+      "domain": "usatoday.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
