@@ -181,14 +181,10 @@ function extractLetterGradeFromText(text) {
  * Returns { type, raw, score } or null if no explicit rating found
  */
 function extractExplicitRating(data) {
-  // Combine all text sources
-  let allText = [
-    data.fullText || '',
-    data.dtliExcerpt || '',
-    data.bwwExcerpt || '',
-    data.showScoreExcerpt || '',
-    data.nycTheatreExcerpt || ''
-  ].join(' ');
+  // Only scan fullText — never excerpts. Aggregator excerpts (especially bwwExcerpt)
+  // can contain adjacent critics' ratings from roundup pages, causing cross-contamination.
+  // Excerpt-only reviews are already confidence-downgraded and scored via Priority 2/3.
+  let allText = data.fullText || '';
 
   if (!allText.trim()) return null;
 
@@ -857,9 +853,28 @@ function getBestScore(data) {
     return null;
   }
 
-  // Priority 0: EXPLICIT RATINGS IN TEXT (most reliable!)
-  // Star ratings, letter grades, "X out of Y" directly stated in the review
-  // These override LLM scores which have ~33% error rate on explicit ratings
+  // Priority 0: Human-reviewed score (manual override from audit queue)
+  // These are set after reviewing flagged reviews where LLM and thumbs disagree.
+  // Highest priority — a deliberate human decision always wins.
+  if (data.humanReviewScore && data.humanReviewScore >= 1 && data.humanReviewScore <= 100) {
+    return { score: data.humanReviewScore, source: 'human-review' };
+  }
+
+  // Priority 0.5: Parse originalScore field (aggregator-provided, outlet-verified)
+  // Ratings like "4/5 stars", "B+", "★★★★☆" come from the aggregator or scraper
+  // and are more reliable than regex extraction from fullText, which can match
+  // garbage sidebar content or unrelated embedded articles.
+  if (data.originalScore) {
+    const parsed = parseOriginalScore(data.originalScore);
+    if (parsed !== null) {
+      return { score: parsed, source: 'originalScore-priority0' };
+    }
+  }
+
+  // Priority 1: Explicit ratings extracted from fullText only
+  // Star ratings, letter grades, "X out of Y" directly stated in the review.
+  // Runs after originalScore because fullText can contain garbage sidebar content
+  // (e.g., "Alaska scored 7.31 out of 10" in a Digital Journal review).
   const explicitRating = extractExplicitRating(data);
   if (explicitRating) {
     // Track if this overrides an LLM score
@@ -883,23 +898,7 @@ function getBestScore(data) {
     };
   }
 
-  // Priority 0.5: Human-reviewed score (manual override from audit queue)
-  // These are set after reviewing flagged reviews where LLM and thumbs disagree
-  if (data.humanReviewScore && data.humanReviewScore >= 1 && data.humanReviewScore <= 100) {
-    return { score: data.humanReviewScore, source: 'human-review' };
-  }
-
-  // Priority 0b: Parse originalScore field BEFORE LLM
-  // Aggregator-provided ratings like "4/5 stars", "B+", "★★★★☆" are more reliable
-  // than LLM scores, which can be confused by garbage/paywall text
-  if (data.originalScore) {
-    const parsed = parseOriginalScore(data.originalScore);
-    if (parsed !== null) {
-      return { score: parsed, source: 'originalScore-priority0' };
-    }
-  }
-
-  // Priority 1: LLM score (HIGH/MEDIUM confidence only)
+  // Priority 2: LLM score (HIGH/MEDIUM confidence only)
   if (data.llmScore && data.llmScore.score) {
     const confidence = data.llmScore.confidence;
     const needsReview = data.ensembleData?.needsReview;
@@ -924,7 +923,7 @@ function getBestScore(data) {
     }
   }
 
-  // P2: Thumb override of low-confidence/needs-review/excerpt-only LLM scores
+  // Priority 3: Thumb override of low-confidence/needs-review/excerpt-only LLM scores
   const hasLowConfLlm = data.llmScore?.score &&
     (data.llmScore.confidence === 'low' || data.ensembleData?.needsReview ||
      !(data.fullText && data.fullText.trim().length > 100 && !data.fullTextRecoveredFrom));
@@ -959,7 +958,7 @@ function getBestScore(data) {
     if ((dtliIsMeh && !bwwScore) || (bwwIsMeh && !dtliScore) || (dtliIsMeh && bwwIsMeh)) {
       // Both are Meh or only Meh available — don't override
       data.mehThumbIgnored = true;
-      // Fall through to LLM fallback (Priority 3)
+      // Fall through to LLM fallback (Priority 4)
     } else {
       // Rule 1: Both thumbs agree AND disagree with LLM direction → override (high signal)
       // Uses direction comparison (positive/negative/neutral) not exact bucket,
@@ -989,7 +988,7 @@ function getBestScore(data) {
     }
   }
 
-  // P3: LLM score fallback (low confidence, needs review, or excerpt-only - when no thumb available)
+  // Priority 4: LLM score fallback (low confidence, needs review, or excerpt-only - when no thumb available)
   if (data.llmScore && data.llmScore.score) {
     const confidence = data.llmScore.confidence;
     const needsReview = data.ensembleData?.needsReview;
