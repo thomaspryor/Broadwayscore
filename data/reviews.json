@@ -4,11 +4,11 @@
     "lastUpdated": "2026-02-02",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 1716,
+      "totalReviews": 1715,
       "skippedNoScore": 32,
       "skippedDuplicate": 3,
       "skippedDuplicateUrl": 53,
-      "skippedWrongProduction": 34,
+      "skippedWrongProduction": 35,
       "recoveredFromGarbage": 101,
       "scoreSources": {
         "explicit-stars": 4,
@@ -17,9 +17,9 @@
         "explicit-letterGrade": 1,
         "human-review": 60,
         "originalScore-priority0": 244,
-        "llmScore": 1166,
+        "llmScore": 1168,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 231,
+        "llmScore-lowconf": 228,
         "llmScore-review": 3,
         "assignedScore": 0,
         "originalScore": 0,
@@ -10895,17 +10895,17 @@
       "outletId": "guardian",
       "outlet": "The Guardian",
       "assignedScore": 77,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Adrian Horton",
-      "url": "https://www.theguardian.com/stage/2023/jul/21/here-lies-love-review-broadway-imelda-marcos",
+      "url": "https://www.theguardian.com/stage/2023/jul/20/here-lies-love-review-imelda-marcos-broadway",
       "publishDate": "July 21, 2023",
       "originalRating": null,
       "pullQuote": "Here Lies Love is an ambitious, immersive musical that transforms the Broadway Theatre into a dancefloor-cum-dictator origin story, though its political complexities sometimes get lost in the spectacle.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "here-lies-love-2023",
@@ -16782,23 +16782,6 @@
     },
     {
       "showId": "moulin-rouge-2019",
-      "outletId": "washpost",
-      "outlet": "The Washington Post",
-      "assignedScore": 64,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Peter Marks",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/moulin-rouge-the-musical-is-a-feast-for-the-senses-but-leaves-you-hungry-for-more/2019/07/26/8b5a5a5c-af8a-11e9-bc5c-e73b603e7f38_story.html",
-      "publishDate": "July 26, 2019",
-      "originalRating": null,
-      "pullQuote": "It's a feast for the senses but leaves you hungry for more... The musical adaptation of Baz Luhrmann's film is undeniably spectacular, yet it feels oddly hollow at its core.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "needs-rescrape"
-    },
-    {
-      "showId": "moulin-rouge-2019",
       "outletId": "theater-news-online",
       "outlet": "Theater News Online",
       "assignedScore": 80,
@@ -20542,7 +20525,7 @@
       "pullQuote": "But whatever its faults and near-misses, Ragtime has always been, like its ’90s contemporaries Titanic and Parade, an opportunity for rediscovery.",
       "dtliThumb": "Meh",
       "bwwThumb": "Up",
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "ragtime-2025",
@@ -21548,7 +21531,7 @@
       "pullQuote": "You want to leave shivering with the majesty of nature",
       "dtliThumb": "Down",
       "bwwThumb": null,
-      "contentTier": "needs-rescrape"
+      "contentTier": "complete"
     },
     {
       "showId": "redwood-2025",
@@ -27885,7 +27868,7 @@
       "outletId": "ap",
       "outlet": "Associated Press",
       "assignedScore": 75,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Mark Kennedy",
@@ -27895,7 +27878,7 @@
       "pullQuote": "Steve Carell brings a weary, melancholic presence to Chekhov's drama, finding both comedy and pathos in his portrayal of the titular character.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "uncle-vanya-2024",

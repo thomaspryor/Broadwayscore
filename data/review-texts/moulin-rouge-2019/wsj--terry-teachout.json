@@ -60,8 +60,8 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Pan"
   },
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "truncated",
+  "wordCount": 195,
   "sources": [
     "show-score",
     "web-search"
@@ -71,7 +71,7 @@
   "isFullReview": false,
   "textWordCount": 195,
   "archivePath": "data/archives/reviews/moulin-rouge-2019/wsj--terry-teachout_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:10:31.105Z",
+  "textFetchedAt": "2026-02-02T23:27:21.336Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -85,6 +85,12 @@
       "method": "playwright",
       "success": false,
       "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Insufficient text: 0 chars"
     },
     {
       "tier": 2,
@@ -104,7 +110,8 @@
   "textStatus": "incomplete",
   "sourceMethod": "brightdata",
   "textIssues": [
-    "Word count too low: 243 (min: 300)"
+    "Word count too low: 210 (min: 300)"
   ],
-  "rescoreCompletedAt": "2026-02-02T03:34:54.767Z"
+  "rescoreCompletedAt": "2026-02-02T03:34:54.767Z",
+  "tierReason": "Short text (195 words)"
 }
