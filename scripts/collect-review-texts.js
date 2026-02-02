@@ -879,7 +879,7 @@ async function browserbaseLogin(bbPage, domain, email, password) {
     // accounts.wsj.com/login redirects to sso.accounts.dowjones.com
     // The SSO page has DataDome CAPTCHA - Browserbase's solveCaptchas handles it
     console.log(`    → Browserbase: navigating to WSJ login...`);
-    await bbPage.goto('https://accounts.wsj.com/login', { timeout: CONFIG.loginTimeout, waitUntil: 'networkidle' });
+    await bbPage.goto('https://accounts.wsj.com/login', { timeout: CONFIG.loginTimeout, waitUntil: 'domcontentloaded' });
 
     // Check for and wait for CAPTCHA resolution (DataDome on Dow Jones SSO)
     const hasCaptcha = await bbPage.evaluate(() => {
