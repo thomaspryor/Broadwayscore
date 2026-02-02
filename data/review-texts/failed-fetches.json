@@ -5128,30 +5128,6 @@
     "timestamp": "2026-02-01T19:30:05.811Z"
   },
   {
-    "reviewId": "just-in-time-2025/timeout--adam-feldman.json",
-    "showId": "just-in-time-2025",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/just-in-time-broadway-review-bobby-darin-jonathan-groff",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 8085,
-    "timestamp": "2026-02-01T19:30:14.613Z"
-  },
-  {
-    "reviewId": "lempicka-2024/deadline--greg-evans.json",
-    "showId": "lempicka-2024",
-    "outlet": "Deadline",
-    "critic": "Greg Evans",
-    "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
-    "textLength": 48624,
-    "timestamp": "2026-02-01T19:30:25.409Z"
-  },
-  {
     "reviewId": "aladdin/hollywood-reporter--david-rooney.json",
     "showId": "aladdin",
     "outlet": "The Hollywood Reporter",
@@ -6158,5 +6134,53 @@
     "garbageReason": "Legal/privacy page: \"©2023 VILLAGE VOICE, LLC. ALL RIGHTS RESERVED\"",
     "textLength": 8666,
     "timestamp": "2026-02-02T00:11:06.293Z"
+  },
+  {
+    "reviewId": "illinoise-2024/timeout--adam-feldman.json",
+    "showId": "illinoise-2024",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/illinoise-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Error/404 page: \"we can't find the page\"",
+    "textLength": 16494,
+    "timestamp": "2026-02-02T00:12:35.634Z"
+  },
+  {
+    "reviewId": "just-in-time-2025/timeout--adam-feldman.json",
+    "showId": "just-in-time-2025",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/just-in-time-broadway-review-bobby-darin-jonathan-groff",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 8336,
+    "timestamp": "2026-02-02T00:12:39.022Z"
+  },
+  {
+    "reviewId": "lempicka-2024/deadline--greg-evans.json",
+    "showId": "lempicka-2024",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
+    "textLength": 48624,
+    "timestamp": "2026-02-02T00:12:47.062Z"
+  },
+  {
+    "reviewId": "lempicka-2024/new-york-sun--elysa-gardner.json",
+    "showId": "lempicka-2024",
+    "outlet": "The New York Sun",
+    "critic": "Elysa Gardner",
+    "url": "https://www.nysun.com/article/a-new-broadway-musical-lempicka-offers-opportunity-to-get-to-know-an-art-deco-icon",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
+    "textLength": 614,
+    "timestamp": "2026-02-02T00:13:24.613Z"
   }
 ]
