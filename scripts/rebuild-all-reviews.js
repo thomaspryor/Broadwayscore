@@ -263,6 +263,31 @@ function fixMojibake(text) {
 }
 
 /**
+ * Fix missing periods between concatenated text segments.
+ * Common in NYSR (star rating subtitle + review body) and aggregator excerpts.
+ */
+function fixMissingPeriods(text) {
+  if (!text) return text;
+  let result = text;
+
+  // After a 4-digit year followed by a capital letter starting a new sentence
+  // e.g., "circa 1915 There's" → "circa 1915. There's"
+  result = result.replace(/(\d{4})\s+([A-Z][a-z])/g, '$1. $2');
+
+  // After "No Comment" running into "BY AUTHOR" (Chelsea Community News)
+  result = result.replace(/No Comment\s*(BY\s)/i, 'No Comment. $1');
+
+  // After photo credit parenthetical running into review text
+  // e.g., "(Joan Marcus)Listen" → "(Joan Marcus). Listen"
+  result = result.replace(/\)([A-Z][a-z])/g, '). $1');
+
+  // After "Darkness" running into next word (WaPo motto concatenation)
+  result = result.replace(/Darkness([A-Z][a-z])/g, 'Darkness. $1');
+
+  return result;
+}
+
+/**
  * Detect if text looks like website navigation/junk rather than review content
  */
 function isJunkExcerpt(text) {
@@ -294,6 +319,13 @@ function isJunkExcerpt(text) {
     /Get all the top news.*discount/i,                  // Newsletter promo (BWW)
     /Open\/Close Dates/i,                               // Show metadata (Cititour)
     /\bprivacy policy\b/i,                              // Privacy/legal boilerplate
+    /^Skip to (content|main)/i,                         // Navigation skip link (TheWrap, ChicagoTribune, BroadwayNews)
+    /^Democracy Dies/i,                                 // Washington Post motto
+    /^Q:\s/i,                                           // Quiz widget sidebar (The Times UK)
+    /^Posted on\s+\w+\s+\d/i,                           // WordPress metadata (Chelsea Community News)
+    /^This article was published more than/i,            // WaPo stale article warning
+    /^Listen\d+\s*min/i,                                // WaPo audio player metadata
+    /rose lovers|Bachelor in Paradise|couples grapple/i, // Wrong show content (reality TV)
   ];
 
   for (const pattern of junkPatterns) {
@@ -315,10 +347,22 @@ function isJunkExcerpt(text) {
 function cleanExcerpt(text, aggressive = false) {
   if (!text) return null;
 
-  let cleaned = fixMojibake(decodeHtmlEntities(text));
+  let cleaned = fixMissingPeriods(fixMojibake(decodeHtmlEntities(text)));
 
   // Reject URLs masquerading as excerpts
   if (/^https?:\/\//i.test(cleaned.trim())) return null;
+
+  // Strip navigation/boilerplate prefixes
+  cleaned = cleaned.replace(/^Skip to (content|main content)\s*/i, '');
+  cleaned = cleaned.replace(/^(This article was published more than[^.]*\.\s*)?Democracy Dies in Darkness\s*/i, '');
+  cleaned = cleaned.replace(/^Q:\s+[^?]*\?\s*/i, '');
+  cleaned = cleaned.replace(/^Posted on\s+\w+\s+\d{1,2},?\s+\d{4}\s*/i, '');
+  cleaned = cleaned.replace(/^No Comment\s*(BY\s+)?/i, '');
+  cleaned = cleaned.replace(/^Listen\s*\d+\s*min\s*/i, '');
+  // Strip WaPo photo captions: "Name as Character in 'Title'. (Photographer)"
+  cleaned = cleaned.replace(/^[A-Z][^.]{10,80}\.\s*\([A-Z][a-z]+ [A-Z][a-z]+\)\s*/i, '');
+  // Strip "Review by Author NAME —" or "Review by Author"
+  cleaned = cleaned.replace(/^Review by\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\s*(?:—\s*)?/i, '');
 
   // Strip "| Photo:" caption artifacts
   cleaned = cleaned.replace(/^[^|]{0,80}\|\s*Photo\s*:\s*[A-Z][a-z]+(?:\s+(?:and\s+)?[A-Z][a-z]+)*(?:\s+[A-Z][a-z]+)*\s+/i, '');
@@ -395,10 +439,15 @@ function cleanExcerpt(text, aggressive = false) {
 function extractExcerptFromFullText(fullText, showTitle) {
   if (!fullText || fullText.length < 200) return null;
 
-  let text = fixMojibake(decodeHtmlEntities(fullText));
+  let text = fixMissingPeriods(fixMojibake(decodeHtmlEntities(fullText)));
 
   // Strip leading star ratings (★★★★☆, ⭐⭐⭐, etc.)
   text = text.replace(/^[\s★☆⭐✩✪❤]+/, '');
+
+  // Strip NYSR-style star-rating subtitles: cast list + show description tagline before the review body
+  // Pattern: "Name, Name, Name, and [Name(s)] [verb] this [description]... circa YEAR."
+  // These appear right after star ratings and run into the review text without clear separation
+  text = text.replace(/^[A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+(?:,\s+[A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+){2,}[^.]*\b(?:cast|musical|new|spark|star|exceptional)\b[^.]*\.\s*/i, '');
 
   // Strip leading metadata/boilerplate lines before the actual review
   // Split on newlines first to skip header junk
@@ -409,6 +458,15 @@ function extractExcerptFromFullText(fullText, showTitle) {
     // Skip: dates, bylines, categories, photo credits, "Theater review", metadata
     if (/^(By|Photo|Posted in|Author:|Date:|Published|Reviews?\s+['''""]|Theater review|Read our review|Category:|Tags:)/i.test(line)) { startIdx = i + 1; continue; }
     if (/^(Broadway|Off-Broadway|Theater Reviews?|Musical|Play)\s*[,|]/i.test(line)) { startIdx = i + 1; continue; }
+    // Skip navigation skip links, newspaper mottos, quiz widgets, WaPo boilerplate
+    if (/^Skip to (content|main)/i.test(line)) { startIdx = i + 1; continue; }
+    if (/^Democracy Dies/i.test(line)) { startIdx = i + 1; continue; }
+    if (/^Q:\s/i.test(line)) { startIdx = i + 1; continue; }
+    if (/^This article was published more than/i.test(line)) { startIdx = i + 1; continue; }
+    if (/^Listen\s*\d+\s*min/i.test(line)) { startIdx = i + 1; continue; }
+    if (/^Posted on\s+\w+\s+\d/i.test(line)) { startIdx = i + 1; continue; }
+    if (/^No Comment\b/i.test(line)) { startIdx = i + 1; continue; }
+    if (/^Review by\s+[A-Z]/i.test(line)) { startIdx = i + 1; continue; }
     if (/^\d{1,2}:\d{2}\s*(AM|PM)/i.test(line)) { startIdx = i + 1; continue; }
     if (/^\w+\s+\d{1,2},\s+\d{4}/.test(line) && line.length < 50) { startIdx = i + 1; continue; }  // "November 20, 2025"
     if (/^(Leave a Comment|Comments?:?\s*\d)/i.test(line)) { startIdx = i + 1; continue; }
@@ -430,6 +488,18 @@ function extractExcerptFromFullText(fullText, showTitle) {
     break;
   }
   text = lines.slice(startIdx).join(' ');
+
+  // Strip navigation/boilerplate prefixes that may be on same line as content
+  text = text.replace(/^Skip to (content|main content)\s*/i, '');
+  text = text.replace(/^(This article was published more than[^.]*\.\s*)?Democracy Dies in Darkness\s*/i, '');
+  text = text.replace(/^Q:\s+[^?]*\?\s*/i, '');
+  text = text.replace(/^Posted on\s+\w+\s+\d{1,2},?\s+\d{4}\s*/i, '');
+  text = text.replace(/^No Comment\s*(BY\s+[A-Z][^|]*\|\s*)?/i, '');
+  text = text.replace(/^Listen\s*\d+\s*min\s*/i, '');
+  // Strip WaPo photo captions: "Name as Character in 'Title'. (Photographer)" or "Name in 'Title'. (Photographer)"
+  text = text.replace(/^[A-Z][^.]{10,80}\.\s*\([A-Z][a-z]+ [A-Z][a-z]+\)\s*/i, '');
+  // Strip "Review by Author NAME —" or "Review by Author" followed by location
+  text = text.replace(/^Review by\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\s*(?:—\s*)?(?:NEW YORK\s*—?\s*)?/i, '');
 
   // Strip photo caption + credit at start (Theatrely: "Name | Photo: Photographer Review text...")
   text = text.replace(/^[^|]{0,80}\|\s*Photo\s*:\s*[A-Z][a-z]+(?:\s+(?:and\s+)?[A-Z][a-z]+)*(?:\s+[A-Z][a-z]+)*\s+/i, '');
@@ -493,6 +563,18 @@ function extractExcerptFromFullText(fullText, showTitle) {
     if (/newsletter|sign up for|subscribe to|Get all the top news/i.test(sentence)) continue;
     // Skip raw HTML
     if (/<a\s+href=/i.test(sentence)) continue;
+    // Skip navigation skip links, newspaper mottos, quiz widgets
+    if (/^Skip to (content|main)/i.test(sentence)) continue;
+    if (/Democracy Dies/i.test(sentence)) continue;
+    if (/^Q:\s/i.test(sentence)) continue;
+    if (/^Posted on\s+\w+\s+\d/i.test(sentence)) continue;
+    if (/^No Comment\b/i.test(sentence)) continue;
+    if (/^Listen\s*\d+\s*min/i.test(sentence)) continue;
+    if (/^This article was published/i.test(sentence)) continue;
+    // Skip WaPo photo description sentences ("Name as Character in 'Title'")
+    if (/^[A-Z][a-z]+ [A-Z][a-z]+\s+(as|in|and|stars|is)\s/i.test(sentence) && /\([A-Z][a-z]+ [A-Z][a-z]+\)\s*$/.test(sentence)) continue;
+    // Skip NYSR star-rating taglines (cast list + show description, no review content)
+    if (/^[A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+,\s+[A-Z][a-z]+/.test(sentence) && /\b(cast|musical|new|spark|star)\b/i.test(sentence) && sentence.length < 200) continue;
 
     excerpt += (excerpt ? ' ' : '') + sentence;
 
