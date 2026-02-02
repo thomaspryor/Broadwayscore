@@ -5,7 +5,7 @@
   "criticName": "Frank Rizzo",
   "url": "https://variety.com/2024/legit/reviews/suffs-review-musical-broadway-1235974881/",
   "publishDate": null,
-  "fullText": "A musical that captures the sweep of history in all its complexities without sacrifice of character or credibility is no easy feat.\n\nBut \"Suffs,\" which tells the story of the final push to achieve the 19th Amendment giving women the right to vote in 1920, does just that with a singular vision and a collective collaboration that is smart, inspiring and thoroughly entertaining.",
+  "fullText": "Read More About: Jenn Colella, Leigh Silverman, Shaina Taub, Suffs Jump to Comments ‘Suffs’ Review: Broadway Musical About Women’s Fight for the Vote Gets Thrilling and Entertaining Musicalization Music Box Theater; 1009 seats; top non-premium tickets $189, premium: $259. Opened April 18, 2024. Reviewed April 13. Running time: 2 HOURS 30 MINS Production: A presentation by Jill Furman, Rachel Sussman, Hillary Rodham Clinton and Malala Yousafzai, Roy Furman, Walport Productions, Cue to Cue Productions, Kevin Ryan & Diane Scott Carter, Renee Ring & Paul Zofnass, Judith Teel Davis & Joe Carroll, Tom D'Angora & Michael D'Angora, Louise Gund, Sandy Robertson, Allison Rubler, Erica Lynn Schwartz, Stone Arch Theatricals / Mayer Productions, Xan Weiser / Matters of the Art, Christin Brecher, The Broadway Investor's Club, Ari Conte, Jennifer Friedland, Rose Maxi, 16 Sunset Productions, Chutzpah Productions, Julie E. Cohen, The Garelicks, Meena Harris, John Gore Organization, Laura Lonergan, Sally Martin, Bryan McCaffrey, Nederlander Presentations, Brian Spector, Candy Spelling, Morgan Steward, True Story Productions, Zuckerberg / Segal, Needle Productions / Oddly Specific Productions, Craig Balsam / Jennifer Kroman, Burkhardt Jones Productions / Adam Cohen, Vibecke Dahle Dellapolla / Samantha Squeri, Funroe Productions / Nothing Ventured Productions, Jamrock Productions / Soto Productions, Peter May / Alissandra Aronow, Michelle Noh / Todd B. Rubin, Nick Padgett / Vasi Laurence, Seaview / Level Forward, Six Point Productions / Theatre Nerd Productions, Theatre Producers of Color / Kim Khoury, The Shubert Organization and The Public Theater, Miranda Gohh and Morgan Steward of a musical in two acts with book, music and lyrics by Shauna Taub. Crew: Directed by Leigh Silverman; choreography, Kristin Yancysets; Riccardo Hernandez; costumes, Paul Tazewell; lighting, Lap Chi Chu; sound, Jason Crystal; musical supervisor, Andrea Grody; orchestrations, Michael Starobin; musical coordinator, Kristy Norter; vocal arrangements, Shaina Taub and Andrea Grody; incidental music arrangements, Shaina Taub, Andrea Grody and Michael Starobin; musical direction, Andrea Grody; production stage manager, Lisa Iacucci; stage manager: David Lurie-Perret. Cast: Shaina Taub, Emily Skinner, Jenn Colella, Nikki M. James, Hannah Cruz, Nadia Dandashi, Jaygee Macapugay, Grace McLean, Anastasia McCleskey, Laila Erica Drew, Kim Blanck, Ally Bonino, Tsilala Brock, Jenna Bainbridge, Monica Tulia Ramirez, Ada Westfall, Dana Costello, Hawley Gould, Christine Heesun Hwang, Chessa Metz, Kirsten Scott, Housso Semon, D’Kaylah Unique Whitley.",
   "bwwExcerpt": "As writer, Taub smartly avoids the facile men-against-women tropes and digs deeper into internal challenges within the movement and within the women as individuals. Thanks to the specificity of the writing, music and lyrics and a remarkable ensemble of women and nonbinary actors, the multitude of characters in this densely packed historic narrative are, if not deeply, then at least reasonably well-defined and relatable with their personal doubts, fears and triumphs.",
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
@@ -61,32 +61,20 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 77,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 81,
   "archivePath": "data/archives/reviews/suffs-2024/variety--frank-rizzo_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T02:56:02.203Z",
-  "fetchMethod": "brightdata",
+  "textFetchedAt": "2026-02-02T07:31:23.997Z",
+  "fetchMethod": "playwright",
   "fetchAttempts": [
     {
       "tier": 1,
       "method": "playwright",
-      "success": false,
-      "error": "Insufficient text extracted: 0 chars"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 3,
-  "sourceMethod": "brightdata",
+  "fetchTier": 1,
+  "sourceMethod": "playwright",
   "archiveOrgTimestamp": "20250104071638",
   "archiveOrgUrl": "http://web.archive.org/web/20250104071638/https://variety.com/2024/legit/reviews/suffs-review-musical-broadway-1235974881/",
   "rescoreCompletedAt": "2026-02-01T16:15:26.572Z",
@@ -95,11 +83,11 @@
   "showScoreExcerpt": "\"In 'Suffs,' the message of this thrilling new musical is resoundingly clear\"",
   "contentTier": "complete",
   "wordCount": 1022,
-  "isFullReview": false,
-  "textWordCount": 63,
-  "textQuality": "truncated",
-  "truncationSignals": [
-    "shorter_than_excerpt"
-  ],
-  "textStatus": "truncated"
+  "isFullReview": true,
+  "textWordCount": 372,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "needsRescore": true,
+  "duplicateTextOf": "variety--aramide-tinubu.json"
 }
