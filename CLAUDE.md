@@ -513,6 +513,38 @@ Each review file in `data/review-texts/{showId}/{outletId}--{criticName}.json`:
 
 `collect-review-texts.js` automatically logs in using these credentials.
 
+**Credential Status (Feb 2026):**
+| Site | Status | Notes |
+|------|--------|-------|
+| WSJ | **INVALID** | Dow Jones SSO returns "The login details entered are incorrect." Login flow mechanically works (button targeting, CAPTCHA handling). Credentials need updating in GitHub Secrets. |
+| Vulture/NY Mag | Untested | Needs verification |
+| Washington Post | Untested | Needs verification |
+| NYT | Possibly invalid | Browserbase login timed out — may be credential issue or timeout |
+
+### Full Text Collection Status (Feb 2026)
+
+**472 stubs remain** (reviews without fullText):
+
+| Category | Count | Top Outlets |
+|----------|-------|-------------|
+| Free (no login) | 424 | timeout (52), deadline (40), new-york-sun (34), observer (26), nydailynews (24), thestage (18) |
+| Paywalled | 48 | wsj (44), nytimes (4) |
+
+**Multi-tier fallback success rates (Jan 2026 data):**
+| Tier | Method | Success Rate | Notes |
+|------|--------|-------------|-------|
+| 0 | Archive.org (first for paywalled) | 11.1% | Best performer |
+| 1 | Playwright + stealth | 6.7% | Local browser |
+| 1.5 | Browserbase | New | $0.10/session, CAPTCHA solving |
+| 2 | ScrapingBee | 3.6% | API-based |
+| 3 | Bright Data Web Unlocker | 3.7% | API-based |
+| 4 | Archive.org (final fallback) | — | Last resort |
+
+**Low success rates are normal** — many URLs are dead (404), behind aggressive anti-bot, or on defunct sites. The overnight-collect workflow (`overnight-collect.yml`) auto-detects shows with the most stubs and processes up to 15 shows sequentially with 5-hour timeout. Enable Browserbase for CAPTCHA-heavy sites.
+
+**Collect free stubs:** `gh workflow run "Overnight Review Collection" -f browserbase_enabled=true`
+**Collect per-show:** `gh workflow run "Collect Review Texts" -f show_filter=SHOW_ID -f max_reviews=0 -f browserbase_enabled=true`
+
 ## Known Extraction & Data Quality Issues (Feb 2026)
 
 Documented from the Jan-Feb 2026 review corpus audit (1,825→2,022 reviews). These inform planned improvements below.
@@ -565,7 +597,7 @@ Documented from the Jan-Feb 2026 review corpus audit (1,825→2,022 reviews). Th
 
 ### Remaining Data Quality Work (Feb 2026)
 
-**115 excerpt-only low-confidence reviews:** Every `llmScore-lowconf` review lacks fullText. These are the highest-value re-scrape targets — getting fullText for any of them enables full-confidence scoring. The weekly `collect-review-texts.js` workflow attempts these automatically.
+**472 stub reviews without fullText (Feb 2026):** 424 are on free (non-paywalled) sites, 48 paywalled (mostly WSJ 44, NYT 4). Highest-count free outlets: timeout (52), deadline (40), new-york-sun (34), observer (26), nydailynews (24), thestage (18). Many URLs may be dead/404. The `overnight-collect.yml` workflow auto-detects shows with the most stubs. Enable Browserbase for better results on CAPTCHA-heavy sites.
 
 **Truncated reviews re-scrape (ONGOING):** ~245 truncated + ~33 needs-rescrape reviews still need better text. `collect-review-texts.js` runs weekly via `review-refresh.yml` and attempts re-scrape. BroadwayNews reviews (paywall) are the hardest — require subscription credentials not yet configured.
 
