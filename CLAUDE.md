@@ -126,6 +126,7 @@ data/
     {outlet}--{critic}.json       # e.g., nytimes--ben-brantley.json
   audit/                           # Audit reports (auto-generated)
     critic-outlet-affinity.json    # Flagged reviews + freelancer list
+    validation-baseline.json       # Previous validation counts (auto-written by validate-data.js)
   aggregator-archive/             # Archived HTML from aggregator sites
     show-score/ | dtli/ | bww-roundups/
 ```
@@ -243,11 +244,11 @@ data/
 - `scripts/lib/ibdb-dates.js` - IBDB date lookup module (preview, opening, closing dates)
 - `scripts/enrich-ibdb-dates.js` - Standalone IBDB date enrichment (`--dry-run`, `--verify`, `--force`, `--show=SLUG`)
 - `scripts/scrape-grosses.ts` - BroadwayWorld weekly grosses + history enrichment
-- `scripts/validate-data.js` - **Run before pushing** - validates shows.json + reviews.json
+- `scripts/validate-data.js` - **Run before pushing** - validates shows.json + reviews.json. Uses dynamic thresholds from `data/audit/validation-baseline.json` (auto-written on success)
 - `scripts/audit-critic-outlets.js` - Generates critic-outlet affinity registry from corpus (`npm run audit:critics`)
 - `scripts/gather-reviews.js` - Main review gathering from all aggregator sources
 - `scripts/collect-review-texts.js` - Full review text scraper with multi-tier fallback
-- `scripts/rebuild-show-reviews.js` - Rebuilds reviews.json from review-texts data
+- `scripts/rebuild-all-reviews.js` - Rebuilds reviews.json from review-texts data (source of truth for scoring pipeline)
 - `scripts/update-commercial-data.js` - Weekly commercial data automation
 - `scripts/generate-critic-consensus.js` - LLM editorial summaries
 - `scripts/fetch-show-images-auto.js` - Image fetcher: TodayTix API (open shows) → page scrape → Playbill fallback
@@ -400,8 +401,8 @@ All automation runs via GitHub Actions - no local commands needed. See `.github/
 |----------|----------------------|----------------------|-------|
 | `rebuild-reviews.yml` | ❌ | ✅ | **PRIMARY sync** - daily 4 AM UTC + manual trigger |
 | `review-refresh.yml` | ✅ | ✅ | Weekly extraction + rebuild |
-| `gather-reviews.yml` | ✅ | ❌ | Parallel-safe, relies on daily rebuild |
-| `collect-review-texts.yml` | ✅ | ❌ | Nightly 2 AM UTC + manual, parallel-safe, relies on daily rebuild |
+| `gather-reviews.yml` | ✅ | ⚡ triggers rebuild | Parallel-safe, triggers `rebuild-reviews.yml` after commit |
+| `collect-review-texts.yml` | ✅ | ⚡ triggers rebuild | Nightly 2 AM UTC + manual, parallel-safe, triggers `rebuild-reviews.yml` after commit |
 | `fetch-guardian-reviews.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
 | `process-review-submission.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
 
@@ -584,7 +585,7 @@ Documented from the Jan-Feb 2026 review corpus audit (1,825→3,644 reviews). **
 
 ### Text Quality Issues
 
-**HTML entity pollution (FIXED Feb 2026):** Entities decoded at three points: `cleanText()` in text-quality.js (LLM scorer path), `mergeReviews()` in review-normalization.js (incoming text), and `rebuild-show-reviews.js` (rebuild path). All use shared `decodeHtmlEntities()` from text-cleaning.js.
+**HTML entity pollution (FIXED Feb 2026):** Entities decoded at three points: `cleanText()` in text-quality.js (LLM scorer path), `mergeReviews()` in review-normalization.js (incoming text), and `rebuild-all-reviews.js` (rebuild path). All use shared `decodeHtmlEntities()` from text-cleaning.js.
 
 **Outlet-specific junk in fullText (FIXED Feb 2026):** `scripts/lib/text-cleaning.js` now has outlet-specific trailing junk patterns for EW (`<img>` tags, srcset, "Related Articles"), BWW ("Get Access To Every Broadway Story"), Variety ("Related Stories", "Popular on Variety"), BroadwayNews (site navigation), and The Times UK (paywall prefix). Applied at write time in all three consumer scripts via `cleanText()`.
 
