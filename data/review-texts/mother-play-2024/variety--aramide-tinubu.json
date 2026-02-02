@@ -86,7 +86,7 @@
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 60,
   "rescoreCompletedAt": "2026-02-01T15:40:31.038Z",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 656,
   "humanReviewScore": 72,
   "humanReviewPreviousScore": 45,
@@ -130,5 +130,7 @@
   "sourceMethod": "brightdata",
   "misattributedFullText": true,
   "extractedByline": "Paula Vogel",
-  "expectedCritic": "Aramide Timubu"
+  "expectedCritic": "Aramide Timubu",
+  "garbageReasoningDetected": "plot-summary-only",
+  "garbageReasoningFlaggedAt": "2026-02-02T00:01:17.107Z"
 }

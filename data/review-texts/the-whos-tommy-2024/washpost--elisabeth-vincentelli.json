@@ -98,7 +98,7 @@
   "textIssues": [
     "Word count too low: 138 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "wordCount": 86,
   "isFullReview": false,
   "textWordCount": 138,
@@ -114,5 +114,7 @@
   "humanReviewScore": 68,
   "humanReviewPreviousScore": 50,
   "humanReviewAt": "2026-02-01T19:59:47.225Z",
-  "showNotMentioned": true
+  "showNotMentioned": true,
+  "garbageReasoningDetected": "insufficient-text",
+  "garbageReasoningFlaggedAt": "2026-02-02T00:01:17.153Z"
 }

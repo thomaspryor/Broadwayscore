@@ -523,7 +523,7 @@ Documented from the Jan-Feb 2026 review corpus audit (1,825→2,022 reviews). Th
 
 **Explicit ratings auto-converted (FIXED Feb 2026):** `rebuild-all-reviews.js` extracts explicit ratings (stars, letter grades, X/5, "X out of Y") from review text and `originalScore` field, overriding LLM scores. Priority 0 in the scoring hierarchy. As of Feb 2026: 217 text-extracted + 110 originalScore-parsed = 327 reviews (16.3%) using explicit ratings. The `scoreSource` field in reviews.json tracks which method produced each score.
 
-**LLM low-confidence as garbage detector:** When LLM reasoning says "website navigation content", "plot summary rather than review", or "headline and byline only", this is a reliable signal that the fullText is garbage. This signal should auto-flag reviews for re-scrape, closing the feedback loop without manual intervention.
+**LLM low-confidence as garbage detector (FIXED Feb 2026):** `detectGarbageFromReasoning()` in `content-quality.js` checks 17 patterns in LLM reasoning text (e.g., "plot summary without evaluation", "headline only", "not a review"). When confidence is "low" and a pattern matches, the review is auto-flagged `contentTier: "needs-rescrape"` with `garbageReasoningDetected` label. Integrated into the scoring pipeline (`llm-scoring/index.ts` post-scoring check) and backfilled on existing reviews (34 flagged).
 
 ### Deduplication Issues
 
@@ -532,3 +532,11 @@ Documented from the Jan-Feb 2026 review corpus audit (1,825→2,022 reviews). Th
 ### Workflow Issues
 
 **Parallel push conflicts (FIXED Feb 2026):** All 8 parallel-safe workflows now use robust push retry: `git checkout -- . && git clean -fd` before rebase, `-X theirs` for auto-conflict resolution, `rebase --abort` on failure, random 10-30s backoff, 5 retries. Fixed in: `gather-reviews.yml`, `rebuild-reviews.yml`, `scrape-nysr.yml`, `scrape-new-aggregators.yml`, `fetch-guardian-reviews.yml`, `process-review-submission.yml`, `review-refresh.yml`, `update-commercial.yml`.
+
+### Remaining Data Quality Work (Feb 2026)
+
+**257 truncated reviews need re-scrape:** Reviews with `contentTier: "truncated"` have partial text (paywall cutoff, "read more" truncation). Running `collect-review-texts.js` with `--force` on these could upgrade them to complete text, improving LLM scoring accuracy.
+
+**27 cross-outlet duplicate-text reviews:** Files with `duplicateTextOf` field where the same fullText appears at a different outlet (e.g., Chris Jones at both Chicago Tribune and NY Daily News). These are legitimate — the same freelance critic published in multiple outlets. Same-outlet duplicates and wrong-critic attributions have been cleaned up.
+
+**Test infrastructure issues:** Two pre-existing test failures unrelated to data quality: (1) `tests/unit/trade-press-scraper.test.mjs` — ESM `export` syntax fails under CJS test runner; (2) `tests/unit/ensemble.test.ts` — uses Jest `describe`/`test` but runs under Node test runner. Both need test harness fixes, not code fixes.

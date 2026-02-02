@@ -5,7 +5,7 @@
   "criticName": "David Rooney",
   "url": "https://www.usatoday.com/story/life/theater/2024/04/25/illinoise-broadway-review/73444902007/",
   "publishDate": "April 25, 2024",
-  "fullText": "This gorgeous dance musical based on Sufjan Stevens' indie-folk song cycle captures the yearning spirit of the original album while expanding it into a deeply moving theatrical experience.",
+  "fullText": "LOCALGasolineAdd TopicGas prices rose from last week: See how much hereUSA TODAY NetworkApril 27, 2024, 5:18 a.m. ETRegional gas prices rose for the second consecutive week and reached an average of $3.42 per gallon of regular fuel on Monday, up from last week's price of $3.41 per gallon, according to the U.S. Energy Information Administration.\n\nThe average fuel price in the Lower Atlantic region has risen about 7 cents since last month. According to the EIA, gas prices across the region in the last year have been as low as $2.88 on Dec. 18, 2023, and as high as $3.66 on Aug. 7, 2023.\n\nA year ago, the average gas price in the Lower Atlantic region was 2% higher at $3.49 per gallon.\n\n>> INTERACTIVE: See how your area's gas prices have changed over the years at data.gastongazette.com.\n\nThe average gas price in the United States last week was $3.67, making prices in the Lower Atlantic region about 6.7% lower than the nation's average. The average national gas price is up from last week's average of $3.63 per gallon.\n\nThe U.S. Energy Information Administration's tally of prices in the Lower Atlantic states includes Florida, Georgia, North Carolina, South Carolina, Virginia and West Virginia.\n\nThe USA TODAY Network is publishing localized versions of this story on its news sites across the country, generated with data from the U.S. Energy Information Administration. Please leave any feedback or corrections for this story here. This story was written by Ozge Terzioglu.",
   "isFullReview": false,
   "dtliExcerpt": "This gorgeous dance musical based on Sufjan Stevens' indie-folk song cycle captures the yearning spirit of the original album while expanding it into a deeply moving theatrical experience.",
   "originalScore": null,
@@ -72,5 +72,47 @@
     }
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 85,
+  "textWordCount": 247,
+  "archivePath": "data/archives/reviews/illinoise-2024/usatoday--david-rooney_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:46:52.957Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Paywall detected - login may have failed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 247 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true
 }

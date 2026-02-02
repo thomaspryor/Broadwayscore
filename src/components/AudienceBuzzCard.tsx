@@ -2,8 +2,8 @@
 
 import {
   AudienceBuzzData,
-  AudienceBuzzDesignation,
-  getAudienceBuzzColor,
+  getAudienceGrade,
+  getAudienceGradeClasses,
 } from '@/lib/data';
 
 interface AudienceBuzzCardProps {
@@ -83,19 +83,6 @@ function ExternalLinkIcon({ className }: { className?: string }) {
   );
 }
 
-function getDesignationEmoji(designation: AudienceBuzzDesignation): string {
-  switch (designation) {
-    case 'Loving':
-      return '❤️';
-    case 'Liking':
-      return '👍';
-    case 'Shrugging':
-      return '🤷';
-    case 'Loathing':
-      return '💩';
-  }
-}
-
 function formatReviewCount(count: number): string {
   if (count >= 1000) {
     return `${(count / 1000).toFixed(1)}K`;
@@ -154,19 +141,25 @@ function SourceCard({ name, icon, score, reviewCount, starRating, url, comingSoo
 }
 
 export default function AudienceBuzzCard({ buzz, showScoreUrl }: AudienceBuzzCardProps) {
-  const colors = getAudienceBuzzColor(buzz.designation);
+  const grade = getAudienceGrade(buzz.combinedScore);
+  const colors = getAudienceGradeClasses(buzz.combinedScore);
   const { showScore, mezzanine, reddit } = buzz.sources;
 
   return (
     <div className="card p-5 sm:p-6 mb-8">
-      <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Audience Buzz</h2>
+      <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Audience Grade</h2>
 
-      {/* Main Designation Badge */}
+      {/* Main Grade Badge */}
       <div className={`rounded-xl p-4 border mb-4 ${colors.bgClass} ${colors.borderClass}`}>
         <div className="flex items-center gap-3">
-          <span className="text-2xl">{getDesignationEmoji(buzz.designation)}</span>
+          <div
+            className="w-12 h-12 rounded-lg flex items-center justify-center"
+            style={{ backgroundColor: `${grade.color}30`, border: `2px solid ${grade.color}50` }}
+          >
+            <span className="text-xl font-black" style={{ color: grade.color }}>{grade.grade}</span>
+          </div>
           <div>
-            <div className={`text-lg font-bold ${colors.textClass}`}>{buzz.designation === 'Loving' ? 'Loving It' : buzz.designation === 'Liking' ? 'Liking It' : buzz.designation === 'Loathing' ? 'Loathing It' : buzz.designation}</div>
+            <div className={`text-lg font-bold ${colors.textClass}`}>{grade.tooltip}</div>
             <div className="text-sm text-gray-400">
               Based on {formatReviewCount(
                 (showScore?.reviewCount || 0) + (mezzanine?.reviewCount || 0) + (reddit?.reviewCount || 0)

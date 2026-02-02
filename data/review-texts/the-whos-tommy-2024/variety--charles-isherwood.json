@@ -5,8 +5,8 @@
   "criticName": "Charles Isherwood",
   "url": "https://variety.com/2024/legit/reviews/the-whos-tommy-broadway-review-1235953576/",
   "publishDate": "March 29, 2024",
-  "fullText": "The new Broadway revival of 'The Who's Tommy' is a sensory overload that succeeds in translating Pete Townshend's rock opera into a thrilling theatrical experience.",
-  "isFullReview": false,
+  "fullText": "Reviews and news from the last year in Park City\n\nLeonardo DiCaprio, Jennifer Lawrence and others chat\n\nNetflix, Paramount Skydance face off\n\nSee the 2026 Grammy winners as they're announced.\n\nThe music industry's biggest stars are dressed up for the Grammys red carpet.\n\nSteven Spielberg has joined the illustrious EGOT club.\n\n The filmmaker achieved EGOT status, winning a Grammy Award in the best music film category for the...\n\n“It’s our moment” for Huntr/x and Netflix’s mega-hit “KPop Demon Hunters.”\n\n EJAE, Audrey Nuna and Rei Ami, the singers from “KPop Demon Hunters,” can add Grammy...\n\nA week after being named as a CBS News contributor, Dr. Peter Attia is coming under fire after the latest raft of documents from the Jeffrey Epstein files includes more...\n\nThe doc, which shadows the First Lady in the lead-up to Donald Trump's second presidential inauguration, is eclipsing box office expectations.\n\nThe two discuss 'Wicked: For Good,' what makes them cry and loving 'The Waterboy.'\n\nThe two on their life-changing 'Mummy' friendship, loneliness and learning to stop trying so hard.\n\nA Variety and iHeartRadio Podcast\n\nRachel McAdams thrives on a desert island in Sam Raimi's twisted survival thriller. Going back to his roots, Raimi wickedly flips the dynamic between a number cruncher and her nightmare boss.\n\nIn a mockumentary that plays it straight, Charli xcx is teamed with a doofus director (Alexander Skarsgård) who wants to clean up her image. But why would any version of Charli xcx say yes?\n\nBrett Ratner's First Lady documentary is a cheeseball infomercial of staggering inertia. There's no drama to a film that should have been called \"Day of the Living Tradwife.\"\n\nJason Statham vs. the world again, Scottish edition. He plays a fugitive former MI6 agent forced to protect himself and a teenage innocent from assassins in a slick if undistinguished action opus.\n\n'Interior Chinatown' Struggles to Turn an Allegorical Novel Into a Show\n\nHBO Prequel Series 'Dune: Prophecy' Capably Tailors the Epic Franchise to Television\n\nTaylor Sheridan's 'Landman' Gives the West Texas Oil Fields the 'Yellowstone' Treatment\n\nEddie Redmayne and Lashana Lynch's 'The Day of the Jackal' Is an Exhilarating Assassin Thriller\n\nBillie Eilish and producer Finneas keep up their winning streak with a surprising and intimate third album.\n\nChildish Gambino's latest is a masterpiece, and a kaleidoscopic showcase for his seemingly endless talents.\n\nVince Staples searches for light on his new album, his most vulnerable project to date.\n\nDua Lipa's new album is a joyous blast of pop savvy.\n\nSam Gold's production is an actorly face-off between Jeremy Strong and Michael Imperioli, but the script ultimately let's the audience off the hook.\n\nPatricia Clarkson gives a luminous performance in an otherwise uneven revival of Eugene O'Neill's family drama.\n\nThe stage adaptation has escapism, enchantment and heart, all elevated to new, literal heights that blend theater and cirque.",
+  "isFullReview": true,
   "dtliExcerpt": "The new Broadway revival of 'The Who's Tommy' is a sensory overload that succeeds in translating Pete Townshend's rock opera into a thrilling theatrical experience.",
   "originalScore": null,
   "assignedScore": 78,
@@ -65,5 +65,47 @@
     "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 78,
+  "textWordCount": 470,
+  "archivePath": "data/archives/reviews/the-whos-tommy-2024/variety--charles-isherwood_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T23:58:51.734Z",
+  "designation": "Recommended",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Paywall detected - login may have failed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true
 }

@@ -31,12 +31,19 @@ interface ShowBuzzData {
   buzz: AudienceBuzzData | null | undefined;
 }
 
-const designationConfig: Record<string, { emoji: string; color: string; displayLabel: string }> = {
-  'Loving': { emoji: '❤️', color: 'text-red-400', displayLabel: 'Loving It' },
-  'Liking': { emoji: '👍', color: 'text-emerald-400', displayLabel: 'Liking It' },
-  'Shrugging': { emoji: '🤷', color: 'text-yellow-400', displayLabel: 'Shrugging' },
-  'Loathing': { emoji: '💩', color: 'text-gray-400', displayLabel: 'Loathing It' },
-};
+function getGradeFromScore(score: number): { grade: string; color: string } {
+  if (score >= 93) return { grade: 'A+', color: '#22c55e' };
+  if (score >= 88) return { grade: 'A', color: '#16a34a' };
+  if (score >= 83) return { grade: 'A-', color: '#14b8a6' };
+  if (score >= 78) return { grade: 'B+', color: '#0ea5e9' };
+  if (score >= 73) return { grade: 'B', color: '#f59e0b' };
+  if (score >= 68) return { grade: 'B-', color: '#f97316' };
+  if (score >= 63) return { grade: 'C+', color: '#ef4444' };
+  if (score >= 58) return { grade: 'C', color: '#dc2626' };
+  if (score >= 53) return { grade: 'C-', color: '#b91c1c' };
+  if (score >= 48) return { grade: 'D', color: '#991b1b' };
+  return { grade: 'F', color: '#6b7280' };
+}
 
 function SortIcon({ direction, active }: { direction: SortDirection | null; active: boolean }) {
   if (!active) {
@@ -53,7 +60,7 @@ function SortIcon({ direction, active }: { direction: SortDirection | null; acti
   );
 }
 
-type BuzzColumn = 'show' | 'score' | 'showScore' | 'mezzanine' | 'reddit' | 'designation';
+type BuzzColumn = 'show' | 'score' | 'showScore' | 'mezzanine' | 'reddit' | 'grade';
 
 interface AudienceBuzzTableProps {
   data: ShowBuzzData[];
@@ -98,10 +105,9 @@ export function AudienceBuzzTable({ data }: AudienceBuzzTableProps) {
           aVal = a.buzz?.sources.reddit?.score ?? null;
           bVal = b.buzz?.sources.reddit?.score ?? null;
           break;
-        case 'designation':
-          const order = ['Loving', 'Liking', 'Shrugging', 'Loathing'];
-          aVal = order.indexOf(a.buzz?.designation || '') ?? 99;
-          bVal = order.indexOf(b.buzz?.designation || '') ?? 99;
+        case 'grade':
+          aVal = a.buzz?.combinedScore ?? null;
+          bVal = b.buzz?.combinedScore ?? null;
           break;
       }
 
@@ -148,16 +154,16 @@ export function AudienceBuzzTable({ data }: AudienceBuzzTableProps) {
                 Reddit
                 <SortIcon direction={sortDirection} active={sortColumn === 'reddit'} />
               </th>
-              <th className={`text-center hidden sm:table-cell ${headerClass}`} onClick={() => handleSort('designation')}>
-                Designation
-                <SortIcon direction={sortDirection} active={sortColumn === 'designation'} />
+              <th className={`text-center hidden sm:table-cell ${headerClass}`} onClick={() => handleSort('grade')}>
+                Grade
+                <SortIcon direction={sortDirection} active={sortColumn === 'grade'} />
               </th>
             </tr>
           </thead>
           <tbody>
             {sortedData.map((item, index) => {
               const buzz = item.buzz;
-              const config = designationConfig[buzz?.designation || ''] || { emoji: '—', color: 'text-gray-500' };
+              const gradeInfo = buzz ? getGradeFromScore(buzz.combinedScore) : null;
 
               return (
                 <tr key={item.show.slug} className="border-b border-white/5 hover:bg-white/5 transition-colors">
@@ -174,12 +180,7 @@ export function AudienceBuzzTable({ data }: AudienceBuzzTableProps) {
                     </Link>
                   </td>
                   <td className="py-3 px-4 text-center">
-                    <span className={`text-xl font-bold ${
-                      (buzz?.combinedScore || 0) >= 88 ? 'text-red-400' :
-                      (buzz?.combinedScore || 0) >= 78 ? 'text-emerald-400' :
-                      (buzz?.combinedScore || 0) >= 68 ? 'text-yellow-400' :
-                      'text-gray-400'
-                    }`}>
+                    <span className="text-xl font-bold" style={gradeInfo ? { color: gradeInfo.color } : undefined}>
                       {buzz?.combinedScore || '—'}
                     </span>
                   </td>
@@ -214,9 +215,16 @@ export function AudienceBuzzTable({ data }: AudienceBuzzTableProps) {
                     )}
                   </td>
                   <td className="py-3 px-4 text-center hidden sm:table-cell">
-                    <span className={config.color}>
-                      {config.emoji} {config.displayLabel || buzz?.designation || '—'}
-                    </span>
+                    {gradeInfo ? (
+                      <span
+                        className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-sm font-bold"
+                        style={{ color: gradeInfo.color, backgroundColor: `${gradeInfo.color}20` }}
+                      >
+                        {gradeInfo.grade}
+                      </span>
+                    ) : (
+                      <span className="text-gray-500">—</span>
+                    )}
                   </td>
                 </tr>
               );
