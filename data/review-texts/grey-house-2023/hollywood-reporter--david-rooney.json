@@ -68,14 +68,20 @@
   "previousLlmScore": 77,
   "textWordCount": 2618,
   "archivePath": "data/archives/reviews/grey-house-2023/hollywood-reporter--david-rooney_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T05:40:03.586Z",
+  "textFetchedAt": "2026-02-02T16:37:21.317Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
     {
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+      "error": "Paywall detected - login may have failed"
     },
     {
       "tier": 2,
