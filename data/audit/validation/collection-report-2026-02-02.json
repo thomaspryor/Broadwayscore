@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-02T16:41:59.924Z",
+  "runDate": "2026-02-02T17:36:46.801Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
@@ -11,60 +11,56 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 8,
-    "failed": 8,
+    "processed": 7,
+    "failed": 6,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "53.8%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 2,
     "browserbase": 0,
     "scrapingbee": 1,
-    "brightdata": 0,
-    "archive": 4
+    "brightdata": 1,
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 10,
-    "tier1Success": 4,
-    "tier1_5Attempts": 7,
+    "tier1Attempts": 3,
+    "tier1Success": 2,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 8,
+    "tier2Attempts": 5,
     "tier2Success": 1,
-    "tier3Attempts": 3,
-    "tier3Success": 0,
-    "tier4Attempts": 30,
+    "tier3Attempts": 2,
+    "tier3Success": 1,
+    "tier4Attempts": 15,
     "tier4Success": 7,
-    "totalFailed": 8,
-    "scrapingBeeCreditsUsed": 38,
-    "browserbaseSessionsUsed": 7,
-    "browserbaseMinutesUsed": 4.5,
-    "urlDiscoveryAttempts": 8,
-    "urlDiscoverySuccess": 7,
+    "totalFailed": 6,
+    "scrapingBeeCreditsUsed": 22,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "hadestown-2019/ew--jessica-derschowitz.json",
+    "hadestown-2019/vulture--jesse-green.json",
     "hadestown-2019/ew--kristen-baldwin.json",
     "hadestown-2019/guardian--jesse-green.json",
-    "hadestown-2019/nypost--johnny-oleksinski.json",
     "hadestown-2019/theatermania--jesse-green.json",
     "hadestown-2019/theatermania--zachary-stewart.json",
-    "hadestown-2019/thewrap--thom-geier.json",
+    "hadestown-2019/wsj--terry-teachout.json",
     "hadestown-2019/rollingstone--peter-travers.json"
   ],
   "failed": [
-    "hadestown-2019/vulture--jesse-green.json",
     "hadestown-2019/observer--david-cote.json",
     "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
     "hadestown-2019/timeout--adam-feldman.json",
-    "hadestown-2019/wsj--terry-teachout.json",
     "hadestown-2019/dailybeast--tim-teeman.json",
     "hadestown-2019/medium--christian-lewis.json",
     "hadestown-2019/vox--constance-grady.json"
   ],
   "tierDetails": {
     "playwright": [
-      "hadestown-2019/ew--jessica-derschowitz.json",
       "hadestown-2019/ew--kristen-baldwin.json",
       "hadestown-2019/guardian--jesse-green.json"
     ],
@@ -72,34 +68,22 @@
     "scrapingbee": [
       "hadestown-2019/theatermania--jesse-green.json"
     ],
+    "brightdata": [
+      "hadestown-2019/wsj--terry-teachout.json"
+    ],
     "archive": [
-      "hadestown-2019/nypost--johnny-oleksinski.json",
+      "hadestown-2019/vulture--jesse-green.json",
       "hadestown-2019/theatermania--zachary-stewart.json",
-      "hadestown-2019/thewrap--thom-geier.json",
       "hadestown-2019/rollingstone--peter-travers.json"
     ]
   },
   "failuresByOutlet": {
-    "Vulture": {
-      "count": 1,
-      "domain": "vulture.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
     "Theater Reviews from My Seat": {
       "count": 1,
       "domain": "theaterreviewsfrommyseat.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
-    },
-    "The Wall Street Journal": {
-      "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
     },
     "The Daily Beast": {
       "count": 1,
@@ -111,39 +95,9 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "hadestown-2019/ew--jessica-derschowitz.json",
-      "oldUrl": "https://ew.com/hadestown-broadway-review/",
-      "newUrl": "https://ew.com/theater-reviews/2019/04/17/hadestown-review/?srsltid=AfmBOopX8I0GUBm3dfh69r-ykQfvqMSzKzTc62DMgsAAtPg8RxF60LNg"
-    },
-    {
-      "reviewId": "hadestown-2019/ew--kristen-baldwin.json",
-      "oldUrl": "https://ew.com/theater/2019/04/18/hadestown-broadway-review/",
-      "newUrl": "https://ew.com/theater-reviews/2019/04/17/hadestown-review/?srsltid=AfmBOoplwi0_hrl0iF6g18yZfPpoXMm7-f7uqhgsoZucAb9rGCzodPVh"
-    },
-    {
-      "reviewId": "hadestown-2019/guardian--jesse-green.json",
-      "oldUrl": "https://www.theguardian.com/stage/2019/apr/18/hadestown-review-broadway-musical-anais-mitchell",
-      "newUrl": "https://www.theguardian.com/stage/2018/nov/14/hadestown-review-musical-rachel-chavkin-anais-mitchell-olivier-london"
-    },
-    {
-      "reviewId": "hadestown-2019/nypost--johnny-oleksinski.json",
-      "oldUrl": "https://nypost.com/2019/04/17/hadestown-broadway-review/",
-      "newUrl": "https://nypost.com/2019/04/17/hadestown-review-broadway-douses-the-fires-of-hell-with-folk-music/"
-    },
-    {
       "reviewId": "hadestown-2019/observer--david-cote.json",
       "oldUrl": "https://observer.com/2019/04/hadestown-broadway-review/",
       "newUrl": "https://observer.com/2019/04/hadestown-tries-like-hell-to-spin-a-concept-album-on-broadway-review/"
-    },
-    {
-      "reviewId": "hadestown-2019/thewrap--thom-geier.json",
-      "oldUrl": "https://www.thewrap.com/hadestown-broadway-review/",
-      "newUrl": "https://www.thewrap.com/hadestown-broadway-review-anais-mitchell-musical-orpheus-eurydice-trump/"
-    },
-    {
-      "reviewId": "hadestown-2019/rollingstone--peter-travers.json",
-      "oldUrl": "https://www.rollingstone.com/culture/culture-theater/hadestown-broadway-review-822863/",
-      "newUrl": "https://www.rollingstone.com/culture/culture-features/hadestown-broadway-anais-mitchell-musical-review-822688/"
     }
   ]
 }
