@@ -135,16 +135,19 @@ function extractLetterGradeFromText(text) {
 
   // Letter grades need context to avoid false positives
   // Look for: "grade: B+", "gives it a B+", "A- rating", etc.
+  // Note: [+\-–—] matches ASCII plus/minus AND en-dash/em-dash (EW uses en-dash for minus)
+  // Use (?!\w) instead of \b at end — \b fails after en-dash since it's not a word boundary
   const patterns = [
-    /\b(?:grade|rating|score)[:\s]+([A-D][+-]?|F)\b/i,
-    /\bgives?\s+(?:it\s+)?(?:a\s+)?([A-D][+-]?)\b/i,
-    /\b([A-D][+-]?)\s+(?:grade|rating)\b/i
+    /\b(?:grade|rating|score)[:\s]+([A-D][+\-–—]?|F)(?!\w)/i,
+    /\bgives?\s+(?:it\s+)?(?:a\s+)?([A-D][+\-–—]?)(?!\w)/i,
+    /\b([A-D][+\-–—]?)\s+(?:grade|rating)\b/i
   ];
 
   for (const pattern of patterns) {
     const match = text.match(pattern);
     if (match) {
-      const grade = match[1].toUpperCase();
+      // Normalize en-dash/em-dash to ASCII minus for lookup
+      const grade = match[1].toUpperCase().replace(/[–—]/g, '-');
       const gradeMap = {
         'A+': 98, 'A': 95, 'A-': 92,
         'B+': 88, 'B': 85, 'B-': 82,
