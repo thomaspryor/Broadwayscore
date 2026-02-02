@@ -10,7 +10,17 @@
  * - All fail case
  */
 
-import {
+import { test, describe } from 'node:test';
+import assert from 'node:assert';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+
+// Register ts-node with the scripts tsconfig (CommonJS/node resolution)
+process.env.TS_NODE_PROJECT = new URL('../../scripts/tsconfig.json', import.meta.url).pathname;
+require('ts-node/register');
+
+const {
   ensembleScore,
   toModelScore,
   scoreToBucket,
@@ -18,19 +28,13 @@ import {
   median,
   mean,
   getAgreementLevel
-} from '../../scripts/llm-scoring/ensemble';
-import { ModelScore, SimplifiedLLMResult, Bucket } from '../../scripts/llm-scoring/types';
+} = require('../../scripts/llm-scoring/ensemble');
 
 // ========================================
 // HELPER FUNCTIONS
 // ========================================
 
-function makeModelScore(
-  model: 'claude' | 'openai' | 'gemini',
-  bucket: Bucket,
-  score: number,
-  options: Partial<ModelScore> = {}
-): ModelScore {
+function makeModelScore(model, bucket, score, options = {}) {
   return {
     model,
     bucket,
@@ -40,7 +44,7 @@ function makeModelScore(
   };
 }
 
-function makeResult(bucket: Bucket, score: number): SimplifiedLLMResult {
+function makeResult(bucket, score) {
   return {
     bucket,
     score,
@@ -57,85 +61,85 @@ function makeResult(bucket: Bucket, score: number): SimplifiedLLMResult {
 
 describe('scoreToBucket', () => {
   test('returns Rave for 85-100', () => {
-    expect(scoreToBucket(100)).toBe('Rave');
-    expect(scoreToBucket(85)).toBe('Rave');
-    expect(scoreToBucket(92)).toBe('Rave');
+    assert.strictEqual(scoreToBucket(100), 'Rave');
+    assert.strictEqual(scoreToBucket(85), 'Rave');
+    assert.strictEqual(scoreToBucket(92), 'Rave');
   });
 
   test('returns Positive for 70-84', () => {
-    expect(scoreToBucket(84)).toBe('Positive');
-    expect(scoreToBucket(70)).toBe('Positive');
-    expect(scoreToBucket(77)).toBe('Positive');
+    assert.strictEqual(scoreToBucket(84), 'Positive');
+    assert.strictEqual(scoreToBucket(70), 'Positive');
+    assert.strictEqual(scoreToBucket(77), 'Positive');
   });
 
   test('returns Mixed for 55-69', () => {
-    expect(scoreToBucket(69)).toBe('Mixed');
-    expect(scoreToBucket(55)).toBe('Mixed');
-    expect(scoreToBucket(62)).toBe('Mixed');
+    assert.strictEqual(scoreToBucket(69), 'Mixed');
+    assert.strictEqual(scoreToBucket(55), 'Mixed');
+    assert.strictEqual(scoreToBucket(62), 'Mixed');
   });
 
   test('returns Negative for 35-54', () => {
-    expect(scoreToBucket(54)).toBe('Negative');
-    expect(scoreToBucket(35)).toBe('Negative');
-    expect(scoreToBucket(45)).toBe('Negative');
+    assert.strictEqual(scoreToBucket(54), 'Negative');
+    assert.strictEqual(scoreToBucket(35), 'Negative');
+    assert.strictEqual(scoreToBucket(45), 'Negative');
   });
 
   test('returns Pan for 0-34', () => {
-    expect(scoreToBucket(34)).toBe('Pan');
-    expect(scoreToBucket(0)).toBe('Pan');
-    expect(scoreToBucket(20)).toBe('Pan');
+    assert.strictEqual(scoreToBucket(34), 'Pan');
+    assert.strictEqual(scoreToBucket(0), 'Pan');
+    assert.strictEqual(scoreToBucket(20), 'Pan');
   });
 });
 
 describe('bucketDistance', () => {
   test('same bucket returns 0', () => {
-    expect(bucketDistance('Rave', 'Rave')).toBe(0);
-    expect(bucketDistance('Mixed', 'Mixed')).toBe(0);
+    assert.strictEqual(bucketDistance('Rave', 'Rave'), 0);
+    assert.strictEqual(bucketDistance('Mixed', 'Mixed'), 0);
   });
 
   test('adjacent buckets return 1', () => {
-    expect(bucketDistance('Rave', 'Positive')).toBe(1);
-    expect(bucketDistance('Positive', 'Mixed')).toBe(1);
-    expect(bucketDistance('Negative', 'Pan')).toBe(1);
+    assert.strictEqual(bucketDistance('Rave', 'Positive'), 1);
+    assert.strictEqual(bucketDistance('Positive', 'Mixed'), 1);
+    assert.strictEqual(bucketDistance('Negative', 'Pan'), 1);
   });
 
   test('distant buckets return correct distance', () => {
-    expect(bucketDistance('Rave', 'Mixed')).toBe(2);
-    expect(bucketDistance('Rave', 'Pan')).toBe(4);
-    expect(bucketDistance('Positive', 'Pan')).toBe(3);
+    assert.strictEqual(bucketDistance('Rave', 'Mixed'), 2);
+    assert.strictEqual(bucketDistance('Rave', 'Pan'), 4);
+    assert.strictEqual(bucketDistance('Positive', 'Pan'), 3);
   });
 });
 
 describe('median', () => {
   test('returns median of odd-length array', () => {
-    expect(median([1, 2, 3])).toBe(2);
-    expect(median([80, 85, 90])).toBe(85);
-    expect(median([10, 50, 90])).toBe(50);
+    assert.strictEqual(median([1, 2, 3]), 2);
+    assert.strictEqual(median([80, 85, 90]), 85);
+    assert.strictEqual(median([10, 50, 90]), 50);
   });
 
   test('returns average of middle two for even-length array', () => {
-    expect(median([1, 2, 3, 4])).toBe(2.5);
-    expect(median([80, 85])).toBe(82.5);
+    assert.strictEqual(median([1, 2, 3, 4]), 2.5);
+    assert.strictEqual(median([80, 85]), 82.5);
   });
 
   test('handles single value', () => {
-    expect(median([50])).toBe(50);
+    assert.strictEqual(median([50]), 50);
   });
 
   test('handles empty array', () => {
-    expect(median([])).toBe(0);
+    assert.strictEqual(median([]), 0);
   });
 });
 
 describe('mean', () => {
   test('returns average of values', () => {
-    expect(mean([80, 85, 90])).toBe(85);
-    expect(mean([0, 100])).toBe(50);
-    expect(mean([75, 75, 75])).toBe(75);
+    assert.strictEqual(mean([80, 85, 90]), 85);
+    assert.strictEqual(mean([0, 100]), 50);
+    assert.strictEqual(mean([75, 75, 75]), 75);
   });
 
   test('handles empty array', () => {
-    expect(mean([])).toBe(0);
+    assert.strictEqual(mean([]), 0);
   });
 });
 
@@ -152,12 +156,12 @@ describe('ensembleScore - 3 models', () => {
         makeModelScore('gemini', 'Rave', 94)
       );
 
-      expect(result.bucket).toBe('Rave');
-      expect(result.score).toBeGreaterThanOrEqual(85);
-      expect(result.score).toBeLessThanOrEqual(100);
-      expect(result.confidence).toBe('high');
-      expect(result.source).toBe('ensemble-unanimous');
-      expect(result.needsReview).toBe(false);
+      assert.strictEqual(result.bucket, 'Rave');
+      assert.ok(result.score >= 85, `score ${result.score} should be >= 85`);
+      assert.ok(result.score <= 100, `score ${result.score} should be <= 100`);
+      assert.strictEqual(result.confidence, 'high');
+      assert.strictEqual(result.source, 'ensemble-unanimous');
+      assert.strictEqual(result.needsReview, false);
     });
 
     test('all Rave with wider spread', () => {
@@ -167,9 +171,9 @@ describe('ensembleScore - 3 models', () => {
         makeModelScore('gemini', 'Rave', 100)
       );
 
-      expect(result.bucket).toBe('Rave');
-      expect(result.confidence).toBe('medium'); // wider spread
-      expect(result.source).toBe('ensemble-unanimous');
+      assert.strictEqual(result.bucket, 'Rave');
+      assert.strictEqual(result.confidence, 'medium'); // wider spread
+      assert.strictEqual(result.source, 'ensemble-unanimous');
     });
 
     test('all Mixed unanimous', () => {
@@ -179,10 +183,10 @@ describe('ensembleScore - 3 models', () => {
         makeModelScore('gemini', 'Mixed', 58)
       );
 
-      expect(result.bucket).toBe('Mixed');
-      expect(result.score).toBeGreaterThanOrEqual(55);
-      expect(result.score).toBeLessThanOrEqual(69);
-      expect(result.source).toBe('ensemble-unanimous');
+      assert.strictEqual(result.bucket, 'Mixed');
+      assert.ok(result.score >= 55, `score ${result.score} should be >= 55`);
+      assert.ok(result.score <= 69, `score ${result.score} should be <= 69`);
+      assert.strictEqual(result.source, 'ensemble-unanimous');
     });
 
     test('all Pan unanimous', () => {
@@ -192,9 +196,9 @@ describe('ensembleScore - 3 models', () => {
         makeModelScore('gemini', 'Pan', 25)
       );
 
-      expect(result.bucket).toBe('Pan');
-      expect(result.score).toBeGreaterThanOrEqual(0);
-      expect(result.score).toBeLessThanOrEqual(34);
+      assert.strictEqual(result.bucket, 'Pan');
+      assert.ok(result.score >= 0, `score ${result.score} should be >= 0`);
+      assert.ok(result.score <= 34, `score ${result.score} should be <= 34`);
     });
   });
 
@@ -206,11 +210,11 @@ describe('ensembleScore - 3 models', () => {
         makeModelScore('gemini', 'Positive', 78)
       );
 
-      expect(result.bucket).toBe('Rave');
-      expect(result.source).toBe('ensemble-majority');
-      expect(result.outlier?.model).toBe('gemini');
-      expect(result.outlier?.bucket).toBe('Positive');
-      expect(result.needsReview).toBe(false); // adjacent bucket, not severe
+      assert.strictEqual(result.bucket, 'Rave');
+      assert.strictEqual(result.source, 'ensemble-majority');
+      assert.strictEqual(result.outlier?.model, 'gemini');
+      assert.strictEqual(result.outlier?.bucket, 'Positive');
+      assert.strictEqual(result.needsReview, false); // adjacent bucket, not severe
     });
 
     test('2 Positive, 1 Pan (severe outlier)', () => {
@@ -220,12 +224,12 @@ describe('ensembleScore - 3 models', () => {
         makeModelScore('gemini', 'Pan', 25)
       );
 
-      expect(result.bucket).toBe('Positive');
-      expect(result.source).toBe('ensemble-majority');
-      expect(result.outlier?.model).toBe('gemini');
-      expect(result.outlier?.bucket).toBe('Pan');
-      expect(result.needsReview).toBe(true); // 3 buckets apart
-      expect(result.reviewReason).toContain('2+ buckets');
+      assert.strictEqual(result.bucket, 'Positive');
+      assert.strictEqual(result.source, 'ensemble-majority');
+      assert.strictEqual(result.outlier?.model, 'gemini');
+      assert.strictEqual(result.outlier?.bucket, 'Pan');
+      assert.strictEqual(result.needsReview, true); // 3 buckets apart
+      assert.ok(result.reviewReason.includes('2+ buckets'), `reviewReason should contain '2+ buckets'`);
     });
 
     test('2 Mixed, 1 Rave (outlier)', () => {
@@ -235,10 +239,10 @@ describe('ensembleScore - 3 models', () => {
         makeModelScore('gemini', 'Mixed', 65)
       );
 
-      expect(result.bucket).toBe('Mixed');
-      expect(result.outlier?.model).toBe('openai');
-      expect(result.outlier?.bucket).toBe('Rave');
-      expect(result.needsReview).toBe(true); // 2 buckets apart
+      assert.strictEqual(result.bucket, 'Mixed');
+      assert.strictEqual(result.outlier?.model, 'openai');
+      assert.strictEqual(result.outlier?.bucket, 'Rave');
+      assert.strictEqual(result.needsReview, true); // 2 buckets apart
     });
   });
 
@@ -250,13 +254,13 @@ describe('ensembleScore - 3 models', () => {
         makeModelScore('gemini', 'Pan', 25)
       );
 
-      expect(result.source).toBe('ensemble-no-consensus');
-      expect(result.confidence).toBe('low');
-      expect(result.needsReview).toBe(true);
-      expect(result.reviewReason).toBe('3-way bucket disagreement');
-      expect(result.note).toContain('claude=Rave');
-      expect(result.note).toContain('openai=Mixed');
-      expect(result.note).toContain('gemini=Pan');
+      assert.strictEqual(result.source, 'ensemble-no-consensus');
+      assert.strictEqual(result.confidence, 'low');
+      assert.strictEqual(result.needsReview, true);
+      assert.strictEqual(result.reviewReason, '3-way bucket disagreement');
+      assert.ok(result.note.includes('claude=Rave'), `note should contain 'claude=Rave'`);
+      assert.ok(result.note.includes('openai=Mixed'), `note should contain 'openai=Mixed'`);
+      assert.ok(result.note.includes('gemini=Pan'), `note should contain 'gemini=Pan'`);
     });
 
     test('uses median score', () => {
@@ -267,8 +271,8 @@ describe('ensembleScore - 3 models', () => {
       );
 
       // Median of [95, 60, 40] = 60
-      expect(result.score).toBe(60);
-      expect(result.bucket).toBe('Mixed');
+      assert.strictEqual(result.score, 60);
+      assert.strictEqual(result.bucket, 'Mixed');
     });
   });
 });
@@ -285,10 +289,10 @@ describe('ensembleScore - 2 models (fallback)', () => {
       null
     );
 
-    expect(result.bucket).toBe('Positive');
-    expect(result.source).toBe('two-model-fallback');
-    expect(result.score).toBe(80); // average
-    expect(result.needsReview).toBe(false);
+    assert.strictEqual(result.bucket, 'Positive');
+    assert.strictEqual(result.source, 'two-model-fallback');
+    assert.strictEqual(result.score, 80); // average
+    assert.strictEqual(result.needsReview, false);
   });
 
   test('2 disagree on bucket (adjacent)', () => {
@@ -298,10 +302,10 @@ describe('ensembleScore - 2 models (fallback)', () => {
       null
     );
 
-    expect(result.source).toBe('two-model-fallback');
-    expect(result.score).toBe(84); // average
-    expect(result.bucket).toBe('Positive'); // derived from score 84
-    expect(result.needsReview).toBe(false); // only 1 bucket apart
+    assert.strictEqual(result.source, 'two-model-fallback');
+    assert.strictEqual(result.score, 84); // average
+    assert.strictEqual(result.bucket, 'Positive'); // derived from score 84
+    assert.strictEqual(result.needsReview, false); // only 1 bucket apart
   });
 
   test('2 disagree on bucket (distant)', () => {
@@ -311,10 +315,10 @@ describe('ensembleScore - 2 models (fallback)', () => {
       null
     );
 
-    expect(result.source).toBe('two-model-fallback');
-    expect(result.score).toBe(65); // average
-    expect(result.confidence).toBe('low');
-    expect(result.needsReview).toBe(true); // 3 buckets apart
+    assert.strictEqual(result.source, 'two-model-fallback');
+    assert.strictEqual(result.score, 65); // average
+    assert.strictEqual(result.confidence, 'low');
+    assert.strictEqual(result.needsReview, true); // 3 buckets apart
   });
 
   test('high score delta triggers review', () => {
@@ -324,9 +328,9 @@ describe('ensembleScore - 2 models (fallback)', () => {
       null
     );
 
-    expect(result.bucket).toBe('Positive');
-    expect(result.needsReview).toBe(true); // delta of 18 > 15
-    expect(result.reviewReason).toContain('delta');
+    assert.strictEqual(result.bucket, 'Positive');
+    assert.strictEqual(result.needsReview, true); // delta of 18 > 15
+    assert.ok(result.reviewReason.includes('delta'), `reviewReason should contain 'delta'`);
   });
 
   test('one model has error', () => {
@@ -337,7 +341,7 @@ describe('ensembleScore - 2 models (fallback)', () => {
     );
 
     // Only claude succeeds
-    expect(result.source).toBe('single-model-fallback');
+    assert.strictEqual(result.source, 'single-model-fallback');
   });
 });
 
@@ -353,12 +357,12 @@ describe('ensembleScore - 1 model (fallback)', () => {
       null
     );
 
-    expect(result.bucket).toBe('Rave');
-    expect(result.score).toBe(92);
-    expect(result.source).toBe('single-model-fallback');
-    expect(result.confidence).toBe('low');
-    expect(result.needsReview).toBe(true);
-    expect(result.note).toContain('claude');
+    assert.strictEqual(result.bucket, 'Rave');
+    assert.strictEqual(result.score, 92);
+    assert.strictEqual(result.source, 'single-model-fallback');
+    assert.strictEqual(result.confidence, 'low');
+    assert.strictEqual(result.needsReview, true);
+    assert.ok(result.note.includes('claude'), `note should contain 'claude'`);
   });
 
   test('only openai succeeds', () => {
@@ -368,9 +372,9 @@ describe('ensembleScore - 1 model (fallback)', () => {
       null
     );
 
-    expect(result.bucket).toBe('Mixed');
-    expect(result.score).toBe(58);
-    expect(result.source).toBe('single-model-fallback');
+    assert.strictEqual(result.bucket, 'Mixed');
+    assert.strictEqual(result.score, 58);
+    assert.strictEqual(result.source, 'single-model-fallback');
   });
 
   test('only gemini succeeds', () => {
@@ -380,8 +384,8 @@ describe('ensembleScore - 1 model (fallback)', () => {
       makeModelScore('gemini', 'Pan', 20)
     );
 
-    expect(result.bucket).toBe('Pan');
-    expect(result.score).toBe(20);
+    assert.strictEqual(result.bucket, 'Pan');
+    assert.strictEqual(result.score, 20);
   });
 });
 
@@ -393,12 +397,12 @@ describe('ensembleScore - all fail', () => {
   test('returns neutral fallback', () => {
     const result = ensembleScore(null, null, null);
 
-    expect(result.score).toBe(50);
-    expect(result.bucket).toBe('Mixed');
-    expect(result.confidence).toBe('low');
-    expect(result.needsReview).toBe(true);
-    expect(result.reviewReason).toBe('All models failed to score');
-    expect(result.note).toBe('All models failed');
+    assert.strictEqual(result.score, 50);
+    assert.strictEqual(result.bucket, 'Mixed');
+    assert.strictEqual(result.confidence, 'low');
+    assert.strictEqual(result.needsReview, true);
+    assert.strictEqual(result.reviewReason, 'All models failed to score');
+    assert.strictEqual(result.note, 'All models failed');
   });
 
   test('all models have errors', () => {
@@ -408,8 +412,8 @@ describe('ensembleScore - all fail', () => {
       makeModelScore('gemini', 'Rave', 90, { error: 'API error' })
     );
 
-    expect(result.note).toBe('All models failed');
-    expect(result.needsReview).toBe(true);
+    assert.strictEqual(result.note, 'All models failed');
+    assert.strictEqual(result.needsReview, true);
   });
 });
 
@@ -422,28 +426,28 @@ describe('toModelScore', () => {
     const result = makeResult('Positive', 80);
     const modelScore = toModelScore(result, 'claude');
 
-    expect(modelScore.model).toBe('claude');
-    expect(modelScore.bucket).toBe('Positive');
-    expect(modelScore.score).toBe(80);
-    expect(modelScore.verdict).toBe('test verdict');
-    expect(modelScore.error).toBeUndefined();
+    assert.strictEqual(modelScore.model, 'claude');
+    assert.strictEqual(modelScore.bucket, 'Positive');
+    assert.strictEqual(modelScore.score, 80);
+    assert.strictEqual(modelScore.verdict, 'test verdict');
+    assert.strictEqual(modelScore.error, undefined);
   });
 
   test('handles null result', () => {
     const modelScore = toModelScore(null, 'openai');
 
-    expect(modelScore.model).toBe('openai');
-    expect(modelScore.bucket).toBe('Mixed');
-    expect(modelScore.score).toBe(50);
-    expect(modelScore.error).toBe('No result');
+    assert.strictEqual(modelScore.model, 'openai');
+    assert.strictEqual(modelScore.bucket, 'Mixed');
+    assert.strictEqual(modelScore.score, 50);
+    assert.strictEqual(modelScore.error, 'No result');
   });
 
   test('handles error parameter', () => {
     const result = makeResult('Positive', 80);
     const modelScore = toModelScore(result, 'gemini', 'API timeout');
 
-    expect(modelScore.error).toBe('API timeout');
-    expect(modelScore.bucket).toBe('Mixed'); // fallback
+    assert.strictEqual(modelScore.error, 'API timeout');
+    assert.strictEqual(modelScore.bucket, 'Mixed'); // fallback
   });
 });
 
@@ -454,7 +458,7 @@ describe('getAgreementLevel', () => {
       makeModelScore('openai', 'Rave', 92),
       makeModelScore('gemini', 'Rave', 88)
     ];
-    expect(getAgreementLevel(results)).toBe('unanimous');
+    assert.strictEqual(getAgreementLevel(results), 'unanimous');
   });
 
   test('returns majority when 2/3 agree', () => {
@@ -463,7 +467,7 @@ describe('getAgreementLevel', () => {
       makeModelScore('openai', 'Rave', 92),
       makeModelScore('gemini', 'Mixed', 60)
     ];
-    expect(getAgreementLevel(results)).toBe('majority');
+    assert.strictEqual(getAgreementLevel(results), 'majority');
   });
 
   test('returns split when all different', () => {
@@ -472,12 +476,12 @@ describe('getAgreementLevel', () => {
       makeModelScore('openai', 'Mixed', 60),
       makeModelScore('gemini', 'Pan', 20)
     ];
-    expect(getAgreementLevel(results)).toBe('split');
+    assert.strictEqual(getAgreementLevel(results), 'split');
   });
 
   test('returns insufficient for single result', () => {
     const results = [makeModelScore('claude', 'Rave', 90)];
-    expect(getAgreementLevel(results)).toBe('insufficient');
+    assert.strictEqual(getAgreementLevel(results), 'insufficient');
   });
 
   test('filters out results with errors', () => {
@@ -485,6 +489,6 @@ describe('getAgreementLevel', () => {
       makeModelScore('claude', 'Rave', 90),
       makeModelScore('openai', 'Rave', 92, { error: 'failed' })
     ];
-    expect(getAgreementLevel(results)).toBe('insufficient');
+    assert.strictEqual(getAgreementLevel(results), 'insufficient');
   });
 });
