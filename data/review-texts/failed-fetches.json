@@ -3664,18 +3664,6 @@
     "timestamp": "2026-01-29T15:07:12.225Z"
   },
   {
-    "reviewId": "uncle-vanya-2024/thewrap--robert-hofler.json",
-    "showId": "uncle-vanya-2024",
-    "outlet": "The Wrap",
-    "critic": "Robert Hofler",
-    "url": "https://www.thewrap.com/uncle-vanya-broadway-review-steve-carell/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Ad blocker message: \"ad block\"",
-    "textLength": 3898,
-    "timestamp": "2026-01-29T15:26:02.563Z"
-  },
-  {
     "reviewId": "uncle-vanya-2024/thewrap--robert.json",
     "showId": "uncle-vanya-2024",
     "outlet": "The Wrap",
@@ -6470,5 +6458,65 @@
     "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
     "textLength": 48624,
     "timestamp": "2026-02-02T00:33:46.967Z"
+  },
+  {
+    "reviewId": "uncle-vanya-2024/new-york-sun--elysa-gardner.json",
+    "showId": "uncle-vanya-2024",
+    "outlet": "New York Sun",
+    "critic": "Elysa Gardner",
+    "url": "https://www.nysun.com/article/with-steve-carell-in-the-title-role-chekhovs-comedic-elements-stand-out-in-this-uncle-vanya",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
+    "textLength": 626,
+    "timestamp": "2026-02-02T00:34:04.675Z"
+  },
+  {
+    "reviewId": "uncle-vanya-2024/thewrap--robert-hofler.json",
+    "showId": "uncle-vanya-2024",
+    "outlet": "TheWrap",
+    "critic": "Robert Hofler",
+    "url": "https://www.thewrap.com/uncle-vanya-broadway-review-steve-carell/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Ad blocker message: \"ad block\"",
+    "textLength": 3898,
+    "timestamp": "2026-02-02T00:34:46.389Z"
+  },
+  {
+    "reviewId": "uncle-vanya-2024/thewrap--unknown.json",
+    "showId": "uncle-vanya-2024",
+    "outlet": "The Wrap",
+    "critic": "Unknown",
+    "url": "https://www.thewrap.com/uncle-vanya-broadway-review-steve-carell/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 5066,
+    "timestamp": "2026-02-02T00:38:01.274Z"
+  },
+  {
+    "reviewId": "uncle-vanya-2024/timeout--adam-feldman.json",
+    "showId": "uncle-vanya-2024",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/uncle-vanya-9",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 6269,
+    "timestamp": "2026-02-02T00:38:06.764Z"
+  },
+  {
+    "reviewId": "uncle-vanya-2024/timeout--unknown.json",
+    "showId": "uncle-vanya-2024",
+    "outlet": "Time Out",
+    "critic": "Unknown",
+    "url": "https://www.timeout.com/newyork/theater/uncle-vanya-broadway-review-steve-carell-chekhov-modern",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 6475,
+    "timestamp": "2026-02-02T00:38:10.882Z"
   }
 ]
