@@ -1,106 +1,63 @@
 {
-  "runDate": "2026-02-02T23:25:25.947Z",
+  "runDate": "2026-02-02T23:30:22.039Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-roommate-2024",
+    "showFilter": "queen-versailles-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 8,
-    "failed": 5,
+    "processed": 1,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "61.5%"
+    "successRate": "33.3%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 1,
     "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 1,
-    "archive": 4
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 2,
-    "tier1_5Attempts": 2,
+    "tier1Attempts": 2,
+    "tier1Success": 1,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 4,
-    "tier2Success": 1,
-    "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier4Attempts": 13,
-    "tier4Success": 7,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 21,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.9,
-    "urlDiscoveryAttempts": 1,
+    "tier2Attempts": 1,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier4Attempts": 1,
+    "tier4Success": 1,
+    "totalFailed": 1,
+    "scrapingBeeCreditsUsed": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-roommate-2024/variety--charles-isherwood.json",
-    "the-roommate-2024/vulture--helen-shaw.json",
-    "the-roommate-2024/broadwaynews--brittani-samuel.json",
-    "the-roommate-2024/deadline--greg-evans.json",
-    "the-roommate-2024/nydailynews--chris-jones.json",
-    "the-roommate-2024/theatermania--jesse-green.json",
-    "the-roommate-2024/the-village-voice--michael-musto.json",
-    "the-roommate-2024/washpost--naveen-kumar.json"
+    "queen-versailles-2025/theatre-reviews-limited--david-roberts.json"
   ],
   "failed": [
-    "the-roommate-2024/nypost--johnny-oleksinski.json",
-    "the-roommate-2024/observer--rex-reed.json",
-    "the-roommate-2024/timeout--adam-feldman.json",
-    "the-roommate-2024/wsj--charles-isherwood.json",
-    "the-roommate-2024/talkinbroadway--matthew-murray.json"
+    "queen-versailles-2025/variety--aramide-tinubu.json",
+    "queen-versailles-2025/timeout--adam-feldman.json"
   ],
-  "failed": [],
   "tierDetails": {
     "playwright": [
-      "the-roommate-2024/the-village-voice--michael-musto.json",
-      "the-roommate-2024/washpost--naveen-kumar.json"
+      "queen-versailles-2025/theatre-reviews-limited--david-roberts.json"
     ],
     "browserbase": [],
-    "scrapingbee": [
-      "the-roommate-2024/variety--charles-isherwood.json"
-    ],
-    "brightdata": [
-      "the-roommate-2024/theatermania--jesse-green.json"
-    ],
-    "archive": [
-      "the-roommate-2024/vulture--helen-shaw.json",
-      "the-roommate-2024/broadwaynews--brittani-samuel.json",
-      "the-roommate-2024/deadline--greg-evans.json",
-      "the-roommate-2024/nydailynews--chris-jones.json"
-    ]
+    "scrapingbee": [],
+    "brightdata": [],
+    "archive": []
   },
-  "failuresByOutlet": {
-    "New York Post": {
-      "count": 1,
-      "domain": "nypost.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Observer": {
-      "count": 1,
-      "domain": "observer.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "The Wall Street Journal": {
-      "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
