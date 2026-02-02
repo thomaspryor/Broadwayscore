@@ -317,25 +317,51 @@ Auto-generated system to catch when reviews are attributed to the wrong outlet. 
 
 ### Text Quality Classification
 
-`collect-review-texts.js` classifies scraped text quality and strips trailing junk:
+Two classification systems exist — the canonical `contentTier` (5-tier, in `content-quality.js`) and the legacy `textQuality` (4-tier, inline in `collect-review-texts.js`). Both are written to review files; `contentTier` is what gets published to `reviews.json`.
 
-**Quality levels:**
-- `full` - >1500 chars, mentions show title, >300 words, no truncation signals
-- `partial` - 500-1500 chars or larger but missing criteria
-- `truncated` - Has paywall/login text, "read more" prompts, or severe signals
-- `excerpt` - <500 chars
+#### Content Tier (canonical, 5-tier)
+
+Classified by `classifyContentTier()` in `scripts/lib/content-quality.js`. Called by:
+- `collect-review-texts.js` — after saving new fullText
+- `gather-reviews.js` — when creating new review files
+- `rebuild-all-reviews.js` — safety net during daily rebuild
+- `backfill-review-flags.js` — one-time recalculation
+
+**Tiers:**
+- `complete` — Full review text with sufficient content for scoring
+- `truncated` — Severe truncation signals (paywall, "read more", mid-sentence cutoff)
+- `excerpt` — Only aggregator excerpt available, no fullText
+- `stub` — Very short text (<150 words) that isn't structurally complete
+- `invalid` — Garbage content (navigation, ads, "thanks for subscribing")
+
+**Three paths to "complete":**
+1. **Path 1** (standard): 300+ words, proper ending punctuation, no truncation signals
+2. **Path 2** (long text): 500+ words regardless of ending (long enough to be usable)
+3. **Path 3** (short but complete): 150+ words, zero truncation signals, proper ending, opinion language detected, text longer than 1.1x longest excerpt
+
+Path 3 uses `hasOpinionLanguage()` which requires 2+ matches from evaluative/critical patterns (brilliant, disappointing, succeeds, struggles, recommended, etc.) to distinguish real capsule reviews from plot summaries.
+
+#### Text Quality (legacy, 4-tier)
+
+Set by `classifyTextQuality()` inline in `collect-review-texts.js`. Stored as `textQuality` field:
+- `full` — >1500 chars, mentions show title, >300 words, no truncation signals
+- `partial` — 500-1500 chars or larger but missing criteria
+- `truncated` — Has paywall/login text, "read more" prompts, or severe signals
+- `excerpt` — <500 chars
+
+#### Junk Handling
 
 **Automatic junk stripping:** Removes newsletter promos (TheaterMania), login prompts (BroadwayNews), "Read more" links (amNY), signup forms (Vulture/NY Mag) from end of scraped text.
 
-**Legitimate endings recognized:** Theater addresses, URLs, production credits, ticket info - these don't trigger false truncation.
+**Legitimate endings recognized:** Theater addresses, URLs, production credits, ticket info — these don't trigger false truncation.
 
 **Truncation signals detected:**
-- `has_paywall_text` - "subscribe", "sign in", "members only"
-- `has_read_more_prompt` - "continue reading", "read more"
-- `has_footer_text` - "privacy policy", "terms of use"
-- `shorter_than_excerpt` - fullText shorter than aggregator excerpt
-- `no_ending_punctuation` - Doesn't end with .!?"')
-- `possible_mid_word_cutoff` - Ends with lowercase letter
+- `has_paywall_text` — "subscribe", "sign in", "members only"
+- `has_read_more_prompt` — "continue reading", "read more"
+- `has_footer_text` — "privacy policy", "terms of use"
+- `shorter_than_excerpt` — fullText shorter than aggregator excerpt
+- `no_ending_punctuation` — Doesn't end with .!?"')
+- `possible_mid_word_cutoff` — Ends with lowercase letter
 
 **Garbage detection guards (Feb 2026):** To prevent false positives on legitimate reviews:
 - Legal page patterns (e.g., "All Rights Reserved") are skipped for texts >500 chars — copyright footers are not garbage
@@ -343,7 +369,7 @@ Auto-generated system to catch when reviews are attributed to the wrong outlet. 
 - Ad blocker detection requires full message context, not just the word "adblock"
 
 **Automated quality checks:**
-- `scripts/audit-text-quality.js` - Runs in CI, enforces thresholds (35% full, <40% truncated, <5% unknown)
+- `scripts/audit-text-quality.js` — Runs in CI, enforces thresholds (35% full, <40% truncated, <5% unknown)
 - Quality classification happens automatically during `collect-review-texts.js` and `gather-reviews.js`
 - `review-refresh.yml` now rebuilds `reviews.json` after collecting new reviews
 
