@@ -222,13 +222,13 @@ const OUTLET_ALIASES = {
     'billboard', 'bill board'
   ],
   'amny': [
-    'amny', 'amnewyork', 'am new york', 'am-new-york', 'amnewsyork'
+    'amny', 'amnewyork', 'am new york', 'am-new-york', 'amnewsyork', 'amny-matt-windman'
   ],
   'culturesauce': [
     'culturesauce', 'culture sauce', 'culture-sauce'
   ],
   'oneminutecritic': [
-    'oneminutecritic', 'one minute critic', 'one-minute-critic', '1 minute critic'
+    'oneminutecritic', 'one minute critic', 'one-minute-critic', '1 minute critic', '1-minute-critic-matthew-wexler'
   ],
   'artsfuse': [
     'artsfuse', 'the arts fuse', 'arts fuse', 'the-arts-fuse'
