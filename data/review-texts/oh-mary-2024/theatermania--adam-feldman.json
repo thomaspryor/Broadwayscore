@@ -67,8 +67,8 @@
   },
   "isFullReview": false,
   "textWordCount": 42,
-  "archivePath": "data/archives/reviews/oh-mary-2024/theatermania--adam-feldman_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T23:42:22.232Z",
+  "archivePath": "data/archives/reviews/oh-mary-2024/theatermania--adam-feldman_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T17:46:43.931Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -81,13 +81,13 @@
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "Insufficient text extracted: 468 chars"
+      "error": "Skipped - known blocked site"
     },
     {
       "tier": 2,
       "method": "scrapingbee",
       "success": false,
-      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+      "error": "Insufficient text: 141 chars"
     },
     {
       "tier": 3,
