@@ -1,78 +1,78 @@
 {
-  "runDate": "2026-02-02T16:39:43.923Z",
+  "runDate": "2026-02-02T16:42:03.693Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "harmony-2023",
+    "showFilter": "grey-house-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 6,
+    "processed": 6,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "45.5%"
+    "successRate": "54.5%"
   },
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 2,
-    "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 4
+    "playwright": 1,
+    "browserbase": 0,
+    "scrapingbee": 1,
+    "brightdata": 2,
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 1,
-    "tier1_5Attempts": 3,
-    "tier1_5Success": 1,
+    "tier1Attempts": 5,
+    "tier1Success": 2,
+    "tier1_5Attempts": 2,
+    "tier1_5Success": 0,
     "tier2Attempts": 4,
-    "tier2Success": 0,
-    "tier3Attempts": 4,
-    "tier3Success": 1,
-    "tier4Attempts": 12,
+    "tier2Success": 1,
+    "tier3Attempts": 3,
+    "tier3Success": 2,
+    "tier4Attempts": 10,
     "tier4Success": 5,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 10,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 2.6,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 20,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 2.5,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "harmony-2023/hollywood-reporter--david-rooney.json",
-    "harmony-2023/variety--aramide-tinubu.json",
-    "harmony-2023/broadwaynews--brittani-samuel.json",
-    "harmony-2023/deadline--greg-evans.json",
-    "harmony-2023/observer--david-cote.json"
+    "grey-house-2023/newyorker--dan-stahl.json",
+    "grey-house-2023/deadline--greg-evans.json",
+    "grey-house-2023/deadline--pete-hammond.json",
+    "grey-house-2023/cititour--brian-scott-lipton.json",
+    "grey-house-2023/nysr--david-nounou.json",
+    "grey-house-2023/talkinbroadway--matthew-murray.json"
   ],
   "failed": [
-    "harmony-2023/vulture--jesse-green.json",
-    "harmony-2023/the-new-york-sun--elysa-gardner.json",
-    "harmony-2023/timeout--adam-feldman.json",
-    "harmony-2023/wsj--charles-isherwood.json",
-    "harmony-2023/theatrely--juan-a-ramirez.json",
-    "harmony-2023/talkinbroadway--matthew-murray.json"
+    "grey-house-2023/hollywood-reporter--david-rooney.json",
+    "grey-house-2023/new-york-sun--elysa-gardner.json",
+    "grey-house-2023/nydailynews--chris-jones.json",
+    "grey-house-2023/timeout--adam-feldman.json",
+    "grey-house-2023/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
-    "playwright": [],
-    "browserbase": [
-      "data/review-texts/harmony-2023/observer--david-cote.json",
-      "harmony-2023/observer--david-cote.json"
+    "playwright": [
+      "grey-house-2023/cititour--brian-scott-lipton.json"
     ],
-    "scrapingbee": [],
+    "browserbase": [],
+    "scrapingbee": [
+      "grey-house-2023/newyorker--dan-stahl.json"
+    ],
     "brightdata": [
-      "harmony-2023/vulture--jesse-green.json"
+      "grey-house-2023/hollywood-reporter--david-rooney.json",
+      "grey-house-2023/talkinbroadway--matthew-murray.json"
     ],
-    "brightdata": [],
     "archive": [
-      "harmony-2023/hollywood-reporter--david-rooney.json",
-      "harmony-2023/variety--aramide-tinubu.json",
-      "harmony-2023/broadwaynews--brittani-samuel.json",
-      "harmony-2023/deadline--greg-evans.json"
+      "grey-house-2023/deadline--greg-evans.json",
+      "grey-house-2023/deadline--pete-hammond.json",
+      "grey-house-2023/nysr--david-nounou.json"
     ]
   },
   "failuresByOutlet": {
@@ -82,27 +82,7 @@
       "hasCredentials": true,
       "isPaywalled": true,
       "isKnownBlocked": true
-    },
-    "Theatrely": {
-      "count": 1,
-      "domain": "theatrely.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Talkin' Broadway": {
-      "count": 1,
-      "domain": "talkinbroadway.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
-      "oldUrl": "https://nypost.com/2024/11/13/entertainment/maybe-happy-ending-review-charming-musical-about-robot-romance/",
-      "newUrl": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/"
-    }
-  ]
+  "urlDiscoveries": []
 }
