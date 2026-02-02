@@ -1,59 +1,105 @@
 {
-  "runDate": "2026-02-02T23:16:07.604Z",
+  "runDate": "2026-02-02T23:19:05.488Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "jajas-african-hair-braiding-2023",
+    "showFilter": "mj-2022",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 1,
+    "processed": 5,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "browserbase": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archive": 0
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 6,
+    "tier1Success": 2,
     "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 4,
+    "tier2Success": 1,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier4Attempts": 1,
-    "tier4Success": 0,
-    "totalFailed": 1,
-    "scrapingBeeCreditsUsed": 0,
+    "tier4Attempts": 13,
+    "tier4Success": 3,
+    "totalFailed": 5,
+    "scrapingBeeCreditsUsed": 22,
     "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.4,
-    "urlDiscoveryAttempts": 0,
+    "browserbaseMinutesUsed": 2.1,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "mj-2022/variety--peter-marks.json",
+    "mj-2022/guardian--adrian-horton.json",
+    "mj-2022/ap--mark-kennedy.json",
+    "mj-2022/usatoday--david-rooney.json"
+  ],
   "failed": [
-    "jajas-african-hair-braiding-2023/nydailynews--chris-jones.json"
+    "mj-2022/hollywood-reporter--david-rooney.json",
+    "mj-2022/ew--kristen-baldwin.json",
+    "mj-2022/timeout--adam-feldman.json",
+    "mj-2022/wsj--charles-isherwood.json",
+    "mj-2022/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
-    "playwright": [],
-    "browserbase": [
-      "data/review-texts/jajas-african-hair-braiding-2023/nydailynews--chris-jones.json"
+    "playwright": [
+      "mj-2022/guardian--adrian-horton.json",
+      "mj-2022/ap--mark-kennedy.json"
+    ],
+    "browserbase": [],
+    "scrapingbee": [
+      "mj-2022/usatoday--david-rooney.json"
     ],
     "brightdata": [],
-    "archive": []
+    "archive": [
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "mj-2022/variety--peter-marks.json"
+    ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Entertainment Weekly": {
+      "count": 1,
+      "domain": "ew.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Hollywood Reporter": {
+      "count": 1,
+      "domain": "hollywoodreporter.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    },
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
