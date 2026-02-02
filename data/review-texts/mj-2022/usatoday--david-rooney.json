@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is most effective when it focuses on Jackson's creative process and his perfectionist drive in the recording studio, capturing the meticulous attention to detail that made him the King of Pop.",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 68,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "The show is most effective when it focuses on Jackson's creative process and his perfectionist drive in the recording studio, capturing the meticulous attention to detail that made him the King of Pop.",
   "needsScoring": true,
   "llmScore": {
-    "score": 60,
+    "score": 68,
     "confidence": "low",
     "range": {
-      "low": 55,
-      "high": 70
+      "low": 63,
+      "high": 73
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -30,21 +30,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 65
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "most effective when it focuses on Jackson's creative process",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "capturing the meticulous attention to detail that made him the King of Pop",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "This excerpt only shows what works about the show without revealing overall verdict or what doesn't work, making it impossible to determine full recommendation strength.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: This appears to be a truncated excerpt that highlights specific strengths but implies the show is less effective in other areas. The phrase 'most effective when' suggests unevenness rather than overall recommendation. | Gemini: The review highlights the show's effectiveness in certain aspects, suggesting a positive but not overwhelmingly enthusiastic recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,19 +42,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:06:16.925Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2340,
-    "outputTokens": 282,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:25:25.161Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 60,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (33 words)"
+  "contentTierReason": "Short text (33 words)",
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+  }
 }

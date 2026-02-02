@@ -7,7 +7,7 @@
   "publishDate": "July 11, 2024",
   "fullText": "Like so many before them, members of the “Oh, Mary!” creative team are proudly reclaiming an insulting epithet as a badge of honor.\n\nI don’t mean “queer”; they’re way past that. I mean “stupid.”\n\n“Oh, Mary!” is “the stupidest play,” Cole Escola, its author and star, tells anyone who will listen.\n\n“I have a huge hunger for deep stupidity,” Sam Pinkleton, its director, chimes in.\n\nThey protest too much. “Oh, Mary!” may be silly, campy, even pointless, but “stupid,” I think not. Rather, the play, which opened on Thursday at the Lyceum Theater, is one of the best crafted and most exactingly directed Broadway comedies in years. Which is a surprise on many levels, and on each level a gift.\n\nTo start with, we don’t get a lot of comedies these days, not the kind you can feel good laughing at. Most contemporary examples of the genre — say “Bootycandy” by Robert O’Hara and “Clybourne Park” by Bruce Norris — use the form the way doctors use an emetic: They want you to gag on the gags. But the totally unserious “Oh, Mary!” is not medicinal in that sense. It merely wants you to lose your breath guffawing, especially with a series of switchback shocks at the end, so cleverly conceived and executed they’re hilarious.\n\nBut the premise is already a joke. How else would you describe a back story in which Mary Todd Lincoln (Escola in a hoop skirt the size of a yurt) longs to return to her first love, cabaret, with its “madcap medleys” and built-in excuses for diva behavior?\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 81,
   "dtliThumb": "Up",
   "source": "dtli",
   "dtliExcerpt": "The laughs roll through the house and return, creating a loop that at times approaches hysteria. (Never for the actors though; they do not break.) And the technical aspects, though also enlarged, remain smarter than they are lavish, recalling the roots of the drag aesthetic in the handmade ethos of community and school.",
@@ -15,67 +15,52 @@
   "bwwExcerpt": "They protest too much. “Oh, Mary!” may be silly, campy, even pointless, but “stupid,” I think not. Rather, the play, which opened on Thursday at the",
   "bwwThumb": null,
   "llmScore": {
-    "score": 88,
+    "score": 81,
     "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 90
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "one of the best crafted and most exactingly directed Broadway comedies in years",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "It merely wants you to lose your breath guffawing",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "so cleverly conceived and executed they're hilarious",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic calls it 'one of the best crafted and most exactingly directed Broadway comedies in years' with high praise for direction, writing craft, and comedic execution despite acknowledging its silliness.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening with context about the creators calling it 'stupid,' the critic clearly praises it as exceptionally well-crafted, surprising, and gifted, calling it one of the best Broadway comedies in years. | GPT-4o: The review praises the play as one of the best crafted comedies in years, highlighting its cleverness and execution, which indicates a strong recommendation. | Gemini: Despite the initial setup about the play's supposed 'stupidity,' the review ultimately praises the play as one of the best crafted and directed comedies in years, indicating a positive recommendation. The truncated text makes me slightly less confident.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:44:38.581Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2722,
-    "outputTokens": 340,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:06:06.266Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 80,
-    "scoreDelta": 5,
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "designation": "Critics_Pick",
   "rescoreReason": "scored on brief excerpt, now has fullText",

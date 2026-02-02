@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"You want to leave shivering with the majesty of nature\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/redwood-broadway",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 60,
   "source": "show-score",
   "dtliThumb": "Down",
   "llmScore": {
-    "score": 50,
+    "score": 60,
     "confidence": "low",
     "range": {
-      "low": 40,
-      "high": 60
+      "low": 55,
+      "high": 65
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -27,45 +27,40 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "You want to leave shivering with the majesty of nature",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "This appears to be a fragment or quote rather than a complete review, making it impossible to determine the critic's actual recommendation or sentiment about the theatrical production.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: The single quote provided is too ambiguous to determine the critic's verdict - it could be describing what the show should achieve or what it does achieve, and the aggregator context suggests negative reception. | GPT-4o: The quote suggests a desire for an experience that the production does not deliver, implying disappointment. The aggregator context supports a negative verdict. | Gemini: The quote suggests a positive experience, but the lack of full context and the aggregator verdict of 'Down' indicate some reservations. | Buckets: claude=Mixed, openai=Negative, gemini=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:05:10.880Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2315,
-    "outputTokens": 243,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:49:51.782Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 50,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 50,
-    "openaiScore": 75,
-    "scoreDelta": 25,
+    "claudeScore": 60,
+    "openaiScore": 40,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Positive",
+    "scoreDelta": 35,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": true,
     "needsReviewReasons": [
-      "Models disagree by 25 points (Claude: 50, OpenAI: 75)"
-    ]
+      "3-way bucket disagreement"
+    ],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "No bucket consensus - using median score"
   },
   "dtliExcerpt": "You want to leave shivering with the majesty of nature; instead, it feels like 110 minutes staring at a potted plant.",
   "sources": [

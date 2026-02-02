@@ -8,7 +8,7 @@
   "fullText": "This is a musical that soars on the strength of Keys' extraordinary catalog and the powerhouse performance of Maleah Joi Moon as Ali, a character clearly inspired by the composer herself.",
   "dtliExcerpt": "This is a musical that soars on the strength of Keys' extraordinary catalog and the powerhouse performance of Maleah Joi Moon as Ali, a character clearly inspired by the composer herself.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "contentTier": "truncated",
   "wordCount": 31,
   "llmScore": {
-    "score": 77,
+    "score": 78,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The word 'soars' indicates strong approval, and the praise for both the music and lead performance signals a clear recommendation, though this appears to be an excerpt rather than a full review. | GPT-4o: The review uses highly positive language such as 'soars', 'extraordinary', and 'powerhouse performance', indicating a strong recommendation. | Gemini: The review highlights the strengths of the musical, indicating a positive overall impression and recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses strong positive language like 'soars' and 'powerhouse performance', indicating clear recommendation despite the brief excerpt. | GPT-4o: The review praises the musical's strength and highlights a standout performance, indicating a strong positive recommendation. | Gemini: The review highlights the strengths of the musical, specifically Keys' music and Moon's performance, indicating a positive overall assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,25 +43,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T13:58:21.240Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-01T23:59:09.039Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 90,
+    "openaiScore": 82,
     "geminiScore": 75,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   }
 }

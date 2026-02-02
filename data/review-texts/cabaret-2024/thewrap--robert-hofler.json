@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 39,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "Near the end of “Cabaret,” Rankin sings the title song, and like so much of this production, she only plays the subtext — that life is anything but beautiful, despite what the Emcee has been telling us. Indeed, life can be hell. She’s a little late to that realization. Redmayne is the Devil, complete with red hair, from the moment he steps on stage.",
@@ -19,62 +19,52 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 39,
-    "confidence": "high",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 33,
-      "high": 45
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
-      "performances": 43,
-      "direction": 28
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "It didn't work at Loyola and it doesn't work now on Broadway",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Redmayne and Rankin have been directed to be abrasive to the extreme",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Because Redmayne isn't playing a character but rather a symbol of decadence, he presents nothing but a jumble of mannerisms",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic fundamentally objects to the directorial concept, finds the lead performances abrasive and ineffective, and explicitly states the production doesn't work despite praising the physical transformation of the theater. | GPT-4o-mini: The review expresses significant criticism of the production's direction and thematic execution, leading to a clear negative recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: Despite praise for the theater design and staging innovations, the critic fundamentally rejects the production's core concept and finds the performances abrasive and problematic, concluding it doesn't work. | GPT-4o: The review praises the set design and some aspects of the production but criticizes the direction and thematic choices. The critic finds the updated themes unsuccessful, indicating a mixed reception overall. | Gemini: The review is largely critical of the direction and choices made in this revival, particularly regarding the portrayal of the characters and the show's themes. The critic explicitly states that certain aspects \"don't work\".",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:42:35.692Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:35:12.984Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 39,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 40,
-    "scoreDelta": 2,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (39 → Down) conflicts with aggregator thumbs (Flat)"
-    ]
+    "claudeScore": 42,
+    "openaiScore": 65,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 53,

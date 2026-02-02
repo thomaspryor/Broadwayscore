@@ -9,42 +9,26 @@
   "bwwExcerpt": "Through tensions and extensions, Bioh’s day-in-the-life play never loses its comedic potency, and its ensemble shines throughout. When Jennifer (Rachel Christopher), an aspiring journalist who walks in at open to get micro-braids, everyone deflates with knowingly exhausted chagrin. By the time she leaves, almost at close, she, and us, can hardly believe it’s time to go.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 83,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 86
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 82
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "presents the deluxe version of all her gifts, in a lively production cheerfully directed by Whitney White as a hangout you never want to leave",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "its ensemble shines throughout",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "By the time she leaves, almost at close, she, and us, can hardly believe it's time to go",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic consistently praises the playwright's gifts, calls it a 'deluxe version' of her talents, celebrates the ensemble performances, and uses imagery of not wanting to leave that suggests strong audience engagement and recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is consistently positive throughout, praising the playwright's gifts, the 'lively production,' the ensemble cast, and describing it as a place 'you never want to leave.' While not using superlatives like 'masterpiece,' the tone is warm and recommending. | GPT-4o: The review is overwhelmingly positive, highlighting the production as a 'deluxe version' of the playwright's gifts and a 'hangout you never want to leave.' The critic praises the direction, set design, and ensemble performance, indicating a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, highlighting the enjoyable world-building and lively production. The critic clearly enjoyed the experience and recommends it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,27 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:21:30.402Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3202,
-    "outputTokens": 363,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:53:04.368Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 83,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 85,
-    "scoreDelta": 3,
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "dtliExcerpt": "Her Broadway debut, Jaja’s African Hair Braiding at MTC’s Friedman Theatre, presents the deluxe version of all her gifts, in a lively production cheerfully directed by Whitney White as a hangout you never want to leave.",

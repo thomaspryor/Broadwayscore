@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 89,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 92,
+    "score": 89,
     "confidence": "high",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -35,7 +35,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Despite limited text, the review uses superlative language like 'top-flight artists perfectly mated' and 'musical heaven,' indicating strong enthusiasm for this Chicago revival. | GPT-4o: The review uses highly enthusiastic language, describing the production as 'pulse-racing' and 'musical heaven,' indicating a strong recommendation. | Gemini: The review uses extremely positive language like \"pulse-racing\", \"top-flight artists\", \"sexiest, most sophisticated dancing\", and \"musical heaven\", indicating a rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review uses superlative language like 'top-flight artists perfectly mated to their parts' and 'flies us right into musical heaven,' indicating strong enthusiasm despite describing only one excerpt. | GPT-4o: The review uses highly positive language, describing the production as 'pulse-racing' and the dancing as 'the sexiest, most sophisticated' on Broadway, culminating in a metaphor of reaching 'musical heaven.' Despite the single excerpt warning, the language strongly suggests a rave review. | Gemini: The review uses extremely positive language such as \"pulse-racing,\" \"top-flight artists,\" \"sexiest, most sophisticated dancing,\" and \"musical heaven,\" indicating a rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,20 +45,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:29:36.449Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:57:04.041Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 92,
-    "geminiScore": 92,
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 90,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 0,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

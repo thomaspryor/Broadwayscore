@@ -9,71 +9,57 @@
   "showScoreExcerpt": "“The elusiveness of love and of the American Dream are the novel's most prescient, somber themes, and all the characters ultimately feel them. Those themes are still baked into this ‘Gatsby,’ but the true draw is the party, to get swept up in a bygone era at its most lavish, liquored, and loose-limbed.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-great-gatsby-musical",
   "originalScore": "D",
-  "assignedScore": 78,
+  "assignedScore": 59,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 78,
-    "confidence": "high",
+    "score": 59,
+    "confidence": "low",
     "range": {
-      "low": 75,
-      "high": 82
+      "low": 54,
+      "high": 64
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 65,
+      "book": null,
       "music": null,
-      "performances": 80,
-      "direction": 85
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Read our four-star review of The Great Gatsby — The Immersive Show",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the alluring, pulsing glamour of the '20s is alive in full glory",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "this truly vivacious show",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Four-star review with consistent praise for the immersive experience, production design, and vivacious entertainment value, despite some minor reservations about faithfulness to source material.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Negative, gemini=Positive | Claude: Despite describing enjoyable immersive elements, the critic gives a D rating and ultimately suggests the show fails to honor its source material, with the celebratory ending undermining the novel's themes. | Gemini: Despite some reservations about honoring the source material, the review ultimately recommends the show as a \"truly vivacious\" experience. The critic highlights the immersive and interactive elements as a major draw.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:18:04.248Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3585,
-    "outputTokens": 344,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:20:43.102Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 40,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Positive",
+    "scoreDelta": 38,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Bucket disagreement > 1 bucket apart"
+    ],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Positive"
   },
   "designation": "Recommended",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",

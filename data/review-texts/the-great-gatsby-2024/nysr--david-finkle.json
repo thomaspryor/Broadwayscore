@@ -6,7 +6,7 @@
   "url": "https://nystagereview.com/2024/04/25/the-great-gatsby-fitzgeralds-roaring-20s-classic-musicalized-as-a-loud-whimper/",
   "publishDate": "2024-04-25",
   "bwwExcerpt": "uction team’s penchant for bells and whistles. If all you’re seeking is a spectacle, you will get one. For some real resonance and depth, though, you may just have to wait a while—or reread the book. David Finkle, New York Stage Review: This musical take on The Great Gatsby presents Jay Gatsby and Daisy Fay Buchanan as a sympathetic couple caught in unfortunate Jazz Age circumstances. In other words, the transfiguration of F. Scott Fitzgerald’s The Great Gatsby is, sorry to report, a travesty. Caroline Cao, New York Theatre Guide: All in all, this Great Gatsby shies away from making us think hard of the blood spilled due to Gatsby’s dealings, which are relegated to lines of dialogue and the campy song “Shady.” Something about the production feels too spic and span by the time it ends: Missing is a mess left behind by the Roaring Twenties excess. I felt the warmth in The Great Gatsby, but it was begging to bring on the heat. Gloria Oladipo, The Guardian: The production splashes in exces",
-  "assignedScore": 42,
+  "assignedScore": 41,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
@@ -26,12 +26,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T04:06:55.437Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:20:14.444Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 40,
-    "previousVersion": "3.0.0"
+    "previousScore": 42,
+    "previousVersion": "5.0.0"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
   "bwwThumb": "Down",
@@ -85,11 +85,11 @@
     "invalidatedAt": "2026-02-01T04:02:00.822Z"
   },
   "llmScore": {
-    "score": 42,
-    "confidence": "high",
+    "score": 41,
+    "confidence": "medium",
     "range": {
-      "low": 37,
-      "high": 47
+      "low": 36,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -100,7 +100,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic's 2/5 star rating and calling the adaptation 'a travesty' clearly indicates a negative recommendation, despite acknowledging spectacle value. | GPT-4o: The critic's original rating of 2/5 stars and the use of the word 'travesty' indicate a clear negative verdict. The review suggests that the production lacks depth and fails to effectively adapt the source material. | Gemini: The critic explicitly states the adaptation is a \"travesty\" and that it lacks depth and resonance. The review also mentions missing elements and a lack of heat, indicating a negative overall assessment. The 2/5 star rating further supports this classification.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The 2/5 star rating and harsh language like 'travesty' from Finkle clearly indicate a negative assessment, though the single excerpt warning and aggregator context suggest caution about going too low in the negative range. | GPT-4o: The critic's original rating of 2/5 stars and the key quote indicate a negative view of the production. The term 'travesty' suggests significant dissatisfaction, aligning with a negative verdict. | Gemini: The review suggests the show is a spectacle but lacks depth. The critic's rating of 2/5 stars also indicates a mixed to negative sentiment, but the presence of 'spectacle' suggests some redeeming qualities.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -111,17 +111,17 @@
   "ensembleData": {
     "claudeScore": 42,
     "openaiScore": 40,
-    "geminiScore": 45,
+    "geminiScore": 62,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "scoreDelta": 5,
+    "geminiBucket": "Mixed",
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "contentTier": "excerpt",
   "wordCount": 0

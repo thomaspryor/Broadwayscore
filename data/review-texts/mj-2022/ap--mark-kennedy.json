@@ -7,7 +7,7 @@
   "publishDate": "2022-02-01",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 59,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "Nottage and director and choreographer Christopher Wheeldon have one of the greatest music catalogues in the world and yet don't seem to know how to handle it. Some pivotal songs - like \"For the Love of Money\" by The O'Jays - aren't by Jackson at all. And a large bulk of Jackson's songs used - including \"Earth Song,\" \"Stranger in Moscow,\" \"Price of Fame\" and \"They Don't Care About Us\" - were released after 1992. You can't have it both ways.",
@@ -15,38 +15,22 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 35,
-    "confidence": "high",
+    "score": 59,
+    "confidence": "medium",
     "range": {
-      "low": 30,
-      "high": 40
+      "low": 54,
+      "high": 64
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
-      "music": 28,
+      "music": null,
       "performances": null,
-      "direction": 35
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "don't seem to know how to handle it",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Some pivotal songs - like \"For the Love of Money\" by The O'Jays - aren't by Jackson at all",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "some pivotal songs - like 'For the Love of Money' by The O'Jays - aren't by Jackson at all",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The excerpt shows clear criticism of the creative team's handling of Jackson's music catalog and questions about song choices, suggesting significant problems with the production's core elements. | GPT-4o-mini: The review expresses significant disappointment with the handling of the music and the selection of songs, indicating a clear negative sentiment towards the production.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The final line 'But logic has little to do with MJ' appears critical, suggesting fundamental flaws, but the excerpt is too limited to determine if this leads to an overall negative verdict or if positive elements follow. | GPT-4o: The review suggests a disconnect between the show's premise and execution, indicating a mixed reception. The phrase 'logic has little to do with “MJ.”' implies a critique of the show's coherence or narrative choices, aligning with a mixed verdict. | Gemini: The review excerpt suggests a critical perspective on the show's narrative choices, implying a lack of coherence or logical storytelling. The aggregator verdict of 'Flat' further supports a mixed or lukewarm reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,20 +39,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:37:22.918Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:22:38.699Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 35,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 35,
-    "openaiScore": 35,
-    "scoreDelta": 0,
+    "claudeScore": 45,
+    "openaiScore": 58,
+    "geminiScore": 60,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "dtliThumb": "Meh",
   "dtliExcerpt": "The new, splashy Broadway musical about Michael Jackson begins with the King of Pop plotting an ambitious tour to reclaim his throne. He’s facing financial ruin, swirling rumors and an addiction to pain pills. You’d think it was 2009, just weeks before his death. That’s the logical place to start. But logic has little to do with “MJ.”",

@@ -10,17 +10,17 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 23,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 23,
+    "score": 42,
     "confidence": "high",
     "range": {
-      "low": 15.5,
-      "high": 30.5
+      "low": 37,
+      "high": 47
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": null,
@@ -28,24 +28,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "selling a dinner \"upgrade\" to the \"Pineapple Room\" offends me",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "How gross",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "fruit is a symbol of generosity and love in a world of horrors. It's not a flavor of costly cocktail nor a high-end status symbol",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic is deeply offended by the production's commercialization of symbolic elements, viewing the dinner upgrade as a gross misunderstanding of the show's themes, suggesting fundamental problems with the production's integrity. | GPT-4o-mini: The review expresses strong disapproval of the show's commercialization of a significant symbol, indicating a clear negative sentiment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic explicitly states the production is 'not worth seeing' and calls it an 'unfortunate shebang,' criticizing both the gimmicky interactive elements and the performances, with only two actors receiving praise. | GPT-4o: The review criticizes the production for prioritizing an 'interactive' experience over the quality of the show itself, describing it as a 'naked attempt to offer a value-added experience.' The critic finds the production lacking in eroticism and vulnerability, and ultimately not worth seeing, except for a couple of performances. | Gemini: The review is overwhelmingly negative, criticizing the production's concept, execution, and performances (except for two actors). The critic clearly states the show is not worth seeing.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,20 +38,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:03:24.854Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:33:29.728Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 23,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 20,
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
     "scoreDelta": 5,
-    "thumbsMatch": true,
-    "expectedThumb": "Down",
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 23,

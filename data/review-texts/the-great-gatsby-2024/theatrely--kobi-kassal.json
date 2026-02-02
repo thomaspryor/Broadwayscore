@@ -17,64 +17,48 @@
     "score": 78,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
-      "music": 85,
-      "performances": 80,
-      "direction": 75
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "This show is FUN. One wildly entertaining night at the theatre with a score that will be stuck in my head for years to come.",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "This is modern day American musical theatre at its finest, that feels right for the whole family.",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Where the musical still stands on unsteady ground is in the overall tone of the piece... The discordant mood we feel from one scene to the next often varies",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Despite acknowledging tonal inconsistencies and structural issues, the critic enthusiastically celebrates the show as 'wildly entertaining' with a memorable score and calls it 'modern day American musical theatre at its finest.'",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic clearly recommends the show as entertaining and fun despite acknowledging it's 'uneven at parts' and has tonal inconsistencies. The positive verdict outweighs the reservations. | Gemini: The review acknowledges some weaknesses but ultimately emphasizes the fun and entertaining nature of the show, recommending it despite its unevenness. The critic also praises the score and overall production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:18:23.771Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3506,
-    "outputTokens": 386,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:21:40.919Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
-    "scoreDelta": 0,
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 79,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "sourceMethod": "scrapingbee",
   "bwwExcerpt": "Marc Bruni directs this entertaining, if uneven at parts, production with ease and style reminiscent of his stunning work on Beautiful: The Carole King Musical. With fierce, high octane choreography by Dominique Kelley on top of Paul Tate DePoo III’s stunning scenic and projection design (ay my performance the back LED wall did fade to black quite a few times accidentally), pleasant costume design by",

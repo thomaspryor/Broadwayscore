@@ -8,18 +8,18 @@
   "bwwExcerpt": "Mr. Leon’s “Our Town” is polished and marked by moments of humor and melancholy, but they do not cohere into a powerfully affecting production. For theatergoers who saw the director David Cromer’s hyper-intimate 2009 off-Broadway production—which ran for almost 650 performances, the longest run in the play’s history—its indelible impact (it ranks as one of the best theatrical productions I have seen) will inevitably lead to disappointing comparisons, unfairly or not.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 55,
+  "assignedScore": 59,
   "source": "bww-roundup",
   "dtliThumb": null,
   "bwwThumb": "Meh",
   "showScoreExcerpt": "\"Mr. Leon’s 'Our Town' is polished and marked by moments of humor and melancholy\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/our-town-broadway",
   "llmScore": {
-    "score": 55,
-    "confidence": "medium",
+    "score": 59,
+    "confidence": "high",
     "range": {
-      "low": 47,
-      "high": 63
+      "low": 54,
+      "high": 64
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -27,48 +27,40 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 57
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "polished and marked by moments of humor and melancholy, but they do not cohere into a powerfully affecting production",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "will inevitably lead to disappointing comparisons",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "polished and marked by moments of humor and melancholy",
-        "sentiment": "positive",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The critic acknowledges polish and moments of quality but explicitly states the production lacks cohesion and power, with disappointing comparisons to a superior previous production being inevitable. | GPT-4o-mini: The review acknowledges some positive aspects but ultimately highlights a lack of cohesion and impact compared to a previous production, leading to a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges positive elements (polished, humor, melancholy) but explicitly states they don't add up to something powerful or affecting, indicating a lukewarm assessment that neither strongly recommends nor condemns. | GPT-4o: The review acknowledges some positive aspects like polish and moments of humor and melancholy, but ultimately suggests the production does not come together effectively, leading to a mixed verdict. | Gemini: The review acknowledges positive aspects like humor and melancholy but ultimately finds the production lacking in overall impact, especially when compared to a previous production. This suggests a mixed assessment rather than a clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:16:33.629Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:39:10.936Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 55,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 52,
+    "claudeScore": 58,
     "openaiScore": 58,
-    "scoreDelta": 6,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "sources": [
     "bww-roundup",

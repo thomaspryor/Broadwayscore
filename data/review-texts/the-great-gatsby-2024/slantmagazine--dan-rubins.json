@@ -7,7 +7,7 @@
   "publishDate": "2024-04-25",
   "bwwExcerpt": "the soundtrack to Jack Clayton’s 1974 movie adaptation did, nor a spirit of wild abandon, like the soundtrack to Baz Luhrmann’s 2013 take. The score to this “Great Gatsby” is missing a vital urgency. Dan Rubins, Slant Magazine: And while any adaptation of The Great Gatsby has to thread the needle between wowing audiences with opulence and inviting critique of the ostentatious hollow center (those pyrotechnics are surely ironic, right?), the show’s final images seem to find that balance successfully. “I don’t want to live here, but I never want to leave,” the bombastically independent Jordan Baker (Samantha Pauly) sings as she enters one of Gatsby’s extravagant parties. That’s about right: If The Great Gatsby doesn’t have the makings of a long-term Broadway resident, it’s become, in its newly minted tension and decadence, a welcome visitor. Christian Lewis, Variety: For any fan of “The Great Gatsby,” though, it’s likely you’ll have moments of wanting more, of missing out on all the subt",
   "originalScore": null,
-  "assignedScore": 10,
+  "assignedScore": 73,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
@@ -20,28 +20,22 @@
   "sourceMethod": "bww-roundup",
   "scoreSource": null,
   "llmScore": {
-    "score": 10,
+    "score": 73,
     "confidence": "medium",
     "range": {
-      "low": 5,
-      "high": 15
+      "low": 68,
+      "high": 78
     },
-    "bucket": "Pan",
-    "thumb": "Down",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "No hay banda! There is no band.",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "GPT-4o-mini: The review indicates a lack of essential musical elements, suggesting a clear rejection of the production.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite criticizing the score for missing 'vital urgency,' the review concludes positively, calling the show 'a welcome visitor' and praising its balance of opulence and critique. The single excerpt warning and truncated text suggest conservative scoring within the positive range. | GPT-4o: The review acknowledges the show's successful balance between opulence and critique, suggesting it has merit. However, it also notes missing elements and implies it may not have lasting appeal, indicating a mixed reception. | Gemini: The review concludes that the show is a \"welcome visitor,\" suggesting a positive but not overwhelmingly enthusiastic recommendation. The \"welcome visitor\" phrasing implies it's worth seeing, but not necessarily a must-see.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,20 +44,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:53:17.655Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:21:19.229Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 10,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 10,
-    "scoreDelta": 0,
+    "claudeScore": 72,
+    "openaiScore": 62,
+    "geminiScore": 74,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwThumb": "Meh",
   "sources": [

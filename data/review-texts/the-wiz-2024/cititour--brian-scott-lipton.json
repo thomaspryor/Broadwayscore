@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 48,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/the-wiz-2024/cititour--brian-scott-lipton_2026-01-29.html",
@@ -38,69 +38,52 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 38,
+    "score": 64,
     "confidence": "medium",
     "range": {
-      "low": 32,
-      "high": 45
+      "low": 59,
+      "high": 69
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 65,
-      "music": 75,
+      "book": null,
+      "music": null,
       "performances": null,
-      "direction": 25
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "don't expect to hear the same kind of exuberance",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Broadway audiences deserve something far better",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "the show remains a crowd-pleaser",
-        "sentiment": "positive",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The critic explicitly states audiences 'deserve something far better' and lacks exuberance for this production, despite acknowledging some entertainment value in the songs and book.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic explicitly states not to expect exuberance and concludes that Broadway audiences deserve better, despite acknowledging some entertaining elements. The truncated ending reinforces the negative assessment. | GPT-4o: The review acknowledges the show's entertainment value and crowd-pleasing nature but criticizes the production for not meeting higher expectations. The tone suggests a mixed verdict, with both positive and negative elements. | Gemini: The review acknowledges the show's entertainment value but ultimately suggests it falls short of expectations for a Broadway audience. The use of \"still\" implies a reservation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:30:45.258Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2432,
-    "outputTokens": 294,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:43:16.932Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 48,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 48,
-    "scoreDelta": 10,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (43 → Down) conflicts with aggregator thumbs (Flat)"
-    ]
+    "claudeScore": 42,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "dateUnknown": true,
   "dateSource": "could-not-extract",

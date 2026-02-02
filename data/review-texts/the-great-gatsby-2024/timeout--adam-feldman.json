@@ -8,15 +8,15 @@
   "showScoreExcerpt": "“ ‘The Great Gatsby’ can be an entertaining night out on the town if you think of it less as a play and more as a night of dress-up...The beat goes on for those who ride the show’s current, eager to be borne back into the past.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-great-gatsby-musical",
   "originalScore": "3/5",
-  "assignedScore": 65,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 65,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -26,24 +26,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "can be an entertaining night out on the town if you think of it less as a play and more as a night of dress-up",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "The beat goes on for those who ride the show's current, eager to be borne back into the past",
-        "sentiment": "positive",
-        "strength": 2
-      },
-      {
-        "quote": "can be an entertaining night out on the town",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic suggests conditional enjoyment based on lowered expectations, indicating mixed reception with qualified approval for those seeking spectacle over substance. | GPT-4o-mini: The review suggests a conditional enjoyment of the show, indicating it may be entertaining but not necessarily a strong theatrical experience.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 3/5 rating and 'Flat' aggregator verdict suggest mixed reception. The critic praises production values highly but the truncated text and context imply significant reservations about other elements. | GPT-4o: The review praises the production values but lacks a clear recommendation or enthusiasm for the overall experience. The original rating of 3/5 and aggregator verdict of 'Flat' suggest a mixed reception. | Gemini: The review excerpt highlights the show's strong production values, suggesting a positive experience, but the truncated text and 'flat' aggregator verdict indicate some reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -52,20 +36,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:17:47.983Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:21:48.098Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
+    "claudeScore": 62,
     "openaiScore": 65,
-    "scoreDelta": 0,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "dtliExcerpt": "Remade as true love torn apart by circumstance, the central romance loses the edge that makes it so compelling: the allure, tragic for Gatsby, of an unattainable class ascent. But will any of that matter where sales are concerned? Maybe not. To audiences hungry for glitz this year, The Good Gatsby may be good enough.",
   "bwwExcerpt": "The Great Gatsby looks great. If you want production values, this adaptation of F. Scott Fitzgerald’s 1925 novel, directed by Marc Bruni, delivers more than any other new musical of the overstuffed Broadway season. It’s the Roaring Twenties, after all—now as well as then—so why not be loud? Let othe...",

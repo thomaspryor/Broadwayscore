@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 45,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,54 +21,53 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 35,
-    "confidence": "low",
+    "score": 45,
+    "confidence": "medium",
     "range": {
-      "low": 25,
-      "high": 45
+      "low": 40,
+      "high": 50
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 25,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 70
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "monumental wilderness conjured by the designers overwhelms",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "twig of a story",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The critic praises the design work but severely criticizes the story as inadequate ('twig'), with the metaphor suggesting the production values cannot compensate for weak material.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The excerpt suggests the production design overshadows a weak story, implying fundamental structural problems. However, with only one curated quote available, scoring conservatively within negative range. | GPT-4o: The excerpt suggests impressive design elements but implies that the story is lacking or underwhelming. This indicates a mixed review, with strong production values but a weak narrative. | Gemini: The quote indicates that the design overshadows the story, suggesting a negative assessment of the show's overall impact. Given the single excerpt warning, I'm scoring conservatively within the negative bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:13:19.933Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2324,
-    "outputTokens": 282,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:50:21.991Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 35,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 62,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
+  }
 }

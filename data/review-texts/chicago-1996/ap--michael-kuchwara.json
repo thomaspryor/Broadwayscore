@@ -9,63 +9,55 @@
   "showScoreExcerpt": "\"A lot of Broadway musicals don't age very well, but the long-running revival of 'Chicago' seems to have discovered the fountain of youth. The score's catchy melodies are potent, toe-tapping reminders of music from the late 1920s, while the lyrics are snappy, pointed and often very funny.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/chicago",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 79,
   "source": "show-score",
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 79,
+    "confidence": "high",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 85,
+      "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "seems to have discovered the fountain of youth",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The score's catchy melodies are potent, toe-tapping reminders",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the lyrics are snappy, pointed and often very funny",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Consistent praise for the musical elements with vivid positive language like 'fountain of youth' and 'potent, toe-tapping,' suggesting clear recommendation despite being a brief excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's enduring appeal and quality, particularly praising the music and lyrics.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic consistently praises the performances, score, and overall entertainment value, calling it 'sharp, sassy' and 'utterly irresistible' despite some minor criticisms of individual performers. | GPT-4o: The review praises the performances, the music, and the overall entertainment value of the production. Despite the truncated text, the positive tone and specific commendations suggest a strong recommendation. | Gemini: The review is largely positive, highlighting strong performances and the enduring appeal of the show. However, the truncated text and a mention of one performer spinning \"out of control\" suggest some reservations, preventing a higher score. The aggregator excerpt confirms the positive sentiment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T21:54:02.496Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:56:18.085Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 45,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,54 +21,53 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 25,
-    "confidence": "low",
+    "score": 45,
+    "confidence": "medium",
     "range": {
-      "low": 15,
-      "high": 45
+      "low": 40,
+      "high": 50
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
-      "performances": 30,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "actors get so mired",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Despite the random contemporary touches",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The fragment suggests actors are struggling with problematic material, indicating a negative assessment, but the incomplete excerpt makes confident scoring difficult.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The phrase 'actors get so mired' suggests negative criticism of performances, but with only a fragment available and truncated text, the full verdict is unclear. | GPT-4o: The excerpt suggests some issues with the production, particularly with the actors being 'mired,' which implies a lack of fluidity or engagement. However, the lack of full context and the warning about potential cherry-picking lead to a conservative score in the middle of the Mixed range. | Gemini: The single excerpt available suggests a negative assessment of the acting, indicating a negative overall impression. Given the limited context, the score is placed in the middle of the negative range.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:09:48.408Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2318,
-    "outputTokens": 269,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:38:18.484Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 62,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
+  }
 }

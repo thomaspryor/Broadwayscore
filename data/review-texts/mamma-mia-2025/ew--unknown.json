@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 77,
+  "assignedScore": 76,
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review uses vivid, positive imagery and rhetorical enthusiasm, but with only excerpts available, I'm cautious about scoring higher without seeing potential reservations in the full text. | GPT-4o: The review uses highly positive language, describing the show as 'pure sunshine' and expressing an inability to resist its charm, indicating a strong recommendation. | Gemini: The review excerpt is overwhelmingly positive, describing the show as \"pure sunshine\" and questioning how anyone could resist it. This suggests a recommendation, placing it in the Positive bucket.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses enthusiastic language like 'pure sunshine' and references the enduring 'fervor' around the show, but with only one excerpt available, the full verdict may not be captured here. | GPT-4o: The excerpt is highly positive, describing the show as 'pure sunshine' and expressing an inability to resist it. This suggests a strong recommendation. However, given the single excerpt warning, the confidence is medium. | Gemini: The review excerpt uses positive language like \"pure sunshine\" and \"how could we resist this?\" suggesting a recommendation, although the single excerpt and lack of a specific rating warrant a score in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:48:54.751Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:26:29.676Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 76,
     "openaiScore": 90,
-    "geminiScore": 78,
+    "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

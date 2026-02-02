@@ -9,71 +9,55 @@
   "dtliExcerpt": "But once the two are no longer strangers, the score, which most pointedly recalls Adam Gwon’s similarly small-scale tunes for Ordinary Days, loses its precision since there’s only so many positions available for Robin and Dougal to assume—frenemies, confidantes, will-they-won’t-theys—before the story starts to spin its wheels. Instead, there are too many novelty numbers about Christmas carols and Tinder swiping not really grounded in who these people are, plus wispy soliloquies that can only credibly inch each character forward. Two Strangers, spanning two days of personal growth in two hours and 20 minutes (including intermission), is both far too long for the audience’s attention and far too short for Dougal and Robin’s transformations.",
   "showScoreExcerpt": "\"Two Strangers, spanning two days of personal growth in two hours and 20 minutes (including intermission), is both far too long for the audience’s attention and far too short for Dougal and Robin’s transformations.\"",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 60,
   "source": "dtli",
   "dtliThumb": "Down",
   "llmScore": {
-    "score": 45,
+    "score": 60,
     "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 55,
+      "high": 65
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 35,
-      "music": 45,
-      "performances": 75,
-      "direction": 65
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "it's hard to imagine the UK-to-Broadway transfer Two Strangers inspiring Marmite-like reactions of either ecstasy or agony",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "their performances are far more flavorful than their jovially bland meet-cute",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "it's hard to feel much of anything in return",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic acknowledges strong performances, especially from Pitts, but finds the show structurally flawed with a bland story, weak songs after the opening, and an inability to generate emotional investment despite its length.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges strong performances and moments of luminosity but finds the show structurally flawed, overlong, and emotionally underwhelming, ultimately describing it as neither inspiring strong positive nor negative reactions. | Gemini: The review highlights strong performances and direction but criticizes the length, pacing, and lack of emotional depth in the latter half. It neither strongly recommends nor discourages seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:33:25.637Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3553,
-    "outputTokens": 370,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:42:06.935Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 45,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 45,
-    "scoreDelta": 0,
+    "claudeScore": 58,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "sourceMethod": "dtli",
   "bwwExcerpt": null,

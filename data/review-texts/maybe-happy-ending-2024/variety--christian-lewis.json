@@ -9,7 +9,7 @@
   "dtliExcerpt": "“Maybe Happy Ending” is an undeniably moving, well-made, adorable musical, and it is a pleasant surprise to see an audience weep at a show about two robots in love.",
   "showScoreExcerpt": "\"Both Criss and Shen give excellent, very different performances... One of the achievements of the production is the very complete world that director Michael Arden has created. The sleek, futuristic set (by Dane Laffrey) draws on Korean design, provides a clear sense of time and place... “Maybe Happy Ending” is an undeniably moving, well-made, adorable musical, and it is a pleasant surprise to see an audience weep at a show about two robots in love.\"",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 79,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:04:06.568Z",
@@ -17,38 +17,22 @@
   "dtliThumb": "Up",
   "bwwExcerpt": "“Maybe Happy Ending” is an undeniably moving, well-made, adorable musical, and it is a pleasant surprise to see an audience weep at a show about two robots in love. The musical makes the bold claim that maybe we are not that different from robots after all, or that they are not that different from u...",
   "llmScore": {
-    "score": 82,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 80,
-      "music": 78,
-      "performances": 85,
-      "direction": 88
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "an undeniably moving, well-made, adorable musical, and it is a pleasant surprise to see an audience weep at a show about two robots in love",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Both Criss and Shen give excellent, very different performances",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The musical has too many endings, but perhaps this is part of the point",
-        "sentiment": "negative",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The critic consistently praises the performances, direction, and thematic depth while acknowledging minor structural issues, culminating in calling it 'undeniably moving' and 'well-made' - clear positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic clearly recommends the show, calling it 'undeniably moving, well-made, adorable' and praising the performances, direction, and themes. Minor criticisms about 'too many endings' and some distracting elements prevent a higher score. | Gemini: The review is overwhelmingly positive, highlighting the moving story, excellent performances, and well-crafted production. While it notes some minor issues like too many endings, the overall tone is enthusiastic and recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -57,20 +41,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:04:38.778Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3938,
-    "outputTokens": 368,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:18:14.470Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
-  "ensembleData": null,
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
+  },
   "sourceMethod": "archive",
   "archivePath": "data/archives/reviews/maybe-happy-ending-2024/variety--christian-lewis_2026-01-26.html",
   "textFetchedAt": "2026-01-26T15:52:41.721Z",

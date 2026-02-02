@@ -10,71 +10,56 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 62,
+    "score": 63,
     "confidence": "high",
     "range": {
       "low": 58,
-      "high": 66
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
-      "music": 40,
-      "performances": 75,
-      "direction": 70
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "You might leave humming the title tune, but also unsatisfied",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "A story this compelling could have made a good musical—with less narration, more character development, and a finale that milked the nostalgia less",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Director and choreographer Warren Carlyle skillfully weaves the elements together and gets the Harmonists—a handsome six-pack of triple threats—on their feet and dancing",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic acknowledges the show's ambition and some strong elements (performances, direction) but finds significant flaws in the music and book, concluding audiences will leave 'unsatisfied' despite some positives.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges the show 'aims higher' than expected and has some positive elements (performances, direction), but consistently points to significant flaws like derivative music, focus problems, and underdeveloped characters, concluding audiences will leave 'unsatisfied.' | GPT-4o: The review acknowledges some positive aspects, such as the compelling story and skillful direction, but criticizes the music as derivative and lacking in depth. The overall tone suggests the production has potential but falls short in execution, leading to a mixed recommendation. | Gemini: The review acknowledges some positive aspects like the skillful direction and the performers, but ultimately finds the musical generic and unsatisfying due to lack of character development and an overreliance on narration. This places it firmly in the 'Mixed' category.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:01:21.220Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3839,
-    "outputTokens": 386,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:10:57.238Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 55,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 3,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "dateUnknown": true,
   "dateSource": "historical-review",

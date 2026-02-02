@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "MJ the Musical is a slick production that succeeds as spectacle but struggles with the complexities of its subject matter, offering dazzling choreography while skirting around Jackson's most troubling aspects.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,8 +18,8 @@
   "showScoreExcerpt": "MJ the Musical is a slick production that succeeds as spectacle but struggles with the complexities of its subject matter, offering dazzling choreography while skirting around Jackson's most troubling aspects.",
   "needsScoring": true,
   "llmScore": {
-    "score": 62,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
       "low": 58,
       "high": 68
@@ -27,50 +27,44 @@
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 75
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "succeeds as spectacle",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "dazzling choreography",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "struggles with the complexities of its subject matter",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review acknowledges strong production values and choreography but criticizes the show's handling of Jackson's controversial legacy, resulting in a mixed recommendation that leans slightly positive.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges the production's strengths (slick, dazzling choreography) but identifies a fundamental flaw in how it handles its subject matter, indicating neither a clear recommendation nor discouragement. | GPT-4o: The review acknowledges the production's success as a spectacle with dazzling choreography but notes its struggle with complex subject matter, indicating a mixed reception. | Gemini: The review acknowledges the show's strengths in spectacle and choreography but also points out its weaknesses in handling the controversial aspects of its subject. This suggests a mixed experience rather than a clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:05:56.558Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2345,
-    "outputTokens": 311,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:23:04.439Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (30 words)"
+  "contentTierReason": "Short text (30 words)",
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

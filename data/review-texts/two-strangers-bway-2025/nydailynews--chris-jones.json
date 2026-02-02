@@ -8,7 +8,7 @@
   "bwwExcerpt": "New York Post: The musical comes dangerously close to cloying sentimentality at times, but Dougal’s dry sense of humor and Tutty’s first-class delivery prevents the story from ever getting too soupy. Chris Jones, The New York Daily News: Stories with odd couples on the edge of Eros, so to speak, can be very effective (see the movie “Lost in Translation” or the musical “The Band’s Visit“) but if writers choose to have their couple get naked and hit the sheets, in this case at the Plaza Hotel, since we’re all about New York aspiration here, they struggle to know where to go. So while this show held me for Act One with its considerable charm, by Act Two, it was hitting turbulence. 90 minutes and out would have been a better plan. Robert Hofler, The Wrap: Jim Barne and Kit Buchan wrote the songs and the book for this rom-com two-hander, and they begin “Two Strangers” with real promise. The young man Dougal (Tutty) is newly arrived at JFK from London and eager to meet his American father fo",
   "showScoreExcerpt": "\"This is a twee, two-character rom-com that could easily be a Hallmark holiday musical... So while this show held me for Act One with its considerable charm, by Act Two, it was hitting turbulence.\"",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-Opens-On-Broadway-20250109",
@@ -19,67 +19,52 @@
   "archivePath": "data/archives/reviews/two-strangers-bway-2025/nydailynews--chris-jones_2026-01-30.html",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 66
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 68,
-      "music": 65,
-      "performances": 72,
-      "direction": 60
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "while this show held me for Act One with its considerable charm, by Act Two, it was hitting turbulence",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "quite a witty book and a few sticky tunes",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "vulnerability, even if differently applied, still is essential for these kinds of stories to work",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic finds considerable charm and wit in Act One but identifies significant structural and character development problems that prevent a clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges considerable charm and positive elements but identifies significant structural problems, particularly in Act Two, and notes the show struggles with character development and pacing. | GPT-4o: The review acknowledges the show's charm and some positive elements, but also highlights significant issues with character dynamics and pacing, leading to a mixed overall impression. | Gemini: The review is generally positive, highlighting the show's charm, witty book, and some sticky tunes. However, it notes that the second act falters and the characters' bond isn't fully believable, indicating reservations. The critic also acknowledges the show's attempt to be more affordable, which is a positive point.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:32:45.211Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3567,
-    "outputTokens": 335,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:40:34.581Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "scoreDelta": 3,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "dtliThumb": "Meh",
   "dtliExcerpt": "So while this show held me for Act One with its considerable charm, by Act Two, it was hitting turbulence. 90 minutes and out would have been a better plan. On the plus side, “Two Strangers” does have quite a witty book and a few sticky tunes. Dougal will be a dreamboat, I suspect, for some teen theatergoers, and there is an amusing set from Soutra Gilmour that imagines New York entirely through carry-on luggage, spinning on a turntable that resembles baggage claim. It’s cool.",

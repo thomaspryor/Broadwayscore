@@ -8,7 +8,7 @@
   "fullText": null,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 73,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,14 +21,14 @@
   "contentTier": "excerpt",
   "wordCount": 0,
   "llmScore": {
-    "score": 62,
+    "score": 73,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 68,
+      "high": 78
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The truncated text shows descriptive analysis rather than clear recommendation. The phrase 'real theater' suggests some appreciation, but without the complete verdict, the score remains uncertain in the mixed range. | GPT-4o: The review highlights the stylized nature and theatrical quality of the production, suggesting it has artistic merit. However, the lack of a full verdict and the mention of a potential sketch-like structure imply it may not fully satisfy all audiences. | Gemini: The truncated text makes it difficult to determine a clear recommendation. The description of the play as \"comedy-turned-drama-turned\" suggests an unevenness, leading to a mixed assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'real theater' suggests appreciation, and describing it as 'clearly plotted' implies structural competence, but the excerpt is too brief and cuts off mid-sentence to determine the full verdict with confidence. | GPT-4o: The excerpt suggests a positive view of the production's style and theatricality, indicating a recommendation. However, due to the single excerpt warning and lack of full context, the score is placed conservatively in the middle of the Positive range. | Gemini: The phrase \"real theater\" suggests a positive assessment, but the truncated nature of the text and the single excerpt available makes it difficult to gauge the overall sentiment with high confidence. The description of the play's structure as \"comedy-turned-drama-turned\" suggests a potentially engaging narrative arc.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,25 +46,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T13:59:02.123Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:07:14.302Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 65,
-    "geminiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 5,
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "geminiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 3 models agree: Positive"
   }
 }

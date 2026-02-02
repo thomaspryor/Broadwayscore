@@ -7,7 +7,7 @@
   "publishDate": "2024-07-11",
   "bwwExcerpt": "s have to rush to get their gags out, which makes them all the funnier because it both raises the stakes and keys into one of the key ingredients of great farce: the mutual experience of the chaotic. David Cote, Observer: Escola’s splendidly nasty queer romp has hiked up its petticoats and staggered uptown from a sold-out run at the Lucille Lortel Theatre, goosing a sleepy Broadway summer. I’m happy to report that although director Sam Pinkleton leveled up the production values (particularly in the musical finale), Oh, Mary! remains the same vicious, dirty-minded, bad-taste farce that delighted camp aficionados last winter. In a theater scene squeezed between the Scylla of nonprofit precarity and Charybdis of commercial desperation, Escola and their team offer audacity, flair, and a homing instinct for the audience funny bone. Bob Verini, New York Stage Review: The script, and the direction of Sam Pinkleton (erstwhile choreographer of Natasha, Pierre & the Great Comet of 1812), start t",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
@@ -15,60 +15,52 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 79,
+    "confidence": "high",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
-      "performances": 80,
-      "direction": 82
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "splendidly nasty queer romp",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "offer audacity, flair, and a homing instinct for the audience funny bone",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "remains the same vicious, dirty-minded, bad-taste farce that delighted camp aficionados",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The review uses consistently enthusiastic language praising the show's audacity, humor, and successful transfer to Broadway, with specific appreciation for performances and direction. | GPT-4o-mini: The review expresses strong enthusiasm for the production's audacity and humor, indicating a clear recommendation to see it.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic expresses clear enthusiasm with phrases like 'splendidly nasty,' 'I'm happy to report,' and praise for the show's audacity and ability to connect with audiences, indicating a strong recommendation despite the playful, irreverent tone. | GPT-4o: The review is highly positive, praising the production's audacity, flair, and humor. The critic expresses happiness with the production values and describes it as a delightful farce, indicating a strong recommendation. | Gemini: The critic is happy with the production and highlights its audacity and flair, indicating a positive recommendation despite the 'bad-taste farce' description which is presented as a positive attribute for its target audience.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:42:12.253Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:06:17.497Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/oh-mary-2024/observer--david-cote_2026-01-29.html",
   "textFetchedAt": "2026-01-29T03:09:36.902Z",

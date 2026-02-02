@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,38 +21,22 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 72,
-    "confidence": "low",
+    "score": 75,
+    "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 78
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "There are no easy answers to the complex problems that 'Jaja's African Hair Braiding' presents",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "the play encourages viewers to inspect the way the current world works",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "leave its salon with a greater sense of compassion and understanding",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The excerpt suggests the play successfully achieves its thematic goals of promoting compassion and understanding, though it acknowledges complexity without offering easy solutions.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt suggests the play succeeds in its thematic goals and provides meaningful value to viewers, though the conservative score reflects the limited text available and potential for cherry-picking from a single excerpt. | GPT-4o: The excerpt suggests the play is thought-provoking and aims to inspire compassion and understanding, indicating a positive reception. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The review excerpt suggests a positive message and encourages viewers to see the play for its insightful perspective. However, the single excerpt and lack of explicit recommendation language lead to a score in the middle of the 'Positive' bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -61,19 +45,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:01:16.437Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2388,
-    "outputTokens": 335,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:53:22.268Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

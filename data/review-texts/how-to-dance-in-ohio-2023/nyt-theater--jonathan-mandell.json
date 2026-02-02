@@ -9,59 +9,56 @@
   "bwwExcerpt": "“How To Dance in Ohio” is a musical adaptation of a 2015 documentary film of the same name about a group of autistic young adults at a counseling center in Columbus, Ohio, who, as part of their social skills therapy group, spend months preparing for a formal prom-like dance. The production, which opens tonight at Broadway’s Belasco Theater, has some tuneful melodies, some touching moments and, above all, an exhilarated and exhilarating cast, featuring seven performers who are themselves autistic",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 65,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
-      "music": 70,
-      "performances": 80,
+      "music": null,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "has some tuneful melodies, some touching moments",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "an exhilarated and exhilarating cast",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: This appears to be an excerpt focusing on positive elements (music, performances, cast energy) but lacks overall assessment or recommendation language, suggesting measured enthusiasm rather than strong advocacy.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt contains positive language ('tuneful melodies', 'touching moments', 'exhilarated and exhilarating cast') but with qualifying terms like 'some' that suggest measured praise. Single excerpt warning requires conservative scoring. | GPT-4o: The review highlights positive aspects such as tuneful melodies and an exhilarating cast, suggesting a generally positive impression. However, the text quality warning and single excerpt caution suggest scoring conservatively within the Positive range. | Gemini: The review highlights positive aspects like tuneful melodies, touching moments, and an exhilarating cast, suggesting a recommendation, but the limited excerpt and lack of stronger language keeps it in the lower end of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:16:34.375Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:55:04.318Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": null,
-    "scoreDelta": 0,
+    "claudeScore": 72,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "fullText added after excerpt-based scoring",

@@ -10,71 +10,55 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 52,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 42,
-    "confidence": "high",
+    "score": 52,
+    "confidence": "low",
     "range": {
-      "low": 38,
-      "high": 46
+      "low": 47,
+      "high": 57
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 35,
-      "music": 55,
-      "performances": 60,
-      "direction": 45
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Harmony isn't without its pleasures or its insights",
-        "sentiment": "positive",
-        "strength": 2
-      },
-      {
-        "quote": "much of the show has all the signs of a would-be magnum opus allowed, over the course of so many years, to spin itself into a overworked tizzy",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Mostly, though, the show is a maudlin affair",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic acknowledges some positive elements like production design and vocal performances but finds the show fundamentally flawed with weak comedy, poor dramatic structure, and overwrought execution that has suffered from its long development process.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Negative, gemini=Mixed | Claude: The critic systematically identifies major flaws: confusion in structure, weak comedy, maudlin execution, and overworked grandiosity. While acknowledging some pleasures, the overall assessment is clearly negative with no recommendation to see it. | Gemini: The review points out flaws in the show's writing and pacing, but also acknowledges some enjoyable aspects like the production design and the Harmonists' vocal performance. This suggests a mixed experience with both positive and negative elements.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:04:15.800Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4001,
-    "outputTokens": 372,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:09:28.307Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 42,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 45,
-    "scoreDelta": 0,
-    "thumbsMatch": true,
-    "expectedThumb": "Down",
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Mixed"
   },
   "dateUnknown": true,
   "dateSource": "historical-review",

@@ -7,72 +7,57 @@
   "publishDate": "April 21, 2024",
   "dtliExcerpt": "In the end, “Hell’s Kitchen” functions much like a teenage love affair: vibrant, tender yet ever so slightly cursory.",
   "originalScore": null,
-  "assignedScore": 70,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T22:02:13.758Z",
   "llmScore": {
-    "score": 40,
-    "confidence": "low",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 35,
-      "high": 50
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 35,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "an action that the new musical \"Hell's Kitchen\" with music, lyrics and new arrangements by Keys threadbaringly takes",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Adoring Alicia Keys is common sense",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "an adoring snapshot of young love and longing in '90s New York",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The review criticizes the show as 'threadbaringly' exploring Keys' story while praising Keys herself, suggesting a disconnect between the artist and the material with no clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges the story is 'so-so' and 'cursory' but emphasizes that the strong performances and choreography overcome these flaws, indicating a positive recommendation with reservations. | GPT-4o: The review highlights strong performances and choreography, which compensate for a less compelling story. The overall tone suggests a positive experience, though not without its flaws. | Gemini: The review highlights positive aspects like choreography and vocals, but also notes a \"so-so story,\" indicating a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:38:18.764Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2529,
-    "outputTokens": 346,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T23:58:34.234Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 70,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 65,
-    "scoreDelta": 0,
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/hells-kitchen-2024/broadwaynews--brittani-samuel_2026-02-01.html",
   "textFetchedAt": "2026-02-01T19:20:56.185Z",

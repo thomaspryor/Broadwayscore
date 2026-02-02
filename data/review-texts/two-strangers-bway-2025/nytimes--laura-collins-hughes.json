@@ -9,65 +9,57 @@
   "dtliExcerpt": "The effervescent new musical comedy “Two Strangers (Carry a Cake Across New York),” which opened on Thursday at the Longacre Theater, is the most charmingly simple show on Broadway right now — a stellar debut for its authors, Jim Barne and Kit Buchan, and the actor Sam Tutty, who plays the irrepressible Dougal. Transferred from London’s West End by way of Cambridge, Mass., this twinkly two-hander delivers lavishly on the promise of a rom-com: laughter, escape and fantasy.",
   "showScoreExcerpt": "Critic’s Pick: \"The effervescent new musical comedy...is the most charmingly simple show on Broadway right now — a stellar debut for its authors... and the actor Sam Tutty.\"",
   "originalScore": null,
-  "assignedScore": 87,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "Up",
   "designation": "Critics_Pick",
   "llmScore": {
-    "score": 87,
-    "confidence": "high",
+    "score": 89,
+    "confidence": "medium",
     "range": {
-      "low": 80.5,
-      "high": 93.5
+      "low": 84,
+      "high": 94
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 80,
+      "book": null,
       "music": null,
-      "performances": 89,
-      "direction": 82
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "stellar debut for its authors, Jim Barne and Kit Buchan, and the actor Sam Tutty",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "delivers lavishly on the promise of a rom-com: laughter, escape and fantasy",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the most charmingly simple show on Broadway right now",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Strong positive language throughout with superlatives like 'stellar debut' and 'delivers lavishly,' plus clear endorsement that it fulfills its genre promises with no noted reservations. | GPT-4o-mini: The review expresses strong enthusiasm for the show's charm and performances, indicating a clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses effusive praise calling it 'effervescent', 'most charmingly simple show on Broadway', and 'stellar debut', plus it's designated as a 'Critic's Pick' which indicates strong recommendation. | GPT-4o: The review is highly positive, describing the show as 'the most charmingly simple show on Broadway right now' and a 'stellar debut,' indicating a strong recommendation. | Gemini: The review uses positive language like \"charmingly simple\", \"stellar debut\", and \"delivers lavishly\", indicating a positive recommendation. The \"Critic's Pick\" designation further supports this classification.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:31:25.692Z",
-    "promptVersion": "2.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:41:42.272Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 87,
+    "previousVersion": "2.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 88,
-    "scoreDelta": 3,
+    "claudeScore": 87,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "textIssue": "too_short",
   "sourceMethod": "dtli",

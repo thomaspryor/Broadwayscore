@@ -8,7 +8,7 @@
   "fullText": "Are we human, or are we... robots?\n\n“Maybe Happy Ending,” a Korean musical now making its Broadway debut, asks this exact question — or in some ways, asks the inverse. It examines what it means to be human, what makes us human, and what it is that separates us from robots — but instead of doing this from a human angle, it takes the robot perspective. The musical by Will Aronson and Hue Park is set in a near-future Seoul, and concerns Oliver (Darren Criss of \"Glee\" and \"The Assassination of Gianni Versace: American Crime Story\") and Claire (Helen J Shen in her Broadway debut), two human-like robot \"HelperBots\" who have now been \"retired.\" Just like an old iPhone, they are doomed to planned obsolescence, abandoned by former owners and left to toil in the \"HelperBot Yards,\" a sort of robot purgatory. They meet when Claire has to borrow a charger (her cable is faulty and her battery life is shrinking; sound familiar?) and they form an unexpected bond.",
   "dtliExcerpt": "The musical, which premiered at Atlanta's Alliance Theatre in 2016, is a sweet, occasionally affecting meditation on loneliness and connection in a world increasingly dominated by technology.",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,38 +18,22 @@
   "contentTier": "truncated",
   "wordCount": 27,
   "llmScore": {
-    "score": 65,
-    "confidence": "low",
+    "score": 75,
+    "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 75
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 70,
+      "book": null,
       "music": null,
-      "performances": 68,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "examines what it means to be human, what makes us human, and what it is that separates us from robots",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "they form an unexpected bond",
-        "sentiment": "positive",
-        "strength": 2
-      },
-      {
-        "quote": "Just like an old iPhone, they are doomed to planned obsolescence",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "This appears to be a plot summary or preview piece rather than a full review, with neutral descriptive language about the premise and no clear evaluative statements about quality or recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review describes the show as 'sweet' and 'occasionally affecting,' which indicates a generally positive but not enthusiastic recommendation. The qualifier 'occasionally' suggests some reservations about its impact. | GPT-4o: The review describes the musical as 'sweet' and 'occasionally affecting,' indicating a generally positive reception with some reservations. The tone suggests it is worth seeing, though not without its flaws. | Gemini: The review uses positive language like \"sweet\" and \"affecting\" to describe the musical, indicating a recommendation, albeit with some reservations implied by \"occasionally.\"",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -58,33 +42,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:38:53.156Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2557,
-    "outputTokens": 335,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:18:19.279Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 65,
+    "claudeScore": 73,
+    "openaiScore": 78,
     "geminiScore": 75,
     "claudeBucket": "Positive",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "previousUrl": "https://variety.com/2024/legit/reviews/maybe-happy-ending-broadway-review-1236223542/",
   "urlDiscoveredAt": "2026-02-01T14:13:28.638Z",

@@ -10,71 +10,56 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Up",
   "originalScore": "5/5 stars",
-  "assignedScore": 92,
+  "assignedScore": 94,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 92,
+    "score": 94,
     "confidence": "high",
     "range": {
-      "low": 90,
-      "high": 95
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 88,
-      "music": 90,
-      "performances": 95,
-      "direction": 92
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Be advised not even to run but to race to this tale",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "There's not a clinker in the score",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Sustained bravos for him and the entire memorable enterprise",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Five-star review with explicit 'run don't walk' recommendation, unqualified praise for all elements, and enthusiastic endorsement throughout.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives 5/5 stars, revives the classic 'run don't walk' recommendation escalating it to 'race', and delivers sustained praise throughout with no meaningful reservations. | GPT-4o: The review is overwhelmingly positive, with the critic reviving the 'Run, don’t walk' recommendation for the show, indicating a strong endorsement. The praise for the production elements and performances further supports a 'Rave' classification. | Gemini: The critic uses extremely enthusiastic language like \"superb new musical\", and explicitly says to \"race\" to see it. The 5/5 star rating also indicates a rave review.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:04:35.640Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3894,
-    "outputTokens": 324,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:09:59.252Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 95,
-    "openaiScore": 90,
-    "scoreDelta": 5,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 93,

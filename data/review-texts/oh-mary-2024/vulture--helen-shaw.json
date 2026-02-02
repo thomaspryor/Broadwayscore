@@ -8,7 +8,7 @@
   "fullText": "Cole Escola's deliriously funny play imagines Mary Todd Lincoln as a drunk, horny, pill-popping wannabe cabaret star, and it's exactly as glorious as it sounds.",
   "dtliExcerpt": "Cole Escola's deliriously funny play imagines Mary Todd Lincoln as a drunk, horny, pill-popping wannabe cabaret star, and it's exactly as glorious as it sounds.",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "contentTier": "truncated",
   "wordCount": 25,
   "llmScore": {
-    "score": 94,
-    "confidence": "medium",
+    "score": 91,
+    "confidence": "high",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 86,
+      "high": 96
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses extremely positive language like 'deliriously funny' and 'glorious', indicating strong enthusiasm and recommendation. | GPT-4o: The review uses enthusiastic language, indicating a strong recommendation, and describes the play as 'glorious,' suggesting it exceeds expectations. | Gemini: The review uses strong positive language like \"deliriously funny\" and \"glorious,\" indicating a recommendation, though without the fervor of a rave.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses 'deliriously funny' and 'exactly as glorious as it sounds' which are clear rave-level endorsements with enthusiasm and strong positive language. | GPT-4o: The review uses highly enthusiastic language, describing the play as 'deliriously funny' and 'glorious,' indicating a strong recommendation. | Gemini: The review uses extremely positive language like \"deliriously funny\" and \"glorious,\" indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,25 +43,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T13:59:07.887Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:07:24.070Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 94,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": 95,
-    "geminiScore": 80,
+    "openaiScore": 92,
+    "geminiScore": 90,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "geminiBucket": "Rave",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   }
 }

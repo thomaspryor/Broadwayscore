@@ -9,32 +9,26 @@
   "showScoreExcerpt": "\"...the moral of the story make you want to go outside and touch grass\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/redwood-broadway",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 61,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 75,
-    "confidence": "low",
+    "score": 61,
+    "confidence": "medium",
     "range": {
-      "low": 65,
-      "high": 85
+      "low": 56,
+      "high": 66
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the moral of the story make you want to go outside and touch grass",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The phrase suggests the show provides meaningful perspective that motivates positive life changes, but the fragment is too brief to determine recommendation strength with confidence.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Single curated excerpt is too brief and ambiguous to determine clear verdict. 'Want to go outside and touch grass' could suggest either positive inspiration or negative desire to escape the theater. | GPT-4o: The excerpt suggests a reaction to the moral of the story, which implies a mixed or unclear sentiment. Without more context, it's difficult to determine a strong recommendation or dissuasion. | Gemini: The quote suggests a positive takeaway, implying the show has a worthwhile message. Given the single excerpt and lack of further context, a score in the middle of the 'Positive' range is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,29 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:06:04.022Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2317,
-    "outputTokens": 248,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:51:01.498Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 50,
-    "scoreDelta": 25,
+    "claudeScore": 60,
+    "openaiScore": 62,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 25 points (Claude: 75, OpenAI: 50)"
-    ]
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "garbage-text: HTML/navigation instead of review content",
   "previousLlmScore": 63,

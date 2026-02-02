@@ -8,65 +8,57 @@
   "fullText": null,
   "dtliExcerpt": "Moving to Broadway after months of breathless hype from critics and theatergoers, it’d be easy to turn up one’s nose at the show, grumbling that something was “lost” in the transfer. But that is certainly not the case here: For any fans of “elegant stories told through song,” Escola’s brilliant lunacy is the real deal. Like the play’s unhinged diva, “Oh, Mary!” will not and should not be ignored.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 77,
   "source": "dtli",
   "dtliThumb": "Up",
   "sourceMethod": "dtli",
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 80.5,
-      "high": 95.5
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 88,
+      "book": null,
       "music": null,
-      "performances": 90,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Escola's brilliant lunacy is the real deal",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "will not and should not be ignored",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "For any fans of 'elegant stories told through song'",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Strong endorsement calling it 'brilliant lunacy' and 'the real deal' with explicit statement that it 'should not be ignored' - clear rave territory. | GPT-4o-mini: The review expresses strong enthusiasm and a clear recommendation for the show, indicating it should not be missed.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening with skeptical context about hype, the critic delivers a clear positive verdict calling it 'brilliant' and 'the real deal,' though the recommendation seems targeted to genre fans rather than universal. | GPT-4o: The review uses strong positive language, describing the show as 'brilliant lunacy' and stating it 'will not and should not be ignored,' which indicates a strong recommendation. However, due to the single excerpt warning, the confidence is medium. | Gemini: The review suggests the show is good for a specific audience, indicating a positive but not universally enthusiastic recommendation. The phrase \"brilliant lunacy is the real deal\" points to a positive assessment.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:42:33.020Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:07:18.280Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 90,
-    "scoreDelta": 5,
+    "claudeScore": 78,
+    "openaiScore": 87,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "showScoreExcerpt": null,
   "bwwExcerpt": null,

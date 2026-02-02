@@ -9,71 +9,56 @@
   "bwwExcerpt": "On its face, the tumult of the Civil War and a traumatizing assassination do not a recipe for laughter make. And yet the Great White Way has not witnessed a comedy this funny, or a comedic star turn this dazzling, in at least a decade.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240619",
   "originalScore": "A",
-  "assignedScore": 92,
+  "assignedScore": 93,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 92,
+    "score": 93,
     "confidence": "high",
     "range": {
       "low": 88,
-      "high": 95
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": null,
       "music": null,
-      "performances": 95,
-      "direction": 88
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the Great White Way has not witnessed a comedy this funny, or a comedic star turn this dazzling, in at least a decade",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "I recommend wearing a loose-fitting shirt, should your howls pop a button",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "preposterously enjoyable",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic uses superlatives throughout ('comic genius', 'dazzling', 'funniest comedy in a decade') with vivid enthusiasm and an explicit recommendation to see it, indicating an unqualified rave.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives an 'A' rating and uses superlative language like 'most heavenly escape,' 'preposterously enjoyable,' 'funniest show on Broadway,' and 'must be seen to be believed,' indicating an enthusiastic must-see recommendation. | GPT-4o: The critic's original rating of 'A' and the enthusiastic language throughout the review, including phrases like 'the funniest show on Broadway right now' and 'must be seen to be believed,' strongly indicate a rave review. | Gemini: The review is overwhelmingly positive, calling the show the \"most heavenly escape on Broadway\" and the \"funniest show on Broadway right now.\" The critic uses strong language like \"theatrical magic that must be seen to be believed\" and states that it's a \"show for the history books.\"",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:44:11.124Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2633,
-    "outputTokens": 356,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:05:31.728Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": 90,
-    "scoreDelta": 2,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "bwwThumb": "Up",
   "dtliExcerpt": "Escola, who New Yorkers will know from Joe’s Pub gigs and TV viewers might recognize from “Search Party,” is conjuring theatrical magic at the Lyceum that must be seen to be believed. And, as the show is so bizarre as to defy description, to be fully grasped. “Oh, Mary!” might not be another theatrical history lesson Broadway is used to, but I reckon it’s a show for the history books.",

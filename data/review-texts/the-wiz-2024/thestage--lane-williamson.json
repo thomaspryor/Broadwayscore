@@ -9,7 +9,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/the-wiz-2024/thestage--lane-williamson_2026-01-29.html",
@@ -36,60 +36,52 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 84,
-      "performances": 83,
-      "direction": 82
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "energetic, charming new staging",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "packed with infectious grooves",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the show ascends when the full ensemble is in motion",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Consistently positive language about music, performances, and staging with no negative caveats suggests a clear recommendation despite being an excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for the staging, music, and performances, indicating a clear recommendation to see the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt uses clearly positive language like 'energetic, charming,' 'infectious grooves,' 'fine singing,' and 'ascends,' indicating recommendation. However, with only one curated excerpt available, I'm scoring conservatively within the positive range. | GPT-4o: The review excerpt highlights positive aspects such as the energetic and charming staging, fine singing, and effective choreography. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Positive range. | Gemini: The review uses positive language like \"energetic, charming\" and \"fine singing,\" suggesting a positive but not overwhelmingly enthusiastic recommendation. Given the limited text, a score in the middle of the positive range is appropriate.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T22:40:17.133Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:45:06.511Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreCompletedAt": "2026-01-29T14:31:52.131Z",
   "dateUnknown": true,

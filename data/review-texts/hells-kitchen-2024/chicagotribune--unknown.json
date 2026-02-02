@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 78,
+  "assignedScore": 75,
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 75,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review emphasizes positive qualities like 'dynamic blasts', 'vibrant', and 'zest and energy', suggesting the critic found the show entertaining and energetic, though the excerpt is limited. | GPT-4o: The review highlights the dynamic and vibrant nature of the musical, suggesting a strong positive experience. The use of words like 'vibrant' and 'dynamic blasts' indicates a high level of enthusiasm. | Gemini: The review highlights the positive energy and suitability of Alicia Keys' music for a jukebox musical, suggesting an enjoyable experience. While limited text is available, the overall tone leans towards a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows clear praise for the music and energy, but with only one curated quote available, the full verdict remains uncertain. | GPT-4o: The excerpt highlights the dynamic and vibrant nature of the show, suggesting a positive experience. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Positive range. | Gemini: The review highlights the vibrant energy and suitability of Alicia Keys' music for a jukebox musical, suggesting an enjoyable experience. However, the limited excerpt and lack of explicit recommendation warrant a score in the middle of the 'Positive' range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:47:03.646Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-01T23:58:47.864Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 82,
+    "claudeScore": 73,
+    "openaiScore": 77,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 7,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

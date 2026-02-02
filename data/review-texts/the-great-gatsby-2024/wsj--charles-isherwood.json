@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of F. Scott Fitzgerald's classic novel brings lavish spectacle to Broadway, though it sometimes struggles to capture the source material's deeper themes.",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical adaptation of F. Scott Fitzgerald's classic novel brings lavish spectacle to Broadway, though it sometimes struggles to capture the source material's deeper themes.",
   "llmScore": {
-    "score": 64,
+    "score": 63,
     "confidence": "medium",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges positive elements (lavish spectacle) but identifies a significant flaw in failing to capture the novel's deeper themes, suggesting neither strong recommendation nor discouragement. | GPT-4o: The review acknowledges the production's visual appeal but notes its struggle with deeper themes, indicating a mixed reception. | Gemini: The review highlights the 'lavish spectacle' which is a positive aspect, but also mentions struggles with the source material's deeper themes, indicating a recommendation with reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges positive elements (lavish spectacle) but identifies significant shortcomings in capturing the source material's essence, suggesting neither strong recommendation nor discouragement. | GPT-4o: The review acknowledges the production's visual appeal but notes a struggle with thematic depth, suggesting a mixed experience overall. | Gemini: The review highlights the 'lavish spectacle' while noting struggles with deeper themes, suggesting a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,20 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T13:59:29.982Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:22:31.645Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 64,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
+    "claudeScore": 60,
     "openaiScore": 65,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

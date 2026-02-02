@@ -7,17 +7,17 @@
   "publishDate": "August 14, 2025",
   "dtliExcerpt": "This touring production’s stop at the Garden has all the makings of a homecoming, and it’s a strenuously joyous one.",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 75,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:02:57.888Z",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 75,
+    "confidence": "high",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -25,26 +25,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 75
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "all the makings of a homecoming",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "strenuously joyous",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "this touring production’s stop at the Garden has all the makings of a homecoming",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic uses distinctly positive language about the production being a joyous homecoming, suggesting a clear recommendation despite the brevity. | GPT-4o-mini: The review expresses strong positive sentiment about the production's joyful nature and homecoming feel, indicating a solid recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'strenuously joyous' suggests enthusiastic recommendation despite being only an excerpt. The 'homecoming' framing is positive, though 'strenuously' may hint at some effort or reservation. | GPT-4o: The phrase 'a strenuously joyous one' suggests a positive experience, indicating the production is recommended. However, the lack of full text and mixed aggregator context leads to medium confidence. | Gemini: The phrase \"strenuously joyous\" suggests a positive experience, indicating a recommendation, albeit perhaps with some reservations implied by \"strenuously.\"",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,20 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:07:44.225Z",
-    "promptVersion": "2.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:26:12.399Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "2.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwExcerpt": "The ninth-longest running Broadway show of all time, Mamma Mia! ran for 14 years at the Winter Garden following its opening shortly after the Towers fell. This touring production’s stop at the Garden has all the makings of a homecoming, and it’s a strenuously joyous one.",
   "sourceMethod": "archive",

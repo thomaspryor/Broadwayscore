@@ -8,72 +8,57 @@
   "fullText": "Opposite can attract, but that doesn't mean they should. Katharine Hepburn and Spencer Tracy were the ultimate they-aren't-made-for-each-other couple that possessed real chemistry, threw off romantic sparks and usually ended up together at the end of the movie. The same could be said for Barbra Streisand and Robert Redford in their one movie together, \"The Way We Were,\" except for the fact that they split up at the end.\n\nAfter productions at London's Kiln Theatre and Cambridge's American Repertory Theater, the new musical \"Two Strangers (Carry a Cake Across New York)\" opened Thursday at the Longacre Theatre.\n\nIt stars Christiani Pitts and Sam Tutty, and these two barely make it passed intermission before it's time for them to call it quits.\n\nJim Barne and Kit Buchan wrote the songs and the book for this rom-com two-hander, and they begin \"Two Strangers\" with real promise. The young man Dougal (Tutty) is newly arrived at JFK from London and eager to meet his American father for the very first time. Dad's getting married and the bride's sister, Robin (Pitts), picks him up at the airport. As meet-cutes go, this one turns very problematic in Act 2, if not before.\n\nEven before he has left JFK, Dougal falls in love with this wonderful town and sings a song titled \"New York.\" While the tune doesn't top \"Conquering New York\" or \"New York, New York,\" it gets \"Two Strangers\" off to a rousing start.\n\n\"Two Strangers\" is one of those rom-coms where the two lovers are wrong for each other. He's too boyish, she's too brittle. It's a new soul/old soul dynamic. That frisson works initially because, in a story too complicated to tell here, he sets her up with another guy on a dating app. Maybe Dougal and Robin will just become very good friends. Unfortunately, no.",
   "dtliExcerpt": "“Two Strangers” is one of those rom-coms where the two lovers are wrong for each other. He’s too boyish, she’s too brittle. It’s a new soul/old soul dynamic. That frisson works initially because, in a story too complicated to tell here, he sets her up with another guy on a dating app. Maybe Dougal and Robin will just become very good friends. Unfortunately, no.",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 41,
   "source": "dtli",
   "dtliThumb": "Down",
   "scrapedAt": "2026-01-23T22:04:31.784Z",
   "llmScore": {
-    "score": 38,
-    "confidence": "high",
+    "score": 41,
+    "confidence": "medium",
     "range": {
-      "low": 32,
-      "high": 45
+      "low": 36,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 35,
-      "music": 50,
-      "performances": 45,
+      "book": null,
+      "music": null,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "these two barely make it passed intermission before it's time for them to call it quits",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "this one turns very problematic in Act 2, if not before",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "gets 'Two Strangers' off to a rousing start",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic finds fundamental problems with the central romantic relationship and story structure, with only minor praise for the opening number, indicating a show that doesn't work despite some initial promise.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The review starts with promise but clearly turns negative, criticizing the central relationship dynamic and noting the show becomes 'very problematic' with an 'Unfortunately, no' conclusion about the romantic pairing working. | GPT-4o: The review describes the production as having initial promise but ultimately failing to deliver, with the main characters being incompatible and the story becoming problematic. The tone suggests disappointment and a lack of recommendation. | Gemini: The review acknowledges initial promise but ultimately suggests the leads lack chemistry and the story becomes problematic. It doesn't outright recommend against seeing it, but it doesn't strongly endorse it either.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:33:36.517Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2759,
-    "outputTokens": 315,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:42:14.307Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 38,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 45,
-    "scoreDelta": 0,
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 60,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "textIssue": "too_short",
   "sourceMethod": "dtli",

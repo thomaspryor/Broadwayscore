@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of Thornton Wilder's 1938 drama feels especially poignant in a post-pandemic world, reminding us to treasure the everyday moments we so often take for granted.",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,33 +18,22 @@
   "showScoreExcerpt": "This revival of Thornton Wilder's 1938 drama feels especially poignant in a post-pandemic world, reminding us to treasure the everyday moments we so often take for granted.",
   "needsScoring": true,
   "llmScore": {
-    "score": 65,
-    "confidence": "low",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 75
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "feels especially poignant in a post-pandemic world",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "reminding us to treasure the everyday moments we so often take for granted",
-        "sentiment": "positive",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The review offers thematic appreciation but lacks any evaluation of the production quality, performances, or explicit recommendation, making it impossible to determine if the critic actually recommends seeing this revival.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review emphasizes the production's emotional resonance and timeliness, suggesting it's worth seeing for its meaningful impact, though the brief text lacks stronger evaluative language. | GPT-4o: The review highlights the poignancy of the revival in a post-pandemic context, suggesting a positive impact. However, the lack of explicit recommendation language leads to a medium confidence level. | Gemini: The review highlights the play's relevance and emotional impact, suggesting a positive experience for the audience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,19 +42,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:09:39.405Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2343,
-    "outputTokens": 288,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:36:30.593Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

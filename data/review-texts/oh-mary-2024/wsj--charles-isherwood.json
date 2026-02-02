@@ -7,67 +7,58 @@
   "publishDate": "2024-07-11T21:03:24-04:00",
   "bwwExcerpt": "“Oh, Mary!” is directed by Sam Pinkleton at a breakneck speed that both allows room for the best jokes to harvest their share of laughter while never letting even the lesser gags land with a thud. The entire cast excels at physical comedy, particularly Escola, whose Mary, after seducing her acting teacher on top of Abraham’s desk, must find a dignified way to descend from it, with ingeniously amusing results. I have a pretty low threshold for the coarseness of much low comedy, and plenty of the humor in “Oh, Mary!” is so low it qualifies as subterranean. But Escola’s brilliantly loopy writing and knockabout performance—which also recalls the great gifts of Carol Burnett—won me over.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 78,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 76,
+      "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 80
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Escola's brilliantly loopy writing and knockabout performance—which also recalls the great gifts of Carol Burnett—won me over",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The entire cast excels at physical comedy",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "I have a pretty low threshold for the coarseness of much low comedy, and plenty of the humor in 'Oh, Mary!' is so low it qualifies as subterranean",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Despite acknowledging the crude humor as potentially off-putting, the critic was ultimately 'won over' by the writing and performances, praising the direction, cast, and comparing the lead to Carol Burnett. | GPT-4o-mini: The review expresses strong praise for the performances and direction while acknowledging some reservations about the humor, leading to a positive recommendation overall.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review praises the direction and pacing, noting successful comedy timing and joke delivery. However, with only excerpted text available, confidence is tempered by the limited context. | Gemini: The review excerpt praises the direction, suggesting an enjoyable experience. The aggregator verdict also indicates a positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:42:44.657Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:07:55.722Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 78,
-    "scoreDelta": 0,
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240619",
   "bwwThumb": "Up",

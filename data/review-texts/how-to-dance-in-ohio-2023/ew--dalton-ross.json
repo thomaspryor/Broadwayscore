@@ -16,61 +16,51 @@
   "bwwThumb": "Up",
   "llmScore": {
     "score": 67,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
-      "low": 60.5,
-      "high": 73.5
+      "low": 62,
+      "high": 72
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 50,
-      "music": 58,
-      "performances": 83,
-      "direction": 55
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the seven actors playing Dr. Amigo's clients are all autistic — and they are fantastic",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Many numbers drift in and out without leaving much of a mark",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "the moments that do hit — when we see these young adults confronting trepidation and unfamiliarity, and just generally celebrating life — hit hard",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The B grade and mixed content - praising performances while criticizing book and music - indicates a qualified positive recommendation with significant reservations. | GPT-4o-mini: The review highlights strong performances and impactful moments but also notes significant weaknesses in the music and overall execution, leading to a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic gives a B grade and explicitly states the show 'often misses' with 'only okay' music, but praises the autistic actors as 'fantastic' and notes moments that 'hit hard' and move audiences to tears. | GPT-4o: The review describes the show as a 'mixed bag' with both high points and shortcomings. While it praises certain performances and moments, it also criticizes the music and some narrative choices. The truncated text warning suggests caution, but the overall tone leans towards mixed. | Gemini: The review highlights both positive and negative aspects, but the positive moments are described as impactful. The truncated text makes it difficult to determine the overall recommendation with certainty, but the aggregator excerpts suggest a positive leaning.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T05:49:21.537Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:54:15.575Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 67,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 68,
-    "openaiScore": 65,
-    "scoreDelta": 3,
-    "thumbsMatch": false,
-    "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (67 → Flat) conflicts with aggregator thumbs (Up)"
-    ]
+    "claudeScore": 67,
+    "openaiScore": 67,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209",
   "archivePath": "data/archives/reviews/how-to-dance-in-ohio-2023/ew--dalton-ross_2026-01-29.html",

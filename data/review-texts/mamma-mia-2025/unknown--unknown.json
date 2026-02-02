@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,59 +21,53 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 72,
-    "confidence": "low",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 70
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "this is a fine iteration of \"Mamma Mia!\"",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "sprightlier than it was the last time I saw the show",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "set that feels a little flimsy",
-        "sentiment": "negative",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Brief positive assessment calling it 'fine' and 'sprightlier' with minor production criticism, suggesting qualified recommendation but excerpt is too short for high confidence.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic calls it a 'fine iteration' that's 'sprightlier' than before, indicating recommendation despite noting some downscaling. Single excerpt warning prompts conservative scoring within positive range. | GPT-4o: The review acknowledges some downsides, such as a flimsy set, but ultimately describes the production as a 'fine iteration' and 'sprightlier' than before, indicating a positive recommendation with some reservations. | Gemini: The review indicates that the production is \"fine\" and \"sprightlier\" than before, suggesting a positive experience, but the mention of a \"flimsy\" set implies reservations. Given the single excerpt warning, I'm scoring conservatively.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:02:54.206Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2357,
-    "outputTokens": 329,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:28:19.313Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

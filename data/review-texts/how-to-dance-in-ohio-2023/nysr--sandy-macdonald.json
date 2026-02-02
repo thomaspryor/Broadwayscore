@@ -9,64 +9,56 @@
   "bwwExcerpt": "Meanwhile, the young performers who make up the seven-member core – all of whom self-identify as autistic – do their best to make us, the audience, comfortable. In a prefatory group speech, one performer notes the availability of “cool-down spaces.” All but the most easily triggered playgoer will want to hang in, though, to hear the melodies – buoyant to poignant – that composer Jacob Yandura has set to the text, portions of which have been lifted verbatim from the film.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209",
   "originalScore": "4/5 stars",
-  "assignedScore": 71,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 71,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 77
+      "low": 75,
+      "high": 85
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 77,
-      "performances": 70,
+      "music": null,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "All but the most easily triggered playgoer will want to hang in",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "melodies – buoyant to poignant – that composer Jacob Yandura has set to the text",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "do their best to make us, the audience, comfortable",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: This excerpt focuses mainly on positive elements (music quality, performer effort) but the partial nature and emphasis on audience comfort suggests qualified enthusiasm rather than strong recommendation. | GPT-4o-mini: The review highlights the strong musical elements and the efforts of the performers, but lacks a clear overall recommendation, indicating a mixed-positive sentiment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating indicates a positive recommendation. While the review raises concerns about the show's premise and some structural issues, the critic praises the performances, music, and ultimately finds it worth seeing for multiple compelling elements. | GPT-4o: The review gives a 4/5 star rating, indicating a strong positive recommendation. The critic highlights the performances and the music positively, despite some reservations about certain aspects of the storyline and character development. | Gemini: The critic gives the show a 4/5 star rating and highlights the strengths of the young performers and the music, while also pointing out some underdeveloped characters and superfluous elements. Overall, the review leans towards a positive recommendation, but with some reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:15:59.543Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:54:46.014Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 71,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 70,
-    "scoreDelta": 2,
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "fullText added after excerpt-based scoring",

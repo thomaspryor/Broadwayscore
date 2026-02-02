@@ -6,7 +6,7 @@
   "url": "https://ew.com/mamma-mia-review-broadway-homecoming-11790686?srsltid=AfmBOorLYK1fy6NcIvYZDKSoJsfJ9fiD4W3WrRa5q7Hv2M_eXOUTb0UY",
   "publishDate": "2025-08-14",
   "originalScore": "B",
-  "assignedScore": 72,
+  "assignedScore": 77,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "Now, they'll get the chance to do just that as the musical returns to its original home — the Winter Garden Theatre — for a six-month-long limited engagement that may not reinvent the material, but is still every bit the dreamy, endlessly endearing experience that fans know and love.",
@@ -18,18 +18,13 @@
   "dtliExcerpt": "It's been over 25 years since Mamma! Mia first took to the stage, and it's abundantly clear that the fervor surrounding it isn't going anywhere anytime soon. And it's easy to see why: The show is pure sunshine baked into a musical and dressed in disco balls, sequins, and feathered boas. My, my, how could we resist this?",
   "dtliThumb": "Up",
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:29:18.137Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3673,
-    "outputTokens": 380,
-    "textSource": {
-      "type": "fullText",
-      "status": "truncated",
-      "field": "fullText",
-      "confidence": "low",
-      "reasoning": "Truncated text - may be missing final verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:26:26.702Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MAMMA-MIA-Returns-To-Broadway-20250814",
   "bwwThumb": "Meh",
@@ -93,59 +88,42 @@
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "llmScore": {
-    "score": 72,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 69,
-      "high": 75
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 70,
-      "music": 85,
-      "performances": 75,
-      "direction": 65
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "still every bit the dreamy, endlessly endearing experience that fans know and love",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "it feels like a missed opportunity to not have capitalized on the show's big Broadway homecoming and taken its romantic island fantasy to the next level",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "The show is pure sunshine baked into a musical and dressed in disco balls, sequins, and feathered boas. My, my, how could we resist this? Grade: B",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "A B grade review that praises the joyous performances and ABBA's music while noting missed opportunities for updates, landing in clear recommendation territory despite reservations.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic gives a B grade and concludes with enthusiastic language about the show being 'pure sunshine' while acknowledging it's a crowd-pleasing experience that delivers what fans expect, despite noting some missed opportunities for updates. | Gemini: The review is generally positive, highlighting the enjoyable aspects of the show and its enduring appeal. The critic notes some areas for improvement, but the overall tone suggests a recommendation, albeit with reservations. The B grade also supports this classification.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
+    "claudeScore": 75,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreCompletedAt": "2026-02-01T15:29:18.137Z",
   "contentTier": "excerpt",

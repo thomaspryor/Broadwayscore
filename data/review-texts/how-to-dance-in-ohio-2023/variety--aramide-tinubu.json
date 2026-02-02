@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The musical adaptation of Alexandra Shiva's 2015 documentary is a tender, authentic portrayal of young adults on the autism spectrum preparing for a spring formal dance.",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,33 +18,22 @@
   "showScoreExcerpt": "The musical adaptation of Alexandra Shiva's 2015 documentary is a tender, authentic portrayal of young adults on the autism spectrum preparing for a spring formal dance.",
   "needsScoring": true,
   "llmScore": {
-    "score": 72,
-    "confidence": "low",
+    "score": 75,
+    "confidence": "medium",
     "range": {
-      "low": 65,
+      "low": 70,
       "high": 80
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "tender, authentic portrayal",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "musical adaptation of Alexandra Shiva's 2015 documentary",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The descriptive language 'tender' and 'authentic' suggests positive sentiment, but this extremely brief excerpt lacks clear recommendation language or substantial critical assessment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The additional context describes the show as 'tender, authentic' which indicates positive assessment, though the main review text is mostly setup. The positive descriptors suggest recommendation despite limited evaluative content. | GPT-4o: The review describes the musical as a 'tender, authentic portrayal,' which suggests a positive view. However, the absence of stronger language or explicit recommendation keeps the score in the lower range of the Positive bucket. | Gemini: The review describes the musical as a \"tender, authentic portrayal,\" which indicates a positive recommendation, although not an enthusiastic one. The lack of stronger positive language suggests a score in the lower end of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,20 +42,14 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T19:59:31.782Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2336,
-    "outputTokens": 279,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:55:48.173Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 72,
   "textWordCount": 763,
@@ -104,5 +87,21 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (86 words)"
+  "contentTierReason": "Short text (86 words)",
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
+  "rescoreCompletedAt": "2026-02-02T00:55:48.173Z"
 }

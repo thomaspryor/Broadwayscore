@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 60,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,14 +20,14 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 45,
-    "confidence": "high",
+    "score": 60,
+    "confidence": "medium",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 55,
+      "high": 65
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -35,7 +35,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The review identifies fundamental structural problems as the show's 'Achilles' heel' and explicitly states what's 'missing' from the production, indicating disappointment with the execution despite acknowledging ambitious scope. | GPT-4o: The review highlights significant issues with the show's structure and execution, indicating a lack of cohesion and captivation. The absence of positive remarks suggests a negative recommendation. | Gemini: The review excerpt clearly points out a significant flaw in the show, indicating a lack of cohesion and harmony, leading to a negative assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The excerpt identifies significant structural flaws but uses measured critical language rather than harsh dismissal. However, with only one curated excerpt available, the overall verdict remains unclear. | GPT-4o: The review highlights a significant flaw in the show, describing it as lacking a crucial element that would make it captivating. The absence of a positive recommendation leads to a negative classification. | Gemini: The review excerpt identifies a significant flaw in the show's cohesion, suggesting it doesn't fully succeed. However, the language isn't overtly negative, indicating a mixed assessment rather than outright disapproval.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,26 +45,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:32:25.099Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:11:48.933Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 45,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 45,
-    "geminiScore": 45,
-    "claudeBucket": "Negative",
+    "claudeScore": 58,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
     "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "scoreDelta": 0,
+    "geminiBucket": "Mixed",
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available"

@@ -9,42 +9,26 @@
   "dtliExcerpt": "It’s a darling gem of a show with a big heart and a captivating sideways sensibility. And in a Broadway assembly line churning with revivals and remakes, it’s a refreshing model of innovation.",
   "showScoreExcerpt": "\"The odd and simple premise of “Maybe Happy Ending” accomplishes something profound, in examining the nature of connection.\"",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 85,
-    "confidence": "high",
+    "score": 89,
+    "confidence": "medium",
     "range": {
-      "low": 82,
-      "high": 88
+      "low": 84,
+      "high": 94
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 82,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "It's a darling gem of a show with a big heart and a captivating sideways sensibility",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "it's a refreshing model of innovation",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "there is an immediate element of surprise and delight",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Strong positive language throughout with phrases like 'darling gem,' 'big heart,' 'surprise and delight,' and 'refreshing model of innovation' indicates clear enthusiasm and recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses glowing language throughout including 'surprise and delight', 'darling gem', 'big heart', 'refreshing model of innovation' and describes the show as accomplishing 'something profound'. This is clearly enthusiastic praise. | GPT-4o: The review uses highly positive language such as 'a darling gem' and 'refreshing model of innovation,' indicating a strong recommendation to see the show. | Gemini: The review uses positive language like \"delight,\" \"darling gem,\" and \"refreshing model of innovation,\" indicating a recommendation. The additional context further emphasizes the show's profound nature, solidifying the positive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,27 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:34:50.043Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2506,
-    "outputTokens": 337,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:18:34.914Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 88,
-    "scoreDelta": 0,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "textIssue": "too_short",
   "sourceMethod": "archive",

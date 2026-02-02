@@ -9,74 +9,57 @@
   "bwwExcerpt": "So here we have a sturdily functional production of the Wilder classic. But when you walk out of a revival thinking how thrilling the play was the last time you saw it—well that’s a problem, isn’t it? David Cromer’s 2009 production at the Barrow Street Theatre (and elsewhere) was vibrant, stunning and altogether unforgettable. The new Broadway production is—well, not.",
   "bwwRoundupUrl": null,
   "originalScore": "3/5 stars",
-  "assignedScore": 62,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
   "bwwThumb": "Meh",
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 66
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": 72,
-      "direction": 55
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "A professional production, overall, and one which is worthy of commendation",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "But when you walk out of a revival thinking how thrilling the play was the last time you saw it—well that's a problem, isn't it?",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "So here we have a sturdily functional production of the Wilder classic",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The 3-star review describes a 'professional' and 'worthy of commendation' production but ultimately finds it disappointingly functional compared to superior past productions, indicating qualified mixed reception.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic gives 3/5 stars and calls it a 'professional production, overall, and one which is worthy of commendation' but ultimately finds it 'sturdily functional' rather than memorable, explicitly comparing it unfavorably to previous productions and noting key scenes 'fall unaccountably flat.' | GPT-4o: The review acknowledges the production's professionalism and commendable aspects but ultimately finds it lacking compared to previous productions, leading to a mixed recommendation. | Gemini: The critic ultimately finds the production \"worthy of commendation\" despite reservations about the opening and comparisons to previous productions. The 3/5 star rating also indicates a positive but not rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:49:28.033Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3583,
-    "outputTokens": 360,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:37:09.012Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 40,
-    "scoreDelta": 2,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (39 → Down) conflicts with aggregator thumbs (Flat)"
-    ]
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 39,

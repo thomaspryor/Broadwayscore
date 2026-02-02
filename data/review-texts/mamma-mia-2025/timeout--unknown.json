@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the show's balance and self-awareness compared to other jukebox musicals, highlighting its core joy and entertainment value, indicating a positive but not overwhelming recommendation. | GPT-4o: The review highlights the show's ability to maintain balance and deliver joy, suggesting a positive experience. However, without a full review or explicit recommendation, the confidence is medium. | Gemini: The review highlights the show's ability to draw the audience in and maintain a sense of self-awareness, suggesting an enjoyable experience despite potential reservations. The comparison to other jukebox musicals implies a positive distinction.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the show's balance and self-awareness while acknowledging it delivers 'joy of vicarious karaoke,' indicating a positive recommendation despite being only a single excerpt. | GPT-4o: The review highlights the show's ability to maintain balance and deliver joy, suggesting a positive experience. However, due to the single excerpt and lack of a full review, the score is conservatively placed in the middle of the Positive range. | Gemini: The review highlights the show's ability to draw the audience in and maintain a sense of self-awareness, suggesting an enjoyable experience, but the limited text and lack of explicit recommendation warrant a score in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:49:10.917Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:28:13.112Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 76,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 78,
+    "openaiScore": 76,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -9,44 +9,28 @@
   "bwwExcerpt": "As for the production, the staging by Michael Greif (“Dear Evan Hansen,” “Next to Normal”) and Schele Williams (“The Wiz”) feels, for all its intention of intimacy, contrived and unsurprising. For a while the cross-cutting of the three couples haunting each other is intriguing but soon Katie Spelman’s choreography of past and future lives ever-circling each other simply becomes a dizzying one-note effect. The cross-racial casting of couples nicely underscores the universality of the romance and the ease of imaginative leaps in musical theater.",
   "showScoreExcerpt": "\"...awash in sentimentality and drenched in wistful longings and wish fulfillment.\"",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "bwwThumb": "Meh",
   "bwwUrl": "https://variety.com/2024/legit/reviews/the-notebook-review-broadway-musical-1235939025/",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 38,
-    "confidence": "high",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 32,
-      "high": 44
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 25,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Hallmark movie of a musical, awash in sentimentality and drenched in wistful longings and wish fulfillment",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "it will take more than recreating that iconic rainstorm to win over other theatergoers looking for more than clichés, tropes and triggers",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "thinly rendered here",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review dismisses the show as a sentimental 'Hallmark movie of a musical' filled with clichés and warns that it won't satisfy discerning theatergoers, indicating a clear negative recommendation despite acknowledging potential commercial appeal.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic clearly does not recommend the show, describing it as clichéd and contrived, warning that only the existing fanbase might boost box office while other theatergoers need 'more than clichés, tropes and triggers.' | GPT-4o: The review criticizes the production for being overly sentimental and filled with clichés. The staging is described as contrived and unsurprising, suggesting the critic does not recommend the show. | Gemini: The review points out flaws like sentimentality and clichés, but also acknowledges the potential appeal to fans and some intriguing staging choices. It doesn't outright recommend or discourage seeing it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,29 +39,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:21:10.149Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2467,
-    "outputTokens": 377,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:47:48.382Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 38,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 42,
     "openaiScore": 45,
-    "scoreDelta": 3,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (44 → Down) conflicts with aggregator thumbs (Flat)"
-    ]
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "archivePath": "data/archives/reviews/the-notebook-2024/variety--frank-rizzo_2026-01-26.html",
   "textFetchedAt": "2026-01-26T19:28:01.661Z",

@@ -9,67 +9,59 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 61,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 45,
-    "confidence": "high",
+    "score": 61,
+    "confidence": "medium",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 56,
+      "high": 66
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": 58,
-      "direction": 38
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the production wobbles",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The electric confrontation between Aloysius and Flynn is underpowered and prevents the play from reaching its climax",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Ryan should be applauded for learning this titanic role",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The review identifies fundamental production problems including imbalanced casting, underpowered key scenes, and direction calibrated for a different performance, despite some praise for individual effort. | GPT-4o-mini: The review highlights significant weaknesses in the production while acknowledging some merit in the performance, leading to a predominantly negative recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The excerpt describes structural problems (imbalance, wobbling, underpowered climax) and casting issues, but only one excerpt available limits confidence in full verdict assessment. | GPT-4o: The review highlights significant issues with the production's balance and climax, suggesting a mixed experience. However, there is praise for individual performances, indicating some positive elements. | Gemini: The review highlights both positive aspects (Bernstine's performance) and negative aspects (imbalance, underpowered confrontation), suggesting a mixed experience overall. The word \"wobbles\" indicates an unevenness that prevents a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:36:18.714Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:31:23.493Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 45,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 45,
-    "scoreDelta": 0,
+    "claudeScore": 42,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "archivePath": "data/archives/reviews/doubt-2024/thestage--lane-williamson_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:38:06.855Z",

@@ -8,45 +8,29 @@
   "fullText": null,
   "showScoreExcerpt": "a cheerful night of theater...if you're on Escola's wacky yet endearing wavelength.",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 74,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/oh-mary-broadway",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 60,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 50,
-      "high": 70
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "cheerful night of theater",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "if you're on Escola's wacky yet endearing wavelength",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "a cheerful night of theater",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review offers qualified praise with a significant caveat about audience compatibility, suggesting a conditional recommendation that depends on personal taste. | GPT-4o-mini: The review suggests a conditional enjoyment of the show, indicating it may appeal to a specific audience while lacking a strong overall recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'cheerful night of theater' indicates enjoyment and recommendation, but the conditional 'if you're on Escola's wavelength' suggests it's not universally appealing. Given this is a single curated excerpt, scoring conservatively within positive range. | GPT-4o: The review excerpt suggests a positive experience, highlighting the show as 'cheerful' and 'endearing.' However, it also implies that the enjoyment may depend on the audience's taste ('if you're on Escola's wavelength'), indicating some reservations. | Gemini: The phrase \"cheerful night of theater\" indicates a positive experience. However, the caveat \"if you're on Escola's wacky yet endearing wavelength\" suggests the show might not appeal to everyone, indicating a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,20 +39,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:42:06.568Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:06:27.591Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 60,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 55,
-    "scoreDelta": 10,
+    "claudeScore": 72,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

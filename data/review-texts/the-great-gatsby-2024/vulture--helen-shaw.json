@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Great Gatsby musical is a glittering, overproduced spectacle that mistakes flash for substance, delivering a show that's as hollow as its source material's critique of the American Dream.",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 52,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,73 +17,51 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The Great Gatsby musical is a glittering, overproduced spectacle that mistakes flash for substance, delivering a show that's as hollow as its source material's critique of the American Dream.",
   "llmScore": {
-    "score": 42,
-    "confidence": "high",
+    "score": 52,
+    "confidence": "low",
     "range": {
-      "low": 38,
-      "high": 46
+      "low": 47,
+      "high": 57
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 45,
-      "music": 40,
-      "performances": 65,
-      "direction": 25
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "this Gatsby feels like it belongs on a cruise or in a theme park",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "They're just all in a vapid musical-shaped-musical while Zdrojeski is in The Great Gatsby",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Zdrojeski is turning in a mesmerizing performance — menacing, vain, subtle when it needs to be",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic finds the production fundamentally misguided and vapid, praising only Zdrojeski's performance while condemning the direction, design, and overall approach as theme park-level spectacle that misses the novel's deeper meaning.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Negative, gemini=Mixed | Claude: The critic systematically criticizes the production as superficial spectacle that misses Fitzgerald's deeper themes, comparing it to theme park entertainment and criticizing the direction, design, and writing while only praising one performance. | Gemini: The review is mixed, praising Zdrojeski's performance as Tom Buchanan but criticizing the overall production as a \"vapid musical-shaped-musical.\" While there are positive aspects, the critic ultimately finds the production lacking in depth and spirit.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:39:57.858Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4141,
-    "outputTokens": 382,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:22:09.961Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 42,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 40,
-    "geminiScore": 45,
+    "openaiScore": null,
+    "geminiScore": 62,
     "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "scoreDelta": 5,
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Mixed"
   },
   "previousUrl": "https://www.vulture.com/article/the-great-gatsby-musical-broadway-review.html",
   "urlDiscoveredAt": "2026-02-01T14:26:38.953Z",

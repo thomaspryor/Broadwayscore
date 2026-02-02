@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'at its best' implies the show has weaker moments, but the emphasis on 'exceptional performances' and the core relationship suggests overall positive assessment, though with some reservations. | GPT-4o: The review highlights strong performances and a compelling central relationship, suggesting a positive experience despite potential limitations in other aspects of the show. | Gemini: The review highlights strong performances and a compelling relationship, suggesting a positive experience, but the phrase 'at its best when' implies that other aspects of the show may be less successful, leading to a 'Positive' bucket with a mid-range score.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic highlights exceptional performances and identifies what works best about the show, indicating a positive assessment, though the phrasing suggests the show has weaker elements when not focused on this core relationship. | GPT-4o: The review highlights strong performances and a compelling aspect of the show, suggesting a positive overall impression, though the lack of broader context or explicit recommendation tempers the enthusiasm. | Gemini: The review highlights the strength of the show and the exceptional performances, indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,11 +43,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T13:58:32.579Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:03:18.424Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 76,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 76,

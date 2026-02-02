@@ -20,12 +20,12 @@
   ],
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T04:05:47.158Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:35:20.565Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 18,
-    "previousVersion": "3.0.0"
+    "previousScore": 43,
+    "previousVersion": "5.0.0"
   },
   "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available",
   "previousLlmScore": 55,
@@ -101,7 +101,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The text is clearly truncated mid-sentence and only shows setup concerns about high expectations and risk of disappointment. However, aggregator verdicts suggest negative reception, so this appears to be building toward criticism rather than praise. | GPT-4o: The review sets up high expectations and suggests that this production does not meet them, indicating disappointment. The aggregator context supports a negative verdict. | Gemini: The review excerpt focuses on the risk of disappointment and high expectations, suggesting the production did not meet them. The aggregator verdicts also indicate a negative reception.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The review opens with concerns about high expectations and risk of disappointment, suggesting potential criticism. However, the text is severely truncated mid-sentence, and aggregator verdicts indicate negative assessment, making confident scoring impossible. | GPT-4o: The review sets up high expectations due to the show's legacy and cast but implies disappointment, aligning with aggregator verdicts of 'Down'. | Gemini: The review sets up the expectation of disappointment, and the aggregator verdicts confirm a negative assessment. The critic highlights the risk of disappointment, indicating the show likely did not meet expectations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -110,13 +110,13 @@
     }
   },
   "ensembleData": {
-    "claudeScore": 58,
+    "claudeScore": 60,
     "openaiScore": 40,
     "geminiScore": 45,
     "claudeBucket": "Mixed",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "scoreDelta": 18,
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

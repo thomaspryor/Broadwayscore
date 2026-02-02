@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,59 +21,53 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 52,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 48,
-      "high": 56
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 25,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 85
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "faint-hearted playwriting yields a show that is both startlingly better and infinitely worse than the average Broadway bio musical",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "stunning technical expertise (including a superb production design)",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "One of our boldest and most accomplished playwrights has turned surprisingly timid",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic praises the technical production while severely criticizing Lynn Nottage's book for being timid and evasive, creating a deeply conflicted assessment that balances high craft with fundamental storytelling failures.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review criticizes the playwright for being 'timid' and 'faint-hearted' while praising the 'stunning technical expertise' and 'superb production design,' concluding it's simultaneously better and worse than average bio musicals - a classic mixed assessment. | GPT-4o: The review highlights both strong technical elements and weak playwriting, suggesting a mixed experience. The critic acknowledges the show's technical prowess but criticizes the writing, indicating a balance of positives and negatives. | Gemini: The review highlights both positive and negative aspects, describing the production as \"startlingly better\" and \"infinitely worse\" than average, indicating a mixed experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:06:12.103Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2469,
-    "outputTokens": 355,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:25:10.911Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 52,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

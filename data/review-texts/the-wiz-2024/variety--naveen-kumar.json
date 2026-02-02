@@ -7,64 +7,56 @@
   "publishDate": "April 17, 2024",
   "fullText": "A flight of imagination born of the trippy 1970s, \"The Wiz\" can shoulder a lot of interpretation. Sidney Lumet's shadowy film, starring Diana Ross and Michael Jackson, sets the Black spin on L. Frank Baum's children's story \"The Wonderful Wizard of Oz\" in a blighted, nearly bombed-out New York City. High schools and community theaters have surely long made do with their prop closets, as the musical by William F. Brown (book) and Charlie Smalls (music and lyrics) is a vibes-based vehicle for a familiar plot and foolproof hits like \"Home\" and \"You Can't Win.\"",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 60,
   "dtliThumb": "Meh",
   "source": "dtli",
   "llmScore": {
-    "score": 65,
-    "confidence": "low",
+    "score": 60,
+    "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 72
+      "low": 55,
+      "high": 65
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": null,
-      "music": 72,
+      "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "foolproof hits like 'Home' and 'You Can't Win'",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "vibes-based vehicle for a familiar plot",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "can shoulder a lot of interpretation",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "This appears to be more of a general description of The Wiz as a property rather than a specific production review, with neutral tone and no clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges the musical's inherent strengths but clearly states this production diminishes those pleasures through excessive visual and audio choices that overwhelm the storytelling. | Gemini: The review acknowledges the show's potential pleasures but criticizes the maximalist revival for being overwhelming and diminishing the storytelling. This suggests a mixed experience, neither strongly recommending nor discouraging.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:32:10.566Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2448,
-    "outputTokens": 320,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:45:23.642Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
-  "ensembleData": null,
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
+  },
   "showScoreExcerpt": "\"...this Oz comes across more like a playground than a coming-of-age purgatory\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-wiz-broadway",
   "dtliExcerpt": "But the maximalist revival that opened at the Marquis Theater on Broadway tonight, following a 13-city national tour, diminishes some of the show’s reliable pleasures with unmitigated, candy-colored exuberance.",

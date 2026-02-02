@@ -9,65 +9,57 @@
   "dtliExcerpt": "It was only a matter of time for the starry revival to make its way over here to New York, and I am happy to report that this Cabaret, which opened tonight at the August Wilson Theatre, is a thrilling sight to behold.",
   "bwwExcerpt": "Where I'm fascinated is that spark the production seems to have found over here in the States. I can't necessarily pinpoint what particlualy changed but the world Frecknall has created now works for me. The team has produced a stunning feat the likes of which Broadway has not experienced in a while. If London is any indication, we are in for a long healthy run with exciting new stars every few months, and I look forward to experiencing the wonderment of the Kit Kat Club again and again.",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 92,
   "source": "dtli",
   "scrapedAt": "2026-01-23T18:00:00.000Z",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 89,
-    "confidence": "high",
+    "score": 92,
+    "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 87,
+      "high": 97
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 93,
-      "direction": 89
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "this Cabaret, which opened tonight at the August Wilson Theatre, is a thrilling sight to behold",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The team has produced a stunning feat the likes of which Broadway has not experienced in a while",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "I look forward to experiencing the wonderment of the Kit Kat Club again and again",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Strong positive review with superlative language ('stunning feat', 'thrilling sight to behold') and explicit enthusiasm for repeat viewing, despite some initial reservations about the London production. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its thrilling visuals and outstanding performances, particularly by Gayle Rankin, indicating a strong recommendation to see the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite opening with lukewarm feelings about the London production, the critic delivers an unambiguously enthusiastic recommendation for the Broadway version, calling it 'thrilling', 'astounding', and 'stunning feat' while expressing excitement to return multiple times. | GPT-4o: The review is overwhelmingly positive, praising the production as a 'thrilling sight to behold' and highlighting standout performances and innovative staging. The critic expresses excitement about experiencing the show multiple times, indicating a strong recommendation. | Gemini: Despite initial reservations about the London production, the critic clearly states that this Broadway production is a \"thrilling sight to behold\" and a \"stunning feat.\" The review is overwhelmingly positive, praising the performances, design, and overall experience.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:42:29.910Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:35:08.433Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 91,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "sourceMethod": "playwright",
   "bwwThumb": "Up",

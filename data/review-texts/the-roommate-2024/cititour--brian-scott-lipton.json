@@ -9,71 +9,56 @@
   "bwwExcerpt": "Directed with his usual finesse by Jack O’ Brien and beautifully designed by Bob Crowley (who has created a spacious, airy Midwest farmhouse) and lit gorgeously by Natasha Katz, the play serves mostly as a showcase for the spectacular Mia Farrow (in a long-awaited return to the stage) and her real-life bestie, Patti LuPone, each of whom do their considerable best to both illuminate and overcome Silverman’s often facile writing. Average Rating: 60.0% { \"@context\":\"https://schema.org\",",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 61,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 68,
-    "confidence": "medium",
+    "score": 61,
+    "confidence": "high",
     "range": {
-      "low": 62,
-      "high": 74
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 78
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "spectacular Mia Farrow (in a long-awaited return to the stage) and her real-life bestie, Patti LuPone",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "do their considerable best to both illuminate and overcome Silverman's often facile writing",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Directed with his usual finesse by Jack O' Brien and beautifully designed",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Strong praise for the star performances and production values, but significant criticism of the script as 'facile writing' that needs to be 'overcome' creates a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review praises the direction, design, and star performances but criticizes the writing as 'facile,' suggesting the actors are working to 'overcome' script weaknesses. This indicates a mixed assessment where production values and performances elevate weak material. | GPT-4o: The review highlights strong performances and production elements but criticizes the writing as 'facile'. The overall tone suggests a mixed reception, with notable strengths in acting and design but significant reservations about the script. | Gemini: The review praises the direction, design, and performances of Farrow and LuPone, but criticizes the writing as \"often facile.\" This suggests a mixed experience, where strong elements are undermined by weaker ones.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:24:19.459Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2437,
-    "outputTokens": 362,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:12:53.519Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 68,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
+    "claudeScore": 60,
     "openaiScore": 60,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "rescoreReason": "scored on brief excerpt, now has fullText",

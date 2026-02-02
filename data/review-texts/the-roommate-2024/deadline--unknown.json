@@ -12,7 +12,7 @@
   "assignedScore": 61,
   "llmScore": {
     "score": 61,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 56,
       "high": 66
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review identifies significant structural flaws but suggests the strong cast (Farrow and LuPone) provides redeeming value, indicating a mixed reception with reservations. | GPT-4o: The review highlights significant flaws in the pacing and story, but acknowledges the strength of the cast, suggesting some redeeming qualities. The tone is neither fully negative nor positive, indicating a mixed verdict. | Gemini: The review highlights flaws in the pacing and story, but acknowledges the strength of the director and cast (Farrow and LuPone). This suggests a mixed experience, not strongly recommending or discouraging.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The excerpt criticizes the pacing, mood shifts, and direction while praising the lead performers. With only one curated quote available, the mixed elements suggest neither strong recommendation nor dismissal. | GPT-4o: The review highlights significant flaws in pacing and mood, and suggests that even a reliable director struggles with the story. The mention of the director not having to make the effort alone with Farrow and LuPone implies some redeeming qualities, but overall the tone is negative. | Gemini: The review points out flaws in pacing and story, but also highlights the strength of the cast. This suggests a mixed experience, not strongly recommending or discouraging.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:54:56.087Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:13:05.288Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 61,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 58,
+    "claudeScore": 60,
+    "openaiScore": 50,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "scoreDelta": 4,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"
