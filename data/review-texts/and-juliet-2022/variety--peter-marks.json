@@ -74,20 +74,20 @@
   "previousLlmScore": 63,
   "textWordCount": 1161,
   "archivePath": "data/archives/reviews/and-juliet-2022/variety--peter-marks_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T05:05:48.205Z",
+  "textFetchedAt": "2026-02-02T15:09:13.023Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
     {
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 1.5,
-      "method": "browserbase",
-      "success": false,
-      "error": "Cannot read properties of undefined (reading 'push')"
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
     },
     {
       "tier": 2,

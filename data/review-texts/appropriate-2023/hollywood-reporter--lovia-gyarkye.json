@@ -78,18 +78,12 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "archivePath": "data/archives/reviews/appropriate-2023/hollywood-reporter--lovia-gyarkye_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T05:08:36.523Z",
+  "textFetchedAt": "2026-02-02T15:09:05.555Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "404 - Page not found"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
