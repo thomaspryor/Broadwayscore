@@ -1084,7 +1084,7 @@ for (const r of allReviews) {
   }
 
   // Check 2: Positive designation with very low score
-  const positiveDesignations = ['Critics_Pick', 'Critics_Choice', 'Must_See'];
+  const positiveDesignations = ['Critics_Pick', 'Critics_Choice'];
   if (positiveDesignations.includes(r.designation) && r.assignedScore < 55) {
     consistencyIssues.push({
       type: 'designation-score-mismatch',

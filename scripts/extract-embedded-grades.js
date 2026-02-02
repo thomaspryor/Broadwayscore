@@ -30,32 +30,15 @@ const LETTER_GRADES = {
   'f': 40
 };
 
-// Designation patterns for score bumps
+// Designation patterns — INTENTIONALLY EMPTY
+// All designations are now extracted from HTML structure only (score-extractors.js),
+// never from review prose text. Text matching produces false positives:
+// - "Critics' Pick" in text could be quoting a different outlet's designation
+// - "must-see" is common reviewer hyperbole, not an official badge
+// - "editors' choice" matches prose, not structured markup
+// Real designations: NYT Critics_Pick (JSON-LD/CSS), Time Out Critics_Choice (badge markup),
+// TheaterMania Must_See (CSS class) — all in score-extractors.js extractDesignation()
 const DESIGNATION_PATTERNS = {
-  'Critics_Pick': [
-    /critic['']s?\s*pick/i,
-    /nyt\s*critic['']s?\s*pick/i,
-    /new\s*york\s*times\s*critic['']s?\s*pick/i,
-  ],
-  'Critics_Choice': [
-    /critic['']s?\s*choice/i,
-    /time\s*out\s*critic['']s?\s*choice/i,
-  ],
-  // "Recommended" removed — no outlet uses it as a real designation
-  'Editors_Choice': [
-    /editor['']s?\s*choice/i,
-    /editor['']s?\s*pick/i,
-  ],
-  'Must_See': [
-    /\bmust[\s-]see\b/i,
-    /\bmust\s*see\s*show\b/i,
-    /\bunmissable\b/i,
-    /\bdon['']t\s*miss\b/i,
-  ],
-  'Top_Pick': [
-    /\btop\s*pick\b/i,
-    /\bhighly\s*recommended\b/i,
-  ],
 };
 
 // Outlet-specific score patterns
@@ -98,38 +81,11 @@ const OUTLET_SCORE_PATTERNS = {
 };
 
 /**
- * Extract designation (Critics' Pick, etc.) from review text
+ * Extract designation from review text — DEPRECATED
+ * Designations should only come from HTML structure (score-extractors.js).
+ * This function is kept for API compatibility but always returns null.
  */
 function extractDesignation(text, outletId) {
-  if (!text || text.length < 20) return null;
-
-  const lower = text.toLowerCase();
-
-  // Check each designation type
-  for (const [designation, patterns] of Object.entries(DESIGNATION_PATTERNS)) {
-    for (const pattern of patterns) {
-      if (pattern.test(text)) {
-        return designation;
-      }
-    }
-  }
-
-  // Outlet-specific designation detection
-  if (outletId) {
-    const outletLower = outletId.toLowerCase();
-
-    // NYT: Only check HTML structure, not review text (text matching causes false positives)
-    // Real extraction should use score-extractors.js which checks JSON-LD, CSS classes, badge markup
-    // This legacy function should not be used for NYT Critics' Pick detection
-
-    // Time Out: Check for Critics' Choice
-    if (outletLower.includes('time-out') || outletLower.includes('timeout')) {
-      if (/critic['']?s?\s*choice/i.test(text)) {
-        return 'Critics_Choice';
-      }
-    }
-  }
-
   return null;
 }
 
