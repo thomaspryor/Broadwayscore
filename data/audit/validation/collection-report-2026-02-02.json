@@ -1,0 +1,62 @@
+{
+  "runDate": "2026-02-02T00:44:06.393Z",
+  "config": {
+    "batchSize": 5,
+    "maxReviews": 5,
+    "priority": "all",
+    "showFilter": "bug-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 1,
+    "failed": 1,
+    "skipped": 0,
+    "successRate": "50.0%"
+  },
+  "tierBreakdown": {
+    "playwright": 0,
+    "browserbase": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archive": 1
+  },
+  "statistics": {
+    "tier1Attempts": 1,
+    "tier1Success": 1,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier4Attempts": 2,
+    "tier4Success": 1,
+    "totalFailed": 1,
+    "scrapingBeeCreditsUsed": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "bug-2026/wsj--charles-isherwood.json"
+  ],
+  "failed": [
+    "bug-2026/timeout--adam-feldman.json"
+  ],
+  "tierDetails": {
+    "playwright": [],
+    "browserbase": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archive": [
+      "bug-2026/wsj--charles-isherwood.json"
+    ]
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
+}
