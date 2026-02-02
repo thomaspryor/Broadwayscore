@@ -1,64 +1,108 @@
 {
-  "runDate": "2026-02-02T23:11:44.808Z",
+  "runDate": "2026-02-02T23:44:09.409Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "marjorie-prime-2025",
+    "showFilter": "suffs-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 2,
+    "processed": 4,
+    "failed": 8,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "33.3%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingbee": 2,
+    "brightdata": 1,
     "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
-    "tier1_5Attempts": 0,
+    "tier1Attempts": 6,
+    "tier1Success": 2,
+    "tier1_5Attempts": 3,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier4Attempts": 3,
+    "tier2Attempts": 5,
+    "tier2Success": 2,
+    "tier3Attempts": 2,
+    "tier3Success": 1,
+    "tier4Attempts": 13,
     "tier4Success": 3,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 23,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 2.8,
+    "urlDiscoveryAttempts": 3,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "marjorie-prime-2025/nydailynews--chris-jones.json"
+    "suffs-2024/nytimes--jesse-green.json",
+    "suffs-2024/theatermania--jesse-green.json",
+    "suffs-2024/wsj--charles-isherwood.json",
+    "suffs-2024/the-times--nancy-durrant.json"
   ],
   "failed": [
-    "marjorie-prime-2025/timeout--adam-feldman.json",
-    "marjorie-prime-2025/wsj--charles-isherwood.json"
+    "suffs-2024/chelsea-community-news--michael-musto.json",
+    "suffs-2024/deadline--greg-evans.json",
+    "suffs-2024/guardian--adrian-horton.json",
+    "suffs-2024/observer--rex-reed.json",
+    "suffs-2024/timeout--adam-feldman.json",
+    "suffs-2024/timeout--regina-robbins.json",
+    "suffs-2024/talkinbroadway--matthew-murray.json",
+    "suffs-2024/usatoday--charles-isherwood.json"
   ],
-  "failed": [],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "suffs-2024/the-times--nancy-durrant.json"
+    ],
     "browserbase": [],
-    "scrapingbee": [],
-    "brightdata": [],
+    "scrapingbee": [
+      "suffs-2024/deadline--greg-evans.json",
+      "suffs-2024/theatermania--jesse-green.json"
+    ],
+    "brightdata": [
+      "suffs-2024/wsj--charles-isherwood.json"
+    ],
     "archive": [
-      "marjorie-prime-2025/nydailynews--chris-jones.json"
+      "suffs-2024/nytimes--jesse-green.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Guardian": {
+      "count": 1,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Observer": {
+      "count": 1,
+      "domain": "observer.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "USA Today": {
+      "count": 1,
+      "domain": "usatoday.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }

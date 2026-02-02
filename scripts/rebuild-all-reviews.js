@@ -24,6 +24,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { getOutletDisplayName } = require('./lib/review-normalization');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
@@ -1101,6 +1102,10 @@ console.log(`Found ${showDirs.length} show directories\n`);
 
 const allReviews = [];
 
+// Cross-show fullText fingerprint map: detect when the same scraped text appears under different shows
+// Key: SHA-256 hash of full cleaned text (avoids false positives from shared boilerplate prefixes)
+const crossShowFingerprints = new Map();
+
 showDirs.forEach(showId => {
   const showDir = path.join(reviewTextsDir, showId);
   const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json'))
@@ -1162,6 +1167,43 @@ showDirs.forEach(showId => {
       if (data.wrongAttribution === true) {
         stats.skippedWrongAttribution = (stats.skippedWrongAttribution || 0) + 1;
         return;
+      }
+
+      // Skip reviews where LLM reasoning indicates wrong content (error pages, press releases, etc.)
+      const reasoning = data.llmScore?.reasoning || '';
+      if (reasoning && /\b(error page|error message|website error|search result|not a review|press release|announcement rather than|reality TV|Bachelor in Paradise)\b/i.test(reasoning)) {
+        stats.skippedWrongContent = (stats.skippedWrongContent || 0) + 1;
+        return;
+      }
+
+      // Skip reviews where show title was never mentioned AND there are no aggregator excerpts
+      // Reviews with valid excerpts from DTLI/BWW/ShowScore are likely legitimate even without title match
+      if (data.showNotMentioned === true) {
+        const hasExcerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt;
+        if (!hasExcerpt) {
+          stats.skippedShowNotMentioned = (stats.skippedShowNotMentioned || 0) + 1;
+          return;
+        }
+        stats.showNotMentionedWithExcerpts = (stats.showNotMentionedWithExcerpts || 0) + 1;
+      }
+
+      // Cross-show duplicate text detection: skip if this fullText was already seen under a different show
+      // Uses SHA-256 hash of full cleaned text to avoid false positives from shared boilerplate prefixes
+      if (data.fullText && data.fullText.length > 200) {
+        const cleanedForFp = (cleanText(data.fullText) || '').toLowerCase().replace(/\s+/g, '');
+        if (cleanedForFp.length > 200) {
+          const fp = crypto.createHash('sha256').update(cleanedForFp).digest('hex').substring(0, 16);
+          const existing = crossShowFingerprints.get(fp);
+          if (existing && existing.showId !== showId) {
+            stats.skippedCrossShowDupe = (stats.skippedCrossShowDupe || 0) + 1;
+            if (!stats.crossShowDupeDetails) stats.crossShowDupeDetails = [];
+            stats.crossShowDupeDetails.push(`${showId}/${file} duplicates ${existing.showId}/${existing.file}`);
+            return;
+          }
+          if (!existing) {
+            crossShowFingerprints.set(fp, { showId, file });
+          }
+        }
       }
 
       // Auto-detect reviews from wrong production based on publish date
@@ -1524,6 +1566,15 @@ console.log(`  Skipped (no valid score): ${stats.skippedNoScore}`);
 console.log(`  Skipped (duplicate): ${stats.skippedDuplicate}`);
 console.log(`  Skipped (duplicate URL): ${stats.skippedDuplicateUrl || 0}`);
 console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`);
+console.log(`  Skipped (wrong content/reasoning): ${stats.skippedWrongContent || 0}`);
+console.log(`  Skipped (cross-show duplicate text): ${stats.skippedCrossShowDupe || 0}`);
+if (stats.crossShowDupeDetails && stats.crossShowDupeDetails.length > 0) {
+  stats.crossShowDupeDetails.forEach(d => console.log(`    - ${d}`));
+}
+console.log(`  Skipped (show not mentioned, no excerpts): ${stats.skippedShowNotMentioned || 0}`);
+if (stats.showNotMentionedWithExcerpts > 0) {
+  console.log(`  Show not mentioned but has excerpts (allowed): ${stats.showNotMentionedWithExcerpts}`);
+}
 if (stats.recoveredFromGarbage > 0) {
   console.log(`  Recovered from garbageFullText: ${stats.recoveredFromGarbage}`);
 }
