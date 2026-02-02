@@ -5,11 +5,10 @@
   "criticName": "Jesse Green",
   "url": "https://www.theatermania.com/new-york-city-theater/reviews/the-roommate-booth-theater_96847.html",
   "publishDate": "September 13, 2024",
-  "fullText": "It seems we can't find what you're looking for. Perhaps searching can help.\n\n Search for:\n \n \n \n \n\n \n\n \n\n \n \n\n \n\n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n Latest Videos\n \n \n \n \n \n \n\n \n \n \n \n \n \n \n Watch Jessica Vosk and Kelli Barrett Sing a Song From the Upcoming Broadway Musical Beaches \n \n \n Broadway performances start on March 27 at the Majestic Theatre.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "Patti LuPone and Mia Farrow make an unlikely but magnetic pair in Jen Silverman's dark comedy about two women who discover dangerous new sides of themselves.",
   "originalScore": null,
-  "assignedScore": 58,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,56 +16,8 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Patti LuPone and Mia Farrow make an unlikely but magnetic pair in Jen Silverman's dark comedy about two women who discover dangerous new sides of themselves.",
   "needsScoring": true,
-  "llmScore": {
-    "score": 58,
-    "confidence": "high",
-    "range": {
-      "low": 53,
-      "high": 63
-    },
-    "bucket": "Mixed",
-    "thumb": "Flat",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a website error message rather than an actual review, providing no critical assessment of any production. | GPT-4o: The text provided does not contain any evaluative content about the show. The review appears to be missing or incorrectly linked, making it impossible to determine a clear verdict. | Gemini: The review text is missing, so it's impossible to determine the critic's opinion. I'm defaulting to a low 'Mixed' score due to the lack of content.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T19:22:57.076Z",
-    "promptVersion": "5.1.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": 59,
-    "previousVersion": "5.1.0"
-  },
-  "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 60,
-    "geminiScore": 55,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 5,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
-  },
-  "contentTier": "truncated",
-  "contentTierReason": "fullText was 404 error page",
+  "contentTier": "needs-rescrape",
+  "contentTierReason": "Wrong content detected - cleared for re-scrape and re-score",
   "textWordCount": 42,
   "archivePath": "data/archives/reviews/the-roommate-2024/theatermania--jesse-green_2026-02-02.html",
   "textFetchedAt": "2026-02-02T23:22:13.517Z",
@@ -111,8 +62,6 @@
     "Word count too low: 42 (min: 300)",
     "Show title not found in text"
   ],
-  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
-  "rescoreCompletedAt": "2026-02-02T03:42:27.004Z",
   "garbageFullText": "It seems we can't find what you're looking for. Perhaps searching can help.\n\n Search for:\n \n \n \n \n\n \n\n \n\n \n \n\n \n\n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n Latest Videos\n \n \n \n \n \n \n\n \n \n \n \n \n \n \n Watch Jessica Vosk and Kelli Barrett Sing a Song From the Upcoming Broadway Musical Beaches \n \n \n Broadway performances start on March 27 at the Majestic Theatre.",
   "garbageReason": "TheaterMania 404 page, not a review",
   "garbageFixedAt": "2026-02-02T19:53:54.659Z",

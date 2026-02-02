@@ -59,6 +59,7 @@
     "the-roommate-2024/wsj--charles-isherwood.json",
     "the-roommate-2024/talkinbroadway--matthew-murray.json"
   ],
+  "failed": [],
   "tierDetails": {
     "playwright": [
       "the-roommate-2024/the-village-voice--michael-musto.json",
@@ -86,12 +87,19 @@
       "isPaywalled": false,
       "isKnownBlocked": true
     },
-    "Talkin' Broadway": {
+    "Observer": {
       "count": 1,
-      "domain": "talkinbroadway.com",
+      "domain": "observer.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": false
+      "isKnownBlocked": true
+    },
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
     }
   },
   "urlDiscoveries": []

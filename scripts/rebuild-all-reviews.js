@@ -1164,10 +1164,22 @@ showDirs.forEach(showId => {
         return;
       }
 
-      // Skip reviews where the show title was never mentioned in scraped content
-      if (data.showNotMentioned === true) {
-        stats.skippedShowNotMentioned = (stats.skippedShowNotMentioned || 0) + 1;
+      // Skip reviews where LLM reasoning indicates wrong content (error pages, press releases, etc.)
+      const reasoning = data.llmScore?.reasoning || '';
+      if (reasoning && /\b(error page|error message|website error|search result|not a review|press release|announcement rather than|reality TV|Bachelor in Paradise)\b/i.test(reasoning)) {
+        stats.skippedWrongContent = (stats.skippedWrongContent || 0) + 1;
         return;
+      }
+
+      // Skip reviews where show title was never mentioned AND there are no aggregator excerpts
+      // Reviews with valid excerpts from DTLI/BWW/ShowScore are likely legitimate even without title match
+      if (data.showNotMentioned === true) {
+        const hasExcerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt;
+        if (!hasExcerpt) {
+          stats.skippedShowNotMentioned = (stats.skippedShowNotMentioned || 0) + 1;
+          return;
+        }
+        stats.showNotMentionedWithExcerpts = (stats.showNotMentionedWithExcerpts || 0) + 1;
       }
 
       // Auto-detect reviews from wrong production based on publish date
@@ -1530,7 +1542,11 @@ console.log(`  Skipped (no valid score): ${stats.skippedNoScore}`);
 console.log(`  Skipped (duplicate): ${stats.skippedDuplicate}`);
 console.log(`  Skipped (duplicate URL): ${stats.skippedDuplicateUrl || 0}`);
 console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`);
-console.log(`  Skipped (show not mentioned): ${stats.skippedShowNotMentioned || 0}`);
+console.log(`  Skipped (wrong content/reasoning): ${stats.skippedWrongContent || 0}`);
+console.log(`  Skipped (show not mentioned, no excerpts): ${stats.skippedShowNotMentioned || 0}`);
+if (stats.showNotMentionedWithExcerpts > 0) {
+  console.log(`  Show not mentioned but has excerpts (allowed): ${stats.showNotMentionedWithExcerpts}`);
+}
 if (stats.recoveredFromGarbage > 0) {
   console.log(`  Recovered from garbageFullText: ${stats.recoveredFromGarbage}`);
 }
