@@ -62,7 +62,7 @@
   },
   "textWordCount": 56,
   "archivePath": "data/archives/reviews/liberation-2025/thewrap--robert-hofler_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T16:38:02.153Z",
+  "textFetchedAt": "2026-02-02T23:12:10.020Z",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
@@ -70,6 +70,12 @@
       "method": "playwright",
       "success": false,
       "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Paywall detected"
     },
     {
       "tier": 2,
@@ -86,5 +92,6 @@
   ],
   "contentTier": "truncated",
   "wordCount": 56,
-  "tierReason": "Short text (56 words)"
+  "tierReason": "Short text (56 words)",
+  "truncationSignals": []
 }
