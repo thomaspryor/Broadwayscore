@@ -9,10 +9,9 @@
  * - Outlet-specific score formats
  *
  * DESIGNATIONS: Extracts for score bumps:
- * - NYT "Critic's Pick" (+3)
+ * - NYT "Critic's Pick" (+3) — HTML structure only, not text matching
  * - Time Out "Critics' Choice" (+2)
- * - Guardian "Recommended" (+2)
- * - Editor's Choice, Must See, Top Pick
+ * NOTE: "Recommended" was removed — no outlet uses it as a real designation
  *
  * Score bumps are applied during final scoring calculation (see src/config/scoring.ts)
  */
@@ -42,11 +41,7 @@ const DESIGNATION_PATTERNS = {
     /critic['']s?\s*choice/i,
     /time\s*out\s*critic['']s?\s*choice/i,
   ],
-  'Recommended': [
-    /\brecommended\b/i,
-    /guardian\s*pick/i,
-    /pick\s*of\s*the\s*week/i,
-  ],
+  // "Recommended" removed — no outlet uses it as a real designation
   'Editors_Choice': [
     /editor['']s?\s*choice/i,
     /editor['']s?\s*pick/i,
@@ -123,24 +118,14 @@ function extractDesignation(text, outletId) {
   if (outletId) {
     const outletLower = outletId.toLowerCase();
 
-    // NYT: Check for Critics' Pick badge/text
-    if (outletLower.includes('nyt') || outletLower.includes('times')) {
-      if (/critic['']?s?\s*pick/i.test(text)) {
-        return 'Critics_Pick';
-      }
-    }
+    // NYT: Only check HTML structure, not review text (text matching causes false positives)
+    // Real extraction should use score-extractors.js which checks JSON-LD, CSS classes, badge markup
+    // This legacy function should not be used for NYT Critics' Pick detection
 
     // Time Out: Check for Critics' Choice
     if (outletLower.includes('time-out') || outletLower.includes('timeout')) {
-      if (/critic['']?s?\s*choice|recommended/i.test(text)) {
+      if (/critic['']?s?\s*choice/i.test(text)) {
         return 'Critics_Choice';
-      }
-    }
-
-    // Guardian: Check for recommended/pick
-    if (outletLower.includes('guardian')) {
-      if (/recommended|guardian\s*pick|pick\s*of/i.test(text)) {
-        return 'Recommended';
       }
     }
   }
