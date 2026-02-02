@@ -8,7 +8,11 @@
     "harmony-2023/vulture--jesse-green.json",
     "heart-of-rock-and-roll-2024/nytg--gillian-russo.json",
     "heart-of-rock-and-roll-2024/nytimes--jesse-green.json",
-    "hells-kitchen-2024/nytimes--jesse-green.json"
+    "hells-kitchen-2024/nytimes--jesse-green.json",
+    "just-for-us-2023/vulture--helen-shaw.json",
+    "lempicka-2024/variety--frank-rizzo.json",
+    "maybe-happy-ending-2024/vulture--jackson-mchenry.json",
+    "merrily-we-roll-along-2023/vulture--helen-shaw.json"
   ],
   "failed": [
     "chess-2025/wsj--charles-isherwood.json",
@@ -54,7 +58,13 @@
     "jajas-african-hair-braiding-2023/variety--aramide-tinubu.json",
     "just-for-us-2023/nytimes--jesse-green.json",
     "just-for-us-2023/variety--aramide-tinubu.json",
-    "just-for-us-2023/variety--naveen-kumar.json"
+    "just-for-us-2023/variety--naveen-kumar.json",
+    "just-in-time-2025/variety--christian-lewis.json",
+    "liberation-2025/variety--aramide-tinubu.json",
+    "marjorie-prime-2025/nytimes--elisabeth-vincentelli.json",
+    "mary-jane-2024/hollywood-reporter--david-rooney.json",
+    "mary-jane-2024/variety--aramide-tinubu.json",
+    "merrily-we-roll-along-2023/variety--trish-deitch.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -62,7 +72,9 @@
       "and-juliet-2022/nytg--unknown.json",
       "harmony-2023/variety--aramide-tinubu.json",
       "harry-potter-2021/variety--marilyn-stasio.json",
-      "heart-of-rock-and-roll-2024/nytg--gillian-russo.json"
+      "heart-of-rock-and-roll-2024/nytg--gillian-russo.json",
+      "just-in-time-2025/variety--christian-lewis.json",
+      "lempicka-2024/variety--frank-rizzo.json"
     ],
     "browserbase": [
       "data/review-texts/appropriate-2023/hollywood-reporter--lovia-gyarkye.json",
@@ -97,11 +109,18 @@
       "hells-kitchen-2024/nytimes--jesse-green.json",
       "hells-kitchen-2024/variety--aramide-tinubu.json",
       "illinoise-2024/variety--christian-lewis.json",
-      "jajas-african-hair-braiding-2023/variety--aramide-tinubu.json"
+      "jajas-african-hair-braiding-2023/variety--aramide-tinubu.json",
+      "just-for-us-2023/vulture--helen-shaw.json",
+      "liberation-2025/variety--aramide-tinubu.json",
+      "maybe-happy-ending-2024/vulture--jackson-mchenry.json",
+      "mary-jane-2024/hollywood-reporter--david-rooney.json",
+      "mary-jane-2024/variety--aramide-tinubu.json",
+      "merrily-we-roll-along-2023/variety--trish-deitch.json",
+      "merrily-we-roll-along-2023/vulture--helen-shaw.json"
     ]
   },
   "startTime": "2026-02-02T03:48:14.615Z",
-  "lastProcessed": "just-for-us-2023/variety--naveen-kumar.json",
+  "lastProcessed": "merrily-we-roll-along-2023/vulture--helen-shaw.json",
   "log": [
     {
       "t": "2026-02-02T03:49:40.892Z",
@@ -157,6 +176,28 @@
     },
     {
       "t": "2026-02-02T05:49:03.402Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-02T06:02:35.464Z",
+      "event": "bb-session",
+      "session": "047556f6",
+      "url": "https://www.vulture.com/2023/06/theater-review-just-for-us-broadway.html"
+    },
+    {
+      "t": "2026-02-02T06:02:37.695Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-02T06:23:26.705Z",
+      "event": "bb-session",
+      "session": "0cc3e55c",
+      "url": "https://www.vulture.com/2023/11/merrily-we-roll-along-broadway-review.html"
+    },
+    {
+      "t": "2026-02-02T06:23:28.787Z",
       "event": "bb-login-uncertain",
       "domain": "vulture.com"
     }
