@@ -1,0 +1,72 @@
+{
+  "showId": "the-cottage-2023",
+  "outletId": "amny",
+  "outlet": "amny",
+  "criticName": "Unknown",
+  "url": "https://www.amny.com/entertainment/ambroadway-the-cottage-wins-yawns-instead-of-laughs/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 62,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "“The performers are all pleasant and spirited, the period costumes are gorgeous, and the detailed scenic design is a source of endless amusement. That being said, I simply could not get into the play itself, which struck me as uninspired and utterly unfunny.”\n\nRead more",
+  "needsScoring": true,
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: While the critic praises technical elements and performances, they explicitly state they couldn't get into the play and found it uninspired and unfunny, indicating a clear negative recommendation despite positive production aspects. | GPT-4o: The review highlights positive aspects such as the performances, costumes, and scenic design, but ultimately criticizes the play itself as uninspired and unfunny. This suggests a mixed verdict, with strengths in production elements but significant weaknesses in the play's content. | Gemini: The review praises the performers, costumes, and set design, but ultimately finds the play itself uninspired and unfunny, leading to a mixed assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T21:00:57.711Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 62,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  },
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available"
+}

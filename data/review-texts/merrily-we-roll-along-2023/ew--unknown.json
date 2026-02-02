@@ -1,0 +1,73 @@
+{
+  "showId": "merrily-we-roll-along-2023",
+  "outletId": "ew",
+  "outlet": "ew",
+  "criticName": "Unknown",
+  "url": "https://ew.com/theater/theater-reviews/merrily-we-roll-along-review-jonathan-groff-daniel-radcliffe-lindsay-mendez/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 76,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "“When a previously referenced plot point suddenly clicks into place amongst the audience, or when its knockout trio are firing on all cylinders at its forefront, ’Merrily’ is truly a sight to behold. What a time to be alive, indeed.”\n\nRead more",
+  "needsScoring": true,
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt emphasizes spectacular moments and uses enthusiastic language like 'sight to behold' and 'What a time to be alive,' but the conditional phrasing ('when...') suggests these moments are intermittent rather than consistent, indicating positive recommendation with some reservations. | GPT-4o: The excerpt highlights moments of the show that are impressive and engaging, suggesting a positive experience. However, the lack of full context and the warning about a single excerpt necessitate a conservative score within the Positive range. | Gemini: The review highlights positive aspects of the show, suggesting it's enjoyable when certain elements align, but the limited excerpt and the phrase \"when...firing on all cylinders\" suggests it's not consistently excellent. Therefore, it's a positive but not rave review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:34:24.613Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
+  },
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
+}

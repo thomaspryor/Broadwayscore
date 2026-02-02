@@ -1,0 +1,73 @@
+{
+  "showId": "water-for-elephants-2024",
+  "outletId": "lighting-and-sound-america",
+  "outlet": "lighting-and-sound-america",
+  "criticName": "David Barbour",
+  "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=7KPM5E",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 74,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "“[It] asks the audience to engage its collective imagination, with exciting results.”\n\nRead more",
+  "needsScoring": true,
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'exciting results' suggests a positive recommendation, but with only one curated excerpt available, I'm scoring conservatively in the lower range of the Positive bucket due to limited context. | GPT-4o: The excerpt suggests a positive experience with the show, highlighting its ability to engage the audience's imagination and deliver exciting results. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Positive range. | Gemini: The quote suggests a positive experience, but the lack of full context and the single excerpt warning necessitate a score in the middle of the 'Positive' range. The phrase 'exciting results' indicates a positive outcome.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:27:27.513Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
+  },
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
+}

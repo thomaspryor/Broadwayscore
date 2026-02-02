@@ -1,0 +1,71 @@
+{
+  "showId": "boop-2025",
+  "outletId": "talkinbroadway",
+  "outlet": "talkinbroadway",
+  "criticName": "Unknown",
+  "url": "https://www.talkinbroadway.com/page/world/BooptheMusical.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 74,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\" 'Boop! The Musical'...features a star-making performance by its lead, an appealing pair of veterans, an adorable puppy marionette, and a pour-it-on supporting cast.\"\n\nRead more",
+  "needsScoring": true,
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The excerpt highlights multiple positive elements (star-making performance, appealing veterans, engaging supporting cast) suggesting recommendation, but with only one curated quote available, I'm scoring conservatively in the lower positive range. | Gemini: The review highlights several positive aspects of the production, including the lead performance and supporting cast, suggesting a positive but not overwhelmingly enthusiastic recommendation. Given that it is a single excerpt, I am scoring conservatively.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T20:58:55.076Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
+  },
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available"
+}

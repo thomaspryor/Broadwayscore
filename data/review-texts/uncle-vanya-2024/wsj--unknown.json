@@ -1,0 +1,72 @@
+{
+  "showId": "uncle-vanya-2024",
+  "outletId": "wsj",
+  "outlet": "wsj",
+  "criticName": "Unknown",
+  "url": "https://www.wsj.com/articles/uncle-vanya-review-steve-carell-lincoln-center-broadway-alfred-molina-william-jackson-harper-anika-noni-rose-alison-pill-c12f1621",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 45,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"...both cast and staging struggle to cohere.\"\n\nRead more",
+  "needsScoring": true,
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The excerpt indicates fundamental problems with the production's execution, but with only one cherry-picked quote available, I'm scoring conservatively within the negative range. | GPT-4o: The excerpt indicates issues with both the cast and staging, suggesting a lack of coherence in the production. This points to a negative assessment, though the single excerpt limits the ability to gauge the full sentiment. | Gemini: The single excerpt indicates a negative assessment of the production's key elements, suggesting a lack of overall quality and coherence. Given the limited information, a score in the middle of the negative range is appropriate.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T21:02:34.259Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
+  },
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available"
+}

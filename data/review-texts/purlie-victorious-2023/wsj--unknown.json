@@ -1,0 +1,73 @@
+{
+  "showId": "purlie-victorious-2023",
+  "outletId": "wsj",
+  "outlet": "wsj",
+  "criticName": "Unknown",
+  "url": "https://www.wsj.com/articles/purlie-victorious-review-leslie-odom-jr-s-southern-satire-84ecc565",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 75,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "“ ‘Purlie Victorious’ was a radical play for Broadway in 1961, when the civil-rights movement was garnering national attention...The play remains radical today, and for the same reason...More important, the production, directed by Kenny Leon, Broadway’s go-to helmer of black-themed plays reinvigorates the jesting that animates the antic action.”\n\nRead more",
+  "needsScoring": true,
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows appreciation for Kenny Leon's direction and the production's ability to reinvigorate the source material, indicating a positive assessment, though the truncated nature requires conservative scoring. | GPT-4o: The review highlights the production's ability to reinvigorate the play's comedic elements, suggesting a positive reception. However, due to the single excerpt and lack of full context, the score is placed conservatively in the middle of the Positive range. | Gemini: The review highlights the play's continued relevance and praises the production's direction, suggesting a positive experience despite the limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:53:49.622Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
+  },
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
+}
