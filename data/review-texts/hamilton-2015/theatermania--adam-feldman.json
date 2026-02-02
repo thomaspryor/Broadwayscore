@@ -70,8 +70,8 @@
   "previousLlmScore": 79,
   "textWordCount": 301,
   "archivePath": "data/archives/reviews/hamilton-2015/theatermania--adam-feldman_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T03:27:18.226Z",
-  "fetchMethod": "brightdata",
+  "textFetchedAt": "2026-02-02T15:11:31.819Z",
+  "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
       "tier": 0,
@@ -88,22 +88,16 @@
     {
       "tier": 2,
       "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 3,
+  "fetchTier": 2,
   "textQuality": "truncated",
   "truncationSignals": [
     "has_paywall_text"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "brightdata",
+  "sourceMethod": "scrapingbee",
   "textIssues": [
     "Show title not found in text"
   ],
