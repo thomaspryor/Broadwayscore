@@ -516,10 +516,12 @@ Each review file in `data/review-texts/{showId}/{outletId}--{criticName}.json`:
 **Credential Status (Feb 2026):**
 | Site | Status | Notes |
 |------|--------|-------|
-| WSJ | **INVALID** | Dow Jones SSO returns "The login details entered are incorrect." Login flow mechanically works (button targeting, CAPTCHA handling). Credentials need updating in GitHub Secrets. |
+| WSJ | **Untestable in CI** | Dow Jones SSO blocks headless Chrome on GitHub Actions IPs — form fields don't render. Previous "invalid credentials" report was misdiagnosis (test script also had wrong selectors, now fixed). Use Browserbase tier for actual collection. |
+| NYT | **Untestable in CI** | Same anti-bot blocking — `myaccount.nytimes.com` won't render login form in headless CI Chrome. Browserbase tier needed. |
 | Vulture/NY Mag | Untested | Needs verification |
 | Washington Post | Untested | Needs verification |
-| NYT | Possibly invalid | Browserbase login timed out — may be credential issue or timeout |
+
+**Anti-bot note:** `test-paywalled-access.yml` uses plain Playwright headless Chrome which WSJ and NYT block. The actual collection script (`collect-review-texts.js`) uses Browserbase (Tier 1.5) with CAPTCHA solving for these sites. To test credentials, run collection with `browserbase_enabled=true` targeting a specific paywalled review.
 
 ### Full Text Collection Status (Feb 2026)
 
