@@ -20,12 +20,12 @@
   "dtliThumb": "Up",
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:04:29.721Z",
+    "scoredAt": "2026-02-02T14:23:58.074Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 90,
+    "previousVersion": "5.1.0"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240619",
   "bwwThumb": "Up",
@@ -103,7 +103,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The A- grade and enthusiastic language like 'fast and wild joy ride' and 'fulfilling theatrical experience' indicate strong positive recommendation, placing it in the high end of the Positive bucket. | GPT-4o: The review is highly positive, highlighting the show's humor, Escola's performance, and its meaningful message. The original A- rating and the enthusiastic language suggest a strong recommendation. | Gemini: The review uses highly positive language such as \"laugh-out-loud funny\" and \"fulfilling theatrical experience.\" The critic's grade of A- further supports a Rave classification.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The A- grade combined with phrases like 'fast and wild joy ride,' 'fulfilling theatrical experience,' and audience applause after every scene clearly indicates strong positive recommendation. | GPT-4o: The review describes the show as 'laugh-out-loud funny' and a 'fulfilling theatrical experience' with a real message, indicating a strong recommendation. The original rating of A- supports a Rave classification. | Gemini: The review uses highly positive language like \"laugh-out-loud funny\" and \"fulfilling theatrical experience.\" The critic's \"A-\" rating and the phrase \"fast and wild joy ride\" indicate a strong recommendation, placing it in the Rave bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -131,7 +131,6 @@
   "previousUrl": "https://ew.com/oh-mary-broadway-review-cole-escola/",
   "urlDiscoveredAt": "2026-02-02T05:14:47.180Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 90,
   "fullText": "This is no \"Hamilton\"-esque history lesson. Here's Mary Todd Lincoln like you've never seen her before. Christian Holub is a writer covering comics and other geeky pop culture. He's still mad about 'Firefly' getting canceled. Over the past few weeks, our already-dysfunctional politics in this country have become straight-up farcical. As if it wasn’t bad enough that Americans were facing the prospect of a national election between two candidates who would each be older when their terms began than Ronald Reagan was when his ended, Joe Biden’s specific deficiencies became impossible to ignore after his nationally televised June 27 debate with Donald Trump and have remained the subject of nonstop news headlines ever since. It’s possible that this strange situation will have changed (or just deteriorated further) by the time this piece is published, but the point is that Americans could hardly be better prepared to laugh at ourselves than we are right now. Good news, then, that there is a hilarious new play on Broadway that pokes a hell of a lot of fun at American history and politics. Oh, Mary! was conceived and written by Cole Escola (Difficult People), and stars them as the titular Mary Todd Lincoln. Conrad Ricamora continues his run of playing lovable left-wing political leaders (following his public-defender incarnation of Darcy in Fire Island and his portrayal of pro-democracy Philippines opposition leader Ninoy Aquino in Here Lies Love) by co-starring as her husband Abraham Lincoln. Want more movie news? But this is no Hamilton-esque history lesson. Escola proudly talks of doing “no research” for Oh, Mary! Instead, they take the most basic facts about Abraham and Mary Todd (he the President who won the Civil War, she his wife who was plagued by alcoholism and watched her children suffer tragic misfortune) and turns them on their head. Here, Mary is indeed a hard drinker (and isn’t above drinking paint thinner when denied access to her beloved whiskey), but outright laughs at any mention of her children. Abe, meanwhile, is a closeted gay man who struggles to balance his efforts to win the war and cement his reputation with an overwhelming desire for men like his loyal lieutenant (Tony Macht). It’s hard to say much more about the plot details, because Escola has cooked up some genuinely hilarious twists and reversals that it would be no fun to spoil. Suffice to say that the irreverence is really refreshing. After all, we almost always hear of the historical Mary Todd in terms of her suffering. Imagining her with a robust interior life (in Escola’s conception, Mary longs to be a cabaret star) can help us think of historical figures as three-dimensional people. Oh, Mary! is laugh-out-loud funny from the first moments; though much of the humor comes from Escola’s unbelievable delivery and the slapstick combination of actors on stage. But what makes Oh, Mary! such a fulfilling theatrical experience is that it also has a real message about the dangers of repression, both societal and personal. Letting people express themselves and live their truth may not solve every political problem, but it can certainly make life way more fun. Escola’s doing that, and the rest of us should too. Grade: A-",
@@ -156,5 +155,6 @@
   "truncationSignals": [
     "no_ending_punctuation"
   ],
-  "textStatus": "partial"
+  "textStatus": "partial",
+  "rescoreCompletedAt": "2026-02-02T14:23:58.074Z"
 }

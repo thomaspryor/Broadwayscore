@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Book of Mormon is that rarest of Broadway commodities: a new musical that's both hilariously funny and toe-tappingly entertaining, while also being smart, sophisticated, and surprisingly sweet.",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,13 +18,13 @@
   "showScoreExcerpt": "The Book of Mormon is that rarest of Broadway commodities: a new musical that's both hilariously funny and toe-tappingly entertaining, while also being smart, sophisticated, and surprisingly sweet.",
   "needsScoring": true,
   "llmScore": {
-    "score": 94,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review uses superlative language calling it the 'rarest of Broadway commodities' and lists multiple strong positive attributes without any reservations or criticisms. | GPT-4o: The review uses highly enthusiastic language, describing the show as 'hilariously funny', 'entertaining', 'smart', 'sophisticated', and 'sweet', indicating a strong recommendation. | Gemini: The review uses positive language to describe the musical as funny, entertaining, smart, and sweet, indicating a recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite significant criticisms about conventional Broadway tropes and missed opportunities, the critic clearly recommends this as the 'freshest and funniest' musical in seasons and praises its subversive nature, spiritual elements, and what musicals 'are supposed to be.' | GPT-4o: The review acknowledges the show's originality and humor, calling it the freshest and funniest in several seasons, despite noting some missed opportunities and conventional elements. This suggests a positive recommendation with some reservations. | Gemini: The review is largely positive, highlighting the show's freshness and humor, but points out flaws and inconsistencies that prevent it from being a 'Rave'. The reviewer acknowledges the show's strengths while also noting its shortcomings, leading to a 'Positive' classification with a score reflecting the mixed feelings.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,30 +43,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:58:34.398Z",
+    "scoredAt": "2026-02-02T14:22:05.472Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 95,
-    "geminiScore": 80,
-    "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
+    "claudeScore": 74,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 94,
   "textWordCount": 1338,
@@ -96,5 +96,6 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "rescoreCompletedAt": "2026-02-02T14:22:05.472Z"
 }

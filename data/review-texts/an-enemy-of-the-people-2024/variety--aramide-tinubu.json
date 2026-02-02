@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Strong's performance is commanding and nuanced, bringing a contemporary urgency to Ibsen's prescient tale of truth versus power.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "Strong's performance is commanding and nuanced, bringing a contemporary urgency to Ibsen's prescient tale of truth versus power.",
   "needsScoring": true,
   "llmScore": {
-    "score": 78,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the lead performance as 'commanding and nuanced' and notes the production brings 'contemporary urgency' to the classic material, indicating a positive assessment though the brief excerpt limits confidence in the full verdict. | GPT-4o: The review highlights a commanding and nuanced performance, suggesting a strong recommendation to see the show. | Gemini: The review highlights a strong performance, indicating a positive experience, even if it doesn't explicitly state a recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite extensive critical analysis and some reservations about the adaptation's choices, the critic explicitly states the production 'has much to recommend it' and praises Strong's performance as worthy of future stage work, indicating a clear positive recommendation. | GPT-4o: The review praises the production's use of the theater's unique structure, the performances, particularly Jeremy Strong's, and the thematic richness of the adaptation. Despite some minor reservations about the adaptation's approach, the overall tone is enthusiastic and recommends the show. | Gemini: The review is largely positive, highlighting strong performances and effective staging, but it also expresses reservations about the adaptation's approach to the central conflict. The final recommendation is positive but not without caveats.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,20 +43,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:57:41.037Z",
+    "scoredAt": "2026-02-02T14:21:35.787Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
     "openaiScore": 82,
-    "geminiScore": 75,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 7,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -69,7 +70,6 @@
   "previousUrl": "https://variety.com/2024/legit/reviews/an-enemy-of-the-people-review-jeremy-strong-1235934087/",
   "urlDiscoveredAt": "2026-02-02T05:05:35.392Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "textWordCount": 1268,
@@ -99,5 +99,6 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "rescoreCompletedAt": "2026-02-02T14:21:35.787Z"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The show's saving grace is its irrepressible spirit and the fact that it knows exactly what it is: a big, silly, glittery spectacle that never takes itself too seriously.",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "showScoreExcerpt": "The show's saving grace is its irrepressible spirit and the fact that it knows exactly what it is: a big, silly, glittery spectacle that never takes itself too seriously.",
   "needsScoring": true,
   "llmScore": {
-    "score": 74,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic frames the show positively as knowing what it is and having 'irrepressible spirit,' though calling it the show's 'saving grace' and describing it as 'big, silly' suggests modest recommendation for those seeking light entertainment rather than high art. | GPT-4o: The review highlights the show's positive attributes, emphasizing its spirit and self-awareness, suggesting it's worth seeing for its entertainment value. | Gemini: The review highlights the show's positive qualities like its spirit and self-awareness, suggesting it's enjoyable despite potential flaws. This indicates a recommendation, albeit with reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic finds the show entertaining at times but consistently points to significant flaws in execution, messaging, and integration. The review balances positive elements (choreography, some performances) with substantial criticisms throughout, landing in mixed territory without a clear recommendation either way. | GPT-4o: The review acknowledges that the show is entertaining at times and highlights some positive aspects like choreography and performances, but overall criticizes the production for its conventionality and lack of coherence, leading to a mixed verdict. | Gemini: The review highlights both positive and negative aspects, describing the show as \"quite entertaining at times\" but also \"hampered by a shambolic jumble.\" This indicates a mixed experience, not strongly recommending or discouraging it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,34 +43,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:44:29.846Z",
+    "scoredAt": "2026-02-02T14:24:05.716Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 74,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "previousUrl": "https://www.nytimes.com/2023/06/14/theater/once-upon-a-one-more-time-review.html",
   "urlDiscoveredAt": "2026-02-02T05:00:05.407Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 74,
   "textWordCount": 1087,
@@ -94,5 +93,6 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251007094145",
   "archiveOrgUrl": "http://web.archive.org/web/20251007094145/https://www.nytimes.com/2023/06/22/theater/once-upon-a-one-more-time-review.html",
-  "duplicateTextOf": "nytimes--elizabeth-vincentelli.json"
+  "duplicateTextOf": "nytimes--elizabeth-vincentelli.json",
+  "rescoreCompletedAt": "2026-02-02T14:24:05.716Z"
 }

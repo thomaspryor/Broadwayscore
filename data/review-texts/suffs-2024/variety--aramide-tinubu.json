@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Taub's score is ambitious and sweeping, with moments of genuine beauty and power, particularly in the ensemble numbers that showcase the collective strength of the suffrage movement.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "Taub's score is ambitious and sweeping, with moments of genuine beauty and power, particularly in the ensemble numbers that showcase the collective strength of the suffrage movement.",
   "needsScoring": true,
   "llmScore": {
-    "score": 77,
-    "confidence": "high",
+    "score": 81,
+    "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the score as 'ambitious and sweeping' with 'genuine beauty and power,' indicating positive assessment, though this appears to be a fragment focusing only on musical elements. | GPT-4o: The review highlights the ambitious and powerful nature of the score, indicating a positive reception of the production's musical elements. | Gemini: The review highlights positive aspects of the score, indicating a recommendation, but the phrase \"moments of\" suggests it's not consistently excellent, hence a 'Positive' bucket with a mid-range score.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is overwhelmingly positive, praising the musical's 'singular vision,' 'inventive storytelling,' 'musical richness,' and calling it 'thrilling.' The critic commends virtually every aspect from performances to direction to writing, with only minor comparative notes about it not matching Hamilton's 'furor.' | GPT-4o: The review is overwhelmingly positive, praising the musical's storytelling, performances, and emotional engagement. The critic describes it as smart, inspiring, and thoroughly entertaining, with a clear and enthusiastic recommendation. | Gemini: The review is overwhelmingly positive, praising the show's storytelling, musical richness, and emotional engagement. While it acknowledges that it may not reach the heights of \"Hamilton,\" it still recommends it as a thrilling new musical.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,33 +43,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T21:00:44.453Z",
+    "scoredAt": "2026-02-02T14:25:17.434Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 80,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 95,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
   "previousUrl": "https://variety.com/2024/legit/reviews/suffs-review-broadway-shaina-taub-1235968025/",
   "urlDiscoveredAt": "2026-02-02T07:40:00.704Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "textWordCount": 1022,
@@ -101,5 +101,6 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250104071638",
-  "archiveOrgUrl": "http://web.archive.org/web/20250104071638/https://variety.com/2024/legit/reviews/suffs-review-musical-broadway-1235974881/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250104071638/https://variety.com/2024/legit/reviews/suffs-review-musical-broadway-1235974881/",
+  "rescoreCompletedAt": "2026-02-02T14:25:17.434Z"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 89,
+    "score": 94,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The 'CRITIC'S PICK' designation combined with superlative language like 'spectacular' and 'for the Ages' indicates strong enthusiasm, though single excerpt limits confidence in full review context. | GPT-4o: The phrase 'CRITIC’S PICK' and the description of the musical as 'a party, and a playlist, for the ages' suggest a highly enthusiastic recommendation. The mention of 'forbidden pleasures' and 'spectacular' further supports a rave assessment. | Gemini: The phrase \"Critic's Pick\" and the description of the musical as \"spectacular\" and the performance as \"dazzling\" indicate a positive recommendation, though the single excerpt and lack of full text warrant a score in the middle of the positive range.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses rapturous language throughout, calling it 'euphoric,' praising stellar performances, and explicitly states 'I swear you'll feel nothing like regret.' This is clearly a must-see recommendation despite minor acknowledged flaws. | GPT-4o: The review is overwhelmingly positive, describing the production as euphoric, a natural high, and a cloud-surfing experience. It praises the performances, direction, and overall production quality, making it a must-see recommendation. | Gemini: The review is largely positive, highlighting the energetic performances, dazzling set, and overall escapism. While acknowledging potential drawbacks like the jukebox musical format, the critic ultimately recommends the show as an enjoyable experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,23 +46,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:32:57.731Z",
+    "scoredAt": "2026-02-02T14:23:46.425Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 89,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "geminiScore": 78,
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 80,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -70,7 +70,6 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Rave"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 89,
   "textWordCount": 1261,
@@ -90,5 +89,6 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251102083001",
-  "archiveOrgUrl": "http://web.archive.org/web/20251102083001/https://www.nytimes.com/2019/07/25/theater/moulin-rouge-review.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251102083001/https://www.nytimes.com/2019/07/25/theater/moulin-rouge-review.html",
+  "rescoreCompletedAt": "2026-02-02T14:23:46.425Z"
 }

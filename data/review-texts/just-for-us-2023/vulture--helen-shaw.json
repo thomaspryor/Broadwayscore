@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Blumberg's show is a careful, thoughtful exploration of what it means to be Jewish in America today, delivered with the kind of gentle humor that makes difficult conversations possible.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "Blumberg's show is a careful, thoughtful exploration of what it means to be Jewish in America today, delivered with the kind of gentle humor that makes difficult conversations possible.",
   "needsScoring": true,
   "llmScore": {
-    "score": 76,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses positive descriptors like 'careful,' 'thoughtful,' and praises the show's approach to difficult material, indicating a recommendation though without strong enthusiasm. | GPT-4o: The review highlights the show's thoughtful exploration and gentle humor, indicating a positive recommendation. | Gemini: The review uses positive language like \"careful\" and \"thoughtful\" and highlights the show's ability to make difficult conversations possible, indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Shaw praises the show as 'crowd-pleasing' and 'often hilarious' while engaging deeply with its complex themes. Despite some minor critiques about pacing and dated references, she clearly recommends the show and treats it as intellectually worthy theater. | GPT-4o: The review highlights the show's humor and clever construction, noting its crowd-pleasing nature and thought-provoking themes. While there are some reservations about the pacing and certain comedic elements, the overall tone is positive and recommends the show. | Gemini: The review is largely positive, highlighting the show's humor and thought-provoking themes. However, it also notes that the show could benefit from exploring certain aspects more deeply, indicating a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,23 +43,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T01:00:10.631Z",
+    "scoredAt": "2026-02-02T14:23:13.420Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 75,
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -70,7 +70,6 @@
   "previousUrl": "https://www.vulture.com/2023/06/theater-review-just-for-us-broadway.html",
   "urlDiscoveredAt": "2026-02-02T06:03:08.161Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
   "textWordCount": 1518,
@@ -91,5 +90,6 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251121085557",
   "archiveOrgUrl": "http://web.archive.org/web/20251121085557/https://www.vulture.com/2023/06/theater-reviews-just-for-us-and-one-woman-show.html",
-  "duplicateTextOf": "vulture--jackson-mchenry.json"
+  "duplicateTextOf": "vulture--jackson-mchenry.json",
+  "rescoreCompletedAt": "2026-02-02T14:23:13.420Z"
 }

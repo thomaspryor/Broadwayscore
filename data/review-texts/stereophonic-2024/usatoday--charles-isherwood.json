@@ -5,11 +5,10 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.usatoday.com/story/entertainment/theater/2024/04/18/stereophonic-broadway-review/73362737007/",
   "publishDate": "April 18, 2024",
-  "fullText": "HEALTHCAREDrug Enforcement AdministrationAdd TopicWhere you can safely dispose unused prescription medication in Lane County Sydney WyattSalem Statesman JournalUpdated April 23, 2024, 1:36 p.m. ETThe Oregon Health Authority encourages anyone with unused or expired prescription medications to seek safe disposal options, such as returning them to permanent collection sites, at Drug Take Back Day events, or to authorized pharmacies or hospitals.\n\nSafe disposal of unused drugs regardless of type is important to prevent others from using them intentionally or unintentionally.\n\nImproperly disposed medications also can pose significant risks to water quality because they can get into water systems. You should never flush unused medications down the toilet or drain.\n\nDrug collection sites do not accept herbal remedies, vitamins, supplements, medical devices, batteries, mercury-containing thermometers, sharps or illicit drugs.\n\nThese are the options for safe medication disposal prescription medications in Lane County:\n\nThe Drug Enforcement Administration (DEA) holds a National Prescription Drug Take Back Day in April and October.\n\nDuring the 25th Drug Take Back Day in October, 2,995 pounds of unused medications were collected at 17 sites across Oregon, according to the DEA.\n\nThe first national event in 2024 will be held April 27. Pharmacy and police department staff will be on-site to assist in safe disposal of unused prescription medications at the following locations\n\nThese are year-round collection sites in Lane County. Some allow drop-off of unused medication. Others offer free mail-back services.\n\nVisit medtakebackoregon.org and enter your ZIP code for a full list of prescription drug collection sites, their location and hours. For more information or to order mail-back supples, call (844) 482-5322.\n\nThis is a partial list of collection sites in Lane County:\n\nSydney Wyatt covers healthcare inequities in the Mid-Willamette Valley. Send comments, questions, and tips to her atSWyatt@gannett.com or (503) 399-6613\n\nWyatt's coverage of healthcare inequities is funded in part by theM.J. Murdock Charitable Trust, which seeks to strengthen the cultural, social, educational, and spiritual base of the Pacific Northwest through capacity-building investments in the nonprofit sector.",
-  "isFullReview": true,
+  "isFullReview": false,
   "dtliExcerpt": "This ambitious musical about a rock band recording an album in the 1970s is a triumph of theatrical storytelling that captures the creative process in all its messy, exhilarating glory.",
   "originalScore": null,
-  "assignedScore": 5,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,61 +16,10 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This ambitious musical about a rock band recording an album in the 1970s is a triumph of theatrical storytelling that captures the creative process in all its messy, exhilarating glory.",
   "needsScoring": true,
-  "llmScore": {
-    "score": 5,
-    "confidence": "medium",
-    "range": {
-      "low": 0,
-      "high": 10
-    },
-    "bucket": "Pan",
-    "thumb": "Down",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Pan | Claude: This is clearly a public health article about prescription drug disposal, not a Broadway theater review at all. | GPT-4o: The text provided appears to be unrelated to a Broadway review and seems to be an article about drug disposal. Without the actual review text, it's impossible to accurately determine the critic's verdict on the show. | Gemini: This is not a review of a Broadway show. It is an article about medication disposal. Therefore, it is a 'Pan'.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": true
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:40:18.460Z",
-    "promptVersion": "5.1.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.1.0"
-  },
-  "ensembleData": {
-    "claudeScore": 0,
-    "openaiScore": 60,
-    "geminiScore": 10,
-    "claudeBucket": "Pan",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Pan",
-    "scoreDelta": 60,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Outlier openai chose Mixed, 2+ buckets from majority"
-    ],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Pan"
-  },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (30 words)",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "contentTier": "needs-rescrape",
+  "contentTierReason": "DEA healthcare/prescription drug article instead of review",
+  "rescoreReason": "LLM score invalidated (scored from garbage/wrong-show text): DEA healthcare/prescription drug article instead of review",
   "previousLlmScore": 92,
-  "textWordCount": 331,
   "archivePath": "data/archives/reviews/stereophonic-2024/usatoday--charles-isherwood_2026-02-02.html",
   "textFetchedAt": "2026-02-02T00:44:52.840Z",
   "fetchMethod": "brightdata",
@@ -101,13 +49,101 @@
     }
   ],
   "fetchTier": 3,
-  "textQuality": "partial",
-  "truncationSignals": [],
-  "textStatus": "incomplete",
   "sourceMethod": "brightdata",
-  "textIssues": [
-    "Show title not found in text"
-  ],
-  "showNotMentioned": true,
-  "rescoreCompletedAt": "2026-02-02T03:40:18.460Z"
+  "rescoreCompletedAt": "2026-02-02T14:25:00.217Z",
+  "_invalidatedFullText": "HEALTHCAREDrug Enforcement AdministrationAdd TopicWhere you can safely dispose unused prescription medication in Lane County Sydney WyattSalem Statesman JournalUpdated April 23, 2024, 1:36 p.m. ETThe Oregon Health Authority encourages anyone with unused or expired prescription medications to seek safe disposal options, such as returning them to permanent collection sites, at Drug Take Back Day events, or to authorized pharmacies or hospitals.\n\nSafe disposal of unused drugs regardless of type is important to prevent others from using them intentionally or unintentionally.\n\nImproperly disposed medications also can pose significant risks to water quality because they can get into water systems. You should never flush unused medications down the toilet or drain.\n\nDrug collection sites do not accept herbal remedies, vitamins, supplements, medical devices, batteries, mercury-containing thermometers, sharps or illicit drugs.\n\nThese are the options for safe medication disposal prescription medications in Lane County:\n\nThe Drug Enforcement Administration (DEA) holds a National Prescription Drug Take Back Day in April and October.\n\nDuring the 25th Drug Take Back Day in October, 2,995 pounds of unused medications were collected at 17 sites across Oregon, according to the DEA.\n\nThe first national event in 2024 will be held April 27. Pharmacy and police department staff will be on-site to assist in safe disposal of unused prescription medications at the following locations\n\nThese are year-round collection sites in Lane County. Some allow drop-off of unused medication. Others offer free mail-back services.\n\nVisit medtakebackoregon.org and enter your ZIP code for a full list of prescription drug collection sites, their location and hours. For more information or to order mail-back supples, call (844) 482-5322.\n\nThis is a partial list of collection sites in Lane County:\n\nSydney Wyatt covers healthcare inequities in the Mid-Willamette Valley. Send comments, questions, and tips to her atSWyatt@gannett.com or (503) 399-6613\n\nWyatt's coverage of healthcare inequities is funded in part by theM.J. Murdock Charitable Trust, which seeks to strengthen the cultural, social, educational, and spiritual base of the Pacific Northwest through capacity-building investments in the nonprofit sector.",
+  "_invalidatedFullTextReason": "DEA healthcare/prescription drug article instead of review",
+  "_invalidatedFullTextAt": "2026-02-02T14:20:41.221Z",
+  "_invalidatedLlmScore": {
+    "score": 5,
+    "confidence": "medium",
+    "range": {
+      "low": 0,
+      "high": 10
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Pan | Claude: This is clearly a public health article about prescription drug disposal, not a Broadway theater review at all. | GPT-4o: The text provided appears to be unrelated to a Broadway review and seems to be an article about drug disposal. Without the actual review text, it's impossible to accurately determine the critic's verdict on the show. | Gemini: This is not a review of a Broadway show. It is an article about medication disposal. Therefore, it is a 'Pan'.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    },
+    "invalidatedReason": "LLM score based on garbage/wrong-show fullText: DEA healthcare/prescription drug article instead of review",
+    "invalidatedAt": "2026-02-02T14:20:41.221Z"
+  },
+  "_invalidatedEnsembleData": {
+    "claudeScore": 0,
+    "openaiScore": 60,
+    "geminiScore": 10,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Pan",
+    "scoreDelta": 60,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Outlier openai chose Mixed, 2+ buckets from majority"
+    ],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Pan",
+    "invalidatedAt": "2026-02-02T14:20:41.221Z"
+  },
+  "wordCount": 0,
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The word 'triumph' combined with enthusiastic descriptors like 'exhilarating glory' clearly indicates strong positive recommendation, though single excerpt warning necessitates conservative scoring within rave range. | GPT-4o: The excerpt uses strong positive language, describing the musical as 'a triumph of theatrical storytelling' and capturing the creative process in 'exhilarating glory,' indicating a highly enthusiastic recommendation. However, given the single excerpt warning, the score is placed conservatively in the middle of the Rave range. | Gemini: The review excerpt uses the word \"triumph,\" which clearly indicates a rave review. The description of the show as capturing the creative process in all its messy, exhilarating glory further supports this classification.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T14:25:00.217Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 5
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

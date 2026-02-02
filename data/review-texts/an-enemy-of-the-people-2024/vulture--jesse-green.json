@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Jeremy Strong brings his trademark intensity to Ibsen's drama, though the production sometimes feels more like a lecture than a play.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "showScoreExcerpt": "Jeremy Strong brings his trademark intensity to Ibsen's drama, though the production sometimes feels more like a lecture than a play.",
   "needsScoring": true,
   "llmScore": {
-    "score": 62,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 87,
+      "high": 97
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Rave",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges Strong's intensity as a positive but delivers a significant criticism about the production feeling didactic rather than theatrical, indicating neither strong recommendation nor strong discouragement. | GPT-4o: The review highlights a strong performance by Jeremy Strong but criticizes the production for lacking theatricality, indicating a mixed reception. | Gemini: The review acknowledges a positive aspect (Strong's performance) but also a significant drawback (feeling like a lecture). This suggests a mixed experience, neither strongly recommending nor discouraging.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Green delivers sustained praise throughout, calling the production's innovations 'profound' and 'pleasurable,' praising the leads' 'vigorous contemporary affect,' describing Herzog's adaptation as 'searing,' and celebrating the production's courage to push boundaries both visually and physically. | GPT-4o: The review is overwhelmingly positive, praising the adaptation's innovative approach, the performances, and the production's ability to refresh Ibsen's play for modern audiences. The critic highlights the profound impact and pleasure of the production, indicating a strong recommendation. | Gemini: The review is largely positive, highlighting the successful adaptation and performances, but it's not a rave. The critic praises the production's ability to make Ibsen relevant and engaging, but doesn't use superlatives that would indicate a 'must-see' recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,33 +43,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:57:44.620Z",
+    "scoredAt": "2026-02-02T14:21:40.124Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 65,
-    "geminiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 7,
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (21 words)",
   "previousUrl": "https://www.vulture.com/article/an-enemy-of-the-people-broadway-review.html",
   "urlDiscoveredAt": "2026-02-02T04:50:18.724Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 62,
   "textWordCount": 1709,
@@ -90,5 +90,6 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260107143029",
   "archiveOrgUrl": "http://web.archive.org/web/20260107143029/https://www.vulture.com/article/theater-review-an-enemy-of-the-people-strong-imperioli-gold-herzog-ibsen.html",
-  "duplicateTextOf": "vulture--sara-holdren.json"
+  "duplicateTextOf": "vulture--sara-holdren.json",
+  "rescoreCompletedAt": "2026-02-02T14:21:40.124Z"
 }

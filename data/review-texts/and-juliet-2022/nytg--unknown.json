@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Single excerpt with mixed elements but positive conclusion about audience enjoyment suggests recommendation with reservations. | GPT-4o: The review suggests that the show is enjoyable for those looking for a light-hearted experience, despite some tunes feeling forced. The positive tone implies a recommendation for those seeking entertainment. | Gemini: The review suggests enjoyment for those seeking a lighthearted experience, indicating a positive but not overwhelmingly enthusiastic recommendation. The phrase 'silly good time' and 'hum along' suggests a positive experience, but the caveat about 'wedged in' tunes indicates reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review acknowledges entertainment value and production strengths but criticizes script problems and momentum issues. The final line suggests it works for audiences seeking light entertainment, indicating a qualified, mixed recommendation. | GPT-4o: The review acknowledges some flaws in the script and narrative but emphasizes the show's entertainment value, vibrant visuals, and engaging music. The positive tone suggests it's worth seeing for those looking for a lighthearted experience, despite the truncated text. | Gemini: The review highlights both positive and negative aspects, but the concluding statement suggests that audiences seeking lighthearted entertainment will enjoy the show. The truncated nature of the text makes it difficult to definitively assess the overall recommendation, but the aggregator excerpts and final sentence point towards a positive, albeit qualified, verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,30 +46,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:57:55.148Z",
+    "scoredAt": "2026-02-02T14:21:50.950Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
+    "claudeScore": 62,
+    "openaiScore": 76,
+    "geminiScore": 79,
+    "claudeBucket": "Mixed",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 74,
   "textWordCount": 1039,
@@ -90,5 +90,6 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "rescoreCompletedAt": "2026-02-02T14:21:50.950Z"
 }

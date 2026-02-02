@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This deeply immersive production is a technical marvel that showcases the creative process behind making a legendary album, while also exploring the personal costs of artistic ambition.",
   "originalScore": null,
-  "assignedScore": 90,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "This deeply immersive production is a technical marvel that showcases the creative process behind making a legendary album, while also exploring the personal costs of artistic ambition.",
   "needsScoring": true,
   "llmScore": {
-    "score": 90,
+    "score": 94,
     "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 95
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review describes the production as a 'technical marvel' and emphasizes the emotional impact and artistic achievement, with the additional context reinforcing the highly positive assessment. | GPT-4o: The review describes the production as a 'technical marvel' and highlights its deep immersion and emotional impact, indicating a strong recommendation. | Gemini: The review describes the production as a \"technical marvel\" and \"deeply immersive,\" indicating a positive assessment and recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review uses unmistakably rave language throughout, calling it 'theatrical virtuosity,' 'brave, purposeful, and rich,' and ending with 'breathtaking whole.' The critic compares the audience experience to the band's awe at hearing something 'truly great.' | GPT-4o: The review is overwhelmingly positive, describing the play as a 'work of theatrical virtuosity' and highlighting the exceptional performances, direction, and music. The critic uses language that suggests the play is a must-see, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"theatrical virtuosity\" and praising the details and performances. It clearly recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,21 +43,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:40:23.521Z",
+    "scoredAt": "2026-02-02T14:25:04.357Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 90,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 89,
-    "openaiScore": 90,
-    "geminiScore": 80,
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -103,6 +103,5 @@
   "sourceMethod": "brightdata",
   "contentTier": "truncated",
   "contentTierReason": "Short text (64 words)",
-  "rescoreCompletedAt": "2026-02-02T03:40:23.521Z",
-  "needsRescore": true
+  "rescoreCompletedAt": "2026-02-02T14:25:04.357Z"
 }

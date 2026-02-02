@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The musical about the Comedian Harmonists, a German vocal group popular in the 1920s and '30s, is earnest and well-meaning but dramatically inert.",
   "originalScore": null,
-  "assignedScore": 46,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,14 +17,14 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical about the Comedian Harmonists, a German vocal group popular in the 1920s and '30s, is earnest and well-meaning but dramatically inert.",
   "llmScore": {
-    "score": 46,
+    "score": 64,
     "confidence": "medium",
     "range": {
-      "low": 41,
-      "high": 51
+      "low": 59,
+      "high": 69
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic acknowledges good intentions but clearly states the show is 'dramatically inert,' which is a fundamental flaw that makes it not worth seeing. | GPT-4o: The review describes the musical as 'dramatically inert,' which suggests a lack of engagement or excitement, leading to a negative recommendation. | Gemini: The review describes the musical as \"earnest and well-meaning\" but also \"dramatically inert,\" suggesting a mixed assessment that doesn't lean strongly in either direction.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges strengths in the comedic elements and performances but finds the show struggles with its serious historical material, calling the second act 'rote' and noting it 'doesn't meet the moment as much as the moment crashes over it.' | GPT-4o: The review acknowledges the show's strengths in humor and performance but notes significant tonal and structural issues, particularly in handling its serious historical context. The critic finds the production intriguing but ultimately not fully successful. | Gemini: The review acknowledges flaws, particularly in the second act and historical elements, but praises the onstage antics, humor, and performances. It's a qualified recommendation, leaning towards positive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,34 +42,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:12:11.045Z",
+    "scoredAt": "2026-02-02T14:22:44.656Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 44,
-    "previousVersion": "5.0.0"
+    "previousScore": 46,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 50,
-    "geminiScore": 60,
-    "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 18,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
   "previousUrl": "https://www.vulture.com/2023/11/theater-review-harmony-barry-manilow-bruce-sussman.html",
   "urlDiscoveredAt": "2026-02-02T05:13:31.267Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 46,
   "textWordCount": 1071,
@@ -90,5 +89,6 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251224013457",
   "archiveOrgUrl": "http://web.archive.org/web/20251224013457/https://www.vulture.com/2023/11/theater-review-harmony-broadway-barry-manilow.html",
-  "duplicateTextOf": "vulture--jackson-mchenry.json"
+  "duplicateTextOf": "vulture--jackson-mchenry.json",
+  "rescoreCompletedAt": "2026-02-02T14:22:44.656Z"
 }

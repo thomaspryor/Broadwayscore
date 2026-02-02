@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 61,
-    "confidence": "high",
+    "score": 62,
+    "confidence": "medium",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Single curated excerpt describes emotional impact but provides no clear recommendation. The truncated nature and lack of evaluative language about the production quality makes scoring very uncertain. | GPT-4o: The excerpt provides an emotional description without clear evaluative content on the production itself. The lack of explicit recommendation or discouragement suggests a mixed sentiment, but the single excerpt limits confidence in this assessment. | Gemini: The excerpt suggests emotional impact but doesn't explicitly recommend or discourage seeing the show. The truncated nature and single excerpt warrant a cautious, middle-ground score.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This single curated excerpt describes emotional themes but provides no clear recommendation about the production's quality or whether to see it. Given the single excerpt warning and lack of evaluative language about the show itself, scoring conservatively in mixed range. | GPT-4o: The excerpt suggests an emotional impact but lacks clear evaluative language about the production itself. The single quote and lack of explicit recommendation lead to a conservative mixed classification. | Gemini: The excerpt suggests an emotional impact, leaning towards a positive experience, but the limited text makes it difficult to gauge the overall recommendation strength. The aggregator context is unavailable, so a conservative score is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,30 +46,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T21:01:24.352Z",
+    "scoredAt": "2026-02-02T14:25:52.945Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 61,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
+    "claudeScore": 62,
     "openaiScore": 62,
-    "geminiScore": 62,
+    "geminiScore": 72,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 2,
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 61,
   "textWordCount": 1131,
@@ -92,5 +92,6 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251007094143",
-  "archiveOrgUrl": "http://web.archive.org/web/20251007094143/https://www.nytimes.com/2024/03/14/theater/the-notebook-review-broadway-musical.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251007094143/https://www.nytimes.com/2024/03/14/theater/the-notebook-review-broadway-musical.html",
+  "rescoreCompletedAt": "2026-02-02T14:25:52.945Z"
 }

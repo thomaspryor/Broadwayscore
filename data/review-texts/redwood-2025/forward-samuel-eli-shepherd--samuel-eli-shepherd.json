@@ -31,16 +31,16 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250809154826",
   "archiveOrgUrl": "http://web.archive.org/web/20250809154826/https://forward.com/culture/theater/695596/redwood-broadway-idina-menzel-jewish-tikkun-olam/",
-  "assignedScore": 58,
+  "assignedScore": 80,
   "llmScore": {
-    "score": 58,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 53,
-      "high": 63
+      "low": 75,
+      "high": 85
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -48,7 +48,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The text is severely truncated with only a headline fragment mentioning a soaring show tune about Tikkun Olam, which suggests some positive elements, but there's no actual review content to assess the critic's recommendation. | GPT-4o: The review text is heavily truncated and lacks a clear verdict. The mention of a show tune 'soaring high' suggests some positive elements, but without more context, it's difficult to assign a higher score. The text quality warning indicates caution is needed, suggesting a mixed assessment. | Gemini: The review is extremely short and truncated, making it difficult to determine the overall verdict. The one positive statement suggests a mixed to positive leaning, but the lack of context makes a definitive classification impossible.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite noting some flaws (pacing issues, show length), the critic concludes with a clear positive recommendation and praises the show's unique Jewish themes, powerful performances, and emotional impact. | GPT-4o: The review highlights the show's originality, emotional depth, and strong performances, particularly by Idina Menzel. While it notes some pacing issues, the overall tone is positive, recommending the show as a worthwhile experience. | Gemini: The review concludes with a strong positive recommendation, stating the show is \"well worth the climb\" and highlighting its originality and Jewish themes. While the reviewer notes some initial flaws, the overall assessment is positive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -58,27 +58,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T02:28:34.731Z",
+    "scoredAt": "2026-02-02T14:24:43.232Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 58,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 60,
-    "geminiScore": 55,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 5,
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 3 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
-  "previousLlmScore": 58
+  "previousLlmScore": 58,
+  "rescoreCompletedAt": "2026-02-02T14:24:43.232Z"
 }

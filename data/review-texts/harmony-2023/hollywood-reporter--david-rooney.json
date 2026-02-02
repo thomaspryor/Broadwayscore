@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The musical about a German vocal sextet destroyed by the rise of Nazism has strong moments but feels more dutiful than deeply felt.",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical about a German vocal sextet destroyed by the rise of Nazism has strong moments but feels more dutiful than deeply felt.",
   "llmScore": {
-    "score": 60,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges 'strong moments' but the key criticism that it feels 'dutiful' rather than 'deeply felt' suggests a production that doesn't fully connect emotionally, placing it in mixed territory. | GPT-4o: The review acknowledges strong moments but suggests the overall experience lacks depth, indicating a mixed reception. | Gemini: The review highlights \"strong moments\" but ultimately finds the production lacking deep emotional resonance, indicating a mixed assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic appreciates Korine's boundary-pushing experimentation and finds moments of intentional humor, but notes the work eschews plot 'to the detriment of anyone looking for a good story' and questions its crossover appeal beyond diehard fans. | GPT-4o: The review acknowledges the film's unique and experimental nature, which may appeal to diehard fans of the director, but also notes its lack of plot and potential to be a chore, suggesting a mixed reception. | Gemini: The review highlights both the film's experimental nature and its potential to be a \"chore to sit through.\" While it acknowledges moments of humor and boundary-pushing, it ultimately suggests a mixed experience, appealing primarily to diehard fans of the director.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,21 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:09:31.706Z",
+    "scoredAt": "2026-02-02T14:22:34.525Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 60,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 60,
+    "claudeScore": 62,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 4,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -69,7 +69,6 @@
   "previousUrl": "https://www.hollywoodreporter.com/lifestyle/arts/harmony-broadway-review-1235608959/",
   "urlDiscoveredAt": "2026-02-02T05:12:11.456Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 60,
   "textWordCount": 869,
@@ -101,5 +100,6 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250720170931",
-  "archiveOrgUrl": "http://web.archive.org/web/20250720170931/https://www.hollywoodreporter.com/movies/movie-reviews/aggro-dr1ft-review-travis-scott-harmony-korine-1235578140/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250720170931/https://www.hollywoodreporter.com/movies/movie-reviews/aggro-dr1ft-review-travis-scott-harmony-korine-1235578140/",
+  "rescoreCompletedAt": "2026-02-02T14:22:34.525Z"
 }

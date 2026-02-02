@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This revival of the Monty Python musical brings fresh energy to the beloved comedy, though it doesn't quite capture the anarchic spirit of the original production.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "showScoreExcerpt": "This revival of the Monty Python musical brings fresh energy to the beloved comedy, though it doesn't quite capture the anarchic spirit of the original production.",
   "needsScoring": true,
   "llmScore": {
-    "score": 75,
+    "score": 44,
     "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review acknowledges positive elements (fresh energy) but the qualifying 'though' indicates significant reservations about not capturing the original's spirit, suggesting neither strong recommendation nor discouragement. | GPT-4o: The review acknowledges the fresh energy brought to the musical, indicating a positive experience, but notes it falls short of the original's spirit, suggesting some reservations. | Gemini: The review acknowledges fresh energy, indicating a positive experience, but the comparison to the original suggests it falls slightly short of being a rave.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic consistently criticizes the production as stale, overdone, and lacking creativity, calling it 'frenzied regurgitation' and concluding that the grail 'is not to be found here.' | GPT-4o: The review consistently criticizes the production for lacking freshness and creativity, describing it as 'frenzied regurgitation' and 'dizzying sensory overload.' The overall tone suggests disappointment and a recommendation to skip this revival. | Gemini: The review highlights both positive and negative aspects of the production. While praising some performances and the energy, it criticizes the overdesign and lack of ingenuity. The overall tone suggests a mixed experience, not strongly recommending or discouraging it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,33 +43,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:59:31.639Z",
+    "scoredAt": "2026-02-02T14:24:53.816Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 75,
-    "geminiScore": 75,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
   "previousUrl": "https://variety.com/2023/legit/reviews/spamalot-review-broadway-revival-1235812345/",
   "urlDiscoveredAt": "2026-02-02T05:00:56.141Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 75,
   "textWordCount": 694,
@@ -106,5 +106,6 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "brightdata",
-  "duplicateTextOf": "variety--naveen-kumar.json"
+  "duplicateTextOf": "variety--naveen-kumar.json",
+  "rescoreCompletedAt": "2026-02-02T14:24:53.816Z"
 }

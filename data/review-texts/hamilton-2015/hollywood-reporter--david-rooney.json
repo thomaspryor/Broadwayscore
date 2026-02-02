@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic explicitly declares the musical 'a triumph' and frames it as a certain hit destined for awards, indicating strong enthusiasm despite limited text. | GPT-4o: The review describes 'Hamilton' as a cultural phenomenon and a triumph, indicating a strong, enthusiastic recommendation. The language used suggests it is essential viewing and likely to achieve significant success. | Gemini: The review explicitly calls the musical a \"triumph\" and suggests it's a \"shoo-in for smash hit status,\" indicating a very strong positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic explicitly calls the musical 'a triumph' and positions it as destined for 'smash hit status' - clear rave language that constitutes an enthusiastic recommendation. | GPT-4o: The review uses strong, enthusiastic language indicating a highly positive assessment, calling the musical 'a triumph' and suggesting it is poised for 'smash hit status and a slew of awards attention.' | Gemini: The review explicitly calls the musical a \"triumph\" and suggests it's a \"shoo-in for smash hit status,\" indicating a very strong positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,12 +41,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:00:24.956Z",
+    "scoredAt": "2026-02-02T14:22:30.826Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "3.0.0"
+    "previousScore": 92,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,
@@ -75,7 +75,6 @@
   "previousUrl": "https://www.hollywoodreporter.com/lifestyle/arts/hamilton-broadway-review/",
   "urlDiscoveredAt": "2026-02-02T05:06:02.600Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 92,
   "isFullReview": true,
@@ -110,5 +109,6 @@
   ],
   "textStatus": "truncated",
   "archiveOrgTimestamp": "20250505112056",
-  "archiveOrgUrl": "http://web.archive.org/web/20250505112056/https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton-theater-813145/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250505112056/https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton-theater-813145/",
+  "rescoreCompletedAt": "2026-02-02T14:22:30.826Z"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The jukebox musical 'The Heart of Rock & Roll,' built around the hits of Huey Lewis and the News, is energetic and well-performed but feels more like a concert than a cohesive story.",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "showScoreExcerpt": "The jukebox musical 'The Heart of Rock & Roll,' built around the hits of Huey Lewis and the News, is energetic and well-performed but feels more like a concert than a cohesive story.",
   "needsScoring": true,
   "llmScore": {
-    "score": 63,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges positive elements (energetic, well-performed) but identifies a fundamental structural flaw that prevents full recommendation. | GPT-4o: The review acknowledges the energy and performance quality but criticizes the lack of a cohesive story, suggesting a mixed impression overall. | Gemini: The review acknowledges positive aspects like energy and performance but ultimately finds the show lacking in a cohesive narrative, suggesting a mixed experience.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Green acknowledges the show's generic plot and clichés but consistently praises the performances, staging, and entertainment value, concluding with a clear endorsement of its solid craftsmanship and good spirits. | GPT-4o: The review highlights the show's charm, humor, and solid performances, while acknowledging its sentimentality and clichés. The overall tone is positive, recommending the show for its enjoyable nature despite some flaws. | Gemini: The review acknowledges the show's flaws (clichés, sentimentality) but praises the performances, staging, and overall good spirits. The critic ultimately suggests it's enjoyable and worth seeing despite its shortcomings.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,34 +43,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:41:13.208Z",
+    "scoredAt": "2026-02-02T14:22:51.529Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
-    "previousVersion": "5.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "claudeScore": 73,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "previousUrl": "https://www.nytimes.com/2024/04/16/theater/heart-of-rock-and-roll-review.html",
   "urlDiscoveredAt": "2026-02-02T05:17:51.336Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 63,
   "textWordCount": 838,
@@ -92,5 +91,6 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250827035113",
   "archiveOrgUrl": "http://web.archive.org/web/20250827035113/https://www.nytimes.com/2024/04/22/theater/heart-of-rock-and-roll-review.html",
-  "duplicateTextOf": "nytimes--elisabeth-vincentelli.json"
+  "duplicateTextOf": "nytimes--elisabeth-vincentelli.json",
+  "rescoreCompletedAt": "2026-02-02T14:22:51.529Z"
 }

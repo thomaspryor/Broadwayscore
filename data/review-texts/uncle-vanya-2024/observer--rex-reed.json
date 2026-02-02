@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Steve Carell's transition from comedy to drama is nothing short of remarkable, bringing a quiet devastation to Chekhov's melancholy masterpiece that left me genuinely moved.",
   "originalScore": null,
-  "assignedScore": 90,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,13 +18,13 @@
   "showScoreExcerpt": "Steve Carell's transition from comedy to drama is nothing short of remarkable, bringing a quiet devastation to Chekhov's melancholy masterpiece that left me genuinely moved.",
   "needsScoring": true,
   "llmScore": {
-    "score": 90,
-    "confidence": "high",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 95
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language like 'nothing short of remarkable' and 'masterpiece' while expressing genuine emotional impact, indicating strong enthusiasm for the performance. | GPT-4o: The review uses strong positive language, indicating a highly favorable impression of the performance and production, suggesting it is a must-see. | Gemini: The review uses strong positive language such as \"remarkable\" and \"masterpiece\" and states that the critic was \"genuinely moved\", indicating a rave review.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt shows strong praise for Carell's performance and emotional impact, but as a single curated quote, it may not represent the full review's verdict, warranting a conservative score within the positive range. | GPT-4o: The review excerpt uses strong positive language such as 'remarkable' and 'genuinely moved,' suggesting a high level of praise for the performance and production. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Rave range. | Gemini: The review excerpt praises Carell's performance and indicates the reviewer was 'genuinely moved,' suggesting a positive experience, but without the full review, it's difficult to determine the extent of the recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,33 +43,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T21:02:27.649Z",
+    "scoredAt": "2026-02-02T14:26:21.990Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 90,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 87,
-    "openaiScore": 92,
-    "geminiScore": 92,
-    "claudeBucket": "Rave",
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 5,
+    "geminiBucket": "Positive",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
   "previousUrl": "https://observer.com/2024/01/uncle-vanya-broadway-review-steve-carell-lincoln-center/",
   "urlDiscoveredAt": "2026-02-02T05:13:50.190Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 90,
   "textWordCount": 931,
@@ -97,5 +97,6 @@
   ],
   "textStatus": "complete",
   "sourceMethod": "browserbase",
-  "duplicateTextOf": "observer--david-cote.json"
+  "duplicateTextOf": "observer--david-cote.json",
+  "rescoreCompletedAt": "2026-02-02T14:26:21.990Z"
 }

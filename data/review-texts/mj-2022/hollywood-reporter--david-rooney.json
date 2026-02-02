@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The show works best when it focuses on Jackson's creative process and his perfectionist drive in the recording studio, with Myles Frost delivering a committed performance that captures the pop icon's distinctive mannerisms and vocal style.",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "The show works best when it focuses on Jackson's creative process and his perfectionist drive in the recording studio, with Myles Frost delivering a committed performance that captures the pop icon's distinctive mannerisms and vocal style.",
   "needsScoring": true,
   "llmScore": {
-    "score": 74,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review highlights what works well in the show and praises the lead performance, but the phrase 'works best when' suggests there are weaker elements, indicating a qualified positive recommendation. | GPT-4o: The review highlights positive aspects, particularly the lead performance and focus on Jackson's creative process, suggesting a recommendation despite potential limitations in other areas. | Gemini: The review highlights the show's strengths, particularly Frost's performance and the focus on Jackson's creative process, suggesting a positive but not overwhelmingly enthusiastic recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises performances, choreography, and production values extensively, calling it 'remarkable' and 'captivating.' While acknowledging the complexity of Jackson's legacy, the critic focuses on the show's artistic merits and effectiveness. | GPT-4o: The review highlights the show's captivating nature and the strong performances, particularly Myles Frost's portrayal of Michael Jackson. Despite some reservations about the narrative's depth, the production is described as euphoric and expertly crafted, suggesting a positive recommendation. | Gemini: Despite the truncated text, the review leans positive, highlighting the captivating nature of the show and the impressive performances. The review also mentions the show's ability to chronicle major milestones with ease, but also notes that it side-steps thornier questions about Jackson as an abuser.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,19 +43,19 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:23:07.869Z",
+    "scoredAt": "2026-02-02T14:23:32.583Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (36 words)",
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 74,
-    "geminiScore": 75,
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
@@ -67,7 +67,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 74,
   "textWordCount": 1274,
@@ -92,5 +91,6 @@
   "sourceMethod": "playwright",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-02T14:23:32.583Z"
 }

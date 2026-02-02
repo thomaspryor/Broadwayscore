@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Water for Elephants is a show that works best when it embraces its circus spectacle and lets the talented ensemble cast shine in moments of pure theatrical magic.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "Water for Elephants is a show that works best when it embraces its circus spectacle and lets the talented ensemble cast shine in moments of pure theatrical magic.",
   "needsScoring": true,
   "llmScore": {
-    "score": 75,
-    "confidence": "high",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review highlights positive elements (spectacle, talented cast, theatrical magic) but the phrase 'works best when' suggests some inconsistency or missed opportunities in other moments. | GPT-4o: The review highlights the show's strengths in its spectacle and ensemble cast, suggesting a positive experience, though it implies there may be areas where it doesn't fully succeed. | Gemini: The review highlights the show's strengths, particularly the circus spectacle and ensemble cast, suggesting a positive experience overall, but the phrasing \"works best when\" implies that there are also weaker elements.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: This is primarily an interview piece rather than a traditional review, but the critic includes clear positive indicators about the production's effectiveness and emotional impact, suggesting recommendation despite the unconventional format. | GPT-4o: The review highlights the power and emotional impact of the play, describing it as a 'must-see' and emphasizing the strong performances and writing. The critic's language suggests a highly positive reception, making it a strong recommendation. | Gemini: The review is positive, highlighting the power and emotional impact of the play. The actors' comments suggest a strong production, making it worth seeing despite the difficult subject matter.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,31 +43,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:26:52.397Z",
+    "scoredAt": "2026-02-02T14:26:44.303Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 74,
-    "geminiScore": 75,
+    "openaiScore": 90,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 75,
   "textWordCount": 1803,
@@ -102,5 +101,6 @@
   "sourceMethod": "scrapingbee",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-02T14:26:44.303Z"
 }

@@ -9,15 +9,15 @@
   "showScoreExcerpt": "“The best thing about ‘The Cottage’ is the cottage, designed by someone with the name Paul Tate dePoo III. Everything else is more like the outhouse. Even as a lark, it’s beneath the standards of Broadway.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-cottage-broadway",
   "originalScore": null,
-  "assignedScore": 23,
+  "assignedScore": 12,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 23,
-    "confidence": "medium",
+    "score": 12,
+    "confidence": "high",
     "range": {
-      "low": 18,
-      "high": 28
+      "low": 7,
+      "high": 17
     },
     "bucket": "Pan",
     "thumb": "Down",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Pan | Claude: The critic explicitly states the show is 'beneath the standards of Broadway' and uses the crude metaphor comparing it to an 'outhouse', indicating strong disapproval despite this being only one excerpt. | GPT-4o: The critic uses strong negative language comparing the show unfavorably to an outhouse and stating it is beneath Broadway standards, indicating a strongly negative view. | Gemini: The review is overwhelmingly negative, comparing the show to an outhouse and stating it's beneath Broadway standards. The single positive comment about the set design does not outweigh the overall negative sentiment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Pan | Claude: This is an unambiguously scathing review with explicit destruction metaphors, calling the show 'abysmal fiasco,' 'lousy,' and 'beneath the standards of Broadway' while recommending a blowtorch as the solution. | GPT-4o: The review is overwhelmingly negative, describing the play as 'vulgar, pointless and stupid,' with 'hopeless ineptitude' and 'abysmal fiasco.' The critic suggests it is beneath Broadway standards and implies it should be destroyed, indicating a strong recommendation to avoid. | Gemini: The review uses extremely negative language throughout, calling the play \"vulgar, pointless and stupid\", \"noisy, witless and moronic\", and an \"abysmal fiasco\". The critic clearly does not recommend seeing it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,31 +38,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T01:00:54.919Z",
+    "scoredAt": "2026-02-02T14:25:32.422Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 20,
-    "previousVersion": "3.0.0"
+    "previousScore": 23,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 20,
-    "geminiScore": 40,
+    "claudeScore": 15,
+    "openaiScore": 10,
+    "geminiScore": 10,
     "claudeBucket": "Pan",
     "openaiBucket": "Pan",
-    "geminiBucket": "Negative",
-    "scoreDelta": 20,
+    "geminiBucket": "Pan",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Pan"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Pan"
   },
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 23,
   "isFullReview": true,
@@ -87,5 +86,6 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "browserbase"
+  "sourceMethod": "browserbase",
+  "rescoreCompletedAt": "2026-02-02T14:25:32.422Z"
 }

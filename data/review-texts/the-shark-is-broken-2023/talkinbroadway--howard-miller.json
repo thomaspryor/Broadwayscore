@@ -10,18 +10,18 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 46,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 42,
-    "confidence": "high",
+    "score": 46,
+    "confidence": "medium",
     "range": {
-      "low": 37,
-      "high": 47
+      "low": 41,
+      "high": 51
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic uses clear negative verdict language like 'flounders to the end' and explicitly states there's no 'engaging hook nor compelling dialog,' indicating they do not recommend the show. | GPT-4o: The review uses strong negative language, indicating the production lacks engaging elements and compelling dialogue, suggesting it is not worth seeing. | Gemini: The review uses very negative language, stating that the show 'flounders' and lacks an 'engaging hook' or 'compelling dialog,' indicating a negative assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic uses multiple fish puns to deliver a negative verdict, stating the show 'flounders' and lacks compelling content, comparing it unfavorably to 'Back to the Future without the DeLorean or a plot.' | GPT-4o: The review concludes with a clear negative verdict, indicating that the play lacks engaging elements and compelling dialogue, suggesting it is not worth seeing. | Gemini: The review highlights some interesting aspects, particularly the performances and character study, but ultimately concludes that the play 'flounders' and lacks a compelling hook, placing it in the Mixed category.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,27 +42,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:53:30.693Z",
+    "scoredAt": "2026-02-02T14:26:15.200Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 28,
-    "previousVersion": "3.0.0"
+    "previousScore": 42,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 42,
-    "geminiScore": 40,
+    "claudeScore": 42,
+    "openaiScore": 50,
+    "geminiScore": 62,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "scoreDelta": 5,
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 42,
@@ -93,12 +93,11 @@
   "sourceMethod": "brightdata",
   "archiveOrgTimestamp": "20251130070639",
   "archiveOrgUrl": "http://web.archive.org/web/20251130070639/https://www.talkinbroadway.com/page/world/index.html",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.117Z",
+  "rescoreCompletedAt": "2026-02-02T14:26:15.200Z",
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "needs-rescrape",
   "previousUrl": "https://www.talkinbroadway.com/page/world/index.html",
-  "needsRescore": true,
   "isFullReview": true,
   "textWordCount": 935,
   "textQuality": "full",

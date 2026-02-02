@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The jukebox musical built around Huey Lewis and the News hits is a crowd-pleasing throwback that doesn't quite find its groove until the second act.",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "showScoreExcerpt": "The jukebox musical built around Huey Lewis and the News hits is a crowd-pleasing throwback that doesn't quite find its groove until the second act.",
   "needsScoring": true,
   "llmScore": {
-    "score": 64,
+    "score": 75,
     "confidence": "medium",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review describes it as 'crowd-pleasing' but notes significant pacing issues in the first act, indicating a lukewarm assessment that neither strongly recommends nor discourages. | GPT-4o: The review acknowledges the musical as a crowd-pleaser but notes it only finds its groove in the second act, indicating a mixed reception with some positive elements. | Gemini: The review indicates the show is \"crowd-pleasing\" which suggests a positive experience, but the reservation about the first act keeps it from being a rave.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic finds the show 'rather fun' and entertaining despite acknowledging its formulaic jukebox musical template, praising the performances and production while noting it 'just entertains' without being deeply inspiring. | GPT-4o: The review acknowledges the show's limitations but ultimately describes it as entertaining and fun. The critic highlights the show's appeal and potential for success, indicating a positive recommendation despite some reservations. | Gemini: The review indicates the show is \"rather fun\" and \"entertains\", but also notes thin characters and unsurprising plot developments. It's a positive review with reservations, landing it in the Positive bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,34 +43,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:42:17.835Z",
+    "scoredAt": "2026-02-02T14:22:56.032Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 75,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "claudeScore": 72,
+    "openaiScore": 76,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "previousUrl": "https://variety.com/2024/legit/reviews/the-heart-of-rock-and-roll-review-broadway-1236051843/",
   "urlDiscoveredAt": "2026-02-02T05:27:08.183Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 64,
   "textWordCount": 766,
@@ -95,5 +94,6 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "scrapingbee"
+  "sourceMethod": "scrapingbee",
+  "rescoreCompletedAt": "2026-02-02T14:22:56.032Z"
 }

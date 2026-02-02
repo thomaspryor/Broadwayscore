@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Lafayette family's sins are not just personal but generational, and the play's horror lies not in any supernatural elements but in the very real damage that racism inflicts across time.",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "showScoreExcerpt": "The Lafayette family's sins are not just personal but generational, and the play's horror lies not in any supernatural elements but in the very real damage that racism inflicts across time.",
   "needsScoring": true,
   "llmScore": {
-    "score": 60,
-    "confidence": "high",
+    "score": 89,
+    "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 84,
+      "high": 94
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Rave",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a single thematic observation about the play's content rather than an evaluative review. Without clear critical assessment or recommendation language, cannot determine the critic's verdict. | GPT-4o: The review text is truncated and lacks a clear verdict, focusing on thematic elements rather than evaluative content about the production itself. Without more context, the recommendation is unclear. | Gemini: The review focuses on the themes and subject matter of the play without providing a clear recommendation for or against seeing it. It describes the play's horror but doesn't evaluate the production's quality or effectiveness.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review is overwhelmingly positive, praising the playwright's craft, the direction, and performances with sophisticated analysis. The critic calls it 'sharp,' praises the 'top-notch cast,' and provides deep appreciation for the complex themes and execution. | GPT-4o: The review is filled with praise for the writing, direction, and performances, describing the play as sharp, complex, and electrifying. The critic highlights the successful risk-taking by the director and cast, making it a compelling and must-see production. | Gemini: The critic praises the direction and performances, highlighting the play's ability to make the audience consider uncomfortable truths. While acknowledging the challenging subject matter, the review ultimately recommends seeing the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,33 +43,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:58:15.241Z",
+    "scoredAt": "2026-02-02T14:21:57.860Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 60,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 60,
-    "geminiScore": 60,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
   "previousUrl": "https://www.vulture.com/2023/12/theater-review-appropriate-broadway-revival.html",
   "urlDiscoveredAt": "2026-02-02T05:09:00.028Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 60,
   "textWordCount": 2042,
@@ -89,5 +89,6 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251210141841",
-  "archiveOrgUrl": "http://web.archive.org/web/20251210141841/https://www.vulture.com/2024/06/theater-review-branden-jacobs-jenkinss-appropriate.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251210141841/https://www.vulture.com/2024/06/theater-review-branden-jacobs-jenkinss-appropriate.html",
+  "rescoreCompletedAt": "2026-02-02T14:21:57.860Z"
 }

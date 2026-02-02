@@ -10,15 +10,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 81,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises the musical as achieving 'no easy feat' with 'singular vision' and calls it 'thrilling,' clearly recommending it despite acknowledging it may not match Hamilton's cultural impact. | GPT-4o: The review praises the musical for its smart and inspiring execution, clear message, and entertaining nature. The critic's language is enthusiastic and highlights the production's strengths, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the show's intelligence, inspiration, and entertainment value. While it acknowledges that it may not reach the same level of furor as 'Hamilton,' it still suggests it will find a following.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The headline explicitly describes the musical as 'thrilling and entertaining,' which are clear positive descriptors that indicate a recommendation to see the show. | GPT-4o: The review describes the musical as 'thrilling and entertaining', which suggests a positive reception. However, the lack of additional evaluative content in the truncated text makes the confidence level medium. | Gemini: The review's headline indicates a positive assessment, describing the musical as \"thrilling and entertaining.\"",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,27 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:58:35.101Z",
+    "scoredAt": "2026-02-02T14:25:21.355Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 90,
-    "geminiScore": 80,
+    "claudeScore": 76,
+    "openaiScore": 79,
+    "geminiScore": 75,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 81,
@@ -77,7 +77,7 @@
   "sourceMethod": "playwright",
   "archiveOrgTimestamp": "20250104071638",
   "archiveOrgUrl": "http://web.archive.org/web/20250104071638/https://variety.com/2024/legit/reviews/suffs-review-musical-broadway-1235974881/",
-  "rescoreCompletedAt": "2026-02-01T16:15:26.572Z",
+  "rescoreCompletedAt": "2026-02-02T14:25:21.355Z",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "showScoreExcerpt": "\"In 'Suffs,' the message of this thrilling new musical is resoundingly clear\"",
@@ -88,6 +88,5 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "needsRescore": true,
   "duplicateTextOf": "variety--aramide-tinubu.json"
 }

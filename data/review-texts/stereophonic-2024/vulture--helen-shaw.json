@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Stereophonic is a meditation on the creative process that feels both intimate and epic, capturing the messy, painful birth of art with remarkable authenticity.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,13 +18,13 @@
   "showScoreExcerpt": "Stereophonic is a meditation on the creative process that feels both intimate and epic, capturing the messy, painful birth of art with remarkable authenticity.",
   "needsScoring": true,
   "llmScore": {
-    "score": 77,
+    "score": 94,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 89,
+      "high": 99
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review uses appreciative language about authenticity and artistic merit, but the brief excerpt lacks explicit recommendation language, making confidence medium. | GPT-4o: The review uses highly positive language, describing the show as both 'intimate and epic' and praising its 'remarkable authenticity,' indicating a strong recommendation. | Gemini: The review uses positive language like \"intimate and epic\" and \"remarkable authenticity\", indicating a recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: This is an ecstatic review that opens with superlative language and maintains enthusiastic praise throughout, calling it 'a meaningful and exceptional piece of work' and celebrating every aspect from performances to direction to design. | GPT-4o: The review is overwhelmingly positive, highlighting the show's exhilarating moments, exceptional performances, and stunning production elements. The critic describes it as a meaningful and exceptional piece of work, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the exceptional performances, writing, and direction. The critic clearly recommends seeing the show, describing it as a \"meaningful and exceptional piece of work\" and a \"love song\" to the act of making art.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,33 +43,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:59:59.628Z",
+    "scoredAt": "2026-02-02T14:25:08.814Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
   "previousUrl": "https://www.vulture.com/article/stereophonic-broadway-review.html",
   "urlDiscoveredAt": "2026-02-02T07:28:44.876Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "textWordCount": 1663,
@@ -108,5 +108,6 @@
   ],
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
-  "duplicateTextOf": "vulture--sara-holdren.json"
+  "duplicateTextOf": "vulture--sara-holdren.json",
+  "rescoreCompletedAt": "2026-02-02T14:25:08.814Z"
 }

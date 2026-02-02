@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Notebook is a show that knows exactly what it is and delivers it with unflinching commitment, even when that commitment leads to emotional manipulation of the highest order.",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "showScoreExcerpt": "The Notebook is a show that knows exactly what it is and delivers it with unflinching commitment, even when that commitment leads to emotional manipulation of the highest order.",
   "needsScoring": true,
   "llmScore": {
-    "score": 64,
-    "confidence": "medium",
+    "score": 79,
+    "confidence": "high",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 74,
+      "high": 84
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges the show's commitment and effectiveness but criticizes it for emotional manipulation, suggesting a conflicted assessment that neither fully recommends nor dismisses the production. | GPT-4o: The review acknowledges the show's commitment to its identity but suggests that this leads to emotional manipulation, indicating a mixed reception. | Gemini: The review acknowledges emotional manipulation but ultimately frames the show's commitment as a positive, suggesting a recommendation with reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: This is a venue review of a movie screening, not a Broadway show review. The critic recommends the experience at this specific theater, praising Spielberg's direction and the technical presentation, though the focus is more on the venue amenities than pure artistic merit. | GPT-4o: The review highlights the vivid and immersive experience of watching the film at the El Capitan Theatre, emphasizing the quality of the presentation and the unique atmosphere. The language suggests a strong recommendation to see the film in this setting. | Gemini: The review focuses on the experience of seeing the movie in a specific theater, highlighting the enhanced visual and auditory experience. It recommends seeing the movie there for the full experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,30 +43,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T21:01:20.392Z",
+    "scoredAt": "2026-02-02T14:25:57.269Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 75,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 64,
   "textWordCount": 471,
@@ -101,5 +101,6 @@
   "sourceMethod": "scrapingbee",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-02T14:25:57.269Z"
 }

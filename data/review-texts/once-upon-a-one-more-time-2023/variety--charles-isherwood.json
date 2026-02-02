@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This jukebox musical built around Britney Spears songs is a colorful, energetic and surprisingly sweet confection that delivers exactly what it promises.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "This jukebox musical built around Britney Spears songs is a colorful, energetic and surprisingly sweet confection that delivers exactly what it promises.",
   "needsScoring": true,
   "llmScore": {
-    "score": 78,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,21 +30,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 78
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "delivers exactly what it promises",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "colorful, energetic and surprisingly sweet confection",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review uses consistently positive descriptors and indicates the show successfully achieves its goals, suggesting a clear but not effusive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review is clearly positive overall, praising the performances, choreography, and concept while noting some pacing issues in the first act. The concluding statement affirms the show's success despite minor flaws. | GPT-4o: The review praises the show's energy, originality, and cleverness in addressing gender roles, despite noting some pacing issues and underused characters. The overall tone is positive, recommending the show for its engaging performances and innovative take on fairy tales. | Gemini: The review is generally positive, highlighting the show's energy, originality, and the clever integration of Britney Spears' music. While it notes some pacing issues and underutilization of a cast member, the overall assessment is favorable, suggesting it's worth seeing.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,20 +42,14 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:08:56.770Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2334,
-    "outputTokens": 269,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T14:24:10.062Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "textWordCount": 914,
@@ -102,5 +85,21 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
+  "rescoreCompletedAt": "2026-02-02T14:24:10.062Z"
 }

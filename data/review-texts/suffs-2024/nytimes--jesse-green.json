@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Though 'Suffs' is often more admirable than enjoyable, it succeeds in making the long struggle for women's voting rights feel immediate and personal.",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "showScoreExcerpt": "Though 'Suffs' is often more admirable than enjoyable, it succeeds in making the long struggle for women's voting rights feel immediate and personal.",
   "needsScoring": true,
   "llmScore": {
-    "score": 64,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 74,
+      "high": 84
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic explicitly states the show is 'more admirable than enjoyable' but acknowledges it 'succeeds' in its mission, indicating a qualified assessment that neither strongly recommends nor discourages. | GPT-4o: The review acknowledges the show's success in making historical events feel immediate and personal, but also notes that it is more admirable than enjoyable, indicating a mixed reception. | Gemini: The review states that the show 'succeeds' in making the struggle feel immediate and personal, indicating a positive recommendation despite the reservation that it's more admirable than enjoyable.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly recommends the show, praising its improvements from Off-Broadway and calling it 'vastly improved,' but notes tonal issues and structural concerns that prevent a stronger endorsement. | GPT-4o: The review acknowledges some past issues with the production but emphasizes significant improvements and the overall thrilling nature of the show. The critic expresses enthusiasm for the musical's ability to engage and uplift, suggesting a strong recommendation. | Gemini: The review indicates that the Broadway production is improved from its previous iteration and has many positive aspects, but also points out some issues with tone and historical liberties. Overall, it leans towards a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,33 +43,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T21:00:22.314Z",
+    "scoredAt": "2026-02-02T14:25:12.906Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 75,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
   "previousUrl": "https://www.nytimes.com/2024/04/19/theater/suffs-review.html",
   "urlDiscoveredAt": "2026-02-02T07:28:20.263Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 64,
   "textWordCount": 1033,
@@ -92,5 +92,6 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250806010809",
-  "archiveOrgUrl": "http://web.archive.org/web/20250806010809/https://www.nytimes.com/2024/04/18/theater/suffs-review-broadway-shaina-taub.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20250806010809/https://www.nytimes.com/2024/04/18/theater/suffs-review-broadway-shaina-taub.html",
+  "rescoreCompletedAt": "2026-02-02T14:25:12.906Z"
 }

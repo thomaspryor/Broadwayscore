@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "McNeal's play is a gripping political thriller that examines the rise and fall of Boris Berezovsky, the Russian oligarch who helped create Vladimir Putin only to become his enemy.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 58,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "showScoreExcerpt": "McNeal's play is a gripping political thriller that examines the rise and fall of Boris Berezovsky, the Russian oligarch who helped create Vladimir Putin only to become his enemy.",
   "needsScoring": true,
   "llmScore": {
-    "score": 77,
+    "score": 58,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 53,
+      "high": 63
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: This appears to be a plot summary or description rather than a review with evaluative content. The phrase 'gripping political thriller' could indicate positive assessment, but without clear recommendation language or critical evaluation, the score reflects uncertainty about the critic's actual verdict. | GPT-4o: The description of the play as 'gripping' suggests a positive view, but the lack of additional evaluative content in the truncated text leads to some uncertainty about the overall recommendation. | Gemini: The review describes the play as a \"gripping political thriller,\" indicating a positive assessment and recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This appears to be a press release or announcement rather than a critical review, containing only biographical information and quotes from Chenoweth herself with no evaluative content about the performance quality or recommendation. | GPT-4o: The review primarily provides biographical and event information without a clear evaluative verdict on the performance itself. The text does not contain explicit recommendation or criticism, leading to a mixed classification with low confidence. | Gemini: The review is a press release about Kristin Chenoweth's upcoming concert. It highlights her excitement and the special nature of the event, implying a positive experience for attendees.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,31 +43,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:20:09.111Z",
+    "scoredAt": "2026-02-02T14:24:20.589Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
-    "previousVersion": "5.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
   "ensembleData": {
     "claudeScore": 60,
-    "openaiScore": 78,
+    "openaiScore": 55,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 18,
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "2/3 models agree: Mixed"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "textWordCount": 414,
@@ -103,5 +102,6 @@
   "textIssues": [
     "Show title not found in text"
   ],
-  "showNotMentioned": true
+  "showNotMentioned": true,
+  "rescoreCompletedAt": "2026-02-02T14:24:20.589Z"
 }

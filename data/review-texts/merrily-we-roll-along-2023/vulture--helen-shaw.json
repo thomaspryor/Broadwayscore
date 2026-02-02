@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The production succeeds because it understands that Merrily is fundamentally about grief — grief for lost friendships, lost idealism, lost time.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,13 +18,13 @@
   "showScoreExcerpt": "The production succeeds because it understands that Merrily is fundamentally about grief — grief for lost friendships, lost idealism, lost time.",
   "needsScoring": true,
   "llmScore": {
-    "score": 76,
-    "confidence": "high",
+    "score": 93,
+    "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 88,
+      "high": 98
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The word 'succeeds' indicates a positive assessment, and the explanation shows the critic appreciates the production's insight into the material's deeper themes. | GPT-4o: The review highlights the production's success in capturing the essence of the show, indicating a positive reception. However, the lack of detailed evaluative content makes the overall recommendation somewhat ambiguous. | Gemini: The review states the production 'succeeds,' indicating a positive assessment, but lacks the enthusiastic language of a 'rave' review. The single sentence provided suggests a qualified recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Shaw delivers a passionate, deeply analytical rave that transforms from initial skepticism to complete admiration. She praises the production as 'exquisite' and credits the cast with 'reviving the play by revealing and jump-starting its heart.' | GPT-4o: The review is overwhelmingly positive, praising the direction, performances, and the emotional depth brought to the production. The critic highlights the transformation of the show's tone and the exceptional chemistry of the cast, indicating a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, praising the direction, performances, and overall impact of the production. While acknowledging past criticisms of the show, the reviewer emphasizes the current production's strengths and the actors' ability to bring out the heart of the story.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,34 +43,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:34:49.942Z",
+    "scoredAt": "2026-02-02T14:23:25.334Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (21 words)",
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "claudeScore": 90,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "previousUrl": "https://www.vulture.com/2023/11/merrily-we-roll-along-broadway-review.html",
   "urlDiscoveredAt": "2026-02-02T06:24:00.870Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
   "textWordCount": 1918,
@@ -90,5 +89,6 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251208083849",
-  "archiveOrgUrl": "http://web.archive.org/web/20251208083849/https://www.vulture.com/2024/06/theater-review-merrily-we-roll-along-sondheim-radcliffe-groff-mendez.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251208083849/https://www.vulture.com/2024/06/theater-review-merrily-we-roll-along-sondheim-radcliffe-groff-mendez.html",
+  "rescoreCompletedAt": "2026-02-02T14:23:25.334Z"
 }

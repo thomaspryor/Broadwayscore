@@ -8,21 +8,21 @@
   "fullText": "Read More About: Eva Noblezada, Jeremy Jordan, The Great Gatsby Jump to Comments ‘The Great Gatsby’ Review: Broadway Musical Has Glamour but Little Grit Broadway Theatre; 1761 seat; $268 top. Opened April 25, 2024. Reviewed April 20. Running time: 2 hours, 30 minutes. Production: A presentation by Chunsoo Shin, OD Company, The Nederlander Organization, The Shubert Organization, Joe Quenqua, Candy Spelling, Mark Shacket in association with Paper Mill Playhouse of a musical in 2 acts with book by Kait Kerrigan, music by Jason Howland, and lyrics by Nathan Tysen. Crew: Directed by Marc Bruni. Choreographed by Dominique Kelley. Sets and projections, Paul Tate dePoo III; costumes, Linda Cho; lights, Cory Pattak; sound, Brian Ronan; hair, Charles G LaPointe and Rachel Geier; makeup, Ashley Ryan; orchestrations, Jason Howland and Kim Scharnberg; production stage manager, Brian Bogin. Cast: Jeremy Jordan, Eva Noblezada, Noah J. Ricketts, Samantha Pauly, Sara Chase, John Zdrojeski, Paul Whitty, Eric Anderson, Raymond Edward Baynard, Austin Colby, Curtis Holland, Traci Elaine Lee, Dariana Mullen, Ryah Nixon, Pascal Pastrana, Kayla Pecchioni, Mariah Resheg Reives, Dan Rosales, Dave Schoonover, Derek Jordan Taylor, Tanairi Sade Vazquez, Katie Webber, Kurt Csolak, Carissa Gaughran, Samantha Pollino, Alex Prakken, Jake Trammel, and Jasmine Pearl Villaroel.",
   "showScoreExcerpt": "\"The Lion King is a spectacular rendition of the animated film, a brilliant theatrical adaptation that stands on its own...Taymor has risen to the challenge, translating the physically complex tale to the stage with an endlessly clever, visually stunning use of masks, puppetry, costumes and scenic effects; the stage show has the delighted audience firmly in its grip.\"",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 61,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "sourceMethod": "playwright",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 89,
-    "confidence": "medium",
+    "score": 61,
+    "confidence": "high",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 56,
+      "high": 66
     },
-    "bucket": "Rave",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The excerpt uses strong positive language like 'spectacular,' 'brilliant,' and 'visually stunning,' indicating enthusiastic praise, though confidence is medium due to single excerpt warning. | GPT-4o: The review uses highly positive language such as 'spectacular', 'brilliant', and 'visually stunning', indicating a strong recommendation. However, due to the single excerpt warning, the confidence is medium. | Gemini: The review uses strong positive language like \"spectacular rendition\" and \"brilliant theatrical adaptation,\" indicating a positive recommendation. The description of the staging as \"endlessly clever, visually stunning\" further supports this classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The headline suggests a production with surface appeal but lacking depth or emotional weight. The additional context about The Lion King appears unrelated to The Great Gatsby review, making assessment challenging with limited evaluative content. | GPT-4o: The review suggests that while the production has visual appeal ('glamour'), it lacks substance ('little grit'). The absence of a clear recommendation or discouragement leads to a mixed classification. However, the text is truncated, and the verdict is not fully clear, resulting in low confidence. | Gemini: The title suggests a mixed review. Without the full text, it's hard to determine the overall recommendation, but the phrase 'little grit' implies some shortcomings.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,27 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:58:18.024Z",
+    "scoredAt": "2026-02-02T14:25:36.089Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "3.0.0"
+    "previousScore": 89,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "geminiScore": 80,
-    "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "mergedFrom": [
     {
@@ -72,7 +72,6 @@
   ],
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 89,
   "isFullReview": false,
@@ -95,5 +94,6 @@
     "Word count too low: 200 (min: 300)",
     "Show title not found in text"
   ],
-  "showNotMentioned": true
+  "showNotMentioned": true,
+  "rescoreCompletedAt": "2026-02-02T14:25:36.089Z"
 }

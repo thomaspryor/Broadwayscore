@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Michael Stuhlbarg delivers a powerhouse performance as Boris Berezovsky in this gripping political drama that traces the oligarch's rise and fall in Putin's Russia.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "showScoreExcerpt": "Michael Stuhlbarg delivers a powerhouse performance as Boris Berezovsky in this gripping political drama that traces the oligarch's rise and fall in Putin's Russia.",
   "needsScoring": true,
   "llmScore": {
-    "score": 78,
+    "score": 45,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 40,
+      "high": 50
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review highlights a 'powerhouse performance' in a 'gripping' drama, indicating recommendation, though the brief excerpt limits confidence in the overall assessment. | GPT-4o: The review highlights a 'powerhouse performance' and describes the drama as 'gripping,' indicating a strong positive recommendation. | Gemini: The review highlights a 'powerhouse performance' and calls the drama 'gripping,' indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The review clearly states the play is 'disappointing' in the headline and opening, criticizes shallow characterization, unsubtle direction, and concludes audiences 'may simply not buy' the central premise. Despite some praise for individual performances, the overall assessment is negative. | GPT-4o: The review consistently describes the play as disappointing and lacking depth, with criticisms of the direction, character portrayal, and overall execution. The critic does not recommend the play, highlighting its shortcomings more than any redeeming qualities. | Gemini: The review uses the word \"disappointing\" in the first sentence and describes the characters as \"charmless\" and \"psychologically shallow.\" The direction is called \"unsubtle,\" and the play is deemed better suited for a TV mini-series. Overall, the review is negative.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,34 +43,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:20:50.503Z",
+    "scoredAt": "2026-02-02T14:24:26.089Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 82,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "scoreDelta": 7,
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "previousUrl": "https://variety.com/2024/legit/reviews/patriots-review-broadway-michael-stuhlbarg-1235996748/",
   "urlDiscoveredAt": "2026-02-02T05:10:29.484Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "textWordCount": 1033,
@@ -95,5 +94,6 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
-  "duplicateTextOf": "variety--frank-rizzo.json"
+  "duplicateTextOf": "variety--frank-rizzo.json",
+  "rescoreCompletedAt": "2026-02-02T14:24:26.089Z"
 }

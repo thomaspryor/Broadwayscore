@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the lasting impact of the show and highlights McAdams' masterful performance, indicating a clear positive recommendation despite the challenging subject matter. | GPT-4o: The review highlights the play's lasting impact on viewers and praises McAdams' performance, indicating a strong recommendation to see the show. | Gemini: The review highlights McAdams' masterful portrayal and the play's lasting impact, indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the story as driving force, commends McAdams' performance despite minor projection issues, and concludes that the show 'stays with viewers' and 'raises worthy questions' - clear indicators of a positive recommendation. | GPT-4o: The review highlights the strong performances, particularly by Rachel McAdams, and the impactful storytelling that leaves a lasting impression on the audience. Despite some minor criticisms about the set and dual roles, the overall tone is positive and recommends the play. | Gemini: The review highlights solid performances and a compelling story that resonates with the audience, making it a worthwhile experience despite some minor distractions in the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,17 +37,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:33:00.773Z",
+    "scoredAt": "2026-02-02T14:23:22.132Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 79,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
     "openaiScore": 82,
-    "geminiScore": 80,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
@@ -97,11 +97,10 @@
   "archiveOrgUrl": "http://web.archive.org/web/20260105081140/https://variety.com/2024/legit/reviews/mary-jane-broadway-review-rachel-mcadams-1235978406/",
   "contentTier": "complete",
   "wordCount": 694,
-  "rescoreCompletedAt": "2026-02-02T03:33:00.773Z",
+  "rescoreCompletedAt": "2026-02-02T14:23:22.132Z",
   "isFullReview": true,
   "textWordCount": 694,
   "textQuality": "full",
   "truncationSignals": [],
-  "textStatus": "complete",
-  "needsRescore": true
+  "textStatus": "complete"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "LuPone and Farrow are both magnetic performers, and watching them work together is like seeing two master classes in different acting techniques conducted simultaneously.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "showScoreExcerpt": "LuPone and Farrow are both magnetic performers, and watching them work together is like seeing two master classes in different acting techniques conducted simultaneously.",
   "needsScoring": true,
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for the lead performances suggests a positive recommendation, though the truncated nature of the review prevents assessment of other production elements. | GPT-4o: The review praises the performances of the lead actors, describing them as 'magnetic' and likening their work to 'master classes,' indicating a strong positive impression of the production. | Gemini: The review focuses on the positive aspects of the performances, indicating a recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges the performers are 'fun to watch' and finds some comedy successful, but is troubled by the play's moral equivocation and shallow treatment of serious themes, ultimately questioning 'what exactly we were clapping for.' | GPT-4o: The review acknowledges the enjoyable performances and humor but criticizes the play's lack of depth and moral ambiguity, leading to a mixed verdict. | Gemini: The review highlights enjoyable aspects like the performances and some funny lines, but also criticizes the play's shaky grip, moral equivocation, and superficial engagement. It neither strongly recommends nor discourages seeing it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,33 +43,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T21:01:51.712Z",
+    "scoredAt": "2026-02-02T14:26:08.225Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 82,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "scoreDelta": 7,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
   "previousUrl": "https://www.vulture.com/article/the-roommate-review-broadway-patti-lupone-mia-farrow.html",
   "urlDiscoveredAt": "2026-02-02T05:01:54.512Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "textWordCount": 1440,
@@ -90,5 +90,6 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250114012912",
   "archiveOrgUrl": "http://web.archive.org/web/20250114012912/https://www.vulture.com/article/theater-review-roommate-lupone-farrow-silverman.html",
-  "duplicateTextOf": "vulture--sara-holdren.json"
+  "duplicateTextOf": "vulture--sara-holdren.json",
+  "rescoreCompletedAt": "2026-02-02T14:26:08.225Z"
 }

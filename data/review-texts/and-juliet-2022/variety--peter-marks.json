@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The jukebox musical '& Juliet' is a sugar rush of a show that imagines what might have happened if Shakespeare's heroine had lived, set to the pop hits of Max Martin.",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "showScoreExcerpt": "The jukebox musical '& Juliet' is a sugar rush of a show that imagines what might have happened if Shakespeare's heroine had lived, set to the pop hits of Max Martin.",
   "needsScoring": true,
   "llmScore": {
-    "score": 63,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 77,
+      "high": 87
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The phrase 'sugar rush' suggests something enjoyable but fleeting and insubstantial. The tone is descriptive rather than clearly recommendatory, indicating a mixed assessment of this jukebox musical. | GPT-4o: The review describes the show as a 'sugar rush,' which suggests an energetic but possibly superficial experience. The lack of clear recommendation or discouragement indicates a mixed verdict. | Gemini: The review describes the show as a \"sugar rush,\" which suggests an enjoyable but perhaps not deeply profound experience, placing it in the positive but not rave category.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite noting some flaws in plotting and choreography, the critic is clearly enthusiastic, calling it 'exactly the show Broadway needs right now' and praising it as 'fun, exuberant, supremely joyful, hilarious, and excellently performed.' | GPT-4o: The review is overwhelmingly positive, highlighting the show's fun, exuberance, and excellent performances. The critic describes it as exactly what Broadway needs, indicating a strong recommendation. | Gemini: Despite some reservations about the plot and feminism, the critic ultimately gives a very positive recommendation, calling it exactly what Broadway needs right now.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,33 +43,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:57:58.453Z",
+    "scoredAt": "2026-02-02T14:21:53.987Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 65,
-    "geminiScore": 75,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "claudeScore": 82,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
   "previousUrl": "https://variety.com/2022/legit/reviews/and-juliet-review-broadway-1235415070/",
   "urlDiscoveredAt": "2026-02-02T04:50:43.880Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 63,
   "textWordCount": 1161,
@@ -108,5 +108,6 @@
   "sourceMethod": "brightdata",
   "archiveOrgTimestamp": "20251224182428",
   "archiveOrgUrl": "http://web.archive.org/web/20251224182428/https://variety.com/2022/legit/reviews/amp-juliet-review-musical-broadway-1235435481/",
-  "duplicateTextOf": "variety--christian-lewis.json"
+  "duplicateTextOf": "variety--christian-lewis.json",
+  "rescoreCompletedAt": "2026-02-02T14:21:53.987Z"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Julie Taymor has created a theatrical experience that is at once primal and sophisticated, managing to honor both the Disney source material and the essentials of live theater.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,13 +18,13 @@
   "showScoreExcerpt": "Julie Taymor has created a theatrical experience that is at once primal and sophisticated, managing to honor both the Disney source material and the essentials of live theater.",
   "needsScoring": true,
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 94,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 89,
+      "high": 99
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises Taymor for creating a successful theatrical experience that honors both source material and live theater, indicating clear recommendation despite the brief excerpt. | GPT-4o: The review uses highly positive language to describe the production as a 'theatrical experience' that is both 'primal and sophisticated', indicating a strong recommendation. | Gemini: The review praises the theatrical experience created by Julie Taymor, indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'a marvel' and 'unrivaled theatrical achievement' while predicting it will 'run for years' and praising every aspect from performances to staging to music. | GPT-4o: The review is overwhelmingly positive, praising the production's visual artistry, storytelling, music, and performances. It describes the show as a theatrical achievement and a box office bonanza likely to run for years, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"marvel\", \"theatrical achievement unrivaled\", and stating the show \"improves upon nearly every aspect\" of the film. The critic clearly recommends seeing the show, even calling it a victory for Taymor.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,30 +43,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T21:01:02.918Z",
+    "scoredAt": "2026-02-02T14:25:44.341Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 78,
-    "claudeBucket": "Positive",
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "textWordCount": 1330,
@@ -97,5 +97,6 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "brightdata",
-  "duplicateTextOf": "variety--greg-evans.json"
+  "duplicateTextOf": "variety--greg-evans.json",
+  "rescoreCompletedAt": "2026-02-02T14:25:44.341Z"
 }

@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review presents clear structural criticisms ('overstuffed and underdeveloped') balanced by praise for a 'magnificent performance,' indicating a mixed assessment without a clear recommendation either way. | GPT-4o: The review highlights both negative aspects ('overstuffed and underdeveloped') and a positive element ('magnificent performance'), indicating a mixed reception with notable strengths. | Gemini: Despite being \"overstuffed and underdeveloped,\" the review highlights a \"magnificent performance,\" suggesting it's worth seeing for that reason alone.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Shaw acknowledges the play's ambition and some strong moments but criticizes its showy rhetoric, cold emotional tone, and weaker historical scenes. The review finds merit but significant reservations. | GPT-4o: The review acknowledges the play's sharpness and humor but criticizes its self-conscious ambition and showy engagement with themes. The critic finds the emotional impact lacking and the play's construction somewhat forced, leading to a mixed recommendation. | Gemini: The review acknowledges flaws like showiness and unevenness between time periods, but ultimately suggests the play is \"plenty sharp\" and raises important questions, indicating a qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,12 +43,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:35:48.200Z",
+    "scoredAt": "2026-02-02T14:24:31.762Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
-    "previousVersion": "5.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
@@ -70,7 +70,6 @@
   "previousUrl": "https://www.vulture.com/article/prayer-for-the-french-republic-broadway-review.html",
   "urlDiscoveredAt": "2026-02-02T07:08:22.849Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 64,
   "textWordCount": 1398,
@@ -91,5 +90,6 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241224194115",
   "archiveOrgUrl": "http://web.archive.org/web/20241224194115/https://www.vulture.com/2024/01/theater-review-prayer-for-the-french-republic.html",
-  "duplicateTextOf": "vulture--sara-holdren.json"
+  "duplicateTextOf": "vulture--sara-holdren.json",
+  "rescoreCompletedAt": "2026-02-02T14:24:31.762Z"
 }

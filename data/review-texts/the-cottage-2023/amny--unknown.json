@@ -22,7 +22,7 @@
   ],
   "llmScore": {
     "score": 62,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 57,
       "high": 67
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: While the critic praises technical elements and performances, they explicitly state they couldn't get into the play and found it uninspired and unfunny, indicating a clear negative recommendation despite positive production aspects. | GPT-4o: The review highlights positive aspects such as the performances, costumes, and scenic design, but ultimately criticizes the play itself as uninspired and unfunny. This suggests a mixed verdict, with strengths in production elements but significant weaknesses in the play's content. | Gemini: The review praises the performers, costumes, and set design, but ultimately finds the play itself uninspired and unfunny, leading to a mixed assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic clearly states they found the play unfunny and uninspired, but acknowledges the audience was enjoying it and notes the strong production values and cast performances. | GPT-4o: The review praises the performances, costumes, and scenic design but criticizes the play as uninspired and unfunny. The critic acknowledges that others in the audience enjoyed it, indicating a mixed reception. | Gemini: The reviewer praises the performances, costumes, and set design, but ultimately states they \"could not get into the play itself.\" This indicates a mixed reaction, with some positive aspects but an overall lack of enjoyment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,30 +46,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T21:00:57.711Z",
+    "scoredAt": "2026-02-02T14:25:28.963Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 62,
-    "geminiScore": 62,
-    "claudeBucket": "Negative",
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 20,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 62,
   "textWordCount": 291,
@@ -92,5 +92,6 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250601032049/https://www.amny.com/entertainment/ambroadway-the-cottage-wins-yawns-instead-of-laughs/",
   "textIssues": [
     "Word count too low: 291 (min: 300)"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-02T14:25:28.963Z"
 }

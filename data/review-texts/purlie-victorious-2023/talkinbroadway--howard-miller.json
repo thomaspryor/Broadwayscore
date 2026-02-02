@@ -10,18 +10,18 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 79,
-    "confidence": "medium",
+    "score": 80,
+    "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic calls it 'an outstanding' production with 'uniformly splendid performances' and praises the direction as 'discerning.' Despite concerns about timeliness of the subject matter, the assessment of this production is clearly positive. | GPT-4o: The review uses strong positive language, describing the production as 'outstanding' with 'splendid performances,' indicating a highly enthusiastic recommendation. | Gemini: The review uses positive language like \"outstanding\" and \"splendid performances\", indicating a positive recommendation. However, the provided text is truncated, so the confidence is medium.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review consistently praises performances (calling Odom 'rip-roaring' and Young 'sublime'), commends the direction's 'rapid-fire slapstick and farcical timing', and concludes that audiences will 'leave the theater on a decidedly positive and hopeful note', clearly indicating a recommendation. | GPT-4o: The review praises the performances, direction, and overall production, highlighting the balance between comedy and a powerful message. The positive tone and the final recommendation indicate a strong endorsement of the show. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and design. The critic explicitly states that the production leaves the audience on a \"decidedly positive and hopeful note.\"",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,27 +42,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:53:16.711Z",
+    "scoredAt": "2026-02-02T14:24:35.899Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 90,
-    "geminiScore": 75,
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
@@ -93,12 +93,11 @@
   "sourceMethod": "brightdata",
   "archiveOrgTimestamp": "20251130070639",
   "archiveOrgUrl": "http://web.archive.org/web/20251130070639/https://www.talkinbroadway.com/page/world/index.html",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.976Z",
+  "rescoreCompletedAt": "2026-02-02T14:24:35.899Z",
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "needs-rescrape",
   "previousUrl": "https://www.talkinbroadway.com/page/world/index.html",
-  "needsRescore": true,
   "isFullReview": true,
   "textWordCount": 672,
   "textQuality": "full",
