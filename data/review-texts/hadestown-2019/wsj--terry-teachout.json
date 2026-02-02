@@ -72,8 +72,8 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 75,
   "textWordCount": 121,
-  "archivePath": "data/archives/reviews/hadestown/wsj--terry-teachout_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T16:04:56.548Z",
+  "archivePath": "data/archives/reviews/hadestown-2019/wsj--terry-teachout_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T23:20:23.830Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -87,6 +87,12 @@
       "method": "playwright",
       "success": false,
       "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Insufficient text: 0 chars"
     },
     {
       "tier": 2,
@@ -108,5 +114,7 @@
   "textIssues": [
     "Word count too low: 170 (min: 300)"
   ],
-  "rescoreCompletedAt": "2026-02-02T18:01:40.620Z"
+  "rescoreCompletedAt": "2026-02-02T18:01:40.620Z",
+  "wordCount": 121,
+  "tierReason": "Short text (121 words)"
 }
