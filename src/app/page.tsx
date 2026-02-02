@@ -328,9 +328,16 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
       {/* Score Badge */}
       <div className="flex-shrink-0 flex flex-col items-center gap-1.5 w-20 sm:w-24">
         {scoreMode === 'audience' ? (
-          // Audience mode: Show letter grade badge (matches critic score badge style)
+          // Audience mode: Show letter grade badge (matches critic score badge layout)
           audienceGrade ? (
-            <div className="flex flex-col items-center gap-1.5 w-full">
+            <>
+              <span
+                className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap"
+                style={{ color: audienceGrade.color }}
+                title={audienceGrade.tooltip}
+              >
+                {audienceGrade.tooltip}
+              </span>
               <div
                 className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-2xl sm:text-3xl rounded-xl font-bold"
                 style={{
@@ -342,12 +349,10 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
               >
                 {audienceGrade.grade}
               </div>
-            </div>
+            </>
           ) : show.status === 'previews' ? (
-            <div className="flex flex-col items-center gap-1.5 w-full">
-              <div className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-sm rounded-xl score-none font-bold text-gray-400">
-                TBD
-              </div>
+            <div className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-sm rounded-xl score-none font-bold text-gray-400">
+              TBD
             </div>
           ) : null
         ) : (
