@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 3/5 star rating and consistently positive language throughout indicate a solid recommendation. The critic praises the performances, direction, choreography, and emotional authenticity, calling it 'distinctly superior' and highlighting multiple standout elements. | GPT-4o: The review highlights the show's emotional authenticity, strong performances, and effective choreography, suggesting a positive experience despite familiar tropes. The original rating of 3/5 stars supports a positive but not overwhelming recommendation. The text is truncated, so the final verdict may be missing, leading to a medium confidence level. | Gemini: The review is mostly positive, highlighting the emotional authenticity, strong performances, and artful integration of Alicia Keys' songs. The 3/5 star rating also suggests a positive but not rave review. However, the truncated text makes it difficult to be completely confident in a higher score.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic consistently praises the show as 'distinctly superior,' highlights stellar performances and creative team work, and uses positive language throughout. The 3/5 star rating aligns with a solid positive recommendation. | GPT-4o: The review praises the emotional authenticity, creative team, and performances, particularly highlighting the choreography and cast. Despite the truncated text, the positive language and original 3/5 star rating suggest a positive recommendation with some reservations. | Gemini: The review is mostly positive, highlighting strong performances, choreography, and integration of Alicia Keys' music. The 3/5 star rating also suggests a positive but not rave review. However, the truncated text makes it difficult to assess the final verdict with complete certainty.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,16 +39,16 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:00:19.134Z",
+    "scoredAt": "2026-02-02T03:52:52.291Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 79,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 78,
+    "openaiScore": 80,
     "geminiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",

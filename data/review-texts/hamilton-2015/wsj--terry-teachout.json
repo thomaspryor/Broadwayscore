@@ -8,7 +8,7 @@
   "bwwExcerpt": "\"Hamilton\" is the best and most important Broadway musical of the past decade...there is nothing quaint about the deeply thoughtful way in which Mr. Miranda has interwoven the tension between Hamilton's personal ambition and sense of national mission with the parallel capacity of his fellow framers to balance realism with idealism. Check out, for instance, \"The Room Where It Happens,\" the spectacular second-act production number in which Aaron Burr (Leslie Odom Jr., who has star quality galore) schools the audience in how politicians get things done...the vaulting energy of Mr. Miranda's score sweeps all cavils aside, and Thomas Kail, Andy Blankenbuehler and David Korins, the director, choreographer and set designer, have successfully expanded the scale of the original production without making it top-heavy...The cast, led by Mr. Miranda in the title role, makes the same vibrant and youthful impression that it did downtown. Indeed, everybody in the show from the boss to the ushers exudes the confident air of show folk who know they've got themselves a hit.",
   "showScoreExcerpt": "\"'Hamilton' is the best and most important Broadway musical of the past decade. Why important? Because it sounds as though it had been written last week instead of a half-century ago...So do whatever you have to do short of grand larceny to score a ticket to 'Hamilton.' It’ll make you want to stand on your seat and yell with delight.\"",
   "originalScore": null,
-  "assignedScore": 95,
+  "assignedScore": 96,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAMILTON-Opens-on-Broadway-Updating-LIVE-20150806",
   "urlSource": "show-score",
@@ -17,11 +17,11 @@
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 95,
-    "confidence": "medium",
+    "score": 96,
+    "confidence": "high",
     "range": {
-      "low": 90,
-      "high": 100
+      "low": 91,
+      "high": 101
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic declares Hamilton the 'best and most important' musical of the decade and praises virtually every aspect - score, direction, choreography, cast, and production design - with superlatives like 'spectacular' and 'vibrant.' | GPT-4o: The review is overwhelmingly positive, describing 'Hamilton' as the best musical of the past decade and praising various aspects of the production, including the performances, direction, and score. The language used is indicative of a strong recommendation. | Gemini: Despite being truncated, the review excerpt is overwhelmingly positive, calling it the best and most important musical of the past decade and praising various aspects of the production.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic calls it the best musical of the decade, urges audiences to do whatever necessary to get tickets, and says it will make you want to 'yell with delight' - this is an unqualified rave recommendation. | GPT-4o: The review is overwhelmingly positive, describing 'Hamilton' as the best and most important musical of the past decade and urging readers to go to great lengths to see it, indicating a strong recommendation. | Gemini: The critic states it is the \"best and most important Broadway musical of the past decade\" and urges readers to do whatever it takes to get a ticket, indicating a rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,27 +42,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:04:05.353Z",
+    "scoredAt": "2026-02-02T03:49:36.401Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 98,
-    "previousVersion": "3.0.0"
+    "previousScore": 95,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 95,
-    "openaiScore": 95,
-    "geminiScore": 82,
+    "claudeScore": 96,
+    "openaiScore": 98,
+    "geminiScore": 95,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/hamilton-2015/wsj--terry-teachout_2026-02-02.html",
   "textFetchedAt": "2026-02-02T03:27:28.589Z",
@@ -89,7 +89,6 @@
   "garbageFixedAt": "2026-01-29T22:45:22.848Z",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 95,
   "fullText": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-1438907400\n\nShareResizeWatch excerpts from several numbers of \"Hamilton,\" the Broadway show by Lin-Manuel Miranda about Alexander Hamilton and the making of America. Photo: Radical MediaNew York\n\nLin-Manuel Miranda’s “Hamilton,” the multiracial rap musical about Alexander Hamilton and the making of America that sold out the Public Theater this spring, has now moved to Broadway, just in time to profit from the ruckus over the possible removal of its namesake from the $10 bill. Not that the show needed any more publicity: It was already a plutonium-hot ticket, stoked by ecstatic reviews of the premiere and acres of near-lascivious advance coverage. No matter what the critics say this time around, “Hamilton” seems a safe bet to occupy the Richard Rodgers Theatre forevermore.",
@@ -99,5 +98,6 @@
   "truncationSignals": [
     "shorter_than_excerpt"
   ],
-  "textStatus": "truncated"
+  "textStatus": "truncated",
+  "rescoreCompletedAt": "2026-02-02T03:49:36.401Z"
 }

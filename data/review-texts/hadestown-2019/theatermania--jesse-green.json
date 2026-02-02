@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Anaïs Mitchell's folk opera about love, loss, and capitalism is a triumph of theatrical storytelling that manages to be both ancient and urgently contemporary.",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 58,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,14 +17,14 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Anaïs Mitchell's folk opera about love, loss, and capitalism is a triumph of theatrical storytelling that manages to be both ancient and urgently contemporary.",
   "llmScore": {
-    "score": 92,
-    "confidence": "medium",
+    "score": 58,
+    "confidence": "high",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 53,
+      "high": 63
     },
-    "bucket": "Rave",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic explicitly calls the show 'a triumph' and praises it as both timeless and contemporary, indicating strong enthusiasm and recommendation. | GPT-4o: The review uses strong positive language, calling the show a 'triumph' and highlighting its effective storytelling, indicating a highly enthusiastic recommendation. | Gemini: The review uses the word \"triumph\" which indicates a very strong positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be primarily factual announcement content about the opening and cast/creative team rather than an actual review with critical evaluation. No clear recommendation or assessment is provided. | GPT-4o: The text provided is primarily descriptive, offering background information and cast details without an evaluative verdict. The absence of explicit recommendation or criticism leads to a mixed classification with low confidence due to lack of clear evaluative content. | Gemini: This review is mostly descriptive, providing background information about the show's plot, cast, and creative team. There is no clear recommendation or discouragement, making it difficult to assess the critic's overall opinion. The text is truncated, making it difficult to determine the final verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,31 +42,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:02:41.964Z",
+    "scoredAt": "2026-02-02T03:49:19.704Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 93,
-    "previousVersion": "5.0.0"
+    "previousScore": 92,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 95,
-    "geminiScore": 92,
-    "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 7,
+    "claudeScore": 60,
+    "openaiScore": 55,
+    "geminiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 92,
   "textWordCount": 364,
@@ -108,5 +107,6 @@
   "textIssues": [
     "Show title not found in text"
   ],
-  "showNotMentioned": true
+  "showNotMentioned": true,
+  "rescoreCompletedAt": "2026-02-02T03:49:19.704Z"
 }

@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is clearly positive throughout, praising performances, particularly highlighting Moon's 'marvelous Broadway debut' and calling the show a 'showcase' for talent. The critic appreciates the music, performances, and production elements, ending on a high note about the show making familiar things 'feel brand-new.' | GPT-4o: The review is overwhelmingly positive, highlighting the powerful performances, the effective use of Alicia Keys' music, and the emotional impact of the show. The critic's enthusiastic language and the description of audience reactions suggest a strong recommendation. | Gemini: The review highlights strong performances and Keys' music, but also mentions some thematic juggling that doesn't quite land. The overall tone is positive, suggesting it's worth seeing despite some reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises multiple aspects including performances, staging, and emotional impact, with specific callouts to 'marvelous' debuts and 'powerhouse' performances, concluding that the show makes familiar elements 'feel brand-new.' | GPT-4o: The review is overwhelmingly positive, highlighting the powerful performances, the effective use of Alicia Keys' music, and the vibrant staging. The critic's enthusiastic description of the audience's reaction and the transformative experience of the show supports a strong recommendation. | Gemini: The review highlights the strong performances and the effective use of Alicia Keys' music, while acknowledging some thematic juggling in the book. The overall tone is positive, suggesting the show is worth seeing despite potential flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:00:45.779Z",
+    "scoredAt": "2026-02-02T03:53:05.807Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 86,
-    "previousVersion": "2.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 92,
+    "openaiScore": 90,
     "geminiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

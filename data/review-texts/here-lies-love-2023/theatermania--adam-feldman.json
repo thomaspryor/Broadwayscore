@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The production succeeds in creating an immersive disco experience that makes the audience complicit in the glamour and corruption of the Marcos regime.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "The production succeeds in creating an immersive disco experience that makes the audience complicit in the glamour and corruption of the Marcos regime.",
   "needsScoring": true,
   "llmScore": {
-    "score": 76,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The word 'succeeds' indicates positive assessment of the production's achievement, though the complex subject matter and brief excerpt limit confidence in the full verdict. | GPT-4o: The review highlights the production's success in creating an immersive experience, indicating a positive recommendation. | Gemini: The review highlights the production's success in creating an immersive experience, indicating a positive assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review is primarily an interview format rather than a traditional review, but contains clear positive indicators: the production 'was worth the wait,' earned Tony nominations, and Morse notes that audiences 'can't speak' because they're 'so moved by this play,' indicating strong recommendation despite the unconventional format. | GPT-4o: The review highlights the power and emotional impact of the play, noting its strong performances and relevance, but it also discusses the challenges and fears associated with remounting the show. The overall tone suggests a positive reception, with some reservations about the subject matter and its portrayal. | Gemini: The critic states that the wait for the Broadway debut was worth it, indicating a positive recommendation. The review focuses on the play's impact and the actors' performances, further supporting this classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,23 +43,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:23:08.765Z",
+    "scoredAt": "2026-02-02T03:50:08.520Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 80,
-    "geminiScore": 75,
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 7,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -67,7 +67,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
   "textWordCount": 1803,
@@ -105,5 +104,6 @@
     "has_paywall_text"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "rescoreCompletedAt": "2026-02-02T03:50:08.520Z"
 }

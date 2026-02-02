@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic finds much to enjoy including stellar performances and energetic staging, but notes predictable plotting and some vocal issues. Overall tone is appreciative despite acknowledged flaws. | GPT-4o: The review highlights several positive aspects such as the performances, direction, and choreography, while noting some predictable elements in the plot and a few performance issues. Overall, it leans towards a positive recommendation with some reservations. | Gemini: The review highlights several positive aspects of the show, including strong performances and energetic choreography, but also points out predictable plot elements and some issues with the lead actress's singing. Overall, it leans towards a recommendation with reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic finds much to appreciate (great performances, strong direction, energetic choreography) while acknowledging the predictable plot and some vocal concerns, ultimately presenting it as worth seeing. | GPT-4o: The review highlights the show's energy, performances, and direction positively, despite noting some predictable elements in the narrative. The overall tone suggests a recommendation, albeit with some reservations about the book's predictability and the lead's vocal performance at the time of review. | Gemini: The review highlights several positive aspects of the show, including strong performances and energetic choreography, but also notes predictable plot elements and some broad characterizations. This suggests a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,12 +40,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:59:52.427Z",
+    "scoredAt": "2026-02-02T03:52:43.833Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 59,
-    "previousVersion": "3.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,

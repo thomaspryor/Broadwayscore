@@ -10,7 +10,7 @@
   "garbageReason": "URL hijacked by appliance removal spam site - not a theater review",
   "garbageFixedAt": "2026-02-01T12:00:00.000Z",
   "originalScore": null,
-  "assignedScore": 5,
+  "assignedScore": 78,
   "scoreStatus": "TO_BE_CALCULATED",
   "source": "show-score",
   "sourceMethod": "playwright",
@@ -22,30 +22,53 @@
     "invalidatedReason": "Scored on spam/garbage text (appliance removal site), not a theater review",
     "invalidatedAt": "2026-02-01T12:00:00.000Z"
   },
-  "llmScore": null,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review explicitly states 'Recommended' and praises performances and direction, but with only one excerpt available, I'm scoring conservatively in the positive range. | GPT-4o: The review excerpt highlights strong performances and effective direction, culminating in a clear recommendation. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Positive range. | Gemini: The review uses the explicit recommendation \"Recommended.\" and praises the direction and performances, indicating a positive but not rave review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:28:58.637Z",
+    "scoredAt": "2026-02-02T03:55:32.486Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
+    "previousScore": 5,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 0,
-    "openaiScore": 5,
-    "geminiScore": 10,
-    "claudeBucket": "Pan",
-    "openaiBucket": "Pan",
-    "geminiBucket": "Pan",
-    "scoreDelta": 10,
+    "claudeScore": 76,
+    "openaiScore": 79,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Pan"
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/drama-queen-nyc--jonathan-warman_2026-01-26.html",
   "textFetchedAt": "2026-01-26T22:26:17.313Z",

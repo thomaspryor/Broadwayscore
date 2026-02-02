@@ -9,18 +9,18 @@
   "dtliExcerpt": "The spotlighting of small things amid the noise and chaos of one of the biggest, loudest, flashiest cities in the world is what makes Hell’s Kitchen such a delight.",
   "showScoreExcerpt": "\"It’s not happily ever after, but a promising beginning.\"",
   "originalScore": null,
-  "assignedScore": 86,
+  "assignedScore": 81,
   "source": "dtli",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T21:59:47.002Z",
   "llmScore": {
-    "score": 86,
-    "confidence": "low",
+    "score": 81,
+    "confidence": "medium",
     "range": {
-      "low": 81,
-      "high": 91
+      "low": 76,
+      "high": 86
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The review is overwhelmingly positive, calling it a 'delight' and 'must-see,' praising every element from performances to production values. The critic uses superlative language throughout and describes multiple 'stunning' and 'star' performances. | Gemini: The review is overwhelmingly positive, praising the performances, choreography, and overall production. The critic highlights the emotional impact and storytelling, indicating a strong recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is overwhelmingly positive, praising the performances, direction, design, and storytelling with enthusiastic language like 'delight,' 'must-see,' and 'star.' The critic highlights exceptional elements across all aspects of the production. | GPT-4o: The review is overwhelmingly positive, highlighting the performances, direction, and production quality as exceptional. The critic uses enthusiastic language throughout, indicating a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, praising the performances, choreography, and overall production. While not a rave, it strongly recommends seeing the show, highlighting its delightful aspects and the emotional impact of the story.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:01:51.874Z",
+    "scoredAt": "2026-02-02T03:53:27.165Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "2.0.0"
+    "previousScore": 86,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": null,
+    "claudeScore": 82,
+    "openaiScore": 95,
     "geminiScore": 80,
-    "claudeBucket": "Rave",
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "sourceMethod": "archive",
   "archivePath": "data/archives/reviews/hells-kitchen-2024/theatermania--zachary-stewart_2026-01-27.html",

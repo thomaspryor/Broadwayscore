@@ -9,7 +9,7 @@
   "bwwExcerpt": "ngs and her greatest hits. BroadwayWorld has pulled together the reviews from New York City s theatre critics. Check out what they re saying about Hell s Kitchen below! Photo credit: Marc J. Franklin Elisabeth Vincentelli, New York Times: The most exciting complement to the music is the choreography by Camille A. Brown, a Tony Award nominee for “Choir Boy” and “For Colored Girls Who Have Considered Suicide/When the Rainbow Is Enuf.” The movement pulses with life and is fully integrated into the show’s overall aesthetics, but it’s the attention to detail that’s memorable. As is standard for Broadway these days, the dancing is ensemble-based, but Brown and her troupe brilliantly find the individual in the group, and each one exists, like the dancer blowing gum bubbles in the middle of a number. There is, always, a sense of the person within a community, as with Ali growing up in a village known as Manhattan Plaza. That she’s back in the old neighborhood feels just right. Aramide Timubu,",
   "showScoreExcerpt": "\"CRITIC’S PICK:...easily stands out as one of the rare must-sees in a crowded season.\"",
   "originalScore": null,
-  "assignedScore": 90,
+  "assignedScore": 91,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HELLS-KITCHEN-Opens-On-Broadway-20240421",
@@ -21,11 +21,11 @@
   "dtliExcerpt": "“Hell’s Kitchen” has earned its place on Broadway: The revised show is thrilling from beginning to end, and easily stands out as one of the rare must-sees in a crowded season.",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 90,
-    "confidence": "high",
+    "score": 91,
+    "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 95
+      "low": 86,
+      "high": 96
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: Despite opening concerns about the original production, the critic explicitly declares this revised version 'thrilling from beginning to end' and 'one of the rare must-sees in a crowded season,' with enthusiastic praise for performances, technical elements, and choreography throughout. | Gemini: The critic explicitly states the show \"has earned its place on Broadway\" and is \"one of the rare must-sees,\" indicating a strong positive recommendation. The review also highlights significant improvements from its previous iteration.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic explicitly calls it a 'must-see' and describes the revised show as 'thrilling from beginning to end' despite initial concerns about the earlier version. | GPT-4o: The review praises the production as thrilling and a must-see, highlighting improvements and strong performances, indicating a highly enthusiastic recommendation. | Gemini: The review explicitly states the show is \"thrilling from beginning to end\" and \"one of the rare must-sees\", indicating a rave recommendation. The critic also highlights significant improvements from the previous version.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,26 +46,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:01:00.081Z",
+    "scoredAt": "2026-02-02T03:53:09.984Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 94,
-    "previousVersion": "3.0.0"
+    "previousScore": 90,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": null,
-    "geminiScore": 92,
+    "claudeScore": 89,
+    "openaiScore": 95,
+    "geminiScore": 90,
     "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 4,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/hells-kitchen-2024/nyt--elisabeth-vincentelli_2026-01-26.html",
   "textFetchedAt": "2026-01-26T15:39:59.989Z",

@@ -9,15 +9,15 @@
   "bwwExcerpt": "Pay attention to those loud, annoying cicadas – they seem to have a story to tell. At least they do in Branden Jacobs-Jenkins superb, marvelously performed Appropriate, the Second Stage production opening tonight at the Helen Hayes Theater with one of the best casts – headed by an astonishing Sarah Paulson – on Broadway. A blistering family drama directed by Lila Neugebauer (easily matching her exemplary work in 2018’s The Waverly Gallery), Appropriate is a wicked cacophony of nerve-wrenching my",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217",
   "originalScore": null,
-  "assignedScore": 91,
+  "assignedScore": 93,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 91,
-    "confidence": "medium",
+    "score": 93,
+    "confidence": "high",
     "range": {
-      "low": 86,
-      "high": 96
+      "low": 88,
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language throughout - 'superb', 'astonishing', 'one of the best casts on Broadway', 'exemplary work', and describes the ending as having 'remarkable emotional force and stunning stagecraft', indicating a clear must-see recommendation. | GPT-4o: The review uses highly enthusiastic language, praising the direction, cast, and emotional impact of the play, indicating a strong recommendation. | Gemini: The review uses strong positive language like \"superb\" and \"marvelously performed\" and praises the cast, indicating a strong recommendation. The additional context further emphasizes the positive aspects of the production.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review uses multiple superlative terms ('superb', 'astonishing', 'exemplary', 'one of the best casts') and praises every element from writing to direction to performances, concluding with high praise for the ending's emotional force and stagecraft. | GPT-4o: The review is filled with superlatives such as 'superb', 'marvelously performed', and 'astonishing', indicating a strong, enthusiastic recommendation. The critic praises the direction, cast, and emotional impact, suggesting it is a must-see production. | Gemini: The review uses extremely positive language like \"superb,\" \"marvelously performed,\" \"one of the best casts,\" and \"astonishing Sarah Paulson,\" clearly indicating a rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:46:06.535Z",
+    "scoredAt": "2026-02-02T03:49:06.510Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
-    "previousVersion": "3.0.0"
+    "previousScore": 91,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 90,
-    "openaiScore": 92,
-    "geminiScore": 82,
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "“...’Appropriate’ provides an ending that’s remarkable in its emotional force and stunning in its stagecraft. Neugebauer, Jacobs-Jenkins and their very fine cast resurrect the spirits of history and leave them abandoned, clamorous, implacable and going nowhere anytime soon.”",
@@ -69,7 +69,6 @@
   ],
   "contentTier": "truncated",
   "wordCount": 52,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 91,
   "isFullReview": false,
@@ -92,5 +91,6 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240108155540",
-  "archiveOrgUrl": "http://web.archive.org/web/20240108155540/https://deadline.com/2023/12/appropriate-broadway-review-1235671187/"
+  "archiveOrgUrl": "http://web.archive.org/web/20240108155540/https://deadline.com/2023/12/appropriate-broadway-review-1235671187/",
+  "rescoreCompletedAt": "2026-02-02T03:49:06.510Z"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Hamilton is a musical that makes the impossible seem inevitable. Lin-Manuel Miranda has created a work that is both historically grounded and utterly contemporary, transforming the story of America's founding into something that feels urgently relevant to our current moment.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 58,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,14 +17,14 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Hamilton is a musical that makes the impossible seem inevitable. Lin-Manuel Miranda has created a work that is both historically grounded and utterly contemporary, transforming the story of America's founding into something that feels urgently relevant to our current moment.",
   "llmScore": {
-    "score": 79,
-    "confidence": "medium",
+    "score": 58,
+    "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 53,
+      "high": 63
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong praise for Miranda's achievement with language like 'impossible seem inevitable' and 'urgently relevant' indicates high enthusiasm and clear recommendation. | GPT-4o: The review uses highly enthusiastic language, describing the show as both 'historically grounded' and 'utterly contemporary', and emphasizes its relevance, indicating a strong recommendation. | Gemini: The review praises the musical's impact and relevance, indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This text appears to be an event announcement about the Lilly Awards ceremony rather than a theater review, making it impossible to determine any critical recommendation about a specific show. | GPT-4o: The text provided is largely unrelated to a specific review and seems to be a mix of event announcements and unrelated review titles. Without clear evaluative content, the classification is tentative and based on the assumption of mixed signals. | Gemini: This appears to be a collection of headlines and announcements, not a review of a single show. The presence of multiple show titles and descriptions indicates a mixed bag of content, not a cohesive review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,31 +42,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:02:35.193Z",
+    "scoredAt": "2026-02-02T03:49:28.018Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 93,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 83,
-    "openaiScore": 95,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 20,
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 55,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (40 words)",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
   "textWordCount": 301,
@@ -108,5 +107,6 @@
   "textIssues": [
     "Show title not found in text"
   ],
-  "showNotMentioned": true
+  "showNotMentioned": true,
+  "rescoreCompletedAt": "2026-02-02T03:49:28.018Z"
 }

@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite criticizing the weak book and lack of dramatic conflict, the critic praises the cast as perfect and calls it 'very high end' with 'top notch' production values, indicating an overall positive recommendation. | GPT-4o: The review praises the cast and production elements highly, indicating a positive experience. However, it notes a lack of depth in the book and character development, suggesting some reservations. | Gemini: The review praises the cast and production elements but notes the book lacks depth and drama. This suggests a positive but not rave recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite criticizing the book as lacking drama and having cardboard characters, the critic praises the cast as couldn't be better and calls it a very high end production with top notch direction, choreography, and design elements. | GPT-4o: The review praises the cast and production elements highly, indicating a positive experience. However, there are reservations about the book and character depth, suggesting it's not a rave. | Gemini: The review praises the cast and production elements but criticizes the book and lack of dramatic conflict. Overall, it leans towards a positive recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,12 +39,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:58:37.307Z",
+    "scoredAt": "2026-02-02T03:52:09.876Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 71,
-    "previousVersion": "3.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,

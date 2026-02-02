@@ -40,7 +40,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B+ rating and use of 'remarkable' and 'fresh' indicate a positive recommendation, though limited excerpt prevents higher confidence assessment. | GPT-4o: The original rating of B+ indicates a strong positive sentiment. The key quote highlights the show's ability to present a familiar story in a fresh way, suggesting a positive and enthusiastic recommendation. | Gemini: The B+ rating and the quote suggest a positive, but not rave, review. The critic acknowledges familiarity but praises the freshness, indicating a recommendation with some reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B+ rating and use of 'remarkable' and 'fresh' indicate clear recommendation, though limited excerpts prevent full assessment of enthusiasm level. | GPT-4o: The original rating of B+ strongly suggests a positive review. The excerpt highlights the show's ability to make a familiar story feel fresh, indicating a strong recommendation. Aggregator context supports this positive assessment. | Gemini: The critic's B+ rating and the positive quote suggest a recommendation, though perhaps with some reservations given the 'familiar' story.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,12 +50,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:59:20.499Z",
+    "scoredAt": "2026-02-02T03:52:28.364Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "3.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,

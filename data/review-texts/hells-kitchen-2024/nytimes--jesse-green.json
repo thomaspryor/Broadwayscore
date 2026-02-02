@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the musical's authenticity and warmth, using positive descriptors like 'genuine' and appreciating both 'grit and poetry,' indicating a solid recommendation though lacking stronger superlatives. | GPT-4o: The review highlights the show's ability to convey warmth and authenticity, suggesting a positive impression. However, the lack of explicit recommendation language makes the confidence medium. | Gemini: The review uses positive language like \"genuine warmth and authenticity\" to describe the musical, indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses positive descriptors like 'genuine warmth and authenticity' but appears to be a brief excerpt rather than a full review, limiting confidence in the overall assessment. | GPT-4o: The review highlights the musical's ability to capture its setting with warmth and authenticity, suggesting a positive reception. However, the text is brief, leading to a medium confidence level. | Gemini: The review uses positive language like \"genuine warmth and authenticity,\" suggesting a positive experience and recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,12 +43,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:01:03.756Z",
+    "scoredAt": "2026-02-02T03:53:12.751Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,

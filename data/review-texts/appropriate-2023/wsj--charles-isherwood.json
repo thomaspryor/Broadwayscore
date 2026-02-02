@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic uses dismissive language ('picked over. And over, and over') and emphasizes excessive length as a negative, suggesting the production is tedious and not recommended. | GPT-4o: The review excerpt suggests a repetitive and potentially tedious experience, but without a full verdict, it leans towards a mixed impression. The critique of the play's length and repetitive nature implies some dissatisfaction, but the lack of explicit negative language suggests it isn't entirely dismissive. | Gemini: The review excerpt suggests the play is long and repetitive, indicating a mixed or slightly negative sentiment. Given the single excerpt warning, I'm scoring conservatively within the Mixed bucket.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic emphasizes repetitive, tedious plotting and excessive length as major flaws. The dismissive tone about secrets being 'picked over. And over, and over' suggests frustration with the production's pacing and structure. | GPT-4o: The excerpt suggests a critique of the play's length and repetitive nature, indicating a mixed reception. The lack of positive language and the focus on the play's exhaustive nature suggest neither a strong recommendation nor a strong discouragement. | Gemini: The review excerpt suggests the play is long and repetitive, which indicates a mixed or slightly negative sentiment. Given the single excerpt warning, I'm scoring it in the middle of the 'Mixed' bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:48:39.055Z",
+    "scoredAt": "2026-02-02T03:49:09.700Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 44,
-    "previousVersion": "3.0.0"
+    "previousScore": 59,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
+    "claudeScore": 45,
     "openaiScore": 60,
     "geminiScore": 58,
     "claudeBucket": "Negative",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 18,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -62,7 +62,6 @@
   },
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 59,
   "isFullReview": true,
@@ -90,5 +89,6 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240402233254/https://www.wsj.com/articles/appropriate-review-drama-coded-into-its-dna-42f5e6db",
   "textIssues": [
     "Word count too low: 293 (min: 300)"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-02T03:49:09.700Z"
 }

@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges the story is 'so-so' and 'cursory' but emphasizes that the strong performances and choreography overcome these flaws, indicating a positive recommendation with reservations. | GPT-4o: The review highlights strong performances and choreography, which compensate for a less compelling story. The overall tone suggests a positive experience, though not without its flaws. | Gemini: The review highlights positive aspects like choreography and vocals, but also notes a \"so-so story,\" indicating a recommendation with reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges story flaws but emphasizes that strong performances and choreography overcome these weaknesses, indicating a recommendation despite reservations. | GPT-4o: The review highlights strong performances and choreography as redeeming qualities, despite a weaker storyline. The overall tone suggests it's worth seeing for these elements, but with some reservations about the narrative depth. | Gemini: The review highlights positive aspects like choreography and vocal performances but also notes a weaker story, indicating a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,21 +37,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:58:34.234Z",
+    "scoredAt": "2026-02-02T03:52:04.340Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 70,
-    "previousVersion": "5.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
+    "claudeScore": 73,
     "openaiScore": 74,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
