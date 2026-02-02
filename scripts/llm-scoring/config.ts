@@ -37,7 +37,10 @@ export function clampScoreToBucket(score: number, bucket: string): number {
   return Math.max(range.min, Math.min(range.max, score));
 }
 
-// Legacy V3 score anchors (kept for backward compatibility)
+/**
+ * @deprecated Use BUCKET_RANGES with SYSTEM_PROMPT_V5 instead.
+ * These V3 ranges conflict with V5 bucket definitions.
+ */
 export const SCORE_ANCHORS = {
   RAVE: {
     range: [90, 100],
@@ -144,15 +147,7 @@ export const FEW_SHOT_EXAMPLES: FewShotExample[] = [
     reasoning: '4/5 stars with clear praise for performances and design. 4 stars = 75-88 range.'
   },
 
-  // POSITIVE example (score: 82)
-  {
-    reviewExcerpt: `June Squibb brings a lovable feistiness to the role of Marjorie, while Danny Burstein delivers another remarkable performance. The play raises fascinating questions about memory and identity in the age of AI. Some scenes drag slightly in the second half, but the ensemble work elevates the material throughout.`,
-    score: 82,
-    bucket: 'Positive',
-    reasoning: 'Clear praise for performances and themes, minor caveat about pacing, overall positive recommendation.'
-  },
-
-  // NEGATIVE-SETUP-POSITIVE-VERDICT example (score: 78)
+  // NEGATIVE-SETUP-POSITIVE-VERDICT example (score: 78) - instructional
   {
     reviewExcerpt: `When "Suffs" premiered at the Public Theatre two years ago, it was a didactic, dull, overstuffed mess. That it would come back, and on Broadway, wasn't a thrilling prospect. And while it did not magically morph into a great show, Version 2.0 is tighter, more confident, often rousing and downright entertaining. We can only rejoice that the creative team did not back down.`,
     score: 78,
@@ -176,28 +171,36 @@ export const FEW_SHOT_EXAMPLES: FewShotExample[] = [
     reasoning: 'Balanced positive (performances) and negative (dated material), no clear recommendation, suggests conditional interest.'
   },
 
-  // 2-STAR example (score: 45) - negative despite some praise
+  // 2-STAR "PRAISE PERFORMER, PAN SHOW" example (score: 40) - Lempicka / NYSR
   {
-    reviewExcerpt: `A monumentally silly show. Elder viewers reared on the comparatively subtle writing of Charles Busch are likely to find Escola's slapdash artistry crude, but there's no denying he snags laughs. I blush to admit that Escola is an artist new to me and their charm eludes me so far. The script may be flimsy. (2/5 stars)`,
-    score: 45,
+    reviewExcerpt: `Power-contralto Eden Espinosa strives mightily to keep Lempicka – an overstuffed, formulaic musical – in forward motion, to mixed effect. Amber Iman's shining moment as Rafaela is worth the overall tedium of admission. But the show plugs along like a Bugatti in need of a lube job — Lempicka deserves — deserved — better. (2/5 stars)`,
+    score: 40,
     bucket: 'Negative',
-    reasoning: '2/5 stars despite acknowledging some laughs. Personal criticism ("charm eludes me", "flimsy script") signals negative. 2 stars = 35-55 range.'
+    reasoning: '2/5 stars. The critic praises individual performers (Espinosa, Iman) but finds the show itself "overstuffed, formulaic" and tedious. PERFORMER PRAISE DOES NOT REDEEM A PAN — score the overall verdict, not the best element.'
   },
 
-  // MIXED-NEGATIVE example (score: 42)
+  // MEASURED NEGATIVE example (score: 42) - Back to the Future / NYSR
   {
-    reviewExcerpt: `Despite a game cast giving their all, the production never finds its footing. The second act drags interminably, the songs are forgettable, and the direction seems uncertain whether to play it campy or sincere. A few bright moments, particularly in the Act One finale, aren't enough to save the evening.`,
+    reviewExcerpt: `This adaptation is less a musical than a two-and-a-half-hour theme park ride with songs, offering as much sensory overload as an afternoon at Magic Kingdom. The turbo-charged tunes are memorable mostly for the affable banality of their lyrics. Roger Bart's considerable comedic gifts are pretty much relegated to reproducing shtick. A day pass to Six Flags might prove a better bargain. (2/5 stars)`,
     score: 42,
     bucket: 'Negative',
-    reasoning: 'Predominantly negative with structural and creative criticisms, only isolated praise, cannot recommend.'
+    reasoning: '2/5 stars. Measured but clearly negative: compares show to theme park, calls lyrics "banally affable," suggests cheaper alternatives. Even acknowledging performers, the recommendation is clearly against.'
   },
 
-  // NEGATIVE example (score: 30)
+  // DEVASTATING PAN example (score: 15) - Lempicka / NY Post
   {
-    reviewExcerpt: `What should be a thrilling evening of theater is instead a tedious slog through underwritten characters and predictable plot beats. The performers seem stranded by the material, forced to emote wildly to compensate for the script's emptiness. By intermission, half the audience had checked out. I understand why.`,
-    score: 30,
+    reviewExcerpt: `What "Lempicka" needs more than anything else is turpentine. The ugly splatter that audiences are left to parse is a ridiculous two-and-a-half-hour Eurovision act with stratospheric delusions of grandeur. The book is incoherent, tonally unhinged. Espinosa and Iman have no chemistry — this pair isn't even in the same room. It's hard to believe this muck is directed by the talented Chavkin.`,
+    score: 15,
     bucket: 'Pan',
-    reasoning: 'Harshly critical of script, direction, and overall experience. Notes audience disengagement. Clear pan.'
+    reasoning: 'Devastating pan. Calls it "ugly splatter," "muck," "incoherent." No redeeming qualities offered. Deep Pan range (10-20).'
+  },
+
+  // 1-STAR PAN ANCHOR example (score: 18) - Queen of Versailles / Culture Sauce
+  {
+    reviewExcerpt: `A tone-deaf celebration of all-American affluenza that can never resolve how we should feel about the vain, misguided woman at its center. The book lifts from the documentary but fails to dramatize any of it. Songs are pleasant but mostly unmemorable. There's a hollowness to this enterprise that's inescapable. This ill-timed trudge of a show seems content to watch her eat cake. (1/5 stars)`,
+    score: 18,
+    bucket: 'Pan',
+    reasoning: '1/5 stars. "Tone-deaf," "hollow," "ill-timed trudge." Even acknowledging the star\'s performance, the verdict is total rejection. 1 star = deep Pan range (10-25).'
   }
 ];
 
@@ -205,7 +208,7 @@ export const FEW_SHOT_EXAMPLES: FewShotExample[] = [
 // PROMPT TEMPLATES
 // ========================================
 
-export const PROMPT_VERSION = '5.1.0';
+export const PROMPT_VERSION = '5.2.0';
 
 // Gemini calibration offset (adjust if Gemini has systematic bias)
 export const GEMINI_CALIBRATION_OFFSET = 0;
@@ -269,6 +272,34 @@ Reasoning: ${ex.reasoning}
 
 export const SYSTEM_PROMPT_V5 = `You are a Broadway theater critic review scorer. Your task is to determine how strongly a critic recommends seeing a show based on their review text.
 
+## Step 0: Is This Text Scoreable?
+
+Before scoring, check if this text is actually a scoreable review of the target show. If ANY of the following apply, DO NOT score — return a rejection instead:
+
+| Rejection Reason | Description |
+|-----------------|-------------|
+| wrong_show | Text is about a completely different show or topic |
+| wrong_production | Reviews an off-Broadway, touring, or previous production — not the current Broadway run |
+| not_a_review | Press release, plot summary with no evaluation, cast listing, or promotional content |
+| garbage_text | Navigation menus, error pages, ad copy, login prompts, or other non-article content |
+
+The following are NOT rejections — score them, but with reduced confidence:
+
+| Situation | How to Handle |
+|-----------|--------------|
+| **Multi-show roundup** | Score the portion about the target show. Set confidence to "low" if less than ~150 words about it. |
+| **Truncated text** | Score what's available. Set confidence to "low" if the verdict/conclusion appears cut off. |
+| **Excerpt only** | Score the excerpt. Set confidence to "low". |
+
+If rejecting, respond with ONLY this JSON:
+{
+  "scoreable": false,
+  "rejection": "wrong_show",
+  "reasoning": "Brief explanation of why this is not scoreable"
+}
+
+If scoreable, proceed to Step 1.
+
 ## Step 1: Choose the Bucket
 
 Classify the review into ONE of these buckets:
@@ -316,16 +347,23 @@ Spread scores across the full bucket range based on recommendation strength.
 
 6. **EVALUATIVE TEXT IS NOT PLOT SUMMARY**: When a critic describes performances ("delivers a powerful turn"), staging choices ("the set crackles with energy"), or production quality ("the direction keeps things moving"), this IS evaluative content even if it reads descriptively. Do not dismiss such passages as "plot summary" or "cast listing."
 
+## Negative Review Patterns
+
+**PERFORMER PRAISE DOES NOT REDEEM A PAN.** A critic saying "despite a game cast giving their all" or "the lead delivers a committed performance" while panning the book, direction, and overall experience is writing a NEGATIVE review. Score the overall verdict, not the best individual element.
+
+**USE THE FULL PAN RANGE (0-34).** Reviews that question why a show exists, warn audiences away, or find no redeeming qualities should score 10-20. Reserve 25-34 for pans that acknowledge isolated bright spots.
+
 ## Output Format
 
 Respond with ONLY this JSON (no markdown code fences, no explanation outside the JSON):
 
 {
+  "scoreable": true,
   "bucket": "Positive",
   "score": 79,
   "confidence": "high",
   "verdict": "recommended with reservations",
-  "keyQuote": "The most indicative phrase from the review",
+  "keyQuote": "One COMPLETE SENTENCE (40-150 chars) where the critic directly evaluates the show — an opinion, not plot summary or context. Prefer mid-review verdicts over opening scene-setting.",
   "reasoning": "1-2 sentences explaining your classification"
 }
 
@@ -341,6 +379,16 @@ Good verdict formats:
 - **high**: Clear verdict language, unambiguous tone
 - **medium**: Some ambiguity but overall direction is clear
 - **low**: Genuinely mixed signals, or truncated text with unclear verdict
+
+## Calibration Examples
+
+${FEW_SHOT_EXAMPLES.map((ex, i) => `### Example ${i + 1}: Score ${ex.score} (${ex.bucket})
+Review: "${ex.reviewExcerpt}"
+Reasoning: ${ex.reasoning}
+`).join('\n')}
+### Example: Not Scoreable
+Text: "The page you are looking for no longer exists. Perhaps you can return back to the homepage..."
+Response: { "scoreable": false, "rejection": "garbage_text", "reasoning": "This is a 404 error page, not a review." }
 `;
 
 export const SCORING_PROMPT_V5 = `Score this Broadway review.
@@ -389,8 +437,11 @@ Analyze this review and respond with a JSON object containing:
    - music (0-100 or null): Songs/music quality (musicals only)
    - performances (0-100 or null): Acting quality
    - direction (0-100 or null): Direction/design/production
-7. **keyPhrases**: 2-3 quotes from the review that most indicate sentiment
-   - Each with: quote, sentiment ("positive" | "negative" | "neutral"), strength (1-5)
+7. **keyPhrases**: 2-3 COMPLETE SENTENCES from the review where the critic directly evaluates the show's quality. These will be displayed as the public-facing review excerpt.
+   - Pick sentences with clear opinion/judgment (e.g., "This is a stunning achievement" or "The show stumbles in its second act"), NOT plot summary, historical context, or production credits
+   - Each quote should be 40-150 characters, be a full grammatical sentence (not a fragment), and make sense without surrounding context
+   - Prefer sentences from the middle or end of the review where critics typically state their verdict, not opening scene-setting paragraphs
+   - Each with: quote (exact text from review), sentiment ("positive" | "negative" | "neutral"), strength (1-5)
 8. **reasoning**: One sentence explaining your score
 9. **flags**: Boolean flags
    - hasExplicitRecommendation: Does critic explicitly say "see it" or "skip it"?
