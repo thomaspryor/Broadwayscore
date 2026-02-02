@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getAllShows, getAudienceBuzz, getAudienceBuzzLastUpdated, AudienceBuzzData } from '@/lib/data';
+import { getAllShows, getAudienceBuzz, getAudienceBuzzLastUpdated, AudienceBuzzData, getAudienceGrade } from '@/lib/data';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ComputedShow } from '@/lib/engine';
@@ -43,21 +43,28 @@ const faqSchema = {
     },
     {
       '@type': 'Question',
-      name: 'What do the Audience Scorecard designations mean?',
+      name: 'What do the Audience Scorecard grades mean?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Shows are categorized as: Loving It (88-100) - audiences adore it, Liking It (78-87) - solid positive reception, Shrugging (68-77) - mixed or lukewarm response, Loathing It (0-67) - audiences dislike it.',
+        text: 'Shows receive a letter grade from A+ (93-100, audiences love it) through F (below 48, audiences dislike it). The scale includes A/A- for strong reception, B+/B/B- for solid to mixed reception, and C+/C/C-/D for below-average to poor reception.',
       },
     },
   ],
 };
 
-const designationConfig: Record<string, { emoji: string; color: string; bgColor: string; displayLabel: string }> = {
-  'Loving': { emoji: '❤️', color: 'text-red-400', bgColor: 'bg-red-500/15', displayLabel: 'Loving It' },
-  'Liking': { emoji: '👍', color: 'text-emerald-400', bgColor: 'bg-emerald-500/15', displayLabel: 'Liking It' },
-  'Shrugging': { emoji: '🤷', color: 'text-yellow-400', bgColor: 'bg-yellow-500/15', displayLabel: 'Shrugging' },
-  'Loathing': { emoji: '💩', color: 'text-gray-400', bgColor: 'bg-gray-500/15', displayLabel: 'Loathing It' },
-};
+const gradeScale = [
+  { grade: 'A+', range: '93-100', color: '#22c55e' },
+  { grade: 'A', range: '88-92', color: '#16a34a' },
+  { grade: 'A-', range: '83-87', color: '#14b8a6' },
+  { grade: 'B+', range: '78-82', color: '#0ea5e9' },
+  { grade: 'B', range: '73-77', color: '#f59e0b' },
+  { grade: 'B-', range: '68-72', color: '#f97316' },
+  { grade: 'C+', range: '63-67', color: '#ef4444' },
+  { grade: 'C', range: '58-62', color: '#dc2626' },
+  { grade: 'C-', range: '53-57', color: '#b91c1c' },
+  { grade: 'D', range: '48-52', color: '#991b1b' },
+  { grade: 'F', range: '<48', color: '#6b7280' },
+];
 
 export default function AudienceBuzzPage() {
   const allShows = getAllShows();
@@ -73,11 +80,11 @@ export default function AudienceBuzzPage() {
     .filter(item => item.buzz && item.buzz.combinedScore > 0)
     .sort((a, b) => (b.buzz?.combinedScore || 0) - (a.buzz?.combinedScore || 0));
 
-  // Group by designation
-  const byDesignation = showsWithBuzz.reduce((acc, item) => {
-    const designation = item.buzz?.designation || 'Unknown';
-    if (!acc[designation]) acc[designation] = [];
-    acc[designation].push(item);
+  // Group by grade
+  const byGrade = showsWithBuzz.reduce((acc, item) => {
+    const grade = item.buzz ? getAudienceGrade(item.buzz.combinedScore).grade : 'Unknown';
+    if (!acc[grade]) acc[grade] = [];
+    acc[grade].push(item);
     return acc;
   }, {} as Record<string, typeof showsWithBuzz>);
 
@@ -99,7 +106,7 @@ export default function AudienceBuzzPage() {
     { name: 'Audience Scorecard', url: `${BASE_URL}/audience-buzz` },
   ]);
 
-  const designationOrder = ['Loving', 'Liking', 'Shrugging', 'Loathing'];
+  const aGradeCount = (byGrade['A+']?.length || 0) + (byGrade['A']?.length || 0) + (byGrade['A-']?.length || 0);
 
   return (
     <>
@@ -127,23 +134,21 @@ export default function AudienceBuzzPage() {
           </p>
         </div>
 
-        {/* Designation Legend */}
+        {/* Grade Scale Legend */}
         <section className="mb-8">
-          <h2 className="text-lg font-bold text-white mb-3">Audience Designations</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {designationOrder.map(designation => (
-              <div key={designation} className={`card p-3 ${designationConfig[designation].bgColor} border-transparent`}>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-2xl">{designationConfig[designation].emoji}</span>
-                  <span className={`font-semibold ${designationConfig[designation].color}`}>{designationConfig[designation].displayLabel}</span>
-                </div>
-                <p className="text-xs text-gray-400">
-                  {designation === 'Loving' && '88-100 score'}
-                  {designation === 'Liking' && '78-87 score'}
-                  {designation === 'Shrugging' && '68-77 score'}
-                  {designation === 'Loathing' && '0-67 score'}
-                </p>
-                <p className="text-xs text-gray-500 mt-1">{byDesignation[designation]?.length || 0} shows</p>
+          <h2 className="text-lg font-bold text-white mb-3">Audience Grade Scale</h2>
+          <div className="flex flex-wrap gap-2">
+            {gradeScale.map(g => (
+              <div
+                key={g.grade}
+                className="card px-3 py-2 border-transparent flex items-center gap-2"
+                style={{ backgroundColor: `${g.color}15` }}
+              >
+                <span className="text-sm font-bold" style={{ color: g.color }}>{g.grade}</span>
+                <span className="text-xs text-gray-500">{g.range}</span>
+                {byGrade[g.grade] && (
+                  <span className="text-xs text-gray-600">({byGrade[g.grade].length})</span>
+                )}
               </div>
             ))}
           </div>
@@ -156,8 +161,8 @@ export default function AudienceBuzzPage() {
             <div className="text-xs text-gray-500 mt-1">Average Score</div>
           </div>
           <div className="card p-4 text-center">
-            <div className="text-2xl font-bold text-red-400">{byDesignation['Loving']?.length || 0}</div>
-            <div className="text-xs text-gray-500 mt-1">Shows Audiences Love</div>
+            <div className="text-2xl font-bold text-green-400">{aGradeCount}</div>
+            <div className="text-xs text-gray-500 mt-1">A-Range Shows</div>
           </div>
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-gray-400">{totalReviews.toLocaleString()}</div>
@@ -193,19 +198,23 @@ export default function AudienceBuzzPage() {
           <AudienceBuzzTable data={showsWithBuzz} />
         </section>
 
-        {/* By Designation Breakdown */}
+        {/* By Grade Breakdown */}
         <section className="mb-12">
-          <h2 className="text-xl font-bold text-white mb-4">Shows by Designation</h2>
+          <h2 className="text-xl font-bold text-white mb-4">Shows by Grade</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {designationOrder.map(designation => {
-              const shows = byDesignation[designation] || [];
+            {gradeScale.map(g => {
+              const shows = byGrade[g.grade] || [];
               if (shows.length === 0) return null;
               return (
-                <div key={designation} className="card p-4">
+                <div key={g.grade} className="card p-4">
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="text-xl">{designationConfig[designation].emoji}</span>
-                    <h3 className={`font-bold ${designationConfig[designation].color}`}>{designation}</h3>
-                    <span className="text-gray-500 text-sm">({shows.length})</span>
+                    <span
+                      className="inline-flex items-center justify-center w-9 h-9 rounded-lg text-sm font-black"
+                      style={{ color: g.color, backgroundColor: `${g.color}20` }}
+                    >
+                      {g.grade}
+                    </span>
+                    <span className="text-gray-500 text-sm">{g.range} · {shows.length} shows</span>
                   </div>
                   <ul className="space-y-1">
                     {shows.slice(0, 8).map(item => (

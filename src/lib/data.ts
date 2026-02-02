@@ -688,7 +688,47 @@ export function getShowsByAudienceBuzz(limit = 10): Array<{ showId: string; data
 }
 
 /**
+ * Compute audience letter grade from combinedScore.
+ * Grade scale shifted down 2 points from standard academic.
+ */
+export function getAudienceGrade(score: number): {
+  grade: string;
+  color: string;
+  tooltip: string;
+} {
+  if (score >= 93) return { grade: 'A+', color: '#22c55e', tooltip: 'Audiences love it' };
+  if (score >= 88) return { grade: 'A', color: '#16a34a', tooltip: 'Audiences love it' };
+  if (score >= 83) return { grade: 'A-', color: '#14b8a6', tooltip: 'Strong audience reception' };
+  if (score >= 78) return { grade: 'B+', color: '#0ea5e9', tooltip: 'Solid audience reception' };
+  if (score >= 73) return { grade: 'B', color: '#f59e0b', tooltip: 'Mixed-positive reception' };
+  if (score >= 68) return { grade: 'B-', color: '#f97316', tooltip: 'Mixed audience reception' };
+  if (score >= 63) return { grade: 'C+', color: '#ef4444', tooltip: 'Below-average reception' };
+  if (score >= 58) return { grade: 'C', color: '#dc2626', tooltip: 'Weak audience reception' };
+  if (score >= 53) return { grade: 'C-', color: '#b91c1c', tooltip: 'Poor audience reception' };
+  if (score >= 48) return { grade: 'D', color: '#991b1b', tooltip: 'Very poor reception' };
+  return { grade: 'F', color: '#6b7280', tooltip: 'Audiences dislike it' };
+}
+
+/**
+ * Get Tailwind classes for an audience grade badge (used in AudienceBuzzCard).
+ */
+export function getAudienceGradeClasses(score: number): {
+  bgClass: string;
+  textClass: string;
+  borderClass: string;
+} {
+  const { grade } = getAudienceGrade(score);
+  if (grade.startsWith('A')) return { bgClass: 'bg-green-500/15', textClass: 'text-green-400', borderClass: 'border-green-500/25' };
+  if (grade === 'B+') return { bgClass: 'bg-sky-500/15', textClass: 'text-sky-400', borderClass: 'border-sky-500/25' };
+  if (grade === 'B') return { bgClass: 'bg-amber-500/15', textClass: 'text-amber-400', borderClass: 'border-amber-500/25' };
+  if (grade === 'B-') return { bgClass: 'bg-orange-500/15', textClass: 'text-orange-400', borderClass: 'border-orange-500/25' };
+  if (grade.startsWith('C')) return { bgClass: 'bg-red-500/15', textClass: 'text-red-400', borderClass: 'border-red-500/25' };
+  return { bgClass: 'bg-gray-500/15', textClass: 'text-gray-400', borderClass: 'border-gray-500/25' };
+}
+
+/**
  * Get audience buzz designation color class
+ * @deprecated Use getAudienceGradeClasses instead
  */
 export function getAudienceBuzzColor(designation: AudienceBuzzDesignation): {
   bgClass: string;
