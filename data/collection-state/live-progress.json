@@ -1,31 +1,37 @@
 {
-  "updatedAt": "2026-02-02T16:34:32.065Z",
-  "processed": 2,
-  "failed": 3,
-  "successRate": "40.0%",
+  "updatedAt": "2026-02-02T16:35:57.394Z",
+  "processed": 7,
+  "failed": 4,
+  "successRate": "63.6%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
+    "playwright": 1,
+    "browserbase": 2,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 2
+    "brightdata": 1,
+    "archive": 4
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-02-02T16:32:45.064Z",
+      "t": "2026-02-02T16:33:01.298Z",
       "event": "bb-session",
-      "session": "f47b2ab7",
-      "url": "https://www.theatermania.com/broadway/reviews/juliet-broadway-review_92586.html"
+      "session": "290a6c50",
+      "url": "https://observer.com/2023/10/review-of-gutenberg-the-musical-print-is-hilariousl"
     },
     {
-      "t": "2026-02-02T16:33:27.199Z",
+      "t": "2026-02-02T16:33:20.780Z",
       "event": "bb-session",
-      "session": "c3f0b891",
-      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+      "session": "30b50e31",
+      "url": "https://www.theatermania.com/broadway/reviews/gutenberg-the-musical_96847.html"
     },
     {
-      "t": "2026-02-02T16:34:08.610Z",
+      "t": "2026-02-02T16:34:22.732Z",
+      "event": "bb-session",
+      "session": "839b9f06",
+      "url": "https://www.wsj.com/arts-culture/theater/gutenberg-the-musical-review-broadway-j"
+    },
+    {
+      "t": "2026-02-02T16:35:08.320Z",
       "event": "bb-login-ok",
       "domain": "wsj.com"
     }
