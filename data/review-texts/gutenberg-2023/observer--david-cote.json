@@ -72,21 +72,27 @@
   "previousLlmScore": 76,
   "isFullReview": true,
   "textWordCount": 972,
-  "archivePath": "data/archives/reviews/gutenberg-2023/observer--david-cote_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T23:55:13.232Z",
-  "fetchMethod": "playwright",
+  "archivePath": "data/archives/reviews/gutenberg-2023/observer--david-cote_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T16:33:13.252Z",
+  "fetchMethod": "browserbase",
   "fetchAttempts": [
     {
       "tier": 1,
       "method": "playwright",
+      "success": false,
+      "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 1.5,
+      "method": "browserbase",
       "success": true
     }
   ],
-  "fetchTier": 1,
+  "fetchTier": 1.5,
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright",
+  "sourceMethod": "browserbase",
   "_removedDesignation": {
     "designation": "Recommended",
     "removedAt": "2026-02-02T04:23:14.188Z",

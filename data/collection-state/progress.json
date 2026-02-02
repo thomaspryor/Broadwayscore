@@ -1,41 +1,62 @@
 {
   "processed": [
-    "and-juliet-2022/variety--peter-marks.json",
-    "and-juliet-2022/thewrap--robert-hofler.json"
+    "gutenberg-2023/vulture--sara-holdren.json",
+    "gutenberg-2023/deadline--greg-evans.json",
+    "gutenberg-2023/nypost--johnny-oleksinski.json",
+    "gutenberg-2023/observer--david-cote.json",
+    "gutenberg-2023/theatermania--jesse-green.json",
+    "gutenberg-2023/theatermania--zachary-stewart.json",
+    "gutenberg-2023/theatrely--david-gordon.json"
   ],
   "failed": [
-    "and-juliet-2022/theatermania--jesse-green.json",
-    "and-juliet-2022/timeout--adam-feldman.json",
-    "and-juliet-2022/wsj--charles-isherwood.json"
+    "gutenberg-2023/new-york-sun--elysa-gardner.json",
+    "gutenberg-2023/timeout--adam-feldman.json",
+    "gutenberg-2023/wsj--charles-isherwood.json",
+    "gutenberg-2023/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
-    "browserbase": [],
+    "playwright": [
+      "gutenberg-2023/theatrely--david-gordon.json"
+    ],
+    "browserbase": [
+      "data/review-texts/gutenberg-2023/observer--david-cote.json",
+      "gutenberg-2023/observer--david-cote.json"
+    ],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "gutenberg-2023/theatermania--jesse-green.json"
+    ],
     "archive": [
-      "and-juliet-2022/variety--peter-marks.json",
-      "and-juliet-2022/thewrap--robert-hofler.json"
+      "gutenberg-2023/vulture--sara-holdren.json",
+      "gutenberg-2023/deadline--greg-evans.json",
+      "gutenberg-2023/nypost--johnny-oleksinski.json",
+      "gutenberg-2023/theatermania--zachary-stewart.json"
     ]
   },
-  "startTime": "2026-02-02T16:32:33.338Z",
-  "lastProcessed": "and-juliet-2022/wsj--charles-isherwood.json",
+  "startTime": "2026-02-02T16:32:31.921Z",
+  "lastProcessed": "gutenberg-2023/theatrely--david-gordon.json",
   "log": [
     {
-      "t": "2026-02-02T16:32:45.064Z",
+      "t": "2026-02-02T16:33:01.298Z",
       "event": "bb-session",
-      "session": "f47b2ab7",
-      "url": "https://www.theatermania.com/broadway/reviews/juliet-broadway-review_92586.html"
+      "session": "290a6c50",
+      "url": "https://observer.com/2023/10/review-of-gutenberg-the-musical-print-is-hilariousl"
     },
     {
-      "t": "2026-02-02T16:33:27.199Z",
+      "t": "2026-02-02T16:33:20.780Z",
       "event": "bb-session",
-      "session": "c3f0b891",
-      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+      "session": "30b50e31",
+      "url": "https://www.theatermania.com/broadway/reviews/gutenberg-the-musical_96847.html"
     },
     {
-      "t": "2026-02-02T16:34:08.610Z",
+      "t": "2026-02-02T16:34:22.732Z",
+      "event": "bb-session",
+      "session": "839b9f06",
+      "url": "https://www.wsj.com/arts-culture/theater/gutenberg-the-musical-review-broadway-j"
+    },
+    {
+      "t": "2026-02-02T16:35:08.320Z",
       "event": "bb-login-ok",
       "domain": "wsj.com"
     }
