@@ -32,5 +32,52 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250504012057",
-  "archiveOrgUrl": "http://web.archive.org/web/20250504012057/https://www.latimes.com/entertainment-arts/story/2024-04-26/illinoise-broadway-review-justin-peck-sufjan-stevens"
+  "archiveOrgUrl": "http://web.archive.org/web/20250504012057/https://www.latimes.com/entertainment-arts/story/2024-04-26/illinoise-broadway-review-justin-peck-sufjan-stevens",
+  "assignedScore": 90,
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: McNulty delivers an enthusiastic recommendation, calling the show 'path-clearing' and concluding he 'glimpsed the majestic future.' Despite acknowledging some moments of corniness, his overall assessment is deeply positive, praising the holistic conception and describing it as a 'deus ex machina' rescuing Broadway. | GPT-4o: The review is overwhelmingly positive, praising the production's innovative approach and its ability to transcend traditional musical forms. The critic describes it as 'gripping' and highlights its emotional impact and artistic excellence, suggesting a strong recommendation. | Gemini: The critic clearly enjoyed the show, calling it a \"fitting end\" to the season and stating that it \"rescues Broadway from its hidebound habits.\" The final line about glimpsing the \"majestic future\" is a strong endorsement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T02:27:05.263Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

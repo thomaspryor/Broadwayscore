@@ -31,5 +31,52 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic praises the 1940s scenes as 'compelling and emotionally resonant' and acknowledges strong performances, but heavily criticizes the political agenda, excessive length, and lack of nuance, ending with an overheard conversation about being 'hit on the head repeatedly' by the show's message. | GPT-4o: The review acknowledges the play's compelling and emotionally resonant scenes, but criticizes its length and political agenda. The critic seems to appreciate certain aspects but is frustrated by the heavy-handedness, leading to a mixed recommendation. | Gemini: The review praises some aspects of the play, particularly the 1940s scenes, but criticizes the political agenda and lack of nuance in the 2016 scenes. The truncated text and overheard conversation suggest a mixed reception, leading to a 'Mixed' classification.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T02:28:02.483Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

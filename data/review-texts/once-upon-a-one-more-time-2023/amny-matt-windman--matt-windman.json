@@ -34,5 +34,52 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250717025055",
-  "archiveOrgUrl": "http://web.archive.org/web/20250717025055/https://www.amny.com/entertainment/broadway/britney-spears-musical-is-a-hot-mess/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250717025055/https://www.amny.com/entertainment/broadway/britney-spears-musical-is-a-hot-mess/",
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: Despite acknowledging some clever moments, the critic concludes with a clear rejection, calling it 'a piece of junk' and ending with an explicit 'No, thank you' to seeing it again. | GPT-4o: The review is overwhelmingly negative, describing the show as a 'piece of junk' and criticizing the music, plotting, and staging. The final verdict is clear with 'No, thank you,' indicating a strong recommendation to avoid the show. | Gemini: The review is overwhelmingly negative, citing issues with the songs, plot, staging, and originality. The critic explicitly states \"No, thank you\" to seeing it again.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T02:27:31.660Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 15,
+    "geminiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "scoreDelta": 27,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
+  }
 }

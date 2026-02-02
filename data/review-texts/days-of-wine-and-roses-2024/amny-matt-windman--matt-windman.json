@@ -30,5 +30,52 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250721191009",
-  "archiveOrgUrl": "http://web.archive.org/web/20250721191009/https://www.amny.com/entertainment/theater/review-days-of-wine-and-roses/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250721191009/https://www.amny.com/entertainment/theater/review-days-of-wine-and-roses/",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly appreciates the show's musical sophistication and performances, calling it 'compelling' with stars who 'shine,' while noting its unique artistic merits that distinguish it from other Broadway fare. | GPT-4o: The review praises the musical's score, production, and performances, noting its uniqueness and the compelling nature of the adaptation. The language used is positive and suggests a strong recommendation. | Gemini: The review is largely positive, highlighting the unique score and strong performances, while also acknowledging the dark subject matter. The critic clearly appreciates the musical's artistic merit and recommends it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T02:26:26.089Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 81,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

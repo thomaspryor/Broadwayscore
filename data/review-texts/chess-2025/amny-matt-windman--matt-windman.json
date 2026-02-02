@@ -34,5 +34,52 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251212095534",
   "archiveOrgUrl": "http://web.archive.org/web/20251212095534/https://www.amny.com/entertainment/broadway/review-chess-the-musical/",
-  "duplicateTextOf": "amny--matt-windman.json"
+  "duplicateTextOf": "amny--matt-windman.json",
+  "assignedScore": 65,
+  "llmScore": {
+    "score": 65,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review criticizes the book and staging choices but ultimately concludes that the show 'wins' as a concert experience with strong vocal performances, indicating a qualified recommendation despite significant flaws. | GPT-4o: The review acknowledges the production's flaws, particularly in storytelling and staging, but also highlights the strong musical performances and moments where the show 'soars.' The overall tone suggests a mixed experience with notable high points, but the truncated text leaves some uncertainty about the final recommendation. | Gemini: Despite the show's flaws and the production's issues, the review concludes that the music and performances make it a worthwhile experience, leaning towards a positive recommendation. The truncated text makes it difficult to be certain of the final verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T02:26:14.720Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

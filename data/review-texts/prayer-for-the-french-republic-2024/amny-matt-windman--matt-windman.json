@@ -30,5 +30,52 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251108035215",
-  "archiveOrgUrl": "http://web.archive.org/web/20251108035215/https://www.amny.com/entertainment/theater/review-prayer-for-the-french-republic/"
+  "archiveOrgUrl": "http://web.archive.org/web/20251108035215/https://www.amny.com/entertainment/theater/review-prayer-for-the-french-republic/",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges the play's significant length as a drawback but emphasizes its power and praises the direction and performances. The review positions it as taking 'the genre to the next level' and notes its particular relevance and urgency. | GPT-4o: The review praises the production's powerful impact, superb ensemble performances, and precise direction, despite noting its long runtime. The critic's language indicates a strong recommendation to see the play. | Gemini: The review is generally positive, highlighting the play's power and the superb ensemble performances. While noting the play's length, the critic ultimately recommends it, especially in light of current events.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T02:27:50.665Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

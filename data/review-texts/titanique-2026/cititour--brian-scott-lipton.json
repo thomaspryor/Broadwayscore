@@ -48,5 +48,52 @@
   ],
   "misattributedFullText": true,
   "extractedByline": "Brian Scott",
-  "expectedCritic": "Brian Scott Lipton"
+  "expectedCritic": "Brian Scott Lipton",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review frames the show positively as 'alternately clever and kooky' and 'the perfect vehicle' for escapist entertainment, though the truncated text prevents seeing the full assessment. | GPT-4o: The review describes the show as a 'clever and kooky send-up' and a 'perfect vehicle' for escapism, suggesting a positive experience. However, due to the truncated text, the final verdict may be missing, leading to medium confidence. | Gemini: The review describes the show as \"alternately clever and kooky\" and \"the perfect vehicle\" for escapism. While truncated, the overall tone suggests a positive recommendation for those seeking light entertainment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T02:29:28.988Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

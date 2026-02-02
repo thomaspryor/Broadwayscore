@@ -31,5 +31,52 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251008132253",
   "archiveOrgUrl": "http://web.archive.org/web/20251008132253/https://www.theatrely.com/post/the-cottage-a-charming-broadway-comedy-review",
-  "duplicateTextOf": "theatrely--juan-a-ramirez.json"
+  "duplicateTextOf": "theatrely--juan-a-ramirez.json",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the performances, comedy, and craftsmanship while noting it's 'simple' and 'straight-forward.' The critic appreciates the cast and finds genuine value in the show's approach to relationships, indicating a solid recommendation despite some limitations. | GPT-4o: The review describes the play as a 'well-crafted comedy' with 'simple, sturdy laughs' and praises the performances and direction, indicating a positive recommendation with some reservations about the depth of the plot. | Gemini: The review highlights the comedic strengths of the cast and the play's ability to evoke genuine emotion, suggesting a positive albeit not overwhelmingly enthusiastic experience. The critic notes some shortcomings, such as the play becoming less interested in physical comedy, but overall conveys a positive impression.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T02:29:21.978Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

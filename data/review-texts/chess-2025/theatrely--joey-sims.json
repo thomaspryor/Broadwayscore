@@ -30,5 +30,52 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251211121950",
-  "archiveOrgUrl": "http://web.archive.org/web/20251211121950/https://www.theatrely.com/post/this-chess-is-a-blast-review"
+  "archiveOrgUrl": "http://web.archive.org/web/20251211121950/https://www.theatrely.com/post/this-chess-is-a-blast-review",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges Chess is 'unfixable' and has significant problems but enthusiastically recommends it as a thrilling experience, praising the score, performances, and overall entertainment value while being honest about its flaws. | GPT-4o: Despite acknowledging the show's flaws and mixed elements, the review emphasizes the exhilarating experience and the powerful performances, particularly highlighting the music and the standout performances of the cast. The overall tone is enthusiastic and recommends the show for its entertainment value. | Gemini: Despite acknowledging the show's flaws and mixed elements, the reviewer ultimately finds it enjoyable and praises the music and performances, leading to a positive recommendation with reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T02:26:22.538Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

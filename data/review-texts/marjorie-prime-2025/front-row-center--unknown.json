@@ -30,5 +30,52 @@
     "no_ending_punctuation"
   ],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the 'very fine cast' as a 'seamless ensemble' and calls it 'a sobering piece' that is 'ably handled,' indicating a positive recommendation despite the challenging subject matter. The truncated warning requires caution, but the available text shows clear appreciation for the performances and production. | GPT-4o: The review praises the cast's performance and describes the production as a 'sobering piece knocking on our door,' suggesting a positive reception despite the serious tone. The truncated text warning prevents a higher confidence level. | Gemini: The review praises the cast and direction, calling it a \"seamless ensemble\" and \"ably handled.\" While noting the play is a \"sobering piece,\" the overall tone suggests a positive, albeit reserved, recommendation. The truncated nature of the text makes it difficult to be more confident.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T02:27:20.485Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -32,5 +32,52 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250723072150",
   "archiveOrgUrl": "http://web.archive.org/web/20250723072150/https://www.newyorker.com/magazine/2024/04/08/the-whos-tommy-theatre-review",
-  "duplicateTextOf": "newyorker--helen-shaw.json"
+  "duplicateTextOf": "newyorker--helen-shaw.json",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic systematically dismantles the production's choices, calling it a failed 'reanimation' that relies too heavily on nostalgia and confusing storytelling, concluding that the transition from concert to musical has lost the original's grip on metaphor. | GPT-4o: The review highlights both positive aspects, such as the energy and some stagecraft moments, and significant criticisms, particularly regarding the production's reliance on nostalgia and lack of clarity. The overall tone suggests a mixed reception with some redeeming qualities. | Gemini: The review highlights both positive and negative aspects of the production. While praising certain elements like the energy and lighting, it criticizes the storytelling and overall sense of the production, leading to a mixed classification.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T02:29:25.781Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

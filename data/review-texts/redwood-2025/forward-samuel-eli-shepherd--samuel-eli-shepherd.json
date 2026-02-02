@@ -30,5 +30,52 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250809154826",
-  "archiveOrgUrl": "http://web.archive.org/web/20250809154826/https://forward.com/culture/theater/695596/redwood-broadway-idina-menzel-jewish-tikkun-olam/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250809154826/https://forward.com/culture/theater/695596/redwood-broadway-idina-menzel-jewish-tikkun-olam/",
+  "assignedScore": 58,
+  "llmScore": {
+    "score": 58,
+    "confidence": "high",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The text is severely truncated with only a headline fragment mentioning a soaring show tune about Tikkun Olam, which suggests some positive elements, but there's no actual review content to assess the critic's recommendation. | GPT-4o: The review text is heavily truncated and lacks a clear verdict. The mention of a show tune 'soaring high' suggests some positive elements, but without more context, it's difficult to assign a higher score. The text quality warning indicates caution is needed, suggesting a mixed assessment. | Gemini: The review is extremely short and truncated, making it difficult to determine the overall verdict. The one positive statement suggests a mixed to positive leaning, but the lack of context makes a definitive classification impossible.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T02:28:34.731Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 55,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

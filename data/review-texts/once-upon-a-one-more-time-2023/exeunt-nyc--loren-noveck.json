@@ -31,5 +31,52 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "assignedScore": 23,
+  "llmScore": {
+    "score": 23,
+    "confidence": "medium",
+    "range": {
+      "low": 18,
+      "high": 28
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Pan | Claude: Despite truncation warning, the review contains overwhelmingly negative language throughout ('pure summer dumb', 'clumsy, lazy show', 'toxic') with no positive verdict visible. The critic explicitly states one Spears show is 'truly Toxic' referring to this production. | GPT-4o: The review is highly critical, describing the show as 'bombastic, patronizing, clumsy, lazy,' and comparing it unfavorably to another production. The tone is strongly negative throughout, with no positive remarks about the production itself. | Gemini: The review is overwhelmingly negative, describing the show as 'pure summer dumb' and criticizing its recycled concepts, unsubtle messaging, and awkward execution. Despite praise for the leads, the overall assessment is unfavorable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T02:27:38.854Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Pan"
+  }
 }

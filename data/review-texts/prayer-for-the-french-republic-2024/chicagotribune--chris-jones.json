@@ -33,5 +33,52 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240119120215",
-  "archiveOrgUrl": "http://web.archive.org/web/20240119120215/https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-prayer-french-republic-broadway-review-20240110-bun346fnxjhj5jn3rnvqstmxzu-story.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20240119120215/https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-prayer-french-republic-broadway-review-20240110-bun346fnxjhj5jn3rnvqstmxzu-story.html",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite the truncation warning, the review contains clear praise for the production's power and relevance, calling it 'gripping' and 'prescient,' with admiration for Cromer's direction and the cast. The final line about the show's emotional impact suggests strong recommendation. | GPT-4o: The review describes the production as 'gripping' and 'superbly cast,' with powerful emotional impact. Despite the truncated text, the language suggests a strong recommendation, emphasizing the play's relevance and emotional resonance. | Gemini: The review highlights the play's prescience and the powerful performances, suggesting a worthwhile experience despite the heavy themes. However, the truncated nature of the text makes it difficult to ascertain the critic's final, unequivocal recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T02:27:54.914Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

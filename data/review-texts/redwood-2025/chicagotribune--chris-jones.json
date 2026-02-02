@@ -30,5 +30,52 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250306120511",
-  "archiveOrgUrl": "http://web.archive.org/web/20250306120511/https://www.chicagotribune.com/2025/02/13/review-redwood-on-broadway-holds-few-surprises-as-idina-menzel-heals-among-the-trees/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250306120511/https://www.chicagotribune.com/2025/02/13/review-redwood-on-broadway-holds-few-surprises-as-idina-menzel-heals-among-the-trees/",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges Menzel's strong performance and some pleasing songs but consistently criticizes the show as predictable, clunky, and repetitive, calling it 'wholly unsurprising' and noting it 'keeps repeating itself' - neither a recommendation nor a complete dismissal. | GPT-4o: The review highlights several issues with the show, such as its predictability and clunky execution, but also acknowledges the appeal of Menzel's performance and some enjoyable musical numbers. The overall tone suggests a mixed reception, with some positive elements for specific audiences. | Gemini: The review highlights both positive and negative aspects. While praising Menzel's performance and some of the musical numbers, it criticizes the predictability and clunkiness of the plot. The overall tone suggests a mixed experience, not strongly recommending or discouraging the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T02:28:14.029Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

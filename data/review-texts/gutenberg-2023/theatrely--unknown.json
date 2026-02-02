@@ -31,5 +31,52 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251212043345",
   "archiveOrgUrl": "http://web.archive.org/web/20251212043345/https://www.theatrely.com/post/gutenberg-the-musical-reunites-rannells-and-gad-review",
-  "duplicateTextOf": "theatrely--juan-a-ramirez.json"
+  "duplicateTextOf": "theatrely--juan-a-ramirez.json",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the performances and acknowledges the show works despite some reservations about the humor needing more edge. The closing line 'Here, one could find a worse deal' suggests it's worth seeing. | GPT-4o: The review highlights the strong performances of the leads and the cleverness of the show, despite some humor that could be sharper. The overall tone suggests it is worth seeing, especially for fans of the actors and musical theatre. | Gemini: The review acknowledges flaws in the humor but ultimately suggests the show is worth seeing, particularly highlighting the talent onstage and the show's commentary on musical theatre. The final sentence implies it's a worthwhile experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T02:26:57.094Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }
