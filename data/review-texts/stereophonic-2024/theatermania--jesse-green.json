@@ -71,7 +71,7 @@
   "previousLlmScore": 78,
   "textWordCount": 318,
   "archivePath": "data/archives/reviews/stereophonic-2024/theatermania--jesse-green_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T15:10:28.483Z",
+  "textFetchedAt": "2026-02-02T16:39:46.451Z",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
@@ -85,6 +85,12 @@
       "method": "playwright",
       "success": false,
       "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Insufficient text: 0 chars"
     },
     {
       "tier": 2,
