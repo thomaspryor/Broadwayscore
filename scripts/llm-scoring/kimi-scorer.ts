@@ -80,7 +80,7 @@ export class KimiScorer {
               { role: 'system', content: SYSTEM_PROMPT_V5 },
               { role: 'user', content: prompt }
             ],
-            max_tokens: 500,
+            max_tokens: 4000,
             temperature: this.options.temperature
           })
         });
@@ -100,7 +100,7 @@ export class KimiScorer {
 
         const data = await response.json() as {
           usage?: { prompt_tokens?: number; completion_tokens?: number };
-          choices?: Array<{ message?: { content?: string } }>;
+          choices?: Array<{ message?: { content?: string; reasoning?: string } }>;
         };
 
         // Track tokens
@@ -109,7 +109,10 @@ export class KimiScorer {
         this.totalInputTokens += inputTokens;
         this.totalOutputTokens += outputTokens;
 
-        const content = data.choices?.[0]?.message?.content;
+        // Kimi K2.5 is a reasoning model — JSON response may be in `content`
+        // or in `reasoning` field if all max_tokens went to reasoning
+        const message = data.choices?.[0]?.message;
+        const content = message?.content || message?.reasoning;
         if (!content) {
           lastError = 'No content in response';
           continue;
