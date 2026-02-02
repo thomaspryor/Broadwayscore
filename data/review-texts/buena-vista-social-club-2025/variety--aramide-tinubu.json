@@ -6,7 +6,7 @@
   "url": "https://variety.com/2025/legit/reviews/buena-vista-social-club-review-broadway-musical-1236342624/",
   "publishDate": "December 19, 2024",
   "fullText": "Entering \"Buena Vista Social Club\" is like stepping into a heady world of the senses, of heightened emotions, and of passionate music and dance.\n\nThe Social Club was a real place for locals in Havana in the '50s. Decades later, its music became the source of a Grammy-winning album, then a popular film — and now it's the most intoxicating and rapturous show of the Broadway season.",
-  "isFullReview": true,
+  "isFullReview": false,
   "dtliExcerpt": "Though the show occasionally feels more like a concert than a cohesive musical, when it works, it's transcendent — a celebration of Cuban music that pulses with life and passion.",
   "originalScore": null,
   "assignedScore": 81,
@@ -68,26 +68,45 @@
   "urlDiscoveredAt": "2026-02-01T18:42:51.521Z",
   "urlDiscoveryMethod": "google-serp",
   "rescoreReason": "fullText added after excerpt-based scoring",
-  "previousLlmScore": 76,
-  "textWordCount": 769,
-  "archivePath": "data/archives/reviews/buena-vista-social-club-2025/variety--aramide-tinubu_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T18:42:51.524Z",
-  "fetchMethod": "archive",
+  "previousLlmScore": 81,
+  "textWordCount": 67,
+  "archivePath": "data/archives/reviews/buena-vista-social-club-2025/variety--aramide-tinubu_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T02:20:27.945Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 4,
-  "textQuality": "full",
+  "fetchTier": 3,
+  "textQuality": "excerpt",
   "truncationSignals": [],
-  "textStatus": "complete",
-  "sourceMethod": "archive",
+  "textStatus": "partial",
+  "sourceMethod": "brightdata",
   "archiveOrgTimestamp": "20250506000250",
   "archiveOrgUrl": "http://web.archive.org/web/20250506000250/https://variety.com/2025/legit/reviews/buena-vista-social-club-review-broadway-musical-1236342624/",
   "rescoreCompletedAt": "2026-02-01T19:57:37.353Z",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (67 words)"
+  "contentTierReason": "Short text (67 words)",
+  "needsRescore": true
 }

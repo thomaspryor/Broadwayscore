@@ -69,14 +69,20 @@
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 74,
   "archivePath": "data/archives/reviews/purlie-victorious-2023/variety--aramide-timubu_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T02:05:48.236Z",
+  "textFetchedAt": "2026-02-02T02:38:48.878Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
     {
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+      "error": "Insufficient text extracted: 0 chars"
     },
     {
       "tier": 2,
