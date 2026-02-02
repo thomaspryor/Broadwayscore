@@ -15,7 +15,7 @@
   "showScoreExcerpt": "\"...a unique and imaginative creation of the stage and live performance.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/water-for-elephants-broadway",
   "archivePath": "data/archives/reviews/water-for-elephants-2024/variety--frank-rizzo_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T00:03:31.199Z",
+  "textFetchedAt": "2026-02-02T02:57:04.605Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -84,8 +84,16 @@
   ],
   "dtliExcerpt": "This underdog circus troupe may promote its entertainment as “Benzini Brothers’ Most Spectacular Show on Earth,” but for this rube’s nickels, “Water for Elephants” could be the greatest show on Broadway.",
   "rescoreReason": "fullText added after excerpt-based scoring",
-  "previousLlmScore": 82,
+  "previousLlmScore": 93,
   "rescoreCompletedAt": "2026-02-01T16:36:43.934Z",
   "contentTier": "complete",
-  "wordCount": 924
+  "wordCount": 924,
+  "needsRescore": true,
+  "isFullReview": false,
+  "textWordCount": 64,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "shorter_than_excerpt"
+  ],
+  "textStatus": "truncated"
 }
