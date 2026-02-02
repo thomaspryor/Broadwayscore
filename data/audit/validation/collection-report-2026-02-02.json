@@ -17,14 +17,14 @@
     "successRate": "28.6%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 1,
+    "tier1Attempts": 2,
     "tier1Success": 1,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
@@ -38,8 +38,8 @@
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -63,6 +63,34 @@
       "redwood-2025/washpost--naveen-kumar.json"
     ]
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "failuresByOutlet": {
+    "New York Daily News": {
+      "count": 1,
+      "domain": "nydailynews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    },
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "thewrap.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+      "oldUrl": "https://nypost.com/2024/11/13/entertainment/maybe-happy-ending-review-charming-musical-about-robot-romance/",
+      "newUrl": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/"
+    }
+  ]
 }
