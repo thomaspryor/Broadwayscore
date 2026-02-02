@@ -1,81 +1,109 @@
 {
-  "runDate": "2026-02-02T15:11:50.888Z",
+  "runDate": "2026-02-02T15:15:24.401Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 5,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "uncle-vanya-2024",
+    "showFilter": "illinoise-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 4,
+    "processed": 6,
+    "failed": 6,
     "skipped": 0,
-    "successRate": "20.0%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archive": 1
+    "archive": 5
   },
   "statistics": {
     "tier1Attempts": 5,
-    "tier1Success": 2,
-    "tier1_5Attempts": 1,
+    "tier1Success": 1,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier2Attempts": 7,
+    "tier2Success": 2,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier4Attempts": 2,
-    "tier4Success": 1,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 1,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.6,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 0,
+    "tier4Attempts": 18,
+    "tier4Success": 7,
+    "totalFailed": 6,
+    "scrapingBeeCreditsUsed": 24,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 4,
+    "urlDiscoverySuccess": 3,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "uncle-vanya-2024/broadwaynews--brittani-samuel.json"
+    "illinoise-2024/hollywood-reporter--david-rooney.json",
+    "illinoise-2024/vulture--helen-shaw.json",
+    "illinoise-2024/broadwaynews--brittani-samuel.json",
+    "illinoise-2024/nydailynews--joe-dziemianowicz.json",
+    "illinoise-2024/nysr--roma-torre.json",
+    "illinoise-2024/usatoday--david-rooney.json"
   ],
   "failed": [
-    "uncle-vanya-2024/variety--bob-verini.json",
-    "uncle-vanya-2024/vulture--helen-shaw.json",
-    "uncle-vanya-2024/deadline--greg-evans.json",
-    "uncle-vanya-2024/new-york-sun--elysa-gardner.json"
+    "illinoise-2024/nyt-theater--jonathan-mandell.json",
+    "illinoise-2024/deadline--greg-evans.json",
+    "illinoise-2024/guardian--adrian-horton.json",
+    "illinoise-2024/observer--rex-reed.json",
+    "illinoise-2024/timeout--adam-feldman.json",
+    "illinoise-2024/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "uncle-vanya-2024/broadwaynews--brittani-samuel.json"
-    ],
+    "playwright": [],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "illinoise-2024/usatoday--david-rooney.json"
+    ],
     "brightdata": [],
     "archive": [
-      "uncle-vanya-2024/variety--bob-verini.json"
+      "illinoise-2024/hollywood-reporter--david-rooney.json",
+      "illinoise-2024/vulture--helen-shaw.json",
+      "illinoise-2024/broadwaynews--brittani-samuel.json",
+      "illinoise-2024/nydailynews--joe-dziemianowicz.json",
+      "illinoise-2024/nysr--roma-torre.json"
     ]
   },
   "failuresByOutlet": {
-    "Vulture": {
+    "The Guardian": {
       "count": 1,
-      "domain": "vulture.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
       "isKnownBlocked": false
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "suffs-2024/washpost--peter-marks.json",
-      "oldUrl": "https://www.washingtonpost.com/theater-dance/2024/04/19/suffs-broadway-review/",
-      "newUrl": "https://www.washingtonpost.com/entertainment/theater/2024/04/18/suffs-broadway-review/"
+      "reviewId": "illinoise-2024/vulture--helen-shaw.json",
+      "oldUrl": "https://www.vulture.com/article/illinoise-broadway-review.html",
+      "newUrl": "https://www.vulture.com/article/theater-review-sufjan-stevens-illinoise-armory.html"
+    },
+    {
+      "reviewId": "illinoise-2024/nydailynews--joe-dziemianowicz.json",
+      "oldUrl": "https://www.nydailynews.com/2024/04/25/illinoise-review-sufjan-stevens-songs-soar-in-transcendent-broadway-dance-musical/",
+      "newUrl": "https://www.nydailynews.com/2024/04/26/broadway-review-illinoise-based-on-sufjan-stevens-album-is-atypical-esoteric-and-intense/"
+    },
+    {
+      "reviewId": "illinoise-2024/observer--rex-reed.json",
+      "oldUrl": "https://observer.com/2024/04/illinoise-broadway-review-sufjan-stevens/",
+      "newUrl": "https://observer.com/2024/03/review-illinoise-musical-dance-broadway/"
     }
   ]
 }
