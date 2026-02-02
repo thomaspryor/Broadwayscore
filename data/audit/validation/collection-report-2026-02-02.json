@@ -1,70 +1,95 @@
 {
-  "runDate": "2026-02-02T17:35:33.957Z",
+  "runDate": "2026-02-02T17:39:16.869Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "chess-2025",
+    "showFilter": "an-enemy-of-the-people-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 2,
+    "processed": 3,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "33.3%"
+    "successRate": "30.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 0,
+    "tier1Attempts": 5,
+    "tier1Success": 2,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 4,
     "tier2Success": 1,
-    "tier3Attempts": 1,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier4Attempts": 4,
-    "tier4Success": 1,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 10,
+    "tier4Attempts": 12,
+    "tier4Success": 4,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 21,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "chess-2025/nytimes--elisabeth-vincentelli.json"
+    "an-enemy-of-the-people-2024/variety--aramide-tinubu.json",
+    "an-enemy-of-the-people-2024/vulture--jesse-green.json",
+    "an-enemy-of-the-people-2024/deadline--greg-evans.json"
   ],
   "failed": [
-    "chess-2025/timeout--adam-feldman.json",
-    "chess-2025/wsj--charles-isherwood.json"
+    "an-enemy-of-the-people-2024/guardian--adrian-horton.json",
+    "an-enemy-of-the-people-2024/nydailynews--chris-jones.json",
+    "an-enemy-of-the-people-2024/timeout--adam-feldman.json",
+    "an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
+    "an-enemy-of-the-people-2024/wsj--unknown.json",
+    "an-enemy-of-the-people-2024/talkinbroadway--matthew-murray.json",
+    "an-enemy-of-the-people-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "an-enemy-of-the-people-2024/variety--aramide-tinubu.json"
+    ],
     "browserbase": [],
     "scrapingbee": [
-      "chess-2025/nytimes--elisabeth-vincentelli.json"
+      "an-enemy-of-the-people-2024/vulture--jesse-green.json"
     ],
     "brightdata": [],
-    "archive": []
+    "archive": [
+      "an-enemy-of-the-people-2024/deadline--greg-evans.json"
+    ]
   },
   "failuresByOutlet": {
-    "The Wall Street Journal": {
+    "New York Daily News": {
       "count": 1,
-      "domain": "wsj.com",
+      "domain": "nydailynews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Washington Post": {
+      "count": 1,
+      "domain": "washingtonpost.com",
       "hasCredentials": true,
       "isPaywalled": true,
-      "isKnownBlocked": true
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": []
