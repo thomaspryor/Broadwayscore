@@ -57,8 +57,8 @@ const TRIGGER_COPY: Record<GateTrigger, { heading: string; subheading: string }>
     subheading: 'Enter your email for full access to Broadway investment data.',
   },
   exit_intent: {
-    heading: 'Don\u2019t miss the next opening night',
-    subheading: 'We\u2019ll email you the Critic Score when new shows open, plus what\u2019s closing soon.',
+    heading: 'Never Miss a New Broadway Show',
+    subheading: 'No spam, no schedule \u2014 just opening night scores. Unsubscribe anytime.',
   },
   return_visitor: {
     heading: 'Never miss a new Broadway show',
