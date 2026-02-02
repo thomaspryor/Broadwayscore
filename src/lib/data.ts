@@ -690,23 +690,25 @@ export function getShowsByAudienceBuzz(limit = 10): Array<{ showId: string; data
 /**
  * Compute audience letter grade from combinedScore.
  * Grade scale shifted down 2 points from standard academic.
+ * Colors use solid fills matching the critic score badge style.
  */
 export function getAudienceGrade(score: number): {
   grade: string;
   color: string;
+  textColor: string;
   tooltip: string;
 } {
-  if (score >= 93) return { grade: 'A+', color: '#22c55e', tooltip: 'Audiences love it' };
-  if (score >= 88) return { grade: 'A', color: '#16a34a', tooltip: 'Audiences love it' };
-  if (score >= 83) return { grade: 'A-', color: '#14b8a6', tooltip: 'Strong audience reception' };
-  if (score >= 78) return { grade: 'B+', color: '#0ea5e9', tooltip: 'Solid audience reception' };
-  if (score >= 73) return { grade: 'B', color: '#f59e0b', tooltip: 'Mixed-positive reception' };
-  if (score >= 68) return { grade: 'B-', color: '#f97316', tooltip: 'Mixed audience reception' };
-  if (score >= 63) return { grade: 'C+', color: '#ef4444', tooltip: 'Below-average reception' };
-  if (score >= 58) return { grade: 'C', color: '#dc2626', tooltip: 'Weak audience reception' };
-  if (score >= 53) return { grade: 'C-', color: '#b91c1c', tooltip: 'Poor audience reception' };
-  if (score >= 48) return { grade: 'D', color: '#991b1b', tooltip: 'Very poor reception' };
-  return { grade: 'F', color: '#6b7280', tooltip: 'Audiences dislike it' };
+  if (score >= 93) return { grade: 'A+', color: '#22c55e', textColor: '#ffffff', tooltip: 'Audiences love it' };
+  if (score >= 88) return { grade: 'A', color: '#16a34a', textColor: '#ffffff', tooltip: 'Audiences love it' };
+  if (score >= 83) return { grade: 'A-', color: '#14b8a6', textColor: '#ffffff', tooltip: 'Strong audience reception' };
+  if (score >= 78) return { grade: 'B+', color: '#0ea5e9', textColor: '#ffffff', tooltip: 'Solid audience reception' };
+  if (score >= 73) return { grade: 'B', color: '#f59e0b', textColor: '#1a1a1a', tooltip: 'Mixed-positive reception' };
+  if (score >= 68) return { grade: 'B-', color: '#f97316', textColor: '#1a1a1a', tooltip: 'Mixed audience reception' };
+  if (score >= 63) return { grade: 'C+', color: '#ef4444', textColor: '#ffffff', tooltip: 'Below-average reception' };
+  if (score >= 58) return { grade: 'C', color: '#dc2626', textColor: '#ffffff', tooltip: 'Weak audience reception' };
+  if (score >= 53) return { grade: 'C-', color: '#b91c1c', textColor: '#ffffff', tooltip: 'Poor audience reception' };
+  if (score >= 48) return { grade: 'D', color: '#991b1b', textColor: '#ffffff', tooltip: 'Very poor reception' };
+  return { grade: 'F', color: '#6b7280', textColor: '#ffffff', tooltip: 'Audiences dislike it' };
 }
 
 /**
