@@ -295,6 +295,13 @@ After choosing the bucket, assign a specific score within its range:
 
 Use the full range. A barely-positive review should be 70-72. A very strong positive should be 82-84.
 
+## Score Distribution
+Do NOT default to the midpoint of a bucket. For Positive reviews:
+- Strong praise, enthusiastic tone → 81-84
+- Solid recommendation, some reservations → 75-79
+- Barely positive, qualified → 70-73
+Spread scores across the full bucket range based on recommendation strength.
+
 ## Critical Instructions
 
 1. **VERDICT OVER SETUP**: Many reviews open with negative context (previous productions, source material issues, hype concerns) before delivering a positive verdict. ALWAYS score based on the FINAL RECOMMENDATION, not the opening setup.

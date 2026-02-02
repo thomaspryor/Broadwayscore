@@ -168,7 +168,7 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
       const uniqueExcerpts = new Set(availableExcerpts);
       if (uniqueExcerpts.size === 1) {
         contextParts.push('\n## Single Excerpt Warning');
-        contextParts.push('CAUTION: Only ONE excerpt is available from this review. A single curated quote may be cherry-picked and not representative of the overall review sentiment. Score conservatively toward the middle of the chosen bucket range.');
+        contextParts.push('CAUTION: Only ONE excerpt is available from this review. A single curated quote may be cherry-picked and not representative of the overall review sentiment. If the excerpt sounds clearly positive, use the upper end of the bucket (80-84 for Positive). If mildly positive, use the lower end (70-74). Avoid defaulting to 77-78.');
       }
     }
   }
