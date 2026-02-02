@@ -1,78 +1,39 @@
 {
   "processed": [
-    "our-town-2024/ew--shania-russell.json",
-    "our-town-2024/nypost--johnny-oleksinski.json",
-    "our-town-2024/theatermania--jesse-green.json",
-    "our-town-2024/thewrap--robert-hofler.json",
-    "our-town-2024/wsj--charles-isherwood.json",
-    "our-town-2024/washpost--peter-marks.json"
+    "wicked-2003/nytimes--charles-isherwood.json",
+    "wicked-2003/variety--charles-isherwood.json",
+    "wicked-2003/ew--alice-king.json",
+    "wicked-2003/the-journal-news-lohud--jacques-le-sourd.json",
+    "wicked-2003/village-voice--michael-feingold.json",
+    "wicked-2003/washpost--peter-marks.json"
   ],
   "failed": [
-    "our-town-2024/hollywood-reporter--angie-han.json",
-    "our-town-2024/deadline--greg-evans.json",
-    "our-town-2024/ny-sun--elysa-gardner.json",
-    "our-town-2024/nydailynews--chris-jones.json",
-    "our-town-2024/timeout--adam-feldman.json"
+    "wicked-2003/newyorker--.json",
+    "wicked-2003/ew--lisa-schwarzbaum.json",
+    "wicked-2003/observer--rex-reed.json",
+    "wicked-2003/timeout--david-cote.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "wicked-2003/curtainup--elyse-sommer.json",
+    "wicked-2003/frontmezzjunkies--unknown.json",
+    "wicked-2003/njcom-star-ledger--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "our-town-2024/washpost--peter-marks.json"
+      "wicked-2003/the-journal-news-lohud--jacques-le-sourd.json",
+      "wicked-2003/washpost--peter-marks.json"
     ],
-    "browserbase": [
-      "data/review-texts/our-town-2024/nydailynews--chris-jones.json",
-      "data/review-texts/our-town-2024/nypost--johnny-oleksinski.json",
-      "our-town-2024/nypost--johnny-oleksinski.json"
-    ],
+    "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "our-town-2024/deadline--greg-evans.json",
-      "our-town-2024/theatermania--jesse-green.json",
-      "our-town-2024/thewrap--robert-hofler.json"
-    ],
     "brightdata": [],
     "archive": [
-      "our-town-2024/ew--shania-russell.json",
-      "our-town-2024/wsj--charles-isherwood.json"
+      "wicked-2003/nytimes--charles-isherwood.json",
+      "wicked-2003/variety--charles-isherwood.json",
+      "wicked-2003/ew--alice-king.json",
+      "wicked-2003/village-voice--michael-feingold.json"
     ]
   },
-  "startTime": "2026-02-02T23:24:59.846Z",
-  "lastProcessed": "our-town-2024/washpost--peter-marks.json",
-  "log": [
-    {
-      "t": "2026-02-02T23:28:43.727Z",
-      "event": "bb-session",
-      "session": "38ac513c",
-      "url": "https://www.nydailynews.com/2024/10/10/broadway-review-revival-of-thornton-wilde"
-    },
-    {
-      "t": "2026-02-02T23:29:08.775Z",
-      "event": "bb-session",
-      "session": "91b241cc",
-      "url": "https://nypost.com/2024/10/10/entertainment/our-town-review-revival-starring-jim"
-    },
-    {
-      "t": "2026-02-02T23:29:32.938Z",
-      "event": "bb-session",
-      "session": "35db2302",
-      "url": "https://www.theatermania.com/broadway/reviews/our-town-broadway-revival-kenny-le"
-    },
-    {
-      "t": "2026-02-02T23:29:58.353Z",
-      "event": "bb-session",
-      "session": "f75a092a",
-      "url": "https://www.thewrap.com/our-town-broadway-review-jim-parsons-katie-holmes/"
-    },
-    {
-      "t": "2026-02-02T23:31:10.636Z",
-      "event": "bb-session",
-      "session": "dbce92a0",
-      "url": "https://www.washingtonpost.com/theater-dance/2024/10/11/our-town-broadway-review"
-    },
-    {
-      "t": "2026-02-02T23:31:13.593Z",
-      "event": "bb-login-uncertain",
-      "domain": "washingtonpost.com"
-    }
-  ]
+  "startTime": "2026-02-02T23:31:50.213Z",
+  "lastProcessed": "wicked-2003/washpost--peter-marks.json",
+  "log": []
 }
