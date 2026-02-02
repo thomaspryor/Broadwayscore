@@ -1,72 +1,85 @@
 {
   "processed": [
-    "uncle-vanya-2024/broadwaynews--brittani-samuel.json",
-    "uncle-vanya-2024/observer--rex-reed.json",
-    "uncle-vanya-2024/theatermania--jesse-green.json"
+    "oh-mary-2024/nytimes--jesse-green.json",
+    "oh-mary-2024/deadline--greg-evans.json",
+    "oh-mary-2024/ew--christian-holub.json"
   ],
   "failed": [
-    "uncle-vanya-2024/variety--bob-verini.json",
-    "uncle-vanya-2024/vulture--helen-shaw.json",
-    "uncle-vanya-2024/deadline--greg-evans.json",
-    "uncle-vanya-2024/new-york-sun--elysa-gardner.json",
-    "uncle-vanya-2024/thewrap--robert-hofler.json",
-    "uncle-vanya-2024/timeout--adam-feldman.json",
-    "uncle-vanya-2024/wsj--unknown.json"
+    "oh-mary-2024/hollywood-reporter--angie-han.json",
+    "oh-mary-2024/hollywood-reporter--david-rooney.json",
+    "oh-mary-2024/variety--aramide-tinubu.json",
+    "oh-mary-2024/vulture--helen-shaw.json",
+    "oh-mary-2024/broadwaynews--brittani-samuel.json",
+    "oh-mary-2024/guardian--adrian-horton.json",
+    "oh-mary-2024/nydailynews--chris-jones.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "uncle-vanya-2024/broadwaynews--brittani-samuel.json"
+      "oh-mary-2024/deadline--greg-evans.json",
+      "oh-mary-2024/ew--christian-holub.json"
     ],
     "browserbase": [
-      "data/review-texts/uncle-vanya-2024/observer--rex-reed.json",
-      "uncle-vanya-2024/observer--rex-reed.json"
+      "data/review-texts/oh-mary-2024/nytimes--jesse-green.json",
+      "oh-mary-2024/nytimes--jesse-green.json"
     ],
     "scrapingbee": [],
     "brightdata": [
-      "uncle-vanya-2024/theatermania--jesse-green.json"
+      "oh-mary-2024/hollywood-reporter--angie-han.json",
+      "oh-mary-2024/hollywood-reporter--david-rooney.json"
     ],
     "archive": [
-      "uncle-vanya-2024/variety--bob-verini.json"
+      "oh-mary-2024/variety--aramide-tinubu.json"
     ]
   },
-  "startTime": "2026-02-02T05:05:37.538Z",
-  "lastProcessed": "uncle-vanya-2024/wsj--unknown.json",
+  "startTime": "2026-02-02T04:56:55.153Z",
+  "lastProcessed": "oh-mary-2024/nydailynews--chris-jones.json",
   "log": [
     {
-      "t": "2026-02-02T05:09:00.359Z",
+      "t": "2026-02-02T05:04:22.692Z",
       "event": "bb-session",
-      "session": "8b16c939",
-      "url": "https://www.vulture.com/article/uncle-vanya-broadway-review.html"
+      "session": "01f4822b",
+      "url": "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html?searc"
     },
     {
-      "t": "2026-02-02T05:09:02.658Z",
+      "t": "2026-02-02T05:05:04.699Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770008671598\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAMgZyYv0WSZ8ANCKmrw==&cid=ekPuuV2SWR1vTz5hXT4UfcVR1V~mKps6ZnbLa9cVL9Pw7bV~YpAkp27qyhXstdVJ2Z4fomC0quV_haUVM6CKCu5XRgSRk2HjoPAbDs_I6BQS9U~9BSFLUqXanrBHdDSW&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770008671598\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770008671598\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAMgZyYv0WSZ8ANCKmrw==&cid=ekPuuV2SWR1vTz5hXT4UfcVR1V~mKps6ZnbLa9cVL9Pw7bV~YpAkp27qyhXstdVJ2Z4fomC0quV_haUVM6CKCu5XRgSRk2HjoPAbDs_I6BQS9U~9BSFLUqXanrBHdDSW&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770008671598\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    34 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770008671598\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAMgZyYv0WSZ8ANCKmrw==&cid=ekPuuV2SWR1vTz5hXT4UfcVR1V~mKps6ZnbLa9cVL9Pw7bV~YpAkp27qyhXstdVJ2Z4fomC0quV_haUVM6CKCu5XRgSRk2HjoPAbDs_I6BQS9U~9BSFLUqXanrBHdDSW&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770008671598\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-02T05:08:40.583Z",
+      "event": "bb-session",
+      "session": "b5e31aa0",
+      "url": "https://www.vulture.com/article/oh-mary-broadway-review.html"
+    },
+    {
+      "t": "2026-02-02T05:08:42.273Z",
       "event": "bb-login-uncertain",
       "domain": "vulture.com"
     },
     {
-      "t": "2026-02-02T05:13:14.543Z",
+      "t": "2026-02-02T05:14:23.450Z",
       "event": "bb-session",
-      "session": "29fe4106",
-      "url": "https://observer.com/2024/01/uncle-vanya-broadway-review-steve-carell-lincoln-ce"
+      "session": "ae768e06",
+      "url": "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-tran"
     },
     {
-      "t": "2026-02-02T05:13:38.783Z",
-      "event": "bb-session",
-      "session": "1b305a94",
-      "url": "https://observer.com/2024/04/review-steve-carell-is-a-lovable-loser-in-a-fragmen"
+      "t": "2026-02-02T05:14:25.977Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
     },
     {
-      "t": "2026-02-02T05:13:52.503Z",
+      "t": "2026-02-02T05:15:15.371Z",
       "event": "bb-session",
-      "session": "1e5f95c3",
-      "url": "https://www.theatermania.com/new-york-city-theater/reviews/uncle-vanya-broadway-"
+      "session": "8680b7a7",
+      "url": "https://www.nydailynews.com/2024/07/11/oh-mary-broadway-review/"
     },
     {
-      "t": "2026-02-02T05:14:18.763Z",
+      "t": "2026-02-02T05:15:41.191Z",
       "event": "bb-session",
-      "session": "35f4e7c1",
-      "url": "https://www.thewrap.com/uncle-vanya-broadway-review-steve-carell/"
+      "session": "d1e027a4",
+      "url": "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-o"
     }
   ]
 }
