@@ -21,6 +21,10 @@ on:
           - data-only
           - e2e-only
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   data-validation:
     name: Data Validation
