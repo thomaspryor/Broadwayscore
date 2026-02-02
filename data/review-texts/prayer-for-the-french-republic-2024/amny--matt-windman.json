@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic acknowledges the play's timeliness and strong performers but criticizes its excessive length, structural problems, and unnecessary Holocaust scenes. The review describes it as a 'work in progress' needing improvement, indicating mixed feelings despite some praise. | GPT-4o: The review acknowledges the play's timeliness and strong performances, suggesting it is worth seeing. However, it also notes issues with the play's construction and pacing, indicating some reservations. The text is truncated, so the final verdict may be missing, but the overall tone leans towards a positive recommendation. | Gemini: The review acknowledges flaws (too much going on, unnecessary scenes) but also highlights the play's timeliness, strong performances, and stirring nature. The aggregator excerpts also suggest a positive overall assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic finds the play timely and stirring with strong performances, but criticizes it for having 'too much going on' and calls certain scenes 'inert and unnecessary.' The review acknowledges worth while identifying significant structural problems. | GPT-4o: The review acknowledges the play's timeliness and strong performances, indicating a positive reception despite noting its complexity and length. The truncated text suggests the possibility of a more definitive positive conclusion. | Gemini: The review acknowledges the play's ambition and timeliness, highlighting strong performances. However, it also points out issues with the play's structure and length, suggesting it suffers in comparison to other recent productions. The truncated nature of the review makes it difficult to ascertain a definitive verdict, but the overall tone leans towards positive with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:36:45.699Z",
+    "scoredAt": "2026-02-02T18:53:01.840Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 69,
+    "previousScore": 75,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 74,
+    "claudeScore": 62,
+    "openaiScore": 75,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 17,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

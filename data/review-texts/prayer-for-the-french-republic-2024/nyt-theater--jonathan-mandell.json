@@ -27,13 +27,13 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
-  "assignedScore": 62,
+  "assignedScore": 64,
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -44,7 +44,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic finds the core story compelling and praises strong performances, but identifies significant structural flaws including too much going on, unnecessary Holocaust scenes, and lack of directorial control over chaotic moments. | Gemini: The review acknowledges strong performances and the timeliness of the subject matter, but ultimately finds the play overstuffed and uneven. The critic notes issues with the play's structure and length, leading to a mixed assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic finds the core story compelling and praises strong performances, but criticizes the play's structure, excessive length, and unnecessary Holocaust scenes, concluding it remains 'a work in progress.' | GPT-4o: The review acknowledges the play's timeliness and strong performances but criticizes its overambitious nature and unnecessary scenes. The critic finds it stirring yet flawed, indicating a mixed reception. | Gemini: The review acknowledges the play's strengths, particularly the performances and the timeliness of the subject matter, but also points out flaws such as the play being overstuffed and the Holocaust-era scenes feeling unnecessary. This suggests a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,28 +54,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:34:21.044Z",
+    "scoredAt": "2026-02-02T18:53:41.435Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 58,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "duplicateTextOf": "amny--matt-windman.json",
   "contentTier": "complete",
   "contentTierReason": "Full review text",
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
-    "geminiScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
     "claudeBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   }
 }

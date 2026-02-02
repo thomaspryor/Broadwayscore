@@ -9,15 +9,15 @@
   "bwwExcerpt": "The production is directed with great heart and welcome humor by David Cromer. It makes for powerful theater that’s as entertaining as it is enlightening. And it’s all terrifically enhanced by a sublime ensemble performing with absolute authenticity.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 60,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This excerpt only provides a neutral observation about the transfer from Off Broadway without indicating whether the critic views this change positively or negatively. The truncated nature and lack of clear evaluative language makes a definitive assessment impossible. | GPT-4o: The excerpt suggests a comparison between the Broadway and Off-Broadway versions, implying changes that might not fully capture the original's intimacy. Without a clear recommendation or criticism, it suggests a mixed reception. | Gemini: The review excerpt suggests the Broadway transfer is different and potentially less successful than the Off-Broadway version, indicating a mixed assessment. Without more context, it's difficult to determine a stronger recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The single excerpt describes the Broadway transfer as a 'counterproposal' to the Off Broadway version, which is neutral/comparative language without clear evaluative judgment. With only this fragment and a truncation warning, the critic's actual verdict is unclear. | GPT-4o: The excerpt suggests a comparison between the Broadway and Off Broadway versions, implying changes that may not fully capture the original's intimacy. The lack of a clear positive or negative recommendation leads to a mixed classification with low confidence due to the limited text. | Gemini: The review excerpt suggests a comparison to a previous production, implying that the current Broadway version might not be as successful. This indicates a mixed or neutral stance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:33:25.471Z",
+    "scoredAt": "2026-02-02T18:53:20.094Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 87,
-    "previousVersion": "3.0.0"
+    "previousScore": 60,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,
-    "openaiScore": 60,
-    "geminiScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

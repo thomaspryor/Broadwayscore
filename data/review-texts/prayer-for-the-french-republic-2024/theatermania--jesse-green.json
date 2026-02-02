@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a website error message rather than an actual review, providing no critical assessment of any Broadway show. | GPT-4o: The text provided is not a review but rather an error message or placeholder text. Without any evaluative content, the verdict is unclear, leading to a low confidence mixed classification. | Gemini: The review text is a placeholder indicating the review is missing, making it impossible to determine a recommendation. I am defaulting to a mixed score as a neutral position.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a website error message rather than an actual review, providing no critical assessment of any production. | GPT-4o: The text provided does not contain any evaluative content about a Broadway show, making it impossible to determine a recommendation. The score reflects the absence of review content. | Gemini: The review text is missing, suggesting the review is incomplete and its verdict is unknown. I am defaulting to the lowest end of 'Mixed' due to the lack of content.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,18 +43,18 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:37:27.442Z",
+    "scoredAt": "2026-02-02T18:54:03.060Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 59,
+    "previousScore": 58,
     "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
   "textWordCount": 42,
   "archivePath": "data/archives/reviews/prayer-for-the-french-republic-2024/theatermania--jesse-green_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:45:40.733Z",
+  "textFetchedAt": "2026-02-02T03:07:50.951Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -73,7 +73,7 @@
       "tier": 2,
       "method": "scrapingbee",
       "success": false,
-      "error": "timeout of 60000ms exceeded"
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
     },
     {
       "tier": 3,

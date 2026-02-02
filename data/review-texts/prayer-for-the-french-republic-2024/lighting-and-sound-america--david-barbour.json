@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 74,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt describes the play as 'riveting' and praises the playwright's vigorous approach, indicating a positive assessment. However, with only one curated quote available, I score conservatively within the positive range. | GPT-4o: The excerpt highlights the play's engaging and thought-provoking nature, suggesting it is worth seeing. However, the lack of full context and the warning about a single excerpt lead to a conservative score within the Positive bucket. | Gemini: The excerpt suggests the play is \"riveting,\" which indicates a positive experience. However, the single excerpt and lack of explicit recommendation warrant a score in the middle of the positive range.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The use of 'riveting' and praise for the playwright's vigorous handling of complex material suggests strong approval, though the single excerpt limits confidence in the overall verdict. | GPT-4o: The excerpt praises the play's ability to engage and provoke thought, indicating a strong recommendation. The use of 'riveting' suggests a high level of engagement and interest, pointing towards a positive assessment. | Gemini: The review excerpt indicates that the play is 'riveting,' which suggests a positive experience. However, due to the limited text, it's difficult to ascertain the full extent of the recommendation, hence a score in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,23 +46,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:37:24.184Z",
+    "scoredAt": "2026-02-02T18:53:24.351Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
+    "previousScore": 74,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "complete",
+  "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "geminiScore": 75,
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -71,10 +71,5 @@
     "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
-  "rescoreCompletedAt": "2026-02-02T03:37:24.184Z",
-  "wordCount": 1448,
-  "truncationSignals": [
-    "no_ending_punctuation"
-  ],
-  "tierReason": "Full review text"
+  "rescoreCompletedAt": "2026-02-02T03:37:24.184Z"
 }

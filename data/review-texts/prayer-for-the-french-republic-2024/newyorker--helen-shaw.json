@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "showScoreExcerpt": "“Like any play transferring to Broadway from an Off Broadway success, this ‘Prayer’ is a counterproposal to its earlier, smaller, and more intimate iteration.”",
@@ -18,11 +18,11 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 62,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges the play's ambitious ideas and praises specific performances (especially Robinette), but criticizes character inconsistencies, structural issues, and notes the production feels 'more tentative' than the original Off Broadway version. | Gemini: The review acknowledges both strengths and weaknesses. While praising certain aspects like the intellectual combat and Robinette's performance, it also criticizes character inconsistencies and the emotional manipulation. The truncated ending makes it difficult to ascertain a definitive recommendation, but the overall tone suggests a mixed assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Shaw acknowledges the play's ambitions and some strong elements (particularly Robinette's performance) but criticizes character inconsistencies, structural issues, and suggests the Off Broadway version was superior. The review concludes that the play feels like 'a relic' and 'you can't go home.' | GPT-4o: The review highlights both strengths and weaknesses of the production, noting its powerful language and moments of applause but also its character inconsistencies and less effective Broadway transition. The truncated text suggests caution, but the overall tone leans towards a mixed verdict. | Gemini: The review highlights both strengths and weaknesses, praising the intellectual combat and Robinette's performance, but criticizing character inconsistencies and emotional manipulation. The truncated ending makes a final assessment difficult, but the overall tone suggests a mixed reaction.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,26 +43,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:33:39.930Z",
+    "scoredAt": "2026-02-02T18:53:29.506Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 45,

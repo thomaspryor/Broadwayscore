@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review opens with 'dramatic triumph' and five-star rating, consistently uses superlative language like 'strikes pure gold' and 'airtight elegance,' with no meaningful reservations expressed throughout. | GPT-4o: The review is overwhelmingly positive, describing the play as a 'dramatic triumph' and praising its direction, acting, and writing. The critic's use of 'five-star review' and 'strikes pure gold' indicates a strong recommendation. | Gemini: The review is overwhelmingly positive, calling the play a \"dramatic triumph\" and stating that Harmon \"strikes pure gold.\" The critic praises the direction, acting, and writing, indicating a strong recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review opens with 'dramatic triumph' and consistently uses superlative language throughout, calling it 'piercing,' 'airtight elegance,' and concluding that Harmon 'strikes pure gold' with a 'plus-size play' that 'impresses in large structural ways.' This is clearly a five-star rave review. | GPT-4o: The review is overwhelmingly positive, describing the play as a 'dramatic triumph' and praising its direction, acting, and thematic depth. The critic's language is enthusiastic and unreserved, indicating a strong recommendation. | Gemini: The review uses extremely positive language like \"gripping, airtight play is a dramatic triumph\" and \"strikes pure gold\" indicating a very strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,12 +38,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:34:24.151Z",
+    "scoredAt": "2026-02-02T18:53:45.268Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 93,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
