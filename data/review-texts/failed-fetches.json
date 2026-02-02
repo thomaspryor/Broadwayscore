@@ -6184,18 +6184,6 @@
     "timestamp": "2026-02-02T00:32:26.411Z"
   },
   {
-    "reviewId": "uncle-vanya-2024/deadline--greg-evans.json",
-    "showId": "uncle-vanya-2024",
-    "outlet": "Deadline",
-    "critic": "Greg Evans",
-    "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
-    "textLength": 48624,
-    "timestamp": "2026-02-02T00:33:46.967Z"
-  },
-  {
     "reviewId": "uncle-vanya-2024/new-york-sun--elysa-gardner.json",
     "showId": "uncle-vanya-2024",
     "outlet": "New York Sun",
@@ -6782,5 +6770,17 @@
     "garbageReason": "Error/404 page: \"we can't find the page\"",
     "textLength": 15857,
     "timestamp": "2026-02-02T03:32:12.906Z"
+  },
+  {
+    "reviewId": "uncle-vanya-2024/deadline--greg-evans.json",
+    "showId": "uncle-vanya-2024",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (19): the outsiders, the great gatsby, wicked, hamilton, chicago...",
+    "textLength": 48624,
+    "timestamp": "2026-02-02T04:21:50.516Z"
   }
 ]
