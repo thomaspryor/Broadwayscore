@@ -4828,18 +4828,6 @@
     "timestamp": "2026-02-01T19:25:33.228Z"
   },
   {
-    "reviewId": "illinoise-2024/deadline--greg-evans.json",
-    "showId": "illinoise-2024",
-    "outlet": "Deadline",
-    "critic": "Greg Evans",
-    "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
-    "textLength": 48624,
-    "timestamp": "2026-02-01T19:28:52.161Z"
-  },
-  {
     "reviewId": "just-for-us-2023/deadline--greg-evans.json",
     "showId": "just-for-us-2023",
     "outlet": "Deadline",
@@ -5750,18 +5738,6 @@
     "garbageReason": "Legal/privacy page: \"©2023 VILLAGE VOICE, LLC. ALL RIGHTS RESERVED\"",
     "textLength": 8666,
     "timestamp": "2026-02-02T00:11:06.293Z"
-  },
-  {
-    "reviewId": "illinoise-2024/timeout--adam-feldman.json",
-    "showId": "illinoise-2024",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/illinoise-review",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Error/404 page: \"we can't find the page\"",
-    "textLength": 16494,
-    "timestamp": "2026-02-02T00:12:35.634Z"
   },
   {
     "reviewId": "just-in-time-2025/timeout--adam-feldman.json",
@@ -6770,5 +6746,41 @@
     "garbageReason": "Paywall/subscription prompt: \"paywall\"",
     "textLength": 6173,
     "timestamp": "2026-02-02T03:29:28.130Z"
+  },
+  {
+    "reviewId": "illinoise-2024/deadline--greg-evans.json",
+    "showId": "illinoise-2024",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (19): the outsiders, the great gatsby, wicked, hamilton, chicago...",
+    "textLength": 48624,
+    "timestamp": "2026-02-02T03:31:29.141Z"
+  },
+  {
+    "reviewId": "illinoise-2024/observer--rex-reed.json",
+    "showId": "illinoise-2024",
+    "outlet": "Observer",
+    "critic": "Rex Reed",
+    "url": "https://observer.com/2024/04/illinoise-broadway-review-sufjan-stevens/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Ad blocker message: \"turn off your ad block\"",
+    "textLength": 582,
+    "timestamp": "2026-02-02T03:31:58.986Z"
+  },
+  {
+    "reviewId": "illinoise-2024/timeout--adam-feldman.json",
+    "showId": "illinoise-2024",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/illinoise-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Error/404 page: \"we can't find the page\"",
+    "textLength": 15857,
+    "timestamp": "2026-02-02T03:32:12.906Z"
   }
 ]
