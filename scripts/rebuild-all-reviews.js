@@ -699,6 +699,14 @@ function selectBestExcerpt(data) {
     }
   }
 
+  // 1b. Try V5 keyQuote (single string from V5 scoring, not yet converted to keyPhrases)
+  if (data.llmScore?.keyQuote && data.llmScore.keyQuote.length > 30) {
+    const cleaned = cleanExcerpt(data.llmScore.keyQuote);
+    if (cleaned && !isJunkExcerpt(cleaned)) {
+      return cleaned;
+    }
+  }
+
   // 2. Try showScoreExcerpt (usually human-curated, cleaner)
   if (data.showScoreExcerpt) {
     const cleaned = cleanExcerpt(data.showScoreExcerpt);

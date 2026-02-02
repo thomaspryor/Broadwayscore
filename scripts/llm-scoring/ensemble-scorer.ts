@@ -336,7 +336,12 @@ export class EnsembleReviewScorer {
         keyPhrases: ensembleResult.modelResults.claude?.keyPhrases
           || ensembleResult.modelResults.openai?.keyPhrases
           || ensembleResult.modelResults.gemini?.keyPhrases
-          || [],
+          // V5 scorers return keyQuote (single string) instead of keyPhrases (array)
+          // Convert the best available keyQuote into a keyPhrases entry for pullQuote pipeline
+          || (ensembleResult.modelResults.claude?.keyQuote ? [{ quote: ensembleResult.modelResults.claude.keyQuote, sentiment: 'neutral' as const, strength: 3 }]
+            : ensembleResult.modelResults.openai?.keyQuote ? [{ quote: ensembleResult.modelResults.openai.keyQuote, sentiment: 'neutral' as const, strength: 3 }]
+            : ensembleResult.modelResults.gemini?.keyQuote ? [{ quote: ensembleResult.modelResults.gemini.keyQuote, sentiment: 'neutral' as const, strength: 3 }]
+            : []),
         reasoning: this.buildCombinedReasoning(ensembleResult),
         flags: {
           hasExplicitRecommendation: false,
