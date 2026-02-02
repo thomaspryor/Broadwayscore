@@ -20,6 +20,24 @@ const THRESHOLDS = {
   maxUnknownPercent: 5,     // No more than 5% should have unknown quality
 };
 
+// Map contentTier values to textQuality equivalents
+function resolveQuality(data) {
+  // Prefer textQuality (more granular, set by collect-review-texts.js)
+  if (data.textQuality) return data.textQuality;
+  // Fall back to contentTier (set by classifyContentTier/backfill)
+  if (data.contentTier) {
+    switch (data.contentTier) {
+      case 'complete': return 'full';
+      case 'full': return 'full';
+      case 'truncated': case 'needs-rescrape': case 'invalid': return 'truncated';
+      case 'excerpt': return 'excerpt';
+      case 'stub': return 'excerpt';
+      default: return 'unknown';
+    }
+  }
+  return 'unknown';
+}
+
 function auditTextQuality() {
   const stats = {
     total: 0,
@@ -29,7 +47,10 @@ function auditTextQuality() {
   };
 
   const shows = fs.readdirSync(REVIEW_TEXTS_DIR)
-    .filter(f => fs.statSync(path.join(REVIEW_TEXTS_DIR, f)).isDirectory());
+    .filter(f => {
+      const stat = fs.lstatSync(path.join(REVIEW_TEXTS_DIR, f));
+      return stat.isDirectory() && !stat.isSymbolicLink();
+    });
 
   for (const show of shows) {
     const showDir = path.join(REVIEW_TEXTS_DIR, show);
@@ -43,7 +64,7 @@ function auditTextQuality() {
 
         if (data.fullText) {
           stats.hasFullText++;
-          const quality = data.textQuality || 'unknown';
+          const quality = resolveQuality(data);
           stats.byQuality[quality] = (stats.byQuality[quality] || 0) + 1;
 
           if (data.truncationSignals) {
