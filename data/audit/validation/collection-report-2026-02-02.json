@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-02-02T05:07:17.394Z",
+  "runDate": "2026-02-02T05:11:23.491Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 10,
     "priority": "all",
-    "showFilter": "the-notebook-2024",
+    "showFilter": "wicked-2003",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -17,80 +17,81 @@
     "successRate": "30.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
-    "browserbase": 0,
-    "scrapingbee": 1,
+    "playwright": 0,
+    "browserbase": 2,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 2
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 5,
+    "tier1Attempts": 6,
     "tier1Success": 1,
-    "tier1_5Attempts": 3,
-    "tier1_5Success": 0,
-    "tier2Attempts": 4,
-    "tier2Success": 1,
-    "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier4Attempts": 9,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier2Attempts": 1,
+    "tier2Success": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 0,
+    "tier4Attempts": 10,
     "tier4Success": 5,
     "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 22,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 1.8,
+    "scrapingBeeCreditsUsed": 12,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
     "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-notebook-2024/nytimes--unknown.json",
-    "the-notebook-2024/broadwaynews--brittani-samuel.json",
-    "the-notebook-2024/theatermania--jesse-green.json"
+    "wicked-2003/nytimes--charles-isherwood.json",
+    "wicked-2003/ew--alice-king.json",
+    "wicked-2003/observer--rex-reed.json"
   ],
   "failed": [
-    "the-notebook-2024/hollywood-reporter--david-rooney.json",
-    "the-notebook-2024/variety--frank-rizzo.json",
-    "the-notebook-2024/vulture--helen-shaw.json",
-    "the-notebook-2024/deadline--greg-evans.json",
-    "the-notebook-2024/nydailynews--chris-jones.json",
-    "the-notebook-2024/timeout--adam-feldman.json",
-    "the-notebook-2024/wsj--charles-isherwood.json"
+    "wicked-2003/variety--charles-isherwood.json",
+    "wicked-2003/ew--lisa-schwarzbaum.json",
+    "wicked-2003/timeout--david-cote.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "wicked-2003/curtainup--elyse-sommer.json",
+    "wicked-2003/frontmezzjunkies--unknown.json",
+    "wicked-2003/njcom-star-ledger--michael-sommers.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "the-notebook-2024/broadwaynews--brittani-samuel.json"
+    "playwright": [],
+    "browserbase": [
+      "data/review-texts/wicked-2003/observer--rex-reed.json",
+      "wicked-2003/observer--rex-reed.json"
     ],
-    "browserbase": [],
-    "scrapingbee": [
-      "the-notebook-2024/theatermania--jesse-green.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "the-notebook-2024/nytimes--unknown.json",
-      "the-notebook-2024/variety--frank-rizzo.json"
+      "wicked-2003/nytimes--charles-isherwood.json",
+      "wicked-2003/ew--alice-king.json",
+      "wicked-2003/variety--charles-isherwood.json"
     ]
   },
   "failuresByOutlet": {
-    "The Wall Street Journal": {
+    "Entertainment Weekly": {
       "count": 1,
-      "domain": "hollywoodreporter.com",
+      "domain": "ew.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "New York Daily News": {
+    "CurtainUp": {
       "count": 1,
-      "domain": "nydailynews.com",
+      "domain": "curtainup.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": true
+      "isKnownBlocked": false
+    },
+    "NJ.com": {
+      "count": 1,
+      "domain": "wickedthemusical.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "the-notebook-2024/vulture--helen-shaw.json",
-      "oldUrl": "https://www.vulture.com/article/the-notebook-broadway-review.html",
-      "newUrl": "https://www.vulture.com/article/theater-reviews-the-notebook-the-effect.html"
-    }
-  ]
+  "urlDiscoveries": []
 }
