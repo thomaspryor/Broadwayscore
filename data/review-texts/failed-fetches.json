@@ -6544,18 +6544,6 @@
     "timestamp": "2026-02-02T03:29:08.170Z"
   },
   {
-    "reviewId": "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
-    "showId": "hells-kitchen-2024",
-    "outlet": "Chelsea Community News",
-    "critic": "Michael Musto",
-    "url": "https://chelseacommunitynews.com/2024/04/20/review-hells-kitchen-is-a-coming-of-age-musical-thats-in-all-the-right-alicia-keys/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Paywall/subscription prompt: \"paywall\"",
-    "textLength": 6173,
-    "timestamp": "2026-02-02T03:29:28.130Z"
-  },
-  {
     "reviewId": "illinoise-2024/deadline--greg-evans.json",
     "showId": "illinoise-2024",
     "outlet": "Deadline",
@@ -6842,5 +6830,17 @@
     "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
     "textLength": 48624,
     "timestamp": "2026-02-02T15:12:05.263Z"
+  },
+  {
+    "reviewId": "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
+    "showId": "hells-kitchen-2024",
+    "outlet": "Chelsea Community News",
+    "critic": "Michael Musto",
+    "url": "https://chelseacommunitynews.com/2024/04/20/review-hells-kitchen-is-a-coming-of-age-musical-thats-in-all-the-right-alicia-keys/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"subscriber\"",
+    "textLength": 6452,
+    "timestamp": "2026-02-02T15:18:46.178Z"
   }
 ]
