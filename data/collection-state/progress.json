@@ -1,32 +1,38 @@
 {
   "processed": [
-    "hells-kitchen-2024/nytimes--jesse-green.json",
-    "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
-    "hells-kitchen-2024/ap--mark-kennedy.json"
+    "moulin-rouge-2019/vulture--jesse-green.json",
+    "moulin-rouge-2019/theatermania--jesse-green.json",
+    "moulin-rouge-2019/wsj--terry-teachout.json",
+    "moulin-rouge-2019/nysr--jesse-oxfeld.json",
+    "moulin-rouge-2019/telegraph--diane-snyder.json",
+    "moulin-rouge-2019/washpost--peter-marks.json"
   ],
   "failed": [
-    "hells-kitchen-2024/hollywood-reporter--david-rooney.json",
-    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
-    "hells-kitchen-2024/deadline--pete-hammond.json",
-    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
-    "hells-kitchen-2024/timeout--adam-feldman.json",
-    "hells-kitchen-2024/wsj--charles-isherwood.json",
-    "hells-kitchen-2024/talkinbroadway--matthew-murray.json"
+    "moulin-rouge-2019/observer--david-cote.json",
+    "moulin-rouge-2019/observer--rex-reed.json",
+    "moulin-rouge-2019/thewrap--robert-hofler.json",
+    "moulin-rouge-2019/timeout--adam-feldman.json",
+    "moulin-rouge-2019/amny--matt-windman.json",
+    "moulin-rouge-2019/dailybeast--tim-teeman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "hells-kitchen-2024/ap--mark-kennedy.json"
-    ],
+    "playwright": [],
     "browserbase": [],
-    "scrapingbee": [],
-    "brightdata": [],
+    "scrapingbee": [
+      "moulin-rouge-2019/theatermania--jesse-green.json"
+    ],
+    "brightdata": [
+      "moulin-rouge-2019/wsj--terry-teachout.json"
+    ],
     "archive": [
-      "hells-kitchen-2024/nytimes--jesse-green.json",
-      "hells-kitchen-2024/broadwaynews--brittani-samuel.json"
+      "moulin-rouge-2019/vulture--jesse-green.json",
+      "moulin-rouge-2019/nysr--jesse-oxfeld.json",
+      "moulin-rouge-2019/telegraph--diane-snyder.json",
+      "moulin-rouge-2019/washpost--peter-marks.json"
     ]
   },
-  "startTime": "2026-02-02T17:37:46.194Z",
-  "lastProcessed": "hells-kitchen-2024/talkinbroadway--matthew-murray.json",
+  "startTime": "2026-02-02T17:42:33.139Z",
+  "lastProcessed": "moulin-rouge-2019/washpost--peter-marks.json",
   "log": []
 }
