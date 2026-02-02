@@ -1,46 +1,43 @@
 {
   "processed": [
-    "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
-    "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
-    "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json",
-    "once-upon-a-one-more-time-2023/associated-press-mark-kennedy--mark-kennedy.json",
-    "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
+    "the-outsiders-2024/vulture--jackson-mchenry.json",
+    "the-outsiders-2024/broadwaynews--brittani-samuel.json",
+    "the-outsiders-2024/theatermania--adam-feldman.json",
+    "the-outsiders-2024/culturesauce--thom-geier.json"
   ],
   "failed": [
-    "once-upon-a-one-more-time-2023/hollywood-reporter--angie-han.json",
-    "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
-    "once-upon-a-one-more-time-2023/timeout--adam-feldman.json",
-    "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
-    "once-upon-a-one-more-time-2023/thestage--lane-williamson.json"
+    "the-outsiders-2024/hollywood-reporter--angie-han.json",
+    "the-outsiders-2024/hollywood-reporter--david-rooney.json",
+    "the-outsiders-2024/variety--maya-phillips.json",
+    "the-outsiders-2024/deadline--greg-evans.json",
+    "the-outsiders-2024/timeout--adam-feldman.json",
+    "the-outsiders-2024/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
-      "once-upon-a-one-more-time-2023/associated-press-mark-kennedy--mark-kennedy.json",
-      "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
+      "the-outsiders-2024/broadwaynews--brittani-samuel.json",
+      "the-outsiders-2024/culturesauce--thom-geier.json"
     ],
     "browserbase": [],
-    "scrapingbee": [],
-    "brightdata": [],
+    "scrapingbee": [
+      "the-outsiders-2024/theatermania--adam-feldman.json"
+    ],
+    "brightdata": [
+      "the-outsiders-2024/variety--maya-phillips.json"
+    ],
     "archive": [
-      "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
-      "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json"
+      "the-outsiders-2024/vulture--jackson-mchenry.json"
     ]
   },
-  "startTime": "2026-02-02T04:57:29.378Z",
-  "lastProcessed": "once-upon-a-one-more-time-2023/thestage--lane-williamson.json",
+  "startTime": "2026-02-02T04:57:06.684Z",
+  "lastProcessed": "the-outsiders-2024/culturesauce--thom-geier.json",
   "log": [
     {
-      "t": "2026-02-02T04:59:27.868Z",
+      "t": "2026-02-02T05:05:15.042Z",
       "event": "bb-session",
-      "session": "0368c930",
-      "url": "https://www.nytimes.com/2023/06/14/theater/once-upon-a-one-more-time-review.html"
-    },
-    {
-      "t": "2026-02-02T04:59:33.938Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
+      "session": "245432b2",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/the-outsiders_93847.h"
     }
   ]
 }
