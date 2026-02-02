@@ -294,21 +294,39 @@ function extractCreativeTeamFromText(text) {
     [/(?:^|[;.\n]\s*)Music by\s+([^;:\n]+)/gi, 'Music'],
   ];
 
+  // Roles that appear in song-level credits on IBDB — only take first match
+  const firstMatchOnly = new Set(['Lyrics', 'Music', 'Music & Lyrics']);
+
   for (const [pattern, role] of rolePatterns) {
     let match;
+    let matchedOnce = false;
     while ((match = pattern.exec(text)) !== null) {
+      // For music/lyrics roles, only take the first match (show-level credit)
+      // to avoid picking up per-song credits from the Songs section
+      if (firstMatchOnly.has(role) && matchedOnce) continue;
+
       const rawName = match[1].trim()
+        // Collapse excess whitespace (IBDB HTML tables produce wide gaps)
+        .replace(/\s{2,}/g, ' ')
         // Strip trailing punctuation/junk
         .replace(/[.,;:\s]+$/, '')
+        // Strip parenthetical suffixes like "(includes projections)"
+        .replace(/\s*\(.*$/, '')
+        // Strip unbalanced trailing parentheses (song credit artifacts)
+        .replace(/\)+$/, '')
         // Strip common IBDB trailing noise
         .replace(/\s+Based on\b.*$/i, '')
         .replace(/\s+Originally\b.*$/i, '')
-        .replace(/\s+Additional\b.*$/i, '');
+        .replace(/\s+Additional\b.*$/i, '')
+        .trim();
 
       if (!rawName || rawName.length < 2 || rawName.length > 100) continue;
 
       // Skip if this looks like a non-name (dates, numbers, etc.)
       if (/^\d/.test(rawName) || /\d{4}/.test(rawName)) continue;
+
+      // Skip song credit boilerplate like "(Unless otherwise noted)"
+      if (/^unless\b/i.test(rawName)) continue;
 
       // Track "Music & Lyrics" names so we skip redundant standalone Lyrics/Music
       if (role === 'Music & Lyrics') {
@@ -325,6 +343,7 @@ function extractCreativeTeamFromText(text) {
       seen.add(key);
 
       creativeTeam.push({ name: rawName, role });
+      matchedOnce = true;
     }
   }
 
