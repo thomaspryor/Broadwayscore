@@ -15,7 +15,6 @@
   "originalScoreNormalized": 80,
   "scoreSource": "text-pattern",
   "scoreExtractedFrom": "archive",
-  "designation": "Recommended",
   "dtliExcerpt": "Affection is the key that opens the show’s comedy: As ridiculous as Doug and Bud may be, you feel for these guys and even root for them. As stupid as their historical musical may be, you can’t deny that they’ve got heart.",
   "showScoreExcerpt": "\"Affection is the key that opens the show’s comedy: As ridiculous as Doug and Bud may be, you feel for these guys and even root for them. As stupid as their historical musical may be, you can’t deny that they’ve got heart.\"",
   "sources": [
@@ -102,5 +101,13 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240908091334",
-  "archiveOrgUrl": "http://web.archive.org/web/20240908091334/https://www.timeout.com/newyork/theater/gutenberg-the-musical-broadway-review-josh-gad-andrew-rannells"
+  "archiveOrgUrl": "http://web.archive.org/web/20240908091334/https://www.timeout.com/newyork/theater/gutenberg-the-musical-broadway-review-josh-gad-andrew-rannells",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.188Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

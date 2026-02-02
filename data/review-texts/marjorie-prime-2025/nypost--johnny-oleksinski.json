@@ -70,10 +70,17 @@
   "originalScoreNormalized": 95,
   "scoreSource": "letter-grade",
   "scoreExtractedFrom": "fullText",
-  "designation": "Recommended",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 82,
   "rescoreCompletedAt": "2026-02-01T15:30:59.538Z",
   "contentTier": "complete",
-  "wordCount": 724
+  "wordCount": 724,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.229Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

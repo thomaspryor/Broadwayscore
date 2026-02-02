@@ -69,7 +69,6 @@
   "textWordCount": 151,
   "archivePath": "data/archives/reviews/aladdin-2014/wsj--terry-teachout_2026-02-02.html",
   "textFetchedAt": "2026-02-02T03:12:29.742Z",
-  "designation": "Recommended",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -104,5 +103,13 @@
   "textIssues": [
     "Word count too low: 162 (min: 300)"
   ],
-  "rescoreCompletedAt": "2026-02-02T03:21:51.259Z"
+  "rescoreCompletedAt": "2026-02-02T03:21:51.259Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.152Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

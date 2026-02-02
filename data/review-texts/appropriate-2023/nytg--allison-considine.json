@@ -72,7 +72,6 @@
   "previousLlmScore": 82,
   "archivePath": "data/archives/reviews/appropriate-2023/nytg--allison-considine_2026-01-29.html",
   "textFetchedAt": "2026-01-29T04:59:56.256Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -94,5 +93,13 @@
   "sourceMethod": "playwright",
   "rescoreCompletedAt": "2026-01-29T14:31:51.653Z",
   "contentTier": "complete",
-  "wordCount": 780
+  "wordCount": 780,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.158Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

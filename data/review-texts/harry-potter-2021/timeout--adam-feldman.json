@@ -28,7 +28,6 @@
     "previousScore": 95,
     "previousVersion": "5.1.0"
   },
-  "designation": "Recommended",
   "sources": [
     "bww-roundup",
     "dtli",
@@ -158,5 +157,13 @@
   ],
   "textStatus": "truncated",
   "archiveOrgTimestamp": "20250511124611",
-  "archiveOrgUrl": "http://web.archive.org/web/20250511124611/https://www.timeout.com/newyork/theater/harry-potter-cursed-child-broadway-review"
+  "archiveOrgUrl": "http://web.archive.org/web/20250511124611/https://www.timeout.com/newyork/theater/harry-potter-cursed-child-broadway-review",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.202Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "none"
+  }
 }

@@ -64,7 +64,6 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "archivePath": "data/archives/reviews/i-need-that-2023/wsj--charles-isherwood_2026-02-02.html",
   "textFetchedAt": "2026-02-02T03:06:50.532Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -92,5 +91,13 @@
   "truncationSignals": [
     "shorter_than_excerpt"
   ],
-  "textStatus": "truncated"
+  "textStatus": "truncated",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.214Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

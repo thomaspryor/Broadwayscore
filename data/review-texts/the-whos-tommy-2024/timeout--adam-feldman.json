@@ -15,7 +15,6 @@
   "originalScoreNormalized": 80,
   "scoreSource": "text-pattern",
   "scoreExtractedFrom": "archive",
-  "designation": "Recommended",
   "dtliExcerpt": "And yet, despite these problems, the show works, and its epic choral finale somehow feels genuinely rousing and healing. As musical theater, Tommy is limited. On its own terms, it’s often sensational.",
   "showScoreExcerpt": "\"As musical theater, Tommy is limited. On its own terms, it’s often sensational.\"",
   "sources": [
@@ -78,5 +77,13 @@
   "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
   "garbageFixedAt": "2026-01-29T22:45:23.361Z",
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.305Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

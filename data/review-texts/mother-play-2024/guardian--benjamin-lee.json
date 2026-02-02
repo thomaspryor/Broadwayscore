@@ -70,7 +70,6 @@
   "textWordCount": 1241,
   "archivePath": "data/archives/reviews/mother-play-2024/guardian--benjamin-lee_2026-02-01.html",
   "textFetchedAt": "2026-02-01T14:03:52.759Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -84,5 +83,13 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-02-01T15:39:23.894Z"
+  "rescoreCompletedAt": "2026-02-01T15:39:23.894Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.238Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "Meh"
+  }
 }

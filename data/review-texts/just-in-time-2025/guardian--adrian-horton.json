@@ -73,7 +73,6 @@
   "textWordCount": 1271,
   "archivePath": "data/archives/reviews/just-in-time-2025/guardian--adrian-horton_2026-02-01.html",
   "textFetchedAt": "2026-02-01T14:18:34.227Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -93,5 +92,13 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "rescoreCompletedAt": "2026-02-01T15:23:22.199Z",
-  "duplicateTextOf": "deadline--greg-evans.json"
+  "duplicateTextOf": "deadline--greg-evans.json",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.220Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Meh",
+    "bwwThumb": "Meh"
+  }
 }

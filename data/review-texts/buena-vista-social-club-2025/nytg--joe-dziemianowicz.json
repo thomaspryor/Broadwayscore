@@ -62,7 +62,6 @@
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Both models agree: Positive"
   },
-  "designation": "Recommended",
   "sources": [
     "dtli",
     "show-score"
@@ -76,5 +75,13 @@
   "wordCount": 992,
   "truncationSignals": [
     "no_ending_punctuation"
-  ]
+  ],
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.167Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "none"
+  }
 }

@@ -62,7 +62,6 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Rave"
   },
-  "designation": "Recommended",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 89,
   "archivePath": "data/archives/reviews/oh-mary-2024/nytg--austin-fimmano_2026-01-29.html",
@@ -84,5 +83,13 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250614120632/https://www.newyorktheatreguide.com/reviews/oh-mary-broadway-review-cole-escola",
   "rescoreCompletedAt": "2026-02-01T15:44:28.614Z",
   "contentTier": "complete",
-  "wordCount": 765
+  "wordCount": 765,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.246Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "none"
+  }
 }

@@ -68,7 +68,6 @@
   "textWordCount": 267,
   "archivePath": "data/archives/reviews/appropriate-2023/wsj--charles-isherwood_2026-02-02.html",
   "textFetchedAt": "2026-02-02T03:22:56.689Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -90,5 +89,13 @@
   "textIssues": [
     "Word count too low: 293 (min: 300)"
   ],
-  "rescoreCompletedAt": "2026-02-02T03:49:09.700Z"
+  "rescoreCompletedAt": "2026-02-02T03:49:09.700Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.159Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

@@ -69,7 +69,6 @@
   "textWordCount": 1242,
   "archivePath": "data/archives/reviews/redwood-2025/guardian--adrian-horton_2026-02-01.html",
   "textFetchedAt": "2026-02-01T23:52:16.037Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -89,5 +88,13 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-02-02T00:48:36.541Z"
+  "rescoreCompletedAt": "2026-02-02T00:48:36.541Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.269Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Down",
+    "bwwThumb": "none"
+  }
 }

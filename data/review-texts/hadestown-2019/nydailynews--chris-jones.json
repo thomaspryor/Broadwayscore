@@ -65,7 +65,6 @@
   "previousLlmScore": 85,
   "archivePath": "data/archives/reviews/hadestown-2019/nydailynews--chris-jones_2026-01-29.html",
   "textFetchedAt": "2026-01-29T05:30:39.684Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -107,5 +106,13 @@
   "dateSource": "historical-review",
   "showScoreExcerpt": "“The thrillingly alarmist new Broadway musical with the score that feels like it comes from somewhere deep in the American gut...An eye-popping, mythological blend of steampunk...’Hadestown’ feels like the most relevant and resistant musical in town, but it never comes off as shrill or moving in some kind of dull lockstep with all the other self-aware plays and musicals lamenting Trump’s America by playing tritely to the choir, critics and all.”",
   "contentTier": "complete",
-  "wordCount": 699
+  "wordCount": 699,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.189Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

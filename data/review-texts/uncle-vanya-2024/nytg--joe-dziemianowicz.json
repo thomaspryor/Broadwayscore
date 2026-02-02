@@ -71,7 +71,6 @@
   "previousLlmScore": 68,
   "archivePath": "data/archives/reviews/uncle-vanya-2024/nytg--joe-dziemianowicz_2026-01-29.html",
   "textFetchedAt": "2026-01-29T15:21:59.918Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -87,5 +86,13 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 891,
-  "rescoreCompletedAt": "2026-02-02T03:43:16.486Z"
+  "rescoreCompletedAt": "2026-02-02T03:43:16.486Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.310Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Meh",
+    "bwwThumb": "none"
+  }
 }

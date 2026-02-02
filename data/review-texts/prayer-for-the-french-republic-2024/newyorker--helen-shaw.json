@@ -68,7 +68,6 @@
   "previousLlmScore": 45,
   "archivePath": "data/archives/reviews/prayer-for-the-french-republic-2024/newyorker--helen-shaw_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:36:56.249Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -87,5 +86,13 @@
   "rescoreCompletedAt": "2026-02-01T15:52:49.330Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
-  "wordCount": 1436
+  "wordCount": 1436,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.258Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "Meh"
+  }
 }

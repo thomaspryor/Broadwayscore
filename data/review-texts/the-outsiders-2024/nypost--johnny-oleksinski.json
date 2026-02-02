@@ -61,7 +61,6 @@
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
-  "designation": "Recommended",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
   "archivePath": "data/archives/reviews/the-outsiders-2024/nypost--johnny-oleksinski_2026-01-30.html",
@@ -84,5 +83,13 @@
     "dtli",
     "web-search"
   ],
-  "rescoreCompletedAt": "2026-02-01T16:22:14.281Z"
+  "rescoreCompletedAt": "2026-02-01T16:22:14.281Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.298Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "none"
+  }
 }

@@ -61,7 +61,6 @@
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Both models agree: Positive"
   },
-  "designation": "Recommended",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 74,
   "archivePath": "data/archives/reviews/two-strangers-bway-2025/nytg--caroline-cao_2026-01-29.html",
@@ -81,5 +80,13 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 1022,
-  "rescoreCompletedAt": "2026-02-01T16:33:12.170Z"
+  "rescoreCompletedAt": "2026-02-01T16:33:12.170Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.309Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "none"
+  }
 }

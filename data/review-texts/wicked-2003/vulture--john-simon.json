@@ -63,7 +63,6 @@
   "previousLlmScore": 13,
   "archivePath": "data/archives/reviews/wicked-2003/vulture--john-simon_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:45:47.983Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -81,5 +80,13 @@
   "archiveOrgUrl": "http://web.archive.org/web/20241113193159/https://nymag.com/nymetro/arts/theater/reviews/n_9454/",
   "rescoreCompletedAt": "2026-02-01T16:38:39.158Z",
   "contentTier": "complete",
-  "wordCount": 1472
+  "wordCount": 1472,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.315Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

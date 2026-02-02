@@ -131,7 +131,6 @@
   "textWordCount": 1236,
   "archivePath": "data/archives/reviews/our-town-2024/timeout--adam-feldman_2026-02-02.html",
   "textFetchedAt": "2026-02-02T03:04:29.305Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -150,5 +149,13 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251115224806",
-  "archiveOrgUrl": "http://web.archive.org/web/20251115224806/https://www.timeout.com/newyork/theater/our-town-broadway-review-thornton-wilder-jim-parsons"
+  "archiveOrgUrl": "http://web.archive.org/web/20251115224806/https://www.timeout.com/newyork/theater/our-town-broadway-review-thornton-wilder-jim-parsons",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.254Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "none",
+    "bwwThumb": "Up"
+  }
 }

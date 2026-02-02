@@ -78,7 +78,6 @@
   "textWordCount": 246,
   "archivePath": "data/archives/reviews/harry-potter-2021/washpost--peter-marks_2026-02-01.html",
   "textFetchedAt": "2026-02-01T15:14:09.698Z",
-  "designation": "Recommended",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
@@ -106,5 +105,13 @@
   "sourceMethod": "scrapingbee",
   "textIssues": [
     "Word count too low: 246 (min: 300)"
-  ]
+  ],
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.203Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

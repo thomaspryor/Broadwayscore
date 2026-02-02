@@ -60,7 +60,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "designation": "Recommended",
   "contentTier": "excerpt",
   "wordCount": 0,
   "rescoreReason": "fullText added after excerpt-based scoring",
@@ -106,5 +105,13 @@
   ],
   "textStatus": "truncated",
   "sourceMethod": "brightdata",
-  "rescoreCompletedAt": "2026-02-02T03:31:27.988Z"
+  "rescoreCompletedAt": "2026-02-02T03:31:27.988Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.219Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

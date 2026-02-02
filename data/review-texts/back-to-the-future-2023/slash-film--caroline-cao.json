@@ -64,7 +64,6 @@
   "previousLlmScore": 67,
   "archivePath": "data/archives/reviews/back-to-the-future-2023/slash-film--caroline-cao_2026-01-29.html",
   "textFetchedAt": "2026-01-29T05:12:50.453Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -79,5 +78,13 @@
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",
-  "wordCount": 1205
+  "wordCount": 1205,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.161Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "Meh"
+  }
 }

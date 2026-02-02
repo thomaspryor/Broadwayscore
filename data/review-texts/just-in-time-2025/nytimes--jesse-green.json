@@ -13,7 +13,6 @@
   "source": "dtli",
   "bwwThumb": "Meh",
   "bwwUrl": "https://www.nytimes.com/2025/04/26/theater/just-in-time-review-darin-groff.html",
-  "designation": "Recommended",
   "dtliThumb": "Meh",
   "urlSource": "show-score",
   "urlUpdatedAt": "2026-01-25T14:20:51.841Z",
@@ -91,5 +90,13 @@
   "archiveOrgTimestamp": "20250607210826",
   "archiveOrgUrl": "http://web.archive.org/web/20250607210826/https://www.nytimes.com/2025/04/26/theater/just-in-time-review-darin-groff.html",
   "contentTier": "complete",
-  "wordCount": 1439
+  "wordCount": 1439,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.221Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Meh",
+    "bwwThumb": "Meh"
+  }
 }

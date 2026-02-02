@@ -70,7 +70,6 @@
   "previousLlmScore": 82,
   "archivePath": "data/archives/reviews/once-upon-a-one-more-time-2023/broadwayworld--hannah-wing_2026-01-30.html",
   "textFetchedAt": "2026-01-30T19:45:02.639Z",
-  "designation": "Recommended",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -95,5 +94,13 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 520,
-  "rescoreCompletedAt": "2026-02-01T15:45:33.626Z"
+  "rescoreCompletedAt": "2026-02-01T15:45:33.626Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.248Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

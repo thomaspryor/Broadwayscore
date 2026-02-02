@@ -15,7 +15,6 @@
   "originalScoreNormalized": 100,
   "scoreSource": "text-pattern",
   "scoreExtractedFrom": "archive",
-  "designation": "Recommended",
   "dtliExcerpt": "Some fans of the play have wondered if it could work as well on a larger stage, but that question has a happy answer: Daniel Aukin’s superb production navigates the change without missing a beat. The jam has been preserved.",
   "showScoreExcerpt": "This is a masterpiece of musical theater, a work of staggering ambition and achievement that sets a new standard for what the medium can accomplish.",
   "sources": [
@@ -79,5 +78,13 @@
   "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
   "garbageFixedAt": "2026-01-29T22:45:23.213Z",
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.283Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

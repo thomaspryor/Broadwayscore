@@ -66,7 +66,6 @@
   "previousLlmScore": 78,
   "archivePath": "data/archives/reviews/harry-potter-2021/vanityfair--richard-lawson_2026-01-31.html",
   "textFetchedAt": "2026-01-31T23:25:48.934Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -83,5 +82,13 @@
   "archiveOrgUrl": "http://web.archive.org/web/20230324091048/https://www.vanityfair.com/style/2018/04/harry-potter-and-the-cursed-child-broadway-review",
   "rescoreCompletedAt": "2026-01-29T14:31:51.772Z",
   "contentTier": "complete",
-  "wordCount": 1410
+  "wordCount": 1410,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.202Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

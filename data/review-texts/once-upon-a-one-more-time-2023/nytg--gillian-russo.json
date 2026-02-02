@@ -66,7 +66,6 @@
   "previousLlmScore": 82,
   "archivePath": "data/archives/reviews/once-upon-a-one-more-time-2023/nytg--gillian-russo_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:59:48.491Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -108,5 +107,13 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251018081456/https://www.newyorktheatreguide.com/reviews/once-upon-a-one-more-time-broadway-review-britney-spears",
   "rescoreCompletedAt": "2026-02-01T15:46:16.143Z",
   "contentTier": "complete",
-  "wordCount": 894
+  "wordCount": 894,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.249Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "none"
+  }
 }

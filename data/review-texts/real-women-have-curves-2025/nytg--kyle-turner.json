@@ -67,7 +67,6 @@
   ],
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "designation": "Recommended",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 48,
   "archivePath": "data/archives/reviews/real-women-have-curves-2025/nytg--kyle-turner_2026-02-02.html",
@@ -99,5 +98,13 @@
   "isFullReview": true,
   "textWordCount": 1129,
   "textQuality": "partial",
-  "textStatus": "partial"
+  "textStatus": "partial",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.267Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Meh",
+    "bwwThumb": "none"
+  }
 }

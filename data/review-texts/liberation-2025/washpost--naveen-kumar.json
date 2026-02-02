@@ -74,7 +74,6 @@
   "textWordCount": 80,
   "archivePath": "data/archives/reviews/liberation-2025/washpost--naveen-kumar_2026-02-02.html",
   "textFetchedAt": "2026-02-02T00:22:13.145Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -96,5 +95,13 @@
   ],
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
-  "rescoreCompletedAt": "2026-02-01T15:28:47.241Z"
+  "rescoreCompletedAt": "2026-02-01T15:28:47.241Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.226Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "none"
+  }
 }

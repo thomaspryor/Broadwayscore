@@ -77,7 +77,6 @@
   "textWordCount": 492,
   "archivePath": "data/archives/reviews/aladdin-2014/newsday--linda-winer_2026-02-02.html",
   "textFetchedAt": "2026-02-02T03:10:36.907Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -96,5 +95,13 @@
   "textStatus": "truncated",
   "rescoreCompletedAt": "2026-02-02T03:21:26.122Z",
   "archiveOrgTimestamp": "20260202001951",
-  "archiveOrgUrl": "http://web.archive.org/web/20260202001951/https://www.newsday.com/entertainment/theater/aladdin-review-sweet-broadway-disney-o26581"
+  "archiveOrgUrl": "http://web.archive.org/web/20260202001951/https://www.newsday.com/entertainment/theater/aladdin-review-sweet-broadway-disney-o26581",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.150Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "none"
+  }
 }

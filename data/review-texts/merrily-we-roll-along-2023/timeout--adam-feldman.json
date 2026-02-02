@@ -131,7 +131,6 @@
   "textWordCount": 992,
   "archivePath": "data/archives/reviews/merrily-we-roll-along-2023/timeout--adam-feldman_2026-02-02.html",
   "textFetchedAt": "2026-02-02T02:58:05.099Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -150,5 +149,13 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250428112433",
-  "archiveOrgUrl": "http://web.archive.org/web/20250428112433/https://www.timeout.com/newyork/theater/merrily-we-roll-along-broadway-review-revival-sondheim-groff-radcliffe-mendez"
+  "archiveOrgUrl": "http://web.archive.org/web/20250428112433/https://www.timeout.com/newyork/theater/merrily-we-roll-along-broadway-review-revival-sondheim-groff-radcliffe-mendez",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.234Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "none",
+    "bwwThumb": "Up"
+  }
 }

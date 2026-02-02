@@ -64,7 +64,6 @@
   "previousLlmScore": 48,
   "archivePath": "data/archives/reviews/illinoise-2024/nytg--amelia-merrill_2026-01-29.html",
   "textFetchedAt": "2026-01-29T15:17:54.466Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -102,5 +101,13 @@
   "wordCount": 618,
   "rescoreCompletedAt": "2026-02-01T15:19:22.542Z",
   "wrongProduction": true,
-  "wrongProductionNote": "Off-Broadway/pre-Broadway run at Park Avenue Armory. Reusable if off-Broadway show entry is created."
+  "wrongProductionNote": "Off-Broadway/pre-Broadway run at Park Avenue Armory. Reusable if off-Broadway show entry is created.",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.216Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

@@ -70,7 +70,6 @@
   "previousLlmScore": 82,
   "archivePath": "data/archives/reviews/mary-jane-2024/nytg--joe-dziemianowicz_2026-01-29.html",
   "textFetchedAt": "2026-01-29T15:08:03.044Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -86,5 +85,13 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 934,
-  "rescoreCompletedAt": "2026-02-01T15:32:36.308Z"
+  "rescoreCompletedAt": "2026-02-01T15:32:36.308Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.231Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "none"
+  }
 }

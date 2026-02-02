@@ -72,7 +72,6 @@
   "previousLlmScore": 76,
   "archivePath": "data/archives/reviews/the-cottage-2023/nytg--joe-dziemianowicz_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:31:44.784Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -94,5 +93,13 @@
   "sourceMethod": "playwright",
   "rescoreCompletedAt": "2026-02-01T16:16:43.747Z",
   "contentTier": "complete",
-  "wordCount": 643
+  "wordCount": 643,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.289Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

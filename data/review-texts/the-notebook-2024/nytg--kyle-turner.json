@@ -64,7 +64,6 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Mixed"
   },
-  "designation": "Recommended",
   "sources": [
     "bww-roundup",
     "dtli",
@@ -82,5 +81,13 @@
   ],
   "humanReviewScore": 60,
   "humanReviewPreviousScore": 45,
-  "humanReviewAt": "2026-02-01T19:59:47.227Z"
+  "humanReviewAt": "2026-02-01T19:59:47.227Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.295Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Meh",
+    "bwwThumb": "Meh"
+  }
 }

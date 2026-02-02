@@ -23,7 +23,6 @@
   ],
   "archivePath": "data/archives/reviews/the-whos-tommy-2024/nypost--johnny-oleksinki_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:30:00.983Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -88,5 +87,13 @@
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 94,
   "rescoreCompletedAt": "2026-02-01T16:28:42.149Z",
-  "duplicateTextOf": "new-york-post--unknown.json"
+  "duplicateTextOf": "new-york-post--unknown.json",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.304Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

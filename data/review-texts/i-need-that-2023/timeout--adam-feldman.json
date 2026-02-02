@@ -65,7 +65,6 @@
   "textFetchedAt": "2026-02-02T03:06:42.256Z",
   "originalScoreNormalized": 60,
   "scoreSource": "text-pattern",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -95,5 +94,13 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "rescoreCompletedAt": "2026-02-02T03:31:00.267Z"
+  "rescoreCompletedAt": "2026-02-02T03:31:00.267Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.214Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Meh",
+    "bwwThumb": "none"
+  }
 }

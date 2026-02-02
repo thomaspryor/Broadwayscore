@@ -13,7 +13,6 @@
   "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": "Up",
-  "designation": "Recommended",
   "dtliExcerpt": "The piece sits very comfortably in the St. James Theatre, a more intimate venue than “Illinoise” enjoyed either in Chicago or on Park Avenue. It’s not a show for all tastes but it certainly makes the case that it belongs on Broadway.",
   "sources": [
     "bww-roundup",
@@ -72,5 +71,13 @@
   "previousLlmScore": 69,
   "rescoreCompletedAt": "2026-01-29T14:31:51.815Z",
   "contentTier": "complete",
-  "wordCount": 635
+  "wordCount": 635,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.215Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

@@ -68,7 +68,6 @@
   "previousLlmScore": 50,
   "archivePath": "data/archives/reviews/spamalot-2023/chicagotribune--chris-jones_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:51:23.571Z",
-  "designation": "Recommended",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
@@ -95,5 +94,13 @@
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",
-  "wordCount": 850
+  "wordCount": 850,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.277Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "Meh"
+  }
 }

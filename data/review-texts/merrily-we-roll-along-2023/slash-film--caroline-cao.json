@@ -64,7 +64,6 @@
   "previousLlmScore": 68,
   "archivePath": "data/archives/reviews/merrily-we-roll-along-2023/slash-film--caroline-cao_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:39:20.009Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -79,5 +78,13 @@
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",
-  "wordCount": 1291
+  "wordCount": 1291,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.234Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "none",
+    "bwwThumb": "Up"
+  }
 }

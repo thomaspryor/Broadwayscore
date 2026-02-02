@@ -71,7 +71,6 @@
   "textWordCount": 1185,
   "archivePath": "data/archives/reviews/the-notebook-2024/guardian--gloria-oladipo_2026-02-01.html",
   "textFetchedAt": "2026-02-01T14:03:35.975Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -84,5 +83,13 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "rescoreCompletedAt": "2026-02-01T16:19:56.588Z"
+  "rescoreCompletedAt": "2026-02-01T16:19:56.588Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.294Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "Meh"
+  }
 }

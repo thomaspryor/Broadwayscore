@@ -14,7 +14,6 @@
   "textWordCount": 735,
   "archivePath": "data/archives/reviews/titanique-2026/nytg--gillian-russo_2026-02-01.html",
   "textFetchedAt": "2026-02-01T19:14:51.207Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -80,5 +79,13 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
+  },
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.308Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
   }
 }

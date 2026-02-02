@@ -78,7 +78,6 @@
   "textWordCount": 227,
   "archivePath": "data/archives/reviews/queen-versailles-2025/washpost--naveen-kumar_2026-02-01.html",
   "textFetchedAt": "2026-02-01T14:17:10.214Z",
-  "designation": "Recommended",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
@@ -107,5 +106,13 @@
   "textIssues": [
     "Word count too low: 227 (min: 300)"
   ],
-  "rescoreCompletedAt": "2026-02-02T00:30:40.301Z"
+  "rescoreCompletedAt": "2026-02-02T00:30:40.301Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.264Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Down",
+    "bwwThumb": "Meh"
+  }
 }

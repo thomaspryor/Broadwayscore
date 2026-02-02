@@ -68,7 +68,6 @@
   "previousLlmScore": 86,
   "archivePath": "data/archives/reviews/six-2021/nypost--johnny-oleksinski_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:46:56.103Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -86,5 +85,13 @@
   ],
   "rescoreCompletedAt": "2026-02-01T16:07:01.262Z",
   "contentTier": "complete",
-  "wordCount": 681
+  "wordCount": 681,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.274Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

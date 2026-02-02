@@ -78,7 +78,6 @@
   "expectedCritic": "Danny Graugnard",
   "isFullReview": true,
   "textWordCount": 350,
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -91,5 +90,13 @@
   "textQuality": "partial",
   "textStatus": "partial",
   "archiveOrgTimestamp": "20210618142324",
-  "archiveOrgUrl": "http://web.archive.org/web/20210618142324/https://uinterview.com/reviews/stage/aladdin-the-musical-review-disney-provides-another-fun-broadway-hit/"
+  "archiveOrgUrl": "http://web.archive.org/web/20210618142324/https://uinterview.com/reviews/stage/aladdin-the-musical-review-disney-provides-another-fun-broadway-hit/",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.152Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

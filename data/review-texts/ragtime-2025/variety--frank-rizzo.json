@@ -91,8 +91,15 @@
     "no_ending_punctuation"
   ],
   "textStatus": "incomplete",
-  "designation": "Recommended",
   "textIssues": [
     "Show title not found in text"
-  ]
+  ],
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.266Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

@@ -103,8 +103,15 @@
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 60,
-  "designation": "Recommended",
   "rescoreCompletedAt": "2026-01-31T18:11:36.329Z",
   "contentTier": "complete",
-  "wordCount": 685
+  "wordCount": 685,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.150Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "none"
+  }
 }

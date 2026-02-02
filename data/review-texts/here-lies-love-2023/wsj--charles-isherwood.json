@@ -63,7 +63,6 @@
   },
   "archivePath": "data/archives/reviews/here-lies-love-2023/wsj--charles-isherwood_2026-02-02.html",
   "textFetchedAt": "2026-02-02T03:31:20.534Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -89,5 +88,13 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "rescoreCompletedAt": "2026-02-02T03:50:17.878Z"
+  "rescoreCompletedAt": "2026-02-02T03:50:17.878Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.210Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "none"
+  }
 }

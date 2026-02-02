@@ -69,7 +69,6 @@
   "previousLlmScore": 84,
   "archivePath": "data/archives/reviews/queen-versailles-2025/nydailynews--chris-jones_2026-01-30.html",
   "textFetchedAt": "2026-01-30T18:33:24.224Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -84,5 +83,13 @@
   "archiveOrgUrl": "http://web.archive.org/web/20260106173259/https://www.nydailynews.com/2025/11/09/queen-of-versailles-broadway-review-kristin-chenoweth/",
   "contentTier": "complete",
   "wordCount": 740,
-  "rescoreCompletedAt": "2026-02-01T15:57:21.074Z"
+  "rescoreCompletedAt": "2026-02-01T15:57:21.074Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.262Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

@@ -64,7 +64,6 @@
   "previousLlmScore": 72,
   "archivePath": "data/archives/reviews/the-shark-is-broken-2023/mashable--kristy-puchko_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:42:07.008Z",
-  "designation": "Recommended",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -91,5 +90,13 @@
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",
-  "wordCount": 1765
+  "wordCount": 1765,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.302Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "none",
+    "bwwThumb": "Up"
+  }
 }

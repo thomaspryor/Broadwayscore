@@ -64,7 +64,6 @@
   },
   "archivePath": "data/archives/reviews/liberation-2025/nytg--amelia-merrill_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:46:32.162Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -82,5 +81,13 @@
   "wordCount": 1056,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 77,
-  "rescoreCompletedAt": "2026-02-02T03:32:16.732Z"
+  "rescoreCompletedAt": "2026-02-02T03:32:16.732Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.225Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "none"
+  }
 }

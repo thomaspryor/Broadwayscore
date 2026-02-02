@@ -72,7 +72,6 @@
   "textWordCount": 950,
   "archivePath": "data/archives/reviews/appropriate-2023/observer--david-cote_2026-02-01.html",
   "textFetchedAt": "2026-02-01T14:43:03.869Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -86,5 +85,13 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-02-01T17:31:19.372Z"
+  "rescoreCompletedAt": "2026-02-01T17:31:19.372Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.158Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "none",
+    "bwwThumb": "Up"
+  }
 }

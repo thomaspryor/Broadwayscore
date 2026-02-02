@@ -72,7 +72,6 @@
   "textWordCount": 470,
   "archivePath": "data/archives/reviews/the-whos-tommy-2024/variety--charles-isherwood_2026-02-02.html",
   "textFetchedAt": "2026-02-02T02:55:18.865Z",
-  "designation": "Recommended",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -108,5 +107,13 @@
     "Show title not found in text"
   ],
   "showNotMentioned": true,
-  "rescoreCompletedAt": "2026-02-02T03:42:46.637Z"
+  "rescoreCompletedAt": "2026-02-02T03:42:46.637Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.305Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

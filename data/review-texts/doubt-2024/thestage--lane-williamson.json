@@ -65,7 +65,6 @@
   },
   "archivePath": "data/archives/reviews/doubt-2024/thestage--lane-williamson_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:38:06.855Z",
-  "designation": "Recommended",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
@@ -92,5 +91,13 @@
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.181Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "Meh"
+  }
 }

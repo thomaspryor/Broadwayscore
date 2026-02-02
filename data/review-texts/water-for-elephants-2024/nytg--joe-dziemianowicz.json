@@ -72,7 +72,6 @@
   "previousLlmScore": 77,
   "archivePath": "data/archives/reviews/water-for-elephants-2024/nytg--joe-dziemianowicz_2026-01-29.html",
   "textFetchedAt": "2026-01-29T15:21:37.782Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -90,5 +89,13 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251009212423/https://www.newyorktheatreguide.com/reviews/water-for-elephants-broadway-review",
   "contentTier": "complete",
   "wordCount": 693,
-  "rescoreCompletedAt": "2026-02-01T16:36:05.874Z"
+  "rescoreCompletedAt": "2026-02-01T16:36:05.874Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.312Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

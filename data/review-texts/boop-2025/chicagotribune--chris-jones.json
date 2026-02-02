@@ -68,7 +68,6 @@
   "previousLlmScore": 77,
   "archivePath": "data/archives/reviews/boop-2025/chicagotribune--chris-jones_2026-01-29.html",
   "textFetchedAt": "2026-01-29T07:12:38.878Z",
-  "designation": "Recommended",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
@@ -97,5 +96,13 @@
   "rescoreCompletedAt": "2026-01-29T14:31:51.667Z",
   "textQualityOverride": "batch-fix-2026-01-30",
   "contentTier": "complete",
-  "wordCount": 868
+  "wordCount": 868,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.163Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "none",
+    "bwwThumb": "Up"
+  }
 }

@@ -15,7 +15,6 @@
   "originalScoreNormalized": 80,
   "scoreSource": "text-pattern",
   "scoreExtractedFrom": "archive",
-  "designation": "Recommended",
   "dtliExcerpt": "Bringing decades of experience to bear, Lange is riveting—and so, by extension, is Phyllis. In this painfully honest tribute, Phyllis’s pain is part of the picture. Vogel does her mother dirty, but she does her mother proud.",
   "showScoreExcerpt": "\"While Mother Play may be punitive, it is never pitilessly so.\"",
   "sources": [
@@ -104,5 +103,13 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.239Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

@@ -72,7 +72,6 @@
   "previousLlmScore": 72,
   "archivePath": "data/archives/reviews/gutenberg-2023/nytg--joe-dziemianowicz_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:37:51.014Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -93,5 +92,13 @@
   "wordCount": 593,
   "humanReviewScore": 68,
   "humanReviewPreviousScore": 72,
-  "humanReviewAt": "2026-02-01T19:59:47.225Z"
+  "humanReviewAt": "2026-02-01T19:59:47.225Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.187Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Meh",
+    "bwwThumb": "Meh"
+  }
 }

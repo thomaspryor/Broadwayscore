@@ -11,7 +11,6 @@
   "assignedScore": 62,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-Opens-On-Broadway-20240411",
-  "designation": "Recommended",
   "sourceMethod": "playwright",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
@@ -89,5 +88,13 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "rescoreCompletedAt": "2026-02-02T03:42:09.445Z"
+  "rescoreCompletedAt": "2026-02-02T03:42:09.445Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.297Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

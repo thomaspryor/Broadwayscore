@@ -16,7 +16,6 @@
   "textWordCount": 557,
   "archivePath": "data/archives/reviews/once-upon-a-one-more-time-2023/telegraph--diane-snyder_2026-02-02.html",
   "textFetchedAt": "2026-02-02T00:01:43.849Z",
-  "designation": "Recommended",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -91,5 +90,13 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
+  },
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.249Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
   }
 }

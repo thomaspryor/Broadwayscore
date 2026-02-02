@@ -15,7 +15,6 @@
   "originalScoreNormalized": 100,
   "scoreSource": "text-pattern",
   "scoreExtractedFrom": "archive",
-  "designation": "Recommended",
   "showScoreExcerpt": "\"What is left to say? After every critic in town (including me) praised the Public Theater world premiere to high heaven; and after seeing this language-drunk, rhyme-crazy dynamo a second time, I can only marvel: They used up all the damn words. Wait, here are three stragglers, straight from the heart: I love 'Hamilton.' I love it like I love New York, or Broadway when it gets it right. And this is so right.\"",
   "sources": [
     "bww-roundup",
@@ -100,5 +99,13 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251127135110",
-  "archiveOrgUrl": "http://web.archive.org/web/20251127135110/https://www.timeout.com/newyork/theater/hamilton-1"
+  "archiveOrgUrl": "http://web.archive.org/web/20251127135110/https://www.timeout.com/newyork/theater/hamilton-1",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.194Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

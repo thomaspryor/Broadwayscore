@@ -70,10 +70,17 @@
   "wrongProductionReason": "Date/URL year mismatch: URL contains year 2023, expected 2024 (or 2023 for previews)",
   "wrongProductionConfidence": "high",
   "showScoreExcerpt": null,
-  "designation": "Recommended",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 25,
   "rescoreCompletedAt": "2026-02-02T03:40:49.485Z",
   "contentTier": "invalid",
-  "wordCount": 743
+  "wordCount": 743,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.285Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Down",
+    "bwwThumb": "Down"
+  }
 }

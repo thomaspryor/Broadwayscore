@@ -67,7 +67,6 @@
   "previousLlmScore": 74,
   "archivePath": "data/archives/reviews/heart-of-rock-and-roll-2024/nytg--gillian-russo_2026-02-02.html",
   "textFetchedAt": "2026-02-02T02:23:30.829Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -92,5 +91,13 @@
   "isFullReview": true,
   "textWordCount": 1331,
   "textQuality": "truncated",
-  "textStatus": "truncated"
+  "textStatus": "truncated",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.204Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

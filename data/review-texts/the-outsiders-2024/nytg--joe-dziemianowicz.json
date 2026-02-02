@@ -61,7 +61,6 @@
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Both models agree: Positive"
   },
-  "designation": "Recommended",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 66,
   "archivePath": "data/archives/reviews/the-outsiders-2024/nytg--joe-dziemianowicz_2026-01-29.html",
@@ -83,5 +82,13 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250119230335/https://www.newyorktheatreguide.com/reviews/the-outsiders-broadway-review",
   "rescoreCompletedAt": "2026-02-01T16:22:34.997Z",
   "contentTier": "complete",
-  "wordCount": 636
+  "wordCount": 636,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.298Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Meh",
+    "bwwThumb": "none"
+  }
 }

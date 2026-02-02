@@ -66,7 +66,6 @@
   ],
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "designation": "Recommended",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 77,
   "rescoreCompletedAt": "2026-01-28T23:28:01.533Z",
@@ -74,5 +73,13 @@
     "no_ending_punctuation"
   ],
   "contentTier": "complete",
-  "wordCount": 1147
+  "wordCount": 1147,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.153Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "none"
+  }
 }

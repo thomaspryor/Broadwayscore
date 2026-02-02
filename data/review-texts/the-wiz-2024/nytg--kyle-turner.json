@@ -71,7 +71,6 @@
   "previousLlmScore": 71,
   "archivePath": "data/archives/reviews/the-wiz-2024/nytg--kyle-turner_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:28:36.204Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -110,5 +109,13 @@
   ],
   "rescoreCompletedAt": "2026-02-01T16:31:25.922Z",
   "contentTier": "complete",
-  "wordCount": 619
+  "wordCount": 619,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.306Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

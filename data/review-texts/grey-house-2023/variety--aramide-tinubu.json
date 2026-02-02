@@ -69,7 +69,6 @@
   "textWordCount": 776,
   "archivePath": "data/archives/reviews/grey-house-2023/variety--aramide-tinubu_2026-02-01.html",
   "textFetchedAt": "2026-02-01T18:54:12.295Z",
-  "designation": "Recommended",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
@@ -97,5 +96,13 @@
   "sourceMethod": "scrapingbee",
   "rescoreCompletedAt": "2026-02-01T19:59:46.583Z",
   "contentTier": "complete",
-  "contentTierReason": "Full review text"
+  "contentTierReason": "Full review text",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.186Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

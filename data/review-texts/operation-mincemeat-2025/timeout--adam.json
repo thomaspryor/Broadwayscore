@@ -73,7 +73,6 @@
   "textFetchedAt": "2026-02-02T03:00:29.756Z",
   "originalScoreNormalized": 60,
   "scoreSource": "text-pattern",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -94,5 +93,13 @@
   "archiveOrgTimestamp": "20251115171727",
   "archiveOrgUrl": "http://web.archive.org/web/20251115171727/https://www.timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review",
   "duplicateTextOf": "timeout--adam-feldman.json",
-  "rescoreCompletedAt": "2026-02-02T03:36:06.734Z"
+  "rescoreCompletedAt": "2026-02-02T03:36:06.734Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.252Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "MEH",
+    "bwwThumb": "none"
+  }
 }

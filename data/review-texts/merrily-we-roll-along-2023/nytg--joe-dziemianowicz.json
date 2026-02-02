@@ -71,7 +71,6 @@
   "previousLlmScore": 63,
   "archivePath": "data/archives/reviews/merrily-we-roll-along-2023/nytg--joe-dziemianowicz_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:29:58.208Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -89,5 +88,13 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251208020157/https://www.newyorktheatreguide.com/reviews/merrily-we-roll-along-broadway-review-jonathan-groff-daniel-radcliffe-lindsay-mendez",
   "rescoreCompletedAt": "2026-02-01T15:35:56.817Z",
   "contentTier": "complete",
-  "wordCount": 1112
+  "wordCount": 1112,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.234Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

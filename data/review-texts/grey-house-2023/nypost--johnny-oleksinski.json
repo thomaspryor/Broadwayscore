@@ -70,7 +70,6 @@
   "previousLlmScore": 41,
   "archivePath": "data/archives/reviews/grey-house-2023/nypost--johnny-oleksinki_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:43:57.268Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -85,5 +84,13 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251003231316/https://nypost.com/2023/06/02/grey-house-review-horror-falls-flat-on-broadway/",
   "rescoreCompletedAt": "2026-01-29T14:31:51.710Z",
   "contentTier": "complete",
-  "wordCount": 616
+  "wordCount": 616,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.184Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "Down"
+  }
 }

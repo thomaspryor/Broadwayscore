@@ -73,7 +73,6 @@
   "textWordCount": 1325,
   "archivePath": "data/archives/reviews/liberation-2025/guardian--adrian-horton_2026-02-01.html",
   "textFetchedAt": "2026-02-01T14:10:59.487Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -86,5 +85,13 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "rescoreCompletedAt": "2026-02-01T15:27:20.340Z"
+  "rescoreCompletedAt": "2026-02-01T15:27:20.340Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.224Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

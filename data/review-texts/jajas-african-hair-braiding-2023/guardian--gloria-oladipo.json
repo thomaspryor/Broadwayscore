@@ -70,7 +70,6 @@
   "textWordCount": 1128,
   "archivePath": "data/archives/reviews/jajas-african-hair-braiding-2023/guardian--gloria-oladipo_2026-02-01.html",
   "textFetchedAt": "2026-02-01T14:14:41.222Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -84,5 +83,13 @@
   "truncationSignals": [],
   "textStatus": "partial",
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-02-01T15:20:51.569Z"
+  "rescoreCompletedAt": "2026-02-01T15:20:51.569Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.217Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "none",
+    "bwwThumb": "Up"
+  }
 }

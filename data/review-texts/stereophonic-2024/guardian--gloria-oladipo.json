@@ -11,7 +11,6 @@
   "assignedScore": 84,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Rock-N-Roll-Drama-STEREOPHONIC-Opens-On-Broadway-20240419",
-  "designation": "Recommended",
   "sourceMethod": "playwright",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
@@ -89,5 +88,13 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "rescoreCompletedAt": "2026-02-01T16:10:48.153Z"
+  "rescoreCompletedAt": "2026-02-01T16:10:48.153Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.279Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "none",
+    "bwwThumb": "Up"
+  }
 }

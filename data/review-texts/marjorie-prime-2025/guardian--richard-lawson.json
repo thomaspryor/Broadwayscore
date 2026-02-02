@@ -73,7 +73,6 @@
   "textWordCount": 1285,
   "archivePath": "data/archives/reviews/marjorie-prime-2025/guardian--richard-lawson_2026-02-01.html",
   "textFetchedAt": "2026-02-01T14:13:05.514Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -86,5 +85,13 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "rescoreCompletedAt": "2026-02-01T15:30:48.127Z"
+  "rescoreCompletedAt": "2026-02-01T15:30:48.127Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.228Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Meh",
+    "bwwThumb": "Meh"
+  }
 }

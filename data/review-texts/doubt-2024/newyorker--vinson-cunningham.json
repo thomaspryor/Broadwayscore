@@ -14,7 +14,6 @@
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/doubt-2024/newyorker--vinson-cunningham_2026-01-29.html",
   "textFetchedAt": "2026-01-29T15:05:39.651Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -78,5 +77,13 @@
   "contentTier": "complete",
   "wordCount": 1327,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
-  "rescoreCompletedAt": "2026-02-02T03:25:59.790Z"
+  "rescoreCompletedAt": "2026-02-02T03:25:59.790Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.180Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

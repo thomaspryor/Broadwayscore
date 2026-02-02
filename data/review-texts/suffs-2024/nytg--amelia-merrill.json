@@ -64,7 +64,6 @@
   "wrongProduction": true,
   "wrongProductionReason": "2022, Public Theater",
   "wrongProductionConfidence": "medium",
-  "designation": "Recommended",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 79,
   "archivePath": "data/archives/reviews/suffs-2024/nytg--amelia-merrill_2026-01-28.html",
@@ -106,5 +105,13 @@
   "dateSource": "could-not-extract",
   "showScoreExcerpt": "\"Leigh Silverman’s production is beautiful, but beauty is skin-deep.\"",
   "contentTier": "invalid",
-  "wordCount": 588
+  "wordCount": 588,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.288Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "none",
+    "bwwThumb": "Up"
+  }
 }

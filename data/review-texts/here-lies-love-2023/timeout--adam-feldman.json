@@ -67,7 +67,6 @@
   ],
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "designation": "Recommended",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
   "rescoreCompletedAt": "2026-02-02T03:50:13.620Z",
@@ -101,5 +100,13 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240618162609",
-  "archiveOrgUrl": "http://web.archive.org/web/20240618162609/https://www.timeout.com/newyork/theater/here-lies-love-musical-broadway-review-imelda-marcos-david-byrne"
+  "archiveOrgUrl": "http://web.archive.org/web/20240618162609/https://www.timeout.com/newyork/theater/here-lies-love-musical-broadway-review-imelda-marcos-david-byrne",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.210Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "none"
+  }
 }

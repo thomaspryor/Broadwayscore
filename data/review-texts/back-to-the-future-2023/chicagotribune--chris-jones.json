@@ -68,7 +68,6 @@
   "previousLlmScore": 37,
   "archivePath": "data/archives/reviews/back-to-the-future-2023/chicagotribune--chris-jones_2026-01-29.html",
   "textFetchedAt": "2026-01-29T05:10:18.684Z",
-  "designation": "Recommended",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
@@ -93,5 +92,13 @@
   "sourceMethod": "scrapingbee",
   "rescoreCompletedAt": "2026-01-29T14:31:51.656Z",
   "contentTier": "complete",
-  "wordCount": 823
+  "wordCount": 823,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.159Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "Down"
+  }
 }

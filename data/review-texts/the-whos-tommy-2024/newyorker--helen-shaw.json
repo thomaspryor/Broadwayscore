@@ -63,7 +63,6 @@
   "previousLlmScore": 32,
   "archivePath": "data/archives/reviews/the-whos-tommy-2024/newyorker--helen-shaw_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:27:57.445Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -78,5 +77,13 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250723072150/https://www.newyorker.com/magazine/2024/04/08/the-whos-tommy-theatre-review",
   "rescoreCompletedAt": "2026-02-01T16:28:34.639Z",
   "contentTier": "complete",
-  "wordCount": 1508
+  "wordCount": 1508,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.304Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

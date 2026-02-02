@@ -64,7 +64,6 @@
   },
   "archivePath": "data/archives/reviews/redwood-2025/nytg--gillian-russo_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:29:19.709Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -84,5 +83,13 @@
   "wordCount": 761,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 64,
-  "rescoreCompletedAt": "2026-02-01T16:04:49.263Z"
+  "rescoreCompletedAt": "2026-02-01T16:04:49.263Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.269Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Down",
+    "bwwThumb": "none"
+  }
 }

@@ -64,7 +64,6 @@
   "previousLlmScore": 77,
   "archivePath": "data/archives/reviews/suffs-2024/chelsea-community-news--michael-musto_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:34:09.882Z",
-  "designation": "Recommended",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
@@ -87,5 +86,13 @@
   "garbageFixedAt": "2026-01-29T22:45:23.236Z",
   "dateSource": "extracted-from-url",
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.287Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "none",
+    "bwwThumb": "Up"
+  }
 }

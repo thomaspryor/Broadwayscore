@@ -68,7 +68,6 @@
   "textWordCount": 58,
   "archivePath": "data/archives/reviews/mother-play-2024/wsj--charles-isherwood_2026-02-02.html",
   "textFetchedAt": "2026-02-02T02:59:21.726Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -88,5 +87,13 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240430055355/https://www.wsj.com/articles/mother-play-review-jessica-langes-tortured-vision-of-parenthood-2850835f?mod=latest_headlines",
   "textIssues": [
     "Word count too low: 85 (min: 300)"
-  ]
+  ],
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.240Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Meh",
+    "bwwThumb": "none"
+  }
 }

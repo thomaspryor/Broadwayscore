@@ -67,7 +67,6 @@
   "previousLlmScore": 79,
   "archivePath": "data/archives/reviews/merrily-we-roll-along-2023/nypost--johnny-oleksinski_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:35:14.304Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -86,5 +85,13 @@
   "rescoreCompletedAt": "2026-02-01T15:35:38.941Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
-  "wordCount": 874
+  "wordCount": 874,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.233Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "none",
+    "bwwThumb": "Up"
+  }
 }

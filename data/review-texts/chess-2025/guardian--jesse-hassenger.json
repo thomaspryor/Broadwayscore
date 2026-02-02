@@ -14,7 +14,6 @@
   "textWordCount": 1290,
   "archivePath": "data/archives/reviews/chess/guardian--jesse-hassenger_2026-02-01.html",
   "textFetchedAt": "2026-02-01T18:54:21.236Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -77,5 +76,13 @@
     "needsReviewReasons": [],
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Both models agree: Mixed"
+  },
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.173Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
   }
 }

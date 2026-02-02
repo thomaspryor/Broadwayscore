@@ -2,8 +2,8 @@
 // Based on user's Google Sheet methodology
 // Change this file to update scoring rules site-wide
 
-export const METHODOLOGY_VERSION = "2.0.0";
-export const METHODOLOGY_DATE = "2026-01-21";
+export const METHODOLOGY_VERSION = "2.1.0";
+export const METHODOLOGY_DATE = "2026-02-02";
 
 // ===========================================
 // COMPONENT WEIGHTS (must sum to 1.0)
@@ -106,7 +106,6 @@ export const OUTLET_TIERS: Record<string, { tier: 1 | 2 | 3; name: string; score
 export const DESIGNATION_BUMPS: Record<string, number> = {
   'Critics_Pick': 3,      // NYT Critics' Pick
   'Critics_Choice': 2,    // Time Out Critic's Choice
-  'Recommended': 2,       // Guardian Pick of the Week
 };
 
 // Minimum score floors for designations (applied after bump)

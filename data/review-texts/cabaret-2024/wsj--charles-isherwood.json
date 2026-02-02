@@ -68,7 +68,6 @@
   "textWordCount": 59,
   "archivePath": "data/archives/reviews/cabaret-2024/wsj--charles-isherwood_2026-02-02.html",
   "textFetchedAt": "2026-02-02T02:43:48.981Z",
-  "designation": "Recommended",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -105,5 +104,13 @@
   "sourceMethod": "brightdata",
   "textIssues": [
     "Word count too low: 70 (min: 300)"
-  ]
+  ],
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.173Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Meh",
+    "bwwThumb": "Meh"
+  }
 }

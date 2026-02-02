@@ -14,7 +14,6 @@
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/lempicka-2024/wsj--charles-isherwood_2026-02-02.html",
   "textFetchedAt": "2026-02-02T02:56:47.217Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -84,5 +83,13 @@
   "textWordCount": 76,
   "textQuality": "partial",
   "truncationSignals": [],
-  "textStatus": "incomplete"
+  "textStatus": "incomplete",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.223Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

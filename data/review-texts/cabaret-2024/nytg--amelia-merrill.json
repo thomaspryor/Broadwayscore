@@ -74,7 +74,6 @@
   "previousLlmScore": 52,
   "archivePath": "data/archives/reviews/cabaret-2024/nytg--amelia-merrill_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:41:09.605Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -91,5 +90,13 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251109005922/https://www.newyorktheatreguide.com/reviews/cabaret-broadway-review-eddie-redmayne-gayle-rankin",
   "rescoreCompletedAt": "2026-01-29T14:31:51.686Z",
   "contentTier": "complete",
-  "wordCount": 1031
+  "wordCount": 1031,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.172Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Meh",
+    "bwwThumb": "Meh"
+  }
 }

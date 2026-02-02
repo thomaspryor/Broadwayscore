@@ -15,7 +15,6 @@
   "originalScoreNormalized": 80,
   "scoreSource": "explicit-after-garbage-invalidation",
   "scoreExtractedFrom": "archive",
-  "designation": "Recommended",
   "dtliExcerpt": "Directed and choreographed by Jerry Mitchell, this is an old-fashioned candy shop of a show, where tasty confections are sold in bulk. When Boop! is corny, it’s candy corn. Gorge on the multicolor gumdrops of its high-energy production numbers; chew the jelly beans of its gentle social-mindedness; let the caramel creams of its love story melt slightly oversweetly in your mouth. And above all, savor this show’s red-hot cinnamon heart: Jasmine Amy Rogers, making a sensational Broadway debut as the 1930s animated-short icon Betty Boop.",
   "showScoreExcerpt": "âThis musical will not change your brain in any way, but it delivers what it promises: a big Broadway production that leaves you grinning, and a star performer with the poise\"",
   "sources": [
@@ -129,5 +128,13 @@
     "modelAgreement": "Both models agree: Positive"
   },
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.165Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

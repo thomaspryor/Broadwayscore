@@ -71,7 +71,6 @@
   "originalScoreNormalized": 80,
   "scoreSource": "text-pattern",
   "scoreExtractedFrom": "fullText",
-  "designation": "Recommended",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "rescoreCompletedAt": "2026-02-02T03:49:02.325Z",
@@ -103,5 +102,13 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240624205122",
-  "archiveOrgUrl": "http://web.archive.org/web/20240624205122/https://www.timeout.com/newyork/theater/an-enemy-of-the-people-broadway-review-jeremy-strong-michael-imperioli"
+  "archiveOrgUrl": "http://web.archive.org/web/20240624205122/https://www.timeout.com/newyork/theater/an-enemy-of-the-people-broadway-review-jeremy-strong-michael-imperioli",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.154Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "none"
+  }
 }

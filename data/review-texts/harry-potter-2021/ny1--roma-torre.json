@@ -69,7 +69,6 @@
   "textWordCount": 364,
   "archivePath": "data/archives/reviews/harry-potter-2021/ny1--roma-torre_2026-02-01.html",
   "textFetchedAt": "2026-02-01T15:12:13.661Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -88,5 +87,13 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "rescoreCompletedAt": "2026-02-01T17:37:02.222Z"
+  "rescoreCompletedAt": "2026-02-01T17:37:02.222Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.200Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

@@ -65,10 +65,17 @@
     "dtli"
   ],
   "showScoreExcerpt": null,
-  "designation": "Recommended",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 38,
   "rescoreCompletedAt": "2026-02-01T16:00:38.220Z",
   "contentTier": "complete",
-  "wordCount": 998
+  "wordCount": 998,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.265Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Meh",
+    "bwwThumb": "Up"
+  }
 }

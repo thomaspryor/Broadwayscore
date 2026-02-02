@@ -68,7 +68,6 @@
   "textWordCount": 1054,
   "archivePath": "data/archives/reviews/moulin-rouge-2019/guardian--alexis-soloski_2026-02-02.html",
   "textFetchedAt": "2026-02-02T00:29:15.954Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -86,5 +85,13 @@
   "fetchTier": 1,
   "textQuality": "full",
   "truncationSignals": [],
-  "textStatus": "complete"
+  "textStatus": "complete",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.240Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

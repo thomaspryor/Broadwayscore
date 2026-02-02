@@ -83,10 +83,17 @@
     "bww-roundup",
     "dtli"
   ],
-  "designation": "Recommended",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 74,
   "rescoreCompletedAt": "2026-02-01T16:24:56.224Z",
   "contentTier": "complete",
-  "wordCount": 538
+  "wordCount": 538,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.300Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

@@ -57,7 +57,7 @@ const articleSchema = {
     },
   },
   datePublished: '2024-01-01',
-  dateModified: '2026-01-26',
+  dateModified: '2026-02-02',
   mainEntityOfPage: {
     '@type': 'WebPage',
     '@id': `${BASE_URL}/methodology`,
@@ -252,15 +252,13 @@ export default function MethodologyPage() {
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">Designation Bumps</h3>
           <p className="text-gray-300 text-sm mb-3">
-            Special designations add bonus points to a review&apos;s base score:
+            When an outlet officially designates a review with a special label, we apply a small bonus to the review&apos;s base score. We only recognize designations that are verified from the outlet&apos;s actual page markup:
           </p>
           <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
             <div className="grid grid-cols-2 gap-2 text-sm">
               <div className="text-gray-400">NYT Critics&apos; Pick</div>
-              <div className="text-brand">+3 points</div>
+              <div className="text-brand">+3 points (min score: 70)</div>
               <div className="text-gray-400">Time Out Critics&apos; Choice</div>
-              <div className="text-brand">+2 points</div>
-              <div className="text-gray-400">Recommended / Pick</div>
               <div className="text-brand">+2 points</div>
             </div>
           </div>
@@ -582,7 +580,7 @@ export default function MethodologyPage() {
 
         {/* Version */}
         <div className="text-center text-gray-500 text-sm pt-4">
-          <p>Methodology Version 2.0.0 — Last updated January 2026</p>
+          <p>Methodology Version 2.1.0 — Last updated February 2026</p>
         </div>
       </div>
       </div>

@@ -62,11 +62,18 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Negative"
   },
-  "designation": "Recommended",
   "contentTier": "truncated",
   "wordCount": 27,
   "sources": [
     "dtli",
     "web-search"
-  ]
+  ],
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.299Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Meh",
+    "bwwThumb": "none"
+  }
 }

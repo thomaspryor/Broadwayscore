@@ -72,7 +72,6 @@
   "previousLlmScore": 56,
   "archivePath": "data/archives/reviews/i-need-that-2023/nytg--joe-dziemianowicz_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:28:08.208Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -90,5 +89,13 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250614073912/https://www.newyorktheatreguide.com/reviews/i-need-that-broadway-review-danny-devito",
   "rescoreCompletedAt": "2026-01-29T14:31:51.811Z",
   "contentTier": "complete",
-  "wordCount": 553
+  "wordCount": 553,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.213Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Meh",
+    "bwwThumb": "Meh"
+  }
 }

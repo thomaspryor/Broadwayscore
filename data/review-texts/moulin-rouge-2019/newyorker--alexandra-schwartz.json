@@ -80,10 +80,17 @@
   "sources": [
     "show-score"
   ],
-  "designation": "Recommended",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 82,
   "rescoreCompletedAt": "2026-01-29T14:31:51.913Z",
   "contentTier": "complete",
-  "wordCount": 1367
+  "wordCount": 1367,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.241Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

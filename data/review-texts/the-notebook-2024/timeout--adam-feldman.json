@@ -15,7 +15,6 @@
   "originalScoreNormalized": 60,
   "scoreSource": "explicit-after-garbage-invalidation",
   "scoreExtractedFrom": "archive",
-  "designation": "Recommended",
   "dtliExcerpt": "The Notebook is a sincere and well-crafted musical that hits its emotional marks, even if it doesn't transcend the familiar territory of its source material.",
   "showScoreExcerpt": "\"As much as I rolled my eyes at The Notebook, I canât deny that they sometimes welled up.\"",
   "sources": [
@@ -130,5 +129,13 @@
     "modelAgreement": "All 3 models agree: Mixed"
   },
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.296Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "Meh"
+  }
 }

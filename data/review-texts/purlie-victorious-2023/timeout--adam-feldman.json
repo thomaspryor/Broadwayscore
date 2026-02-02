@@ -15,7 +15,6 @@
   "originalScoreNormalized": 80,
   "scoreSource": "text-pattern",
   "scoreExtractedFrom": "archive",
-  "designation": "Recommended",
   "dtliExcerpt": "Directed knowingly by Kenny Leon, the show’s new Broadway production is a joyous affair, broad in comedy and in spirit.",
   "sources": [
     "bww-roundup",
@@ -100,5 +99,13 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240909015953",
-  "archiveOrgUrl": "http://web.archive.org/web/20240909015953/https://www.timeout.com/newyork/theater/purlie-victorious-broadway-review-ossie-davis-leslie-odom-kara-young"
+  "archiveOrgUrl": "http://web.archive.org/web/20240909015953/https://www.timeout.com/newyork/theater/purlie-victorious-broadway-review-ossie-davis-leslie-odom-kara-young",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.261Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

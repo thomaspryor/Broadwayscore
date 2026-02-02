@@ -68,10 +68,17 @@
     "bww-roundup"
   ],
   "showScoreExcerpt": null,
-  "designation": "Recommended",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 29,
   "rescoreCompletedAt": "2026-02-02T03:33:40.746Z",
   "contentTier": "complete",
-  "wordCount": 717
+  "wordCount": 717,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.236Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Down",
+    "bwwThumb": "none"
+  }
 }

@@ -66,7 +66,6 @@
   "previousLlmScore": 74,
   "archivePath": "data/archives/reviews/jajas-african-hair-braiding-2023/nytg--gillian-russo_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:40:27.709Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -88,5 +87,13 @@
   "sourceMethod": "playwright",
   "rescoreCompletedAt": "2026-02-01T15:21:01.851Z",
   "contentTier": "complete",
-  "wordCount": 798
+  "wordCount": 798,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.217Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

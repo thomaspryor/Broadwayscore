@@ -21,7 +21,6 @@
   ],
   "archivePath": "data/archives/reviews/harmony-2023/nypost--johnny-oleksinki_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:40:50.938Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -109,5 +108,13 @@
   "wordCount": 816,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 64,
-  "rescoreCompletedAt": "2026-02-01T15:04:23.416Z"
+  "rescoreCompletedAt": "2026-02-01T15:04:23.416Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.195Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Meh",
+    "bwwThumb": "Meh"
+  }
 }

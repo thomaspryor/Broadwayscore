@@ -77,7 +77,6 @@
   "textFetchedAt": "2026-02-02T02:49:16.172Z",
   "originalScoreNormalized": 60,
   "scoreSource": "text-pattern",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -97,5 +96,13 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250724211141",
   "archiveOrgUrl": "http://web.archive.org/web/20250724211141/https://www.timeout.com/newyork/theater/the-heart-of-rock-and-roll-broadway-musical-review-huey-lewis",
-  "rescoreCompletedAt": "2026-02-02T03:30:23.689Z"
+  "rescoreCompletedAt": "2026-02-02T03:30:23.689Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.204Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "Meh"
+  }
 }

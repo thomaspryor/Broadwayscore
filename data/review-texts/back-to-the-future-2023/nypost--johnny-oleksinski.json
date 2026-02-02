@@ -68,7 +68,6 @@
   "previousLlmScore": 25,
   "archivePath": "data/archives/reviews/back-to-the-future-2023/nypost--johnny-oleksinki_2026-01-30.html",
   "textFetchedAt": "2026-01-30T16:03:49.248Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -83,5 +82,13 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240430204152/https://nypost.com/2023/08/03/back-to-the-future-the-musical-review-watch-the-movie-instead/",
   "contentTier": "complete",
   "wordCount": 879,
-  "rescoreCompletedAt": "2026-02-01T17:31:41.501Z"
+  "rescoreCompletedAt": "2026-02-01T17:31:41.501Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.160Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "Meh"
+  }
 }

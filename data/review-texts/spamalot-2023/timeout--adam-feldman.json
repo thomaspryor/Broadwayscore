@@ -15,7 +15,6 @@
   "originalScoreNormalized": 80,
   "scoreSource": "text-pattern",
   "scoreExtractedFrom": "archive",
-  "designation": "Recommended",
   "dtliExcerpt": "My reaction to its new and updated—if still slightly dated—Broadway revival, directed and choreographed with flair by Josh Rhodes, is more affectionate.",
   "showScoreExcerpt": "“Rhodes’s cast of show-tune pros is highly capable, and the show’s laughter now seems more like it’s coming from inside the Broadway house. It’s a true ensemble effort...In this company of men, however, it is a woman who really dazzles: Leslie Rodriguez Kritzer as the sword-bestowing Lady of the Lake...It’s in the Lady of the Lake’s spotlight moments, the show’s biggest departure from the nearly all-male Grail, that Spamalot comes into its own most effectively and takes flight—not as an African swallow, capable of carrying significant weight, or merely as a parrot, possibly dead, but as what it is: a lark.”",
   "sources": [
@@ -107,5 +106,13 @@
   "textStatus": "truncated",
   "sourceMethod": "playwright",
   "archiveOrgTimestamp": "20250420132519",
-  "archiveOrgUrl": "http://web.archive.org/web/20250420132519/https://www.timeout.com/newyork/theater/spamalot-review-broadway-musical-revival-monty-python"
+  "archiveOrgUrl": "http://web.archive.org/web/20250420132519/https://www.timeout.com/newyork/theater/spamalot-review-broadway-musical-revival-monty-python",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.278Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

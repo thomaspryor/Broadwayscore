@@ -75,7 +75,6 @@
   "originalScoreNormalized": 80,
   "scoreSource": "text-pattern",
   "scoreExtractedFrom": "archive",
-  "designation": "Recommended",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
   "rescoreCompletedAt": "2026-02-02T03:31:44.661Z",
@@ -107,5 +106,13 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250826051821",
-  "archiveOrgUrl": "http://web.archive.org/web/20250826051821/https://www.timeout.com/newyork/theater/just-in-time-broadway-review-bobby-darin-jonathan-groff"
+  "archiveOrgUrl": "http://web.archive.org/web/20250826051821/https://www.timeout.com/newyork/theater/just-in-time-broadway-review-bobby-darin-jonathan-groff",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.221Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

@@ -16,7 +16,6 @@
   "textWordCount": 1138,
   "archivePath": "data/archives/reviews/uncle-vanya-2024/guardian--adrian-horton_2026-02-02.html",
   "textFetchedAt": "2026-02-02T00:33:58.780Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -76,5 +75,13 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
+  },
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.309Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
   }
 }

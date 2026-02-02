@@ -74,7 +74,6 @@
   "textWordCount": 462,
   "archivePath": "data/archives/reviews/book-of-mormon-2011/newsday--linda-winer_2026-02-02.html",
   "textFetchedAt": "2026-02-02T03:23:06.530Z",
-  "designation": "Recommended",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -109,5 +108,13 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "rescoreCompletedAt": "2026-02-01T17:32:07.466Z"
+  "rescoreCompletedAt": "2026-02-01T17:32:07.466Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.162Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

@@ -62,7 +62,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
   },
-  "designation": "Recommended",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 53,
   "archivePath": "data/archives/reviews/the-great-gatsby-2024/nytg--caroline-cao_2026-01-29.html",
@@ -84,5 +83,13 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251109010450/https://www.newyorktheatreguide.com/reviews/the-great-gatsby-broadway-review-jeremy-jordan-eva-noblezada",
   "contentTier": "complete",
   "wordCount": 962,
-  "rescoreCompletedAt": "2026-02-01T16:17:58.722Z"
+  "rescoreCompletedAt": "2026-02-01T16:17:58.722Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.290Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Meh",
+    "bwwThumb": "none"
+  }
 }

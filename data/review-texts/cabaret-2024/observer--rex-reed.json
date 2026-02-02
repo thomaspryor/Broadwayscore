@@ -70,7 +70,6 @@
   "textWordCount": 812,
   "archivePath": "data/archives/reviews/cabaret-2024/observer--rex-reed_2026-02-01.html",
   "textFetchedAt": "2026-02-01T18:51:58.400Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -86,5 +85,13 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "rescoreCompletedAt": "2026-02-01T19:57:49.021Z"
+  "rescoreCompletedAt": "2026-02-01T19:57:49.021Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.172Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "Down"
+  }
 }

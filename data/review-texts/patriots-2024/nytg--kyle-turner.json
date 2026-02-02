@@ -68,7 +68,6 @@
   },
   "archivePath": "data/archives/reviews/patriots-2024/nytg--kyle-turner_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:29:25.931Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -86,5 +85,13 @@
   "wordCount": 774,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 66,
-  "rescoreCompletedAt": "2026-02-01T15:51:25.800Z"
+  "rescoreCompletedAt": "2026-02-01T15:51:25.800Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.256Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Meh",
+    "bwwThumb": "none"
+  }
 }

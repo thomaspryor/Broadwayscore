@@ -16,7 +16,6 @@
   "textWordCount": 3479,
   "archivePath": "data/archives/reviews/schmigadoon-2026/paste-amy-amatangelo--amy-amatangelo_2026-02-02.html",
   "textFetchedAt": "2026-02-02T00:41:49.939Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -78,5 +77,13 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
+  },
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.272Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
   }
 }

@@ -66,7 +66,6 @@
   "previousLlmScore": 82,
   "archivePath": "data/archives/reviews/lempicka-2024/nytg--gillian-russo_2026-01-31.html",
   "textFetchedAt": "2026-01-31T22:32:27.729Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -84,5 +83,13 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250815094044/https://www.newyorktheatreguide.com/reviews/lempicka-broadway-review",
   "contentTier": "complete",
   "wordCount": 803,
-  "rescoreCompletedAt": "2026-02-01T15:25:43.912Z"
+  "rescoreCompletedAt": "2026-02-01T15:25:43.912Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.222Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

@@ -64,7 +64,6 @@
   "previousLlmScore": 89,
   "archivePath": "data/archives/reviews/just-for-us-2023/nytg--joe-dziemianowicz_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:41:37.102Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -80,5 +79,13 @@
   "sourceMethod": "playwright",
   "rescoreCompletedAt": "2026-02-01T15:22:12.269Z",
   "contentTier": "complete",
-  "wordCount": 673
+  "wordCount": 673,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.218Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

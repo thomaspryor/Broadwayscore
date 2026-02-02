@@ -68,7 +68,6 @@
   "textWordCount": 641,
   "archivePath": "data/archives/reviews/just-for-us-2023/observer--david-cote_2026-02-01.html",
   "textFetchedAt": "2026-02-01T19:29:58.745Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -82,5 +81,13 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-02-01T20:03:52.470Z"
+  "rescoreCompletedAt": "2026-02-01T20:03:52.470Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.218Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

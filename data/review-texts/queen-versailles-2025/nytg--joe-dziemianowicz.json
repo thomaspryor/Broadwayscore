@@ -69,7 +69,6 @@
   "dtliExcerpt": "Make no mistake, diminutive Tony-winning dynamo Chenoweth works overtime. In short skirts and plunging tops, she showcases her comic chops while fully deploying her voice: big belt, soaring soprano, and warm, mellow middle tones. Like a timeshare broker, she’s up there selling her character and the show.",
   "dtliThumb": "Meh",
   "showScoreExcerpt": null,
-  "designation": "Recommended",
   "rescoreReason": "low-conf: prompt=3.0.0, delta=18, upgrading to V5 + 3 models",
   "previousLlmScore": 61,
   "rescoreCompletedAt": "2026-02-01T15:58:02.493Z",
@@ -77,5 +76,13 @@
   "wordCount": 962,
   "truncationSignals": [
     "no_ending_punctuation"
-  ]
+  ],
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.263Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Meh",
+    "bwwThumb": "Meh"
+  }
 }

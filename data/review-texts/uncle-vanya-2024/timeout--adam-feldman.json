@@ -28,7 +28,6 @@
   ],
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "designation": "Recommended",
   "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available",
   "previousLlmScore": 70,
   "rescoreCompletedAt": "2026-02-01T04:07:13.078Z",
@@ -127,5 +126,13 @@
     "modelAgreement": "All 3 models agree: Mixed"
   },
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.311Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Meh",
+    "bwwThumb": "none"
+  }
 }

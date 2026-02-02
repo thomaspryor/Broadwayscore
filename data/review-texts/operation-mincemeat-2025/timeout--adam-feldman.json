@@ -15,7 +15,6 @@
   "originalScoreNormalized": 60,
   "scoreSource": "explicit-after-garbage-invalidation",
   "scoreExtractedFrom": "archive",
-  "designation": "Recommended",
   "dtliExcerpt": "If this looks to you like actors having fun, there’s a good chance you’ll dig what Operation Mincemeat is grinding. To me, it looks like actors pushing too hard. They don’t stop nudging you with their elbows, and while moments of that can tickle—I misled more than once at Hodgson’s bluff obliviousness—two and a half hours of it gets a little exhausting.",
   "showScoreExcerpt": "‘Operation Mincemeat’ ... is itself slicker than it wants to appear, and clearly well-drilled. This really is an ensemble show, and SpitLip prove a winning one. Their style may not be for everyone, but you’d have to have a very stiff upper lip indeed for it not to break into laughter.",
   "sources": [
@@ -156,5 +155,13 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251115171727",
   "archiveOrgUrl": "http://web.archive.org/web/20251115171727/https://www.timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review",
-  "duplicateTextOf": "timeout--adam.json"
+  "duplicateTextOf": "timeout--adam.json",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.251Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Meh",
+    "bwwThumb": "Meh"
+  }
 }

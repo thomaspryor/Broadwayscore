@@ -85,7 +85,6 @@
   "humanReviewScore": 65,
   "humanReviewPreviousScore": 85,
   "humanReviewAt": "2026-02-01T19:59:47.224Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -97,5 +96,13 @@
   "fetchTier": 4,
   "textStatus": "truncated",
   "archiveOrgTimestamp": "20200918181207",
-  "archiveOrgUrl": "http://web.archive.org/web/20200918181207/https://nymag.com/listings/theater/the_lion_king/"
+  "archiveOrgUrl": "http://web.archive.org/web/20200918181207/https://nymag.com/listings/theater/the_lion_king/",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.293Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Meh",
+    "bwwThumb": "none"
+  }
 }

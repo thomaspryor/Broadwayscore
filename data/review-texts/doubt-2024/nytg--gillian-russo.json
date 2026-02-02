@@ -64,7 +64,6 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "archivePath": "data/archives/reviews/doubt-2024/nytg--gillian-russo_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:32:05.970Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -81,5 +80,13 @@
   "archiveOrgTimestamp": "20250710210835",
   "archiveOrgUrl": "http://web.archive.org/web/20250710210835/https://www.newyorktheatreguide.com/reviews/doubt-broadway-review-amy-ryan-liev-schreiber",
   "contentTier": "complete",
-  "wordCount": 818
+  "wordCount": 818,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.181Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

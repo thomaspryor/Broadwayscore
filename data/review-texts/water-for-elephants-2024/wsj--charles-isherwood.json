@@ -63,7 +63,6 @@
   },
   "archivePath": "data/archives/reviews/water-for-elephants-2024/wsj--charles-isherwood_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:34:31.049Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -89,5 +88,13 @@
   "sources": [
     "dtli",
     "web-search"
-  ]
+  ],
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.314Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Meh",
+    "bwwThumb": "Down"
+  }
 }

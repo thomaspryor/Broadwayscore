@@ -72,7 +72,6 @@
   "previousLlmScore": 88,
   "archivePath": "data/archives/reviews/prayer-for-the-french-republic-2024/nytg--joe-dziemianowicz_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:38:11.883Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -90,5 +89,13 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250715204455/https://www.newyorktheatreguide.com/reviews/prayer-for-the-french-republic-broadway-review",
   "rescoreCompletedAt": "2026-02-01T15:53:18.223Z",
   "contentTier": "complete",
-  "wordCount": 631
+  "wordCount": 631,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.258Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

@@ -83,7 +83,6 @@
   "textWordCount": 1354,
   "archivePath": "data/archives/reviews/death-becomes-her-2024/timeout--adam-feldman_2026-02-02.html",
   "textFetchedAt": "2026-02-02T03:05:30.352Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -102,5 +101,13 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250217165848",
-  "archiveOrgUrl": "http://web.archive.org/web/20250217165848/https://www.timeout.com/newyork/theater/death-becomes-her-broadway-musical-review"
+  "archiveOrgUrl": "http://web.archive.org/web/20250217165848/https://www.timeout.com/newyork/theater/death-becomes-her-broadway-musical-review",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.179Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "none"
+  }
 }

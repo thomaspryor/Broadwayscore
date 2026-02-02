@@ -61,7 +61,7 @@
     "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwExcerpt": "Its exotic Middle Eastern setting and multiethnic cast aside, Aladdin offers less \"A Whole New World\" - to quote its signature song - than a traditional Disney fairy-tale realm; it's perhaps the most old-school of the company's screen-to-stage adaptations since Beauty and the Beast. But that shouldn't deter audiences from making this splashy Arabian Nights wish-fulfillment fantasy into a family-friendly hit.",
-  "textFetchedAt": "2026-02-02T04:05:53.748Z",
+  "textFetchedAt": "2026-02-02T02:17:05.750Z",
   "textFetchMethod": "playwright",
   "archivePath": "data/archives/reviews/aladdin-2014/hollywood-reporter--david-rooney_2026-02-02.html",
   "urlSource": "show-score",
@@ -75,7 +75,6 @@
     "reviews-json-stub"
   ],
   "bwwThumb": null,
-  "designation": "Recommended",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 74,
   "rescoreCompletedAt": "2026-02-02T03:21:23.350Z",
@@ -90,20 +89,8 @@
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Insufficient text extracted: 0 chars"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
@@ -116,5 +103,13 @@
   ],
   "textStatus": "truncated",
   "archiveOrgTimestamp": "20140321200808",
-  "archiveOrgUrl": "http://web.archive.org/web/20140321200808/http://www.hollywoodreporter.com/review/aladdin-theater-review-690038"
+  "archiveOrgUrl": "http://web.archive.org/web/20140321200808/http://www.hollywoodreporter.com/review/aladdin-theater-review-690038",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.149Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "none"
+  }
 }

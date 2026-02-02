@@ -70,7 +70,6 @@
   "previousLlmScore": 79,
   "archivePath": "data/archives/reviews/the-whos-tommy-2024/nytg--joe-dziemianowicz_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:28:11.916Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -86,5 +85,13 @@
   "sourceMethod": "playwright",
   "rescoreCompletedAt": "2026-02-01T16:29:11.009Z",
   "contentTier": "complete",
-  "wordCount": 1093
+  "wordCount": 1093,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.305Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "UP",
+    "bwwThumb": "Up"
+  }
 }

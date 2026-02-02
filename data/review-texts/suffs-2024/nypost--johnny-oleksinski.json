@@ -68,7 +68,6 @@
   "previousLlmScore": 60,
   "archivePath": "data/archives/reviews/suffs-2024/nypost--johnny-oleksinki_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:35:35.586Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -84,5 +83,13 @@
   "rescoreCompletedAt": "2026-02-01T16:14:44.047Z",
   "showScoreExcerpt": "\"A moving musical march that’s not quite there yet\"",
   "contentTier": "complete",
-  "wordCount": 766
+  "wordCount": 766,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.287Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "Meh"
+  }
 }

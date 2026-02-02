@@ -84,11 +84,18 @@
   "textIssues": [
     "Show title not found in text"
   ],
-  "designation": "Recommended",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 84,
   "rescoreCompletedAt": "2026-02-02T03:28:58.637Z",
   "contentTier": "complete",
   "wordCount": 711,
-  "showNotMentioned": true
+  "showNotMentioned": true,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.198Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

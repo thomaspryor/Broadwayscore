@@ -20,7 +20,6 @@
   ],
   "archivePath": "data/archives/reviews/the-notebook-2024/nypost--johnny-oleksinki_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:46:20.480Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -86,5 +85,13 @@
   "wordCount": 708,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 57,
-  "rescoreCompletedAt": "2026-02-02T03:41:57.425Z"
+  "rescoreCompletedAt": "2026-02-02T03:41:57.425Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.294Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Meh",
+    "bwwThumb": "Down"
+  }
 }

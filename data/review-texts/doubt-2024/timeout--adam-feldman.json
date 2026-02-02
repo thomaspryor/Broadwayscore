@@ -15,7 +15,6 @@
   "originalScoreNormalized": 80,
   "scoreSource": "text-pattern",
   "scoreExtractedFrom": "archive",
-  "designation": "Recommended",
   "dtliExcerpt": "Roundabout Theatre Company’s Broadway revival, directed by Scott Ellis, is mostly very effective.",
   "showScoreExcerpt": "\" 'Doubt' is an odd kind of mystery, less a whodunit than a wasitdunatall.\"",
   "sources": [
@@ -101,5 +100,13 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240624202940",
-  "archiveOrgUrl": "http://web.archive.org/web/20240624202940/https://www.timeout.com/newyork/theater/doubt-a-parable-revival-broadway-review-amy-ryan-liev-schreiber"
+  "archiveOrgUrl": "http://web.archive.org/web/20240624202940/https://www.timeout.com/newyork/theater/doubt-a-parable-revival-broadway-review-amy-ryan-liev-schreiber",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.182Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

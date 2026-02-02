@@ -15,7 +15,6 @@
   "originalScoreNormalized": 80,
   "scoreSource": "explicit-after-garbage-invalidation",
   "scoreExtractedFrom": "archive",
-  "designation": "Recommended",
   "dtliExcerpt": "Who doesn’t enjoy a royal wedding? The zingy Broadway musical Six celebrates, in boisterous fashion, the union of English dynastic history and modern pop music.",
   "showScoreExcerpt": "\"At heart, Six is a sparkly lark—Hamilton Extra Lite, with the multiculturalism and anachronism and knowing name-dropping but without the plot, emotion and depth...Six is not deep. Six is fun. Let yourself go and enjoy the finery.\"",
   "sources": [
@@ -130,5 +129,13 @@
     "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.275Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "none"
+  }
 }

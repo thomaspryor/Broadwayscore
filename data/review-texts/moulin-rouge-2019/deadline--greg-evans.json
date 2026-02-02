@@ -94,7 +94,6 @@
   "fetchTier": 4,
   "archiveOrgTimestamp": "20241217202511",
   "archiveOrgUrl": "http://web.archive.org/web/20241217202511/https://deadline.com/2019/07/moulin-rouge-musical-broadway-review-alex-timbers-1202653416/",
-  "designation": "Recommended",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 38,
   "rescoreCompletedAt": "2026-02-02T03:34:18.368Z",
@@ -102,5 +101,13 @@
   "_garbageRestoredAt": "2026-01-31T23:50:00.000Z",
   "_garbageRestoredReason": "Text was incorrectly flagged as garbage due to 'All Rights Reserved' footer. Restored complete 1294-word review.",
   "contentTier": "complete",
-  "wordCount": 1084
+  "wordCount": 1084,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.240Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

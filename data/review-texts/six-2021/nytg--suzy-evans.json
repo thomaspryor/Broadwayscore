@@ -30,7 +30,6 @@
   "textIssues": [
     "Show title not found in text"
   ],
-  "designation": "Recommended",
   "scoreSource": "extracted-thumbs-up",
   "scoreConfidence": "low",
   "llmScore": {
@@ -85,5 +84,13 @@
   "previousLlmScore": 95,
   "rescoreCompletedAt": "2026-02-01T16:07:24.675Z",
   "contentTier": "complete",
-  "wordCount": 1013
+  "wordCount": 1013,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.274Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

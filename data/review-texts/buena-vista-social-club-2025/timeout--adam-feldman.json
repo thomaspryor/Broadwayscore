@@ -72,7 +72,6 @@
   "textFetchedAt": "2026-02-02T02:58:47.572Z",
   "originalScoreNormalized": 80,
   "scoreSource": "text-pattern",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -92,5 +91,13 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251230210807",
   "archiveOrgUrl": "http://web.archive.org/web/20251230210807/https://www.timeout.com/newyork/theater/buena-vista-social-club-broadway-review",
-  "rescoreCompletedAt": "2026-02-02T03:24:05.159Z"
+  "rescoreCompletedAt": "2026-02-02T03:24:05.159Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.167Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "none"
+  }
 }

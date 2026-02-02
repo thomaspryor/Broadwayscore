@@ -16,7 +16,6 @@
   "textWordCount": 988,
   "archivePath": "data/archives/reviews/once-upon-a-one-more-time-2023/observer--david-cote_2026-02-01.html",
   "textFetchedAt": "2026-02-01T23:43:15.748Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -75,5 +74,13 @@
     "needsReviewReasons": [],
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+  },
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.249Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
   }
 }

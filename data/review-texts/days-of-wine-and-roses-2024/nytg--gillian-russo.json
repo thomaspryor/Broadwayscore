@@ -67,7 +67,6 @@
   "previousLlmScore": 83,
   "archivePath": "data/archives/reviews/days-of-wine-and-roses-2024/nytg--gillian-russo_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:31:47.219Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -85,5 +84,13 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250715195124/https://www.newyorktheatreguide.com/reviews/days-of-wine-and-roses-broadway-review-kelli-ohara-brian-darcy-james",
   "rescoreCompletedAt": "2026-02-02T03:25:19.759Z",
   "contentTier": "complete",
-  "wordCount": 596
+  "wordCount": 596,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.176Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

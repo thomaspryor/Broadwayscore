@@ -22,7 +22,6 @@
   ],
   "archivePath": "data/archives/reviews/doubt-2024/nypost--johnny-oleksinki_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:35:05.524Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -84,5 +83,13 @@
     "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "complete",
-  "wordCount": 606
+  "wordCount": 606,
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.180Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "Meh",
+    "bwwThumb": "Meh"
+  }
 }

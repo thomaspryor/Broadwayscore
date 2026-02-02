@@ -74,7 +74,6 @@
   "textWordCount": 774,
   "archivePath": "data/archives/reviews/death-of-a-salesman-2026/unknown--unknown_2026-02-02.html",
   "textFetchedAt": "2026-02-02T00:13:28.045Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -90,5 +89,13 @@
   ],
   "textStatus": "partial",
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-02-02T03:25:48.250Z"
+  "rescoreCompletedAt": "2026-02-02T03:25:48.250Z",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.179Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

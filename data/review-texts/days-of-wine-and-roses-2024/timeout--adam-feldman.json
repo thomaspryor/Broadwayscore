@@ -14,7 +14,6 @@
   "humanReviewNote": "Full text (in garbageFullText) is clearly positive: 'ambitious, artful, musically sophisticated', leads 'superb', direction 'elegant'. 'Effectively sober' is wordplay, not criticism. Both thumbs Up.",
   "source": "bww-roundup",
   "dtliThumb": "Up",
-  "designation": "Recommended",
   "dtliExcerpt": "Days of Wine and Roses reunites composer Adam Guettel with playwright Craig Lucas; as in their previous collaboration, 2005’s The Light in the Piazza, the result is ambitious, artful and musically sophisticated.",
   "showScoreExcerpt": "\"If 'Days and Wine and Roses' isn’t exactly galvanizing...it is effectively sober.\"",
   "sources": [
@@ -103,5 +102,13 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.177Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "Up"
+  }
 }

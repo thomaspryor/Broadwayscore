@@ -82,7 +82,6 @@
   "textWordCount": 1494,
   "archivePath": "data/archives/reviews/liberation-2025/timeout--adam-feldman_2026-02-02.html",
   "textFetchedAt": "2026-02-02T03:07:22.026Z",
-  "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -101,5 +100,13 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251116024653",
-  "archiveOrgUrl": "http://web.archive.org/web/20251116024653/https://www.timeout.com/newyork/theater/liberation-broadway-review-bess-wohl-feminism"
+  "archiveOrgUrl": "http://web.archive.org/web/20251116024653/https://www.timeout.com/newyork/theater/liberation-broadway-review-bess-wohl-feminism",
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.225Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": true,
+    "dtliThumb": "Up",
+    "bwwThumb": "none"
+  }
 }

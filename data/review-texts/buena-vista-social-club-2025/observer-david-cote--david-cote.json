@@ -14,7 +14,6 @@
   "textWordCount": 735,
   "archivePath": "data/archives/reviews/buena-vista-social-club/observer-david-cote--david-cote_2026-02-01.html",
   "textFetchedAt": "2026-02-01T15:11:18.462Z",
-  "designation": "Recommended",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -77,5 +76,13 @@
     "needsReviewReasons": [],
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Both models agree: Positive"
+  },
+  "_removedDesignation": {
+    "designation": "Recommended",
+    "removedAt": "2026-02-02T04:23:14.167Z",
+    "reason": "Removed: \"Recommended\" is not a real outlet designation. Was either from overly-broad regex or synthetic aggregator thumb translation.",
+    "hadPositiveThumb": false,
+    "dtliThumb": "none",
+    "bwwThumb": "none"
   }
 }
