@@ -1267,6 +1267,42 @@ function computeContentFingerprint(text, length = 500) {
   return Math.abs(hash).toString(16).padStart(8, '0');
 }
 
+/**
+ * Detect if LLM scoring reasoning indicates the text was garbage
+ * (not an actual review). Only meaningful when confidence is "low".
+ *
+ * Returns { isGarbage: boolean, matchedPattern: string|null }
+ */
+const GARBAGE_REASONING_PATTERNS = [
+  { pattern: /caption|photo description/i, label: 'photo-caption' },
+  { pattern: /plot summary.*without.*(?:evaluat|critical|recommendation)/i, label: 'plot-summary-only' },
+  { pattern: /appears to be.*(?:landing page|navigation|website|homepage)/i, label: 'navigation-page' },
+  { pattern: /headline.*(?:only|byline)/i, label: 'headline-only' },
+  { pattern: /not.*(?:actual|genuine) review/i, label: 'not-a-review' },
+  { pattern: /insufficient.*(?:text|context|content)/i, label: 'insufficient-text' },
+  { pattern: /no.*(?:critical|evaluative).*(?:language|assessment|content)/i, label: 'no-evaluative-content' },
+  { pattern: /general commentary.*rather than.*(?:specific|actual).*review/i, label: 'commentary-not-review' },
+  { pattern: /(?:cookie|privacy|subscription|paywall).*(?:notice|prompt|text)/i, label: 'paywall-text' },
+  { pattern: /appears to be.*(?:stub|fragment|metadata|introduction|headline|cast announcement)/i, label: 'stub-or-fragment' },
+  { pattern: /no.*review.*content/i, label: 'no-review-content' },
+  { pattern: /background information without.*evaluat/i, label: 'background-only' },
+  { pattern: /impossible to determine.*(?:overall|actual|critic)/i, label: 'undeterminable' },
+  { pattern: /industry analysis.*rather than.*(?:actual|theater|review)/i, label: 'industry-analysis' },
+  { pattern: /thematic overview.*(?:limited|without).*evaluative/i, label: 'thematic-overview' },
+  { pattern: /factual.*(?:description|announcement).*rather than.*(?:actual|review)/i, label: 'factual-description' },
+  { pattern: /rather than.*(?:substantive|actual|complete) review/i, label: 'not-substantive-review' },
+];
+
+function detectGarbageFromReasoning(reasoning, confidence) {
+  if (!reasoning || confidence !== 'low') return { isGarbage: false, matchedPattern: null };
+  for (const { pattern, label } of GARBAGE_REASONING_PATTERNS) {
+    if (pattern.test(reasoning)) {
+      return { isGarbage: true, matchedPattern: label };
+    }
+  }
+  return { isGarbage: false, matchedPattern: null };
+}
+
 module.exports = {
   isGarbageContent,
   hasReviewContent,
@@ -1294,6 +1330,9 @@ module.exports = {
   detectNavigationJunk,
   detectWrongArticle,
   detectHorrorFilmContent,
+  // LLM reasoning garbage detector
+  detectGarbageFromReasoning,
+  GARBAGE_REASONING_PATTERNS,
   // Export constants for reference
   THEATER_KEYWORDS,
   CURRENT_BROADWAY_SHOWS,

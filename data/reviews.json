@@ -1,22 +1,22 @@
 {
   "_meta": {
     "description": "Critic reviews - raw input data",
-    "lastUpdated": "2026-02-01",
+    "lastUpdated": "2026-02-02",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 2007,
-      "skippedNoScore": 96,
+      "totalReviews": 2010,
+      "skippedNoScore": 93,
       "skippedDuplicate": 5,
       "skippedWrongProduction": 17,
       "scoreSources": {
         "explicit-stars": 115,
         "explicit-outOf": 3,
         "explicit-slash": 5,
-        "explicit-letterGrade": 94,
+        "explicit-letterGrade": 95,
         "originalScore-priority0": 110,
         "llmScore": 1454,
         "thumb-override-llm": 20,
-        "llmScore-lowconf": 126,
+        "llmScore-lowconf": 128,
         "llmScore-review": 80,
         "assignedScore": 0,
         "originalScore": 0,
@@ -3908,7 +3908,8 @@
       "originalRating": null,
       "pullQuote": "Tracy Letts' excellent, itchy Bug on Broadway",
       "dtliThumb": "Up",
-      "bwwThumb": null
+      "bwwThumb": null,
+      "designation": "Recommended"
     },
     {
       "showId": "bug-2026",
@@ -19659,7 +19660,7 @@
       "url": "https://www.broadwaynews.com/review-once-upon-a-one-more-time-thrillingly-weds-fairy-tale-princesses-and-pop/",
       "publishDate": null,
       "originalRating": null,
-      "pullQuote": "a thoroughly enjoyable, relentlessly watchable and genuinely funny good time\"Deadline: \"Smart, funny, splendid to look at and all with a beat you can dance to, this tribute (to) the indomitable Ms.",
+      "pullQuote": "The musical of Britney Spears songs hits all the right notes of zaniness, creativity and unbridled joy. Liberation sits at the foundation of our favorite pop songs, and few superstars have more to say about freedom than Britney Spears.",
       "dtliThumb": null,
       "bwwThumb": null
     },
@@ -19679,6 +19680,22 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "designation": "Recommended"
+    },
+    {
+      "showId": "once-upon-a-one-more-time-2023",
+      "outletId": "cititour",
+      "outlet": "Cititour",
+      "assignedScore": 69,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Brian Lipton",
+      "url": "https://cititour.com/NYC_Broadway/Once-Upon-A-One-More-Time/1154",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "NYC Events, Restaurants, Music, & Nightlife\n\nCititour.com Review\n The illegitimate love child of “Bad Cinderella” and “&Juliet” – with a little bit of the theatrical sperm of “Into the Woods” thrown in for fertilization – the ultra-splashy musical “Once Upon a One More Time,” now at the Marquis Theatre, is the latest Broadway fable screaming at ...",
+      "dtliThumb": null,
+      "bwwThumb": null
     },
     {
       "showId": "once-upon-a-one-more-time-2023",
@@ -19811,6 +19828,23 @@
     },
     {
       "showId": "once-upon-a-one-more-time-2023",
+      "outletId": "observer",
+      "outlet": "Observer",
+      "assignedScore": 67,
+      "scoreSource": "llmScore-lowconf",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "David Cote",
+      "url": "https://observer.com/2023/06/review-once-upon-a-one-more-time-wont-leave-britney-alone/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Once Upon a One More Time | 2hrs 30mins. | Marquis Theatre | 210 West 46th Street | 212-307-4100 By clicking submit, you agree to our <a href=\"http://observermedia.com/terms\">termsice</a> and acknowledge we may use your information to send you emails, product samples, and promotions on this website and other properties.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "designation": "Recommended"
+    },
+    {
+      "showId": "once-upon-a-one-more-time-2023",
       "outletId": "dailybeast",
       "outlet": "The Daily Beast",
       "assignedScore": 45,
@@ -19919,6 +19953,22 @@
       "originalRating": null,
       "pullQuote": "Don't overthink it, just intoxicate yourself",
       "dtliThumb": "Up",
+      "bwwThumb": null
+    },
+    {
+      "showId": "once-upon-a-one-more-time-2023",
+      "outletId": "theatrely",
+      "outlet": "Theatrely",
+      "assignedScore": 79,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Unknown",
+      "url": "https://www.theatrely.com/post/once-upon-a-one-more-time-crowns-a-pop-princess-review",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "The company of Once Upon a One More Time | Photo: Matthew Murphy\n\nIf the success of & Juliet proved anything, it’s that the key to a jukebox musical is leaning all the way into its ridiculousness. We’re here for pop songs, for the delicious, instant jolts of unserious serotonin they dispatch, You’d think the flipper-choreographed megahit Mamma Mia!",
+      "dtliThumb": null,
       "bwwThumb": null
     },
     {
@@ -20484,7 +20534,8 @@
       "originalRating": null,
       "pullQuote": "top-notch director who has done recent work that is both more exhilarating (Purlie Victorious) and more revelatory (Home)",
       "dtliThumb": null,
-      "bwwThumb": "Up"
+      "bwwThumb": "Up",
+      "designation": "Recommended"
     },
     {
       "showId": "our-town-2024",
@@ -20950,7 +21001,8 @@
       "originalRating": null,
       "pullQuote": "Michael Stuhlbarg delivers a powerhouse performance as Boris Berezovsky in this gripping political drama that feels unnervingly relevant to today's world. The production crackles with tension and intelligence.",
       "dtliThumb": null,
-      "bwwThumb": null
+      "bwwThumb": null,
+      "designation": "Recommended"
     },
     {
       "showId": "patriots-2024",
@@ -22729,9 +22781,10 @@
       "url": "https://deadline.com/2025/10/ragtime-broadway-review-1236583715/",
       "publishDate": "October 16, 2025",
       "originalRating": null,
-      "pullQuote": "But whatever its faults and near-misses, Ragtime has always been, like its ’90s contemporaries Titanic and Parade, an opportunity for rediscovery.",
+      "pullQuote": "Get our Breaking News Alerts and Keep your inbox happy. I absolutely loved the review of ‘Ragtime’!",
       "dtliThumb": "Meh",
-      "bwwThumb": "Up"
+      "bwwThumb": "Up",
+      "designation": "Recommended"
     },
     {
       "showId": "ragtime-2025",
@@ -23269,15 +23322,15 @@
       "showId": "real-women-have-curves-2025",
       "outletId": "ew",
       "outlet": "Entertainment Weekly",
-      "assignedScore": 81,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
+      "assignedScore": 95,
+      "scoreSource": "explicit-letterGrade",
+      "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Unknown",
       "url": "https://ew.com/real-women-have-curves-review-musical-broadway-11722804",
       "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "The show is an absolute joy to witness with its vibrant scenery and lively choreography. It also pulls off a crucial balancing act, immersing us in the real, textured world of their Angeles locale, leaning into the detail and intimate moments, and then, in the right moments, embracing fantasy by whisking us into the character's minds and letting...",
+      "originalRating": "A",
+      "pullQuote": "​ \n\n \n\n \n\n \n\n \n\n \n\n \n\n \n\n \n\n \n\n \n\nTop Stories\n\nWhite House lashes out at 'South Park'\n\nAnne Burrell's death ruled a suicide\n\nHulk Hogan dies at 71\n\nGloRilla arrested on drug possession charges\n\nReal Women Have Curves review: The beloved movie gets bolder and brighter as a crowd-pleasing Broadway musical\nLike America Ferrera before her, Tatianna ...",
       "dtliThumb": null,
       "bwwThumb": null
     },
@@ -23567,7 +23620,7 @@
       "url": "https://www.thewrap.com/real-women-have-curves-broadway-review-latinas-take-cover-to-break-free/",
       "publishDate": null,
       "originalRating": null,
-      "pullQuote": "In scene after scene, Lisa Loomer and Nell Benjamin's book for the new musical \"Real Women Have Curves\" is a vast improvement on George LaVoo and Josefina Lopez's screenplay, which is based on Lopez's play.",
+      "pullQuote": "The star of this show is a mummy that goes on a most twisted, tune-filled journey The makers of the outrageous new musical “Dead Outlaw” give us the equivalent of what Alfred Hitchcock did in “Psycho” when his star Janet Leigh gets killed 40 minutes into the movie.",
       "dtliThumb": null,
       "bwwThumb": null
     },
@@ -23811,7 +23864,8 @@
       "originalRating": null,
       "pullQuote": "There was a palpable feeling of deflation after the first number",
       "dtliThumb": "Down",
-      "bwwThumb": null
+      "bwwThumb": null,
+      "designation": "Recommended"
     },
     {
       "showId": "redwood-2025",
@@ -23825,9 +23879,10 @@
       "url": "https://www.theguardian.com/stage/2025/feb/13/redwood-review-idina-menzel",
       "publishDate": "February 13, 2025",
       "originalRating": null,
-      "pullQuote": "There was a palpable feeling of deflation after the first number, a sense of trepidation that did not ease for the remainder of the show.",
+      "pullQuote": "The Broadway titan returns for an original musical that is sadly lacking in show-stopping songs or emotional depth To a Californian redwood, human life is but a blip. The tallest trees in the world, reaching over 360ft (110 meters) into the sky, they can live for 2,000 years or more.",
       "dtliThumb": "DOWN",
-      "bwwThumb": null
+      "bwwThumb": null,
+      "designation": "Recommended"
     },
     {
       "showId": "redwood-2025",
@@ -25672,7 +25727,8 @@
       "originalRating": null,
       "pullQuote": "\"the play turns into something altogether fresh and, in this play-with-music hybrid form\"",
       "dtliThumb": "Up",
-      "bwwThumb": "Up"
+      "bwwThumb": "Up",
+      "designation": "Recommended"
     },
     {
       "showId": "stereophonic-2024",
