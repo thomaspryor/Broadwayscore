@@ -444,6 +444,27 @@ function validateReviewsJson() {
     }
   }
 
+  // URL uniqueness check: same URL at same outlet for same show should not appear twice
+  const urlDuplicates = [];
+  const seenUrls = {};
+  for (const r of reviews) {
+    if (!r.url) continue;
+    const key = `${r.showId}|${(r.outletId || r.outlet || '').toLowerCase()}|${r.url.toLowerCase().replace(/#.*$/, '').replace(/\/$/, '')}`;
+    if (seenUrls[key]) {
+      urlDuplicates.push({ showId: r.showId, outlet: r.outlet, url: r.url, critics: [seenUrls[key], r.criticName] });
+    } else {
+      seenUrls[key] = r.criticName;
+    }
+  }
+  if (urlDuplicates.length > 0) {
+    warn(`Found ${urlDuplicates.length} duplicate URLs within same show+outlet in reviews.json:`);
+    urlDuplicates.slice(0, 10).forEach(d => {
+      warn(`  ${d.showId}: ${d.outlet} | ${d.url} (${d.critics.join(', ')})`);
+    });
+  } else {
+    ok('No duplicate URLs within same show+outlet in reviews.json');
+  }
+
   // Phase 1 quality flag validation: check that new flags exist on review-text files
   // and that rebuild-all-reviews.js passes them through correctly
   info('Checking Phase 1 quality flags in review-texts...');

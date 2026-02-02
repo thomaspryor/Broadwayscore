@@ -715,7 +715,7 @@ function scoreToBucket(score) {
   if (score >= 85) return 'Rave';
   if (score >= 70) return 'Positive';
   if (score >= 55) return 'Mixed';
-  if (score >= 40) return 'Negative';
+  if (score >= 35) return 'Negative';
   return 'Pan';
 }
 
@@ -759,13 +759,21 @@ const allReviews = [];
 
 showDirs.forEach(showId => {
   const showDir = path.join(reviewTextsDir, showId);
-  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
+  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json'))
+    // Sort: prefer files with real critic names over "unknown"/"unnamed" for URL dedup tiebreaking
+    .sort((a, b) => {
+      const aUnknown = /unknown|unnamed/i.test(a) ? 1 : 0;
+      const bUnknown = /unknown|unnamed/i.test(b) ? 1 : 0;
+      return aUnknown - bUnknown || a.localeCompare(b);
+    });
 
   stats.byShow[showId] = { files: files.length, reviews: 0, skipped: 0 };
   stats.totalFiles += files.length;
 
   // Track seen outlet+critic combinations to avoid duplicates
   const seenKeys = new Set();
+  // Track seen URLs per outlet to avoid same-URL duplicates with different critic names
+  const seenUrlsByOutlet = new Map();
 
   files.forEach(file => {
     try {
@@ -871,6 +879,29 @@ showDirs.forEach(showId => {
       }
 
       seenKeys.add(dedupKey);
+
+      // URL dedup: same URL at same outlet under different critic names
+      if (data.url) {
+        // Normalize URL: lowercase hostname, strip trailing slash and fragment
+        // Preserve query params (some outlets use them as article IDs)
+        let normalizedUrl;
+        try {
+          const parsed = new URL(data.url);
+          parsed.hash = '';
+          normalizedUrl = parsed.toString().replace(/\/$/, '');
+        } catch {
+          normalizedUrl = data.url.toLowerCase().replace(/#.*$/, '').replace(/\/$/, '');
+        }
+        // Use outletId (short consistent form like "wsj") not outlet (display name)
+        const urlOutletKey = normalizeOutletId(data.outletId || data.outlet);
+        const urlDedupKey = `${urlOutletKey}|${normalizedUrl}`;
+        if (seenUrlsByOutlet.has(urlDedupKey)) {
+          // Files are sorted so real critic names come before "unknown" — first wins
+          stats.skippedDuplicateUrl = (stats.skippedDuplicateUrl || 0) + 1;
+          return;
+        }
+        seenUrlsByOutlet.set(urlDedupKey, file);
+      }
 
       // CHECK: Flag reviews that SHOULD have LLM scores but don't
       // These have scorable text but were never run through LLM scoring
@@ -1119,6 +1150,7 @@ const output = {
       totalReviews: stats.totalReviews,
       skippedNoScore: stats.skippedNoScore,
       skippedDuplicate: stats.skippedDuplicate,
+      skippedDuplicateUrl: stats.skippedDuplicateUrl || 0,
       skippedWrongProduction: stats.skippedWrongProduction || 0,
       recoveredFromGarbage: stats.recoveredFromGarbage || 0,
       scoreSources: stats.scoreSources
@@ -1136,6 +1168,7 @@ console.log(`Total files processed: ${stats.totalFiles}`);
 console.log(`Total reviews INCLUDED: ${stats.totalReviews}`);
 console.log(`  Skipped (no valid score): ${stats.skippedNoScore}`);
 console.log(`  Skipped (duplicate): ${stats.skippedDuplicate}`);
+console.log(`  Skipped (duplicate URL): ${stats.skippedDuplicateUrl || 0}`);
 console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`);
 if (stats.recoveredFromGarbage > 0) {
   console.log(`  Recovered from garbageFullText: ${stats.recoveredFromGarbage}`);
