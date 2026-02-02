@@ -1593,7 +1593,7 @@ async function resolveTimeoutListingUrl(review) {
  * @param {Object} review - Review object with showId, outletId, outlet, criticName, url
  * @returns {string|null} - Discovered URL, or null if not found
  */
-const URL_DISCOVERY_MAX_PER_RUN = 50; // Cap SERP API calls to control costs
+const URL_DISCOVERY_MAX_PER_RUN = 250; // Cap SERP API calls to control costs (raised from 50 — 84% success rate justifies higher cap)
 let _showsJsonCache = null; // Cached shows.json data (static within a run)
 
 async function discoverCorrectUrl(review) {
@@ -2595,10 +2595,13 @@ function loadState() {
       if (hoursSinceStart < 24) {
         console.log(`Resuming from previous run (${saved.processed.length} already processed)`);
         state = saved;
-        // Ensure tierBreakdown exists
+        // Ensure tierBreakdown and all sub-arrays exist (older state files may be missing keys)
         if (!state.tierBreakdown) {
-          state.tierBreakdown = { playwright: [], scrapingbee: [], brightdata: [], archive: [] };
+          state.tierBreakdown = { playwright: [], browserbase: [], scrapingbee: [], brightdata: [], archive: [] };
+        } else {
+          if (!state.tierBreakdown.browserbase) state.tierBreakdown.browserbase = [];
         }
+        if (!state.log) state.log = [];
         return true;
       }
     } catch (e) {

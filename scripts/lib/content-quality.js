@@ -634,7 +634,13 @@ function isGarbageContent(text) {
   }
 
   // Check for legal/privacy page
-  const legalPage = detectLegalPage(text);
+  // For longer texts (>1000 chars), only check the first 500 chars — real reviews
+  // often have "All Rights Reserved" or "Terms of Use" as footer boilerplate,
+  // but a genuine legal/privacy page would have these patterns near the start.
+  const legalCheckText = trimmed.length > 1000
+    ? trimmed.substring(0, 500)
+    : text;
+  const legalPage = detectLegalPage(legalCheckText);
   if (legalPage.detected) {
     return { isGarbage: true, reason: `Legal/privacy page: "${legalPage.match}"` };
   }
