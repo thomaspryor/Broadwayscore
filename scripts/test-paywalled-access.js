@@ -43,11 +43,13 @@ const SITES = {
     passwordEnv: ['NYT_PASSWORD', 'NYTIMES_PASSWORD'],
     login: async (page, email, password) => {
       console.log('    Navigating to NYT login...');
-      await page.goto('https://myaccount.nytimes.com/auth/login', { waitUntil: 'networkidle', timeout: 30000 });
+      // NYT redirects /auth/login → /auth/enter-email; use domcontentloaded (networkidle hangs in CI)
+      await page.goto('https://myaccount.nytimes.com/auth/login', { waitUntil: 'domcontentloaded', timeout: 30000 });
+      await page.waitForTimeout(3000); // Wait for SPA to render
 
       // Wait for email field
       console.log('    Waiting for email field...');
-      const emailField = await page.waitForSelector('input[name="email"], input[type="email"], #email', { timeout: 15000 });
+      const emailField = await page.waitForSelector('input[name="email"], input[type="email"], #email', { timeout: 20000 });
       await emailField.fill(email);
 
       // Click continue button
@@ -365,30 +367,42 @@ const SITES = {
     passwordEnv: ['WSJ_PASSWORD'],
     login: async (page, email, password) => {
       console.log('    Navigating to WSJ login...');
-      await page.goto('https://sso.accounts.dowjones.com/login', { waitUntil: 'networkidle', timeout: 30000 });
+      // accounts.wsj.com/login redirects to sso.accounts.dowjones.com
+      await page.goto('https://accounts.wsj.com/login', { waitUntil: 'domcontentloaded', timeout: 30000 });
+      await page.waitForTimeout(3000); // Wait for SPA to render
 
       console.log('    Looking for email field...');
-      const emailField = await page.waitForSelector('input[name="username"], input[type="email"], #username', { timeout: 15000 });
+      // WSJ uses name="emailOrUsername" and id="emailOrUsername-form-item" (updated Feb 2026)
+      const emailField = await page.waitForSelector('input[name="emailOrUsername"], input#emailOrUsername-form-item, input[type="email"], input[name="username"]', { timeout: 20000 });
       await emailField.fill(email);
 
       // WSJ has continue button then password
       const continueBtn = await page.$('button[type="submit"], button:has-text("Continue"), button:has-text("Next")');
       if (continueBtn) {
         await continueBtn.click();
-        await page.waitForTimeout(2000);
+        await page.waitForTimeout(3000);
       }
 
       console.log('    Looking for password field...');
       const passwordField = await page.waitForSelector('input[name="password"], input[type="password"]', { timeout: 15000 });
       await passwordField.fill(password);
 
-      const loginBtn = await page.$('button[type="submit"], button:has-text("Sign In"), button:has-text("Log In")');
+      const loginBtn = await page.$('button[type="submit"], button:has-text("Sign In"), button:has-text("Log In"), button:has-text("Continue")');
       if (loginBtn) {
         await loginBtn.click();
       }
 
       console.log('    Waiting for login to complete...');
       await page.waitForTimeout(5000);
+
+      // Check for error messages
+      const errorEl = await page.$('[class*="error"], [class*="alert"], [role="alert"]');
+      if (errorEl) {
+        const errorText = await errorEl.textContent().catch(() => '');
+        if (errorText && errorText.length > 5) {
+          throw new Error(`Login error: ${errorText.trim().substring(0, 100)}`);
+        }
+      }
 
       return true;
     },
