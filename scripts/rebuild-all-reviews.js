@@ -27,6 +27,7 @@ const path = require('path');
 const { getOutletDisplayName } = require('./lib/review-normalization');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
+const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 
 // Human review queue — flagged items written to data/audit/needs-human-review.json
 const humanReviewQueue = [];
@@ -52,16 +53,10 @@ function flagForHumanReview(data, reason, detail) {
   });
 }
 
-// Score mappings
-const THUMB_TO_SCORE = { 'Up': 80, 'Meh': 60, 'Flat': 60, 'Down': 35 };
-const BUCKET_TO_SCORE = { 'Rave': 90, 'Positive': 82, 'Mixed': 65, 'Negative': 48, 'Pan': 30 };
-const LETTER_TO_SCORE = {
-  'A+': 97, 'A': 93, 'A-': 90,
-  'B+': 87, 'B': 83, 'B-': 78,
-  'C+': 72, 'C': 65, 'C-': 58,
-  'D+': 40, 'D': 35, 'D-': 30,
-  'F': 20
-};
+// Score mappings — imported from shared source of truth (scripts/lib/score-extractors.js)
+const THUMB_TO_SCORE = THUMB_SCORES;
+const BUCKET_TO_SCORE = BUCKET_SCORES;
+const LETTER_TO_SCORE = LETTER_GRADES;
 
 /**
  * EXPLICIT RATING EXTRACTION

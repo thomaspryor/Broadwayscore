@@ -33,13 +33,28 @@ function cleanHtmlForScoring(html) {
     .replace(/margin[^;:]*[;:][^;]*/gi, '');  // Remove margin rules
 }
 
-// Letter grade to numeric conversion
+// ===================================================
+// CANONICAL SCORE MAPS — single source of truth for scripts.
+// Must stay aligned with src/config/scoring.ts (LETTER_GRADE_MAP, BUCKET_SCORE_MAP, THUMB_SCORE_MAP).
+// ===================================================
+
+// Letter grade → 0-100
 const LETTER_GRADES = {
-  'A+': 98, 'A': 95, 'A-': 92,
-  'B+': 88, 'B': 85, 'B-': 82,
-  'C+': 78, 'C': 75, 'C-': 72,
-  'D+': 68, 'D': 65, 'D-': 62,
-  'F': 50
+  'A+': 97, 'A': 93, 'A-': 90,
+  'B+': 87, 'B': 83, 'B-': 78,
+  'C+': 72, 'C': 65, 'C-': 58,
+  'D+': 40, 'D': 35, 'D-': 30,
+  'F': 20
+};
+
+// Sentiment bucket → 0-100
+const BUCKET_SCORES = {
+  'Rave': 90, 'Positive': 82, 'Mixed': 65, 'Negative': 48, 'Pan': 30
+};
+
+// Aggregator thumb → 0-100
+const THUMB_SCORES = {
+  'Up': 80, 'Meh': 60, 'Flat': 60, 'Down': 35
 };
 
 // Star rating to numeric (out of 5)
@@ -512,6 +527,8 @@ module.exports = {
   extractNYTCriticsPick,
   extractTheaterManiaMustSee,
   LETTER_GRADES,
+  BUCKET_SCORES,
+  THUMB_SCORES,
   starsToNumeric,
   OUTLET_EXTRACTORS
 };
