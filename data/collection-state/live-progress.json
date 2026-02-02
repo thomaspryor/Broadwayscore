@@ -1,62 +1,15 @@
 {
-  "updatedAt": "2026-02-02T05:16:29.563Z",
-  "processed": 3,
-  "failed": 7,
-  "successRate": "30.0%",
+  "updatedAt": "2026-02-02T05:46:04.783Z",
+  "processed": 23,
+  "failed": 97,
+  "successRate": "19.2%",
   "tierBreakdown": {
     "playwright": 2,
-    "browserbase": 2,
-    "scrapingbee": 0,
-    "brightdata": 2,
-    "archive": 1
+    "browserbase": 0,
+    "scrapingbee": 2,
+    "brightdata": 29,
+    "archive": 14
   },
-  "browserbaseSessions": 5,
-  "recentActivity": [
-    {
-      "t": "2026-02-02T05:04:22.692Z",
-      "event": "bb-session",
-      "session": "01f4822b",
-      "url": "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html?searc"
-    },
-    {
-      "t": "2026-02-02T05:05:04.699Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770008671598\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAMgZyYv0WSZ8ANCKmrw==&cid=ekPuuV2SWR1vTz5hXT4UfcVR1V~mKps6ZnbLa9cVL9Pw7bV~YpAkp27qyhXstdVJ2Z4fomC0quV_haUVM6CKCu5XRgSRk2HjoPAbDs_I6BQS9U~9BSFLUqXanrBHdDSW&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770008671598\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770008671598\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAMgZyYv0WSZ8ANCKmrw==&cid=ekPuuV2SWR1vTz5hXT4UfcVR1V~mKps6ZnbLa9cVL9Pw7bV~YpAkp27qyhXstdVJ2Z4fomC0quV_haUVM6CKCu5XRgSRk2HjoPAbDs_I6BQS9U~9BSFLUqXanrBHdDSW&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770008671598\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    34 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770008671598\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAMgZyYv0WSZ8ANCKmrw==&cid=ekPuuV2SWR1vTz5hXT4UfcVR1V~mKps6ZnbLa9cVL9Pw7bV~YpAkp27qyhXstdVJ2Z4fomC0quV_haUVM6CKCu5XRgSRk2HjoPAbDs_I6BQS9U~9BSFLUqXanrBHdDSW&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770008671598\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-02-02T05:08:40.583Z",
-      "event": "bb-session",
-      "session": "b5e31aa0",
-      "url": "https://www.vulture.com/article/oh-mary-broadway-review.html"
-    },
-    {
-      "t": "2026-02-02T05:08:42.273Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-02T05:14:23.450Z",
-      "event": "bb-session",
-      "session": "ae768e06",
-      "url": "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-tran"
-    },
-    {
-      "t": "2026-02-02T05:14:25.977Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-02T05:15:15.371Z",
-      "event": "bb-session",
-      "session": "8680b7a7",
-      "url": "https://www.nydailynews.com/2024/07/11/oh-mary-broadway-review/"
-    },
-    {
-      "t": "2026-02-02T05:15:41.191Z",
-      "event": "bb-session",
-      "session": "d1e027a4",
-      "url": "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-o"
-    }
-  ]
+  "browserbaseSessions": 4,
+  "recentActivity": []
 }
