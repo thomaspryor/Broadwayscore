@@ -1,27 +1,27 @@
 {
-  "runDate": "2026-02-02T17:45:52.829Z",
+  "runDate": "2026-02-02T17:49:07.777Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "redwood-2025",
+    "showFilter": "the-cottage-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 5,
+    "processed": 1,
+    "failed": 4,
     "skipped": 0,
-    "successRate": "28.6%"
+    "successRate": "20.0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 2
+    "archive": 1
   },
   "statistics": {
     "tier1Attempts": 2,
@@ -32,26 +32,24 @@
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 6,
-    "tier4Success": 6,
-    "totalFailed": 5,
+    "tier4Attempts": 4,
+    "tier4Success": 4,
+    "totalFailed": 4,
     "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "redwood-2025/broadwaynews--brittani-samuel.json",
-    "redwood-2025/washpost--naveen-kumar.json"
+    "the-cottage-2023/wsj--charles-isherwood.json"
   ],
   "failed": [
-    "redwood-2025/deadline--greg-evans.json",
-    "redwood-2025/new-york-sun--elysa-gardner.json",
-    "redwood-2025/observer--david-cote.json",
-    "redwood-2025/timeout--adam-feldman.json",
-    "redwood-2025/wsj--charles-isherwood.json"
+    "the-cottage-2023/new-york-sun--elysa-gardner.json",
+    "the-cottage-2023/observer--rex-reed.json",
+    "the-cottage-2023/timeout--adam-feldman.json",
+    "the-cottage-2023/theater-pizzazz--carole-di-tosti.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -59,38 +57,9 @@
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "redwood-2025/broadwaynews--brittani-samuel.json",
-      "redwood-2025/washpost--naveen-kumar.json"
+      "the-cottage-2023/wsj--charles-isherwood.json"
     ]
   },
-  "failuresByOutlet": {
-    "New York Daily News": {
-      "count": 1,
-      "domain": "nydailynews.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "The Wall Street Journal": {
-      "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    },
-    "Talkin' Broadway": {
-      "count": 1,
-      "domain": "thewrap.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
-  "urlDiscoveries": [
-    {
-      "reviewId": "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
-      "oldUrl": "https://nypost.com/2024/11/13/entertainment/maybe-happy-ending-review-charming-musical-about-robot-romance/",
-      "newUrl": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }
