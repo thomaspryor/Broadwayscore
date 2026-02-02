@@ -14,6 +14,7 @@ import {
   TIER_WEIGHTS,
   DEFAULT_TIER,
   DESIGNATION_BUMPS,
+  DESIGNATION_FLOORS,
   LETTER_GRADE_MAP,
   BUCKET_SCORE_MAP,
   THUMB_SCORE_MAP,
@@ -339,9 +340,14 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
     // Otherwise use the assigned score directly
     let reviewScore = assignedScore;
 
-    // Apply designation bump if applicable
-    if (review.designation && DESIGNATION_BUMPS[review.designation]) {
-      reviewScore = Math.min(100, reviewScore + DESIGNATION_BUMPS[review.designation]);
+    // Apply designation floor and bump if applicable
+    if (review.designation) {
+      if (DESIGNATION_FLOORS[review.designation]) {
+        reviewScore = Math.max(reviewScore, DESIGNATION_FLOORS[review.designation]);
+      }
+      if (DESIGNATION_BUMPS[review.designation]) {
+        reviewScore = Math.min(100, reviewScore + DESIGNATION_BUMPS[review.designation]);
+      }
     }
 
     // Calculate weighted score
@@ -630,6 +636,7 @@ export function getMethodologyConfig() {
     bucketScoreMap: BUCKET_SCORE_MAP,
     thumbScoreMap: THUMB_SCORE_MAP,
     designationBumps: DESIGNATION_BUMPS,
+    designationFloors: DESIGNATION_FLOORS,
     audiencePlatformWeights: AUDIENCE_PLATFORM_WEIGHTS,
     buzzConfig: BUZZ_CONFIG,
     confidenceThresholds: CONFIDENCE_THRESHOLDS,
