@@ -1,62 +1,50 @@
 {
-  "generatedAt": "2026-01-30T06:39:42.783Z",
+  "generatedAt": "2026-02-02T06:56:03.580Z",
   "summary": {
     "totalShows": 87,
-    "openShows": 31,
-    "closedShows": 40
+    "openShows": 29,
+    "closedShows": 42
   },
   "grosses": {
     "lastUpdated": "2026-01-28T15:22:16.504Z",
     "weekEnding": "1/25/2026",
     "showCount": 77,
     "status": "ok",
-    "daysStale": 1
+    "daysStale": 4
   },
   "statusChanges": {
     "autoClosed": []
   },
   "closingSoon": [
     {
-      "id": "mamma-mia-2025",
-      "title": "Mamma Mia!",
-      "closingDate": "2026-02-01",
-      "daysLeft": 2
-    },
-    {
-      "id": "liberation-2025",
-      "title": "Liberation",
-      "closingDate": "2026-02-01",
-      "daysLeft": 2
-    },
-    {
       "id": "oedipus-2025",
       "title": "Oedipus",
       "closingDate": "2026-02-08",
-      "daysLeft": 9
+      "daysLeft": 6
     },
     {
       "id": "marjorie-prime-2025",
       "title": "Marjorie Prime",
       "closingDate": "2026-02-15",
-      "daysLeft": 16
+      "daysLeft": 13
     },
     {
       "id": "hells-kitchen-2024",
       "title": "Hell's Kitchen",
       "closingDate": "2026-02-22",
-      "daysLeft": 23
+      "daysLeft": 20
     },
     {
       "id": "bug-2026",
       "title": "Bug",
-      "closingDate": "2026-02-22",
-      "daysLeft": 23
+      "closingDate": "2026-03-08",
+      "daysLeft": 34
     },
     {
       "id": "all-out-2025",
       "title": "All Out: Comedy About Ambition",
       "closingDate": "2026-03-08",
-      "daysLeft": 37
+      "daysLeft": 34
     }
   ],
   "dataQuality": {
@@ -66,7 +54,8 @@
       "oh-mary-2024",
       "the-great-gatsby-2024",
       "bug-2026",
-      "marjorie-prime-2025"
+      "marjorie-prime-2025",
+      "death-becomes-her-2024"
     ],
     "hasIssues": [
       {
@@ -268,10 +257,6 @@
           {
             "type": "missing_cast",
             "severity": "medium"
-          },
-          {
-            "type": "missing_creative",
-            "severity": "medium"
           }
         ]
       },
@@ -290,16 +275,6 @@
         ]
       },
       {
-        "id": "mamma-mia-2025",
-        "title": "Mamma Mia!",
-        "issues": [
-          {
-            "type": "missing_cast",
-            "severity": "medium"
-          }
-        ]
-      },
-      {
         "id": "stranger-things-2024",
         "title": "Stranger Things: The First Shadow",
         "issues": [
@@ -314,43 +289,11 @@
         ]
       },
       {
-        "id": "liberation-2025",
-        "title": "Liberation",
-        "issues": [
-          {
-            "type": "missing_cast",
-            "severity": "medium"
-          },
-          {
-            "type": "missing_creative",
-            "severity": "medium"
-          }
-        ]
-      },
-      {
-        "id": "death-becomes-her-2024",
-        "title": "Death Becomes Her",
-        "issues": [
-          {
-            "type": "missing_creative",
-            "severity": "medium"
-          },
-          {
-            "type": "no_closing_date",
-            "severity": "info"
-          }
-        ]
-      },
-      {
         "id": "buena-vista-social-club-2025",
         "title": "Buena Vista Social Club",
         "issues": [
           {
             "type": "missing_cast",
-            "severity": "medium"
-          },
-          {
-            "type": "missing_creative",
             "severity": "medium"
           },
           {
@@ -376,10 +319,6 @@
           {
             "type": "missing_cast",
             "severity": "medium"
-          },
-          {
-            "type": "no_closing_date",
-            "severity": "info"
           }
         ]
       },
@@ -389,10 +328,6 @@
         "issues": [
           {
             "type": "missing_cast",
-            "severity": "medium"
-          },
-          {
-            "type": "missing_creative",
             "severity": "medium"
           },
           {
@@ -434,9 +369,7 @@
         "& Juliet",
         "Oedipus",
         "Harry Potter and the Cursed Child",
-        "Mamma Mia!",
         "Stranger Things: The First Shadow",
-        "Liberation",
         "Buena Vista Social Club",
         "Ragtime",
         "Chess",
@@ -459,15 +392,6 @@
         "& Juliet",
         "Harry Potter and the Cursed Child",
         "Stranger Things: The First Shadow",
-        "Death Becomes Her",
-        "Buena Vista Social Club",
-        "Chess",
-        "Just in Time"
-      ],
-      "missing_creative": [
-        "Oedipus",
-        "Liberation",
-        "Death Becomes Her",
         "Buena Vista Social Club",
         "Just in Time"
       ],
