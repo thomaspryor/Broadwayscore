@@ -1,28 +1,39 @@
 {
-  "updatedAt": "2026-02-02T03:29:00.592Z",
+  "updatedAt": "2026-02-02T03:41:48.375Z",
   "processed": 2,
-  "failed": 3,
-  "successRate": "40.0%",
+  "failed": 4,
+  "successRate": "33.3%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 2,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 1
+    "brightdata": 2,
+    "archive": 0
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-02-02T03:25:44.927Z",
+      "t": "2026-02-02T03:37:33.300Z",
       "event": "bb-session",
-      "session": "76b84f86",
+      "session": "7630a35b",
       "url": "https://variety.com/2023/legit/reviews/spamalot-review-broadway-2023-1235792687/"
     },
     {
-      "t": "2026-02-02T03:28:37.121Z",
+      "t": "2026-02-02T03:40:25.245Z",
       "event": "bb-session",
-      "session": "93a73585",
+      "session": "cdebc637",
       "url": "https://www.theatermania.com/new-york-city-theater/reviews/spamalot-broadway-st-"
+    },
+    {
+      "t": "2026-02-02T03:41:05.842Z",
+      "event": "bb-session",
+      "session": "70fee88f",
+      "url": "https://www.wsj.com/articles/spamalot-review-king-arthur-monty-python-broadway-e"
+    },
+    {
+      "t": "2026-02-02T03:41:28.206Z",
+      "event": "bb-login-uncertain",
+      "domain": "wsj.com"
     }
   ]
 }
