@@ -17,8 +17,8 @@
     "successRate": "28.6%"
   },
   "tierBreakdown": {
-    "playwright": 1,
-    "browserbase": 0,
+    "playwright": 0,
+    "browserbase": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archive": 1
@@ -53,11 +53,11 @@
     "back-to-the-future-2023/timeout--adam-feldman.json",
     "back-to-the-future-2023/wsj--charles-isherwood.json"
   ],
+  "failed": [],
   "tierDetails": {
     "playwright": [
       "back-to-the-future-2023/queerty--matthew-wexler.json"
     ],
-    "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
