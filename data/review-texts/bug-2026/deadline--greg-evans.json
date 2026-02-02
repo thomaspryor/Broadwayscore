@@ -63,7 +63,7 @@
   "textIssue": "too_short",
   "sourceMethod": "brightdata",
   "archivePath": "data/archives/reviews/bug-2026/deadline--greg-evans_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T00:31:56.716Z",
+  "textFetchedAt": "2026-02-02T17:39:50.869Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -76,7 +76,7 @@
       "tier": 2,
       "method": "scrapingbee",
       "success": false,
-      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+      "error": "timeout of 60000ms exceeded"
     },
     {
       "tier": 3,
