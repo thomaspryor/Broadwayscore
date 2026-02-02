@@ -62,13 +62,19 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Negative"
   },
-  "archivePath": "data/archives/reviews/the-notebook-2024/variety--frank-rizzo_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T23:51:59.344Z",
+  "archivePath": "data/archives/reviews/the-notebook-2024/variety--frank-rizzo_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T02:19:45.602Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 0,
-      "method": "archive-first",
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "404 - Page not found"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
       "success": true
     }
   ],
@@ -85,5 +91,12 @@
   "sources": [
     "bww-roundup",
     "web-search"
-  ]
+  ],
+  "isFullReview": false,
+  "textWordCount": 100,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "shorter_than_excerpt"
+  ],
+  "textStatus": "truncated"
 }

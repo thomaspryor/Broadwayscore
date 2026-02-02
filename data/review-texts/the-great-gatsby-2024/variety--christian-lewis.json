@@ -63,18 +63,30 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
   },
-  "sourceMethod": "archive",
-  "archivePath": "data/archives/reviews/the-great-gatsby-2024/variety--christian-lewis_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T23:48:09.832Z",
-  "fetchMethod": "archive",
+  "sourceMethod": "brightdata",
+  "archivePath": "data/archives/reviews/the-great-gatsby-2024/variety--christian-lewis_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T02:19:39.813Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
-      "tier": 0,
-      "method": "archive-first",
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 3,
   "archiveOrgTimestamp": "20251215213827",
   "archiveOrgUrl": "http://web.archive.org/web/20251215213827/https://variety.com/2024/legit/reviews/the-great-gatsby-review-broadway-musical-jeremy-jordan-1235981841/",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
