@@ -1,39 +1,39 @@
 {
-  "updatedAt": "2026-02-02T23:39:24.037Z",
-  "processed": 3,
-  "failed": 7,
-  "successRate": "30.0%",
+  "updatedAt": "2026-02-02T23:44:08.203Z",
+  "processed": 4,
+  "failed": 8,
+  "successRate": "33.3%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 1,
-    "scrapingbee": 1,
-    "brightdata": 0,
-    "archive": 2
+    "playwright": 1,
+    "browserbase": 0,
+    "scrapingbee": 2,
+    "brightdata": 1,
+    "archive": 1
   },
   "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-02-02T23:34:31.322Z",
+      "t": "2026-02-02T23:38:55.505Z",
       "event": "bb-session",
-      "session": "39e44eb6",
-      "url": "https://www.vulture.com/article/the-notebook-broadway-review.html"
+      "session": "76fadeb8",
+      "url": "https://observer.com/2024/04/suffs-broadway-review-shaina-taub/"
     },
     {
-      "t": "2026-02-02T23:34:33.649Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
+      "t": "2026-02-02T23:39:20.998Z",
+      "event": "bb-session",
+      "session": "4ad9af69",
+      "url": "https://www.theatermania.com/broadway/reviews/suffs_90952.html"
     },
     {
-      "t": "2026-02-02T23:38:06.833Z",
+      "t": "2026-02-02T23:40:09.437Z",
       "event": "bb-session",
-      "session": "379023a1",
-      "url": "https://www.nydailynews.com/2024/03/14/broadway-review-the-notebook-is-an-unexpe"
+      "session": "b008bcc5",
+      "url": "https://www.wsj.com/articles/suffs-review-a-musical-of-marching-women-shaina-tau"
     },
     {
-      "t": "2026-02-02T23:38:36.972Z",
-      "event": "bb-session",
-      "session": "f59074ef",
-      "url": "https://www.theatermania.com/new-york-city-theater/reviews/the-notebook_93127.ht"
+      "t": "2026-02-02T23:40:52.471Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
     }
   ]
 }
