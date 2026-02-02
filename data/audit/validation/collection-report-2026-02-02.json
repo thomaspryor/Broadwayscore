@@ -1,118 +1,104 @@
 {
-  "runDate": "2026-02-02T17:43:44.820Z",
+  "runDate": "2026-02-02T17:46:53.960Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "aladdin-2014",
+    "showFilter": "oh-mary-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 6,
-    "failed": 9,
+    "processed": 7,
+    "failed": 6,
     "skipped": 0,
-    "successRate": "40.0%"
+    "successRate": "53.8%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 0,
-    "archive": 4
+    "scrapingbee": 0,
+    "brightdata": 1,
+    "archive": 6
   },
   "statistics": {
-    "tier1Attempts": 9,
-    "tier1Success": 4,
+    "tier1Attempts": 3,
+    "tier1Success": 1,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 6,
-    "tier2Success": 2,
-    "tier3Attempts": 2,
-    "tier3Success": 0,
-    "tier4Attempts": 20,
-    "tier4Success": 5,
-    "totalFailed": 9,
-    "scrapingBeeCreditsUsed": 33,
+    "tier2Attempts": 5,
+    "tier2Success": 0,
+    "tier3Attempts": 3,
+    "tier3Success": 2,
+    "tier4Attempts": 18,
+    "tier4Success": 9,
+    "totalFailed": 6,
+    "scrapingBeeCreditsUsed": 23,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 3,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoverySuccess": 3,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "aladdin-2014/hollywood-reporter--david-rooney.json",
-    "aladdin-2014/ew--thom-geier.json",
-    "aladdin-2014/newsday--linda-winer.json",
-    "aladdin-2014/uinterview--danny-graugnard.json",
-    "aladdin-2014/ap--mark-kennedy.json",
-    "aladdin-2014/thisbroadsway--sandra-mcfarland.json"
+    "oh-mary-2024/hollywood-reporter--angie-han.json",
+    "oh-mary-2024/hollywood-reporter--david-rooney.json",
+    "oh-mary-2024/nytimes--jesse-green.json",
+    "oh-mary-2024/variety--aramide-tinubu.json",
+    "oh-mary-2024/broadwaynews--brittani-samuel.json",
+    "oh-mary-2024/deadline--greg-evans.json",
+    "oh-mary-2024/theatermania--adam-feldman.json"
   ],
   "failed": [
-    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
-    "aladdin-2014/nypost--elisabeth-vincentelli.json",
-    "aladdin-2014/theatermania--charles-isherwood.json",
-    "aladdin-2014/timeout--adam-feldman.json",
-    "aladdin-2014/wsj--terry-teachout.json",
-    "aladdin-2014/broadway-voice--kristen-balzano.json",
-    "aladdin-2014/catholic-transcript--bernard-carragher.json",
-    "aladdin-2014/theater-pizzazz--sandi-durell.json",
-    "aladdin-2014/thestage--mark-shenton.json"
+    "oh-mary-2024/vulture--helen-shaw.json",
+    "oh-mary-2024/guardian--adrian-horton.json",
+    "oh-mary-2024/nydailynews--chris-jones.json",
+    "oh-mary-2024/observer--david-cote.json",
+    "oh-mary-2024/timeout--adam-feldman.json",
+    "oh-mary-2024/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "aladdin-2014/uinterview--danny-graugnard.json",
-      "aladdin-2014/ap--mark-kennedy.json"
-    ],
+    "playwright": [],
     "browserbase": [],
-    "scrapingbee": [
-      "marjorie-prime-2025/nytimes--elisabeth-vincentelli.json"
+    "scrapingbee": [],
+    "brightdata": [
+      "oh-mary-2024/theatermania--adam-feldman.json"
     ],
-    "brightdata": [],
     "archive": [
-      "aladdin-2014/hollywood-reporter--david-rooney.json",
-      "aladdin-2014/ew--thom-geier.json",
-      "aladdin-2014/newsday--linda-winer.json",
-      "aladdin-2014/thisbroadsway--sandra-mcfarland.json"
+      "oh-mary-2024/hollywood-reporter--angie-han.json",
+      "oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "oh-mary-2024/nytimes--jesse-green.json",
+      "oh-mary-2024/variety--aramide-tinubu.json",
+      "oh-mary-2024/broadwaynews--brittani-samuel.json",
+      "oh-mary-2024/deadline--greg-evans.json"
     ]
   },
   "failuresByOutlet": {
-    "New Jersey Newsroom": {
+    "New York Daily News": {
       "count": 1,
-      "domain": "newjerseynewsroom.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "New York Post": {
-      "count": 1,
-      "domain": "nypost.com",
+      "domain": "nydailynews.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
-    },
-    "The Wall Street Journal": {
-      "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    },
-    "Broadway Voice": {
-      "count": 1,
-      "domain": "bwayvoice.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "aladdin-2014/thestage--mark-shenton.json",
-      "oldUrl": "http://www.thestage.co.uk/opinion/shenton/2014/04/live-broadway-disneys-20-year-run-encore-happy-fella/",
-      "newUrl": "https://www.thestage.co.uk/reviews/aladdin"
+      "reviewId": "oh-mary-2024/vulture--helen-shaw.json",
+      "oldUrl": "https://www.vulture.com/article/oh-mary-broadway-review.html",
+      "newUrl": "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-transfer.html"
+    },
+    {
+      "reviewId": "oh-mary-2024/guardian--adrian-horton.json",
+      "oldUrl": "https://www.theguardian.com/stage/2024/jul/11/oh-mary-broadway-review",
+      "newUrl": "https://www.theguardian.com/stage/article/2024/jul/11/oh-mary-review-cole-escola-broadway"
+    },
+    {
+      "reviewId": "oh-mary-2024/nydailynews--chris-jones.json",
+      "oldUrl": "https://www.nydailynews.com/2024/07/11/oh-mary-broadway-review/",
+      "newUrl": "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-oh-mary-is-hilarious-take-on-controversial-first-lady/"
     }
   ]
 }
