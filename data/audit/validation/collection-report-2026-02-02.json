@@ -1,77 +1,98 @@
 {
-  "runDate": "2026-02-02T17:37:38.465Z",
+  "runDate": "2026-02-02T17:40:41.178Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "cabaret-2024",
+    "showFilter": "harmony-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 5,
+    "processed": 4,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "37.5%"
+    "successRate": "36.4%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archive": 2
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 2,
+    "tier1Attempts": 4,
     "tier1Success": 1,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 0,
-    "tier3Attempts": 2,
-    "tier3Success": 2,
-    "tier4Attempts": 8,
+    "tier2Attempts": 5,
+    "tier2Success": 2,
+    "tier3Attempts": 3,
+    "tier3Success": 0,
+    "tier4Attempts": 12,
     "tier4Success": 5,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 10,
+    "totalFailed": 6,
+    "scrapingBeeCreditsUsed": 20,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "cabaret-2024/variety--naveen-kumar.json",
-    "cabaret-2024/broadwaynews--brittani-samuel.json",
-    "cabaret-2024/village-voice--michael-musto.json"
+    "harmony-2023/hollywood-reporter--david-rooney.json",
+    "harmony-2023/variety--aramide-tinubu.json",
+    "harmony-2023/vulture--jesse-green.json",
+    "harmony-2023/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
-    "cabaret-2024/nyt-theater--jonathan-mandell.json",
-    "cabaret-2024/deadline--greg-evans.json",
-    "cabaret-2024/observer--rex-reed.json",
-    "cabaret-2024/timeout--adam-feldman.json",
-    "cabaret-2024/wsj--charles-isherwood.json"
+    "harmony-2023/deadline--greg-evans.json",
+    "harmony-2023/observer--david-cote.json",
+    "harmony-2023/the-new-york-sun--elysa-gardner.json",
+    "harmony-2023/timeout--adam-feldman.json",
+    "harmony-2023/wsj--charles-isherwood.json",
+    "harmony-2023/theatrely--juan-a-ramirez.json",
+    "harmony-2023/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "cabaret-2024/broadwaynews--brittani-samuel.json"
-    ],
+    "playwright": [],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "harmony-2023/deadline--greg-evans.json"
+    ],
     "brightdata": [],
     "archive": [
-      "cabaret-2024/variety--naveen-kumar.json",
-      "cabaret-2024/village-voice--michael-musto.json"
+      "harmony-2023/hollywood-reporter--david-rooney.json",
+      "harmony-2023/variety--aramide-tinubu.json",
+      "harmony-2023/vulture--jesse-green.json",
+      "harmony-2023/broadwaynews--brittani-samuel.json"
     ]
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "back-to-the-future-2023/observer--david-cote.json",
-      "oldUrl": "https://observer.com/2023/08/back-to-the-future-the-musical-review-broadway/",
-      "newUrl": "https://observer.com/2023/08/back-to-the-future-the-musical-review-the-delorean-flies-the-songs-sink/"
+  "failuresByOutlet": {
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    },
+    "Theatrely": {
+      "count": 1,
+      "domain": "theatrely.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
-  ]
+  },
+  "urlDiscoveries": []
 }
