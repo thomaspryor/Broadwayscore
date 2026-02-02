@@ -1,106 +1,94 @@
 {
-  "runDate": "2026-02-02T23:25:25.947Z",
+  "runDate": "2026-02-02T23:28:45.920Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-roommate-2024",
+    "showFilter": "here-lies-love-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 8,
+    "processed": 5,
     "failed": 5,
     "skipped": 0,
-    "successRate": "61.5%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
     "playwright": 2,
     "browserbase": 0,
     "scrapingbee": 1,
-    "brightdata": 1,
-    "archive": 4
+    "brightdata": 2,
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 4,
+    "tier1Attempts": 6,
     "tier1Success": 2,
     "tier1_5Attempts": 2,
     "tier1_5Success": 0,
-    "tier2Attempts": 4,
+    "tier2Attempts": 3,
     "tier2Success": 1,
     "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier4Attempts": 13,
-    "tier4Success": 7,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 21,
+    "tier3Success": 2,
+    "tier4Attempts": 12,
+    "tier4Success": 4,
+    "totalFailed": 2,
+    "scrapingBeeCreditsUsed": 32,
     "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.9,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 0,
+    "browserbaseMinutesUsed": 2.7,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-roommate-2024/variety--charles-isherwood.json",
-    "the-roommate-2024/vulture--helen-shaw.json",
-    "the-roommate-2024/broadwaynews--brittani-samuel.json",
-    "the-roommate-2024/deadline--greg-evans.json",
-    "the-roommate-2024/nydailynews--chris-jones.json",
-    "the-roommate-2024/theatermania--jesse-green.json",
-    "the-roommate-2024/the-village-voice--michael-musto.json",
-    "the-roommate-2024/washpost--naveen-kumar.json"
+    "here-lies-love-2023/hollywood-reporter--angie-han.json",
+    "here-lies-love-2023/broadwaynews--brittani-samuel.json",
+    "here-lies-love-2023/theatermania--adam-feldman.json",
+    "here-lies-love-2023/wsj--charles-isherwood.json",
+    "here-lies-love-2023/ap--mark-kennedy.json"
   ],
   "failed": [
-    "the-roommate-2024/nypost--johnny-oleksinski.json",
-    "the-roommate-2024/observer--rex-reed.json",
-    "the-roommate-2024/timeout--adam-feldman.json",
-    "the-roommate-2024/wsj--charles-isherwood.json",
-    "the-roommate-2024/talkinbroadway--matthew-murray.json"
+    "here-lies-love-2023/nytimes--jesse-green.json",
+    "here-lies-love-2023/deadline--greg-evans.json",
+    "here-lies-love-2023/guardian--adrian-horton.json",
+    "here-lies-love-2023/timeout--adam-feldman.json",
+    "here-lies-love-2023/bergen-record--robert-feldberg.json"
   ],
-  "failed": [],
   "tierDetails": {
     "playwright": [
-      "the-roommate-2024/the-village-voice--michael-musto.json",
-      "the-roommate-2024/washpost--naveen-kumar.json"
+      "here-lies-love-2023/guardian--adrian-horton.json",
+      "here-lies-love-2023/ap--mark-kennedy.json"
     ],
     "browserbase": [],
     "scrapingbee": [
-      "the-roommate-2024/variety--charles-isherwood.json"
+      "here-lies-love-2023/theatermania--adam-feldman.json"
     ],
     "brightdata": [
-      "the-roommate-2024/theatermania--jesse-green.json"
+      "here-lies-love-2023/nytimes--jesse-green.json",
+      "here-lies-love-2023/deadline--greg-evans.json"
     ],
     "archive": [
-      "the-roommate-2024/vulture--helen-shaw.json",
-      "the-roommate-2024/broadwaynews--brittani-samuel.json",
-      "the-roommate-2024/deadline--greg-evans.json",
-      "the-roommate-2024/nydailynews--chris-jones.json"
+      "here-lies-love-2023/hollywood-reporter--angie-han.json",
+      "here-lies-love-2023/broadwaynews--brittani-samuel.json",
+      "here-lies-love-2023/wsj--charles-isherwood.json"
     ]
   },
   "failuresByOutlet": {
-    "New York Post": {
+    "The Record (Bergen)": {
       "count": 1,
-      "domain": "nypost.com",
+      "domain": "northjersey.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Observer": {
-      "count": 1,
-      "domain": "observer.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "The Wall Street Journal": {
-      "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
+      "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "here-lies-love-2023/guardian--adrian-horton.json",
+      "oldUrl": "https://www.theguardian.com/stage/2023/jul/21/here-lies-love-review-broadway-imelda-marcos",
+      "newUrl": "https://www.theguardian.com/stage/2023/jul/20/here-lies-love-review-imelda-marcos-broadway"
+    }
+  ]
 }
