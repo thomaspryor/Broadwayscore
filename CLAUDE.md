@@ -545,9 +545,31 @@ Documented from the Jan-Feb 2026 review corpus audit (1,825→2,022 reviews). Th
 
 **Parallel push conflicts (FIXED Feb 2026):** All 8 parallel-safe workflows now use robust push retry: `git checkout -- . && git clean -fd` before rebase, `-X theirs` for auto-conflict resolution, `rebase --abort` on failure, random 10-30s backoff, 5 retries. Fixed in: `gather-reviews.yml`, `rebuild-reviews.yml`, `scrape-nysr.yml`, `scrape-new-aggregators.yml`, `fetch-guardian-reviews.yml`, `process-review-submission.yml`, `review-refresh.yml`, `update-commercial.yml`.
 
+### Scoring Pipeline Details (Feb 2026)
+
+**Scoring hierarchy in `rebuild-all-reviews.js`:**
+- **Priority 0:** Explicit ratings extracted from review text (stars, letter grades, X/5, "X out of Y") — 205 reviews
+- **Priority 0.5:** `humanReviewScore` (1-100) — manual override from audit queue, always paired with `humanReviewNote` — 39 reviews
+- **Priority 0b:** `originalScore` parsed from field (letter grades, star ratings) — 61 reviews
+- **Priority 1:** LLM ensemble score (high/medium confidence, not needs-review) — 1,233 reviews
+- **Priority 2:** Aggregator thumb override of low-confidence/needs-review LLM — 13 reviews
+- **Priority 3:** LLM fallback (low confidence, single/no thumbs) — 115 reviews
+
+**Excerpt-only confidence downgrade:** When `fullText` is missing or <100 chars, LLM confidence is downgraded to "low" regardless of what the model reported. Audit showed ~50% error rate on excerpt-only high/medium confidence scores. These route through Priority 2 (thumb override) or Priority 3 (fallback) instead.
+
+**garbageFullText recovery:** During rebuild, reviews with `fullText: null` but `garbageFullText` >200 chars are cleaned via `cleanText()`. If the cleaned result is >200 chars, it's promoted to `fullText` for scoring. 114 reviews recovered this way. The source files are NOT modified — recovery is in-memory during rebuild only.
+
+**contentTier flow-through:** `rebuild-all-reviews.js` carries `contentTier` from source files into `reviews.json`. Distribution: 1,063 complete, 335 excerpt, 245 truncated, 45 stub, 33 needs-rescrape.
+
+**Human review queue:** `data/audit/needs-human-review.json` lists reviews where LLM score and aggregator thumbs disagree. Categories: `both-thumbs-override-llm` (auto-handled), `single-thumb-override-low-conf`, `both-thumbs-disagree-with-llm` (needs manual review). Set `humanReviewScore` + `humanReviewNote` on the source file to override.
+
 ### Remaining Data Quality Work (Feb 2026)
 
-**Truncated reviews re-scrape (IN PROGRESS Feb 2026):** 314 reviews across 67 shows with `contentTier: "truncated"` or `"needs-rescrape"` are being re-scraped via 3 parallel `collect-review-texts.js` batches. The `contentTier` gap in `collect-review-texts.js` was fixed — it now checks `contentTier` in addition to `textQuality`/`textStatus` when deciding what to re-scrape.
+**115 excerpt-only low-confidence reviews:** Every `llmScore-lowconf` review lacks fullText. These are the highest-value re-scrape targets — getting fullText for any of them enables full-confidence scoring. The weekly `collect-review-texts.js` workflow attempts these automatically.
+
+**Truncated reviews re-scrape (ONGOING):** ~245 truncated + ~33 needs-rescrape reviews still need better text. `collect-review-texts.js` runs weekly via `review-refresh.yml` and attempts re-scrape. BroadwayNews reviews (paywall) are the hardest — require subscription credentials not yet configured.
+
+**23 reviews in human review queue:** `data/audit/needs-human-review.json` — 10 `both-thumbs-disagree-with-llm` needing manual score assessment, 12 `both-thumbs-override-llm` (auto-handled), 1 `single-thumb-override`.
 
 **27 cross-outlet duplicate-text reviews:** Files with `duplicateTextOf` field where the same fullText appears at a different outlet (e.g., Chris Jones at both Chicago Tribune and NY Daily News). These are legitimate — the same freelance critic published in multiple outlets. Same-outlet duplicates and wrong-critic attributions have been cleaned up.
 

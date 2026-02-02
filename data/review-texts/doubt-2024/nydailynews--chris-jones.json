@@ -7,7 +7,7 @@
   "publishDate": "March 7, 2024",
   "dtliExcerpt": "Twenty years later, all reasonable doubt has been removed from Shanley’s parable. This taut drama, back in a gripping new Broadway production from the Roundabout Theatre Company and director Scott Ellis, plays like a cautionary tale, an ode to those who found the courage to stand up to abusers and side with the young and the vulnerable.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 81,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": "\"...a timely and now seemingly timeless piece of art that shed light\"",
@@ -15,12 +15,12 @@
   "bwwThumb": "Up",
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:29:22.393Z",
+    "scoredAt": "2026-02-02T03:26:03.498Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 75,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "sources": [
     "dtli",
@@ -97,11 +97,11 @@
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "llmScore": {
-    "score": 75,
-    "confidence": "low",
+    "score": 81,
+    "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -112,35 +112,32 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: The excerpt is too brief to determine a clear verdict. While 'timeless piece of art' suggests some appreciation, the fragment doesn't contain explicit recommendation language or clear evaluative stance. | GPT-4o: The phrase 'a timely and now seemingly timeless piece of art' suggests a strong positive impression, indicating the production is highly regarded and impactful. The aggregator context supports a positive verdict. | Gemini: The review excerpt describes the show as a \"timely and now seemingly timeless piece of art,\" indicating a positive assessment and recommendation. | Buckets: claude=Mixed, openai=Rave, gemini=Positive",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is deeply appreciative of the production, praising performances as 'excellent' and calling it 'gripping.' The critic finds profound meaning in the revival and concludes it exemplifies what American theater should accomplish. | GPT-4o: The review is overwhelmingly positive, praising the production as gripping and highlighting its profound impact and relevance. The critic describes the play as a masterpiece with standout performances and a powerful staging, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting strong performances and the play's enduring relevance. While there's a minor critique of Schreiber's performance, the overall assessment is a recommendation to see the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 88,
-    "geminiScore": 75,
-    "claudeBucket": "Mixed",
+    "claudeScore": 82,
+    "openaiScore": 95,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 28,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "3-way bucket disagreement"
-    ],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "No bucket consensus - using median score"
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
-  "rescoreCompletedAt": "2026-02-01T04:05:49.816Z",
-  "contentTier": "excerpt",
-  "wordCount": 0,
-  "needsRescore": true,
+  "rescoreCompletedAt": "2026-02-02T03:26:03.498Z",
+  "contentTier": "complete",
+  "wordCount": 631,
   "previousLlmScore": 75,
   "fullText": "John Patrick Shanley’s “Doubt: A Parable” was first produced in 2004, near the zenith of the long-lasting crisis over abusive priests hiding in plain sight within the Catholic Church. At the time, it felt like a deeply nuanced work focused on the agony of a whistleblowing nun. On a broader level, it was a play about being unsure over a potential accusation that surely would result in grievous harm — whether made public or not.\n\nTwenty years later, all reasonable doubt has been removed from Shanley’s parable. This taut drama, back in a gripping new Broadway production from the Roundabout Theatre Company and director Scott Ellis, plays like a cautionary tale, an ode to those who found the courage to stand up to abusers and side with the young and the vulnerable.\n\nI used to think that was because it was deftly structured almost like a procedural, even an 85-minute crime thriller, as Sister Aloysius Beauvier (Amy Ryan), the tough-nosed principal of a parochial school, tries to toughen up her scared young sidekick Sister James (Zoe Kazan) to ascertain precisely what Father Brendan Flynn (Liev Schreiber) has been doing with a young student whose breath smelled of Communion wine.\n\nBut I saw something new and profoundly sad in the play in this revival, thanks in no small part to Ryan’s performance in a role she took over mid-process after the original star, Tyne Daly, left the show. Ryan and Ellis focus is not so much on rectitude or certainty but on the character’s fight against her own exhaustion.\n\nRyan, whose performance is tart, vulnerable, and unstinting, shows us a character slowly realizing that her unswerving belief in the hierarchy she serves — heck, the way she has ordered her entire life — is incompatible with her moral and practical quest. The similarly excellent Kazan, whose teaching nun has the assets and drawbacks of youth, can only stare horrified at a future that she now understands is coming for her, too. It’s just a matter of time.\n\nBut, frankly, all of that pales when compared to the most devastating scene in the play, which is among the best in any American drama of the last 20 years. It’s a confrontation between Beauvier and the mother of the Black boy under the father’s potentially nefarious influence. As excruciatingly played here by Quincy Tyler Bernstine, the woman says, in essence, to leave it alone; adding one more trouble to the pile the boy already bears would surely cause him to collapse under its weight.\n\nThis particular scene, Shanley’s most masterful, achieves more in 10 minutes or so than most writers manage in entire plays. It reveals with alacrity a great truth about how people in impossible and unjust situations must learn to compartmentalize and broker deals to mitigate compounding circumstances. In this particular staging, I found it almost unbearable to watch.\n\nI’d argue Schreiber could have chosen an additional note of vulnerability in his performance, but his Flynn certainly imposes himself, which is what the play demands. And, even though the boy is unseen, the actor sure has nailed down the aggressively obsequious kind of intimacy with youth that has cost society so much.\n\n“Doubt” moves fast, especially here on a relatively simple but highly effective design from David Rockwell that seems only to add to the play’s inherent sense of dread. You feel a very physical disconnect between community and loneliness, fresh air and hidden secrets, the resolute teacher and the cornered man with petty power. The past being prologue, I left yet more worried for the future than when I came in the door.\n\nYet, here was a play, a timely and now seemingly timeless piece of art that shed light and did exactly what the American theater is supposed to do.",
   "isFullReview": true,

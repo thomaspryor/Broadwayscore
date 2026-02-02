@@ -874,7 +874,8 @@ showDirs.forEach(showId => {
         originalRating: data.originalScore || null,
         pullQuote: selectBestExcerpt(data),
         dtliThumb: data.dtliThumb || null,
-        bwwThumb: data.bwwThumb || null
+        bwwThumb: data.bwwThumb || null,
+        contentTier: data.contentTier || 'none'
       };
 
       // Add designation if present
