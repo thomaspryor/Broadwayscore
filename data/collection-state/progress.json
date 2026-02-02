@@ -1,27 +1,54 @@
 {
   "processed": [
-    "ragtime-2025/nyt-theater--jonathan-mandell.json",
-    "ragtime-2025/one-minute-critic--matthew-wexler.json",
-    "ragtime-2025/washpost--naveen-kumar.json"
+    "book-of-mormon-2011/variety--marilyn-stasio.json",
+    "book-of-mormon-2011/newsday--linda-winer.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "book-of-mormon-2011/talkinbroadway--matthew-murray.json"
   ],
   "failed": [
-    "ragtime-2025/deadline--greg-evans.json",
-    "ragtime-2025/timeout--adam-feldman.json",
-    "ragtime-2025/wsj--charles-isherwood.json"
+    "book-of-mormon-2011/timeout--david-cote.json",
+    "book-of-mormon-2011/wsj--terry-teachout.json",
+    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+    "book-of-mormon-2011/ny-1--roma-torre.json",
+    "book-of-mormon-2011/the-philadelphia-inquirer--howard-shapiro.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "ragtime-2025/nyt-theater--jonathan-mandell.json",
-      "ragtime-2025/one-minute-critic--matthew-wexler.json",
-      "ragtime-2025/washpost--naveen-kumar.json"
+      "book-of-mormon-2011/variety--marilyn-stasio.json",
+      "book-of-mormon-2011/ap--mark-kennedy.json",
+      "book-of-mormon-2011/backstage--david-sheward.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/book-of-mormon-2011/newsday--linda-winer.json",
+      "book-of-mormon-2011/newsday--linda-winer.json"
+    ],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "book-of-mormon-2011/talkinbroadway--matthew-murray.json"
+    ],
     "archive": []
   },
-  "startTime": "2026-02-02T04:56:54.987Z",
-  "lastProcessed": "ragtime-2025/washpost--naveen-kumar.json",
-  "log": []
+  "startTime": "2026-02-02T04:57:42.665Z",
+  "lastProcessed": "book-of-mormon-2011/the-philadelphia-inquirer--howard-shapiro.json",
+  "log": [
+    {
+      "t": "2026-02-02T04:57:54.037Z",
+      "event": "bb-session",
+      "session": "2db092cd",
+      "url": "https://www.newsday.com/news/new-york/theater-review-the-book-of-mormon-4-stars-"
+    },
+    {
+      "t": "2026-02-02T04:58:15.152Z",
+      "event": "bb-session",
+      "session": "56da6a30",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-02-02T04:58:43.565Z",
+      "event": "bb-login-uncertain",
+      "domain": "wsj.com"
+    }
+  ]
 }
