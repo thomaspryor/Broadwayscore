@@ -1,94 +1,46 @@
 {
   "processed": [
-    "moulin-rouge-2019/nytimes--unknown.json",
-    "moulin-rouge-2019/nydailynews--joe-dziemianowicz.json",
-    "moulin-rouge-2019/observer--david-cote.json",
-    "moulin-rouge-2019/theatermania--jesse-green.json"
+    "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
+    "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
+    "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json",
+    "once-upon-a-one-more-time-2023/associated-press-mark-kennedy--mark-kennedy.json",
+    "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
   ],
   "failed": [
-    "moulin-rouge-2019/vulture--jesse-green.json",
-    "moulin-rouge-2019/observer--rex-reed.json",
-    "moulin-rouge-2019/thewrap--robert-hofler.json",
-    "moulin-rouge-2019/timeout--adam-feldman.json",
-    "moulin-rouge-2019/wsj--terry-teachout.json",
-    "moulin-rouge-2019/amny--matt-windman.json"
+    "once-upon-a-one-more-time-2023/hollywood-reporter--angie-han.json",
+    "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
+    "once-upon-a-one-more-time-2023/timeout--adam-feldman.json",
+    "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
+    "once-upon-a-one-more-time-2023/thestage--lane-williamson.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
-    "browserbase": [
-      "data/review-texts/moulin-rouge-2019/observer--david-cote.json",
-      "moulin-rouge-2019/observer--david-cote.json"
+    "playwright": [
+      "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
+      "once-upon-a-one-more-time-2023/associated-press-mark-kennedy--mark-kennedy.json",
+      "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
     ],
+    "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "moulin-rouge-2019/theatermania--jesse-green.json"
-    ],
+    "brightdata": [],
     "archive": [
-      "moulin-rouge-2019/nytimes--unknown.json",
-      "moulin-rouge-2019/nydailynews--joe-dziemianowicz.json"
+      "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
+      "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json"
     ]
   },
-  "startTime": "2026-02-02T04:59:11.905Z",
-  "lastProcessed": "moulin-rouge-2019/amny--matt-windman.json",
+  "startTime": "2026-02-02T04:57:29.378Z",
+  "lastProcessed": "once-upon-a-one-more-time-2023/thestage--lane-williamson.json",
   "log": [
     {
-      "t": "2026-02-02T05:00:30.974Z",
+      "t": "2026-02-02T04:59:27.868Z",
       "event": "bb-session",
-      "session": "73db7eaf",
-      "url": "https://www.vulture.com/2019/07/moulin-rouge-the-musical-broadway-review.html"
+      "session": "0368c930",
+      "url": "https://www.nytimes.com/2023/06/14/theater/once-upon-a-one-more-time-review.html"
     },
     {
-      "t": "2026-02-02T05:00:34.666Z",
+      "t": "2026-02-02T04:59:33.938Z",
       "event": "bb-login-uncertain",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-02T05:01:04.656Z",
-      "event": "bb-session",
-      "session": "9a050f5b",
-      "url": "https://www.nydailynews.com/2019/07/25/moulin-rouge-broadway-review/"
-    },
-    {
-      "t": "2026-02-02T05:01:42.527Z",
-      "event": "bb-session",
-      "session": "f21bd6d7",
-      "url": "https://observer.com/2019/08/moulin-rouge-the-musical-kitsch-glitz-review-broadw"
-    },
-    {
-      "t": "2026-02-02T05:01:56.300Z",
-      "event": "bb-session",
-      "session": "b3fde828",
-      "url": "https://observer.com/2019/07/moulin-rouge-broadway-review/"
-    },
-    {
-      "t": "2026-02-02T05:02:25.612Z",
-      "event": "bb-session",
-      "session": "f804c0f3",
-      "url": "https://www.theatermania.com/broadway/reviews/moulin-rouge-the-musical_88234.htm"
-    },
-    {
-      "t": "2026-02-02T05:03:03.641Z",
-      "event": "bb-session",
-      "session": "40cbffef",
-      "url": "https://www.thewrap.com/moulin-rouge-broadway-review-2019/"
-    },
-    {
-      "t": "2026-02-02T05:03:35.738Z",
-      "event": "bb-session",
-      "session": "faf7eda2",
-      "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11"
-    },
-    {
-      "t": "2026-02-02T05:04:03.542Z",
-      "event": "bb-login-uncertain",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-02T05:04:30.997Z",
-      "event": "bb-session",
-      "session": "e7d8e97d",
-      "url": "https://www.amny.com/entertainment/moulin-rouge-broadway-review/"
+      "domain": "nytimes.com"
     }
   ]
 }
