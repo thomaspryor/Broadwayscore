@@ -1,92 +1,83 @@
 {
-  "runDate": "2026-02-02T16:35:48.838Z",
+  "runDate": "2026-02-02T16:38:02.322Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-great-gatsby-2024",
+    "showFilter": "once-upon-a-one-more-time-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 5,
+    "processed": 6,
+    "failed": 4,
     "skipped": 0,
-    "successRate": "28.6%"
+    "successRate": "60.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 1
+    "archive": 5
   },
   "statistics": {
-    "tier1Attempts": 1,
+    "tier1Attempts": 4,
     "tier1Success": 1,
-    "tier1_5Attempts": 4,
-    "tier1_5Success": 1,
-    "tier2Attempts": 3,
-    "tier2Success": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 1,
     "tier3Attempts": 1,
     "tier3Success": 0,
     "tier4Attempts": 8,
-    "tier4Success": 2,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 2,
-    "browserbaseSessionsUsed": 4,
-    "browserbaseMinutesUsed": 3.6,
-    "urlDiscoveryAttempts": 2,
+    "tier4Success": 6,
+    "totalFailed": 3,
+    "scrapingBeeCreditsUsed": 11,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
-    "the-great-gatsby-2024/guardian--adrian-horton.json"
+    "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
+    "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
+    "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
+    "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
+    "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json",
+    "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
   ],
   "failed": [
-    "the-great-gatsby-2024/nydailynews--chris-jones.json",
-    "the-great-gatsby-2024/nypost--johnny-oleksinski.json",
-    "the-great-gatsby-2024/observer--david-cote.json",
-    "the-great-gatsby-2024/timeout--adam-feldman.json",
-    "the-great-gatsby-2024/wsj--charles-isherwood.json"
+    "once-upon-a-one-more-time-2023/hollywood-reporter--angie-han.json",
+    "once-upon-a-one-more-time-2023/timeout--adam-feldman.json",
+    "once-upon-a-one-more-time-2023/associated-press-mark-kennedy--mark-kennedy.json",
+    "once-upon-a-one-more-time-2023/thestage--lane-williamson.json"
   ],
   "tierDetails": {
     "playwright": [
-      "the-great-gatsby-2024/guardian--adrian-horton.json"
+      "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
     ],
-    "browserbase": [
-      "data/review-texts/the-great-gatsby-2024/nydailynews--chris-jones.json"
-    ],
+    "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
+      "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
+      "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
+      "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
+      "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
+      "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json"
     ]
   },
   "failuresByOutlet": {
-    "New York Post": {
+    "The Hollywood Reporter": {
       "count": 1,
-      "domain": "nypost.com",
+      "domain": "hollywoodreporter.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Observer": {
-      "count": 1,
-      "domain": "observer.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "The Wall Street Journal": {
-      "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": []
