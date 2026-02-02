@@ -1,37 +1,25 @@
 {
-  "updatedAt": "2026-02-02T23:18:10.621Z",
-  "processed": 7,
-  "failed": 8,
-  "successRate": "46.7%",
+  "updatedAt": "2026-02-02T23:19:04.317Z",
+  "processed": 5,
+  "failed": 5,
+  "successRate": "50.0%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 2,
     "browserbase": 0,
-    "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 5
+    "scrapingbee": 1,
+    "brightdata": 0,
+    "archive": 2
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-02-02T23:12:50.786Z",
+      "t": "2026-02-02T23:14:59.435Z",
       "event": "bb-session",
-      "session": "70cb97df",
-      "url": "https://nypost.com/2014/03/21/aladdin-review-a-whole-new-wonderful-world/"
+      "session": "c0070fb2",
+      "url": "https://www.wsj.com/articles/mj-the-musical-review-broadway-michael-jackson-1164"
     },
     {
-      "t": "2026-02-02T23:13:44.246Z",
-      "event": "bb-session",
-      "session": "1d607ad8",
-      "url": "https://www.theatermania.com/new-york-city-theater/reviews/aladdin_70661.html"
-    },
-    {
-      "t": "2026-02-02T23:14:22.160Z",
-      "event": "bb-session",
-      "session": "96536796",
-      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
-    },
-    {
-      "t": "2026-02-02T23:15:09.383Z",
+      "t": "2026-02-02T23:15:46.562Z",
       "event": "bb-login-ok",
       "domain": "wsj.com"
     }
