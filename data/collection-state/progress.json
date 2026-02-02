@@ -1,35 +1,38 @@
 {
   "processed": [
-    "the-notebook-2024/nytimes--jesse-green.json",
-    "the-notebook-2024/nytimes--unknown.json",
-    "the-notebook-2024/broadwaynews--brittani-samuel.json",
-    "the-notebook-2024/deadline--greg-evans.json",
-    "the-notebook-2024/theatermania--jesse-green.json"
+    "uncle-vanya-2024/variety--bob-verini.json",
+    "uncle-vanya-2024/broadwaynews--brittani-samuel.json",
+    "uncle-vanya-2024/theatermania--jesse-green.json",
+    "uncle-vanya-2024/ap--mark-kennedy.json",
+    "uncle-vanya-2024/exeunt-nyc--cameron-kelsall.json"
   ],
   "failed": [
-    "the-notebook-2024/hollywood-reporter--david-rooney.json",
-    "the-notebook-2024/vulture--helen-shaw.json",
-    "the-notebook-2024/nydailynews--chris-jones.json",
-    "the-notebook-2024/timeout--adam-feldman.json",
-    "the-notebook-2024/wsj--charles-isherwood.json",
-    "the-notebook-2024/rollingstone--brittany-spanos.json"
+    "uncle-vanya-2024/vulture--helen-shaw.json",
+    "uncle-vanya-2024/deadline--greg-evans.json",
+    "uncle-vanya-2024/new-york-sun--elysa-gardner.json",
+    "uncle-vanya-2024/observer--rex-reed.json",
+    "uncle-vanya-2024/thewrap--robert-hofler.json",
+    "uncle-vanya-2024/timeout--adam-feldman.json",
+    "uncle-vanya-2024/wsj--unknown.json",
+    "uncle-vanya-2024/thestage--nicole-serratore.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
-    "browserbase": [],
-    "scrapingbee": [
-      "the-notebook-2024/theatermania--jesse-green.json"
+    "playwright": [
+      "uncle-vanya-2024/ap--mark-kennedy.json",
+      "uncle-vanya-2024/exeunt-nyc--cameron-kelsall.json"
     ],
-    "brightdata": [],
+    "browserbase": [],
+    "scrapingbee": [],
+    "brightdata": [
+      "uncle-vanya-2024/theatermania--jesse-green.json"
+    ],
     "archive": [
-      "the-notebook-2024/nytimes--jesse-green.json",
-      "the-notebook-2024/nytimes--unknown.json",
-      "the-notebook-2024/broadwaynews--brittani-samuel.json",
-      "the-notebook-2024/deadline--greg-evans.json"
+      "uncle-vanya-2024/variety--bob-verini.json",
+      "uncle-vanya-2024/broadwaynews--brittani-samuel.json"
     ]
   },
-  "startTime": "2026-02-02T17:49:42.236Z",
-  "lastProcessed": "the-notebook-2024/rollingstone--brittany-spanos.json",
+  "startTime": "2026-02-02T17:51:29.145Z",
+  "lastProcessed": "uncle-vanya-2024/thestage--nicole-serratore.json",
   "log": []
 }
