@@ -1,33 +1,39 @@
 {
-  "updatedAt": "2026-02-02T23:15:14.189Z",
-  "processed": 3,
-  "failed": 7,
-  "successRate": "30.0%",
+  "updatedAt": "2026-02-02T23:18:10.621Z",
+  "processed": 7,
+  "failed": 8,
+  "successRate": "46.7%",
   "tierBreakdown": {
     "playwright": 1,
-    "browserbase": 1,
+    "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 2
+    "brightdata": 1,
+    "archive": 5
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-02-02T23:11:52.109Z",
+      "t": "2026-02-02T23:12:50.786Z",
       "event": "bb-session",
-      "session": "2b40aa69",
-      "url": "https://www.nydailynews.com/2024/03/18/broadway-review-enemy-of-the-people-is-li"
+      "session": "70cb97df",
+      "url": "https://nypost.com/2014/03/21/aladdin-review-a-whole-new-wonderful-world/"
     },
     {
-      "t": "2026-02-02T23:14:49.198Z",
+      "t": "2026-02-02T23:13:44.246Z",
       "event": "bb-session",
-      "session": "e490e3b3",
-      "url": "https://www.washingtonpost.com/theater-dance/2024/03/18/enemy-people-broadway-re"
+      "session": "1d607ad8",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/aladdin_70661.html"
     },
     {
-      "t": "2026-02-02T23:14:51.179Z",
-      "event": "bb-login-uncertain",
-      "domain": "washingtonpost.com"
+      "t": "2026-02-02T23:14:22.160Z",
+      "event": "bb-session",
+      "session": "96536796",
+      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
+    },
+    {
+      "t": "2026-02-02T23:15:09.383Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
     }
   ]
 }
