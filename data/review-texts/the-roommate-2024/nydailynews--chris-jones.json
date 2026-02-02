@@ -65,7 +65,7 @@
     "bww-roundup"
   ],
   "archivePath": "data/archives/reviews/the-roommate-2024/nydailynews--chris-jones_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T05:05:31.409Z",
+  "textFetchedAt": "2026-02-02T23:21:00.344Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -88,10 +88,9 @@
   "textWordCount": 101,
   "textQuality": "truncated",
   "truncationSignals": [
-    "no_ending_punctuation",
-    "shorter_than_excerpt",
-    "matches_excerpt"
+    "ends_with_ellipsis"
   ],
   "textStatus": "truncated",
-  "contentTierReason": "fullText (595 chars) appears to be partial scrape matching bwwExcerpt"
+  "contentTierReason": "fullText (595 chars) appears to be partial scrape matching bwwExcerpt",
+  "tierReason": "Short text (101 words)"
 }
