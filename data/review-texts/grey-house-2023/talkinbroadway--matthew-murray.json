@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review suggests the play has merit in its genre but criticizes it for overreaching, indicating a lukewarm assessment without clear recommendation either way. | GPT-4o: The review suggests that the play has strengths when it embraces its genre but implies it struggles when attempting to be more profound. This indicates a mixed reception. | Gemini: The review suggests the play has redeeming qualities when it embraces its B-movie nature, but implies it falters when attempting deeper themes, indicating a mixed experience.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review suggests the show has merit when it embraces its horror/B-movie nature but implies it fails when attempting deeper meaning, indicating mixed results rather than a clear recommendation. | GPT-4o: The review suggests that the play has strengths when it embraces its genre but implies shortcomings when it attempts to be more profound, indicating a mixed reception. | Gemini: The review suggests the play has positive aspects when it embraces its B-movie nature, but also implies it falters when it aims for deeper meaning, resulting in a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,11 +42,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:30:38.164Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:25:39.599Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 63,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,

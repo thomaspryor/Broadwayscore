@@ -7,65 +7,57 @@
   "publishDate": "November 21, 2024",
   "dtliExcerpt": "The two work together like the ingredients of a dangerous magical potion, each delivering precisely nuanced yet stupendously big performances in amounts that, were they off by so much as a fraction, would thoroughly undo the magic.",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T22:05:40.163Z",
   "llmScore": {
-    "score": 94,
-    "confidence": "high",
+    "score": 89,
+    "confidence": "medium",
     "range": {
-      "low": 87.5,
-      "high": 100
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 88,
-      "music": 93,
-      "performances": 95,
-      "direction": 93
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "A virtually perfect big-budget, broad-appeal musical comedy that improves in every way over the 1992 film",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "This is a musical that grabs its audience by the jugular fast and doesn't let go",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Hilty and Simard give two of the funniest performances this side of Oh, Mary!",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The critic uses superlative language throughout ('virtually perfect', 'wildly entertaining', 'knock-em-dead collection of killer songs') with comprehensive praise for all elements and no meaningful reservations. | GPT-4o-mini: The review expresses unqualified enthusiasm for the show, highlighting its humor, performances, and music, indicating a strong recommendation to see it.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The magical potion metaphor and phrases like 'stupendously big performances' and 'precisely nuanced' indicate exceptional praise for the performances, suggesting a strong positive recommendation. | GPT-4o: The review uses highly positive language to describe the performances as 'precisely nuanced' and 'stupendously big', suggesting a strong recommendation. The metaphor of a 'dangerous magical potion' implies a powerful and effective combination, indicating a rave review. | Gemini: The review excerpt praises the performances in a highly positive way, suggesting a recommendation. The aggregator context also indicates a generally positive reception.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:46:36.489Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:40:26.935Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 94,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 95,
-    "scoreDelta": 3,
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "sourceMethod": "archive",
   "archivePath": "data/archives/reviews/death-becomes-her-2024/deadline--greg-evans_2026-01-26.html",

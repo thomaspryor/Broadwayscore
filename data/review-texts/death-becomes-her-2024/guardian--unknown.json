@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 82,
+  "assignedScore": 79,
   "llmScore": {
-    "score": 82,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 87
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review calls it a 'rousing, raucously entertaining hit' and predicts long-term success, indicating strong positive recommendation despite being excerpted text. | GPT-4o: The review describes the show as a 'rousing, raucously entertaining hit' and suggests it will be a long-lasting success, indicating a strong, enthusiastic recommendation. | Gemini: The review describes the show as a \"rousing, raucously entertaining hit\" and a \"big, box-ticking blockbuster\", indicating a positive recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The language is very positive ('rousing', 'raucously entertaining hit', 'big blockbuster') and suggests commercial and artistic success, but with only one excerpt available, I'm scoring conservatively within the positive range. | GPT-4o: The excerpt describes the show as a 'rousing, raucously entertaining hit' and suggests longevity, indicating a strong positive reception. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Rave range. | Gemini: The review excerpt describes the show as a \"rousing, raucously entertaining hit\" and a \"blockbuster,\" indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:46:06.418Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:40:57.499Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 78,
     "openaiScore": 90,
-    "geminiScore": 82,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

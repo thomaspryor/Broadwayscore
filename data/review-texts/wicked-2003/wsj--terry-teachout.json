@@ -7,67 +7,59 @@
   "publishDate": "October 31, 2003",
   "showScoreExcerpt": "\"The best moments in 'Wicked' come when the stage is least crowded. I'm done niggling. 'Wicked' is funny and touching and full of beans (not to mention child-friendly). It'll make a great movie one of these days, and it's going to make Kristin Chenoweth a star right this minute. Go.\"",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 78,
   "source": "show-score",
   "needsFullText": true,
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 84,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 77.5,
-      "high": 90.5
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 89,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Go.",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "'Wicked' is funny and touching and full of beans",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "it's going to make Kristin Chenoweth a star right this minute",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Despite some minor criticisms about crowded staging, the critic gives an explicit positive recommendation ('Go') and praises the show as 'funny and touching,' highlighting strong performances. | GPT-4o-mini: The review expresses strong enthusiasm for the show, particularly praising its humor and emotional impact, leading to a clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite opening criticisms about crowded staging, the critic concludes with clear positive language and an explicit 'Go' recommendation, indicating overall endorsement with some reservations. | GPT-4o: The review highlights positive aspects such as humor, emotional impact, and star-making performances, concluding with a clear recommendation to see the show. However, the mention of 'best moments' and 'niggling' suggests some reservations, leading to a mid-range positive score. | Gemini: The review concludes with a clear recommendation to \"Go,\" indicating a positive overall assessment despite any earlier \"niggling.\"",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T06:02:43.572Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:45:41.545Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 84,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 85,
-    "scoreDelta": 3,
+    "claudeScore": 78,
+    "openaiScore": 79,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/wicked-2003/wsj--terry-teachout_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:46:31.267Z",

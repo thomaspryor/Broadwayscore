@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Hamilton is a musical that makes the impossible seem inevitable. Lin-Manuel Miranda has created a work that is both historically grounded and utterly contemporary, transforming the story of America's founding into something that feels urgently relevant to our current moment.",
   "originalScore": null,
-  "assignedScore": 93,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,13 +17,13 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Hamilton is a musical that makes the impossible seem inevitable. Lin-Manuel Miranda has created a work that is both historically grounded and utterly contemporary, transforming the story of America's founding into something that feels urgently relevant to our current moment.",
   "llmScore": {
-    "score": 93,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 88,
-      "high": 98
+      "low": 74,
+      "high": 84
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The language 'impossible seem inevitable' and describing it as a transformative work that feels 'urgently relevant' indicates strong enthusiastic praise for a masterpiece-level production. | GPT-4o: The review uses highly enthusiastic language, indicating a strong recommendation. The phrases 'makes the impossible seem inevitable' and 'urgently relevant' suggest a transformative and essential viewing experience. | Gemini: The review uses extremely positive language, praising Lin-Manuel Miranda's work as both historically grounded and utterly contemporary, making it a must-see.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong praise for Miranda's achievement with language like 'impossible seem inevitable' and 'urgently relevant' indicates high enthusiasm and clear recommendation. | GPT-4o: The review uses highly enthusiastic language, describing the show as both 'historically grounded' and 'utterly contemporary', and emphasizes its relevance, indicating a strong recommendation. | Gemini: The review praises the musical's impact and relevance, indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,26 +42,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:32:06.541Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:02:35.193Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 93,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 83,
     "openaiScore": 95,
-    "geminiScore": 92,
-    "claudeBucket": "Rave",
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (40 words)"

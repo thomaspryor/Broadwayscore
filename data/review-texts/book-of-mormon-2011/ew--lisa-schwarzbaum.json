@@ -9,7 +9,7 @@
   "bwwExcerpt": "A: Teaming with Avenue Q co-creator Robert Lopez (South Park creators Matt Stone and Trey Parker) to wrote a perfect book, music, and lyrics, they honor the traditions of great song-and-dance musical theater in all the best ways: Every detail of the production - choreographed with typical brilliance by Spamalot's Casey Nicholaw and codirected by Nicholaw and Parker - serves a purpose.",
   "showScoreExcerpt": "\"An exhilarating Broadway musical at once revolutionary and classic, funny and obscene, uncompromising in production standards and unafraid of just about anything else.\"",
   "originalScore": "B",
-  "assignedScore": 95,
+  "assignedScore": 85,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-THE-BOOK-OF-MORMON-20110324",
   "urlSource": "show-score",
@@ -23,60 +23,51 @@
   "dtliExcerpt": "Don’t expect to find any members of the Mormon faith protesting outside “The Book of Mormon,” a tuneful, unabashedly silly and absolutely uproarious new musical by Matt Stone and Trey Parker.",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 95,
-    "confidence": "high",
+    "score": 85,
+    "confidence": "low",
     "range": {
-      "low": 90,
-      "high": 100
+      "low": 80,
+      "high": 90
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 95,
-      "music": 92,
-      "performances": 93,
-      "direction": 95
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "a spectacular, rather perfect Broadway musical",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "This is what 21st-century Broadway can be",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "an exhilarating Broadway musical at once revolutionary and classic",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The critic gives an unqualified rave with superlatives like 'spectacular,' 'rather perfect,' and 'revolutionary,' predicting armloads of Tony awards and declaring this what 21st-century Broadway can be. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the show's originality, humor, and production quality, with no significant reservations expressed.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The critic uses superlative language like 'exhilarating', 'revolutionary', 'done wonders', and describes it as addressing difficult issues with humor and high production standards. The B rating aligns with strong positive reception. | Gemini: The review is overwhelmingly positive, using words like \"exhilarating\" and \"hilarious.\" The critic's B rating also indicates a positive recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:33:35.191Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:46:31.307Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 95,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 95,
-    "openaiScore": 95,
-    "scoreDelta": 0,
+    "claudeScore": 89,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
   "originalScoreNormalized": 85,
   "scoreExtractedFrom": "fullText",

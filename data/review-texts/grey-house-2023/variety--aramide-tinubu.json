@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Though the play boasts an impressive creative team and a committed cast, 'Grey House' ultimately feels like a missed opportunity to deliver genuine scares on Broadway.",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,73 +17,52 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Though the play boasts an impressive creative team and a committed cast, 'Grey House' ultimately feels like a missed opportunity to deliver genuine scares on Broadway.",
   "llmScore": {
-    "score": 42,
-    "confidence": "high",
+    "score": 45,
+    "confidence": "medium",
     "range": {
-      "low": 38,
-      "high": 46
+      "low": 40,
+      "high": 50
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
-      "performances": 65,
-      "direction": 60
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "impressive creative team and a committed cast",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "ultimately feels like a missed opportunity",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "deliver genuine scares",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Despite praising the cast and creative team, the critic's verdict is that the production fails to achieve its core purpose, making it a clear mixed-negative review with more problems than strengths.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The phrase 'missed opportunity' clearly indicates disappointment and lack of recommendation, despite acknowledging some positive elements like the creative team and cast commitment. | GPT-4o: The review highlights the play's failure to achieve its intended effect despite having a strong team, suggesting a negative overall impression. However, due to the single excerpt warning, the score is placed conservatively in the middle of the negative range. | Gemini: The review acknowledges the impressive team and cast but concludes that the play is a 'missed opportunity,' suggesting a mixed or neutral recommendation. Given the single excerpt, a score in the middle of the 'Mixed' bucket is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T19:59:46.583Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2334,
-    "outputTokens": 315,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:26:30.657Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 42,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 45,
     "openaiScore": 45,
-    "geminiScore": 45,
+    "geminiScore": 62,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "scoreDelta": 0,
+    "geminiBucket": "Mixed",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 45,

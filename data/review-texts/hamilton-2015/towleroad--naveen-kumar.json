@@ -16,59 +16,51 @@
   "scoreConfidence": "medium",
   "llmScore": {
     "score": 94,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
-      "low": 87.5,
-      "high": 100
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 90,
+      "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "nothing short of revolutionary",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "soulful, electrifying retelling",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "one of its greatest strengths",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review uses exceptionally strong superlatives like 'revolutionary,' 'electrifying,' and 'landmark' with no caveats or criticisms, indicating unqualified enthusiasm. | GPT-4o-mini: The review expresses unqualified enthusiasm and highlights the musical's innovative qualities, indicating a strong recommendation to see it.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review is filled with superlative language calling the show 'revolutionary,' 'mesmerizing,' 'brilliantly poetic,' and praising its 'greatest strengths' with uniformly positive assessment of all elements. | GPT-4o: The review is overwhelmingly positive, praising the show as 'revolutionary' and highlighting the 'mesmerizing power' of Miranda's lyrics. The critic describes the musical as a 'landmark' and emphasizes its compelling storytelling and strong performances, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the music, lyrics, direction, and performances. While acknowledging the story's familiarity, it highlights the innovative and compelling retelling, making it a recommended show.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:22:42.628Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:03:25.654Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 94,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 92,
     "openaiScore": 95,
-    "scoreDelta": 3,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/hamilton-2015/towleroad--naveen-kumar_2026-01-26.html",
   "textFetchedAt": "2026-01-26T22:38:53.459Z",

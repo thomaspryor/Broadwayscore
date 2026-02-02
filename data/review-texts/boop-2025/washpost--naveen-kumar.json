@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
@@ -18,67 +18,52 @@
     "reviews-json-stub"
   ],
   "llmScore": {
-    "score": 85,
+    "score": 77,
     "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 92,
-      "direction": 88
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "gives the most sensational star-making Broadway turn in years — funny, captivating, a total knockout",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "splendid showcases for powerhouse performers",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "directed and choreographed with maximalist razzle-dazzle by Jerry Mitchell, weren't such an eye-popping spectacle",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Strong praise for performances ('most sensational star-making Broadway turn in years') and production values ('eye-popping spectacle') with superlatives throughout suggests clear positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses enthusiastic language like 'splendid showcases,' 'sensational star-making turn,' and 'eye-popping spectacle' while praising the performances and production values, indicating a clear positive recommendation. | GPT-4o: The review highly praises the performances and production quality, describing it as a 'sensational star-making Broadway turn' and an 'eye-popping spectacle,' indicating a strong recommendation. | Gemini: The review highlights the strength of the performers and the spectacle of the production, suggesting a positive experience despite potential reservations about the show's overall quality.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:32:44.795Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2599,
-    "outputTokens": 355,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:19:08.510Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
+    "claudeScore": 78,
+    "openaiScore": 92,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 89,

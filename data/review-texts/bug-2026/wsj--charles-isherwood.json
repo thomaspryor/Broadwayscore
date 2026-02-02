@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The language emphasizes the play's effectiveness and craft, describing how it successfully achieves its thriller objectives. However, with only excerpted text available, there's some uncertainty about the full verdict. | GPT-4o: The review excerpt describes the play as an effective thriller that engages the audience, suggesting a positive experience. The lack of a full review text introduces some uncertainty, but the provided quote and aggregator context support a positive recommendation. | Gemini: The quote indicates a positive experience, suggesting the play is effective and engaging, but not necessarily a 'must-see' event. The language suggests a recommendation with some reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the play's effectiveness and craft, describing how skillfully it creates tension and gets 'under your skin.' However, this is only an excerpt, so confidence is medium due to incomplete text. | GPT-4o: The review excerpt highlights the play's effectiveness in engaging the audience, suggesting a positive experience. The use of 'efficiently' implies a well-executed production, leading to a positive recommendation. | Gemini: The review excerpt describes the play as a thriller that effectively gets under the skin, indicating a positive experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,11 +41,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T14:53:28.756Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:14:00.194Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,

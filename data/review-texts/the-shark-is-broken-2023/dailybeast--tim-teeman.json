@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "But what they don’t know is that Jaws will go on to become the cultural totem we know it as today—and it is in the humorous and profound gap of past and present, known and unknown, and ignorance and wisdom that The Shark Is Broken wittily excels not just as a clever time capsule, but as an examination of male bonding and competitiveness, ego, frailty, fame, and film-making. Which is to say: you don’t miss the shark for one second.",
@@ -19,67 +19,51 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 82,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 85
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 80,
+      "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 80
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Ian Shaw and Joseph Nixon's excellent Broadway play",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "directed with a guileful brevity by Guy Masterson",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "it's an impressive performance—playful, respectful, yet also not afraid of dwelling in, and implicitly criticizing Shaw's darker side",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The reviewer calls the play 'excellent' early on and consistently praises the performances, direction, and production design with specific examples and thoughtful analysis.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic calls the play 'excellent' in the opening, praises Shaw's 'impressive performance' and the direction as having 'guileful brevity,' and describes it as 'insightful' and 'tough.' Despite some analytical tone, the overall assessment is clearly positive. | Gemini: The review is largely positive, highlighting the performances and writing, but doesn't express overwhelming enthusiasm. It's a recommendation with some reservations, focusing on the personal and insightful aspects of the play.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:25:56.753Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3110,
-    "outputTokens": 346,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:51:31.191Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 85,
-    "scoreDelta": 3,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 84,

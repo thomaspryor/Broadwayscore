@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"Unsteadiness in premise can be covered for by verve of execution, which Boop! does find here and there\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/boop-the-musical-broadway",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "Meh",
   "archivePath": "data/archives/reviews/boop-2025/new-york-magazine-vulture--jackson-mchenry_2026-01-27.html",
@@ -30,60 +30,51 @@
   "archiveOrgTimestamp": "20260103021238",
   "archiveOrgUrl": "http://web.archive.org/web/20260103021238/https://www.vulture.com/article/theater-review-betty-boop-broadway-musical.html",
   "llmScore": {
-    "score": 52,
-    "confidence": "medium",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 43.5,
-      "high": 60.5
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 48,
-      "music": 58,
-      "performances": 71,
-      "direction": 53
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the thing adds up to less than the sum of its bits",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Boop! is so slapdash, you long for a more thought-out inquiry",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Rogers has the kind of charm and ease with physical comedy...that makes you resort to old-fashioned forms of praise: a cutup, a laugh riot, a real pistol",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic finds significant problems with the musical's premise, coherence, and execution while praising individual performances and moments, ultimately concluding it's a disappointing adaptation that fails to achieve its potential. | GPT-4o-mini: The review expresses mixed feelings about the show, highlighting some entertaining elements while criticizing its coherence and overall execution.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic finds individual elements entertaining (Rogers' performance, Mitchell's choreography, some charming details) but ultimately concludes the show is 'slapdash' and lacks coherence in both premise and execution, with no clear recommendation to see it. | Gemini: The review highlights both positive and negative aspects of the show. While praising the performances and choreography, it criticizes the lack of coherence in premise and aesthetics, ultimately resulting in a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:37:37.489Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:19:02.415Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 52,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 48,
-    "openaiScore": 55,
-    "scoreDelta": 7,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "dtliExcerpt": "We may not know Betty Boop deeply, but we can agree she has that certain “It” quality that has made her stick around for nearly a century, even if just on lunchboxes. I wish, after seeing this musical, I were closer to identifying why.",
   "sources": [

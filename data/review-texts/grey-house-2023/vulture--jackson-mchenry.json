@@ -9,66 +9,55 @@
   "showScoreExcerpt": "“Once you get to huge Broadway houses, claustrophobia is harder to maintain... But it was also fun to see the production swing so hard at genre tropiness. If it doesn’t fully succeed on its own terms, it’s at least a solid reminder that terror is as worthy of drama as any other kind of spectacle.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/grey-house-broadway",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 69,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 67,
-    "confidence": "high",
+    "score": 69,
+    "confidence": "low",
     "range": {
-      "low": 60.5,
-      "high": 73.5
+      "low": 64,
+      "high": 74
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 53,
+      "book": null,
       "music": null,
-      "performances": 75,
-      "direction": 70
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "If it doesn't fully succeed on its own terms, it's at least a solid reminder that terror is as worthy of drama as any other kind of spectacle",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "The production makes a good case for more full-on spookiness onstage, even if it's a less convincing one for this play in particular",
-        "sentiment": "neutral",
-        "strength": 4
-      },
-      {
-        "quote": "There's only so many times kids can say things like 'tell a lie and a mama die' before things turn silly",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic appreciates the concept and performances but finds significant flaws in execution and script, resulting in qualified interest rather than clear recommendation. | GPT-4o-mini: The review expresses a mix of appreciation for the performances and direction while highlighting significant issues with the script and clarity of the story, leading to a conditional recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic acknowledges effective scares and strong adult performances but finds the play overly familiar, sometimes silly, and unclear in its messaging. The final verdict explicitly states it 'doesn't fully succeed on its own terms' while still finding value in the attempt. | Gemini: The review acknowledges flaws and reliance on tropes, but ultimately finds the production worthwhile for bringing horror to the Broadway stage. The critic highlights effective performances and staging, suggesting a positive, though not rave, experience.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:50:56.369Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:26:44.947Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 64,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 68,
-    "openaiScore": 65,
-    "scoreDelta": 3,
-    "thumbsMatch": false,
-    "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (64 → Flat) conflicts with aggregator thumbs (Up)"
-    ]
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
   },
   "bwwExcerpt": "I won’t try to explain what exactly is going on in the Grey House, both in order to avoid spoiling the plot and because I’m not entirely sure myself. (The production sent over a PDF explaining the lore to critics after they attended, which may be a sign that things aren’t entirely clear in the performance.) I’ll just say that Holloway inches toward a double-underlined, not exactly groundbreaking message about how men treat women, though the more the play tried to emphasize its insights, the less",
   "bwwThumb": "Up",

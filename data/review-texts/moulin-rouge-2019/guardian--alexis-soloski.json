@@ -8,15 +8,15 @@
   "fullText": null,
   "bwwExcerpt": "You could be forgiven for thinking that this tale has reached its sell-by date. But Moulin Rouge is one of those shows that is not only critic-proof, but maybe also story-proof. In Alex Timbers's production, with a book by",
   "originalScore": "3/5",
-  "assignedScore": 55,
+  "assignedScore": 62,
   "source": "reviews-json-stub",
   "sourceMethod": "stub",
   "llmScore": {
-    "score": 55,
-    "confidence": "low",
+    "score": 62,
+    "confidence": "medium",
     "range": {
-      "low": 45,
-      "high": 65
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -26,41 +26,39 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "You could be forgiven for thinking that this tale has reached its sell-by date",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Moulin Rouge is one of those shows that is not only critic-proof, but maybe also story-proof",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The excerpt suggests the story may be dated but acknowledges the show's resilience, though it's too brief to determine the critic's actual recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The excerpt suggests the story feels outdated but notes the show is 'critic-proof,' implying it works despite flaws. The 3/5 rating supports a middle-range score, but the truncated text prevents a confident assessment. | GPT-4o: The review acknowledges potential issues with the story's freshness but suggests the production has qualities that transcend these concerns. The original 3/5 rating supports a mixed classification. | Gemini: The critic's 3/5 rating and the phrase \"critic-proof\" suggest a positive but not rave review. The limited text makes it difficult to be more precise.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:40:52.498Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2357,
-    "outputTokens": 297,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:31:08.974Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 55,
+    "previousVersion": "5.0.0"
   },
-  "ensembleData": null,
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  },
   "contentTier": "excerpt",
   "wordCount": 0,
   "rescoreReason": "low-conf: prompt=3.0.0, delta=32, upgrading to V5 + 3 models",

@@ -17,64 +17,48 @@
     "score": 95,
     "confidence": "high",
     "range": {
-      "low": 92,
-      "high": 98
+      "low": 90,
+      "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 95,
-      "music": 90,
-      "performances": 95,
-      "direction": 95
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Stereophonic is still as much of a masterpiece as it was six months ago, and it's deservedly poised to become the big hit of the year",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "it's riveting from start to finish, one of those shows that unassumingly lures you in and then socks you with a punch of emotion",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "everything about Stereophonic is remarkable from top to bottom. It's the kind of play that reminds you how the magic of theater is a singular experience",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The critic uses unqualified superlatives like 'masterpiece' and 'remarkable from top to bottom' with no meaningful reservations, calling it riveting throughout and praising every element of the production.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic uses superlative language throughout, calling it a 'miraculous masterpiece' that's 'remarkable from top to bottom' and 'riveting from start to finish,' with unqualified praise for all elements of the production. | Gemini: The review uses strong positive language like \"miraculous\", \"masterpiece\", and \"riveting from start to finish\", indicating a rave review. The critic clearly believes the show is exceptional and a must-see.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:12:17.628Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3855,
-    "outputTokens": 403,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:08:15.001Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 95,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 95,
-    "openaiScore": 95,
+    "openaiScore": null,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Rave",
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Rave"
   },
   "textIssue": "too_short",
   "urlSource": "show-score",

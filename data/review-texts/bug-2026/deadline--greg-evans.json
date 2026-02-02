@@ -7,66 +7,58 @@
   "publishDate": "January 12, 2026",
   "dtliExcerpt": "Together, the creative touches corralled by Cromer and his company build a world that’s unerringly, distressingly realistic, even when everything inside those soon-to-be tinfoil-covered walls loses all recognizable meaning.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 74,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:59:33.626Z",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 80,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 87
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
-      "performances": 87,
-      "direction": 83
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Tracy Letts' excellent, itchy Bug on Broadway",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Coon... a revelation even if you saw her spectacular work on HBO's The White Lotus last year",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the creative touches corralled by Cromer and his company build a world that's unerringly, distressingly realistic",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic calls the play 'excellent' upfront, praises Coon as 'a revelation' with 'spectacular work', lauds the direction and design elements as expertly crafted, and describes the production as building a distressingly realistic world - clear positive recommendation despite some reservations about contemporary relevance. | GPT-4o-mini: The review expresses strong praise for the performances and direction while acknowledging some limitations in the script, leading to a clear positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises the creative team's world-building as 'unerringly realistic,' suggesting technical accomplishment. However, with only one curated quote available and the aggregator indicating positive reception, I'm scoring conservatively in the lower positive range due to limited context. | GPT-4o: The review excerpt highlights the effective and realistic world-building by the creative team, suggesting a positive view of the production. However, the mention of losing recognizable meaning introduces some reservation, leading to a conservative score within the Positive range. | Gemini: The excerpt suggests a positive assessment of the creative elements and realism, but the phrase \"distressingly realistic, even when everything inside those soon-to-be tinfoil-covered walls loses all recognizable meaning\" implies a potentially unsettling or confusing experience, warranting a score in the lower end of the positive range. Given the single excerpt warning, I am scoring conservatively.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:39:50.172Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:10:23.165Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 80,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 78,
+    "claudeScore": 72,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "textIssue": "too_short",
   "sourceMethod": "playwright",

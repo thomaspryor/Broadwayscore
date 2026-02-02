@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 79,
+  "assignedScore": 75,
   "llmScore": {
-    "score": 79,
-    "confidence": "medium",
+    "score": 75,
+    "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly states audiences will have more fun here than at other shows, describes it as filled with big songs and dancing, and directly recommends it 'if you desire sheer escapism.' The positive assessment of the entertainment value outweighs any implied reservations. | GPT-4o: The review highlights the show as a fun and escapist experience, with praise for the choreography and overall entertainment value, suggesting a strong recommendation to see it. | Gemini: The review suggests the show is enjoyable and fun, especially for those seeking escapism, indicating a positive recommendation, though not an enthusiastic one.",
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic clearly recommends the show for entertainment value, praising the dancing, songs, and escapist appeal, though the single excerpt limits confidence in the overall verdict. | Gemini: The review suggests the show is enjoyable and fun, especially compared to other shows, but the phrase 'If you desire sheer escapism' implies it might not be for everyone or the most artistically fulfilling experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:44:27.989Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:15:19.806Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 82,
-    "geminiScore": 78,
+    "claudeScore": 73,
+    "openaiScore": null,
+    "geminiScore": 77,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

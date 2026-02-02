@@ -9,71 +9,55 @@
   "showScoreExcerpt": "\" 'Liberation' is timely, but it does more than just appeal to resistance-frazzled audiences.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/liberation-broadway",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 85,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 85,
+    "confidence": "low",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 80,
+      "high": 90
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 90,
-      "direction": 88
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "an extraordinary must-see",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "it's rooted in vibrant, complex characters who embody the individual stakes entangled behind efforts at solidarity",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Average Rating: 89.3%",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The Washington Post review uses strong positive language including 'extraordinary must-see' and praises the complex characters and ensemble work, while the aggregated rating of 89.3% from multiple critics confirms strong critical consensus.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The Washington Post explicitly calls it 'an extraordinary must-see' and praises it as more than ameliorative, highlighting vibrant complex characters. The aggregator context shows overwhelmingly positive critical consensus with an 89.3% average rating. | Gemini: The review excerpt indicates a positive assessment, highlighting the play's appeal and the complexity of its characters, suggesting a recommendation with some reservations.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:28:47.241Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 5014,
-    "outputTokens": 339,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:57:46.484Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 70,
-    "scoreDelta": 5,
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
   "dtliExcerpt": "Wohl’s ensemble drama is a memory play about a social movement, full of arguments that will ring familiar to many. But it’s rooted in vibrant, complex characters who embody the individual stakes entangled behind efforts at solidarity.",
   "bwwExcerpt": "But “Liberation” does more than appeal to resistance-frazzled nerves, an ameliorative quality it shares with last season’s “Good Night, and Good Luck,” the hit George Clooney vehicle about a free press holding the government to account. Wohl’s ensemble drama is a memory play about a social movement, full of arguments that will ring familiar to many. But it’s rooted in vibrant, complex characters who embody the individual stakes entangled behind efforts at solidarity. Average Rating: 89.3% { \"@context\":\"https://schema.org\", \"@type\":\"LiveBlogPosting\", \"@id\":\"/article/Review-Roundup-LIBERATION-Opens-On-Broadway-20251028\", \"about\":{ \"@type\":\"Event\", \"startDate\":\"2025-10-28T10:07:39-05:00\", \"name\":\"Review Roundup: Bess Wohl's LIBERATION Opens On Broadway\", \"eventAttendanceMode\": \"https://schema.org/OnlineEventAttendanceMode\", \"location\": { \"@type\": \"VirtualLocation\", \"url\": \"/article/Review-Roundup-LIBERATION-Opens-On-Broadway-20251028\" } }, \"coverageStartTime\":\"2025-10-28T10:07:39-05:00\", \"coverageEndTime\":\"2025-10-29T01:07:39-05:00\", \"headline\":\"Review Roundup: Bess Wohl's LIBERATION Opens On Broadway\", \"description\":\"See what the critics are saying about Liberation, the new play by Tony Award nominee Bess Wohl. The play examines a meeting between a group of women at the height of the women's liberation movement of the 1970s.\", \"liveBlogUpdate\":[ { \"@type\":\"BlogPosting\", \"headline\":\"The New York Times - ‘Liberation’ Review: A Tony-Worthy Ensemble Plotting Revolution\", \"datePublished\":\"2025-10-29T09:02:05-05:00\", \"articleBody\": \"By no means do I want to give the impression that “Liberation” is the kind of good-for-you didactic show that feels like an assignment. Not only does its sustained pace make the story downright suspenseful — we quickly become invested in these women and wonder what will become of them — but spending time in their company is also an unadulterated pleasure. Directed with sensitivity by Whitney White and performed by a cast preternaturally in sync, the production looks at community and individuality, determination and self-determination, in an elegiac and impassioned manner.\" }, { \"@type\":\"BlogPosting\", \"headline\":\"Vulture - Re-Encountering Liberation on Broadway\", \"datePublished\":\"2025-10-29T09:02:05-05:00\", \"articleBody\": \"Both times I’ve seen the play—Off Broadway this spring, now returning in a larger space on Broadway—I’ve felt unprepared for the emotional wallop it lands, the way that Wohl’s work becomes cosmically immense without leaving that gym basement. I think it gets there by staying so focused on the quietly radical thing these women are doing with each other, and which Wohl is making the rest of the audience engage in. Maybe you should be scared, because listening could change you too.\" }, { \"@type\":\"BlogPosting\", \"headline\":\"Variety - ‘Liberation’ Broadway Review: An Impressive Memory Play That Delivers a Fresh and Frank Take on the Women’s Rights Movement \", \"datePublished\":\"2025-10-29T09:02:05-05:00\", \"articleBody\": \"It can be challenging to deliver something fresh and unique to the memory play genre. However, in writer Bess Wohl‘s new Broadway show, “Liberation,” she manages to do just that. \" }, { \"@type\":\"BlogPosting\", \"headline\":\"Time Out New York - Liberation\", \"datePublished\":\"2025-10-29T09:02:05-05:00\", \"articleBody\": \"Five stars. Bess Wohl's feminist drama keeps the conversation going. \" }, { \"@type\":\"BlogPosting\", \"headline\":\"The Wrap - It was great Off Broadway. Now Bess Wohl’s play comes to Broadway where it continues to ask: What the hell went wrong?\", \"datePublished\":\"2025-10-29T09:02:05-05:00\", \"articleBody\": \"When Bess Wohl’s “Liberation” opened Off Broadway all the way back in February, it would have been ridiculous to grace it with best-of superlatives. Now that “Liberation” has opened on Broadway this Tuesday at the James Earl Jones Theatre, it’s entirely apt to write that it’s the year’s best play. There are only a few other new plays to open in 2025 and I’ve seen most of them in previews. Bank on it: “Liberation” remains the best.\" }, { \"@type\":\"BlogPosting\", \"headline\":\"Entertainment Weekly - Liberation review: Bess Wohl's new Broadway play highlights how the times, they aren't a-changin'\", \"datePublished\":\"2025-10-29T09:02:05-05:00\", \"articleBody\": \"Liberation may not be able to answer life's difficult questions, but it knows that it's important to foster these conversations and to come together to try our best to make the world a better place — especially when history often seems hellbent on repeating itself. And, four steps out of the theater, it's clear that messaging has hit its mark when a young woman turns to her friend and brightly declares, I'm fired up! Grade: B+ \" }, { \"@type\":\"BlogPosting\", \"headline\":\"The Daily Beast - The Brilliant ‘Liberation’ Sheds Its Clothes to Get to the Naked Truth\", \"datePublished\":\"2025-10-29T09:02:05-05:00\", \"articleBody\": \"The play speaks to itself, it speaks to us, and it encourages a dialogue straight back at it. In this sense, it is its own highly effective consciousness-raising exercise, looking at us in our present day where the principles of equality and progress are becoming derided and imperiled. What the women thought they were confronting and vanquishing in the early 1970s remains all too prescient.\" }, { \"@type\":\"BlogPosting\", \"headline\":\"Chicago Tribune - Review: ‘Liberation’ on Broadway is brave enough to ask, what does feminism mean?\", \"datePublished\":\"2025-10-29T09:02:05-05:00\", \"articleBody\": \"“Liberation” pokes fun at long, “male” plays written by the childless, which is a bit of a cheap shot, albeit one that lands with this audience. In reality, it has much in common with those epic lifts, and that’s a compliment. There are certain thematic interests and structural devices in common with Paula Vogel’s “Mother Play,” which is not surprising, but Wohl has such a powerful and enjoyable voice. She makes everyone care about the questions she has herself and that’s exactly what a playwright should be doing.\" }, { \"@type\":\"BlogPosting\", \"headline\":\"The Guardian - Liberation review – fiery and funny show brings 70s feminism to Broadway\", \"datePublished\":\"2025-10-29T09:02:05-05:00\", \"articleBody\": \"Any listlessness, however, is expelled by the far superior second act, which boldly opens with a meeting in the nude (full bush, hence no phones), inspired by the real efforts of 70s consciousness groups. (Intimacy director Kelsey Rainwater coordinates a fast-settling normalcy to the proceeding.) The play’s second half unravels the frayed distinctions between then and now, memory and reality, skirting the line of self-awareness without tipping fully into self-importance. (It helps that it’s frequently quite funny, even biting.) \" }, { \"@type\":\"BlogPosting\", \"headline\":\"amNY - Review | ‘Liberation’ bares all—literally and politically\", \"datePublished\":\"2025-10-29T09:02:05-05:00\", \"articleBody\": \"In “Liberation,” Bess Wohl’s daring and deeply analytical new play, the act of exposure is both literal and intellectual. Wohl strips away nostalgia and ideology to examine how the 1970s women’s liberation movement reshaped lives, where it fell short, and what its legacy means today. She’s less interested in celebrating the past than in interrogating it—probing questions of identity, sacrifice, and progress with the precision of a social scientist and the empathy of a dramatist. \" }, { \"@type\":\"BlogPosting\", \"headline\":\"New York Theatre Guide - 'Liberation' review — Bess Wohl's memory play is sharp and witty\", \"datePublished\":\"2025-10-29T09:02:05-05:00\", \"articleBody\": \"Tackling misogyny, internalized homophobia, domestic abuse, gender roles, and the need for intersectionality, Liberation leaves no stone unturned in its quest for answers about the past and the present. But with any of these topics, no play can have the answers to something that we haven’t figured out yet in real life – and that’s all part of the point. \" }, { \"@type\":\"BlogPosting\", \"headline\":\"New York Theater - Liberation Broadway Review\", \"datePublished\":\"2025-10-29T09:02:05-05:00\", \"articleBody\": \"Much of the strength of the production, which has moved intact from its Off-Broadway run earlier this year, resides in the ensemble acting, theater regulars portraying everyday women with grace and good humor. \" }, { \"@type\":\"BlogPosting\", \"headline\":\"New York Stage Review - Liberation: This Is How We Change the World\", \"datePublished\":\"2025-10-29T09:02:05-05:00\", \"articleBody\": \"When Bess Wohl’s Liberation began performances off-Broadway at the Roundabout’s Laura Pels Theatre earlier this year, it was just after Trump’s second inauguration. The time-hopping memory play—which looks at a multigenerational group of second-wave feminists through a world-weary modern-day lens—registered as capital-I Important. Though not in a didactic, dullsville way. In a Heidi Chronicles kind of way.\" }, { \"@type\":\"BlogPosting\", \"headline\":\"New York Stage Review - Liberation: The Women Are Back and Better than Ever\", \"datePublished\":\"2025-10-29T09:02:05-05:00\", \"articleBody\": \"When Bess Wohl’s play Liberation premiered off-Broadway last winter it was revelatory. Despite some structural weaknesses that remain, it’s a beautiful work featuring an ensemble of actors at the top of their game. It’s no wonder the production transferred to Broadway totally intact. \" }, { \"@type\":\"BlogPosting\", \"headline\":\"Washington Post - Broadway’s new play about the women’s movement is an extraordinary must-see\", \"datePublished\":\"2025-10-29T09:02:05-05:00\", \"articleBody\": \" But “Liberation” does more than appeal to resistance-frazzled nerves, an ameliorative quality it shares with last season’s “Good Night, and Good Luck,” the hit George Clooney vehicle about a free press holding the government to account. Wohl’s ensemble drama is a memory play about a social movement, full of arguments that will ring familiar to many. But it’s rooted in vibrant, complex characters who embody the individual stakes entangled behind efforts at solidarity.\" } ] }",

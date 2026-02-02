@@ -6,73 +6,58 @@
   "url": "https://www.chicagotribune.com/2026/01/08/review-bug-steppenwolf-broadway/",
   "publishDate": "2026-01-08",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 79,
   "source": "reviews-json-stub",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:58:36.554Z",
   "bwwExcerpt": "The scariest change, though, is that in an America where guardrails have fallen, tech-sector parasites run amok in our hands and heads, and trust in government is close to nonexistent, what seemed totally implausible in 1996 now feels like reasonable societal comment. At one point, there is worry about whether one of the characters is some kind of robot.",
   "llmScore": {
-    "score": 82,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 82
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Coon just roars her way through this show, more vulnerable than she appeared to be in 2000 and a tad more fragile, only adding to the stakes and the overall quality of her work",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Smallwood, who is not well known in New York, will be a revelation to many",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "what seemed totally implausible in 1996 now feels like reasonable societal comment",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic praises the performances extensively (especially Coon and Smallwood), appreciates the design work, and finds the play newly relevant and impactful, with no significant criticisms of the production itself.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the performances (especially Coon and Smallwood), design elements, and finds the production more relevant and compelling than when originally seen, though maintains some analytical distance rather than enthusiastic recommendation. | GPT-4o: The review praises the performances, especially Carrie Coon's, and highlights the intensity and relevance of the production. The critic expresses surprise at the play's continued impact and relevance, suggesting a strong recommendation. | Gemini: The review is generally positive, highlighting strong performances and design elements. While it acknowledges the play's disturbing themes, it ultimately praises the production's intensity and relevance, suggesting it is worth seeing despite its unsettling nature.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:33:04.730Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3518,
-    "outputTokens": 383,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:09:56.850Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "textFetchedAt": "2026-01-30T18:34:02.849Z",
   "textFetchMethod": "playwright-stealth",

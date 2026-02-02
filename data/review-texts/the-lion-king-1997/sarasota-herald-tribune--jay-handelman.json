@@ -8,18 +8,18 @@
   "fullText": null,
   "showScoreExcerpt": "\"The most visually stunning Broadway musical in years...\"",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 77,
   "source": "show-score",
   "designation": null,
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 85,
-    "confidence": "high",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,43 +27,40 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 88
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The most visually stunning Broadway musical in years",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The most visually stunning Broadway musical in years...",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: Superlative praise for visual elements suggests strong positive recommendation, but excerpt is too brief to assess overall show quality or determine if visual excellence translates to full endorsement. | GPT-4o-mini: The review highlights the visual impact of the musical, suggesting a strong recommendation despite lacking details on other components.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Single excerpt with strong positive language about visual aspects, but lack of full review context and potential cherry-picking requires conservative scoring within positive range. | GPT-4o: The phrase 'most visually stunning Broadway musical in years' suggests a highly positive view of the production's visual elements, indicating a strong recommendation. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Rave range. | Gemini: The quote is positive, praising the visual aspects of the musical. However, due to the limited text and single excerpt, a score in the middle of the positive range is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:54:55.303Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:58:57.001Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
-    "scoreDelta": 0,
+    "claudeScore": 75,
+    "openaiScore": 88,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

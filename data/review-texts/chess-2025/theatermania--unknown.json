@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review acknowledges the show's emotional directness and lack of nuance as potential weaknesses, but expresses pleasant surprise at the actors' depth of performance, suggesting a positive assessment despite reservations. | GPT-4o: The review acknowledges the lack of nuance but praises the actors for their depth, suggesting a mixed but somewhat positive impression. | Gemini: The review excerpt highlights the actors' ability to find depth despite the show's overt emotionality, suggesting a positive experience with some reservations about the 'bombast and goofiness'.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic acknowledges flaws ('bombast and goofiness') but is 'surprised' by the actors' depth, suggesting the performances elevate the material enough to warrant a recommendation. | GPT-4o: The review acknowledges the lack of nuance but praises the actors for their depth, suggesting a balance of positive and negative elements. The single excerpt indicates a mixed impression, with some redeeming qualities. | Gemini: The review excerpt highlights the actors' ability to find depth despite the show's overt emotionality, suggesting a positive but not overwhelmingly enthusiastic assessment. Given the single excerpt warning, I'm scoring conservatively.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,19 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:45:49.644Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:39:01.180Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 65,
+    "claudeScore": 72,
+    "openaiScore": 62,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "[Rogers] can do it all. As smiley, effervescent and, well, animated as t he actress is for most of the night, she finds power and emotional resonance in her 11 o’clock number “Something To Shout About.”",
@@ -19,67 +19,51 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 72,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 45,
-      "music": 68,
-      "performances": 85,
-      "direction": 75
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "a fun if not fantastic musical",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "I mostly enjoyed the bump-free ride to a happy ending",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "The basic and predictable book from writer Bob Martin",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic clearly enjoyed the show despite acknowledging significant flaws in the book and plot, praising the lead performance and overall entertainment value while noting it's 'fun if not fantastic.'",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic clearly enjoyed the show and recommends it, praising the lead performance as 'marvelous' and calling it a 'fun if not fantastic musical,' though acknowledging the basic plot and some underwhelming elements. | Gemini: The review is generally positive, highlighting Jasmine Amy Rogers' performance and the enjoyable aspects of the show, but acknowledges flaws in the plot and some underwhelming comic relief. The phrase \"fun if not fantastic\" encapsulates the mixed but ultimately positive sentiment.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:32:34.379Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3136,
-    "outputTokens": 328,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:16:07.305Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,

@@ -11,13 +11,13 @@
     "playbill-verdict"
   ],
   "playbillVerdictUrl": "https://nypost.com/2024/03/28/entertainment/the-whos-tommy-broadway-review-4-stars-for-a-rock-revival/",
-  "assignedScore": 76,
+  "assignedScore": 75,
   "llmScore": {
-    "score": 76,
+    "score": 75,
     "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 'espresso martini' metaphor suggests an energizing, exciting experience compared to a bland season, indicating positive reception despite limited text available. | GPT-4o: The review uses a metaphor that suggests energy and excitement, indicating a positive impression. However, the lack of a full review and explicit recommendation lowers confidence slightly. | Gemini: The review uses a positive metaphor to describe the show, suggesting it's a refreshing and energetic experience compared to other recent musicals. This implies a recommendation, though without stronger language, it's a moderate positive.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The 'espresso martini' metaphor clearly positions this as an energizing, exciting show compared to a boring season, indicating positive recommendation. However, with only one excerpt available, scoring conservatively within the positive range. | GPT-4o: The critic uses vivid and enthusiastic language to describe the show as a standout experience, likening it to an 'espresso martini' in a 'chamomile-tea season', suggesting it is invigorating and exciting. Despite the single excerpt warning, the tone is strongly positive. | Gemini: The review excerpt suggests a positive reception, contrasting the show with less exciting musicals. The \"espresso martini\" metaphor implies an energetic and stimulating experience, indicating a recommendation, albeit with limited context.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,25 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:56:01.329Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:19:54.919Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 76,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 80,
+    "claudeScore": 75,
+    "openaiScore": 90,
     "geminiScore": 75,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 7,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

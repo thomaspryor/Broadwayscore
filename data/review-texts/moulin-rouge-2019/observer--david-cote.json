@@ -7,15 +7,15 @@
   "publishDate": "2019-07-25",
   "bwwExcerpt": "Eighteen years later, with the property retooled, remixed and relocated to Broadway, how culturally relevant is Moulin Rouge! The Musical? Neither rollicking prophet nor ham-fisted artifact, Luhrmann's splashy zeitflop is exactly where Broadway lives, for better or worse. The adaptation, with a tidy, problem-solving book by",
   "originalScore": "Mixed",
-  "assignedScore": 64,
+  "assignedScore": 61,
   "source": "reviews-json-stub",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 64,
+    "score": 61,
     "confidence": "high",
     "range": {
-      "low": 57.5,
-      "high": 70.5
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -23,21 +23,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 73
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Production sparkles",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "questions of cultural relevance linger",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The review presents a classic mixed verdict - praising the production values while raising concerns about the show's cultural relevance, suggesting qualified interest rather than clear recommendation. | GPT-4o-mini: The review indicates a generally positive view of the production quality but raises concerns about its cultural relevance, leading to a mixed-positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly states it's 'neither' excellent nor terrible, calling it a 'zeitflop' that represents Broadway's current state 'for better or worse' - clearly mixed sentiment. However, with only one truncated excerpt available, confidence is low. | GPT-4o: The review excerpt suggests a balanced view, indicating the show is neither groundbreaking nor a failure, but rather typical of Broadway. The critic's original rating of 'Mixed' supports this classification. | Gemini: The review explicitly states the show is neither great nor terrible, placing it firmly in the 'Mixed' category. The phrase 'for better or worse' indicates a neutral stance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,20 +35,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:40:12.728Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:32:05.586Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 64,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "scoreDelta": 3,
+    "claudeScore": 60,
+    "openaiScore": 62,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "archivePath": "data/archives/reviews/moulin-rouge-2019/observer--david-cote_2026-01-27.html",
   "textFetchedAt": "2026-01-27T01:52:07.040Z",

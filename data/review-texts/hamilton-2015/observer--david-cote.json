@@ -7,7 +7,7 @@
   "publishDate": "2015-08-06",
   "bwwExcerpt": "s the same vibrant and youthful impression that it did downtown. Indeed, everybody in the show from the boss to the ushers exudes the confident air of show folk who know they've got themselves a hit. David Cote, Time Out NY : I love Hamilton. I love it like I love New York, or Broadway when it gets it right. And this is so right. A sublime conjunction of radio-ready hip-hop (as well as R&B, Britpop and trad showstoppers), under-dramatized American history and Miranda's uniquely personal focus as a son of immigrants and as an inexhaustible wordsmith, Hamilton hits multilevel culture buttons, hard...Miranda may be composer-lyricist and star, but the world he creates is vibrantly democratic. Hamilton is the center, but Burr is his equally weighted Judas and Javert-and more complexly drawn than either...Phillipa Soo, playing the betrayed but finally forgiving wife, Eliza, has some of the show's most heartbreaking music...As French ally Lafayette in the first act and a foppish, trash-talkin",
   "originalScore": null,
-  "assignedScore": 95,
+  "assignedScore": 92,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAMILTON-Opens-on-Broadway-20150806",
@@ -15,11 +15,11 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 95,
-    "confidence": "medium",
+    "score": 92,
+    "confidence": "high",
     "range": {
-      "low": 90,
-      "high": 100
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "Restored from previousLlmScore after garbage fullText was removed",
+    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: Despite being a single excerpt, the critic's passionate declaration of love for the show, calling it 'so right' and praising it as hitting 'multilevel culture buttons, hard' clearly indicates an enthusiastic rave recommendation. | Gemini: The critic expresses strong enthusiasm and love for the show, calling it 'so right' and highlighting its many positive aspects. This indicates a 'Rave' recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,20 +39,27 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:58:16.212Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:01:41.752Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 95,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 0,
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Rave",
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Rave"
   },
   "archivePath": "data/archives/reviews/hamilton-2015/observer--david-cote_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:51:13.812Z",

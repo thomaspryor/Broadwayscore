@@ -7,7 +7,7 @@
   "publishDate": "August 11, 2023",
   "fullText": "For nine weeks in 1974, off the shore of Martha’s Vineyard, the shooting of “Jaws” was repeatedly delayed by the whims of its temperamental stars. And by “stars,” I mean Bruce.\n\nBruce was the name given to the three mechanical predators built to simulate the great white shark at the heart of the story. As one after another became bloated with saltwater or entangled in seaweed and failed to operate or flat-out sank — the crew called the movie “Flaws” — there was little the three equally temperamental human stars could do but try (and usually fail) to be patient. Occasionally they wondered if it might not have been better to train an actual great white for the role.\n\nAfter seeing “The Shark Is Broken,” a play about that disastrous shoot, you may wonder the opposite: whether it might not have been better to cast the movie with mechanical humans. The real ones were nearly as glitchy as Bruce. Aboard the Orca, the lobster boat on which much of “Jaws” was filmed, the actors Robert Shaw, Richard Dreyfuss and Roy Scheider bickered, brawled, vomited, kvetched, drank, backstabbed and, like Bruce, broke down.\n\nAll of that is faithfully rendered in “The Shark Is Broken,” which opened on Thursday at the Golden Theater, in a production directed by Guy Masterson. There’s a perfect replica of the Orca bobbing prettily on a C.G.I. sea, and costumes minutely matched to the film. (Duncan Henderson is the designer.) Accents, postures, props and hairstyles are fanatically accurate; there’s even a hat-tip (by Adam Cork) to John Williams’s sawing, rasping theme at the start.\n\nBut these details do not on their own create much dramatic interest. Plots consisting of hurry-up-and-wait rarely do. Were it not for its curious meta-story, the play would be little more than a pleasant diversion: 95 minutes of bloodless, toothless, Hollywood-adjacent dramedy.\n\nThe meta-story gives it a bit more bite. Robert Shaw, who played the Ahab-like shark hunter Quint in “Jaws,” is played here by Ian Shaw, who is one of his sons. Ian, who could be his father’s twin, is also, with Joseph Nixon, the play’s author. The ancient theme of paterfamilias versus prodigal is obviously engaged, also organizing the arcs of the characters. Like a dorsal fin poking over the waves, their filial conflicts suggest the story’s dark undertow.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
   "originalScore": null,
-  "assignedScore": 48,
+  "assignedScore": 63,
   "dtliThumb": "Meh",
   "source": "dtli",
   "dtliExcerpt": "Were it not for its curious meta-story, the play would be little more than a pleasant diversion: 95 minutes of bloodless, toothless, Hollywood-adjacent dramedy.",
@@ -15,67 +15,52 @@
   "bwwExcerpt": "All of that is faithfully rendered in “The Shark Is Broken,” which opened on Thursday at the Golden Theater, in a production directed by Guy Masterson. There’s a perfect replica of the Orca bobbing prettily on a C.G.I. sea, and costumes minutely matched to the film. (Duncan Henderson is the designer.) Accents, postures, props and hairstyles are fanatically accurate; there’s even a hat-tip (by Adam Cork) to John Williams’s sawing, rasping theme at the start. But these details do not on their own",
   "bwwThumb": "Meh",
   "llmScore": {
-    "score": 48,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 42,
-      "high": 54
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 35,
+      "book": null,
       "music": null,
-      "performances": 75,
-      "direction": 70
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the play would be little more than a pleasant diversion: 95 minutes of bloodless, toothless, Hollywood-adjacent dramedy",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "these details do not on their own create much dramatic interest. Plots consisting of hurry-up-and-wait rarely do",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "there's a perfect replica of the Orca bobbing prettily on a C.G.I. sea, and costumes minutely matched to the film",
-        "sentiment": "positive",
-        "strength": 2
-      }
-    ],
-    "reasoning": "While the critic praises the production values and meta-theatrical elements, they fundamentally dismiss the play as lacking dramatic interest and being 'bloodless' and 'toothless,' making it difficult to recommend despite some technical merits.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic finds the production technically accomplished but dramatically thin, calling it a 'pleasant diversion' that lacks substantial dramatic interest despite some intriguing meta-theatrical elements. | GPT-4o: The review describes the play as having accurate details and a meta-story that adds some interest, but overall it is portrayed as lacking dramatic interest and being a 'pleasant diversion'. This suggests a mixed reception with some positive elements but not a strong recommendation. | Gemini: The review suggests the play is a 'pleasant diversion' without the meta-story, implying it's not particularly compelling on its own. The meta-story adds some 'bite,' but the overall tone is lukewarm, placing it in the Mixed category.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:27:00.155Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2911,
-    "outputTokens": 397,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:53:09.038Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 48,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 55,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 3,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "archivePath": "data/archives/reviews/the-shark-is-broken-2023/nytimes--jesse-green_2026-01-29.html",

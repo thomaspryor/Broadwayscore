@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 76,
+  "assignedScore": 74,
   "llmScore": {
-    "score": 76,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt focuses on praising the craft of the playwright and the compelling performances of the leads, particularly noting their 'compelling balance' and how they're 'intensely engaged,' suggesting a positive assessment despite limited text. | GPT-4o: The review highlights the compelling performances of the actors and the engaging dynamic between the characters, suggesting some positive aspects. However, without a clear recommendation and due to the lack of a full review, it leans towards a mixed verdict. | Gemini: The review highlights compelling performances and an engaging dynamic, suggesting a positive experience despite the limited context. The focus on the actors' performances and the intriguing nature of their characters' relationship leans towards a recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt focuses on craft appreciation and positive performance assessment ('compelling balance', 'intensely engaged'), but as a single curated quote from a larger review, the overall verdict remains unclear. | GPT-4o: The excerpt highlights strong performances and engaging dynamics between the actors, suggesting a positive view of the production. However, due to the single excerpt warning and lack of explicit recommendation, the score is placed conservatively in the middle of the Positive range. | Gemini: The review excerpt focuses on the compelling performances and engaging dynamic between the actors, suggesting a positive experience. However, without the full review, it's difficult to gauge the overall recommendation strength, so I'm placing it in the lower end of the 'Positive' bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:45:30.337Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:12:58.735Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 76,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 65,
+    "claudeScore": 73,
+    "openaiScore": 75,
     "geminiScore": 75,
     "claudeBucket": "Positive",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 11,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

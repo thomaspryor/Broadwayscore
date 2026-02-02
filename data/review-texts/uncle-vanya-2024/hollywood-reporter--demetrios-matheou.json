@@ -5,40 +5,24 @@
   "criticName": "Demetrios Matheou",
   "bwwExcerpt": "Arguably the most difficult aspect of presenting Chekhov is finding the tonal balance in his tragicomedy. The characters' navel-gazing self-pity can be so demanding that sometimes you have to resist the urge to jump on stage and give them a good slap. There is no such issue in Conor McPherson's brilliant, buoyantly accessible adaptation of",
   "source": "bww-roundup",
-  "assignedScore": 85,
+  "assignedScore": 75,
   "llmScore": {
-    "score": 85,
-    "confidence": "high",
+    "score": 75,
+    "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "brilliant, buoyantly accessible adaptation",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "There is no such issue",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Conor McPherson's brilliant, buoyantly accessible adaptation",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The excerpt calls McPherson's adaptation 'brilliant' and 'buoyantly accessible' while noting it avoids the common problems of Chekhov productions, suggesting strong praise despite the incomplete text. | GPT-4o-mini: The review expresses strong praise for the adaptation while acknowledging some challenges in the source material, leading to a solid recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The text calls the adaptation 'brilliant' and 'buoyantly accessible' while noting it avoids typical Chekhov pitfalls, suggesting a positive assessment. However, with only one truncated excerpt available, the full verdict remains unclear. | GPT-4o: The excerpt praises the adaptation as 'brilliant' and 'buoyantly accessible', indicating a strong positive reaction. Despite the single excerpt warning, the language suggests a high level of enthusiasm. | Gemini: The review excerpt praises the adaptation as 'brilliant' and 'buoyantly accessible,' suggesting a positive overall assessment despite the initial setup about the challenges of Chekhov.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -47,20 +31,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-30T23:17:44.006Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:49:32.204Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
-    "scoreDelta": 0,
+    "claudeScore": 72,
+    "openaiScore": 88,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 16,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0,

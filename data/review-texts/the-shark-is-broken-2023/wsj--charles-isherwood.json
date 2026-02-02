@@ -17,57 +17,48 @@
     "score": 74,
     "confidence": "high",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
+      "book": null,
       "music": null,
-      "performances": 87,
-      "direction": 70
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "it's a frisky and continuously amusing diversion—perfect late-summer entertainment",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "not a play for the ages, or even for those who have never seen 'Jaws,' but",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "the actors playing their more famous counterparts are so superb, giving performances that perfectly capture the personas",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic clearly enjoys the show as entertainment with superb performances, but acknowledges its limitations and narrow appeal, resulting in a qualified positive recommendation. | GPT-4o-mini: The review highlights strong performances and overall amusement, leading to a clear recommendation despite some reservations about the play's significance.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic acknowledges limitations but clearly recommends it as entertaining and amusing, with specific endorsement as 'perfect' entertainment for its intended audience. | Gemini: The review calls the play \"a frisky and continuously amusing diversion\" and \"perfect late-summer entertainment,\" indicating a positive, though not rave, recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T02:55:57.881Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:54:17.020Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 73,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "archivePath": "data/archives/reviews/the-shark-is-broken-2023/wsj--charles-isherwood_2026-01-29.html",

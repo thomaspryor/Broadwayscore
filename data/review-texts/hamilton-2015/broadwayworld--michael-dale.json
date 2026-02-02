@@ -7,66 +7,58 @@
   "publishDate": "2015-08-06",
   "fullText": "Jeremy McCarter, co-author with Lin-Manuel Miranda of Hamilton: The Revolution, was back in Chicago for a book signing at Women & Children First bookstore. Still ticket-less for the show itself, I decided this was the next best thing. But I wondered if the book would live up to the hype led by the Pulitzer Prize-winning production itself. And I asked myself \"Who is the audience for this book?\" It's a question every author struggles with. Despite wanting the whole world to read our books, we do in fact have specific audiences in mind when we write. I wondered if the book signing attendees would give me an answer. And they did. There were pre-teens and teenagers, dressed in Hamilton t-shirts, brought by their mothers who could attest to their obsession with the show. There were history buffs, fascinated with a musical about someone who was a stranger to anyone not interested in the birth of our country. There were theatre lovers like myself, aware that a ground-breaking show like this is seen rarely in musical theatre. Hamilton: The Revolution is not just a book: it's a whole shelf in a library or bookstore. For theatre professionals students and fans: it exists on more than one level. The entire book of the musical including lyrics, as well as interviews with the cast members and behind-the-scenes stories. We learn of the struggles - yes, struggles - of a wildly diverse group of talented artists as they bring such a massive dream to life. For artists in any medium: the story of one man's dream and how he drew inspiration from the world around him. For early American history buffs: source material on a Founding Father who had been largely forgotten and a re-telling of the birth of our country - one that includes us all. For people who prefer traditional musicals and hate hip-hop: a master class in blending styles and genres that will prove a beauty as rich as anything you'll find in classic musical theatre. For writers of all genres: process stories of the show itself and the book, which will open your eyes to the courage of all the collaborators - the courage to fail. Theatre is, after all, a collaborative art. No one can do it by themselves, though most people would assume that everything you see onstage in Hamilton is all Miranda. The surprise to me - both in McCarter's talk that night and the book itself - was how collaborative writing a book or a musical could be. I can't imagine co-writing any book, much less 288 pages of script, interviews, research and gossip. But there are no awkward transitions from one voice to the other. In fact, there are many voices speaking: not just the authors, but the cast members, too, in interviews that give insight into the performers who found themselves in the eye of the Hamilton hurricane. The physical book itself is gorgeous, something lost in audio or ebook versions: textured, ragged-edge, sepia-toned pages that immediately draw you into the 18th century. Photos of the production itself, rehearsals, script pages and historical documents can be found on almost every page. The formatting and language of the table of contents are true to the period. You would be mistaken, though, to consider Hamilton: The Revolution a coffee table book: nice to display but rarely worth opening. It cannot be devoured in one sitting. It demands you return to it again and again, to discover some new tidbit you missed in your first reading. Because what McCarter and Miranda have accomplished here is a book that may actually be for everyone.",
   "originalScore": null,
-  "assignedScore": 91,
+  "assignedScore": 62,
   "source": "reviews-json-stub",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:01:04.130Z",
   "bwwExcerpt": "The hottest ticket in town at The Public, Hamilton has only grown as a phenomenon with its move to Broadway, with its web site advising customers that good seats will start becoming available in January. And while some have pondered if Hamilton's success signals Broadway's greater acceptance of dive...",
   "llmScore": {
-    "score": 91,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 85,
-      "high": 97
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Rave",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 91,
+      "book": null,
       "music": null,
-      "performances": 90,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "what McCarter and Miranda have accomplished here is a book that may actually be for everyone",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "It cannot be devoured in one sitting. It demands you return to it again and again, to discover some new tidbit you missed",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The physical book itself is gorgeous... You would be mistaken, though, to consider Hamilton: The Revolution a coffee table book: nice to display but rarely worth opening",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The reviewer expresses consistent enthusiasm for the book across multiple dimensions - content, collaboration, design, and universal appeal - culminating in the strong endorsement that it 'may actually be for everyone.' | GPT-4o-mini: The review expresses unqualified enthusiasm for the book's depth, design, and accessibility, indicating a strong recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a book review/event coverage rather than a show review, and the text is truncated before any clear verdict about the production itself is given. | GPT-4o: The review is truncated and focuses more on the book signing event and the audience rather than the production itself. The critic's tone suggests appreciation for the show's rarity in musical theatre, but without a clear recommendation or critique of the production, the verdict is mixed. | Gemini: The review focuses on the book signing and the audience for the book, rather than providing a direct assessment of the Broadway show itself. It describes the show's popularity but doesn't offer a clear recommendation or discouragement.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:56:34.466Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T23:59:10.283Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 91,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 90,
-    "scoreDelta": 2,
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "sourceMethod": "stub",
   "sources": [

@@ -11,13 +11,13 @@
     "playbill-verdict"
   ],
   "playbillVerdictUrl": "https://www.theguardian.com/stage/2025/dec/08/marjorie-prime-cynthia-nixon-review",
-  "assignedScore": 63,
+  "assignedScore": 61,
   "llmScore": {
-    "score": 63,
+    "score": 61,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges the play's intriguing and poignant qualities but emphasizes significant weaknesses like 'creaky' mechanics and insufficient development, suggesting neither strong recommendation nor dismissal. | GPT-4o: The review acknowledges the intriguing aspects of the production but also notes significant shortcomings, particularly in its execution and reliance on internal mechanics. The tone suggests a balance of positive and negative elements, leading to a mixed verdict. | Gemini: The review highlights both positive and negative aspects, suggesting it's neither a strong recommendation nor a discouragement. The phrase \"helped and hindered\" indicates a mixed assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review presents balanced criticism, noting both intriguing elements and significant flaws like 'creaky' internal mechanics. The phrase 'both helped and hindered' signals ambivalence rather than recommendation. | GPT-4o: The review acknowledges intriguing and poignant elements but also notes limitations in its execution, suggesting a mixed reception. | Gemini: The review acknowledges the play's intriguing aspects but also points out its creaky mechanics and lack of sufficient suggestion. This indicates a mixed assessment, leaning towards the middle of the bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,19 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:49:44.784Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:33:53.361Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 63,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
+    "openaiScore": 60,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

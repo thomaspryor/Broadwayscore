@@ -9,64 +9,55 @@
   "showScoreExcerpt": "â...hard to dislike and ultimatelyâas a medical examiner might say of these womenâwithout a heartbeat.â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/death-becomes-her-broadway",
   "originalScore": null,
-  "assignedScore": 67,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 67,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 60.5,
-      "high": 73.5
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 58,
-      "music": 71,
-      "performances": 78,
-      "direction": 65
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Death Becomes Her fires on all cylinders, like a fine automobile that runs on ecologically dodgy fuel",
-        "sentiment": "neutral",
-        "strength": 4
-      },
-      {
-        "quote": "hard to dislike and ultimately—as a medical examiner might say of these women—without a heartbeat",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The conceit's cleverly nipped and tucked, the work of fine theatrical plastic surgery",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic appreciates the performances, production values, and humor but finds the show emotionally hollow and thematically shallow, ultimately delivering qualified praise with significant reservations. | GPT-4o-mini: The review highlights strong performances and humor but criticizes the lack of depth in the material, leading to a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges the show's entertainment value and strong performances but consistently criticizes its lack of emotional depth and missed opportunities for meaningful exploration of its themes. | Gemini: The review acknowledges the show's strengths (performances, humor, some songs) but ultimately finds it lacking depth and becoming repetitive. The final line indicates a lack of strong feeling either way.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:47:47.517Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:42:57.488Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 67,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 68,
-    "openaiScore": 65,
-    "scoreDelta": 3,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "dtliExcerpt": "They leave us with a wink and meta-joke, a song about how they’ll never have an ending, but if they did, it might go a little like this … The conceit’s cleverly nipped and tucked, the work of fine theatrical plastic surgery, hard to dislike and ultimately—as a medical examiner might say of these women—without a heartbeat.",
   "sources": [

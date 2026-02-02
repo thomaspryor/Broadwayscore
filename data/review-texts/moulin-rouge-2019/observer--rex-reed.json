@@ -21,7 +21,7 @@
     "score": 78,
     "confidence": "medium",
     "range": {
-      "low": 72,
+      "low": 73,
       "high": 83
     },
     "bucket": "Positive",
@@ -30,47 +30,41 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 82
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "somehow works despite its excesses",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "spectacular production values",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "sensory overload",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Despite describing the show as excessive and overwhelming, the critic ultimately concludes it 'somehow works' and praises the spectacular production values, indicating qualified approval.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges the show's over-the-top nature but concludes it 'somehow works,' indicating a positive recommendation despite reservations about its excesses. | GPT-4o: The review describes the show as an extravagant spectacle that succeeds in its execution, indicating a strong recommendation despite acknowledging its excesses. | Gemini: The review acknowledges the show's excesses but ultimately finds it works and is spectacular, indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:07:22.148Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2357,
-    "outputTokens": 302,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:32:08.521Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (31 words)"
+  "contentTierReason": "Short text (31 words)",
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

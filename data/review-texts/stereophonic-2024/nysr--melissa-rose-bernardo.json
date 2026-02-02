@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "5/5 stars",
-  "assignedScore": 92,
+  "assignedScore": 89,
   "source": "bww-roundup",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/stereophonic-2024/nysr--melissa-rose-bernardo_2026-01-28.html",
@@ -34,11 +34,11 @@
   "fetchTier": 1,
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 92,
-    "confidence": "medium",
+    "score": 89,
+    "confidence": "high",
     "range": {
-      "low": 85,
-      "high": 95
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -48,19 +48,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the genius on display at the Golden Theatre",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "That doesn't even begin to describe",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic uses superlative language like 'genius on display' and emphasizes that even a compelling elevator pitch undersells the show's quality, indicating very strong enthusiasm.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The 5/5 star rating and the word 'genius' strongly indicate a rave review, though the single excerpt warning requires conservative scoring within the rave range. | GPT-4o: The critic's 5/5 star rating and the phrase 'genius on display' strongly indicate a rave review. Despite the text quality warning, the available excerpt suggests an enthusiastic recommendation. | Gemini: The critic uses the word \"genius\" to describe the show, and the original rating is 5/5 stars, indicating a rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -69,27 +58,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:11:29.328Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2386,
-    "outputTokens": 279,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:06:42.980Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 95,
-    "scoreDelta": 7,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "openaiScore": 90,
+    "geminiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "dateSource": "extracted-from-url",
   "contentTier": "complete",

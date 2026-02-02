@@ -9,64 +9,56 @@
   "showScoreExcerpt": "\"'Wicked's' at its cleverest with the girl stuff; the streamlining of Maguire’s story – reducing a totalitarian allegory to an animal-rights flap – weakens the narrative logic. Catchy Stephen Schwartz songs compensate for a dreary opening number, but it’s the 'Wicked' witches who really make magic.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/wicked",
   "originalScore": "B",
-  "assignedScore": 71,
+  "assignedScore": 77,
   "source": "show-score",
   "dtliThumb": "Down",
   "llmScore": {
-    "score": 71,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 77
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 53,
-      "music": 75,
-      "performances": 85,
+      "book": null,
+      "music": null,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "it's the 'Wicked' witches who really make magic",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "streamlining of Maguire's story – reducing a totalitarian allegory to an animal-rights flap – weakens the narrative logic",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Catchy Stephen Schwartz songs compensate for a dreary opening number",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Mixed review that criticizes the book adaptation but praises the lead performances and finds the music mostly successful, suggesting a qualified recommendation. | GPT-4o-mini: The review expresses mixed feelings, praising certain elements while criticizing the narrative, leading to a moderate recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B rating and concluding praise about the leads making 'magic' indicates a positive recommendation despite noted flaws in narrative logic and opening number. | GPT-4o: The original B rating suggests a positive but not overwhelming recommendation. The review highlights strong performances and catchy songs, despite some narrative weaknesses, indicating a generally positive impression. | Gemini: The critic gives a B grade and highlights the strengths of the performances and songs, while noting some weaknesses in the narrative. This indicates a positive but not rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:22:01.257Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:43:26.598Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 71,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 70,
-    "scoreDelta": 2,
+    "claudeScore": 75,
+    "openaiScore": 79,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 71,

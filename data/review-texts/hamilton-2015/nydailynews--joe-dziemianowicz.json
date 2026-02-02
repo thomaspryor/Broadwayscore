@@ -25,63 +25,48 @@
     "confidence": "high",
     "range": {
       "low": 90,
-      "high": 98
+      "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 92,
-      "music": 95,
+      "book": null,
+      "music": null,
       "performances": null,
-      "direction": 90
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Broadway is officially the coolest place on the planet. And the smartest. And most exhilarating.",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Lin-Manuel Miranda's magical musical tour of the life of the '10-dollar Founding Father,' Alexander Hamilton, is that great.",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "It's even richer and more eloquent since its run earlier this year at the Public Theater.",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Unqualified superlatives throughout ('coolest place on the planet', 'magical', 'that great') with no reservations or caveats indicate a clear rave review.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'that great' and declaring Broadway the 'coolest place on the planet' because of this show, with clear enthusiastic recommendation. | GPT-4o: The review is overwhelmingly positive, describing 'Hamilton' as 'coolest,' 'smartest,' and 'most exhilarating,' with no reservations or criticisms. The critic emphasizes the show's greatness and improvement since its earlier run, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, calling the show \"that great\" and \"even richer and more eloquent.\" The language used indicates a strong recommendation and positions the show as a must-see.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:36:23.620Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2445,
-    "outputTokens": 369,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:01:16.630Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 95,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 95,
     "openaiScore": 95,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "sources": [
     "bww-roundup",

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a masterpiece of maximalism, a sugar rush of spectacle that somehow manages to be both completely overwhelming and oddly touching.",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,59 +18,53 @@
   "showScoreExcerpt": "The show is a masterpiece of maximalism, a sugar rush of spectacle that somehow manages to be both completely overwhelming and oddly touching.",
   "needsScoring": true,
   "llmScore": {
-    "score": 82,
+    "score": 94,
     "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 89,
+      "high": 99
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 85
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "masterpiece of maximalism",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "oddly touching",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "completely overwhelming",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "While the critic calls it 'completely overwhelming', the overall framing as a 'masterpiece' that is 'oddly touching' indicates strong appreciation for the production's ambitious spectacle.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses 'masterpiece' and describes the show as both spectacular and emotionally resonant, indicating strong enthusiasm despite acknowledging it's overwhelming. | GPT-4o: The review uses highly enthusiastic language, calling the show a 'masterpiece' and describing it as both 'overwhelming' and 'touching', indicating a strong recommendation. | Gemini: The review uses strong positive language like \"masterpiece\" and describes the show as both overwhelming and touching, indicating a very positive experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:07:36.129Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2330,
-    "outputTokens": 306,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:33:04.371Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

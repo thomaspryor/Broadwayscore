@@ -9,71 +9,55 @@
   "showScoreExcerpt": "\"Intertwined issues of script, casting, and direction are at work here.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/uncle-vanya-broadway",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 44,
   "source": "dtli",
   "dtliThumb": "Down",
   "llmScore": {
-    "score": 38,
+    "score": 44,
     "confidence": "high",
     "range": {
-      "low": 35,
-      "high": 42
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
-      "performances": 35,
-      "direction": 30
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "it is, unhappily, an example of how all these things can fail to cohere into something powerful. Like its luckless hero, it shoots and misses.",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "We still don't know how to do Chekhov in this country",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "we're still liable to hear 'boredom' and end up with boring",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic systematically dismantles the production across all elements - performances lack chemistry and depth, direction fails to find the play's emotional core, design choices feel generic and oppressive, and the overall execution misses the mark despite having major stars and a prestigious venue.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The critic systematically details how the production fails - actors feel 'unrooted,' lack emotional connection, miss Chekhov's subtextual depth, and result in one of 'the least sexy Vanyas' the critic has seen. The review concludes that 'we're still liable to hear boredom and end up with boring.' | Gemini: The review is largely negative, criticizing the direction, acting, and overall impact of the production. While acknowledging the talent involved, it ultimately finds the production lacking in emotional depth and connection.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:35:01.991Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 5055,
-    "outputTokens": 382,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:51:13.582Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 38,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 35,
-    "openaiScore": 45,
-    "scoreDelta": 10,
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Negative"
   },
   "sources": [
     "show-score",

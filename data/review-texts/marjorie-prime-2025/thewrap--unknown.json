@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review criticizes the playwright's execution as 'contrived' but finds merit in the core story and machine characters, suggesting a middling assessment without clear recommendation. | GPT-4o: The review suggests a mixed experience, noting contrived elements but also highlighting a positive aspect in the portrayal of machines. The lack of a clear recommendation or discouragement leads to a mixed classification. | Gemini: The review highlights both positive and negative aspects. The phrase 'machines are more honest' suggests a positive element, while 'contrived' indicates a negative one, leading to a mixed classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt criticizes the playwright's choices as 'contrived' but notes positive elements like the machines being 'more honest' and lacking angst. Single excerpt warning requires conservative scoring within Mixed range. | GPT-4o: The review suggests a mix of elements, with criticism of the contrived narrative but also a positive note on the lack of angst. The single excerpt provides limited context, leading to a conservative middle-range score within the Mixed bucket. | Gemini: The review highlights both positive and negative aspects, suggesting a mixed experience. The phrase 'machines are more honest' implies some appreciation, but the criticism of 'contrived' elements prevents a fully positive classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,19 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:50:02.602Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:35:58.249Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 65,
+    "claudeScore": 62,
+    "openaiScore": 62,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 5,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

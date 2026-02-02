@@ -6,43 +6,27 @@
   "url": "https://www.theatermania.com/news/review-death-becomes-her-is-broadway-musical-comedy-heaven_1756248/",
   "publishDate": "November 21, 2024",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 87,
   "source": "dtli",
   "needsFullText": true,
   "scrapedAt": "2026-01-23T21:59:41.143Z",
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 87,
+    "confidence": "low",
     "range": {
-      "low": 85,
+      "low": 82,
       "high": 92
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
-      "music": 88,
-      "performances": 92,
-      "direction": 87
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the funniest new musical comedy on Broadway",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "instantly legendary performances by Megan Hilty and Jennifer Simard",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Gattelli's extravagant production never wavers in tone or execution, with classic Broadway showmanship",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic delivers unqualified enthusiasm calling it 'the funniest new musical comedy on Broadway' with 'instantly legendary performances' and praising every creative element without meaningful reservations.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The review is overwhelmingly positive with superlative language throughout - calling it 'the funniest new musical comedy on Broadway,' praising 'instantly legendary performances,' and describing it as a 'perfect time' for the show to arrive. The critic clearly loves every aspect of the production. | Gemini: The review is overwhelmingly positive, praising the score, performances, book, and direction. The critic clearly enjoyed the show and finds it relevant and hilarious, making it a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,27 +35,27 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:34:56.076Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3801,
-    "outputTokens": 353,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:42:14.528Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 90,
-    "scoreDelta": 5,
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
   "sourceMethod": "archive",
   "dtliExcerpt": "Unlike the writers of so many new musicals on Broadway, Pennette, Mattison, Carey, and director-choreographer Christopher Gattelli know exactly what story they’re telling and for whom, making it explicit in the production number “For the Gaze,” which features Hilty executing a dizzying number of costume changes (she’s both Judy and Liza) while sugar-voiced chorus boys tap-dance around her.",

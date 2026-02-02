@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "4/5",
-  "assignedScore": 77,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
@@ -18,60 +18,51 @@
     "playwright-scraped"
   ],
   "llmScore": {
-    "score": 77,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 70.5,
-      "high": 83.5
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 53,
-      "music": 63,
-      "performances": 85,
-      "direction": 80
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Broadway newbie Jasmine Amy Rogers delivers a star-making turn as the title character",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The score, by David Foster and lyricist Susan Birkenhead, is a mixed bag",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "she proves that even after nearly a century, Betty Boop still deserves a place in the spotlight",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: 4/5 star review with enthusiastic praise for Rogers' performance and production values, but significant criticisms of the overstuffed book and mixed-quality score keep it from being a rave. | GPT-4o-mini: The review highlights strong performances and enjoyable production elements while noting significant issues with the book and some music, leading to a positive but qualified recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic gives 4/5 stars and concludes positively, praising Rogers' star-making performance and the show's worthiness despite criticizing the overstuffed book and pacing issues. The final verdict clearly endorses the production. | Gemini: The critic gives the show 4/5 stars and despite mentioning some flaws, the overall tone is positive, especially regarding Jasmine Amy Rogers' performance. The truncated text makes it slightly less confident, but the star rating and positive comments point to a recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:35:06.960Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:15:00.874Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 77,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 75,
-    "scoreDelta": 3,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 77,

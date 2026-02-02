@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a haunted house thriller that works on Broadway, thanks to a committed cast led by Laurie Metcalf and a production that knows how to deliver genuine scares.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is a haunted house thriller that works on Broadway, thanks to a committed cast led by Laurie Metcalf and a production that knows how to deliver genuine scares.",
   "llmScore": {
-    "score": 78,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review clearly states the show 'works' and praises both the lead performance and production's effectiveness at delivering its intended thrills. | GPT-4o: The review highlights the effectiveness of the production and the strong performance by the cast, indicating a positive recommendation. | Gemini: The review explicitly states that the show 'works on Broadway' and praises the cast and production, indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly states the show 'works' and praises both the lead performance and the production's effectiveness at delivering scares, indicating a solid recommendation. | GPT-4o: The review highlights the effectiveness of the production and the strong performance by the cast, particularly Laurie Metcalf, indicating a positive recommendation. | Gemini: The review explicitly states that the play \"works on Broadway\" and praises the cast and production, indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,20 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:30:27.372Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:24:25.621Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 81,
+    "openaiScore": 82,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

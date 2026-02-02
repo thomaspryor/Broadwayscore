@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The excerpt criticizes core elements as 'exhausting' with 'limp punchlines' and lacking 'emotional weight,' indicating clear disappointment. However, confidence is medium due to limited text availability. | GPT-4o: The review excerpts highlight significant issues with both the playful and real-world elements of the show, suggesting a lack of emotional weight and exhausting performances, indicating a negative impression. | Gemini: The review excerpt highlights significant flaws in both the Toontown and real-world aspects of the production, suggesting an uneven experience that doesn't fully deliver on its emotional potential. This indicates a mixed assessment rather than a positive or negative one.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The excerpt criticizes both major elements of the show - calling Toontown 'exhausting' with 'limp punchlines' and noting the real world scenes lack subtlety and emotional weight. However, with only one excerpt available, I'm scoring conservatively within the negative range. | GPT-4o: The review excerpt highlights significant issues with both the playful and real-world elements of the show, suggesting a lack of emotional weight and tiresome execution. The tone indicates a negative view, but the single excerpt limits full confidence. | Gemini: The review excerpt describes significant flaws in both the 'Toontown' and 'real world' aspects of the production, suggesting an uneven experience that doesn't fully succeed. The language indicates neither a strong recommendation nor a strong discouragement.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,10 +36,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:44:52.938Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:18:48.106Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 44,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 42,

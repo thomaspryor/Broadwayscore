@@ -7,74 +7,59 @@
   "publishDate": "September 21, 2015",
   "showScoreExcerpt": "\"There have been moments in the history of musical theater when, like a twister, the sheer talent and whirling spectacle of a production have flattened any negative criticism that stood to get in its way...The latest incarnation of this impeccably oiled entertainment machine finds a new gear courtesy of a British import.\"",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 78,
   "source": "show-score",
   "needsFullText": true,
   "sourceMethod": "playwright",
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 82,
-    "confidence": "high",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 85
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 85,
-      "performances": 88,
-      "direction": 80
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "nearly blows the roof off the massive Gershwin Theatre with her opening number",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Stephen Schwartz's classic score provides a wonderful playground for the cast to swing upon",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "this impeccably oiled entertainment machine finds a new gear courtesy of a British import",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review consistently praises the performances, music, and production values with enthusiastic language about the lead performer 'blowing the roof off' and calling it an 'impeccably oiled entertainment machine,' indicating strong recommendation despite no explicit 'see it' statement.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is consistently positive throughout, praising performances, design, and the production's entertainment value, with no significant reservations expressed. | GPT-4o: The review is filled with praise for the performances, choreography, and production elements, indicating a strong recommendation. The critic describes the show as an 'impeccably oiled entertainment machine' and highlights the exceptional performances, suggesting a must-see experience. | Gemini: The review highlights strong performances and enjoyable aspects of the production, indicating a positive overall experience, but doesn't reach the level of a rave.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:37:20.183Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3427,
-    "outputTokens": 366,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:43:38.290Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
-    "scoreDelta": 0,
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/wicked-2003/front-row-center--stanford-friedman_2026-02-01.html",
   "textFetchedAt": "2026-02-01T14:06:19.830Z",

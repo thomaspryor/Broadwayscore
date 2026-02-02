@@ -9,64 +9,56 @@
   "showScoreExcerpt": "\"âMoulin Rouge! The Musical!â Review: Pop Opera Excess. A stage adaptation of Baz Luhrmannâs 2001 camp extravaganza is as opulent as it is empty.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/moulin-rouge-broadway",
   "originalScore": null,
-  "assignedScore": 34,
+  "assignedScore": 60,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 34,
+    "score": 60,
     "confidence": "medium",
     "range": {
-      "low": 25,
-      "high": 43
+      "low": 55,
+      "high": 65
     },
-    "bucket": "Pan",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 35
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "as opulent as it is empty",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "camp extravaganza",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "Pop Opera Excess",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The headline describes the show as 'excess' and 'as opulent as it is empty,' suggesting visual spectacle without substance - a clear criticism that outweighs any neutral acknowledgment of its camp nature. | GPT-4o-mini: The review indicates a strong disapproval of the production, describing it as empty despite its opulence, leading to a clear pan recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The phrase 'as opulent as it is empty' suggests visual spectacle without substance, and 'camp extravaganza' implies a lack of serious artistic merit. However, with only one excerpt available, the full verdict may be more nuanced. | GPT-4o: The review describes the production as 'opulent' but also 'empty,' suggesting a visually impressive but perhaps shallow experience. The lack of full text and the single excerpt warning suggest a conservative score within the Mixed bucket. | Gemini: The phrase \"as opulent as it is empty\" suggests a visually impressive but ultimately shallow experience, indicating a mixed reaction. Given the single excerpt, I'm scoring in the middle of the Mixed range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:21:15.992Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:33:14.111Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 34,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 30,
-    "scoreDelta": 8,
+    "claudeScore": 45,
+    "openaiScore": 62,
+    "geminiScore": 58,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "contentTier": "excerpt",
   "wordCount": 0,

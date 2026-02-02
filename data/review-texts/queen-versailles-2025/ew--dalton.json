@@ -11,7 +11,7 @@
   "originalScore": null,
   "_scoreFixedFrom": "D",
   "_scoreFixedReason": "Removed bogus D grade - review has no letter grade, D was extracted from garbage content",
-  "assignedScore": 15,
+  "assignedScore": 41,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": null,
@@ -44,38 +44,22 @@
   "scoreConfidence": null,
   "extractedGrade": null,
   "llmScore": {
-    "score": 15,
+    "score": 41,
     "confidence": "high",
     "range": {
-      "low": 10,
-      "high": 20
+      "low": 36,
+      "high": 46
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 20,
-      "music": 15,
-      "performances": 65,
-      "direction": 25
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "a show that simply presents obscene wealth without perspective, judgment, or insight—a documentary-style spectacle that mistakes footage for drama and confuses screen time with character development",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "expensive, elaborately designed, professionally performed, utterly beside the point",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "The show's January 4 closing—barely two months after its November 9 opening—surprises no one",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "This is an unqualified pan that systematically demolishes every creative element except performances, calling the show 'utterly beside the point' and noting its rapid closure with no surprise.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The critic systematically dismantles the show across all elements—book, score, direction, and concept—calling it 'creative bankruptcy' and 'utterly beside the point,' clearly advising audiences to skip it. | Gemini: The review is overwhelmingly negative, criticizing the lack of insight, character development, and thematic clarity. The critic explicitly states the show offers \"only spectacle without insight\" and questions what the creators were thinking, indicating a strong disapproval.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -84,27 +68,27 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:56:55.731Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3732,
-    "outputTokens": 370,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:27:49.990Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 15,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 28,
-    "openaiScore": 30,
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 40,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Negative"
   },
   "bwwExcerpt": "It’s a situation where Jackie has both won it all yet also lost it all at the same time, and the show seems prepared to end abruptly with its protagonist forced to confront her entire life's mission that has left her at this crossroads. But the moment is fleeting, as the orchestra strikes back up, the sharp edge is dulled, the curtain falls, and audiences are left to ponder how a show so big could also say so little. Sara Holdren and Jesse",
   "showScoreExcerpt": "âIn a year when Broadway has given us genuinely ambitious work grappling with what it means to be American, \"The Queen of Versailles\" offers only spectacle without insight, a palace with no one home. What were they thinking?â",

@@ -11,15 +11,15 @@
     "playbill-verdict"
   ],
   "playbillVerdictUrl": "https://variety.com/2024/legit/reviews/uncle-vanya-review-steve-carrell-broadway-1235980718/",
-  "assignedScore": 89,
+  "assignedScore": 77,
   "llmScore": {
-    "score": 89,
+    "score": 77,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The word 'brilliance' and the sophisticated praise for the entire creative team indicates strong critical acclaim, though truncated text limits confidence in full verdict. | GPT-4o: The review uses strong positive language, highlighting the brilliance of the play and its cast, suggesting an enthusiastic recommendation. | Gemini: The review excerpt highlights the brilliance of the play and suggests that it offers a valuable perspective, indicating a positive recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt explicitly calls the production 'brilliant' and praises the entire cast, indicating clear appreciation. However, with only one curated quote available, I'm scoring conservatively within the positive range as this may not represent the full review verdict. | GPT-4o: The review excerpt praises the play's brilliance and the performances, suggesting a strong recommendation. The use of 'brilliance' indicates a high level of enthusiasm, placing it in the Rave bucket. However, due to the single excerpt warning, the confidence is medium. | Gemini: The excerpt highlights the 'brilliance' of the play, suggesting a positive assessment. However, due to the limited text and single excerpt, a more conservative score within the 'Positive' bucket is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,25 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:56:54.011Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:50:59.243Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "geminiScore": 78,
-    "claudeBucket": "Rave",
+    "claudeScore": 78,
+    "openaiScore": 88,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

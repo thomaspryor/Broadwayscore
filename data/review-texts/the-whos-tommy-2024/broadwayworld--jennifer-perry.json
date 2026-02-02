@@ -9,42 +9,26 @@
   "bwwExcerpt": "Under the meticulous direction of Josh Rhodes, the cast belts out Pete Townshend's (Music and Lyrics) tunes with intense energy, backed by Music Director Lynne Shankel's equally committed onstage eight-piece orchestra. The music, Josh Rhodes' choreography, Paul DePoo's scenic and projection elements, and Jake DeGroot's bright lighting design also make it very easy to be drawn into the moment and overall experience, despite the deficiencies in the book (at least as presented here, it's simply uni",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-WHOS-TOMMY-2024",
   "originalScore": null,
-  "assignedScore": 70,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 70,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 60,
-      "high": 80
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 40,
-      "music": 83,
-      "performances": 75,
-      "direction": 80
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "cast belts out Pete Townshend's (Music and Lyrics) tunes with intense energy",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "very easy to be drawn into the moment and overall experience",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "despite the deficiencies in the book",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review praises the music, performances, and production values but clearly identifies significant problems with the book, creating a mixed recommendation where technical excellence doesn't overcome fundamental story issues. | GPT-4o-mini: The review highlights strong musical and directional elements while acknowledging significant issues with the book, leading to a positive but qualified recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises multiple production elements and says it's 'very easy to be drawn into the moment and overall experience,' indicating a positive viewing experience despite acknowledged book problems. However, the text is clearly truncated and this is only one excerpt, requiring conservative scoring. | GPT-4o: The review highlights strong elements such as direction, music, and design, suggesting an engaging production. However, it notes deficiencies in the book, indicating some reservations. | Gemini: The review praises many aspects of the production (direction, cast, music, choreography, design) but notes deficiencies in the book, suggesting a positive but not rave recommendation. The single excerpt and truncated text warning suggest caution.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,20 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:04:03.077Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:19:14.957Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 70,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 75,
-    "scoreDelta": 10,
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dateUnknown": true,
   "dateSource": "could-not-extract",

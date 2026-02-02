@@ -10,81 +10,58 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 41,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 25,
-    "confidence": "low",
+    "score": 41,
+    "confidence": "high",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 36,
+      "high": 46
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 20,
-      "music": 15,
-      "performances": 45,
-      "direction": 25
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "that secret passageway would serve the audience better if it led out of the theatre",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Even Kristin Chenoweth's desperate charm can't salvage this cringy musical",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "a Broadway construction site that never finds its foundation",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "This is a comprehensive pan that systematically criticizes every aspect of the production from book to score to direction, with the critic literally suggesting the audience would be better served by an exit route.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The review is consistently critical throughout, calling it a 'house of cards,' criticizing the storytelling as 'baffling,' and ending with the clear recommendation that audiences would be better served by leaving the theater. | Gemini: The review is overwhelmingly negative, criticizing the storytelling, tone, score, and direction. The final sentence explicitly states that even Chenoweth's charm cannot save the musical.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
-    },
-    "humanReviewOverride": {
-      "previousConfidence": "high",
-      "reason": "LLM Pan (25) too harsh for Meh review. Override to thumb-based 60.",
-      "appliedAt": "2026-02-01T17:37:53.680Z"
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:58:13.213Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3066,
-    "outputTokens": 342,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:29:19.130Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 20,
-    "scoreDelta": 5,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (23 → Down) conflicts with aggregator thumbs (Flat)"
-    ]
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 40,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Negative"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 23,

@@ -11,45 +11,29 @@
   "_removedScore": "B",
   "_removedScoreReason": "Grade doesn't match text - review is extremely negative ('timidly tepid satire', 'generic pastiche comedy', 'very disappointing') but had B grade. LLM correctly scored 29.",
   "_removedAt": "2026-01-31T23:45:00.000Z",
-  "assignedScore": 29,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-THE-BOOK-OF-MORMON-20110324",
   "sourceMethod": "archive",
   "scoreSource": "letter-grade",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 29,
+    "score": 44,
     "confidence": "medium",
     "range": {
-      "low": 20.5,
-      "high": 37.5
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 25,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 30
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "simply pats it on its back",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "generic pastiche comedy and timidly tepid satire",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "the show we all hoped would set Broadway on its ear",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic expresses clear disappointment with a show that fails to meet expectations, describing it as 'generic' and 'timidly tepid' - strong negative language indicating a clear pan. | GPT-4o-mini: The review expresses strong disappointment and criticism of the show's lack of originality and impact, indicating a clear negative recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic expresses clear disappointment throughout, calling the show 'disappointing,' 'Grade B, vaguely amateurish,' and concluding it 'simply pats it on its back' rather than delivering the expected breakthrough. Despite some acknowledgment of effort, the overall verdict is negative. | GPT-4o: The review expresses disappointment with the show, noting it lacks the expected edge and satire, and describes it as generic and amateurish. The critic clearly does not recommend it. | Gemini: The review expresses disappointment that the show isn't more outrageous, but acknowledges some funny moments. It ultimately lands in the 'mixed' category as it neither strongly recommends nor discourages seeing it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -58,20 +42,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:07:08.594Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:47:55.273Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 29,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 32,
-    "openaiScore": 25,
-    "scoreDelta": 7,
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 29,

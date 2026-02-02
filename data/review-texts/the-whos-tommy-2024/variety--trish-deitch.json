@@ -9,71 +9,55 @@
   "showScoreExcerpt": "\"...this production of 'Tommy' is basically for old people, and not for a new generation\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-who-s-tommy-broadway",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 52,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 65,
+    "score": 52,
     "confidence": "low",
     "range": {
-      "low": 55,
-      "high": 75
+      "low": 47,
+      "high": 57
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "bone-shaking, ear-splitting spectacles",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "I don't like this! Get me out of here!",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "overwhelming action",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "This excerpt focuses on the show's intense spectacle and audience reaction rather than providing clear critical assessment, making it difficult to determine the critic's actual recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Negative, gemini=Mixed | Claude: Despite acknowledging some standout performances, the critic clearly indicates this is a disappointing production that fails to connect with new audiences and relies too heavily on nostalgia rather than theatrical merit. | Gemini: The review highlights some positive aspects like standout performances but ultimately suggests the production is primarily for an older audience familiar with The Who, indicating a mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:29:59.206Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2427,
-    "outputTokens": 310,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:22:46.292Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 40,
-    "openaiScore": 35,
-    "scoreDelta": 5,
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Mixed"
   },
   "bwwExcerpt": "There are standout performances. Mop-headed Ali Louis Bourzgui, who plays Tommy as a young adult, has stage presence and good pipes, and Alison Luff, playing Tommy’s mother, Mrs. Walker, brings real grit to her one solo, “Smash the Mirror.” Maybe if you’d missed the ’70s, when The Who’s exceptional album stirred the hearts of kids making enough noise to change the world, you wouldn’t care that this production of “Tommy” is basically for old people, and not for a new generation.",
   "bwwThumb": "Meh",

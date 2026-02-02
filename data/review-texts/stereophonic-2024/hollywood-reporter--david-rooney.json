@@ -7,45 +7,29 @@
   "publishDate": "April 19, 2024",
   "fullText": "Arguably the best new American drama since Annie Baker's The Flick, David Adjmi's Stereophonic shares both a hyper-naturalistic style and a sprawling three-hour running time with that 2013 masterwork. But the similarities end there. Chronicling a turbulent year in California recording studios during which a fictional 1970s rock band labors over the follow-up to their breakthrough album, this is an immersive plunge into the fraught process of artistic collaboration as pressures mount and interpersonal harmony dissolves into acrimony.\n\nFunny, raw and poignant in equal measure, this expertly sculpted play has the feel of both a behind-the-music docudrama and a lost Robert Altman film, with its astute microcosmic focus, its frequent wash of overlapping dialogue and its sly nudges toward satire. In fact, while the music — fabulous original songs written by Will Butler, formerly of Arcade Fire — is pop-rock rather than country, Stereophonic could almost be an expanded vignette lifted right out of Nashville.",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 93,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:08:31.428Z",
   "urlUpdated": "2026-01-23T05:32:10.723Z",
   "bwwExcerpt": "Funny, raw and poignant in equal measure, this expertly sculpted play has the feel of both a behind-the-music docudrama and a lost Robert Altman film, with its astute microcosmic focus, its frequent wash of overlapping dialogue and its sly nudges toward satire. In fact, while the music — fabulous original songs written by",
   "llmScore": {
-    "score": 92,
+    "score": 93,
     "confidence": "high",
     "range": {
       "low": 88,
-      "high": 95
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
-      "music": 88,
+      "book": null,
+      "music": null,
       "performances": null,
-      "direction": 90
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Arguably the best new American drama since Annie Baker's The Flick",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Funny, raw and poignant in equal measure, this expertly sculpted play",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "fabulous original songs written by Will Butler",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Opening with superlative praise calling it 'arguably the best new American drama' since a Pulitzer winner, combined with consistent high-level praise for craft and multiple elements, signals a clear rave recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic opens by comparing it to a masterwork and concludes it's 'a chart topper' with 'searing emotional heft.' The superlative language and comparison to acclaimed works indicates the highest level of recommendation. | GPT-4o: The review is highly enthusiastic, comparing the play to a 'masterwork' and describing it as 'funny, raw and poignant in equal measure.' The critic uses strong language indicating a must-see status, such as 'a chart topper' and 'grabs you by the throat.' | Gemini: The review is overwhelmingly positive, comparing the play favorably to a 'masterwork' and calling it a 'chart topper' with 'searing emotional heft.' This indicates a strong recommendation, placing it in the Rave bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,27 +38,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:10:53.282Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2540,
-    "outputTokens": 351,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:05:51.432Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": 90,
-    "scoreDelta": 2,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "sourceMethod": "archive",
   "bwwThumb": "Up",

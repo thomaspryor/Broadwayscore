@@ -7,42 +7,26 @@
   "publishDate": "June 18, 2014",
   "dtliExcerpt": "In the opening number of The Lion King, director Julie Taymor created one of the most transporting visions ever seen in a Broadway show. A procession of African beasts of all shapes and sizes—flocks of birds, leaping gazelles, and towering giraffes—moves through the aisles, all interpreted via gorgeous, minutely detailed costumes and puppetry. This long-running New York City musical is based on the 1994 Disney animated flick about a Hamletesque lion who must win back his kingdom from the clutches of his evil uncle. Featuring a catchy score by Elton John and Tim Rice, Taymor’s adaptation is infused with additional spectacle and songs inspired by African culture.",
   "originalScore": null,
-  "assignedScore": 86,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 86,
+    "score": 89,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 95
+      "low": 84,
+      "high": 94
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 80,
+      "music": null,
       "performances": null,
-      "direction": 90
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "one of the most transporting visions ever seen in a Broadway show",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "gorgeous, minutely detailed costumes and puppetry",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "catchy score by Elton John and Tim Rice",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Strong praise for direction and visual spectacle with superlative language ('most transporting visions ever seen'), positive notes on music, and no negative elements mentioned. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production's visual and thematic elements, indicating a strong recommendation to see the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The language is highly celebratory with phrases like 'amazing menagerie,' 'audacious staging,' and 'pride of Broadway,' indicating strong enthusiasm despite limited excerpt available. | GPT-4o: The review uses highly positive language such as 'amazing', 'audacious', and 'pride of Broadway', indicating a strong recommendation. The description of the staging as a 'celebration of heritage' suggests a transformative and must-see production. | Gemini: The review excerpt praises the staging and visual elements, suggesting a positive overall experience. The phrase \"celebration of heritage\" implies a strong positive takeaway.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,20 +35,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:28:25.384Z",
-    "promptVersion": "2.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:59:19.580Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 86,
+    "previousVersion": "2.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 88,
     "openaiScore": 90,
-    "scoreDelta": 8,
+    "geminiScore": 75,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "sourceMethod": "scrapingbee",
   "archivePath": "data/archives/reviews/the-lion-king-1997/timeout-ny--jenna-scherer_2026-01-27.html",

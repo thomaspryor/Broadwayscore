@@ -9,71 +9,55 @@
   "showScoreExcerpt": "\"This update on Vanya doesn’t alter the story in any revolutionary terms\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/uncle-vanya-broadway",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 74,
   "source": "show-score",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 72,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
+      "book": null,
       "music": null,
-      "performances": 78,
-      "direction": 70
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Carell is impossible to look away from in that moment — and in many others. He boasts such a distinct charisma",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "many of the characters have been flattened into their simplest, most accessible forms",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Harper, drowning in torment as Astrov, even when he appears to have discovered relief. His despair is frenetic, ever-palpable thanks to Harper's naturalistic performance",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review appreciates strong performances, particularly from Carell and Harper, but criticizes the translation for flattening characters and reducing nuance, resulting in a qualified positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review praises individual performances, particularly highlighting Carell's charisma and Harper's scene-stealing turn, while noting some flattening of characters and loss of nuance. Overall tone is appreciative of the production's strengths despite identified weaknesses. | Gemini: The review highlights strong performances, particularly from Carell and Harper, but notes some flattening of characters and missing inner turmoil. Overall, it leans towards a positive assessment, acknowledging both strengths and weaknesses.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:33:53.860Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3272,
-    "outputTokens": 382,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:49:23.917Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 50,
-    "openaiScore": 50,
-    "scoreDelta": 0,
+    "claudeScore": 73,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "dtliExcerpt": "Though the bitterness boiling beneath the piece may catch them off guard, Neugebauer and Schreck have crafted an especially accessible adaptation, for better or worse.",
   "sources": [

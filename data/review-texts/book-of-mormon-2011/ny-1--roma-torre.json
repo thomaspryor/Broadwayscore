@@ -9,64 +9,56 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 89,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 92,
+    "score": 89,
     "confidence": "medium",
     "range": {
-      "low": 83.5,
-      "high": 100
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 93,
-      "direction": 90
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "everyone shines",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "an inspired collaboration made in theatre heaven",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "meticulously cast",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Consistently glowing praise for all elements with superlative language like 'theatre heaven' and universal acclaim for cast and creative team indicates strong positive recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm for the performances and direction, indicating a must-see experience.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite being only one excerpt, the language is consistently glowing with phrases like 'meticulously cast', 'everyone shines', 'divine versatility', and the climactic 'made in theatre heaven', clearly indicating a rave review. | GPT-4o: The review excerpt is overwhelmingly positive, highlighting the exceptional casting and performances, and describing the production as 'an inspired collaboration made in theatre heaven.' Despite the single excerpt warning, the language used suggests a strong recommendation. | Gemini: The review highlights the excellent casting and performances, describing the collaboration as \"inspired\" and \"made in theatre heaven,\" indicating a positive overall assessment. Given it's a single excerpt, I'm scoring it in the middle of the positive range.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:13:29.111Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:47:10.759Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 95,
-    "scoreDelta": 7,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 92,

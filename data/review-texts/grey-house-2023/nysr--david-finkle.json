@@ -10,42 +10,26 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Meh",
   "originalScore": "3/5 stars",
-  "assignedScore": 69,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 69,
+    "score": 64,
     "confidence": "medium",
     "range": {
-      "low": 60.5,
-      "high": 77.5
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 64,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "will not only declare themselves scarily entertained",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "challenging intricacies of Holloway's plot – of what unappealingly unfolds",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "will result in some head-scratching and 'Huh, what?' mouthings",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The review suggests audiences who understand the complex plot will find it entertainingly provocative, but acknowledges the material is challenging and potentially confusing, indicating qualified appreciation. | GPT-4o-mini: The review acknowledges both the complexity and potential confusion of the plot, suggesting a mixed but leaning positive recommendation for those who can appreciate its themes.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 3/5 star rating and review tone indicate a mixed assessment - the critic acknowledges effective performances and entertainment value but notes potential confusion and head-scratching from audiences, suggesting qualified appreciation rather than clear recommendation. | GPT-4o: The review provides a balanced view, noting both the strengths in performances and the potential for confusion in the plot. The original 3/5 star rating suggests a mixed reception, aligning with the critic's acknowledgment of both entertainment and complexity. | Gemini: The critic gives the show 3/5 stars and states that those who understand the play's intentions will be \"scarily entertained\". While he notes some potential confusion with the plot, the overall tone suggests a positive, albeit reserved, recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,20 +38,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:18:12.068Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:24:48.424Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 69,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
+    "claudeScore": 62,
     "openaiScore": 65,
-    "scoreDelta": 7,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 69,

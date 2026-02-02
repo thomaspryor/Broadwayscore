@@ -11,13 +11,13 @@
     "playbill-verdict"
   ],
   "playbillVerdictUrl": "https://ew.com/the-who-tommy-review-broadway-8620278",
-  "assignedScore": 90,
+  "assignedScore": 89,
   "llmScore": {
-    "score": 90,
+    "score": 89,
     "confidence": "high",
     "range": {
-      "low": 85,
-      "high": 95
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review uses strong imperative language ('See it, feel it') and declares it unmissable with 'has to be seen to be believed,' indicating an enthusiastic recommendation. | GPT-4o: The review uses strong, enthusiastic language indicating a must-see experience, such as 'truly has to be seen to be believed' and 'you won't forget it,' suggesting a highly positive recommendation. | Gemini: The review uses very strong positive language like \"one-of-a-kind adventure that truly has to be seen to be believed\" and \"you won't forget it\", indicating a rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The excerpt contains strong positive language ('deliciously delirious', 'radical', 'one-of-a-kind') and ends with an emphatic recommendation using 'must-see' language, but single excerpt warning requires conservative scoring within rave range. | GPT-4o: The excerpt uses strong, enthusiastic language suggesting a unique and unforgettable experience, indicating a rave review. However, with only one excerpt available, the confidence is medium. | Gemini: The review uses strong positive language like \"deliciously delirious,\" \"radical,\" and \"one-of-a-kind adventure,\" culminating in the emphatic recommendation to \"see it, feel it you won't forget it,\" indicating a rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,19 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:55:58.162Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:19:51.164Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 90,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 90,
-    "geminiScore": 92,
+    "geminiScore": 90,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 4,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

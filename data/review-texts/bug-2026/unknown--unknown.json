@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,73 +20,51 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 82,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 85
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 78,
-      "direction": 72
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "In 2025, in the aftermath of QAnon, Pizzagate, and that benign tourist expedition on January 6, Bug, has acquired a skin-crawling acuity",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Carrie Coon's Agnes --- taut, whippet-thin, getting by a diet of vodka and Coke plus the odd puff -- is on point throughout",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "his handling of the first act is a bit slack, a problem partly due to casting",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic fundamentally reassesses and elevates their opinion of the play, praising Letts' prescient vision and Coon's performance, with only minor reservations about pacing and one casting choice.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises the play's contemporary relevance and Letts' prescient writing, appreciates the performances (especially Coon), but notes directorial and casting issues in the first act that prevent this from being a rave. | Gemini: The review acknowledges a slow start and some casting issues, but ultimately praises the performances of Carrie Coon and Namir Smallwood, and the play's relevance. This suggests a positive, but not rave, recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:33:43.327Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3569,
-    "outputTokens": 399,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:13:13.131Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 60,
-    "geminiScore": 60,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 60,

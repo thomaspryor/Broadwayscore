@@ -7,42 +7,26 @@
   "publishDate": "March 29, 2024",
   "fullText": "Director Des McAnuff’s high-frequency revival pushes Broadway’s boundaries and possibly, its sound barriers.\n\nGood morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “The Who’s Tommy.”\n\nIf the first 10 minutes of a show are supposed to rope you in, “The Who’s Tommy” dares you to need more than 10 seconds. Director Des McAnuff’s revival staging of the electric rock opera he co-wrote explodes onto the Nederlander Theatre stage in a paroxysm of booming sound, blinding light and crackling projections. That digital gluttony carries throughout this high-octane production about a traumatized young boy named Tommy, who morphs into a “pinball wizard” and then a rock music demigod. At first, it may seem odd that McAnuff encases his and co-book writer Pete Townshend’s story about a young man’s spiritual ascension in so much high-tech, but that juxtaposition is exactly where the magic (and music, also by Townshend) lies. Because amid the digital frenzy, the heart of this musical is still the sad, abused human at its center. There is a darkness to the way Ali Louis Bourzgui plays Tommy — crooning through Townshend’s iconic, primarily sung-through score, his posture erect as he pulls haunting focus. And what a score it is: Townshend’s layered compositions have never sounded better, and sound designer Gareth Owen maintains control. The full band is so loud, yet we can still hear individual chord progressions. There is a cacophony of guitar strums and drum beats, but we can still hear individual zippy sound effects of the pinball machine.",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 77,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 82,
+    "score": 77,
     "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
-      "music": 85,
-      "performances": 80,
-      "direction": 88
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "explodes onto the Nederlander Theatre stage in a paroxysm of booming sound, blinding light and crackling projections",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "that juxtaposition is exactly where the magic (and music, also by Townshend) lies",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "There is a darkness to the way Ali Louis Bourzgui plays Tommy — crooning through Townshend's iconic, primarily sung-through score, his posture erect as he pulls haunting focus",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The reviewer praises McAnuff's high-energy direction and production values, finds artistic merit in the digital/spiritual juxtaposition, and appreciates the lead performance, with no significant criticisms mentioned.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises the director's vision, finds 'magic' in the production's approach, and highlights strong central performance, though notes the overwhelming technical elements. | GPT-4o: The review is highly positive, emphasizing the explosive and high-octane nature of the production, suggesting it is a must-see experience. The language used is enthusiastic and indicates a strong recommendation. | Gemini: The review is generally positive, highlighting the energy and heart of the production, but doesn't reach 'rave' status. The reviewer focuses on the production's strengths and the performance of the lead actor, indicating a recommendation with some reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,20 +35,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:28:04.975Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2620,
-    "outputTokens": 396,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:19:11.709Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
-  "ensembleData": null,
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  },
   "dtliExcerpt": "If the first 10 minutes of a show are supposed to rope you in, “The Who’s Tommy” dares you to need more than 10 seconds. Director Des McAnuff’s revival staging of the electric rock opera he co-wrote explodes onto the Nederlander Theatre stage in a paroxysm of booming sound, blinding light and crackling projections",
   "sources": [
     "dtli"

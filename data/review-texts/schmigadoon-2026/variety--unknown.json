@@ -45,61 +45,55 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "brightdata",
-  "assignedScore": 42,
+  "assignedScore": 59,
   "llmScore": {
-    "score": 42,
-    "confidence": "medium",
+    "score": 59,
+    "confidence": "high",
     "range": {
-      "low": 35,
-      "high": 48
+      "low": 54,
+      "high": 64
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "If, like this critic, you think there's something ineffably cringey about it",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "you may not find yourself on the wavelength of a show defined by its strenuousness",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "If you think it's a clever, charming wink... then you may very well be along for the ride",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The critic expresses clear personal distaste for the show's fundamental approach, calling it 'cringey' and 'strenuous,' while acknowledging others might enjoy it but making no recommendation themselves.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic clearly states their negative reaction to the title and describes the show as 'cringey' and 'strenuous,' while acknowledging others may enjoy it, indicating a mixed but leaning negative assessment. | GPT-4o: The review suggests a mixed reaction, with the critic personally finding the show's concept cringey and effortful, indicating neither a strong recommendation nor a complete dismissal. | Gemini: The review expresses reservations and suggests enjoyment depends on personal taste, indicating a mixed reaction rather than a clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:13:58.015Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2441,
-    "outputTokens": 359,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:59:59.552Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 42,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (97 words)"
+  "contentTierReason": "Short text (97 words)",
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

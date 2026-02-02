@@ -9,42 +9,26 @@
   "bwwExcerpt": "The band is back together on Broadway. David Adjmi’s Stereophonic had a critically acclaimed, sold-out run off Broadway in fall 2023 at Playwrights Horizons, and now it’s hitting all the right notes at the Golden Theatre. Average Rating: 95.0% { \"@context\":\"https://schema.org\", \"@type\":\"LiveBlogPosting\", \"@id\":\"/article/Review-Roundup-Rock-N-Roll-Drama-STEREOPHONIC-Opens-On-Broadway-20240419\", \"about\":{ \"@type\":\"Event\", \"startDate\":\"2024-04-19T11:58:03-05:00\", \"na",
   "bwwRoundupUrl": null,
   "originalScore": "B",
-  "assignedScore": 88,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 88,
+    "score": 81,
     "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 87
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Naturalism has never looked or sounded as good as it does",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "presents an unshakeable, hyperreal slice-of-life drama",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Adjmi builds complex portraits with painstakingly tiny brush strokes",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Strong praise for the naturalistic writing, hyperreal drama, and complex character work with superlative language like 'never looked or sounded as good' and 'unshakeable' indicating clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The B rating, combined with highly enthusiastic language like 'unshakeable,' 'hyperreal,' and describing it as sparking desire to 'live in' the experience, plus the 95% average rating context, clearly indicates strong recommendation despite the B grade. | GPT-4o: The review is highly positive, praising the naturalism and the script's ability to create complex portraits. The original rating of B supports a strong positive classification, and the phrase 'it's a hit' indicates a clear recommendation. | Gemini: The review is overwhelmingly positive, praising the naturalism and realism of the play. The additional context from the review further supports a positive classification, with phrases like \"Drama from the studio enters the stage, and it's a hit\" and \"hitting all the right notes\". The critic's own rating of B also indicates a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,20 +37,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:10:28.806Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2664,
-    "outputTokens": 347,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:05:19.780Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
-  "ensembleData": null,
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  },
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "dtliExcerpt": "Sometimes, a song is so good you want to live in it. You want to nestle into its melodies, unravel the chords holding it up and more than anything, wander in the mind fields of the people who created it. David Adjmi’s “Stereophonic” is the play that sparks this very desire.",

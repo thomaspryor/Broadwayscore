@@ -10,18 +10,18 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 70.5,
-      "high": 83.5
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,26 +29,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 77
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "like gulping a glass of fizzy sangria after a rough day",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "sing-and-smile-along production",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "gulping a glass of fizzy sangria after a rough day",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The vivid metaphor comparing the show to refreshing sangria after stress strongly suggests the critic found it enjoyable and therapeutic, indicating a positive recommendation despite limited text. | GPT-4o-mini: The review conveys a positive sentiment towards the production's uplifting nature, suggesting a clear recommendation despite not delving into specific elements.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The metaphor of 'fizzy sangria after a rough day' clearly indicates the show is enjoyable and provides welcome relief/entertainment. However, with only one excerpt available, I'm scoring conservatively within the positive range. | GPT-4o: The review uses a positive metaphor, comparing the show to a refreshing and enjoyable experience, suggesting a recommendation. However, due to the single excerpt and potential for cherry-picking, the confidence is medium and the score is conservatively placed in the middle of the Positive range. | Gemini: The review excerpt compares the musical to a refreshing drink after a stressful period, suggesting it's enjoyable and worth seeing, but perhaps not a profound or groundbreaking experience. Given the single excerpt and aggregator context, I'm scoring it as a positive but not rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -57,20 +41,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:08:03.631Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:14:46.558Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 77,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,

@@ -9,7 +9,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "4/5",
-  "assignedScore": 59,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "originalScoreNormalized": 80,
@@ -24,65 +24,52 @@
     "show-score"
   ],
   "llmScore": {
-    "score": 59,
-    "confidence": "low",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 53,
-      "high": 65
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
-      "music": 45,
+      "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "As musical theater, Tommy is limited",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "On its own terms, it's often sensational",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "As musical theater, Tommy is limited.",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review presents a balanced mixed assessment, criticizing the musical theater elements while praising the production on its own terms, suggesting conditional appreciation rather than clear recommendation. | GPT-4o-mini: The review presents a mixed view, acknowledging limitations while also noting some sensational aspects, leading to a conditional recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 rating and phrase 'often sensational' indicate a positive recommendation, though the qualifier about being 'limited as musical theater' suggests some reservations. | GPT-4o: The critic acknowledges limitations but ultimately describes the show as 'sensational' on its own terms. The original rating of 4/5 and positive aggregator verdicts support a positive classification. | Gemini: The critic acknowledges limitations but ultimately finds the show sensational on its own terms, suggesting a positive recommendation with reservations. The 4/5 rating also indicates a positive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
-    },
-    "humanReviewOverride": {
-      "previousConfidence": "high",
-      "reason": "Both thumbs Up but current score 59. Override to thumb-based 80.",
-      "appliedAt": "2026-02-01T17:37:53.693Z"
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:20:43.937Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:22:24.362Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 59,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 60,
-    "scoreDelta": 2,
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 59,

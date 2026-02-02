@@ -11,13 +11,13 @@
     "playbill-verdict"
   ],
   "playbillVerdictUrl": "https://nypost.com/2025/12/08/entertainment/marjorie-prime-review-96-year-old-june-squibb-is-a-marvel-in-an-early-highlight-of-the-broadway-season/",
-  "assignedScore": 75,
+  "assignedScore": 74,
   "llmScore": {
-    "score": 75,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt focuses entirely on praising June Squibb's presence and performance with warm, appreciative language, though limited text prevents assessment of the full production verdict. | GPT-4o: The review highlights the presence of June Squibb as a significant positive aspect, suggesting a recommendation to see the show. However, without the full text, the overall tone is less clear, leading to a medium confidence level. | Gemini: The review excerpt focuses heavily on June Squibb's performance and presence, suggesting a positive experience for those who appreciate her work. While the excerpt doesn't explicitly recommend the play itself, the strong praise for Squibb implies a positive overall assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt expresses clear admiration for June Squibb's performance and presence, but as a single curated quote it may not represent the full review's verdict about the production overall. | GPT-4o: The excerpt focuses on June Squibb's performance, highlighting her presence as a positive aspect of the show. The language suggests a recommendation, but without more context, the score is conservatively placed in the lower range of Positive. | Gemini: The review excerpt focuses on the positive experience of seeing June Squibb perform, suggesting a recommendation despite the limited context.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,19 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:49:47.674Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:34:17.987Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 75,
+    "claudeScore": 72,
+    "openaiScore": 74,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

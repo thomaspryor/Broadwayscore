@@ -8,59 +8,56 @@
   "showScoreExcerpt": "\"Ms. White does elicit uniformly terrific performances that keep the play lively and humming with bright humor.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/liberation-broadway",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 74,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 78
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "uniformly terrific performances",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "keep the play lively and humming with bright humor",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Strong praise for performances and direction creating a lively production with humor suggests positive recommendation, but excerpt is too brief to be certain of overall show quality.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises performances and overall energy positively, but given it's a single curated quote that could be cherry-picked, I'm scoring conservatively in the lower positive range. | GPT-4o: The excerpt praises the performances and the humor, suggesting a positive experience. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Positive range. | Gemini: The review excerpt highlights the terrific performances and lively humor, suggesting a positive experience, but the lack of a full review and the single excerpt warrant a score in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:17:48.272Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:57:53.986Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": null,
-    "scoreDelta": 0,
+    "claudeScore": 72,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,

@@ -9,64 +9,56 @@
   "showScoreExcerpt": "\"A stunning stage event. Combining a graceful horde of actors, singers and dancers with a stylized world of fantastic puppets and theatrical wonderment.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-lion-king",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 78,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 89,
-    "confidence": "high",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 90
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "A stunning stage event",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "stylized world of fantastic puppets and theatrical wonderment",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "graceful horde of actors, singers and dancers",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Opening with 'stunning stage event' and consistent superlatives about performances and production design indicate strong enthusiasm and clear recommendation. | GPT-4o-mini: The review expresses strong enthusiasm and admiration for the production, indicating it is a must-see experience.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The language is clearly positive with 'stunning' and 'theatrical wonderment', but as a single curated excerpt, it may not represent the full review's verdict, so I'm scoring conservatively within the positive range. | GPT-4o: The excerpt uses highly enthusiastic language, describing the production as 'stunning' and full of 'theatrical wonderment', which suggests a strong recommendation. However, due to the single excerpt warning, the confidence is medium. | Gemini: The excerpt uses very positive language (\"stunning,\" \"graceful,\" \"fantastic,\" \"wonderment\") suggesting a positive recommendation. Given the single excerpt warning, I'm scoring in the middle of the positive range.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:18:14.457Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:58:25.273Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 78,
     "openaiScore": 90,
-    "scoreDelta": 2,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "sources": [
     "show-score"

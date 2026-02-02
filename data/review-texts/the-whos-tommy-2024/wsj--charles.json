@@ -7,43 +7,27 @@
   "publishDate": "March 28, 2024",
   "dtliExcerpt": "A big blast of boomer pleasure has arrived on Broadway at the Nederlander Theatre, where the thunderous and thoroughly intoxicating revival of “The Who’s Tommy” has opened, giving a seismic jolt to the mostly lusterless musical season.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 76,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/the-whos-tommy/",
   "llmScore": {
-    "score": 88,
-    "confidence": "medium",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 83,
-      "high": 93
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 90,
+      "music": null,
       "performances": null,
-      "direction": 85
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "thunderous and thoroughly intoxicating revival",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "giving a seismic jolt to the mostly lusterless musical season",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "big blast of boomer pleasure",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Strong positive language with superlatives like 'thunderous,' 'thoroughly intoxicating,' and 'seismic jolt' indicates clear enthusiasm and recommendation despite being just an opening excerpt.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'intoxicating energy' is distinctly positive language suggesting the critic found the production engaging, but with only this brief excerpt available, the full verdict remains unclear. | GPT-4o: The phrase 'brings an intoxicating energy' suggests a positive view of the production's energy and storytelling. However, without more context, it's unclear if there are any reservations, leading to a medium confidence level. | Gemini: The phrase \"intoxicating energy\" suggests a positive experience, indicating a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -52,20 +36,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:10:24.443Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:23:26.201Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": null,
-    "scoreDelta": 0,
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "showScoreExcerpt": "\"...brings an intoxicating energy to the story of a boy who survives trauma\"",
   "sources": [

@@ -8,34 +8,28 @@
   "fullText": null,
   "showScoreExcerpt": "\"Julie Taymor's staging is nothing short of miraculous...\"",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 89,
   "source": "show-score",
   "designation": null,
   "sourceMethod": "showscore",
   "scoreSource": "manual-override",
   "llmScore": {
-    "score": 45,
-    "confidence": "low",
+    "score": 89,
+    "confidence": "medium",
     "range": {
-      "low": 30,
-      "high": 70
+      "low": 84,
+      "high": 94
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Rave",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 90
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "nothing short of miraculous",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "While the direction receives extraordinary praise ('miraculous'), this is only a fragment that doesn't address the overall production or provide a clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The phrase 'nothing short of miraculous' is extremely strong praise for the staging, indicating a rave review. However, confidence is medium due to having only one excerpt that could be cherry-picked from a more mixed review. | GPT-4o: The phrase 'nothing short of miraculous' suggests a highly positive view of the staging, indicating a strong recommendation. However, due to the single excerpt warning, the confidence is medium as the full context of the review is not available. | Gemini: The single quote praises the staging as \"miraculous,\" which suggests a positive experience, but without more context, it's difficult to gauge the overall recommendation strength. I'm placing it in the positive bucket with a middling score due to the limited information.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,29 +38,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:18:58.329Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2316,
-    "outputTokens": 236,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:58:21.072Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 45,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
+    "claudeScore": 88,
     "openaiScore": 90,
-    "scoreDelta": 45,
+    "geminiScore": 75,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 45 points (Claude: 45, OpenAI: 90)"
-    ]
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "scoreOverrideReason": "LLM confused by truncated text; headline clearly indicates sentiment",
   "scoreOverrideAt": "2026-01-26T17:35:57.827Z",

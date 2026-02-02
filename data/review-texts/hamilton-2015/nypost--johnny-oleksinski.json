@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is the best musical to hit Broadway in years. It's funny, heartbreaking, exhilarating and, above all, important.",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 95,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is the best musical to hit Broadway in years. It's funny, heartbreaking, exhilarating and, above all, important.",
   "llmScore": {
-    "score": 94,
+    "score": 95,
     "confidence": "high",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 90,
+      "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Unambiguous superlative language calling it 'the best musical in years' combined with multiple strong positive descriptors indicates a must-see recommendation. | GPT-4o: The review uses superlative language indicating a strong recommendation, calling it the best musical in years and highlighting its emotional impact and importance. | Gemini: The review uses superlative language and declares it the 'best musical in years,' indicating a very strong positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The superlative language 'best musical to hit Broadway in years' combined with multiple positive descriptors and the emphasis on importance indicates an unqualified rave recommendation. | GPT-4o: The review uses extremely positive language, describing the show as the best in years and highlighting its emotional impact and importance, indicating a strong recommendation. | Gemini: The review uses superlative language and declares it the best musical in years, indicating a rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,20 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:32:03.529Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:01:22.965Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 94,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 95,
     "openaiScore": 95,
     "geminiScore": 95,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

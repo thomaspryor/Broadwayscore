@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Pan | Claude: The review uses harsh language like 'embarrassing' and 'seedy and smelly' to describe the production, indicating strong disapproval and disgust with the show. | GPT-4o: The review uses strong negative language, comparing the production unfavorably to street performers and describing costumes as 'seedy and smelly', indicating a strongly negative impression. | Gemini: The review excerpt is overwhelmingly negative, comparing the costumes to something embarrassing and using words like 'seedy' and 'smelly'. This indicates a strong dislike for the production.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Pan | Claude: The critic finds the production embarrassing and describes costumes as seedy and smelly, clearly negative language. However, this is only one excerpt so I'm scoring conservatively within the negative range. | GPT-4o: The excerpt is strongly negative, comparing the production unfavorably to street performers and criticizing the costumes as 'seedy and smelly'. The tone suggests a strong disrecommendation. | Gemini: The review excerpt is overwhelmingly negative, describing the costumes as \"seedy and smelly\" and comparing them unfavorably to people in Disney outfits on the street. This indicates a strong dislike for the production's aesthetic.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:44:45.017Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:18:18.179Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 20,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
+    "claudeScore": 40,
     "openaiScore": 20,
-    "geminiScore": 15,
-    "claudeBucket": "Pan",
+    "geminiScore": 20,
+    "claudeBucket": "Negative",
     "openaiBucket": "Pan",
     "geminiBucket": "Pan",
-    "scoreDelta": 10,
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Pan"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Pan"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

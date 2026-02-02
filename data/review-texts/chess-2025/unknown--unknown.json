@@ -21,7 +21,7 @@
   ],
   "llmScore": {
     "score": 60,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 55,
       "high": 65
@@ -35,7 +35,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges the musical's appeal ('infectious score') but highlights persistent fundamental flaws in storytelling that have plagued it for decades, suggesting neither strong recommendation nor dismissal. | GPT-4o: The review highlights ongoing issues with the musical's story, indicating it fails to engage beyond its score. The language suggests a lack of recommendation, but the text is truncated, so the confidence is medium. | Gemini: The review acknowledges the infectious score but also points out the ongoing struggle with the story, indicating a mixed assessment. The phrase 'still struggles' suggests it hasn't overcome its issues.",
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges the musical's strengths (infectious score) but emphasizes fundamental structural problems that persist after decades and multiple rewrites, suggesting it never fully succeeds as theater. | Gemini: The review acknowledges the infectious score but also points out the ongoing struggle with the story, suggesting a mixed experience. The phrase 'still struggles' indicates that the issues haven't been resolved.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,26 +45,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:29:32.877Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:39:40.417Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 60,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 58,
-    "openaiScore": 40,
+    "openaiScore": null,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "scoreDelta": 22,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available"

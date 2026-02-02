@@ -16,61 +16,51 @@
   "scoreConfidence": "medium",
   "llmScore": {
     "score": 62,
-    "confidence": "low",
+    "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 70
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
-      "performances": 75,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "I could be impressed by the writing and acting in 'Stereophonic'",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "and still be disappointed by it",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic explicitly states being impressed by writing and acting but disappointed overall, suggesting mixed feelings with the negative sentiment slightly outweighing the positive praise.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly states being 'impressed by the writing and acting' but 'still be disappointed,' indicating a mixed response. However, with only one truncated excerpt available, confidence is low. | GPT-4o: The critic acknowledges being impressed by certain elements of the play, yet expresses disappointment overall. This suggests a mixed review, with both positive and negative aspects noted. | Gemini: The critic expresses both positive impressions (\"impressed by the writing and acting\") and disappointment, indicating a mixed reaction. The single excerpt and warning about it being potentially unrepresentative suggests a conservative score in the middle of the Mixed bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:11:33.534Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2387,
-    "outputTokens": 282,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:06:50.758Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 55,
-    "scoreDelta": 3,
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwThumb": "Up",
   "sources": [

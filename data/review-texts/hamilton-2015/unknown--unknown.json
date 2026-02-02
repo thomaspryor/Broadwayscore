@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 93,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 94,
+    "score": 93,
     "confidence": "high",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 88,
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -35,7 +35,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The 'CRITIC'S PICK' designation combined with hyperbolic language about mortgaging houses for tickets and calling it proof of the musical's evolution indicates an exceptional, must-see recommendation. | GPT-4o: The review is labeled as a 'CRITIC'S PICK' and uses hyperbolic language suggesting extreme enthusiasm, indicating a strong recommendation to see the show. | Gemini: The critic's statement that the show 'might just about be worth it' even to the point of extreme measures, coupled with the description of it as proof of the American musical's evolution, indicates a very strong positive recommendation, placing it in the Rave category.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Despite being a single excerpt, this is clearly a Critic's Pick with hyperbolic praise ('mortgage their houses') and declares it essential for understanding the evolution of American musical theater. | GPT-4o: The critic uses hyperbolic language suggesting extreme measures to see the show, indicating a strong recommendation. The phrase 'CRITIC'S PICK' and the emphasis on the show's significance in the evolution of the American musical further support a rave classification. | Gemini: Despite the initial hesitation, the critic ultimately states the show is 'worth it' and highlights its importance to the evolution of the American musical, indicating a very strong positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,14 +45,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:32:10.647Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:03:28.679Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 94,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 94,
+    "claudeScore": 92,
     "openaiScore": 95,
     "geminiScore": 92,
     "claudeBucket": "Rave",

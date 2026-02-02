@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a musical that makes the Founding Fathers seem like real people rather than figures imprisoned in history books, and does so with wit, intelligence and an infectious energy that makes the show's nearly three-hour length fly by.",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is a musical that makes the Founding Fathers seem like real people rather than figures imprisoned in history books, and does so with wit, intelligence and an infectious energy that makes the show's nearly three-hour length fly by.",
   "llmScore": {
-    "score": 92,
+    "score": 89,
     "confidence": "medium",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review uses highly positive language like 'wit, intelligence and infectious energy' and notes that even a three-hour show 'flies by', indicating strong enthusiasm and recommendation. | GPT-4o: The review highlights the show's ability to bring historical figures to life with wit, intelligence, and energy, suggesting a highly positive experience. | Gemini: The review praises the musical's wit, intelligence, and energy, indicating a positive experience and recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic praises the show with superlatives like 'wit, intelligence and infectious energy' and notes that even its long runtime 'flies by,' indicating a compelling, must-see production. | GPT-4o: The review praises the show for its wit, intelligence, and infectious energy, suggesting a highly positive experience that makes time fly by, indicating a strong recommendation. | Gemini: The review praises the musical's wit, intelligence, and energy, and notes that the length 'flies by,' indicating a positive experience and recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,20 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:32:13.464Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:03:45.720Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 95,
+    "openaiScore": 90,
     "geminiScore": 80,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

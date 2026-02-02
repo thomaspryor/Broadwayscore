@@ -8,18 +8,18 @@
   "fullText": null,
   "showScoreExcerpt": "\"Director Julie Taymor has fashioned a visual feast that is both dazzling and surprisingly intimate...\"",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 75,
   "source": "show-score",
   "designation": null,
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 79,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,26 +27,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 80
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "visual feast that is both dazzling and surprisingly intimate",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Director Julie Taymor has fashioned",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "visual feast that is both dazzling",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Strong praise for Taymor's direction and visual design suggests positive recommendation, but excerpt is too brief to assess overall show quality or explicit recommendation. | GPT-4o-mini: The review highlights the impressive direction and visual elements, suggesting a positive recommendation despite lacking detail on other components.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows clear praise for the direction and visual elements, but with only one curated quote available, I'm scoring conservatively in the lower positive range as the full verdict remains unclear. | GPT-4o: The excerpt praises the director's work as a 'visual feast' and 'dazzling', indicating a positive reception. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The review excerpt praises the visual aspects of the production, indicating a positive experience, but the lack of further context and the single excerpt warning suggest a conservative score within the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,20 +39,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:54:18.248Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:58:06.601Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 72,
+    "openaiScore": 77,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

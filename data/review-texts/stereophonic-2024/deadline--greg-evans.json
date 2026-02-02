@@ -7,18 +7,18 @@
   "publishDate": "April 19, 2024",
   "dtliExcerpt": "With unerring direction by Daniel Aukin and performed by a miraculous cast that so fully embodies Fleetwoo… I mean, the unnamed band at the heart of Stereophonic, the play is like the answer to a question you never knew you needed answered.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 77,
   "source": "dtli",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T22:05:42.707Z",
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T04:06:50.132Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:05:12.364Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
-    "previousVersion": "2.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "sourceMethod": "archive",
   "archivePath": "data/archives/reviews/stereophonic-2024/deadline--greg-evans_2026-01-27.html",
@@ -122,11 +122,11 @@
     "invalidatedAt": "2026-02-01T04:02:00.821Z"
   },
   "llmScore": {
-    "score": 79,
+    "score": 77,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -137,7 +137,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite limited text, the language is highly positive with 'unerring direction,' 'miraculous cast,' and the unique praise of being 'the answer to a question you never knew you needed answered' suggesting strong enthusiasm. | GPT-4o: The review excerpt praises the direction and the cast, suggesting a strong positive impression. The phrase 'miraculous cast' indicates a high level of enthusiasm, aligning with a positive recommendation. | Gemini: The review excerpt is overwhelmingly positive, praising the direction and cast. The 'answer to a question' metaphor suggests a satisfying and worthwhile experience.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The language 'unerring direction,' 'miraculous cast,' and the metaphor of being 'the answer to a question you never knew you needed answered' strongly suggests enthusiastic praise, despite having only one excerpt. | GPT-4o: The review excerpt praises the direction and cast, suggesting a positive view of the production. However, the phrasing 'answer to a question you never knew you needed answered' implies a unique but potentially niche appeal, aligning with a positive but not overwhelmingly enthusiastic recommendation. | Gemini: The quote suggests a positive experience, but the truncated text and single excerpt make it difficult to gauge the full enthusiasm. The aggregator verdict also suggests a positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -147,12 +147,12 @@
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 80,
-    "geminiScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 75,
     "claudeBucket": "Rave",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

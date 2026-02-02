@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "Fun summer movies are being turned into dreary summer theater this August. The tone-deaf “Back to the Future” musical is now followed by “The Shark Is Broken,” written by Ian Shaw and Joseph Nixon, which tells the behind-the-scenes story of the making of “Jaws.”",
@@ -19,67 +19,52 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 25,
-    "confidence": "high",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 20,
+      "book": null,
       "music": null,
-      "performances": 15,
-      "direction": 25
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Fun summer movies are being turned into dreary summer theater this August",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Ian Shaw imitates his father's every grimace and vocal mannerism, delivering one of the most grating performances ever put on stage",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Guy Masterson's blunt direction does nothing to mitigate these over-the-top acting exercises",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic systematically dismantles nearly every aspect of the production, calling it 'dreary,' criticizing the performances as 'grating' and 'over-the-top acting exercises,' and finding fundamental flaws in the concept and execution.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic finds multiple fundamental flaws with the production - weak plotting, over-the-top performances, and direction that fails to mitigate the problems. While acknowledging some technical merits (video design), the overall assessment is clearly negative. | GPT-4o: The review is overwhelmingly negative, criticizing the production as 'tone-deaf' and describing performances as 'grating'. The critic suggests the only interesting aspect is the video projection, implying the rest of the production is a failure. | Gemini: The review is largely negative, criticizing the writing, acting, and direction. While it praises the video projections, the overall assessment is that the play is disappointing and doesn't effectively capture the behind-the-scenes drama of 'Jaws'.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:27:39.168Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3118,
-    "outputTokens": 376,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:53:37.816Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 10,
-    "scoreDelta": 15,
-    "thumbsMatch": true,
-    "expectedThumb": "Down",
+    "claudeScore": 42,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 18,

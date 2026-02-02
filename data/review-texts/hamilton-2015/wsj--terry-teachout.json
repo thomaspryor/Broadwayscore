@@ -8,7 +8,7 @@
   "bwwExcerpt": "\"Hamilton\" is the best and most important Broadway musical of the past decade...there is nothing quaint about the deeply thoughtful way in which Mr. Miranda has interwoven the tension between Hamilton's personal ambition and sense of national mission with the parallel capacity of his fellow framers to balance realism with idealism. Check out, for instance, \"The Room Where It Happens,\" the spectacular second-act production number in which Aaron Burr (Leslie Odom Jr., who has star quality galore) schools the audience in how politicians get things done...the vaulting energy of Mr. Miranda's score sweeps all cavils aside, and Thomas Kail, Andy Blankenbuehler and David Korins, the director, choreographer and set designer, have successfully expanded the scale of the original production without making it top-heavy...The cast, led by Mr. Miranda in the title role, makes the same vibrant and youthful impression that it did downtown. Indeed, everybody in the show from the boss to the ushers exudes the confident air of show folk who know they've got themselves a hit.",
   "showScoreExcerpt": "\"'Hamilton' is the best and most important Broadway musical of the past decade. Why important? Because it sounds as though it had been written last week instead of a half-century ago...So do whatever you have to do short of grand larceny to score a ticket to 'Hamilton.' It’ll make you want to stand on your seat and yell with delight.\"",
   "originalScore": null,
-  "assignedScore": 98,
+  "assignedScore": 95,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAMILTON-Opens-on-Broadway-Updating-LIVE-20150806",
   "urlSource": "show-score",
@@ -17,60 +17,52 @@
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 98,
-    "confidence": "high",
+    "score": 95,
+    "confidence": "medium",
     "range": {
-      "low": 93,
+      "low": 90,
       "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 92,
-      "music": 95,
-      "performances": 90,
-      "direction": 88
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Hamilton is the best and most important Broadway musical of the past decade",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "So do whatever you have to do short of grand larceny to score a ticket to 'Hamilton.' It'll make you want to stand on your seat and yell with delight",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the vaulting energy of Mr. Miranda's score sweeps all cavils aside",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: This is an unqualified rave with superlatives ('best and most important'), explicit strong recommendation ('do whatever you have to do'), and promises of ecstatic audience response. | GPT-4o-mini: The review expresses unqualified enthusiasm and a strong recommendation to see the show, highlighting its importance and impact.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic declares Hamilton the 'best and most important' musical of the decade and praises virtually every aspect - score, direction, choreography, cast, and production design - with superlatives like 'spectacular' and 'vibrant.' | GPT-4o: The review is overwhelmingly positive, describing 'Hamilton' as the best musical of the past decade and praising various aspects of the production, including the performances, direction, and score. The language used is indicative of a strong recommendation. | Gemini: Despite being truncated, the review excerpt is overwhelmingly positive, calling it the best and most important musical of the past decade and praising various aspects of the production.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:23:00.597Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:04:05.353Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 98,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 98,
-    "openaiScore": 98,
-    "scoreDelta": 0,
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/hamilton-2015/wsj--terry-teachout_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:52:51.907Z",

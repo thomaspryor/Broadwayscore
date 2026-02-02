@@ -9,37 +9,26 @@
   "showScoreExcerpt": "“This might have been a fascinating portrait of male ego and insecurity, with real insights into the workings of Hollywood in the 1970s...But written by the son of the late Robert Shaw, the piece feels like artless autobiography or maybe even a son’s revenge.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-shark-is-broken-broadway",
   "originalScore": null,
-  "assignedScore": 55,
+  "assignedScore": 42,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 55,
-    "confidence": "low",
+    "score": 42,
+    "confidence": "high",
     "range": {
-      "low": 50,
-      "high": 65
+      "low": 37,
+      "high": 47
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Anything that has to do with Steven Spielberg's award-winning 1975 film 'Jaws' should be fun",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "It's one part 'Moby Dick,' three parts campy disaster film",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "This appears to be only an introductory excerpt about the source material rather than an actual review of the theatrical production, making scoring highly uncertain.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: Despite acknowledging potential, the critic dismisses the execution as 'artless' and suggests it's driven by personal vendetta rather than artistic merit. | GPT-4o: The review suggests that the production fails to deliver on its potential, describing it as 'artless' and implying it lacks depth or insight, which indicates a negative assessment. | Gemini: The review uses negative language to describe the play, indicating a negative recommendation. The critic describes the play as feeling like \"artless autobiography\" or \"a son's revenge.\"",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,27 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:07:54.907Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2437,
-    "outputTokens": 302,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:53:54.562Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 55,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 35,
-    "openaiScore": 35,
-    "scoreDelta": 0,
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 35,

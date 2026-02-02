@@ -18,57 +18,49 @@
     "score": 94,
     "confidence": "high",
     "range": {
-      "low": 87.5,
-      "high": 100
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 89,
-      "direction": 95
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the most exciting Broadway experience since Rent routed the Great White Way into the '90s two seasons ago",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "astonishing, in the jaw-dropping manner of speaking. And today, 21 years later, it still is",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Taymor, the avant-garde director to whom Disney entrusted the piece, outdid herself",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review uses superlative language calling it 'the most exciting Broadway experience since Rent' and 'astonishing' with praise for direction and lasting power over 21 years. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its innovative direction and exceptional ensemble, indicating a strong recommendation to see the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives an 'A' grade and declares this 'the most exciting Broadway experience' in recent years, with enthusiastic language like 'Broadway roared' indicating a strong rave recommendation. | GPT-4o: The critic's original rating of 'A' and the enthusiastic language used in the review, particularly the comparison to Rent and the description of The Lion King as the most exciting Broadway experience, clearly indicate a rave review. | Gemini: The review uses extremely positive language, calling the show the \"most exciting Broadway experience since Rent.\" The critic's 'A' rating and the 'Did They Like It: Up' aggregator verdict further support a 'Rave' classification.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:54:24.025Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:58:10.377Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 94,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 91,
     "openaiScore": 95,
-    "scoreDelta": 3,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "fetchMethod": "archive",
   "fetchAttempts": [

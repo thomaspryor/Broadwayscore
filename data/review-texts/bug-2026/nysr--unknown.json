@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 77,
+  "assignedScore": 76,
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite opening with context about the play feeling dated, the review pivots to praise it as 'grippingly unnerving' and 'like a waking nightmare,' indicating a positive recommendation for the current production. | GPT-4o: The review describes the play as 'a grippingly unnerving thriller,' indicating a positive recommendation despite the context of its themes feeling 'quaint.' The language suggests it is worth seeing for its thrilling nature. | Gemini: The review states that the play \"remains a grippingly unnerving thriller,\" which indicates a positive recommendation, despite the initial setup discussing how the play's impact has changed over time.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite contextual setup about the play feeling less prescient now, the critic delivers a positive verdict calling it 'grippingly unnerving' and comparing it to 'a waking nightmare' in an appreciative way. Single excerpt warning requires conservative scoring within positive range. | GPT-4o: The review acknowledges the play's dated themes but ultimately describes it as a 'grippingly unnerving thriller,' suggesting a positive recommendation despite some reservations about its contemporary relevance. | Gemini: The review acknowledges the play's initial impact and notes its continued relevance, describing it as a \"grippingly unnerving thriller.\" This suggests a positive, though perhaps not overwhelmingly enthusiastic, recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:45:07.076Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:11:48.514Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 80,
+    "openaiScore": 78,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

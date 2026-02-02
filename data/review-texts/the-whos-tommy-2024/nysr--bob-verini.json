@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "5/5 stars",
-  "assignedScore": 95,
+  "assignedScore": 94,
   "source": "bww-roundup",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/the-whos-tommy-2024/nysr--bob-verini_2026-01-29.html",
@@ -30,67 +30,51 @@
   "archiveOrgTimestamp": "20250722160838",
   "archiveOrgUrl": "http://web.archive.org/web/20250722160838/https://nystagereview.com/2024/03/28/the-whos-tommy-a-rock-classic-is-triumphantly-reborn/",
   "llmScore": {
-    "score": 95,
+    "score": 94,
     "confidence": "high",
     "range": {
-      "low": 92,
-      "high": 98
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
-      "music": 95,
-      "performances": 93,
-      "direction": 95
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "It's a smash, Mrs. Walker, it's a smash",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "This production creates transcendent enjoyment. Not 'I get it, I love it,' but rather: It gets me. It understands me.",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "creates an intermission buzz in the house unlike most I've encountered in decades of theatergoing – perhaps not since the premiere of Rent",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "5-star review with superlative language ('smash', 'transcendent enjoyment'), detailed praise for all production elements, and comparison to landmark shows like Rent indicating exceptional quality.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic gives 5/5 stars and uses superlative language throughout, calling it a 'smash' and describing 'transcendent enjoyment' with praise for every production element. The comparison to Rent's premiere buzz indicates this is seen as a truly exceptional theatrical experience. | Gemini: The critic gives the show 5/5 stars and uses overwhelmingly positive language, calling it a 'smash' and praising its emotional impact and storytelling. The review concludes with a powerful statement about the show's ability to connect with the audience on a deep, personal level.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:28:55.354Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3389,
-    "outputTokens": 373,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:20:41.355Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 95,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 95,
-    "scoreDelta": 7,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Rave"
   },
   "dateSource": "extracted-from-url",
   "_scoreFixedFrom": "4/5 stars",

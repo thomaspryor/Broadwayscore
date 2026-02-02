@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 85,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/the-whos-tommy-2024/nysr--david-finkle_2026-01-29.html",
@@ -30,67 +30,51 @@
   "archiveOrgTimestamp": "20250724130218",
   "archiveOrgUrl": "http://web.archive.org/web/20250724130218/https://nystagereview.com/2024/03/28/the-whos-tommy-the-ground-breaking-rock-opera-seen-heard-felt-in-sizzling-revival/",
   "llmScore": {
-    "score": 85,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 82,
-      "high": 88
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 80,
-      "music": 85,
+      "book": null,
+      "music": null,
       "performances": null,
-      "direction": 90
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "is just about perfect as it relies on 30 years of technology progress to bring it up-to-thrilling-often-chilling-date",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "indisputably reaches new heights",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "operating as if they were stage conjurers stirring a sizzling cauldron",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Four-star review with strong praise for the revival's technical achievements and direction, calling it 'just about perfect' and reaching 'new heights,' with confidence McAnuff will win another Tony.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic gives 4/5 stars and describes the production as 'just about perfect' with 'flawless direction' and praises virtually every creative element. The enthusiastic tone throughout supports a strong positive recommendation. | Gemini: The critic gives the show 4 out of 5 stars and calls the production 'just about perfect'. The review is overwhelmingly positive, praising the direction, design, choreography, and performances.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:29:00.306Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2724,
-    "outputTokens": 355,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:20:55.722Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 95,
-    "scoreDelta": 3,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 80,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "dateSource": "extracted-from-url",
   "_scoreFixedFrom": "5/5 stars",

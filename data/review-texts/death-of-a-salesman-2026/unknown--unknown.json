@@ -35,7 +35,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic expresses such strong engagement that they would gladly extend an already very long theatrical experience, indicating exceptional enthusiasm and a clear must-see recommendation. | GPT-4o: The quote indicates a strong enthusiasm for the production, suggesting it is highly engaging and worth watching beyond its lengthy runtime. | Gemini: The critic's statement that they would gladly stay longer indicates a strong positive recommendation, suggesting they were captivated by the production despite its length.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic expresses willingness to watch even more of a 3.5-hour show, indicating exceptional engagement and enthusiasm that clearly signals a rave recommendation. | GPT-4o: The quote expresses a strong desire to continue watching the show beyond its lengthy runtime, indicating a highly positive experience. However, due to the single excerpt warning, the confidence is medium. | Gemini: The critic states they would gladly stay longer to watch the story continue, indicating a positive experience, but the length of the show suggests a reservation. Given that this is a single excerpt, the score is placed in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,20 +45,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:30:17.931Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T01:00:18.867Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 89,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 90,
-    "geminiScore": 80,
+    "geminiScore": 75,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

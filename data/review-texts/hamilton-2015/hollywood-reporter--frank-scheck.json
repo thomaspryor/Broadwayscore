@@ -9,66 +9,58 @@
   "dtliExcerpt": "There's rarely been a history lesson as entertaining as Lin-Manuel Miranda's new hip hop-infused musical about Alexander Hamilton, or, as the opening number puts it, \"The ten-dollar founding father without a father.\" Based on Ron Chernow's best-selling biography, Hamilton brings American history to musical-theater life in a style akin to the classic 1776, only with a hipper, more multi-cultural attitude. Currently enjoying a virtually sold-out off-Broadway premiere engagement at the Public Theater, where its run has already been extended twice before the official opening, the show seems inevitably destined for a Broadway transfer.Miranda, previously responsible for the 2008 Tony Award-winning musical In the Heights, is clearly enamored of his subject. In addition to writing the book, music and lyrics for the nearly three-hour show, he also plays the title role. And while he's had the audacity to cast Hispanic and black actors as the Founding Fathers commonly referred to as \"old dead white men,\" Miranda's work is remarkably faithful to the historical facts, imparting great amounts of information in such rollicking fashion that high school history teachers will find themselves profoundly grateful for the assist.",
   "showScoreExcerpt": "\"Having already become a cultural phenomenon in its off-Broadway premiere run earlier this year at the Public Theater, 'Hamilton' — written by and starring Lin-Manuel Miranda, who previously made a name for himself on Broadway with 'In the Heights' — seems a shoo-in for smash hit status and a slew of awards attention...The musical is a triumph.\"",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 92,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAMILTON-Opens-on-Broadway-Updating-LIVE-20150806",
   "dtliThumb": "Up",
   "bwwExcerpt": "The almost entirely sung-through show is remarkably faithful to the historical facts, packing immense amounts of detail into its sprawling narrative. But it does so in such riotously entertaining fashion that it never feels like a history lesson, although it surely delivers one...Largely unaltered from its original production save for one important cast change, the lyrically dense show makes an even greater impact on the large Broadway stage, which provides ample room for its large ensemble.",
   "llmScore": {
-    "score": 94,
-    "confidence": "high",
+    "score": 92,
+    "confidence": "medium",
     "range": {
-      "low": 87.5,
-      "high": 100
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 90,
-      "performances": 92,
-      "direction": 93
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The musical is a triumph, one that has already been seen and lauded by presidents past (Bill Clinton), present (Barack Obama) and possibly future (Hillary Clinton)",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "seems a shoo-in for smash-hit status and a slew of awardnoms",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "On a purely technical level, the production is impeccable",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: This is an unqualified rave that explicitly calls Hamilton 'a triumph' with superlative praise for all elements and clear indication of major success and cultural impact. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its triumph and the quality of performances and direction, indicating a must-see status.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Despite limited excerpts, the critic explicitly calls the musical 'a triumph' and frames it as destined for 'smash hit status and a slew of awards attention,' indicating enthusiastic recommendation. | GPT-4o: The critic describes 'Hamilton' as a 'triumph' and suggests it is a 'shoo-in for smash hit status and a slew of awards attention,' indicating a highly enthusiastic recommendation. | Gemini: The review explicitly calls the musical a \"triumph\" and suggests it's a \"shoo-in for smash hit status,\" indicating a very strong positive recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:57:20.727Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:00:29.320Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 94,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 88,
     "openaiScore": 95,
-    "scoreDelta": 3,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "urlSource": "show-score",
   "urlUpdatedAt": "2026-01-25T14:20:46.933Z",

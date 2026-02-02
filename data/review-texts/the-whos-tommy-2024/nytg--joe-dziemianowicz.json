@@ -9,71 +9,55 @@
   "showScoreExcerpt": "\"Tommy’s saga delivers a pointed and potent take on trauma, fame, and individuality\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-who-s-tommy-broadway",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 81,
   "source": "show-score",
   "dtliThumb": "UP",
   "llmScore": {
-    "score": 85,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 82,
-      "high": 88
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 88,
-      "performances": 82,
-      "direction": 87
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "eye-popping, ear-thumping, goosebump-inducing",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Rock musicals don't come to Broadway often. It's rare when they truly rock – and The Who's Tommy does.",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The show takes off like a speeding bullet and it seldom, if ever, slows down.",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review is filled with enthusiastic praise for the production's energy, performances, and technical elements, with vivid positive descriptions and concludes that this rock musical 'truly rocks' - a clear strong recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review is overwhelmingly positive with phrases like 'eye-popping, ear-thumping, goosebump-inducing,' 'electrifying,' and the definitive closing statement that Tommy 'truly rocks.' The critic praises virtually every aspect from performances to production values. | Gemini: The review is overwhelmingly positive, highlighting the electrifying performances, music, and production. While it mentions the dark themes, the overall tone is enthusiastic and recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:29:11.009Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3189,
-    "outputTokens": 364,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:21:14.067Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "dtliExcerpt": "The great news is that what precedes and follows this moment also stirs and tickles the senses. That’s the way this rock opera rolls, as it spins the story of a boy so deeply damaged by life – first by his parents and later by his abusive uncle and creepy cousin – that he nearly shuts down completely.",
   "sources": [

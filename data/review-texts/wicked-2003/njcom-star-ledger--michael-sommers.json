@@ -8,67 +8,58 @@
   "fullText": null,
   "showScoreExcerpt": "\"A marvel of organization and inventiveness. Lusciously composed, smartly written and beautifully staged, 'Wicked' is one of the rare shows in town that justifies a $100 ticket. The cost is easily paid back in memories alone.\"",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 84,
   "source": "show-score",
   "needsFullText": true,
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 94,
-    "confidence": "high",
+    "score": 84,
+    "confidence": "low",
     "range": {
-      "low": 87.5,
-      "high": 100
+      "low": 79,
+      "high": 89
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 90
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "A marvel of organization and inventiveness",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "one of the rare shows in town that justifies a $100 ticket",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The cost is easily paid back in memories alone",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Unqualified praise with superlatives ('marvel'), explicit value assertion, and strong endorsement of the complete theatrical experience. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong praise, indicating a must-see experience.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The excerpt contains strongly positive language like 'marvel' and 'lusciously composed' with an explicit value recommendation about justifying the high ticket price, but confidence is medium due to single excerpt warning. | Gemini: The review excerpt strongly suggests a positive recommendation, highlighting the show's inventiveness and value for money. While it's only one excerpt, the language used is quite enthusiastic.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T06:01:39.326Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:43:52.613Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 94,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 95,
-    "scoreDelta": 3,
+    "claudeScore": 88,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

@@ -11,13 +11,13 @@
     "playbill-verdict"
   ],
   "playbillVerdictUrl": "https://www.theatrely.com/post/june-squibb-finds-post-ai-humanity-in-marjorie-prime----review",
-  "assignedScore": 79,
+  "assignedScore": 80,
   "llmScore": {
-    "score": 79,
+    "score": 80,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt shows clear praise for the lead performance and direction with positive descriptors like 'exquisitely directed' and 'intelligent,' but as only curated excerpts are available, the full verdict may be more nuanced. | GPT-4o: The review uses highly positive language, praising the performances, direction, and thematic depth, indicating a strong recommendation to see the show. | Gemini: The review highlights Squibb's exceptional performance and praises the direction, indicating a positive experience overall. The description of the play as an \"intelligent prayer\" further supports a positive assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt contains exceptionally strong praise for the lead performance, direction, and cast, calling it 'intelligent' and 'exquisitely directed.' However, as only one curated excerpt is available, I score conservatively within the positive range. | GPT-4o: The review excerpt praises the performances and direction highly, using strong positive language like 'sharpest', 'emotionally precise', and 'exquisitely directed'. Despite the single excerpt warning, the language suggests a strong recommendation. | Gemini: The review praises the performances and direction, calling it an \"intelligent prayer.\" While only one excerpt is available, the positive language suggests a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,15 +38,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:49:58.482Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:35:45.236Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 82,
     "openaiScore": 90,
-    "geminiScore": 80,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",

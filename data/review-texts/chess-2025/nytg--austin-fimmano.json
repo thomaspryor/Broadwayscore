@@ -8,65 +8,57 @@
   "fullText": "Chess is a bit of a platypus of a show, made up of disparate parts that seem too good to be true. It's the brainchild of Tim Rice, who's collaborated on musicals like Evita, Jesus Christ Superstar, Aladdin, and The Lion King, with music by Benny Andersson and Björn Ulvaeus of the Swedish pop group ABBA. And yet, despite this killer résumé, the success of Chess has been elusive since its Broadway debut flopped in 1988.\n\nIt's with a laser focus that the first Broadway revival, now at the Imperial Theatre, attempts to change that, armed with a new book by Danny Strong and direction by Tony Award winner Michael Mayer. Some of their updates don't work (the heavy-handed presence of the CIA and KGB cheapens the show's original metaphor for U.S.-Russia tensions), but some do (snappy dialogue and a new narrator character make the plot much sleeker). However, the biggest draw regardless are the three leads, who may just be the most powerful voices on Broadway right now: Aaron Tveit, Lea Michele, and Nicholas Christopher.\n\nMichele, the Funny Girl star and Glee alum, plays a somewhat rigid chess second Florence Vassy. But when the chords of \"Nobody's Side\" strike up, she is in her element. Flanking her are Christopher as Anatoly Sergievsky and Tveit as Freddie Trumper, both chess champions. Together and apart, the three of them had my audience cheering and whooping after nearly every song.\n\nChristopher proves the vocal heart of the show, with sonorous pipes that bring the house down in the climactic song \"Endgame.\" Meanwhile, certified Broadway heartthrob Tveit shows off his range between the catchy \"One Night in Bangkok\" (featuring an impressive costume change that must be seen to be believed) and the soulful \"Pity the Child,\" in which rough-around-the-edges Freddie reflects on his childhood.\n\nThe set is relatively minimalist, as are the costumes: severe gray '80s pantsuits for the ensemble and monochromatic neutrals for the main cast. However, the lighting design (by Kevin Adams) adds an extra punch of dynamism, heightening tension or signifying softness.\n\nChess might not be for everyone: Diehard fans may bemoan the modern updates, while newcomers may get lost in the 2-hour-and-40-minute back-and-forth of plot that covers, essentially, two chess matches. But for those who go to Broadway musicals hoping to hear actors perform songs so powerfully you get goosebumps, you'll find that three times over.",
   "showScoreExcerpt": "\"For those who go to Broadway musicals hoping to hear actors perform songs so powerfully you get goosebumps, youâll find that three times over.\"",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 79,
   "source": "playwright-scraped",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T05:10:00.000Z",
   "llmScore": {
-    "score": 76,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 67,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 58,
-      "music": 85,
-      "performances": 91,
-      "direction": 70
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "for those who go to Broadway musicals hoping to hear actors perform songs so powerfully you get goosebumps, you'll find that three times over",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Chess might not be for everyone",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "the three of them had my audience cheering and whooping after nearly every song",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review offers a qualified recommendation based primarily on exceptional vocal performances, while acknowledging significant flaws in the book and mixed success of updates. | GPT-4o-mini: The review highlights strong performances and powerful music while acknowledging some weaknesses in the book and updates, leading to a solid positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite acknowledging flaws in the book updates, the critic clearly recommends the show based on the exceptional vocal performances of the three leads and the audience's enthusiastic response. | GPT-4o: The review acknowledges some flaws in the production updates but highlights the powerful performances of the lead actors and the audience's enthusiastic response, indicating a strong recommendation to see the show. | Gemini: The review highlights strong performances and vocal talent, while acknowledging some issues with the updated book. The overall tone suggests a positive experience, making it a recommended show with reservations.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:44:02.671Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:38:35.820Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 76,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 80,
-    "scoreDelta": 8,
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "sourceMethod": "playwright",
   "sources": [

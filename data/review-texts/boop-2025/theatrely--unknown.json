@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 79,
+  "assignedScore": 78,
   "llmScore": {
-    "score": 79,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review uses enthusiastic language about both the show and lead performer, calling it among 'the best early 20th century works' and praising Rogers as an 'instant star' with 'larger-than-life charisma.' However, this is only an excerpt, so confidence is medium. | GPT-4o: The review uses highly positive language to describe the show and its lead, suggesting a strong recommendation to see it. The terms 'bright', 'effervescent', and 'relentlessly charming' indicate a very favorable impression. | Gemini: The review compares the musical favorably to a 'best early 20th century work' and praises the lead actress as an 'instant star,' indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic draws a positive parallel between the show and 'the best early 20th century works' and praises both the production and lead performer with enthusiastic language, though this is only one excerpt so scoring conservatively within positive range. | GPT-4o: The review excerpt praises the musical as 'bright, effervescent, relentlessly charming and sexy,' and highlights a standout performance by Jasmine Amy Rogers. This suggests a positive impression, though the single excerpt and lack of a definitive rating warrant a conservative score within the Positive range. | Gemini: The review compares the musical favorably to its source material and praises the lead performance, suggesting a positive, though possibly not rave, recommendation. The single excerpt and lack of explicit recommendation language tempers the score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:44:41.571Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:18:10.133Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 80,
+    "openaiScore": 78,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

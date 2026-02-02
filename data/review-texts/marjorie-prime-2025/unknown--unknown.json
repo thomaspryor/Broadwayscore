@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 61,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 65,
-    "confidence": "low",
+    "score": 61,
+    "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 75
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -35,40 +35,38 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The play is far more disquieting, merely as a consequence of the passage of time",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "I can't ever remember ever seeing a play whose impact felt so utterly different a decade later",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "This excerpt suggests the play has gained unexpected relevance and impact over time, but 'disquieting' is ambiguous and there's no clear recommendation or evaluation of production quality.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: Single excerpt describes the play's changed impact over time but provides no clear recommendation. 'Disquieting' could be positive or negative depending on context, and the full verdict is likely in the missing text. | Gemini: The review excerpt suggests the play's impact has changed significantly over time, implying a mixed reaction. The phrase 'utterly different' suggests a notable shift in the experience, but not necessarily a negative one.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:03:03.882Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2348,
-    "outputTokens": 303,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:36:16.434Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
+  }
 }

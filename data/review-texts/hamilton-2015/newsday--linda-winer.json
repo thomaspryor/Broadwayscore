@@ -8,7 +8,7 @@
   "fullText": "Lin-Manuel Miranda and the company star in the Broadway production of \"Hamilton\" at the Richard Rodgers Theatre in Manhattan. Credit: Joan Marcus\n\nWith the delirious praise swirling around \"Hamilton\" since its Public Theater run in February, there was danger that Lin-Manuel Miranda's hip-hop masterwork would seem anticlimactic -- or at least overhyped -- at its Broadway premiere.\n\nInstead, the show -- which tells early American history in its own time but shot through with multicultural urban sensibility -- is even more nuanced, more cohesive in individual performances and its more focused finale. Most important, Miranda and director Thomas Kail have fine-tuned it without losing a shiver of its audacity and thrill.\n\nThe musical -- written and composed by its star -- manages to be radical and satirical, yet good-hearted. It is sung-through like a pop opera. But it is driven by rap's nonstop verbal and rhythmic unpredictability and, somehow, proudly indebted to jazz, '60s pop, Gilbert & Sullivan patter songs and golden-age Broadway. The jagged, sly poetry and overlapping storytelling barrel through, dense and fast, except when choreographer Andy Blankenbuehler's lusciously visceral dancers shock us in slow motion.\n\nMiranda, who plays Hamilton with wit and an exquisitely endearing inelegance, doesn't preach. Yet he and the ingenious Kail embed knowing ideals about immigration, slavery, authenticity and love. More than once, with an enthusiasm rare outside the theater today, characters urge one another to \"look around\" at \"how lucky we are to be alive right now.\"\n\nAs everyone surely knows by now, Miranda, inspired by Ron Chernow's biography, tells the story of this lost founding father, what rival Aaron Burr calls a \"bastard orphan son of a whore.\" Remembered, if at all, for being killed in a duel by Burr and being the face on the $10 bill, Hamilton went from ambitious Caribbean teen to George Washington's right-hand man. He wrote most of the Federalist Papers, establishing the federal bank and having what may have been the first sex scandal in American politics.\n\nGet the latest on celebs, TV and more.\n\nBy clicking Sign up, you agree to our privacy policy.\n\nHowever, this is anything but a one-man show. Every supporting character is a vivid personality, the virtuoso actors clearly having grand fun in Paul Tazewell's historical-yet-cool costumes and on David Korins' double-decker set with concentric turntables.\n\nDaveed Diggs remains an irresistible peacock as Lafayette and, later, Thomas Jefferson. Leslie Odom Jr. has added daring physical and vocal flair to his portrayal of Burr, as has Phillipa Soo as Hamilton's wife. Jonathan Groff is lovably evil as the deliciously snide King George, who sings a '60s revenge ditty, \"I will kill your friends and family/to remind you of my love.\"\n\nEarly in the evening, Hamilton sings, \"Don't be shocked when the history books remember me.\" Little did he know he'd make musical-theater history, too.\n\nThe Newsday app makes it easier to access content without having to log in.\n\nUnlimited Digital AccessOnly 25¢for 6 months",
   "bwwExcerpt": "lise Goldsberry's Angelica Schuyler will make you demand a spinoff musical all her own. Part of the genius of Miranda's writing is this polyphonic, block-party quality, where everyone gets their say. Linda Winer, Newsday : Instead, the show -- which tells early American history in its own time but shot through with multicultural urban sensibility -- is even more nuanced, more cohesive in individual performances and its more focused finale. Most important, Miranda and director Thomas Kail have fine-tuned it without losing a shiver of its audacity and thrill. The musical -- written and composed by its star -- manages to be radical and satirical, yet good-hearted...The jagged, sly poetry and overlapping storytelling barrel through, dense and fast, except when choreographer Andy Blankenbuehler's lusciously visceral dancers shock us in slow motion. Miranda, who plays Hamilton with wit and an exquisitely endearing inelegance, doesn't preach...However, this is anything but a one-man show. Eve",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 58,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAMILTON-Opens-on-Broadway-20150806",
@@ -16,67 +16,58 @@
   "scoreSource": "sentiment-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 89,
-    "confidence": "high",
+    "score": 58,
+    "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 53,
+      "high": 63
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 85,
-      "music": 88,
-      "performances": 93,
-      "direction": 89
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "manages to be radical and satirical, yet good-hearted",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "fine-tuned it without losing a shiver of its audacity and thrill",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "even more nuanced, more cohesive in individual performances",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review contains consistent high praise for all elements including writing, performances, direction, and choreography, with language like 'genius,' 'audacity and thrill,' and 'exquisitely endearing' indicating strong enthusiasm. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and direction, highlighting the show's audacity and emotional impact, indicating a must-see experience.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This appears to be a caption or basic factual description rather than a review with critical assessment or recommendation. No evaluative content is present to determine the critic's stance. | GPT-4o: The text provided is purely descriptive and lacks evaluative content or a clear recommendation. Without additional context or evaluative language, it is impossible to determine the critic's opinion on the production. | Gemini: The review states that Lin-Manuel Miranda and the company star in the Broadway production of 'Hamilton', which implies a positive assessment of the show.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:21:22.699Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:00:50.066Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
+    "claudeScore": 60,
+    "openaiScore": 55,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "contentTier": "excerpt",
   "wordCount": 0,
   "previousUrl": "https://www.newsday.com/entertainment/theater/hamilton-broadway-review-2015/",
   "urlDiscoveredAt": "2026-02-01T15:10:06.478Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 89,
   "isFullReview": true,
@@ -112,5 +103,6 @@
   ],
   "textStatus": "truncated",
   "archiveOrgTimestamp": "20250830035550",
-  "archiveOrgUrl": "http://web.archive.org/web/20250830035550/https://www.newsday.com/entertainment/theater/hamilton-review-even-better-on-broadway-p56633"
+  "archiveOrgUrl": "http://web.archive.org/web/20250830035550/https://www.newsday.com/entertainment/theater/hamilton-review-even-better-on-broadway-p56633",
+  "rescoreCompletedAt": "2026-02-02T00:00:50.066Z"
 }

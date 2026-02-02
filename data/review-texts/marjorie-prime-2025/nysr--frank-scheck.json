@@ -7,73 +7,57 @@
   "publishDate": "December 8, 2025",
   "fullText": "★★★★★ When Marjorie Prime first appeared off-Broadway ten years ago, it seemed like speculative science fiction. Surely, artificial creations couldn't possibly stand in for deceased loved ones with whom we're desperate to reconnect. It was a provocative idea, but too fanciful to be taken seriously.\n\nNow, in a time when people are contentedly foregoing real relationships in favor of AI-generated ones, Jordan Harrison's play seems downright dated.\n\nIt also seems sharper, more resonant, and more deeply poignant in the current Broadway revival once again directed by Anne Kaufman. Partly this is due to its first-rate cast including June Squibb, miraculously still treading the boards at age 96.\n\nSet in a nondescript suburban home nearly entirely colored in pastel shades of green (Lee Jellinek did the set design), the play begins with a living room discussion between Marjorie (Squibb) and her handsome husband Walter (Christopher Lowell). It's immediately apparent that something is a bit off, since Walter is more than a half-century younger than his wife.\n\nIt turns out that Walter is in fact Walter Prime, an artificial creation who's there to comfort Marjorie in her declining years, provided by her daughter Tess (Cynthia Nixon) and son-in-law Jon (Danny Burstein), with whom she lives. Having not yet lapsed into dementia, Marjorie is well aware that the person in front of her is not the man she married, especially when he makes mistakes concerning the facts of their life together.\n\nAs the play progresses, tragedies ensue and other characters are replaced by artificial beings. It becomes clear that this is how people in the probably not so distant future cope with the loss of loved ones.\n\nThe ingenious conceit by the playwright provides the opportunity to ponder, among other things, the indignities of aging, the unreliability of memory, the devastating effects of loss, and the intangible nature of relationships. The play does so with wit and humor, but also with wrenching emotionality.\n\nSquibb is the marquee draw, proving once again that she's become a national treasure. She doesn't miss a beat onstage, displaying the engaging feistiness of her screen persona but also conveying the pain of someone painfully aware of her physical and mental decline.\n\nNixon and Burstein are also superlative, with the former making us fully aware of the lingering trauma suffered by her brittle, sometimes unsympathetic character. Burstein brings his natural warmth to his role, especially in an emotionally devastating scene toward the end of the play.\n\nEnding with a haunting final scene in which it becomes apparent that the Primes can function quite effectively without us, Marjorie Prime is very much a play for our times.",
   "bwwExcerpt": "Squibb is the marquee draw, proving once again that she’s become a national treasure (check out her wonderful performance in the recent film Eleanor the Great). She doesn’t miss a beat onstage, displaying the engaging feistiness of her screen persona but also conveying the pain of someone painfully aware of her physical and mental decline. She’s funny as well, delivering her lines with well-honed comic timing. And her sotto voce rendition of Beyonce’s “Single Ladies (Put a Ring on It)” is worth the ticket price itself. Melissa",
-  "assignedScore": 88,
+  "assignedScore": 92,
   "source": "playwright-scraped",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MARJORIE-PRIME-Opens-On-Broadway-Starring-Cynthia-Nixon-June-Squibb-Danny-Burstein-and-More-20251208",
   "scrapedAt": "2026-01-24T04:15:00.000Z",
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 88,
+    "score": 92,
     "confidence": "high",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 87,
+      "high": 97
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 90,
-      "direction": 82
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "★★★★★",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "seems sharper, more resonant, and more deeply poignant in the current Broadway revival",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Marjorie Prime is very much a play for our times",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Five-star review with consistent praise for performances, direction, and relevance, describing the production as 'sharper' and 'more resonant' than before.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic gives 5/5 stars and uses consistently superlative language throughout - calling it 'sharper, more resonant, and more deeply poignant,' praising the 'first-rate cast,' and describing performances as 'superlative' and 'devastating.' The review concludes by definitively stating it's 'very much a play for our times.' | Gemini: The critic gives the play 5/5 stars and uses overwhelmingly positive language, calling the cast 'first-rate' and the performances 'superlative.' The conclusion that it is 'very much a play for our times' indicates a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:31:04.431Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2920,
-    "outputTokens": 330,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:34:32.337Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 88,
-    "scoreDelta": 6,
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Rave"
   },
   "bwwThumb": "Up",
   "sources": [

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,14 +20,14 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 74,
+    "score": 62,
     "confidence": "medium",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -35,7 +35,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite noting the musical lacks a 'discernible heartbeat,' the critic emphasizes it 'stays fun and fabulous' thanks to the leads, indicating a positive but qualified recommendation. | GPT-4o: The review acknowledges a lack of emotional depth ('doesn’t have a discernible heartbeat') but highlights the performances of Hilty and Simard as keeping the show enjoyable. This suggests a mixed reception with positive elements. | Gemini: The review acknowledges a significant flaw (\"doesn't have a discernible heartbeat\") but highlights the strengths of the performers, suggesting it's still \"fun and fabulous.\" This indicates a positive but not rave recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges a fundamental flaw (no discernible heartbeat) but finds redeeming value in the lead performances that keep it entertaining. Single excerpt warning requires conservative scoring within Mixed range. | GPT-4o: The review suggests that while the musical lacks depth ('doesn't have a discernible heartbeat'), the performances by Hilty and Simard make it enjoyable ('fun and fabulous'). This indicates a mixed sentiment with positive elements. | Gemini: The review acknowledges a significant flaw (\"doesn't have a discernible heartbeat\") but praises the performances, suggesting it's still enjoyable. Given the single excerpt and negative acknowledgement, I'm placing it in the lower end of the positive bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,26 +45,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:30:14.435Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:42:36.064Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 74,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 65,
+    "claudeScore": 62,
+    "openaiScore": 62,
     "geminiScore": 75,
-    "claudeBucket": "Positive",
+    "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available"

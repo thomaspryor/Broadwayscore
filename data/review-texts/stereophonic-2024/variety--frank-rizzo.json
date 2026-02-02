@@ -8,45 +8,29 @@
   "fullText": "This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. There was an error. Please try again later. There was an error please try again later. Does not meet password requirements Password must be at least 12 characters. This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. You can log in with the Vox Media account you created on We’ve sent an email with instructions for setting a new password. Sign in with your new password below.",
   "dtliExcerpt": "Audiences may feel the same way after seeing this work of theatrical virtuosity, realizing that all the tiny details, wild rhythms, and clever hooks presented on stage have added up to a work that is brave, purposeful, and rich.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 80,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:08:39.002Z",
   "dtliThumb": "Up",
   "bwwExcerpt": "Audiences may feel the same way after seeing this work of theatrical virtuosity, realizing that all the tiny details, wild rhythms, and clever hooks presented on stage have added up to a work that is brave, purposeful, and rich.",
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 80,
+    "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 88
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "work of theatrical virtuosity",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "brave, purposeful, and rich",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "emotionally stunned and still with the realization that they have just heard something truly great",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The reviewer uses exceptionally strong praise ('theatrical virtuosity', 'truly great', 'brave, purposeful, and rich') and creates an elaborate metaphor comparing the audience's experience to the band's awestruck reaction to their own masterpiece.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite truncated text, the provided excerpt clearly praises the production as 'theatrical virtuosity' that is 'brave, purposeful, and rich,' indicating strong recommendation. | GPT-4o: The review uses highly positive language, describing the production as 'theatrical virtuosity' and 'brave, purposeful, and rich,' indicating a strong recommendation. | Gemini: The review uses positive language like \"theatrical virtuosity,\" \"brave,\" \"purposeful,\" and \"rich,\" indicating a recommendation, though not an overwhelming one.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,27 +39,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:12:33.588Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2450,
-    "outputTokens": 340,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:08:46.752Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 84,
-    "openaiScore": 85,
-    "scoreDelta": 1,
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "sourceMethod": "playwright",
   "archivePath": "data/archives/reviews/stereophonic-2024/variety--frank-rizzo_2026-02-01.html",

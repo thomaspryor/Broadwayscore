@@ -8,45 +8,29 @@
   "fullText": "Get local news delivered to your inbox!\n\nBeginning of dialog window. Escape will cancel and close the window.\n\nGet up-to-the-minute news sent straight to your device.\n\nBack\n \n\n \n ×\n \n Enjoy unlimited digital access to journaltimes.com!\n \n \n\n \n \n Sorry, an error occurred.\n\n*offer available for new customers only\n\n*offer available for new customers only\n\nAccount processing issue - the email address may already exist\n\nYour account has been registered, and you are now logged in.\n\nInvalid password or account does not exist\n\nSubmitting this form below will send a message to your email with a link to change your password.\n\nAn email message containing instructions on how to reset your password has been sent to the email address listed on your account.\n\nSecure transaction.\n Secure transaction. Cancel anytime.\n\nYour gift purchase was successful!\n Your purchase was successful, and you are now logged in.\n\nA receipt was sent to your email.",
   "showScoreExcerpt": "\"Wicked makes endearingly whimsical noises, the sounds of a bona fide crowd-pleaser. Much of the rest of the time, however, the magic fades as the show pursues its rather charmless agenda as a parable about the roots of political evil.\"",
   "originalScore": null,
-  "assignedScore": 57,
+  "assignedScore": 64,
   "source": "show-score",
   "needsFullText": true,
   "sourceMethod": "scrapingbee",
   "scoreSource": "sentiment-strong-negative",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 57,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 50.5,
-      "high": 63.5
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "endearingly whimsical noises, the sounds of a bona fide crowd-pleaser",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "the magic fades as the show pursues its rather charmless agenda",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Much of the rest of the time, however",
-        "sentiment": "negative",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: Mixed review that acknowledges crowd-pleasing elements but criticizes the show's political agenda as charmless, with negative sentiment dominating the brief excerpt. | GPT-4o-mini: The review expresses a mix of whimsical enjoyment and significant disappointment in the show's thematic execution, leading to a balanced but cautious recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges the show as a 'crowd-pleaser' but criticizes its 'charmless agenda,' with Menzel's performance being the primary saving grace that prevents it from being a complete failure. | GPT-4o: The review acknowledges the show's appeal as a crowd-pleaser but criticizes its lack of charm in its political messaging. The performance of Idina Menzel is highlighted as a saving grace, indicating a mixed but somewhat positive view. | Gemini: Despite the critic's reservations about the show's plot and message, the review indicates that Idina Menzel's performance is strong enough to make the show worth seeing. This suggests a positive, but not rave, recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,20 +39,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T06:02:34.217Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:45:38.216Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 57,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 55,
-    "scoreDelta": 3,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "dtliExcerpt": "What saves 'Wicked' from the dustbin of Broadway also-rans is the ferocious talent of Idina Menzel, who plays Elphaba, the future Wicked Witch of the West.",
   "sources": [
@@ -77,7 +69,6 @@
   ],
   "contentTier": "truncated",
   "wordCount": 26,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 57,
   "isFullReview": false,
@@ -112,5 +103,6 @@
     "Word count too low: 146 (min: 300)",
     "Show title not found in text"
   ],
-  "showNotMentioned": true
+  "showNotMentioned": true,
+  "rescoreCompletedAt": "2026-02-02T00:45:38.216Z"
 }

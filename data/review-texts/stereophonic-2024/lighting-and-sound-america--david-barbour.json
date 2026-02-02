@@ -9,7 +9,7 @@
   "showScoreExcerpt": "âFocusing on an Anglo-American band whose sharp-elbowed members include two troubled couples, Stereophonic is unlikely to see Mick Fleetwood or Stevie Nicks in the audience, but, even for non-fans of the classic album Rumours, this account of internecine personal and creative struggles is hard to beatâ¦Across a luxurious three hours -- to be sure, the action never drags -- relationships crumble, friendships are betrayed, and nerve endings are given a thorough flaying...Stereophonic compels as a poignant character study and needle-sharp comedy.â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/stereophonic",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 81,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/stereophonic-2024/lighting-sound-america--david-barbour_2026-01-27.html",
@@ -28,38 +28,22 @@
   ],
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 88,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 88,
-      "performances": 90,
-      "direction": 87
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "this account of internecine personal and creative struggles is hard to beat",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Under the pinpoint direction of Daniel Aukin, everyone inhabits their roles with rare authenticity",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Stereophonic compels as a poignant character study and needle-sharp comedy",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The reviewer provides detailed praise for all aspects of the production - script, music, performances, and direction - with specific examples and enthusiastic language throughout, concluding with clear appreciation for the show as both character study and comedy.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite the truncated warning, the review consistently praises the production with phrases like 'hard to beat,' 'compels,' and detailed appreciation of performances, direction, and technical elements. The Show Score excerpt confirms the positive verdict. | GPT-4o: The review praises the play's compelling character study and comedic elements, highlighting the authenticity of performances and the effective direction. Despite the truncated text, the positive tone and detailed appreciation suggest a strong recommendation. | Gemini: The review highlights the play's strengths in character development, humor, and realism, ultimately stating that the effort to create the album is worth it, suggesting a positive recommendation. The truncated text is a concern, but the overall tone and Show Score excerpt support this assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -68,27 +52,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:10:59.406Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4270,
-    "outputTokens": 357,
-    "textSource": {
-      "type": "fullText",
-      "status": "truncated",
-      "field": "fullText",
-      "confidence": "low",
-      "reasoning": "Truncated text - may be missing final verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:06:02.345Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 90,
-    "scoreDelta": 5,
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 88,
