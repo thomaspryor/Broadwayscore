@@ -174,30 +174,45 @@ function checkCorruption(text) {
 function stripTrailingJunk(text) {
   if (!text) return text;
 
-  // Common patterns that indicate end of actual review content
-  const junkPatterns = [
-    /\n\s*(When we learn of a mistake|If you spot an error|A version of this)[^]*$/i,
-    /\n\s*(Share full article|Related Content|Advertisement|Share this)[^]*$/i,
-    /\n\s*(Running time|Tickets|At the .{0,50}Theater|Through \w+ \d+)[^]*$/i,
+  // Anchor patterns match the START of trailing junk sections (no greedy tails).
+  // We find where junk begins, then truncate from that position.
+  // Guards prevent false positives when keywords appear in review body.
+  const junkAnchors = [
+    /\n\s*(When we learn of a mistake|If you spot an error|A version of this)/i,
+    /\n\s*(Share full article|Related Content|Advertisement|Share this)/i,
+    /\n\s*(Running time|Tickets|At the .{0,50}Theater|Through \w+ \d+)/i,
     /\n\s*Learn more\s*$/i,
-    /\n\s*More from[^]*$/i,
-    /\n\s*Read more[^]*$/i,
+    /\n\s*More from/i,
+    /\n\s*Read more/i,
 
     // NYT-style related article sections (headlines followed by colons)
-    // Pattern: "Headline Title: More text" after sentence end - strip headline onward, keep the period
-    /(?<=\.)\s+[A-Z][A-Za-z\s]{5,50}:\s+[A-Z][^]*$/,
+    // Uses [ ] not \s to avoid matching across newlines
+    /(?<=\.)\s+[A-Z][A-Za-z ]{5,50}:\s+[A-Z]/,
 
-    // More explicit related content patterns
-    /\s+(Related|Also Read|You May Also Like|More Stories|Recommended)[:\s][^]*$/i,
+    // Explicit related content patterns
+    /\s+(Related|Also Read|You May Also Like|More Stories|Recommended)[:\s]/i,
 
     // Vulture/Vox related content
     /\s+See All\s*$/i,
-    /\s+More:\s+[^]*$/i,
+    /\s+More:\s+/i,
   ];
 
   let cleaned = text;
-  for (const pattern of junkPatterns) {
-    cleaned = cleaned.replace(pattern, '');
+  const originalLength = text.length;
+  const minRemaining = Math.max(200, originalLength * 0.15);
+
+  for (const pattern of junkAnchors) {
+    const match = cleaned.match(pattern);
+    if (!match) continue;
+
+    // Back-half guard: only strip if match is in the last 40% of current text.
+    // Prevents keywords like "Tickets" in page headers from eating the review.
+    if (match.index < cleaned.length * 0.6) continue;
+
+    // Minimum-remaining guard: don't strip if too little text would remain.
+    if (match.index < minRemaining) continue;
+
+    cleaned = cleaned.slice(0, match.index);
   }
 
   return cleaned.trim();
@@ -464,7 +479,8 @@ function cleanText(text) {
   cleaned = cleaned.replace(/^We may earn a commission[^.]*\.\s*/i, '');
 
   // Remove leading photo credits (e.g., "Photo: Name\n")
-  cleaned = cleaned.replace(/^Photo\s*:\s*[^\n]+[\n\s]*/i, '');
+  // Requires newline after credit to avoid eating single-line reviews
+  cleaned = cleaned.replace(/^Photo\s*:\s*[^\n]{1,200}\n[\s]*/i, '');
 
   // Remove leading whitespace and empty lines
   cleaned = cleaned.replace(/^[\s\n]+/, '');
@@ -496,9 +512,6 @@ function cleanText(text) {
 
   // Use stripTrailingJunk for thorough trailing cleanup
   cleaned = stripTrailingJunk(cleaned);
-
-  // Remove trailing metadata (theater info already handled by stripTrailingJunk)
-  cleaned = cleaned.replace(/\n\s*(?:Running time|Tickets|Through\s+\w+\s+\d+)[^]*$/i, '');
 
   // Normalize whitespace
   cleaned = cleaned.replace(/\s+/g, ' ').trim();
