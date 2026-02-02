@@ -1,81 +1,111 @@
 {
-  "runDate": "2026-02-02T15:11:50.888Z",
+  "runDate": "2026-02-02T15:15:35.774Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 5,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "uncle-vanya-2024",
+    "showFilter": "hamilton-2015",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 4,
+    "processed": 7,
+    "failed": 8,
     "skipped": 0,
-    "successRate": "20.0%"
+    "successRate": "46.7%"
   },
   "tierBreakdown": {
     "playwright": 2,
     "browserbase": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 1
+    "scrapingbee": 2,
+    "brightdata": 1,
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 2,
-    "tier1_5Attempts": 1,
+    "tier1Attempts": 7,
+    "tier1Success": 3,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier4Attempts": 2,
-    "tier4Success": 1,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 1,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.6,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 0,
+    "tier2Attempts": 8,
+    "tier2Success": 3,
+    "tier3Attempts": 4,
+    "tier3Success": 2,
+    "tier4Attempts": 20,
+    "tier4Success": 5,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 52,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "uncle-vanya-2024/broadwaynews--brittani-samuel.json"
+    "hamilton-2015/guardian--jesse-green.json",
+    "hamilton-2015/newsday--linda-winer.json",
+    "hamilton-2015/nypost--elisabeth-vincentelli.json",
+    "hamilton-2015/nypost--johnny-oleksinski.json",
+    "hamilton-2015/theatermania--adam-feldman.json",
+    "hamilton-2015/theatre-reviews-limited--david-roberts.json",
+    "hamilton-2015/ny1--roma-torre.json"
   ],
   "failed": [
-    "uncle-vanya-2024/variety--bob-verini.json",
-    "uncle-vanya-2024/vulture--helen-shaw.json",
-    "uncle-vanya-2024/deadline--greg-evans.json",
-    "uncle-vanya-2024/new-york-sun--elysa-gardner.json"
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/variety--charles-isherwood.json",
+    "hamilton-2015/observer--david-cote.json",
+    "hamilton-2015/timeout--david-cote.json",
+    "hamilton-2015/wsj--terry-teachout.json",
+    "hamilton-2015/ap--mark-kennedy.json",
+    "hamilton-2015/the-clyde-fitch-report--david-finkle.json",
+    "hamilton-2015/thisbroadsway--sandra-mcfarland.json"
   ],
   "tierDetails": {
     "playwright": [
-      "uncle-vanya-2024/broadwaynews--brittani-samuel.json"
+      "hamilton-2015/guardian--jesse-green.json",
+      "hamilton-2015/ny1--roma-torre.json"
     ],
     "browserbase": [],
-    "scrapingbee": [],
-    "brightdata": [],
+    "scrapingbee": [
+      "hamilton-2015/nypost--johnny-oleksinski.json",
+      "hamilton-2015/theatermania--adam-feldman.json"
+    ],
+    "brightdata": [
+      "hamilton-2015/hollywood-reporter--david-rooney.json"
+    ],
     "archive": [
-      "uncle-vanya-2024/variety--bob-verini.json"
+      "hamilton-2015/newsday--linda-winer.json",
+      "hamilton-2015/nypost--elisabeth-vincentelli.json",
+      "hamilton-2015/theatre-reviews-limited--david-roberts.json"
     ]
   },
   "failuresByOutlet": {
-    "Vulture": {
+    "Variety": {
       "count": 1,
-      "domain": "vulture.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
+      "domain": "variety.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Clyde Fitch Report": {
+      "count": 1,
+      "domain": "clydefitchreport.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
       "isKnownBlocked": false
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "suffs-2024/washpost--peter-marks.json",
-      "oldUrl": "https://www.washingtonpost.com/theater-dance/2024/04/19/suffs-broadway-review/",
-      "newUrl": "https://www.washingtonpost.com/entertainment/theater/2024/04/18/suffs-broadway-review/"
+      "reviewId": "hamilton-2015/guardian--jesse-green.json",
+      "oldUrl": "https://www.theguardian.com/stage/2015/aug/07/hamilton-review-broadway-musical",
+      "newUrl": "https://www.theguardian.com/stage/2015/feb/18/hamilton-review-founding-father-gets-a-hip-hop-makeover"
+    },
+    {
+      "reviewId": "hamilton-2015/nypost--johnny-oleksinski.json",
+      "oldUrl": "https://nypost.com/2015/08/06/hamilton-is-the-best-musical-to-hit-broadway-in-years/",
+      "newUrl": "https://nypost.com/2020/06/30/hamilton-review-musical-loses-edge-but-reveals-tenderness/"
     }
   ]
 }
