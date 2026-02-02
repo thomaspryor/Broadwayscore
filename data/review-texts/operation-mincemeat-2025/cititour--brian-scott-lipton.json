@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly states the show is 'very enjoyable, well-crafted and extremely inventive' and praises the performances as 'medal-worthy,' but notes several significant flaws including excessive length, forgettable music, and tonal issues that prevent a stronger recommendation. | GPT-4o: The review highlights the show's inventiveness, well-crafted nature, and enjoyable experience, despite noting some flaws like its length and reliance on farce. The overall tone is positive, recommending the show with some reservations. | Gemini: The review is overall positive, highlighting the cast's performance and inventiveness of the show. However, it also mentions issues with the length, tone, and some aspects of the score and design, indicating reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite several criticisms (overlong runtime, forgettable score, flippant tone), the critic clearly enjoyed the show and praises the performances, calling it 'very enjoyable, well-crafted and extremely inventive' with a concluding 'Bravo and brava!' | GPT-4o: The review praises the show's inventiveness, cast, and overall enjoyment despite noting some issues like the length and reliance on farce. The positive aspects outweigh the criticisms, leading to a solid recommendation. | Gemini: The review is overall positive, calling the show enjoyable and well-crafted. However, it also notes some reservations, such as the show being overlong and the score not being particularly memorable, which places it in the 'Positive' bucket but not at the high end.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,21 +37,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:28:28.972Z",
+    "scoredAt": "2026-02-02T18:48:51.111Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 74,
+    "claudeScore": 76,
     "openaiScore": 78,
-    "geminiScore": 78,
+    "geminiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

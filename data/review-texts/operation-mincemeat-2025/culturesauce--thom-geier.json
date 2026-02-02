@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review is highly positive about the performances, comedy, and creativity, but notes technical issues like muddy sound mix. The enthusiastic language about the cast being 'pitch-perfect' and the show being a 'celebration' indicates strong recommendation despite some flaws. | GPT-4o: The review praises the cast's comedic performance, the clever dialogue, and the engaging storytelling. Despite some technical issues with the sound mix, the overall tone is positive, highlighting the show's humor and heart. The truncation warning suggests caution, but the provided excerpts and context indicate a positive reception. | Gemini: The review is mostly positive, highlighting the humor, performances, and cleverness of the production. However, the truncated text and mention of a muddy sound mix suggest some reservations, preventing a higher score.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the show as a 'genre-busting celebration' with 'hilarity and heart,' compliments the 'pitch-perfect cast,' and highlights clever writing and performances. However, the truncated text and mention of sound mix issues suggest some reservations that may have been elaborated in the missing conclusion. | GPT-4o: The review praises the production's humor, clever dialogue, and strong performances, indicating a strong recommendation. Despite the truncated text, the positive tone and detailed praise suggest a high score within the Positive bucket. | Gemini: The review is generally positive, highlighting the humor, performances, and music. However, the truncated text and mention of a muddy sound mix suggest some reservations, preventing a higher score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,21 +43,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:28:33.138Z",
+    "scoredAt": "2026-02-02T18:48:55.538Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 80,
-    "geminiScore": 78,
+    "openaiScore": 81,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

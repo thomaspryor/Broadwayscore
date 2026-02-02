@@ -13,7 +13,7 @@
   "fetchedAt": "2026-01-23T04:55:04.031Z",
   "llmScore": {
     "score": 79,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 74,
       "high": 84
@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The BWW excerpt provides clear positive language ('supremely entertaining', 'inventive', 'sublime') and notes it 'has a fanatical following.' While the review critiques historical accuracy regarding Montagu's Jewish identity, this appears to be contextual criticism rather than condemnation of the show's entertainment value. | GPT-4o: Despite the truncated text warning, the review highlights the show's entertaining qualities, inventive stagecraft, and strong ensemble performance. The positive language suggests a strong recommendation, though the final verdict may be missing. | Gemini: Despite the lengthy discussion of historical inaccuracies, the review highlights entertaining aspects and inventive stagecraft. The aggregator excerpt also points to a positive reception. Given the truncated text, I'm conservatively scoring it as positive rather than rave.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The BWW excerpt shows clear positive language ('supremely entertaining,' 'inventive stagecraft,' 'sublime slapstick') indicating recommendation, though the truncated main text focuses heavily on biographical/historical context rather than direct show assessment, creating some uncertainty about the final verdict. | GPT-4o: Despite the truncated text, the excerpts provided highlight strong praise for the production's entertainment value, inventive stagecraft, and energetic performances, suggesting a highly positive recommendation. | Gemini: Despite the truncated text, the review highlights entertaining aspects and inventive stagecraft. The aggregator excerpts confirm a positive, though not rave, assessment, leading to a 'Positive' bucket score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,21 +37,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:35:52.481Z",
+    "scoredAt": "2026-02-02T18:49:06.840Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 80,
+    "previousScore": 79,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 76,
     "openaiScore": 82,
-    "geminiScore": 78,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

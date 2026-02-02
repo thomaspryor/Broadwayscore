@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges clever writing and good performances but finds the show 'tiring,' 'grating,' and 'too much,' suggesting neither strong recommendation nor complete dismissal. | GPT-4o: The review highlights both cleverness and wit but also criticizes the show for being overly frenetic and tiring. The critic appreciates some aspects like the absorbing story and certain performances but finds the overall execution grating and overly silly. | Gemini: The review highlights both positive and negative aspects. While there's cleverness and an absorbing story, the reviewer finds the hyperactivity tiring and the humor abusive, suggesting a mixed experience overall.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic finds merit in the story and acknowledges cleverness, but is clearly fatigued by the hyperactive style and finds the comedy 'abusive' and 'grating,' ending with 'it will be too much' for some audiences. | GPT-4o: The review highlights both positive aspects, such as cleverness and witty lines, and negative aspects, like the grating hyperactivity and overly silly nature. The critic finds the story absorbing but criticizes the execution, indicating a mixed reception. | Gemini: The review highlights both positive and negative aspects, such as cleverness and witty lines versus grating hyperactivity. The overall tone suggests a mixed experience, not strongly recommending or discouraging.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,12 +44,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:29:14.187Z",
+    "scoredAt": "2026-02-02T18:49:14.704Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 48,
-    "previousVersion": "5.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,

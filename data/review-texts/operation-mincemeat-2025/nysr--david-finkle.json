@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The 4/5 star rating and phrases like 'gleeful obligatory viewing,' 'extremely favorable review,' and 'joyfully welcome' indicate strong enthusiasm with minor reservations. | Gemini: The review is overwhelmingly positive, using phrases like \"zestiest\", \"mind-blowing\", \"ultimately adorable\", and \"joyfully welcome\". The critic explicitly recommends seeing the show, calling it \"gleeful obligatory viewing.\"",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating combined with overwhelmingly positive language like 'mind-blowing,' 'unremittingly tough, ultimately adorable,' and calling it 'gleeful obligatory viewing' indicates strong enthusiasm with only minor reservations. | GPT-4o: The review is overwhelmingly positive, highlighting the show's humor, creativity, and successful adaptation to a larger stage. The critic's 4/5 star rating and the enthusiastic tone throughout strongly suggest a solid recommendation. | Gemini: The review is overwhelmingly positive, highlighting the show's humor, performances, and overall quality. The critic explicitly recommends seeing it, calling it \"gleeful obligatory viewing\" and awarding it 4 out of 5 stars.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,26 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:29:28.560Z",
+    "scoredAt": "2026-02-02T18:49:17.930Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "5.0.0"
+    "previousScore": 82,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": null,
+    "openaiScore": 82,
     "geminiScore": 82,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250121",
   "rescoreReason": "fullText added after excerpt-based scoring",
