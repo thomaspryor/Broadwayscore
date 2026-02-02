@@ -1,77 +1,69 @@
 {
-  "runDate": "2026-02-02T15:19:28.317Z",
+  "runDate": "2026-02-02T15:24:25.995Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 5,
     "priority": "all",
-    "showFilter": "the-great-gatsby-2024",
+    "showFilter": "maybe-happy-ending-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 2,
+    "processed": 1,
+    "failed": 4,
     "skipped": 0,
-    "successRate": "60.0%"
+    "successRate": "20.0%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 1,
     "browserbase": 1,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 3,
+    "tier1Attempts": 4,
+    "tier1Success": 2,
     "tier1_5Attempts": 2,
     "tier1_5Success": 1,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 1,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
     "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 1,
+    "totalFailed": 3,
+    "scrapingBeeCreditsUsed": 20,
     "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 1.1,
-    "urlDiscoveryAttempts": 1,
+    "browserbaseMinutesUsed": 0.7,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
-    "the-great-gatsby-2024/guardian--adrian-horton.json",
-    "the-great-gatsby-2024/guardian--gloria-oladipo.json"
+    "maybe-happy-ending-2024/deadline--greg-evans.json"
   ],
   "failed": [
-    "the-great-gatsby-2024/nydailynews--chris-jones.json",
-    "the-great-gatsby-2024/nypost--johnny-oleksinski.json"
+    "maybe-happy-ending-2024/vulture--jackson-mchenry.json",
+    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+    "maybe-happy-ending-2024/new-york-sun--elysa-gardner.json",
+    "maybe-happy-ending-2024/nydailynews--chris-jones.json"
   ],
   "tierDetails": {
     "playwright": [
-      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
-      "the-great-gatsby-2024/guardian--adrian-horton.json",
-      "the-great-gatsby-2024/guardian--gloria-oladipo.json"
+      "maybe-happy-ending-2024/deadline--greg-evans.json"
     ],
     "browserbase": [
-      "data/review-texts/the-great-gatsby-2024/nydailynews--chris-jones.json"
+      "data/review-texts/maybe-happy-ending-2024/nydailynews--chris-jones.json"
     ],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "maybe-happy-ending-2024/vulture--jackson-mchenry.json"
+    ],
     "archive": []
   },
-  "failuresByOutlet": {
-    "New York Post": {
-      "count": 1,
-      "domain": "nypost.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
