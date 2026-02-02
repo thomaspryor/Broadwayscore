@@ -1,6 +1,9 @@
 name: Collect Review Texts
 
 on:
+  schedule:
+    # Nightly at 2 AM UTC (9 PM EST) - automated backfill of truncated/stub reviews
+    - cron: '0 2 * * *'
   workflow_dispatch:
     inputs:
       batch_size:
@@ -10,7 +13,7 @@ on:
       max_reviews:
         description: 'Maximum total reviews to process (0 = all)'
         required: false
-        default: '50'
+        default: '100'
       priority:
         description: 'Priority filter (tier1, all)'
         required: false
@@ -26,7 +29,7 @@ on:
       retry_failed:
         description: 'Retry previously failed reviews (true/false)'
         required: false
-        default: 'false'
+        default: 'true'
       stealth_proxy:
         description: 'Use ScrapingBee stealth proxy - costs 75 credits/request but better CAPTCHA bypass'
         required: false
@@ -42,11 +45,11 @@ on:
       browserbase_enabled:
         description: 'Enable Browserbase tier for CAPTCHA-heavy sites (costs ~$0.10/session)'
         required: false
-        default: 'false'
+        default: 'true'
       browserbase_max_sessions:
-        description: 'Max Browserbase sessions per run (5 recommended for parallel runs, 30 daily cap)'
+        description: 'Max Browserbase sessions per run (10 for nightly, 5 for parallel runs, 30 daily cap)'
         required: false
-        default: '5'
+        default: '10'
 
 ## PARALLEL RUNS: Max 5 simultaneous runs recommended.
 ## Browserbase daily limit is 30 sessions; default 5/run × 5 runs = 25 (safe).
