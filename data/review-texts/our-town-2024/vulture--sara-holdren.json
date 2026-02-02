@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"...with a play like Our Town — where its enduring miracle is both its granular mundanity and its immensity — the imagination is going to start firing.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/our-town-broadway",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 62,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic clearly states this production lacks the revelatory quality needed, calling it safe and middle-of-the-road. While she praises some performances (Thomas, Jones, Parsons), the overall assessment is of a production that doesn't justify its existence beyond competent execution. | Gemini: The review acknowledges some positive aspects (Parsons, Thomas, Jones) but ultimately finds the production lacking in revelatory power and feeling somewhat hodgepodge-y. It neither strongly recommends nor discourages seeing the show.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic clearly states this production is neither painful nor revelatory, treading safely down the middle. While acknowledging some strong performances (Thomas, Jones, Parsons as 'good companion'), she finds the direction lacks the necessary clarity and innovation to justify revisiting this canonical work. | GPT-4o: The review acknowledges some strengths, such as the performances of certain actors, but overall finds the production lacking in clarity and coherence, describing it as safe and not particularly innovative. | Gemini: The review acknowledges some positive aspects (Parsons, Thomas, Jones) but ultimately finds the production lacking in revelatory power and feeling hodgepodge-y. It neither recommends nor discourages strongly.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:38:39.193Z",
+    "scoredAt": "2026-02-02T18:51:11.687Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 58,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwExcerpt": "That fundamental drive — that feeling of questing clarity, of the necessity of returning to an old play to excavate its glowing, undiminished heart — is what Kenny Leon’s new Broadway production lacks. It’s not painful, but it’s far from revelatory. In certain ways it treads safely down the middle of the road — gets in, gets on with it, gets it over with, and gets out.",
   "bwwThumb": "Meh",

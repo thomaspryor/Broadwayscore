@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Michael Stuhlbarg delivers a powerhouse performance as Boris Berezovsky in this gripping political drama that feels unnervingly relevant to today's world. The production crackles with tension and intelligence.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "Michael Stuhlbarg delivers a powerhouse performance as Boris Berezovsky in this gripping political drama that feels unnervingly relevant to today's world. The production crackles with tension and intelligence.",
   "needsScoring": true,
   "llmScore": {
-    "score": 76,
-    "confidence": "medium",
+    "score": 82,
+    "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt contains strong praise for the lead performance and production quality, but with only one curated quote available, I'm scoring conservatively in the lower positive range. | GPT-4o: The review excerpt praises the performance and the production's tension and intelligence, suggesting a strong recommendation. However, due to the single excerpt warning, the confidence is medium. | Gemini: The review highlights a 'powerhouse performance' and describes the production as 'gripping' and full of 'tension and intelligence,' indicating a positive experience. However, due to the limited excerpt, a score in the middle of the 'Positive' range is appropriate.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt uses strong positive language ('powerhouse performance', 'crackles with tension and intelligence') and describes the show as 'gripping' and 'relevant', indicating clear recommendation without reservations. | GPT-4o: The excerpt praises the lead performance as 'powerhouse' and describes the production as 'gripping' and 'crackling with tension and intelligence,' indicating a strong positive recommendation. | Gemini: The review uses strong positive language like \"powerhouse performance\" and \"gripping political drama,\" indicating a positive recommendation. The phrase \"crackles with tension and intelligence\" further supports this assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,18 +43,18 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:18:46.947Z",
+    "scoredAt": "2026-02-02T18:51:34.793Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
   "textWordCount": 92,
   "archivePath": "data/archives/reviews/patriots-2024/deadline--pete-hammond_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:44:32.479Z",
+  "textFetchedAt": "2026-02-02T17:28:24.112Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -82,19 +82,19 @@
   ],
   "showNotMentioned": true,
   "ensembleData": {
-    "claudeScore": 74,
-    "openaiScore": 88,
-    "geminiScore": 78,
+    "claudeScore": 82,
+    "openaiScore": 83,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "_removedDesignation": {
     "designation": "Recommended",

@@ -10,18 +10,18 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 75,
-    "confidence": "high",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises the performances, direction, and design elements consistently, calling Leon's work 'beautiful and evocative' and the staging 'lovely.' While expressing philosophical disagreement with the play's traditional framework, the review recommends the production for its artistic merits. | Gemini: The review praises the direction, performances, and design elements, indicating a positive experience overall. However, the critic expresses a desire for a more radical interpretation of the play's themes, suggesting a reservation in their recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises the performances, design, and Leon's direction but ultimately finds the production conceptually limited, wanting something more transformative than an inclusive version of the same conventional structure. | GPT-4o: The review praises the production's evocative work and performances, particularly highlighting the director's ability to invigorate classic texts. However, it expresses a desire for a more daring challenge to conventions, indicating some reservations. | Gemini: The review praises the direction, performances, and design elements, but expresses a desire for a more radical interpretation of the play's themes. This indicates a positive but not overwhelmingly enthusiastic recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,26 +42,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:38:53.480Z",
+    "scoredAt": "2026-02-02T18:51:15.174Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": null,
+    "claudeScore": 62,
+    "openaiScore": 78,
     "geminiScore": 75,
-    "claudeBucket": "Positive",
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 16,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/our-town-2024/washpost--naveen-kumar_2026-01-30.html",
   "textFetchedAt": "2026-01-30T18:21:29.168Z",
