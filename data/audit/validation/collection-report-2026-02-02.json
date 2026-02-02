@@ -1,73 +1,72 @@
 {
-  "runDate": "2026-02-02T04:47:36.454Z",
+  "runDate": "2026-02-02T05:01:49.785Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 10,
     "priority": "all",
-    "showFilter": "redwood-2025",
+    "showFilter": "the-cottage-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 6,
-    "failed": 3,
+    "processed": 3,
+    "failed": 4,
     "skipped": 0,
-    "successRate": "66.7%"
+    "successRate": "42.9%"
   },
   "tierBreakdown": {
-    "playwright": 2,
-    "browserbase": 0,
-    "scrapingbee": 0,
+    "playwright": 1,
+    "browserbase": 2,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archive": 4
+    "archive": 1
   },
   "statistics": {
     "tier1Attempts": 3,
-    "tier1Success": 3,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier4Attempts": 8,
-    "tier4Success": 6,
+    "tier1Success": 1,
+    "tier1_5Attempts": 2,
+    "tier1_5Success": 1,
+    "tier2Attempts": 2,
+    "tier2Success": 1,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier4Attempts": 4,
+    "tier4Success": 3,
     "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
+    "scrapingBeeCreditsUsed": 10,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 1.5,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "redwood-2025/broadwaynews--brittani-samuel.json",
-    "redwood-2025/timeout--adam-feldman.json",
-    "redwood-2025/wsj--charles-isherwood.json",
-    "redwood-2025/forward-samuel-eli-shepherd--samuel-eli-shepherd.json",
-    "redwood-2025/nysr--melissa-rose-bernardo.json",
-    "redwood-2025/washpost--naveen-kumar.json"
+    "the-cottage-2023/new-york-sun--elysa-gardner.json",
+    "the-cottage-2023/observer--rex-reed.json",
+    "the-cottage-2023/amny--unknown.json"
   ],
   "failed": [
-    "redwood-2025/deadline--greg-evans.json",
-    "redwood-2025/new-york-sun--elysa-gardner.json",
-    "redwood-2025/observer--david-cote.json"
+    "the-cottage-2023/variety--naveen-kumar.json",
+    "the-cottage-2023/timeout--adam-feldman.json",
+    "the-cottage-2023/wsj--charles-isherwood.json",
+    "the-cottage-2023/theater-pizzazz--carole-di-tosti.json"
   ],
   "tierDetails": {
     "playwright": [
-      "redwood-2025/nysr--melissa-rose-bernardo.json",
-      "redwood-2025/washpost--naveen-kumar.json"
+      "the-cottage-2023/new-york-sun--elysa-gardner.json"
     ],
-    "browserbase": [],
-    "scrapingbee": [],
+    "browserbase": [
+      "data/review-texts/the-cottage-2023/observer--rex-reed.json",
+      "the-cottage-2023/observer--rex-reed.json"
+    ],
+    "scrapingbee": [
+      "the-cottage-2023/variety--naveen-kumar.json"
+    ],
     "brightdata": [],
     "archive": [
-      "redwood-2025/broadwaynews--brittani-samuel.json",
-      "redwood-2025/timeout--adam-feldman.json",
-      "redwood-2025/wsj--charles-isherwood.json",
-      "redwood-2025/forward-samuel-eli-shepherd--samuel-eli-shepherd.json"
+      "the-cottage-2023/amny--unknown.json"
     ]
   },
   "failuresByOutlet": {},
