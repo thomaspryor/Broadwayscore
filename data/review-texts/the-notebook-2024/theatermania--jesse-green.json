@@ -5,8 +5,8 @@
   "criticName": "Jesse Green",
   "url": "https://www.theatermania.com/new-york-city-theater/reviews/the-notebook_93127.html",
   "publishDate": "March 14, 2024",
-  "fullText": "The Notebook is a show that knows exactly what it is and delivers it with unflinching commitment, even when that commitment leads to emotional manipulation of the highest order.",
-  "isFullReview": false,
+  "fullText": "If you’re in LA, you have the chance to see this new movie the way it’s meant to be seen. And heard.\n\nA vivid movie deserves a vivid experience, and that's what seeing Steven Spielberg's new version of West Side Story at the El Capitan Theatre in Hollywood delivers.\n\nThe palatial venue — which the Walt Disney Company bought and restored in the late 1980s and which now showcases the studio's premieres — gives audiences a state-of-the-art experience, one that's technologically modern while still feeling like it's from another era. There's an ornate proscenium, multiple curtains that rise to fanfare before the movie, and a preshow serenade by Rob Richards on an antique Wurlitzer organ.\n\nTo commemorate the film at hand, Richards plays Hollywood standards like \"As Time Goes By,\" Broadway hits like the title song from Phantom of the Opera, and a musical memory lane of Spielberg's past hits including Raiders of the Lost Ark. The Mighty instrument will come to life at all Saturday and Sunday screenings throughout the engagement, which runs through January 2.\n\nA movie so sensitively directed by Spielberg could even entrance a viewer on their grandparents' 16-inch portable black-and-white TV, yet the rich colors of Janusz Kamiński's cinematography dazzles on the El Capitan screen, which comes with a digital cinema package. Leonard Bernstein and Stephen Sondheim's vibrant score sounds astonishing on the theater's Dolby Vision audio system.\n\nIn addition, the El Capitan also displays several of Paul Tazewell's costumes for the film, including Anita's striking yellow dress with a red ruffle from the \"America\" number, and offers a photo op either among the costumes or in front of a wall with West Side Story graffitied upon it. Gold Members of Disney's D23 organization will receive incentives including complimentary popcorn, a bottled beverage, and a commemorative poster. VIP ticket purchasers will also receive a hat and tote bag.\n\nCome March 2022, 20th Century Studios's new West Side Story could make Oscar history by being the first remake to win Best Picture after its original had also taken the gold. A record-breaker deserves to be seen in its best light and sound, surrounded by Hollywood glitz. The El Capitan offers that full experience.\n\nReview: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Every Step Has Meaning in Anne Gridley’s Watch Me Walk \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Leopold Bloom for Rookies and Pros in a Hilarious Ulysses \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre.",
+  "isFullReview": true,
   "dtliExcerpt": "The Notebook is a show that knows exactly what it is and delivers it with unflinching commitment, even when that commitment leads to emotional manipulation of the highest order.",
   "originalScore": null,
   "assignedScore": 64,
@@ -65,5 +65,41 @@
     "modelAgreement": "2/3 models agree: Mixed"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 64,
+  "textWordCount": 471,
+  "archivePath": "data/archives/reviews/the-notebook-2024/theatermania--jesse-green_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T05:07:05.668Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Insufficient text: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Show title not found in text"
+  ]
 }
