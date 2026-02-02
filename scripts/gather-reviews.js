@@ -1228,6 +1228,31 @@ function createReviewFile(showId, reviewData) {
   review.contentTier = tier.contentTier;
   review.contentTierReason = tier.tierReason;
 
+  // Date-based production guard: warn if review was published >60 days before
+  // the show's earliest date (previews/opening). Likely from an off-Broadway,
+  // West End, or TV production rather than the Broadway run.
+  if (review.publishDate) {
+    try {
+      const showsPath = path.join(__dirname, '..', 'data', 'shows.json');
+      const showsJSON = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+      const show = showsJSON.shows.find(s => s.id === showId);
+      if (show) {
+        const earliest = show.previewsStartDate || show.openingDate;
+        if (earliest) {
+          const pubDate = new Date(review.publishDate);
+          const earliestDate = new Date(earliest);
+          const daysBefore = (earliestDate - pubDate) / (1000 * 60 * 60 * 24);
+          if (daysBefore > 60) {
+            console.log(`    ⚠️  WARNING: Review published ${Math.round(daysBefore)} days before show's earliest date (${earliest}).`);
+            console.log(`       Likely from a prior production. Flagging as wrongProduction.`);
+            review.wrongProduction = true;
+            review.wrongProductionNote = `Auto-flagged: published ${Math.round(daysBefore)} days before show earliest date ${earliest}`;
+          }
+        }
+      }
+    } catch (e) {}
+  }
+
   fs.writeFileSync(filepath, JSON.stringify(review, null, 2));
   console.log(`    ✓ Created ${filename}`);
   return true;
