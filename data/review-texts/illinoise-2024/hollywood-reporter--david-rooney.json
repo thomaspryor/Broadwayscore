@@ -72,8 +72,7 @@
   "previousLlmScore": 84,
   "rescoreCompletedAt": "2026-01-29T14:31:51.818Z",
   "truncationSignals": [
-    "no_ending_punctuation",
-    "possible_mid_word_cutoff"
+    "no_ending_punctuation"
   ],
   "textQualityOverride": "batch-fix-2026-01-30",
   "contentTier": "complete",
@@ -81,7 +80,7 @@
   "isFullReview": true,
   "textWordCount": 1414,
   "archivePath": "data/archives/reviews/illinoise-2024/hollywood-reporter--david-rooney_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T16:32:29.544Z",
+  "textFetchedAt": "2026-02-02T23:11:57.700Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -96,5 +95,6 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250826075828",
   "archiveOrgUrl": "http://web.archive.org/web/20250826075828/https://www.hollywoodreporter.com/lifestyle/arts/illinoise-review-sufjan-stevens-justin-peck-broadway-theater-1235882171/",
-  "duplicateTextOf": "hollywood-reporter--unknown.json"
+  "duplicateTextOf": "hollywood-reporter--unknown.json",
+  "tierReason": "Full review text"
 }
