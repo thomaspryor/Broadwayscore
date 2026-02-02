@@ -9,18 +9,18 @@
   "showScoreExcerpt": "“What makes the musical hard for first-time audiences is the fact that it’s like a jigsaw puzzle doled out one piece at a time, so you don’t see a complete picture until the last piece is placed and the show is over...That’s why ‘Merrily We Roll Along’ is art and not comfortably commercial theater.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/merrily-we-roll-along-broadway",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 64,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 76,
-    "confidence": "medium",
+    "score": 64,
+    "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 59,
+      "high": 69
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic frames the show's complexity and non-commercial nature as artistic virtues rather than flaws, suggesting appreciation for what makes it challenging and worthwhile, though acknowledging it's not easily accessible. | GPT-4o: The review acknowledges the show's artistic value but highlights its challenging structure, suggesting it's not easily entertaining. This indicates a mixed recommendation, appreciating the art but recognizing it may not appeal to all audiences. | Gemini: The review positions the show as 'art' rather than 'comfortably commercial theater,' suggesting it's worth seeing despite its challenging nature. The reviewer implies that the show's artistic merit outweighs its difficulty for some audiences.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges the show as 'good, or even great, art' but describes feeling alienated during the actual viewing experience, comparing it to 'being a stranger at a party.' This creates a complex assessment that neither fully recommends nor discourages attendance. | GPT-4o: The review acknowledges the artistic merit and thought-provoking nature of the production, but also highlights feelings of alienation and issues with character development, leading to a mixed but somewhat appreciative assessment. | Gemini: The review highlights both positive and negative aspects of the production. While praising certain performances and the overall artistic merit, it also notes issues with audience engagement and character development, leading to a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,32 +38,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:34:46.248Z",
+    "scoredAt": "2026-02-02T18:37:54.764Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 52,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 65,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
+    "claudeScore": 62,
+    "openaiScore": 67,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 11,
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "low-conf: prompt=3.0.0, delta=18, upgrading to V5 + 3 models",
   "previousLlmScore": 69,
   "archivePath": "data/archives/reviews/merrily-we-roll-along-2023/variety--trish-deitch_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:42:06.767Z",
+  "textFetchedAt": "2026-02-02T16:38:08.777Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -77,11 +77,11 @@
   "archiveOrgTimestamp": "20251207021119",
   "archiveOrgUrl": "http://web.archive.org/web/20251207021119/https://variety.com/2023/legit/reviews/merrily-we-roll-along-review-broadway-daniel-radcliffe-jonathan-groff-lindsay-mendez-1235750477/",
   "rescoreCompletedAt": "2026-02-01T15:36:46.231Z",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 1058,
   "isFullReview": true,
   "textWordCount": 1058,
   "textQuality": "full",
-  "textStatus": "complete",
-  "tierReason": "Full review text"
+  "truncationSignals": [],
+  "textStatus": "complete"
 }

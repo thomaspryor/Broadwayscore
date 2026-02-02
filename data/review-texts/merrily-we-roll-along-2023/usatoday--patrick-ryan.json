@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'as close to perfect as Broadway gets,' 'the most top-to-bottom perfect production of them all,' and praising every aspect from performances to direction with unqualified enthusiasm. | Gemini: The review uses extremely positive language such as \"splendid and shattering revival\" and \"top-to-bottom perfect production\" indicating a rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The headline declares the show 'as close to perfect as Broadway gets' and the review concludes it's 'the most top-to-bottom perfect production of them all.' The critic uses superlative language throughout, calling it 'splendid and shattering' and praising every element from performances to direction. | GPT-4o: The review is overwhelmingly positive, praising the revival as 'splendid and shattering' and 'the most top-to-bottom perfect production of them all.' The critic highlights the performances, direction, and production quality as exceptional, making it a must-see. | Gemini: The review is overwhelmingly positive, calling the revival \"splendid and shattering\" and \"the most top-to-bottom perfect production of them all.\" The critic praises the direction, performances, and orchestrations, indicating a very strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,26 +42,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:34:38.918Z",
+    "scoredAt": "2026-02-02T18:37:51.031Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 95,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 95,
-    "openaiScore": null,
+    "claudeScore": 94,
+    "openaiScore": 95,
     "geminiScore": 95,
     "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 0,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 94,

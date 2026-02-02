@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'transcendent,' a 'theatrical miracle,' and praising 'career-best performances.' The enthusiastic tone and repeated use of words like 'miracle' and 'heaven' indicate an unmissable recommendation. | GPT-4o: The review is overwhelmingly positive, describing the production as 'transcendent' and 'a theatrical miracle.' The critic praises the performances as 'career-best' and highlights the emotional impact of the show, making it a must-see. | Gemini: The review is overwhelmingly positive, using phrases like \"transcendent production,\" \"career-best performances,\" and \"theatrical miracle.\" The critic clearly believes this production is exceptional and a must-see.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic calls this a 'transcendent production' and 'theatrical miracle' with 'career-best performances,' describing it as achieving what previous productions failed to do and delivering genuine emotional impact. | GPT-4o: The review is overwhelmingly positive, describing the production as 'transcendent' and 'a theatrical miracle'. The critic praises the performances as 'career-best' and highlights the emotional impact of the show, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"transcendent productions\" and \"musical-comedy heaven.\" The critic praises the performances as career-best and calls the production a \"theatrical miracle,\" indicating a very strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,12 +39,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:35:20.365Z",
+    "scoredAt": "2026-02-02T18:38:10.103Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
