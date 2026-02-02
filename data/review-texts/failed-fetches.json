@@ -5632,18 +5632,6 @@
     "timestamp": "2026-02-01T23:58:24.997Z"
   },
   {
-    "reviewId": "harmony-2023/the-new-york-sun--elysa-gardner.json",
-    "showId": "harmony-2023",
-    "outlet": "The New York Sun",
-    "critic": "Elysa Gardner",
-    "url": "https://www.nysun.com/article/with-harmony-barry-manilow-and-bruce-sussman-offer-a-musical-that-is-almost-defiantly-life-affirming-and-joyous",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
-    "textLength": 628,
-    "timestamp": "2026-02-01T23:58:38.228Z"
-  },
-  {
     "reviewId": "harmony-2023/timeout--adam-feldman.json",
     "showId": "harmony-2023",
     "outlet": "Time Out New York",
@@ -5654,18 +5642,6 @@
     "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
     "textLength": 7826,
     "timestamp": "2026-02-01T23:58:55.777Z"
-  },
-  {
-    "reviewId": "harry-potter-2021/national-review--kyle-smith.json",
-    "showId": "harry-potter-2021",
-    "outlet": "National Review",
-    "critic": "Kyle Smith",
-    "url": "https://www.nationalreview.com/2018/04/harry-potter-broadway-play-turning-point-for-american-theater/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Paywall/subscription prompt: \"paywall\"",
-    "textLength": 6457,
-    "timestamp": "2026-02-02T00:00:32.556Z"
   },
   {
     "reviewId": "harry-potter-2021/timeout--adam-feldman.json",
@@ -6770,5 +6746,29 @@
     "garbageReason": "Ad blocker message: \"turn off your ad block\"",
     "textLength": 582,
     "timestamp": "2026-02-02T03:27:10.135Z"
+  },
+  {
+    "reviewId": "harmony-2023/the-new-york-sun--elysa-gardner.json",
+    "showId": "harmony-2023",
+    "outlet": "The New York Sun",
+    "critic": "Elysa Gardner",
+    "url": "https://www.nysun.com/article/with-harmony-barry-manilow-and-bruce-sussman-offer-a-musical-that-is-almost-defiantly-life-affirming-and-joyous",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
+    "textLength": 628,
+    "timestamp": "2026-02-02T03:28:15.414Z"
+  },
+  {
+    "reviewId": "harry-potter-2021/national-review--kyle-smith.json",
+    "showId": "harry-potter-2021",
+    "outlet": "National Review",
+    "critic": "Kyle Smith",
+    "url": "https://www.nationalreview.com/2018/04/harry-potter-broadway-play-turning-point-for-american-theater/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"paywall\"",
+    "textLength": 6457,
+    "timestamp": "2026-02-02T03:29:08.170Z"
   }
 ]
