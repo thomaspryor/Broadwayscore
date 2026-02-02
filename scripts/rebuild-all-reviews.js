@@ -287,6 +287,13 @@ function isJunkExcerpt(text) {
     /^(Facebook|Twitter|Pinterest|Threads)\s+(Twitter|Facebook|Pinterest|X\b)/i,  // Social sharing buttons
     /^Visit the Site/i,                                 // Cititour show info metadata
     /^Tickets from \$/i,                                // Ticket pricing metadata
+    /By clicking submit/i,                              // Observer privacy consent
+    /<a\s+href=/i,                                      // Raw HTML in text
+    /^Home\s*[>|]/i,                                    // Breadcrumb navigation (Mashable)
+    /newsletter in your inbox/i,                        // Newsletter signup (Time Out)
+    /Get all the top news.*discount/i,                  // Newsletter promo (BWW)
+    /Open\/Close Dates/i,                               // Show metadata (Cititour)
+    /\bprivacy policy\b/i,                              // Privacy/legal boilerplate
   ];
 
   for (const pattern of junkPatterns) {
@@ -337,6 +344,14 @@ function cleanExcerpt(text, aggressive = false) {
   if (nextCriticMatch && nextCriticMatch.index > 50) {
     cleaned = cleaned.substring(0, nextCriticMatch.index + 1);
   }
+
+  // Strip Observer privacy consent and similar trailing boilerplate
+  cleaned = cleaned.replace(/\s*By clicking submit[^]*$/i, '');
+  cleaned = cleaned.replace(/\s*<a\s+href=[^]*$/i, '');
+  // Strip LA Times / newspaper copyright footers
+  cleaned = cleaned.replace(/\s*Copyright ©[^]*$/i, '');
+  // Strip "Visit the Site" show metadata (Cititour)
+  cleaned = cleaned.replace(/\s*Visit the Site\S*[^]*$/i, '');
 
   // Strip trailing "Read more" / "Continue reading" / "Read the full review"
   cleaned = cleaned.replace(/\s*(Read more|Continue reading|Read the full review)\.?\s*$/i, '');
@@ -470,6 +485,14 @@ function extractExcerptFromFullText(fullText, showTitle) {
     if (/\bin\s+[""][^""]+[""]\s*\.\s*$/i.test(sentence) && sentence.length < 120) continue;
     // Skip sentences with embedded metadata (author name + date + number concatenated)
     if (/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2},\s+\d{4}\s+\d+\s+/i.test(sentence) && sentence.indexOf('Photo') !== -1) continue;
+    // Skip breadcrumb navigation ("Home > Entertainment...")
+    if (/^Home\s*[>|]/i.test(sentence)) continue;
+    // Skip privacy/consent boilerplate ("By clicking submit...")
+    if (/By clicking submit/i.test(sentence)) continue;
+    // Skip newsletter/signup prompts
+    if (/newsletter|sign up for|subscribe to|Get all the top news/i.test(sentence)) continue;
+    // Skip raw HTML
+    if (/<a\s+href=/i.test(sentence)) continue;
 
     excerpt += (excerpt ? ' ' : '') + sentence;
 
@@ -484,9 +507,10 @@ function extractExcerptFromFullText(fullText, showTitle) {
   // Strip trailing "Read more." or similar
   excerpt = excerpt.replace(/\s*Read more\.?\s*$/i, '');
 
-  // Reject if excerpt is ad code, URL, or junk
+  // Reject if excerpt is ad code, URL, HTML attributes, or junk
   if (/defineSlot|setTargeting|blogherads|adsbygoogle|googletag/i.test(excerpt)) return null;
   if (/^https?:\/\//i.test(excerpt)) return null;
+  if (/data-\w+="/i.test(excerpt)) return null;  // Raw HTML data attributes
 
   // Reject if starts mid-word (lowercase with no preceding context)
   if (/^[a-z]/.test(excerpt)) {
@@ -1120,7 +1144,11 @@ showDirs.forEach(showId => {
         url: data.url || null,
         publishDate: data.publishDate || null,
         originalRating: data.originalScore || null,
-        pullQuote: normalizeQuoteWrapping(selectBestExcerpt(data)),
+        pullQuote: (() => {
+          const raw = selectBestExcerpt(data);
+          if (raw && isJunkExcerpt(raw)) return null;
+          return normalizeQuoteWrapping(raw);
+        })(),
         dtliThumb: data.dtliThumb || null,
         bwwThumb: data.bwwThumb || null,
         contentTier: data.contentTier || 'none'
