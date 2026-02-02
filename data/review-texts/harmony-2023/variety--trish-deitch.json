@@ -63,18 +63,12 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 61,
   "archivePath": "data/archives/reviews/harmony-2023/variety--trish-deitch_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T01:46:45.347Z",
+  "textFetchedAt": "2026-02-02T02:31:32.681Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "404 - Page not found"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],

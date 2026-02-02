@@ -6,7 +6,7 @@
   "url": "https://www.hollywoodreporter.com/lifestyle/arts/grey-house-broadway-review-1235521623/",
   "publishDate": "May 31, 2023",
   "fullText": "On the plane after dropping her children off to her ex, the lyrics would pour out of Kelly Clarkson.\n\n\"To be just frank,\" the star says, \"there would be times I’d fly my kids to my ex and then I’d have to fly back and then wake back up hours later for work again. And I was exhausted physically, mentally, emotionally. On those flights back when I’m by myself, those were the really hard moments. And that’s when a lot of the songs were written because there’s so much that was going on and I was processing so much. Honestly, a lot of the songs were written in those moments on the way back.\"",
-  "isFullReview": true,
+  "isFullReview": false,
   "dtliExcerpt": "The play's central conceit is ingenious, and director Joe Mantello orchestrates the creeping dread with masterful precision.",
   "originalScore": null,
   "assignedScore": 78,
@@ -66,9 +66,9 @@
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
-  "textWordCount": 2618,
-  "archivePath": "data/archives/reviews/grey-house-2023/hollywood-reporter--david-rooney_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T18:51:10.086Z",
+  "textWordCount": 114,
+  "archivePath": "data/archives/reviews/grey-house-2023/hollywood-reporter--david-rooney_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T02:28:27.012Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -81,13 +81,13 @@
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "CAPTCHA or access blocked"
+      "error": "Paywall detected - login may have failed"
     },
     {
       "tier": 2,
       "method": "scrapingbee",
       "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
     },
     {
       "tier": 3,
