@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"The production is so powerfully sung and deeply felt that it overwhelms. Maybe these characters have false dreams, and maybe the showâs idea of hope is impossibly naÃ¯ve, but it lingers.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/ragtime-broadway",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 78,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic acknowledges flaws ('thudding sentimentality,' 'not a truly great musical') but consistently praises the production's growth, stellar performances, and emotional impact, concluding it's 'impossible to dismiss' despite being 'easy to quibble with.' | Gemini: The review acknowledges flaws and moments of being \"overliteral\" but ultimately concludes that the high points make the show \"impossible to dismiss.\" This indicates a positive recommendation with reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges the show's flaws ('thudding sentimentality', 'not a truly great musical') but ultimately finds it worth seeing due to strong performances and effective direction that elevates the material beyond its limitations. | GPT-4o: The review highlights the production's strengths, particularly the performances and orchestration, and concludes with a strong endorsement despite minor reservations. The overall tone is enthusiastic and appreciative. | Gemini: The review is generally positive, highlighting strong performances and impactful moments, while also acknowledging some flaws. The concluding sentence indicates a recommendation despite reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:13:36.840Z",
+    "scoredAt": "2026-02-02T18:59:27.801Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 78,
+    "claudeScore": 75,
+    "openaiScore": 82,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "Ragtime settles into a richer and more internal mode quickly, in a large part due to the textured performances of its leads and the thought they’ve applied to Ahrens and Flaherty’s score.",
   "bwwExcerpt": "The fantasy of endless space is what matters, a great chimeric promise, this production understands, that both sustains the nation and goes unfulfilled. Even America has an end. Ragtime, with its thudding sentimentality, is not a truly great musical, but deBessonet has enough finesse to convince you that it might come close.",

@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite missing some epic elements of the original production, the critic praises the cast performances, vocal work, and acknowledges the show's touching qualities while noting it's 'fair enough' for different times. | GPT-4o: The review acknowledges some changes and lacks in the production but ultimately praises the cast's performance and the emotional impact of the show, indicating a positive recommendation. | Gemini: The review highlights the strengths of the cast and the enduring power of the score, but also notes the lack of an overarching visual statement and a shift in focus away from the epic scope of the original production. This suggests a recommendation with reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic appreciates the strong performances and vocals while acknowledging the production's different approach from the original. Despite missing some epic elements, the review concludes positively about the cast's strengths and the show's enduring appeal. | GPT-4o: The review acknowledges some changes and omissions in the new production but ultimately praises the cast's performance and the emotional impact of the show, recommending it despite some reservations about the staging choices. | Gemini: The review acknowledges missing the epic feel of the original but praises the cast's performances and the focus on individual stories. It's a recommendation with reservations, highlighting both strengths and weaknesses.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:10:43.956Z",
+    "scoredAt": "2026-02-02T18:58:37.922Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 80,
-    "geminiScore": 75,
+    "openaiScore": 78,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

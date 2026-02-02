@@ -9,16 +9,16 @@
   "bwwExcerpt": "“Ragtime,” like “Les Miz,” gives anthems a very bad name. DeBessonet emphasizes their excessiveness by having her cast, especially Joshua Henry in the Coalhouse role, hold on to a note well passed its sell-by date. It’s difficult to tell if people are applauding mid-song because they’re impressed by Henry’s lung power or if they just want him to get off the note and finish the song. DeBessonet’s blunt direction only encourages us to applaud before the actors have finished singing.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 45,
   "source": "dtli",
   "dtliThumb": "Down",
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 44,
-    "confidence": "high",
+    "score": 45,
+    "confidence": "medium",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 40,
+      "high": 50
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The critic consistently criticizes the production's direction, sound design, book adaptation, and overall execution, calling it pompous and numbing while acknowledging only a few bright spots. | Gemini: The review is largely negative, criticizing the direction, book, and sound design. While acknowledging some vocal strengths, the overall assessment is unfavorable, leading to a negative classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: While acknowledging some strong vocal performances, the critic systematically criticizes the direction, book, sound design, and overall execution, describing it as pompous and numbing with only brief flashes of what works. | GPT-4o: The review criticizes the production for its lack of humor, poor direction, and over-reliance on amplification, resulting in a disappointing experience. The negative tone and specific criticisms suggest a clear recommendation to skip the show. | Gemini: The review is largely negative, criticizing the book, direction, and sound design. While the performers are praised, the overall assessment is that the production falls short.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:13:08.180Z",
+    "scoredAt": "2026-02-02T18:59:17.348Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 45,
-    "previousVersion": "5.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": null,
+    "openaiScore": 48,
     "geminiScore": 45,
     "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "scoreDelta": 3,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Negative"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "dtliExcerpt": "“Ragtime,” like “Les Miz,” gives anthems a very bad name. DeBessonet emphasizes their excessiveness by having her cast, especially Joshua Henry in the Coalhouse role, hold on to a note well passed its sell-by date. It’s difficult to tell if people are applauding mid-song because they’re impressed by Henry’s lung power or if they just want him to get off the note and finish the song. DeBessonet’s blunt direction only encourages us to applaud before the actors have finished singing.",
   "sources": [

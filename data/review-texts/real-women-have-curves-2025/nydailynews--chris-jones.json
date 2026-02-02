@@ -16,7 +16,7 @@
   "bwwThumb": null,
   "llmScore": {
     "score": 78,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 73,
       "high": 83
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic gives an A rating and finds the show 'entertaining and empowering' with strong performances, though notes the plot is derivative and predictable. The positive elements outweigh the criticisms. | Gemini: The review acknowledges plot issues but praises the score, choreography, and the celebration of garment workers, indicating a positive overall experience. The critic also notes the audience's positive reception.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic gives an 'A' rating and clearly recommends the show, praising the performances, choreography, and celebration of garment workers, while acknowledging the predictable plot as secondary to the overall experience. | GPT-4o: The critic's original rating of 'A' strongly suggests a rave review. The review text is filled with positive language about the performances, direction, and overall experience, indicating a strong recommendation to see the show. | Gemini: Despite acknowledging the derivative plot, the critic praises the show's celebration of garment workers, the performances, and the choreography. The critic's \"A\" rating also strongly suggests a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,26 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:21:27.093Z",
+    "scoredAt": "2026-02-02T19:00:18.260Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 78,
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/real-women-have-curves-2025/nydailynews--chris-jones_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:41:28.449Z",

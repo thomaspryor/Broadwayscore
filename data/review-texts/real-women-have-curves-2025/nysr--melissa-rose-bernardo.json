@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic gives 4/5 stars and uses positive language throughout, praising performances, design, and score while acknowledging some weak lyrics. The tone is enthusiastic and recommending despite minor flaws. | Gemini: The critic gives the show 4 out of 5 stars and highlights the strong performances and engaging story. While there's mention of 'cringey lyrics,' the overall tone is positive, indicating a recommendation with minor reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and enthusiastic praise for performances, direction, and production values clearly indicate a positive recommendation, despite some criticism of 'cringey lyrics' that prevents it from being a stronger endorsement. | GPT-4o: The review is filled with praise for the performances, direction, and music, indicating a strong recommendation. The original 4/5 star rating aligns with a high positive score. | Gemini: The review is overwhelmingly positive, highlighting strong performances, vibrant music, and an engaging story. The 4/5 star rating reinforces this positive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:21:41.561Z",
+    "scoredAt": "2026-02-02T19:00:22.282Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-REAL-WOMEN-HAVE-CURVES-Opens-on-Broadway-20250426",
   "archivePath": "data/archives/reviews/real-women-have-curves-2025/nysr--melissa-rose-bernardo_2026-01-29.html",

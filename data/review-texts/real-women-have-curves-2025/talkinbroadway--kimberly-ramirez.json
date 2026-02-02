@@ -19,7 +19,7 @@
   ],
   "llmScore": {
     "score": 76,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 71,
       "high": 81
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The text is truncated but the available excerpt shows clear positive language ('pulses with spirit', 'bold and defiantly optimistic', 'vibrant new musical', 'gloriously championed') indicating a positive recommendation, though the incomplete nature prevents a higher confidence rating. | GPT-4o: The review text is truncated, and the provided excerpt suggests a vibrant and optimistic spirit but also hints at potential bias. Without a clear positive or negative verdict, it falls into the mixed category. | Gemini: The review uses positive language like \"vibrant\" and \"gloriously championed\" indicating a positive recommendation. The phrase \"bold and defiantly optimistic\" further supports this classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses strongly positive descriptors ('pulses', 'chingona spirit', 'bold', 'defiantly optimistic') that suggest genuine admiration for the production's energy and attitude, despite acknowledging bias challenges. | GPT-4o: The review highlights the show's bold and optimistic spirit, suggesting a positive experience despite acknowledging some bias. The tone implies a recommendation, though not without reservations. | Gemini: The review excerpt suggests a positive, albeit qualified, recommendation. The phrase \"bold and defiantly optimistic\" indicates a positive experience, while \"relentlessly biased\" suggests a reservation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,27 +43,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:22:27.191Z",
+    "scoredAt": "2026-02-02T19:00:41.354Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "3.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 65,
+    "openaiScore": 78,
     "geminiScore": 75,
     "claudeBucket": "Positive",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 11,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
@@ -94,8 +94,6 @@
   "rescoreCompletedAt": "2026-01-29T14:31:52.007Z",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
-  "contentTier": "excerpt",
-  "previousUrl": "https://www.talkinbroadway.com/page/world/index.html",
-  "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "contentTier": "needs-rescrape",
+  "previousUrl": "https://www.talkinbroadway.com/page/world/index.html"
 }

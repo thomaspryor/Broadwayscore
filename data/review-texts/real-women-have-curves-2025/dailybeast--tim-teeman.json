@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the standout 'Curves' number, celebrates the diverse cast and themes, but notes the show is 'formulaic' and performances 'occasionally flatten.' Overall tone is appreciative with clear recommendation despite acknowledged flaws. | GPT-4o: The review highlights the show's powerful and joyous moments, particularly the 'Curves' number, and praises the performances, humor, and overall sentiment. Despite noting some formulaic elements, the critic's tone is overwhelmingly positive, emphasizing the show's sincerity, heart, and audience reception. | Gemini: The review highlights several positive aspects of the show, including the performances, humor, and overall message. While acknowledging some formulaic elements, the reviewer ultimately conveys a positive impression and recommends seeing it.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises key performances, highlights the show's cultural importance and joy, notes audience enthusiasm, but acknowledges formulaic plotting and occasional flat performances. | GPT-4o: The review highlights the show's strong performances, engaging songs, and positive audience reactions, indicating a solid recommendation with enthusiastic praise for its sincerity and humor. | Gemini: The review highlights many positive aspects of the show, including the performances, music, and themes. While acknowledging that the show is somewhat formulaic, the critic ultimately recommends it due to its sincerity, heart, and humor.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,12 +36,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:20:56.110Z",
+    "scoredAt": "2026-02-02T18:59:53.690Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,

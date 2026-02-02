@@ -6,7 +6,7 @@
   "url": "https://deadline.com/2025/04/real-women-have-curves-broadway-review-1236378219/",
   "publishDate": "April 27, 2025",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 80,
   "humanReviewScore": 48,
   "humanReviewNote": "Full text in garbageFullText is clearly negative: 'too few moments that soar', 'trite and familiar', 'flattens the experience'. LLM misled by cherry-picked positive ShowScore excerpt.",
   "dtliThumb": "Meh",
@@ -17,11 +17,11 @@
   "showScoreExcerpt": "\"funny, tender, compassionate and so well-performed by the eight women on stage that it earned a mid-show standing ovation the night I was in attendance.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/real-women-have-curves-the-musical-broadway",
   "llmScore": {
-    "score": 78,
+    "score": 80,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows clear praise for the performances and emotional impact, with the mid-show standing ovation being particularly strong evidence of quality, though the truncated nature and contradictory aggregator context creates some uncertainty about the full verdict. | GPT-4o: The review highlights the strong performances and emotional impact of the show, culminating in a mid-show standing ovation, which indicates a strong positive reception. | Gemini: The review excerpt highlights positive aspects like humor, tenderness, compassion, and strong performances, suggesting a positive but not overwhelmingly enthusiastic recommendation. The mid-show standing ovation is a strong indicator of audience appreciation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite aggregator warnings about 'flat' verdicts, this excerpt shows strong praise for performances and audience response. The mid-show standing ovation and positive descriptors indicate genuine enthusiasm, though limited text prevents higher confidence. | GPT-4o: The review highlights the show's humor, tenderness, and compassion, along with a strong performance by the cast, culminating in a mid-show standing ovation, indicating a strong positive reception. | Gemini: The review highlights positive aspects like humor, tenderness, compassion, and strong performances, suggesting a positive overall experience despite the 'Flat' aggregator verdicts.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,15 +42,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:21:03.016Z",
+    "scoredAt": "2026-02-02T18:59:57.147Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 45,
-    "previousVersion": "3.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 82,
     "openaiScore": 82,
     "geminiScore": 75,
     "claudeBucket": "Positive",

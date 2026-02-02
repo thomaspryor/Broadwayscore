@@ -8,15 +8,15 @@
   "showScoreExcerpt": "\"What he delivers in Ragtime is, quite simply, some of the most magnificent singing I have ever heard on Broadway\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/ragtime-broadway",
   "originalScore": "4/5",
-  "assignedScore": 92,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 92,
+    "score": 89,
     "confidence": "medium",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The superlative language 'most magnificent singing I have ever heard on Broadway' indicates exceptional praise, and the 4/5 rating confirms this is a strong positive recommendation. | GPT-4o: The critic's original rating of 4/5 suggests a strong positive recommendation. The key quote highlights exceptional singing, indicating a high level of praise for the production. | Gemini: The critic uses extremely strong positive language, calling the singing \"some of the most magnificent...ever heard on Broadway.\" The 4/5 rating and aggregator context further support a rave classification.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language ('most magnificent...I have ever heard on Broadway') which indicates exceptional praise. The 4/5 rating and 'Up' aggregator verdict confirm this is a strong recommendation. | GPT-4o: The critic's statement about the singing being 'some of the most magnificent' on Broadway suggests a very strong positive impression. Combined with the original 4/5 rating, this indicates a highly enthusiastic recommendation. | Gemini: The review excerpt uses extremely positive language (\"magnificent singing\") and the aggregator indicates an overall positive reception, suggesting a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,21 +37,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:13:11.238Z",
+    "scoredAt": "2026-02-02T18:59:20.396Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 93,
-    "previousVersion": "3.0.0"
+    "previousScore": 92,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 82,
-    "geminiScore": 92,
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Rave",
-    "scoreDelta": 10,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

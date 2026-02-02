@@ -9,18 +9,18 @@
   "showScoreExcerpt": "\"Fortunately, the show sounds gloriously lush throughout...So much so that it hardly needs much embellishment at all.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/ragtime-broadway",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 77,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 63,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges clear strengths (material, cast, director's vision) but notes significant weaknesses (bold strokes don't always work, narrative pitfalls). The balanced 'succeeds but doesn't always benefit' language indicates a mixed assessment. | GPT-4o: The review acknowledges the success of the material and cast, but also notes shortcomings in the production's approach, leading to a mixed assessment. | Gemini: The review highlights both successes (cast, material) and failures (overly bold direction, reliance on archetypes), resulting in a mixed assessment. The aggregator verdict of 'Flat' supports this classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly states the production 'succeeds' and praises the 'powerhouse principal cast' while noting it 'doesn't always benefit' from certain choices. This is a solid recommendation with reservations. | GPT-4o: The review praises the cast and the production's ability to resonate with its themes, despite noting some clichés and distractions in the staging. The overall tone is positive, with a solid recommendation to see the show. | Gemini: The review praises the cast and material but notes that the production doesn't always rise above cliché and that some design choices are distracting. Overall, it's a positive assessment with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:13:44.112Z",
+    "scoredAt": "2026-02-02T18:59:31.095Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "3.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "It succeeds on the merits of the material and the powerhouse principal cast reprising their roles. Director Lear DeBessonet, in her first show as artistic director of Lincoln Center Theater, makes some appealing use of the grand canvas, a promising sign for her upcoming tenure. But the production doesn’t always benefit from these bold strokes, which underline the pitfalls of a narrative told through archetypes and melodrama.",
   "sources": [
@@ -67,12 +67,12 @@
   ],
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "contentTier": "complete",
-  "wordCount": 823,
+  "contentTier": "truncated",
+  "wordCount": 67,
   "isFullReview": true,
   "textWordCount": 823,
-  "archivePath": "data/archives/reviews/ragtime-2025/washpost--naveen-kumar_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:51:11.906Z",
+  "archivePath": "data/archives/reviews/ragtime/washpost--naveen-kumar_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T17:29:55.460Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -89,7 +89,7 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
+  "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright",
-  "tierReason": "Full review text"
+  "sourceMethod": "playwright"
 }

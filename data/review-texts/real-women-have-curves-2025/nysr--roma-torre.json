@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-REAL-WOMEN-HAVE-CURVES-Opens-on-Broadway-20250426",
   "bwwThumb": "Up",
   "originalScore": "5/5 stars",
-  "assignedScore": 95,
+  "assignedScore": 94,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 95,
+    "score": 94,
     "confidence": "high",
     "range": {
-      "low": 90,
-      "high": 100
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives 5/5 stars and uses rapturous language throughout, calling it 'wonderfully entertaining,' praising the 'embarrassment of riches in talent,' and concluding with 'This is the power of great theater.' Clear rave recommendation. | GPT-4o: The review is overwhelmingly positive, highlighting the outstanding cast, the production's heart, humor, and originality, and its powerful message. The critic's 5/5 star rating and enthusiastic language strongly support a Rave classification. | Gemini: The critic gives the show 5/5 stars and uses overwhelmingly positive language, calling it 'wonderfully entertaining' and praising the cast, direction, and message. The review is filled with superlatives and enthusiastic recommendations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives 5/5 stars and uses overwhelmingly enthusiastic language throughout, calling it 'wonderfully entertaining,' praising the 'embarrassment of riches in talent,' and ending with recognition of 'the power of great theater.' This is clearly a must-see recommendation. | GPT-4o: The review is overwhelmingly positive, highlighting the cast's performances, the production's originality, and its emotional impact. The critic's 5/5 star rating and enthusiastic language strongly indicate a rave review. | Gemini: The critic gives the show 5/5 stars and uses overwhelmingly positive language, calling it 'funny, touching, tuneful and refreshingly original' and a 'spicy Mexican feast of a show.' The review is filled with praise for the cast, direction, and message, indicating a rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:21:50.602Z",
+    "scoredAt": "2026-02-02T19:00:26.738Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 95,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 95,
+    "claudeScore": 92,
     "openaiScore": 95,
     "geminiScore": 95,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 0,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

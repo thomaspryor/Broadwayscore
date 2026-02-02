@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic gives an A- grade and describes the show as 'an absolute joy,' 'crowd-pleasing,' and praises multiple aspects including performances, direction, and emotional impact. Despite some comparative critiques to the film version, the overall assessment is strongly positive. | GPT-4o: The review is overwhelmingly positive, highlighting the show's vibrant production, strong performances, and emotional impact. The critic's original rating of 'A' and the positive aggregator excerpts further support a Rave classification. | Gemini: Despite some reservations about changes from the original, the review is overwhelmingly positive, praising the performances, music, and overall experience. The critic's grade of A- and the enthusiastic language throughout indicate a strong recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic gives an A- grade and uses enthusiastic language like 'absolute joy,' 'heartfelt and riotous,' and 'unburdened delight.' Despite some comparative critiques to the film version, the overall assessment is highly positive with clear recommendation. | GPT-4o: The critic's original rating of 'A' strongly suggests a rave review. The review praises the show as a 'joy to witness' with 'vibrant scenery and lively choreography,' indicating a highly positive reception. The tone is enthusiastic, highlighting the show's emotional impact and communal experience. | Gemini: Despite some reservations about changes from the original, the review is overwhelmingly positive, praising the performances, music, and overall experience. The 'A-' grade and aggregator excerpts further support a positive classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:38:34.799Z",
+    "scoredAt": "2026-02-02T19:00:04.966Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 91,
+    "previousScore": 89,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 87,
+    "claudeScore": 88,
     "openaiScore": 90,
-    "geminiScore": 82,
+    "geminiScore": 79,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

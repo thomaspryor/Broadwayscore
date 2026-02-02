@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses exceptionally strong positive language - 'sterling production' and 'flawless cast' - indicating high enthusiasm and clear recommendation despite the complex material. | GPT-4o: The review uses highly positive language such as 'sterling production', 'flawless cast', and 'admirable trenchancy', indicating a strong recommendation. The tone is enthusiastic and suggests a must-see production. | Gemini: The review uses overwhelmingly positive language such as \"sterling production\" and \"flawless cast,\" indicating a strong recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language including 'sterling production' and 'flawless cast' which indicates strong enthusiasm and recommendation despite the complex plot. | GPT-4o: The review uses highly positive language, describing the production as 'sterling' with a 'flawless cast' and 'admirable trenchancy,' indicating a strong recommendation. The tone is enthusiastic and unambiguous. | Gemini: The review uses extremely positive language like \"sterling production\" and \"flawless cast,\" indicating a strong recommendation. The aggregator context also points to a positive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,15 +42,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:13:52.145Z",
+    "scoredAt": "2026-02-02T18:59:33.795Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 89,
-    "previousVersion": "3.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 87,
     "openaiScore": 90,
     "geminiScore": 82,
     "claudeBucket": "Rave",

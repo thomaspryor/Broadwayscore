@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite being truncated, the review consistently highlights positive elements - the show has 'heart,' the characters 'make it work,' performances are praised as 'impressive' and 'worthy,' and design elements 'stand out.' The BWW excerpt confirms an 'Up' verdict, supporting a positive recommendation. | Gemini: The review highlights the heart and the performances of the cast, suggesting a positive experience despite a predictable plot. The aggregator excerpt also indicates a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review emphasizes the show's heart and the strength of its ensemble, praising performances, costumes, and musical numbers. While noting a predictable plot, the critic focuses on what makes the production work effectively. | GPT-4o: The review highlights the heart and character-driven aspects of the show, noting the performances and musical numbers as strengths. While it mentions a predictable plot, the overall tone suggests a positive view of the production. The text is truncated, so the final verdict is unclear, but the provided excerpts and context indicate a generally favorable impression. | Gemini: The review highlights the heart and positive aspects of the show, particularly the characters and musical numbers, suggesting a positive experience despite a predictable plot. The aggregator excerpts also indicate a positive overall assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:22:05.040Z",
+    "scoredAt": "2026-02-02T19:00:31.034Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": null,
-    "geminiScore": 78,
+    "openaiScore": 76,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 66,

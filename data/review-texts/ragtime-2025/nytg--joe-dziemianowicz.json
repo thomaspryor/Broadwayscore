@@ -9,7 +9,7 @@
   "bwwExcerpt": "The bare-bones staging keeps the focus squarely where it counts: on the cast of nearly 40, who are uniformly topflight and in sync when it comes to sparking emotional electricity. The simplicity of the production provides breathing room in a megamusical that often exhilarates, but also drains because of its tendency to always think bigger. Matthew Wexler, One-Minute Critic: Ragtime, one of the great musical theater scores of the late 20th century, steps up to bat on Broadway in its third major production. And if some of its design elements feel sparse in Lincoln Center Theater’s 1,050-seat Vivian Beaumont, its glorious cast of 34 and “the music of something beginning” land with a visceral impact that marks a uniquely American art form. Rob Weinert- Kendt, America Magazine: Still, the mantle of “relevance” is a heavy thing to lay on a Broadway musical. An earlier version of this same staging, also by director Lear deBessonet, ran at the Encores! series last November in the weeks before and after the U.S. presidential election, and depending on when audiences saw it, they felt either the show’s bursts of hope or its cries of despair with a fresh immediacy. Seen now, it plays less like a reflection of the breaking news outside the theater’s doors than like a dead-serious fable, speaking not so much to our precise present moment as to the perennial national questions this moment raises. Brian",
   "showScoreExcerpt": "\"The simplicity of the production provides breathing room in a megamusical that often exhilarates, but also drains because of its tendency to always think bigger.\"",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
   "urlSource": "show-score",
@@ -21,11 +21,11 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 79,
-    "confidence": "high",
+    "score": 80,
+    "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite noting the show's tendency toward 'power-anthem overload' and some pacing issues, the critic explicitly states the show is 'easy to heartily recommend' and praises the performances as 'uniformly topflight.' | Gemini: The critic ultimately recommends the show, highlighting its strengths in score, cast, and relevance, despite noting some issues with length and repetitiveness. The final sentence explicitly states a recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic explicitly states the show is 'easy to heartily recommend' and praises the performances, direction, and relevance, though notes the show's tendency toward 'power-anthem overload' and can be draining. | GPT-4o: The review highlights the production's striking visual elements, strong performances, and enduring relevance, culminating in a clear and enthusiastic recommendation. | Gemini: The review has some reservations about the length and 'power-anthem overload,' but the final verdict is a 'hearty recommendation' due to the score, cast, and resonance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,26 +46,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:12:00.360Z",
+    "scoredAt": "2026-02-02T18:58:56.698Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "openaiScore": 92,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "sources": [
     "bww-roundup",
