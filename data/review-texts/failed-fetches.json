@@ -5008,18 +5008,6 @@
     "timestamp": "2026-02-01T23:32:49.117Z"
   },
   {
-    "reviewId": "chess-2025/nytg--unknown.json",
-    "showId": "chess-2025",
-    "outlet": "New York Theatre Guide",
-    "critic": "Unknown",
-    "url": "https://www.newyorktheatreguide.com/reviews/chess-broadway-review-aaron-tveit-lea-michele-nicholas-christopher",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple article boundaries detected (3)",
-    "textLength": 5987,
-    "timestamp": "2026-02-01T23:33:38.346Z"
-  },
-  {
     "reviewId": "oedipus-2025/timeout--adam-feldman.json",
     "showId": "oedipus-2025",
     "outlet": "Time Out New York",
@@ -6638,5 +6626,17 @@
     "garbageReason": "Legal/privacy page: \"©2024 Dow Jones & Company, Inc. All Rights Reserved\"",
     "textLength": 679,
     "timestamp": "2026-02-02T01:00:27.632Z"
+  },
+  {
+    "reviewId": "chess-2025/nytg--unknown.json",
+    "showId": "chess-2025",
+    "outlet": "New York Theatre Guide",
+    "critic": "Unknown",
+    "url": "https://www.newyorktheatreguide.com/reviews/chess-broadway-review-aaron-tveit-lea-michele-nicholas-christopher",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple article boundaries detected (3)",
+    "textLength": 5987,
+    "timestamp": "2026-02-02T01:08:28.282Z"
   }
 ]
