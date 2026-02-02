@@ -980,6 +980,92 @@ if (fs.existsSync(reviewsJsonPath)) {
   }
 }
 
+// ========================================
+// 3C: CONSISTENCY AUDIT
+// ========================================
+// Detect rating conversion bugs, designation mismatches, and score clustering.
+const consistencyIssues = [];
+
+for (const r of allReviews) {
+  // Check 1: Original rating vs assigned score mismatch
+  if (r.originalRating && typeof r.originalRating === 'string') {
+    const parsed = parseOriginalScore(r.originalRating);
+    if (parsed !== null && Math.abs(r.assignedScore - parsed) > 20) {
+      consistencyIssues.push({
+        type: 'rating-score-mismatch',
+        severity: 'high',
+        showId: r.showId,
+        outlet: r.outletId,
+        critic: r.criticName,
+        detail: `originalRating "${r.originalRating}" (=${parsed}) vs score ${r.assignedScore} (source: ${r.scoreSource})`
+      });
+    }
+  }
+
+  // Check 2: Positive designation with very low score
+  const positiveDesignations = ['Critics_Pick', 'Critics_Choice', 'Must_See'];
+  if (positiveDesignations.includes(r.designation) && r.assignedScore < 55) {
+    consistencyIssues.push({
+      type: 'designation-score-mismatch',
+      severity: 'medium',
+      showId: r.showId,
+      outlet: r.outletId,
+      critic: r.criticName,
+      detail: `${r.designation} but score=${r.assignedScore} (source: ${r.scoreSource})`
+    });
+  }
+}
+
+// Check 3: Score clustering per show (many identical LLM scores)
+const showGroups = {};
+for (const r of allReviews) {
+  if (!showGroups[r.showId]) showGroups[r.showId] = [];
+  showGroups[r.showId].push(r);
+}
+for (const [showId, revs] of Object.entries(showGroups)) {
+  if (revs.length < 6) continue;
+  const scoreCounts = {};
+  for (const r of revs) {
+    scoreCounts[r.assignedScore] = (scoreCounts[r.assignedScore] || 0) + 1;
+  }
+  for (const [score, count] of Object.entries(scoreCounts)) {
+    const pct = (count / revs.length) * 100;
+    if (count >= 5 && pct >= 35) {
+      consistencyIssues.push({
+        type: 'score-clustering',
+        severity: 'low',
+        showId,
+        detail: `${count}/${revs.length} reviews (${pct.toFixed(0)}%) scored exactly ${score}`
+      });
+    }
+  }
+}
+
+if (consistencyIssues.length > 0) {
+  const auditDir = path.join(__dirname, '../data/audit');
+  if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
+  fs.writeFileSync(
+    path.join(auditDir, 'rebuild-consistency.json'),
+    JSON.stringify({ generatedAt: new Date().toISOString(), issues: consistencyIssues }, null, 2) + '\n'
+  );
+
+  const byType = {};
+  consistencyIssues.forEach(i => { byType[i.type] = (byType[i.type] || 0) + 1; });
+
+  console.log(`\n⚠️  CONSISTENCY AUDIT: ${consistencyIssues.length} issues detected`);
+  for (const [type, count] of Object.entries(byType)) {
+    console.log(`  ${type}: ${count}`);
+  }
+  const highSeverity = consistencyIssues.filter(i => i.severity === 'high');
+  if (highSeverity.length > 0) {
+    console.log('\n  HIGH SEVERITY issues:');
+    for (const i of highSeverity.slice(0, 10)) {
+      console.log(`    ${i.showId} / ${i.outlet}: ${i.detail}`);
+    }
+  }
+  console.log(`  Full report: data/audit/rebuild-consistency.json`);
+}
+
 // Build output
 const output = {
   _meta: {
