@@ -138,6 +138,9 @@ jobs:
         run: node scripts/validate-data.js
         continue-on-error: true
 
+      - name: Check for large files
+        uses: ./.github/actions/check-file-sizes
+
       - name: Final commit and push
         id: push
         run: |
