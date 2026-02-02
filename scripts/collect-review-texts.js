@@ -54,7 +54,7 @@ const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS } = require('./lib/
 const { verifyContent, quickValidityCheck } = require('./lib/content-verifier');
 
 // Content quality detection (garbage/invalid content filter)
-const { assessTextQuality, isGarbageContent, validateShowMentioned, extractByline, matchesCritic, computeContentFingerprint } = require('./lib/content-quality');
+const { assessTextQuality, isGarbageContent, validateShowMentioned, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier } = require('./lib/content-quality');
 
 // Parse CLI arguments
 const args = process.argv.slice(2);
@@ -2572,6 +2572,16 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
     if (contentVerification.truncated && !data.truncationSignals) {
       data.textQuality = 'truncated';
     }
+  }
+
+  // Reclassify contentTier using canonical 5-tier system
+  // This ensures contentTier stays in sync whenever fullText changes
+  if (data.fullText) {
+    const tierResult = classifyContentTier(data);
+    data.contentTier = tierResult.contentTier;
+    data.wordCount = tierResult.wordCount;
+    data.truncationSignals = tierResult.truncationSignals;
+    data.tierReason = tierResult.tierReason;
   }
 
   fs.writeFileSync(review.filePath, JSON.stringify(data, null, 2));

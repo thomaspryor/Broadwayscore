@@ -26,6 +26,7 @@ const fs = require('fs');
 const path = require('path');
 const { getOutletDisplayName } = require('./lib/review-normalization');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
+const { classifyContentTier } = require('./lib/content-quality');
 
 // Human review queue — flagged items written to data/audit/needs-human-review.json
 const humanReviewQueue = [];
@@ -794,6 +795,12 @@ showDirs.forEach(showId => {
           data.fullTextRecoveredFrom = 'garbageFullText';
           stats.recoveredFromGarbage = (stats.recoveredFromGarbage || 0) + 1;
         }
+      }
+
+      // Reclassify contentTier as safety net (in case collect-review-texts missed it)
+      if (data.fullText) {
+        const tierResult = classifyContentTier(data);
+        data.contentTier = tierResult.contentTier;
       }
 
       // Skip wrong-production reviews (e.g., off-Broadway reviews filed under Broadway show)
