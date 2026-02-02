@@ -1,35 +1,41 @@
 {
   "processed": [
-    "gutenberg-2023/deadline--greg-evans.json",
-    "gutenberg-2023/nypost--johnny-oleksinski.json",
-    "gutenberg-2023/theatermania--jesse-green.json",
-    "gutenberg-2023/theatermania--zachary-stewart.json",
-    "gutenberg-2023/theatrely--david-gordon.json"
+    "hadestown-2019/vulture--jesse-green.json",
+    "hadestown-2019/ew--kristen-baldwin.json",
+    "hadestown-2019/guardian--jesse-green.json",
+    "hadestown-2019/theatermania--jesse-green.json",
+    "hadestown-2019/theatermania--zachary-stewart.json",
+    "hadestown-2019/wsj--terry-teachout.json",
+    "hadestown-2019/rollingstone--peter-travers.json"
   ],
   "failed": [
-    "gutenberg-2023/new-york-sun--elysa-gardner.json",
-    "gutenberg-2023/observer--david-cote.json",
-    "gutenberg-2023/timeout--adam-feldman.json",
-    "gutenberg-2023/wsj--charles-isherwood.json",
-    "gutenberg-2023/wsj--terry-teachout.json"
+    "hadestown-2019/observer--david-cote.json",
+    "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
+    "hadestown-2019/timeout--adam-feldman.json",
+    "hadestown-2019/dailybeast--tim-teeman.json",
+    "hadestown-2019/medium--christian-lewis.json",
+    "hadestown-2019/vox--constance-grady.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "gutenberg-2023/theatrely--david-gordon.json"
+      "hadestown-2019/ew--kristen-baldwin.json",
+      "hadestown-2019/guardian--jesse-green.json"
     ],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "hadestown-2019/theatermania--jesse-green.json"
+    ],
     "brightdata": [
-      "gutenberg-2023/theatermania--jesse-green.json"
+      "hadestown-2019/wsj--terry-teachout.json"
     ],
     "archive": [
-      "gutenberg-2023/deadline--greg-evans.json",
-      "gutenberg-2023/nypost--johnny-oleksinski.json",
-      "gutenberg-2023/theatermania--zachary-stewart.json"
+      "hadestown-2019/vulture--jesse-green.json",
+      "hadestown-2019/theatermania--zachary-stewart.json",
+      "hadestown-2019/rollingstone--peter-travers.json"
     ]
   },
-  "startTime": "2026-02-02T17:33:39.367Z",
-  "lastProcessed": "gutenberg-2023/theatrely--david-gordon.json",
+  "startTime": "2026-02-02T17:33:51.405Z",
+  "lastProcessed": "hadestown-2019/vox--constance-grady.json",
   "log": []
 }
