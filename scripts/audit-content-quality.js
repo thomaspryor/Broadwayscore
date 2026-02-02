@@ -118,7 +118,7 @@ for (const showDir of showDirs) {
     }
 
     // ---- CHECK 2: Wrong production content ----
-    if (data.fullText && show) {
+    if (data.fullText && show && !data.wrongProduction && !data.wrongShow) {
       checkWrongProduction(data.fullText, show, relPath, data);
     }
 
@@ -405,18 +405,25 @@ function checkSuspiciousWebSearch(data, relPath) {
 function normalizeUrl(url) {
   try {
     const parsed = new URL(url);
-    return `${parsed.hostname}${parsed.pathname}`.replace(/\/$/, '').toLowerCase();
+    // Keep query parameters for sites that use them for routing (e.g., story.asp?ID=X, page.php?id=X)
+    // Strip only known tracking params (utm_*, fbclid, etc.)
+    const trackingParams = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'fbclid', 'gclid'];
+    trackingParams.forEach(p => parsed.searchParams.delete(p));
+    const search = parsed.searchParams.toString();
+    const base = `${parsed.hostname}${parsed.pathname}`.replace(/\/$/, '').toLowerCase();
+    return search ? `${base}?${search}` : base;
   } catch {
     return url.toLowerCase();
   }
 }
 
 function extractYearFromUrl(url) {
-  // Common patterns: /2024/04/19/ or /2024-04-19 or year in path
-  const match = url.match(/\/(\d{4})\//);
+  // Match year-like segments in URL paths: /2024/04/ or /2024-04-19 or /2024/
+  // Must be a plausible year (1990-2030) to avoid matching article IDs like /6910/
+  const match = url.match(/\/((?:19|20)\d{2})\//);
   if (match) return parseInt(match[1]);
 
-  const match2 = url.match(/\/(\d{4})-/);
+  const match2 = url.match(/\/((?:19|20)\d{2})-/);
   if (match2) return parseInt(match2[1]);
 
   return null;
